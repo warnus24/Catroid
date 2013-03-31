@@ -1,36 +1,55 @@
-/*
- * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2014 The Catrobat Team
- * (<http://developer.catrobat.org/credits>)
+/**
+ *  Catroid: An on-device visual programming system for Android devices
+ *  Copyright (C) 2010-2013 The Catrobat Team
+ *  (<http://developer.catrobat.org/credits>)
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *  
+ *  An additional term exception under section 7 of the GNU Affero
+ *  General Public License, version 3, is available at
+ *  http://developer.catrobat.org/license_additional_term
+ *  
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU Affero General Public License for more details.
+ *  
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *    
+ *    This file incorporates work covered by the following copyright and  
+ *    permission notice: 
+ *    
+ *		   	Copyright 2010 Guenther Hoelzl, Shawn Brown
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ *		   	This file is part of MINDdroid.
  *
- * An additional term exception under section 7 of the GNU Affero
- * General Public License, version 3, is available at
- * http://developer.catrobat.org/license_additional_term
+ * 		  	MINDdroid is free software: you can redistribute it and/or modify
+ * 		  	it under the terms of the GNU Affero General Public License as
+ * 		  	published by the Free Software Foundation, either version 3 of the
+ *   		License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
+ *   		MINDdroid is distributed in the hope that it will be useful,
+ *   		but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   		GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *   		You should have received a copy of the GNU Affero General Public License
+ *   		along with MINDdroid.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.legonxt;
+package org.catrobat.catroid.robot.albert;
 
-import android.annotation.SuppressLint;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * This class is for talking to a LEGO NXT robot via bluetooth.
@@ -38,7 +57,7 @@ import java.util.ArrayList;
  * Objects of this class can either be run as standalone thread or controlled
  * by the owners, i.e. calling the send/recive methods by themselves.
  */
-public abstract class LegoNXTCommunicator extends Thread {
+public abstract class RobotAlbertCommunicator extends Thread {
 	public static final int MOTOR_A = 0;
 	public static final int MOTOR_B = 1;
 	public static final int MOTOR_C = 2;
@@ -71,43 +90,19 @@ public abstract class LegoNXTCommunicator extends Thread {
 	public static final int GENERAL_COMMAND = 100;
 	public static final int MOTOR_COMMAND = 102;
 	public static final int TONE_COMMAND = 101;
-	// receive messages from the UI
-	// TODO should be fixed - could lead to problems
-	@SuppressLint("HandlerLeak")
-	final Handler myHandler = new Handler() {
-		@Override
-		public void handleMessage(Message myMessage) {
 
-			switch (myMessage.what) {
-				case TONE_COMMAND:
-					doBeep(myMessage.getData().getInt("frequency"), myMessage.getData().getInt("duration"));
-					break;
-				case DISCONNECT:
-					break;
-				default:
-					int motor;
-					int speed;
-					int angle;
-					motor = myMessage.getData().getInt("motor");
-					speed = myMessage.getData().getInt("speed");
-					angle = myMessage.getData().getInt("angle");
-					moveMotor(motor, speed, angle);
-
-					break;
-
-			}
-		}
-	};
-	protected static ArrayList<byte[]> receivedMessages = new ArrayList<byte[]>();
-	private static boolean requestConfirmFromDevice = false;
 	protected boolean connected = false;
 	protected Handler uiHandler;
-	protected byte[] returnMessage;
-	protected Resources resources;
+	private static boolean requestConfirmFromDevice = false;
 
-	public LegoNXTCommunicator(Handler uiHandler, Resources resources) {
+	protected static ArrayList<byte[]> receivedMessages = new ArrayList<byte[]>();
+	protected byte[] returnMessage;
+
+	protected Resources mResources;
+
+	public RobotAlbertCommunicator(Handler uiHandler, Resources resources) {
 		this.uiHandler = uiHandler;
-		this.resources = resources;
+		this.mResources = resources;
 	}
 
 	public static ArrayList<byte[]> getReceivedMessageList() {
@@ -123,10 +118,7 @@ public abstract class LegoNXTCommunicator extends Thread {
 	}
 
 	public byte[] getReturnMessage() {
-
-		byte[] copy = new byte[returnMessage.length];
-		System.arraycopy(returnMessage, 0, copy, 0, returnMessage.length);
-		return copy;
+		return returnMessage;
 	}
 
 	/**
@@ -187,11 +179,9 @@ public abstract class LegoNXTCommunicator extends Thread {
 	 */
 
 	protected void sendState(int message) {
-		if (uiHandler != null) {
-			Bundle myBundle = new Bundle();
-			myBundle.putInt("message", message);
-			sendBundle(myBundle);
-		}
+		Bundle myBundle = new Bundle();
+		myBundle.putInt("message", message);
+		sendBundle(myBundle);
 	}
 
 	protected void sendMessageAndState(byte[] message) {
@@ -222,37 +212,42 @@ public abstract class LegoNXTCommunicator extends Thread {
 		//		for (int i = 0; i < message.length; i++) {
 		//			Log.i("bt", " " + (0x000000FF & message[i]));
 		//		}
-		Log.d("NXT", "Why is LegoNXTCommunicator active?");
 
-		switch (message[1]) {
-
-			case LCPMessage.SET_OUTPUT_STATE:
-				//sendState(RECEIVED_MESSAGE, message);
-				analyzeMessageSetOutputState(message);
-				break;
-
-			case LCPMessage.GET_OUTPUT_STATE:
-				//sendState(RECEIVED_MESSAGE, message);
-				receivedMessages.add(message);
-				analyzeMessageGetOutputState(message);
-				break;
-			default:
-				Log.i("bt", "Unknown Message received by LegoNXTCommunicator over bluetooth " + message.length);
-				receivedMessages.add(message);
-				break;
-		}
+		/*
+		 * switch (message[1]) {
+		 * 
+		 * case LCPMessage.SET_OUTPUT_STATE:
+		 * //sendState(RECEIVED_MESSAGE, message);
+		 * analyzeMessageSetOutputState(message);
+		 * break;
+		 * 
+		 * case LCPMessage.GET_OUTPUT_STATE:
+		 * //sendState(RECEIVED_MESSAGE, message);
+		 * receivedMessages.add(message);
+		 * analyzeMessageGetOutputState(message);
+		 * break;
+		 * default:
+		 * Log.i("bt", "Unknown Message received by LegoNXTCommunicator over bluetooth " + message.length);
+		 * receivedMessages.add(message);
+		 * break;
+		 * }
+		 */
 	}
 
 	protected void analyzeMessageSetOutputState(byte[] message) {
 		//change command byte0 to DIRECT_COMMAND_REPLY to use!
-		Log.i("bt", "Direct command executed: " + (int) message[0]);
-		Log.i("bt", "executed Command was: " + (int) message[1]);
-		Log.i("bt", "Status: " + (int) message[2]);
-		Log.i("bt", "Length: " + message.length);
+		/*
+		 * Log.i("bt", "Direct command executed: " + (int) message[0]);
+		 * Log.i("bt", "executed Command was: " + (int) message[1]);
+		 * Log.i("bt", "Status: " + (int) message[2]);
+		 * Log.i("bt", "Length: " + message.length);
+		 */
 
 	}
 
 	protected void analyzeMessageGetOutputState(byte[] message) {
+
+		Log.d("!!!!", "Why are u there?");
 		//See Lego NXT Docu or LCPMessage class for info on numbers!
 		Log.i("bt", "Message Length: " + message.length);
 		Log.i("bt", "GetOutputState executed: " + (int) message[0]);
@@ -282,9 +277,11 @@ public abstract class LegoNXTCommunicator extends Thread {
 	}
 
 	protected void doBeep(int frequency, int duration) {
-		byte[] message = LCPMessage.getBeepMessage(frequency, duration);
-		sendMessageAndState(message);
-		waitSomeTime(20);
+		/*
+		 * byte[] message = LCPMessage.getBeepMessage(frequency, duration);
+		 * sendMessageAndState(message);
+		 * waitSomeTime(20);
+		 */
 	}
 
 	protected void waitSomeTime(int millis) {
@@ -303,13 +300,83 @@ public abstract class LegoNXTCommunicator extends Thread {
 	}
 
 	protected synchronized void moveMotor(int motor, int speed, int end) {
-		byte[] message = LCPMessage.getMotorMessage(motor, speed, end);
-		sendMessageAndState(message);
-		//Log.i("bto", "Motor " + motor + " speed " + speed);
+		/*
+		 * byte[] message = LCPMessage.getMotorMessage(motor, speed, end);
+		 * sendMessageAndState(message);
+		 * //Log.i("bto", "Motor " + motor + " speed " + speed);
+		 * 
+		 * if (requestConfirmFromDevice) {
+		 * byte[] test = LCPMessage.getOutputStateMessage(motor);
+		 * sendMessageAndState(test);
+		 * }
+		 */
+	}
 
-		if (requestConfirmFromDevice) {
-			byte[] test = LCPMessage.getOutputStateMessage(motor);
-			sendMessageAndState(test);
+	protected synchronized void albertMoveForward() {
+		byte[] buffer = new byte[22];
+		buffer[0] = (byte) 0xAA;
+		buffer[1] = (byte) 0x55;
+		buffer[2] = (byte) 20;
+		buffer[3] = (byte) 6;
+		buffer[4] = (byte) 0x11;
+		buffer[5] = (byte) 0;
+		buffer[6] = (byte) 0;
+		buffer[7] = (byte) 0xFF;
+		buffer[8] = (byte) 100; //Left motor
+		buffer[9] = (byte) 100; //Right motor
+		buffer[10] = (byte) 0; //Buzzer
+		buffer[11] = (byte) 0; //Left LED Red
+		buffer[12] = (byte) 0; //Left LED Green
+		buffer[13] = (byte) 0; //Left LED Blue
+		buffer[14] = (byte) 0; //Right LED Red
+		buffer[15] = (byte) 0; //Right LED Green
+		buffer[16] = (byte) 0; //Right LED Blue
+		buffer[17] = (byte) 0; //Front-LED 0...1
+		buffer[18] = (byte) 0; //Reserved
+		buffer[19] = (byte) 0; //Body-LED 0...255
+		buffer[20] = (byte) 0x0D;
+		buffer[21] = (byte) 0x0A;
+
+		try {
+			sendMessage(buffer);
+		} catch (IOException e) {
+			sendState(STATE_SENDERROR);
 		}
 	}
+
+	// receive messages from the UI
+	final Handler myHandler = new Handler() {
+		@Override
+		public void handleMessage(Message myMessage) {
+
+			/*
+			 * switch (myMessage.what) {
+			 * case TONE_COMMAND:
+			 * doBeep(myMessage.getData().getInt("frequency"), myMessage.getData().getInt("duration"));
+			 * break;
+			 * case DISCONNECT:
+			 * break;
+			 * default:
+			 * 
+			 * int motor;
+			 * int speed;
+			 * int angle;
+			 * motor = myMessage.getData().getInt("motor");
+			 * speed = myMessage.getData().getInt("speed");
+			 * angle = myMessage.getData().getInt("angle");
+			 * moveMotor(motor, speed, angle);
+			 * 
+			 * Log.d("Albert", "Handler:albertMoveForward()");
+			 * albertMoveForward();
+			 * 
+			 * break;
+			 * 
+			 * }
+			 */
+			Log.d("Albert", "Handler:albertMoveForward()");
+			albertMoveForward();
+
+		}
+
+	};
 }

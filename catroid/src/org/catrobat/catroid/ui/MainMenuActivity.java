@@ -185,7 +185,6 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		if (!viewSwitchLock.tryLock()) {
 			return;
 		}
-
 		startWebViewActivity(Constants.CATROBAT_HELP_URL);
 	}
 

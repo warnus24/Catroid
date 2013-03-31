@@ -96,6 +96,20 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 		}
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d("!!!!!!!!!!!!!!", "onOptionsItemSelected");
+		switch (item.getItemId()) {
+			case android.R.id.home: {
+				Intent intent = new Intent(this, MainMenuActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				return true;
+			}
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 	public static void setTermsOfServiceAgreedPermanently(Context context, boolean agreed) {
 		setBooleanSharedPreference(agreed, SETTINGS_PARROT_AR_DRONE_CATROBAT_TERMS_OF_SERVICE_ACCEPTED_PERMANENTLY,
 				context);

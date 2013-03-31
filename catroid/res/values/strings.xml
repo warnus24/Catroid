@@ -69,6 +69,8 @@
     <string name="preference_title">Settings</string>
     <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorms bricks</string>
     <string name="preference_description_mindstorm_bricks">Allow to control Lego Mindstorms robots</string>
+	<string name="pref_enable_robot_albert_bricks">Robot Albert bricks</string>
+	<string name="pref_descr_robot_albert_bricks">Allow to control robot Albert</string>
     <string name="preference_title_use_face_detection">Face Detection</string>
     <string name="preference_description_use_face_detection">Allow to detect faces</string>
     <string name="preference_title_select_camera">Choose Camera</string>
@@ -330,6 +332,7 @@
     <string name="category_variables">Variables</string>
     <string name="category_user_bricks">My Bricks</string>
     <string name="category_lego_nxt">Lego NXT</string>
+    <string name="category_robot_albert">Robot Albert</string>
     <string name="category_drone">ARDrone</string>
     <!--  -->
 

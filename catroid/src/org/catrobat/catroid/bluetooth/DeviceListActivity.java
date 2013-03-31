@@ -115,6 +115,9 @@ public class DeviceListActivity extends Activity {
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.device_list);
+
+		//TODO:
+		//Set title according to the selected Device
 		setTitle(R.string.select_device);
 
 		setResult(Activity.RESULT_CANCELED);

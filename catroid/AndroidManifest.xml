@@ -165,6 +165,7 @@
 
         <service android:name=".transfers.ProjectUploadService" />
         <service android:name=".transfers.ProjectDownloadService" />
+        <activity android:name=".ui.AlbertControlActivity"></activity>
         <service android:name="com.parrot.freeflight.service.DroneControlService"/>        
     </application>
 </manifest>
