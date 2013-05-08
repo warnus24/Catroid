@@ -190,6 +190,20 @@ public class Sprite implements Serializable, Cloneable {
 		look.addAction(whenParallelAction);
 	}
 
+	public void createWhenKeyScriptActionSequence(int keyCode) {
+		ParallelAction whenParallelAction = ExtendedActions.parallel();
+		for (Script s : scriptList) {
+			if (s instanceof WhenKeyScript) {
+				if (((WhenKeyScript) s).getKeyCode() == keyCode) {
+					SequenceAction sequence = createActionSequence(s);
+					whenParallelAction.addAction(sequence);
+				}
+			}
+		}
+		look.setWhenParallelAction(whenParallelAction);
+		look.addAction(whenParallelAction);
+	}
+
 	public SequenceAction createBroadcastScriptActionSequence(BroadcastScript script) {
 		return createActionSequence(script);
 	}

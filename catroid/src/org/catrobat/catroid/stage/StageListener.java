@@ -149,6 +149,26 @@ public class StageListener implements ApplicationListener {
 		virtualHeightHalf = virtualHeight / 2;
 
 		stage = new Stage(virtualWidth, virtualHeight, true);
+		screenMode = ScreenModes.STRETCH;
+
+		//stage = new Stage(virtualWidth, virtualHeight, true);
+		stage = new Stage(virtualWidth, virtualHeight, true) {
+
+			@Override
+			public boolean keyDown(int keycode) {
+
+				Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
+				if (sprite.isPaused) {
+					return super.keyDown(keycode);
+				}
+
+				sprite.createWhenKeyScriptActionSequence(keycode);
+
+				return super.keyDown(keycode);
+			}
+
+		};
+
 		batch = stage.getSpriteBatch();
 
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
