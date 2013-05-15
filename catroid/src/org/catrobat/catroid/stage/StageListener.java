@@ -25,7 +25,10 @@ package org.catrobat.catroid.stage;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -49,9 +52,12 @@ import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenModes;
 import org.catrobat.catroid.common.ScreenValues;
+import org.catrobat.catroid.common.Values;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.SoundManager;
+import org.catrobat.catroid.robot.albert.RobotAlbert;
+import org.catrobat.catroid.robot.albert.RobotAlbertCommunicator;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
 
@@ -205,6 +211,9 @@ public class StageListener implements ApplicationListener {
 		for (Sprite sprite : sprites) {
 			sprite.pause();
 		}
+
+		Log.d("XXXXXXXXXXXXXX", "XXXXXXXXXXXXXXXXXXXX");
+
 	}
 
 	public void reloadProject(Context context, StageDialog stageDialog) {
@@ -235,7 +244,17 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void pause() {
-		if (finished) {
+		try {
+			Handler btcHandler = RobotAlbert.getBTCHandler();
+			Log.d("StageListener Pause", "sendRobotAlbertMotorResetMessage()");
+			Message myMessage = btcHandler.obtainMessage();
+			myMessage.what = RobotAlbertCommunicator.MOTOR_RESET_COMMAND;
+			btcHandler.sendMessage(myMessage);
+			Log.d("StageListener Pause", "sendRobotAlbertMotorResetMessage finished!");
+		} catch (Exception e) {
+		}
+
+		if (finished || (sprites == null)) {
 			return;
 		}
 		if (!paused) {

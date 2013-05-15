@@ -513,6 +513,12 @@
     <string name="nxt_motor_a_and_c">A+C</string>
     <string name="nxt_motor_all">All</string>
     <!--  -->
+    
+    <!-- Robot Albert Strings -->
+    <string name="brick_robot_albert_motor_action">Albert move motor</string>
+    <string name="robot_albert_motor_speed">Speed</string>
+    <string name="robot_albert_motor_stop">Albert stop motor</string>
+    <!--  -->
 
 
     <!-- Formula Editor Strings -->
