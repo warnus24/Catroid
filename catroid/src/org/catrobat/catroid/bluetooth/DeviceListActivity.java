@@ -50,6 +50,7 @@ public class DeviceListActivity extends Activity {
 	public static final String AUTO_CONNECT = "auto_connect";
 	public static final String DEVICE_NAME_AND_ADDRESS = "device_infos";
 	public static final String EXTRA_DEVICE_ADDRESS = "device_address";
+	public static final String OTHER_DEVICE_TITLE = "other_device_title";
 	private static final int LENGTH_OF_FOO = 18; //TODO: figure out the meaning of the value
 
 	private OnItemClickListener deviceClickListener = new OnItemClickListener() {
@@ -79,7 +80,6 @@ public class DeviceListActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-
 			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				if ((device.getBondState() != BluetoothDevice.BOND_BONDED)) {
@@ -119,6 +119,10 @@ public class DeviceListActivity extends Activity {
 		//TODO:
 		//Set title according to the selected Device
 		setTitle(R.string.select_device);
+		String otherTitle = this.getIntent().getExtras().getString(OTHER_DEVICE_TITLE);
+		if (otherTitle != null) {
+			setTitle(otherTitle);
+		}
 
 		setResult(Activity.RESULT_CANCELED);
 

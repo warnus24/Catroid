@@ -76,4 +76,5 @@ public final class BrickValues {
 	}
 	
 	//Constants Robot Albert
+	public static final int ROBOT_ALBERT_SPEED = 100;
 }

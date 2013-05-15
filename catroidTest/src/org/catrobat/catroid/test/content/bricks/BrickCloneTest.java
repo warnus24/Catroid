@@ -48,6 +48,7 @@ import org.catrobat.catroid.content.bricks.MoveNStepsBrick;
 import org.catrobat.catroid.content.bricks.NoteBrick;
 import org.catrobat.catroid.content.bricks.PlaceAtBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
 import org.catrobat.catroid.content.bricks.SetBrightnessBrick;
 import org.catrobat.catroid.content.bricks.SetGhostEffectBrick;
 import org.catrobat.catroid.content.bricks.SetSizeToBrick;
@@ -125,6 +126,11 @@ public class BrickCloneTest extends AndroidTestCase {
 		brick = new MoveNStepsBrick(BRICK_FORMULA_VALUE);
 		brickClone(brick, Brick.BrickField.STEPS);
 
+		brick = new RobotAlbertMotorActionBrick(sprite, RobotAlbertMotorActionBrick.Motor.Left, BRICK_FORMULA_VALUE);
+		brickClone(brick, "speed");
+
+		brick = new SetBrightnessBrick(sprite, BRICK_FORMULA_VALUE);
+		brickClone(brick, "brightness");
 		brick = new RepeatBrick(BRICK_FORMULA_VALUE);
 		brickClone(brick, Brick.BrickField.TIMES_TO_REPEAT);
 
