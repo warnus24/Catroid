@@ -158,7 +158,7 @@ public class StageListener implements ApplicationListener {
 			public boolean keyDown(int keycode) {
 
 				Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
-				if (sprite.isPaused) {
+				if (sprite != null && sprite.isPaused) {
 					return super.keyDown(keycode);
 				}
 
