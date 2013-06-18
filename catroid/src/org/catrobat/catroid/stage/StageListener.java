@@ -581,8 +581,6 @@ public class StageListener implements ApplicationListener {
 
 	private PreStageGestureListener createPreStageGestureListener() {
 		PreStageGestureListener gestureListener = new PreStageGestureListener();
-		//gestureListener.setActorToChange(spriteToChange.costume);
-		//gestureListener.setMode(preStageMode);
 		return gestureListener;
 	}
 

@@ -23,33 +23,32 @@
 package org.catrobat.catroid.stage;
 
 import android.util.Log;
-import android.view.MotionEvent;
 
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 
 public class PreStageGestureListener implements GestureListener {
 
-	public boolean onTouchEvent(MotionEvent event) {
-
-		Log.d("onTouchEvent", "action: " + event.getAction());
-		Log.d("onTouchEvent", "actionMask: " + event.getActionMasked());
-
-		switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				Log.d("onTouchEvent", "ACTION_DOWN");
-				return true;
-			case MotionEvent.ACTION_MOVE:
-				Log.d("onTouchEvent", "ACTION_MOVE");
-				break;
-			case MotionEvent.ACTION_UP:
-				Log.d("onTouchEvent", "ACTION_UP");
-				break;
-			default:
-				return false;
-		}
-		return true;
-	}
+	//	public boolean onTouchEvent(MotionEvent event) {
+	//
+	//		Log.d("onTouchEvent", "action: " + event.getAction());
+	//		Log.d("onTouchEvent", "actionMask: " + event.getActionMasked());
+	//
+	//		switch (event.getAction()) {
+	//			case MotionEvent.ACTION_DOWN:
+	//				Log.d("onTouchEvent", "ACTION_DOWN");
+	//				return true;
+	//			case MotionEvent.ACTION_MOVE:
+	//				Log.d("onTouchEvent", "ACTION_MOVE");
+	//				break;
+	//			case MotionEvent.ACTION_UP:
+	//				Log.d("onTouchEvent", "ACTION_UP");
+	//				break;
+	//			default:
+	//				return false;
+	//		}
+	//		return true;
+	//	}
 
 	/*
 	 * (non-Javadoc)
@@ -59,6 +58,9 @@ public class PreStageGestureListener implements GestureListener {
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		// TODO Auto-generated method stub
+
+		Log.d("touchDown", "x: " + x + " - y: " + y);
+
 		return false;
 	}
 
@@ -70,6 +72,9 @@ public class PreStageGestureListener implements GestureListener {
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
 		// TODO Auto-generated method stub
+
+		Log.d("tap", "x: " + x + " - y: " + y);
+
 		return false;
 	}
 
@@ -103,6 +108,9 @@ public class PreStageGestureListener implements GestureListener {
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
 		// TODO Auto-generated method stub
+
+		Log.d("pan", "x: " + x + " - y: " + y);
+
 		return false;
 	}
 
@@ -126,6 +134,12 @@ public class PreStageGestureListener implements GestureListener {
 	@Override
 	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
 		// TODO Auto-generated method stub
+
+		Log.d("pinch", "P1x: " + pointer1.x + " - P1y: " + pointer1.y);
+		Log.d("pinch", "P2x: " + pointer2.x + " - P2y: " + pointer2.y);
+		//Log.d("pinch", "InitP1x: " + initialPointer1.x + " - InitP1y: " + initialPointer1.y);
+		//Log.d("pinch", "InitP2x: " + initialPointer2.x + " - InitP2y: " + initialPointer2.y);
+
 		return false;
 	}
 
