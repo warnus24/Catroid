@@ -41,6 +41,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -194,7 +195,8 @@ public class StageListener implements ApplicationListener {
 			Gdx.input.setInputProcessor(multiplexer);
 			fpsLogger = new FPSLogger();
 		} else {
-			Gdx.input.setInputProcessor(stage);
+			//Gdx.input.setInputProcessor(stage);
+			Gdx.input.setInputProcessor(new GestureDetector(createPreStageGestureListener()));
 		}
 
 		axes = new Texture(Gdx.files.internal("stage/red_pixel.bmp"));
@@ -551,4 +553,37 @@ public class StageListener implements ApplicationListener {
 			}
 		}
 	}
+	public void setMakeAutomaticScreenshot(boolean makeAutomaticScreenshot) {
+		this.makeAutomaticScreenshot = makeAutomaticScreenshot;
+	}
+
+	public boolean isMakeAutomaticScreenshot() {
+		return this.makeAutomaticScreenshot;
+	}
+
+	private void prepareScreenshotFiles() {
+		File noMediaFile = new File(pathForScreenshot + ".nomedia");
+		File screenshotFile = new File(pathForScreenshot + SCREENSHOT_FILE_NAME);
+		try {
+			if (screenshotFile.exists()) {
+				screenshotFile.delete();
+				screenshotFile = new File(pathForScreenshot + SCREENSHOT_FILE_NAME);
+			}
+			screenshotFile.createNewFile();
+
+			if (!noMediaFile.exists()) {
+				noMediaFile.createNewFile();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private PreStageGestureListener createPreStageGestureListener() {
+		PreStageGestureListener gestureListener = new PreStageGestureListener();
+		//gestureListener.setActorToChange(spriteToChange.costume);
+		//gestureListener.setMode(preStageMode);
+		return gestureListener;
+	}
+
 }
