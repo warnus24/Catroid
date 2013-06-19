@@ -54,5 +54,19 @@
 		<item>select</item>
 		<item>menu</item>
 	</string-array>
+	
+	<!-- Virtual pad spinner -->
+	<string-array name="virtual_pad_chooser">
+		<item>up</item>
+		<item>down</item>
+		<item>left</item>
+		<item>right</item>
+	</string-array>
+	
+	<!-- Virtual button spinner -->
+	<string-array name="virtual_button_chooser">
+		<item>press</item>
+		<item>long press</item>
+	</string-array>
     
 </resources>

@@ -68,6 +68,20 @@
 		<item>Select</item>
 		<item>Menü</item>
 	</string-array>
+	
+	<!-- Virtual pad spinner -->
+	<string-array name="virtual_pad_chooser">
+		<item>Oben</item>
+		<item>Unten</item>
+		<item>Links</item>
+		<item>Rechts</item>
+	</string-array>
+	
+	<!-- Virtual button spinner -->
+	<string-array name="virtual_button_chooser">
+		<item>drücken</item>
+		<item>lange drücken</item>
+	</string-array>
 
     <declare-styleable name="BrickLayout">
         <attr name="customPadding" format="dimension"/>

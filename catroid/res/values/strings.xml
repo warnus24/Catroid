@@ -423,6 +423,8 @@
     <string name="brick_broadcast_default_value">"message 1"</string>
     
     <string name="brick_when_key_pressed">When key pressed</string>
+    <string name="brick_when_virtual_pad_pressed">When virtual d-pad pressed</string>
+    <string name="brick_when_virtual_button_pressed">When virtual button pressed</string>
     <!--  -->
 
 

@@ -117,6 +117,8 @@ import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.content.bricks.WhenBrick;
 import org.catrobat.catroid.content.bricks.WhenKeyBrick;
 import org.catrobat.catroid.content.bricks.WhenStartedBrick;
+import org.catrobat.catroid.content.bricks.WhenVirtualButtonBrick;
+import org.catrobat.catroid.content.bricks.WhenVirtualPadBrick;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 import org.catrobat.catroid.utils.ImageEditing;
@@ -266,6 +268,8 @@ public final class StorageHandler {
 		xstream.alias("droneMoveLeftBrick", DroneMoveLeftBrick.class);
 		xstream.alias("droneMoveRightBrick", DroneMoveRightBrick.class);
 		xstream.alias("whenKeyBrick", WhenKeyBrick.class);
+		xstream.alias("whenVirtualPadBrick", WhenVirtualPadBrick.class);
+		xstream.alias("whenVirtualButtonBrick", WhenVirtualButtonBrick.class);
 	}
 
 	private void createCatroidRoot() {

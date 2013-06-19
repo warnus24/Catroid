@@ -83,6 +83,8 @@ import org.catrobat.catroid.content.bricks.WhenBrick;
 import org.catrobat.catroid.content.bricks.WhenKeyBrick;
 import org.catrobat.catroid.content.bricks.WhenKeyBrick.Key;
 import org.catrobat.catroid.content.bricks.WhenStartedBrick;
+import org.catrobat.catroid.content.bricks.WhenVirtualButtonBrick;
+import org.catrobat.catroid.content.bricks.WhenVirtualPadBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
@@ -357,6 +359,14 @@ public class AddBrickFragment extends SherlockListFragment {
 
 		WhenKeyBrick whenKeyBrick = new WhenKeyBrick(sprite, null, Key.KEY_PADUP);
 		controlBrickList.add(whenKeyBrick);
+
+		WhenVirtualPadBrick whenVirtualPadBrick = new WhenVirtualPadBrick(sprite, null,
+				WhenVirtualPadBrick.Direction.UP);
+		controlBrickList.add(whenVirtualPadBrick);
+
+		WhenVirtualButtonBrick whenVirtualButtonBrick = new WhenVirtualButtonBrick(sprite, null,
+				WhenVirtualButtonBrick.Action.TOUCH);
+		controlBrickList.add(whenVirtualButtonBrick);
 
 		brickMap.put(context.getString(R.string.category_control), controlBrickList);
 
