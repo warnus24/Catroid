@@ -47,6 +47,6 @@ public class WhenKeyActionTest extends AndroidTestCase {
 			sprite.look.act(1.0f);
 		}
 
-		assertEquals("Simple broadcast failed", (float) testPosition, sprite.look.getX());
+		assertEquals("Simple key test failed", (float) testPosition, sprite.look.getX());
 	}
 }
