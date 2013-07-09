@@ -87,13 +87,15 @@ public class BluetoothManager {
 			return BLUETOOTH_NOT_SUPPORTED;// Device does not support Bluetooth
 		}
 		if (!bluetoothAdapter.isEnabled()) {
+			Log.d("BluetoothManager", "Before enable Bluetooth");
 			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			activity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT_WITH_TEXT);
+			Log.d("BluetoothManager", "After enable Bluetooth");
 			return BLUETOOTH_ACTIVATING;
 		} else {
 			//Log.d("TAG", "LOOP!!!!!");
 			//connectLegoNXT();
-			Log.d("error", "error");
+			Log.d("BluetoothManager", "activateBluetooth:BLUETOOTH_ALREADY_ON");
 			return BLUETOOTH_ALREADY_ON;
 		}
 	}
