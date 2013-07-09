@@ -162,17 +162,30 @@ public class PreStageActivity extends BaseActivity {
 			bluetoothDeviceWaitingText = waiting_text;
 			int bluetoothState = bluetoothManager.activateBluetooth(title, waiting_text);
 			if (bluetoothState == BluetoothManager.BLUETOOTH_NOT_SUPPORTED) {
-
+				Log.d("PreStageActivity", "Bluetooth not supported");
 				Toast.makeText(PreStageActivity.this, R.string.notification_blueth_err, Toast.LENGTH_LONG).show();
 				resourceFailed();
 			} else if (bluetoothState == BluetoothManager.BLUETOOTH_ALREADY_ON) {
+				Log.d("PrestageActivity", "Bluetooth already on");
 				robot_albert_active = true;
 				if (robotAlbert == null) {
 					startBluetoothCommunication(true, title, waiting_text);
 				} else {
 					resourceInitialized();
 				}
-			}
+			} /*
+			 * else if (bluetoothState == BluetoothManager.BLUETOOTH_ACTIVATING) {
+			 * 
+			 * Log.d("PrestageActivity", "Bluetooth activating");
+			 * 
+			 * robot_albert_active = true;
+			 * if (robotAlbert == null) {
+			 * startBluetoothCommunication(true, title, waiting_text);
+			 * } else {
+			 * resourceInitialized();
+			 * }
+			 * }
+			 */
 		}
 
 		if ((requiredResources & Brick.CAMERA_LED ) > 0) {
@@ -357,6 +370,7 @@ public class PreStageActivity extends BaseActivity {
 	}
 
 	private void startBluetoothCommunication(boolean autoConnect, String title, String waiting_text) {
+		Log.d("PreStageActivity", "startBluetoothCommunication with custom Title");
 		connectingProgressDialog = ProgressDialog.show(this, "", waiting_text, true);
 		Intent serverIntent = new Intent(this, DeviceListActivity.class);
 		serverIntent.putExtra(DeviceListActivity.AUTO_CONNECT, autoConnect);
@@ -383,6 +397,7 @@ public class PreStageActivity extends BaseActivity {
 			case REQUEST_ENABLE_BLUETOOTH:
 				switch (resultCode) {
 					case Activity.RESULT_OK:
+						nxt_active = true;
 						startBluetoothCommunication(true);
 						break;
 					case Activity.RESULT_CANCELED:
@@ -397,6 +412,7 @@ public class PreStageActivity extends BaseActivity {
 				switch (resultCode) {
 					case Activity.RESULT_OK:
 						Log.d("test", "test data=" + data);
+						robot_albert_active = true;
 						startBluetoothCommunication(true, bluetoothDeviceName, bluetoothDeviceWaitingText);
 						break;
 					case Activity.RESULT_CANCELED:
