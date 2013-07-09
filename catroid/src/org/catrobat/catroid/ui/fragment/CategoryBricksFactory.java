@@ -75,6 +75,9 @@ import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.PointInDirectionBrick.Direction;
 import org.catrobat.catroid.content.bricks.PointToBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertBuzzerBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertRgbLedEyeActionBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
 import org.catrobat.catroid.content.bricks.SetBrightnessBrick;
 import org.catrobat.catroid.content.bricks.SetGhostEffectBrick;
@@ -292,6 +295,17 @@ public class CategoryBricksFactory {
 		legoNXTBrickList.add(new LegoNxtPlayToneBrick(BrickValues.LEGO_FREQUENCY, BrickValues.LEGO_DURATION));
 
 		return legoNXTBrickList;
+	}
+
+	private List<Brick> setupRobotAlbertCategoryList(Sprite sprite) {
+		List<Brick> robotAlbertBrickList = new ArrayList<Brick>();
+		robotAlbertBrickList.add(new RobotAlbertMotorActionBrick(sprite, RobotAlbertMotorActionBrick.Motor.Left,
+				BrickValues.ROBOT_ALBERT_SPEED));
+		robotAlbertBrickList.add(new RobotAlbertBuzzerBrick(sprite, BrickValues.ROBOT_ALBERT_FREQUENCY));
+		robotAlbertBrickList.add(new RobotAlbertRgbLedEyeActionBrick(sprite, RobotAlbertRgbLedEyeActionBrick.Eye.Both,
+				BrickValues.ROBOT_ALBERT_RGB_LED_EYE_RED, BrickValues.ROBOT_ALBERT_RGB_LED_EYE_GREEN,
+				BrickValues.ROBOT_ALBERT_RGB_LED_EYE_BLUE));
+		return robotAlbertBrickList;
 	}
 
 	private List<Brick> setupDroneCategoryList() {
