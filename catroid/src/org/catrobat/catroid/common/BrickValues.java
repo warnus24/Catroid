@@ -65,4 +65,9 @@ public final class BrickValues {
 	
 	//Constants Robot Albert
 	public static final int ROBOT_ALBERT_SPEED = 100;
+	public static final int ROBOT_ALBERT_FREQUENCY = 255;
+	public static final int ROBOT_ALBERT_RGB_LED_EYE_RED = 255;
+	public static final int ROBOT_ALBERT_RGB_LED_EYE_GREEN = 255;
+	public static final int ROBOT_ALBERT_RGB_LED_EYE_BLUE = 255;
+	public static final int ROBOT_ALBERT_RGB_LED_EYE = 2;
 }

@@ -518,6 +518,13 @@
     <string name="brick_robot_albert_motor_action">Albert move motor</string>
     <string name="robot_albert_motor_speed">Speed</string>
     <string name="robot_albert_motor_stop">Albert stop motor</string>
+    <string name="brick_robot_albert_buzzer_action">Albert use buzzer</string>
+    <string name="robot_albert_buzzer_frequency">Frequency</string>
+    <string name="brick_robot_albert_rgb_led_action">Albert illuminate eye</string>
+    <string name="robot_albert_rgb_led_red">Red</string>
+    <string name="robot_albert_rgb_led_green">Green</string>
+    <string name="robot_albert_rgb_led_blue">Blue</string>
+    <string name="robot_albert_rgb_led_color">Color</string>
     <!--  -->
 
 

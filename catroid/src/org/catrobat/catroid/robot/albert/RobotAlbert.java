@@ -72,6 +72,8 @@ public class RobotAlbert implements BTConnectable {
 
 	//private static int TONE_COMMAND = 101;
 	private static final int MOTOR_COMMAND = 102;
+	private static final int BUZZER_COMMAND = 104;
+	private static final int RGB_EYE_COMMAND = 105;
 
 	public RobotAlbert(Activity activity, Handler recieverHandler) {
 		this.activity = activity;
@@ -182,6 +184,37 @@ public class RobotAlbert implements BTConnectable {
 		 * 
 		 * }
 		 */
+	}
+
+	public static synchronized void sendRobotAlbertBuzzerMessage(int buzzer) {
+		Log.d("RobotAlbert", "sendRobotAlbert BuzzerMessage():Bundle");
+		Bundle myBundle = new Bundle();
+		myBundle.putInt("buzzer", buzzer);
+		Log.d("RobotAlbert", "1");
+		Message myMessage = btcHandler.obtainMessage();
+		Log.d("RobotAlbert", "2");
+		myMessage.setData(myBundle);
+		myMessage.what = BUZZER_COMMAND;
+		Log.d("RobotAlbert", "sendRobotAlbertBuzzerMessage():btcHandler.sendMessage(...)");
+		btcHandler.sendMessage(myMessage);
+		Log.d("RobotAlbert", "sendRobotAlbertBuzzerMessage finished!");
+	}
+
+	public static synchronized void sendRobotAlbertRgbLedEyeMessage(int eye, int red, int green, int blue) {
+		Log.d("RobotAlbert", "sendRobotAlbert RgbLedEyeMessage():Bundle");
+		Bundle myBundle = new Bundle();
+		myBundle.putInt("eye", eye);
+		myBundle.putInt("red", red);
+		myBundle.putInt("green", green);
+		myBundle.putInt("blue", blue);
+		Log.d("RobotAlbert", "1");
+		Message myMessage = btcHandler.obtainMessage();
+		Log.d("RobotAlbert", "2");
+		myMessage.setData(myBundle);
+		myMessage.what = RGB_EYE_COMMAND;
+		Log.d("RobotAlbert", "sendRobotAlbertRgbLedEyeMessage():btcHandler.sendMessage(...)");
+		btcHandler.sendMessage(myMessage);
+		Log.d("RobotAlbert", "sendRobotAlbertRgbLedEyeMessage finished!");
 	}
 
 	public static Handler getBTCHandler() {
