@@ -105,6 +105,22 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 		}
 
 		while (connected) {
+
+			Log.d("test", "loop");
+			try {
+				receiveMessage();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.d("RobotAlbertBtComm", "Exception in run:receiveMessage occured: " + e.toString());
+				//Log.d("Test", e.getMessage());
+				//This error occurs if robot albert is suddenly switched of
+				if (e.getMessage().equalsIgnoreCase("Software caused connection abort")) {
+					sendState(STATE_CONNECTERROR);
+					connected = false;
+				}
+
+			}
+
 			/*
 			 * try {
 			 * returnMessage = receiveMessage();
@@ -259,43 +275,11 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 	public void sendMessage(byte[] message) throws IOException {
 
 		try {
-
-			Log.d("RobotAlbertBTComm", "sendMessage: nxtOutputstream=" + nxtOutputStream);
-			Log.d("RobotAlbertBTComm", "sendMessage: nxtBtSocket=" + nxtBTsocket);
-			//Log.d("RobotAlbertBTComm", "sendMessage: nxtBtSocketisConnected=" + nxtBTsocket.isConnected());
-
 			if (nxtOutputStream == null) {
 				throw new IOException();
 			}
-
-			// send message length
-			//int messageLength = message.length;
-			//nxtOutputStream.write(messageLength);
-			//nxtOutputStream.write(messageLength >> 8);
 			nxtOutputStream.write(message, 0, message.length);
 			nxtOutputStream.flush();
-
-			//Log.d("test", "Text=" + receiveMessage());
-			if (createThread == true) {
-				createThread = false;
-				Log.d("test", "Thread created");
-				Thread thread1 = new Thread() {
-					@Override
-					public void run() {
-						try {
-							while (true) {
-								Log.d("test", "Thread starts from the beginning");
-								receiveMessage();
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-							Log.d("Error in Thread:", " " + e);
-						}
-					}
-				};
-				thread1.start();
-			}
-
 		} catch (Exception e) {
 			Log.d("RobotAlbertBtComm", "ERROR: Exception occured in sendMessage " + e.getMessage());
 		}
@@ -309,23 +293,46 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 	@Override
 	public byte[] receiveMessage() throws IOException {
 
-		Log.d("RobotAlbertBtComm", "receiveMessage InputStream=" + nxtInputStream);
+		//Log.d("RobotAlbertBtComm", "receiveMessage");
 		if (nxtInputStream == null) {
 			throw new IOException();
 		}
 
-		//		int length = nxtInputStream.read();
-		//		length = (nxtInputStream.read() << 8) + length;
-		//		byte[] returnMessage = new byte[length];
-		//		nxtInputStream.read(returnMessage);
-		//		Log.i("bt", returnMessage.toString());
 		byte[] buffer = new byte[100];
+		int read = 0;
+		byte[] buf = new byte[1];
+		byte[] buf0 = new byte[2];
+		int count2 = 0;
 
-		while (nxtInputStream.read(buffer) != -1) {
-		}
+		do {
+			//Log.d("test","checking 0xAA");
+			read = nxtInputStream.read(buf0);
+			count2++;
+			if (count2 > 200) {
+				return null;
+			}
+		} while ((buf0[0] != -86) || (buf0[1] != 85));
 
-		Log.d("RobotAlbertBtCommunicator", "something received:" + buffer.toString());
+		int count = 2;
+		buffer[0] = buf0[0];
+		buffer[1] = buf0[1];
+
+		do {
+			read = nxtInputStream.read(buf);
+			buffer[count] = buf[0];
+			count++;
+			//Log.d("test", "waiting for 0x0A (count="+count+")");
+		} while ((buffer[count] != 13) && (buffer[count - 1] != 10));
+
+		Log.d("RobotAlbertBtComm", "receiveMessage: buffer[13]=" + buffer[13]);
+		Log.d("RobotAlbertBtComm", "receiveMessage: buffer[14]=" + buffer[14]);
+		Log.d("RobotAlbertBtComm", "receiveMessage: buffer[15]=" + buffer[15]);
+		Log.d("RobotAlbertBtComm", "receiveMessage: buffer[16]=" + buffer[16]);
+		//Log.d("RobotAlbertBtComm", "receiveMessage: buffer[17]=" + buffer[17]);
+		//Log.d("RobotAlbertBtComm", "receiveMessage: buffer[18]=" + buffer[18]);
+		//Log.d("RobotAlbertBtComm", "receiveMessage: buffer[19]=" + buffer[19]);
+		//Log.d("RobotAlbertBtComm", "receiveMessage: buffer[20]=" + buffer[20]);
+
 		return buffer;
 	}
-
 }
