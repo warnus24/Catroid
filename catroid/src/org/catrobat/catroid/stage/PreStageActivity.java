@@ -139,19 +139,7 @@ public class PreStageActivity extends Activity {
 				} else {
 					resourceInitialized();
 				}
-			} /*
-			 * else if (bluetoothState == BluetoothManager.BLUETOOTH_ACTIVATING) {
-			 * 
-			 * Log.d("PrestageActivity", "Bluetooth activating");
-			 * 
-			 * robot_albert_active = true;
-			 * if (robotAlbert == null) {
-			 * startBluetoothCommunication(true, title, waiting_text);
-			 * } else {
-			 * resourceInitialized();
-			 * }
-			 * }
-			 */
+			}
 		}
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
@@ -419,7 +407,7 @@ public class PreStageActivity extends Activity {
 					case RobotAlbertBtCommunicator.STATE_CONNECTERROR:
 						Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_SHORT).show();
 						connectingProgressDialog.dismiss();
-						robotAlbert.destroyCommunicator();
+						robotAlbert.destroyCommunicator(); //exception thrown when program exit
 						robotAlbert = null;
 						if (autoConnect) {
 							String waiting_text = getResources()
