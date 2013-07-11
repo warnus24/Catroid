@@ -352,7 +352,7 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static RobotAlbertMotorActionAction RobotAlbertMotorAction(Sprite sprite, String motor,
+	public static RobotAlbertMotorActionAction robotAlbertMotor(Sprite sprite, String motor,
 			org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick.Motor motorEnum, Formula speed) {
 		RobotAlbertMotorActionAction action = action(RobotAlbertMotorActionAction.class);
 		action.setMotorEnum(motorEnum);
@@ -361,13 +361,19 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static RobotAlbertBuzzerAction RobotAlbertBuzzerAction(Sprite sprite, Formula value) {
+	public static RobotAlbertBuzzerAction robotAlbertBuzzer(Sprite sprite, Formula value) {
 		RobotAlbertBuzzerAction action = action(RobotAlbertBuzzerAction.class);
 		action.setValue(value);
 		return action;
 	}
 
-	public static RobotAlbertRgbLedEyeAction RobotAlbertRgbLedEyeAction(Sprite sprite, String eye,
+	public static RobotAlbertFrontLedAction robotAlbertFrontLedAction(Sprite sprite, Formula value) {
+		RobotAlbertFrontLedAction action = action(RobotAlbertFrontLedAction.class);
+		action.setValue(value);
+		return action;
+	}
+
+	public static RobotAlbertRgbLedEyeAction robotAlbertRgbLedEye(Sprite sprite, String eye,
 			org.catrobat.catroid.content.bricks.RobotAlbertRgbLedEyeActionBrick.Eye eyeEnum, Formula red,
 			Formula green, Formula blue) {
 		RobotAlbertRgbLedEyeAction action = action(RobotAlbertRgbLedEyeAction.class);
@@ -491,6 +497,16 @@ public class ExtendedActions extends Actions {
 		VibrateAction action = action(VibrateAction.class);
 		action.setSprite(sprite);
 		action.setDuration(duration);
+		return action;
+	}
+
+	public static RobotAlbertDistanceSensorLeftAction robotAlbertDistanceSensorLeft(Sprite sprite,
+			Formula variableFormula, UserVariable userVariable) {
+
+		RobotAlbertDistanceSensorLeftAction action = action(RobotAlbertDistanceSensorLeftAction.class);
+		action.setSprite(sprite);
+		action.setChangeVariable(variableFormula);
+		action.setUserVariable(userVariable);
 		return action;
 	}
 }
