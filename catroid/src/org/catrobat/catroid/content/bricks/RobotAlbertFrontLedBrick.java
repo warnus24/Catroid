@@ -44,7 +44,7 @@ import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickListener {
+public class RobotAlbertFrontLedBrick extends BrickBaseType implements OnClickListener {
 	private static final long serialVersionUID = 1L;
 
 	private transient View prototypeView;
@@ -61,12 +61,12 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 		return this;
 	}
 
-	public RobotAlbertBuzzerBrick(Sprite sprite, int value) {
+	public RobotAlbertFrontLedBrick(Sprite sprite, int value) {
 		this.sprite = sprite;
 		this.value = new Formula(value);
 	}
 
-	public RobotAlbertBuzzerBrick(Sprite sprite, Formula value) {
+	public RobotAlbertFrontLedBrick(Sprite sprite, Formula value) {
 		this.sprite = sprite;
 		this.value = value;
 	}
@@ -78,23 +78,22 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 
 	@Override
 	public Brick copyBrickForSprite(Sprite sprite, Script script) {
-		RobotAlbertBuzzerBrick copyBrick = (RobotAlbertBuzzerBrick) clone();
+		RobotAlbertFrontLedBrick copyBrick = (RobotAlbertFrontLedBrick) clone();
 		copyBrick.sprite = sprite;
 		return copyBrick;
 	}
 
 	@Override
 	public View getPrototypeView(Context context) {
-		prototypeView = View.inflate(context, R.layout.brick_robot_albert_buzzer_action, null);
-		TextView textValue = (TextView) prototypeView.findViewById(R.id.robot_albert_buzzer_action_frequency_text_view);
+		prototypeView = View.inflate(context, R.layout.brick_robot_albert_front_led_action, null);
+		TextView textValue = (TextView) prototypeView.findViewById(R.id.robot_albert_front_led_action_status_text_view);
 		textValue.setText(String.valueOf(value.interpretInteger(sprite)));
-		//TODO set the spinner Value to A
 		return prototypeView;
 	}
 
 	@Override
 	public Brick clone() {
-		return new RobotAlbertBuzzerBrick(getSprite(), value.clone());
+		return new RobotAlbertFrontLedBrick(getSprite(), value.clone());
 	}
 
 	@Override
@@ -103,8 +102,8 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 			return view;
 		}
 
-		view = View.inflate(context, R.layout.brick_robot_albert_buzzer_action, null);
-		setCheckboxView(R.id.brick_robot_albert_buzzer_action_checkbox);
+		view = View.inflate(context, R.layout.brick_robot_albert_front_led_action, null);
+		setCheckboxView(R.id.brick_robot_albert_front_led_action_checkbox);
 
 		final Brick brickInstance = this;
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -115,9 +114,9 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 			}
 		});
 
-		TextView textValue = (TextView) view.findViewById(R.id.robot_albert_buzzer_action_frequency_text_view);
-		editValue = (EditText) view.findViewById(R.id.robot_albert_buzzer_action_frequency_edit_text);
-		value.setTextFieldId(R.id.robot_albert_buzzer_action_frequency_edit_text);
+		TextView textValue = (TextView) view.findViewById(R.id.robot_albert_front_led_action_status_text_view);
+		editValue = (EditText) view.findViewById(R.id.robot_albert_front_led_action_status_edit_text);
+		value.setTextFieldId(R.id.robot_albert_front_led_action_status_edit_text);
 		value.refreshTextField(view);
 
 		textValue.setVisibility(View.GONE);
@@ -126,8 +125,8 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 		editValue.setOnClickListener(this);
 
 		int val = value.interpretInteger(sprite);
-		if (val > 255) {
-			editValue.setText("" + 255);
+		if (val > 1) {
+			editValue.setText("" + 1);
 		} else if (val < 0) {
 			editValue.setText("" + 0);
 		}
@@ -142,7 +141,7 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 
 	@Override
 	public View getViewWithAlpha(int alphaValue) {
-		LinearLayout layout = (LinearLayout) view.findViewById(R.id.brick_robot_albert_buzzer_action_layout);
+		LinearLayout layout = (LinearLayout) view.findViewById(R.id.brick_robot_albert_front_led_action_layout);
 		Drawable background = layout.getBackground();
 		background.setAlpha(alphaValue);
 		this.alphaValue = (alphaValue);
@@ -151,7 +150,7 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertBuzzer(sprite, value));
+		sequence.addAction(ExtendedActions.robotAlbertFrontLedAction(sprite, value));
 		return null;
 	}
 }

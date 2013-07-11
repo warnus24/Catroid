@@ -164,6 +164,13 @@ public class RobotAlbertMotorActionBrick extends BrickBaseType implements OnClic
 
 		motorSpinner.setSelection(motorEnum.ordinal());
 
+		int val = speed.interpretInteger(sprite);
+		if (val > 100) {
+			editSpeed.setText("" + 100);
+		} else if (val < -100) {
+			editSpeed.setText("" + -100);
+		}
+
 		return view;
 	}
 
@@ -183,7 +190,7 @@ public class RobotAlbertMotorActionBrick extends BrickBaseType implements OnClic
 
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.RobotAlbertMotorAction(sprite, motor, motorEnum, speed));
+		sequence.addAction(ExtendedActions.robotAlbertMotor(sprite, motor, motorEnum, speed));
 		return null;
 	}
 }
