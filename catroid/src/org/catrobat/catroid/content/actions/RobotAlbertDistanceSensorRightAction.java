@@ -20,28 +20,42 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.ui;
+package org.catrobat.catroid.content.actions;
 
-import android.os.Bundle;
+import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.UserVariable;
+import org.catrobat.catroid.robot.albert.RobotAlbert;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
-import org.catrobat.catroid.R;
+public class RobotAlbertDistanceSensorRightAction extends TemporalAction {
 
-public class SettingsActivity extends SherlockPreferenceActivity {
+	private Sprite sprite;
+	private Formula changeVariable;
+	private UserVariable userVariable;
 
-	@SuppressWarnings("deprecation")
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void update(float percent) {
+		if (userVariable == null) {
+			return;
+		}
+		//double value = changeVariable.interpretDouble(sprite);
+		int value = RobotAlbert.getRobotAlbertDistanceSensorRightMessage();
+		userVariable.setValue(value);
 
-		addPreferencesFromResource(R.xml.preferences);
+	}
 
-		ActionBar actionBar = getSupportActionBar();
+	public void setUserVariable(UserVariable userVariable) {
+		this.userVariable = userVariable;
+	}
 
-		actionBar.setTitle(R.string.preference_title);
-		actionBar.setHomeButtonEnabled(true);
+	public void setChangeVariable(Formula changeVariable) {
+		this.changeVariable = changeVariable;
+	}
+
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
 	}
 
 }
