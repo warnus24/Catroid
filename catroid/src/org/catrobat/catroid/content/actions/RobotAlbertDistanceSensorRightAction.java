@@ -24,31 +24,34 @@ package org.catrobat.catroid.content.actions;
 
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.robot.albert.RobotAlbert;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
-public class RobotAlbertFrontLedAction extends TemporalAction {
-	private static final int MIN = 0;
-	private static final int MAX = 1;
+public class RobotAlbertDistanceSensorRightAction extends TemporalAction {
 
-	private Formula value;
 	private Sprite sprite;
+	private Formula changeVariable;
+	private UserVariable userVariable;
 
 	@Override
 	protected void update(float percent) {
-
-		int status = value.interpretInteger(sprite);
-		if (status < MIN) {
-			status = MIN;
-		} else if (status > MAX) {
-			status = MAX;
+		if (userVariable == null) {
+			return;
 		}
-		RobotAlbert.sendRobotAlbertFrontLedMessage(status);
+		//double value = changeVariable.interpretDouble(sprite);
+		int value = RobotAlbert.getRobotAlbertDistanceSensorRightMessage();
+		userVariable.setValue(value);
+
 	}
 
-	public void setValue(Formula value) {
-		this.value = value;
+	public void setUserVariable(UserVariable userVariable) {
+		this.userVariable = userVariable;
+	}
+
+	public void setChangeVariable(Formula changeVariable) {
+		this.changeVariable = changeVariable;
 	}
 
 	public void setSprite(Sprite sprite) {

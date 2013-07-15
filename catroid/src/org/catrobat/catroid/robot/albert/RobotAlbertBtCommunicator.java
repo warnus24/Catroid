@@ -78,8 +78,6 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 	private String mMACaddress;
 	private BTConnectable myOwner;
 
-	private boolean createThread = true; //just for testing
-
 	public RobotAlbertBtCommunicator(BTConnectable myOwner, Handler uiHandler, BluetoothAdapter btAdapter,
 			Resources resources) {
 		super(uiHandler, resources);
@@ -106,7 +104,7 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 
 		while (connected) {
 
-			Log.d("test", "loop");
+			//TODO: Test it on more devices. If everything works use this else use Version in branch albert_robot_presentation_V2 
 			try {
 				receiveMessage();
 			} catch (IOException e) {
