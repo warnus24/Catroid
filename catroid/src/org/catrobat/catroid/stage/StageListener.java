@@ -27,15 +27,18 @@ package org.catrobat.catroid.stage;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.Values;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.WhenVirtualButtonScript;
 import org.catrobat.catroid.content.WhenVirtualPadScript;
+import org.catrobat.catroid.content.bricks.WhenVirtualPadBrick.Direction;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
@@ -61,7 +64,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -153,7 +155,11 @@ public class StageListener implements ApplicationListener {
 	private byte[] thumbnail;
 =======
 	private boolean virtualGamepadSelected = false;
+<<<<<<< HEAD
 >>>>>>> 8093ff1... Tests for virtual pad brick and virtual button brick
+=======
+	private Sprite vgpPadSprite;
+>>>>>>> c1724ae... stagelistener update (touch-handling, thread-handling, display images)
 
 	StageListener() {
 	}
@@ -179,17 +185,282 @@ public class StageListener implements ApplicationListener {
 		//stage = new Stage(virtualWidth, virtualHeight, true);
 		stage = new Stage(virtualWidth, virtualHeight, true) {
 
-			@Override
-			public boolean keyDown(int keycode) {
+			private float dPadInitValue = -100000.0f;
+			private float dPadStartX = -100000.0f;
+			private float dPadStartY = -100000.0f;
+			private double dPadMinMotion = 20.0;
+			private double dPadMaxMotion = 80.0;
+			private DPadThread dPadThread;
 
-				Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
-				if (sprite != null && sprite.isPaused) {
-					return super.keyDown(keycode);
+			private boolean dPadUp = false;
+			private boolean dPadDown = false;
+			private boolean dPadLeft = false;
+			private boolean dPadRight = false;
+
+			class DPadThread extends Thread {
+
+				private boolean running = false;
+
+				@Override
+				public void run() {
+					try {
+						Log.e("DPadThread<run>", "thread started");
+
+						while (running) {
+
+							Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
+							if (sprite == null) {
+								List<Sprite> spriteList = ProjectManager.getInstance().getCurrentProject()
+										.getSpriteList();
+								for (Sprite tmp : spriteList) {
+									for (int script = 0; script < tmp.getNumberOfScripts(); script++) {
+										if (tmp.getScript(script) instanceof WhenVirtualPadScript
+												|| tmp.getScript(script) instanceof WhenVirtualButtonScript) {
+											sprite = tmp;
+											break;
+										}
+									}
+									if (sprite != null) {
+										break;
+									}
+								}
+								if (sprite == null) {
+									running = false;
+									Log.e("DPadThread<run>", "sprite is null");
+									return;
+								}
+							} else if (sprite.isPaused) {
+								running = false;
+								return;
+							}
+
+							boolean changeImage = true;
+							if (dPadUp && dPadLeft) {
+								for (LookData lookData : vgpPadSprite.getLookDataList()) {
+									if (lookData.getLookName().equals(Constants.VGP_IMAGE_PAD_UPLEFT)) {
+										vgpPadSprite.look.setLookData(lookData);
+										break;
+									}
+								}
+								changeImage = false;
+							} else if (dPadUp && dPadRight) {
+								for (LookData lookData : vgpPadSprite.getLookDataList()) {
+									if (lookData.getLookName().equals(Constants.VGP_IMAGE_PAD_UPRIGHT)) {
+										vgpPadSprite.look.setLookData(lookData);
+										break;
+									}
+								}
+								changeImage = false;
+							} else if (dPadDown && dPadLeft) {
+								for (LookData lookData : vgpPadSprite.getLookDataList()) {
+									if (lookData.getLookName().equals(Constants.VGP_IMAGE_PAD_DOWNLEFT)) {
+										vgpPadSprite.look.setLookData(lookData);
+										break;
+									}
+								}
+								changeImage = false;
+							} else if (dPadDown && dPadRight) {
+								for (LookData lookData : vgpPadSprite.getLookDataList()) {
+									if (lookData.getLookName().equals(Constants.VGP_IMAGE_PAD_DOWNRIGHT)) {
+										vgpPadSprite.look.setLookData(lookData);
+										break;
+									}
+								}
+								changeImage = false;
+							}
+
+							if (dPadUp) {
+								if (changeImage) {
+									for (LookData lookData : vgpPadSprite.getLookDataList()) {
+										if (lookData.getLookName().equals(Constants.VGP_IMAGE_PAD_UP)) {
+											vgpPadSprite.look.setLookData(lookData);
+											break;
+										}
+									}
+								}
+								sprite.createWhenVirtualPadScriptActionSequence(Direction.UP.getId());
+							}
+							if (dPadDown) {
+								if (changeImage) {
+									for (LookData lookData : vgpPadSprite.getLookDataList()) {
+										if (lookData.getLookName().equals(Constants.VGP_IMAGE_PAD_DOWN)) {
+											vgpPadSprite.look.setLookData(lookData);
+											break;
+										}
+									}
+								}
+								sprite.createWhenVirtualPadScriptActionSequence(Direction.DOWN.getId());
+							}
+							if (dPadLeft) {
+								if (changeImage) {
+									for (LookData lookData : vgpPadSprite.getLookDataList()) {
+										if (lookData.getLookName().equals(Constants.VGP_IMAGE_PAD_LEFT)) {
+											vgpPadSprite.look.setLookData(lookData);
+											break;
+										}
+									}
+								}
+								sprite.createWhenVirtualPadScriptActionSequence(Direction.LEFT.getId());
+							}
+							if (dPadRight) {
+								if (changeImage) {
+									for (LookData lookData : vgpPadSprite.getLookDataList()) {
+										if (lookData.getLookName().equals(Constants.VGP_IMAGE_PAD_RIGHT)) {
+											vgpPadSprite.look.setLookData(lookData);
+											break;
+										}
+									}
+								}
+								sprite.createWhenVirtualPadScriptActionSequence(Direction.RIGHT.getId());
+							}
+							if (!dPadUp && !dPadDown && !dPadLeft && !dPadRight) {
+								//center
+								for (LookData lookData : vgpPadSprite.getLookDataList()) {
+									if (lookData.getLookName().equals(Constants.VGP_IMAGE_PAD_CENTER)) {
+										vgpPadSprite.look.setLookData(lookData);
+										break;
+									}
+								}
+							}
+
+							Thread.sleep(20);
+						}
+
+						Log.e("DPadThread<run>", "thread stopped");
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 
-				sprite.createWhenKeyScriptActionSequence(keycode);
+				@Override
+				public void start() {
+					try {
+						running = true;
+						Log.e("DPadThread<start>", "start thread");
+						super.start();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 
+				public void stopThread() {
+					running = false;
+				}
+
+			}
+
+			private void setDPadDirection(boolean dPadUp, boolean dPadDown, boolean dPadLeft, boolean dPadRight) {
+				this.dPadUp = dPadUp;
+				this.dPadDown = dPadDown;
+				this.dPadLeft = dPadLeft;
+				this.dPadRight = dPadRight;
+			}
+
+			@Override
+			public boolean keyDown(int keycode) {
+				try {
+					Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
+					if (sprite != null && sprite.isPaused) {
+						return super.keyDown(keycode);
+					} else if (sprite != null) {
+						sprite.createWhenKeyScriptActionSequence(keycode);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				return super.keyDown(keycode);
+			}
+
+			@Override
+			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+				try {
+					//				Log.e("touchDown", "x=" + screenX);
+					//				Log.e("touchDown", "y=" + screenY);
+					//				Log.e("touchDown", "pointer=" + pointer);
+					//				Log.e("touchDown", "button=" + button);
+
+					//					if (pointer == 0) {
+					dPadThread = new DPadThread();
+					dPadThread.start();
+
+					vgpPadSprite.look.setXInUserInterfaceDimensionUnit(screenX - virtualWidth / 2.0f);
+					vgpPadSprite.look.setYInUserInterfaceDimensionUnit(virtualHeight / 2.0f - screenY);
+
+					vgpPadSprite.look.setVisible(true);
+					//					}
+					return true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+
+			@Override
+			public boolean touchDragged(int screenX, int screenY, int pointer) {
+				try {
+					//				Log.i("touchDragged", "x=" + screenX);
+					//				Log.i("touchDragged", "y=" + screenY);
+					//				Log.i("touchDragged", "pointer=" + pointer);
+
+					//init start values
+					if (dPadStartX == dPadInitValue || dPadStartY == dPadInitValue) {
+						dPadStartX = screenX;
+						dPadStartY = screenY;
+						return false;
+					}
+
+					double distance = Math.sqrt(Math.pow(dPadStartX - screenX, 2) + Math.pow(dPadStartY - screenY, 2));
+					if (distance <= dPadMinMotion || distance > dPadMaxMotion) {
+						setDPadDirection(false, false, false, false);
+					} else {
+						boolean tmpUp = false;
+						boolean tmpDown = false;
+						boolean tmpLeft = false;
+						boolean tmpRight = false;
+
+						//direction
+						if (screenX > dPadStartX && (screenX - dPadMinMotion) > dPadStartX) {
+							tmpRight = true;
+						} else if (screenX < dPadStartX && (screenX + dPadMinMotion) < dPadStartX) {
+							tmpLeft = true;
+						}
+
+						if (screenY > dPadStartY && (screenY - dPadMinMotion) > dPadStartY) {
+							tmpDown = true;
+						} else if (screenY < dPadStartY && (screenY + dPadMinMotion) < dPadStartY) {
+							tmpUp = true;
+						}
+
+						setDPadDirection(tmpUp, tmpDown, tmpLeft, tmpRight);
+					}
+					return true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+
+			@Override
+			public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+				try {
+					//				Log.e("touchUp", "x=" + screenX);
+					//				Log.e("touchUp", "y=" + screenY);
+					//				Log.e("touchUp", "pointer=" + pointer);
+					//				Log.e("touchUp", "button=" + button);
+
+					//					if (pointer == 0) {
+					dPadStartX = dPadInitValue;
+					dPadStartY = dPadInitValue;
+
+					dPadThread.stopThread();
+
+					vgpPadSprite.look.setVisible(false);
+					//					}
+					return true;
+				} catch (Exception e) {
+					return false;
+				}
 			}
 
 		};
@@ -206,6 +477,7 @@ public class StageListener implements ApplicationListener {
 			stage.addActor(sprite.look);
 			sprite.resume();
 		sprites.get(0).look.setLookData(createWhiteBackgroundLookData());
+
 		for (int sprite = 0; sprite < sprites.size(); sprite++) {
 			stage.addActor(sprites.get(sprite).look);
 
@@ -216,7 +488,9 @@ public class StageListener implements ApplicationListener {
 					break;
 				}
 			}
-
+			if (virtualGamepadSelected) {
+				break;
+			}
 		}
 
 		passepartout = new Passepartout(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, maximizeViewPortWidth,
@@ -233,7 +507,9 @@ public class StageListener implements ApplicationListener {
 		} else {
 			Log.i("GamepadSelected", "selected: " + virtualGamepadSelected);
 			if (virtualGamepadSelected) {
-				Gdx.input.setInputProcessor(new GestureDetector(createPreStageGestureListener()));
+				loadVirtualGamepadImagesLookData();
+				Gdx.input.setInputProcessor(stage);
+				//Gdx.input.setInputProcessor(new GestureDetector(createPreStageGestureListener()));
 			} else {
 				Gdx.input.setInputProcessor(stage);
 			}
@@ -311,8 +587,17 @@ public class StageListener implements ApplicationListener {
 	public void finish() {
 		finished = true;
 		SoundManager.getInstance().clear();
+
 		if (thumbnail != null && !makeAutomaticScreenshot) {
 			saveScreenshot(thumbnail, SCREENSHOT_AUTOMATIC_FILE_NAME);
+
+
+		for (int i = 0; i < sprites.size(); i++) {
+			if (sprites.get(i).getName().equals(Constants.VGP_SPRITE_PAD)) {
+				sprites.remove(i);
+				break;
+			}
+
 		}
 	}
 
@@ -624,4 +909,48 @@ public class StageListener implements ApplicationListener {
 		return gestureListener;
 	}
 
+	private void loadVirtualGamepadImagesLookData() {
+		try {
+
+			String path = Utils.buildPath(Utils.buildProjectPath(project.getName()), Constants.IMAGE_DIRECTORY);
+			String[] imageName = new String[] { Constants.VGP_IMAGE_PAD_CENTER, Constants.VGP_IMAGE_PAD_UP,
+					Constants.VGP_IMAGE_PAD_DOWN, Constants.VGP_IMAGE_PAD_LEFT, Constants.VGP_IMAGE_PAD_RIGHT,
+					Constants.VGP_IMAGE_PAD_UPLEFT, Constants.VGP_IMAGE_PAD_UPRIGHT, Constants.VGP_IMAGE_PAD_DOWNLEFT,
+					Constants.VGP_IMAGE_PAD_DOWNRIGHT };
+
+			ArrayList<LookData> lookDataList = new ArrayList<LookData>();
+
+			for (int i = 0; i < imageName.length; i++) {
+				String filePath = Utils.buildPath(path, imageName[i]);
+				File file = new File(filePath);
+				if (file.exists()) {
+					Log.i("StageListener<create>", "filename: " + file.getName());
+
+					Pixmap pixmap = Utils.getPixmapFromFile(file);
+
+					LookData dpadLookData = new LookData();
+					dpadLookData.setLookName(imageName[i]);
+					dpadLookData.setLookFilename(file.getName());
+					dpadLookData.setPixmap(pixmap);
+					dpadLookData.setTextureRegion();
+					lookDataList.add(dpadLookData);
+				} else {
+					Log.e("StageListener<loadVirtualGamepadImagesLookData>", "File do not exist. filePath: " + filePath);
+				}
+			}
+
+			vgpPadSprite = new Sprite(Constants.VGP_SPRITE_PAD);
+			if (lookDataList.size() > 0) {
+				vgpPadSprite.look.setLookData(lookDataList.get(0));
+				vgpPadSprite.setLookDataList(lookDataList);
+			}
+			vgpPadSprite.look.setVisible(false);
+
+			sprites.add(vgpPadSprite);
+			stage.addActor(vgpPadSprite.look);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

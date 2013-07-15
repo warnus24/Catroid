@@ -60,6 +60,12 @@ import org.catrobat.catroid.utils.UtilFile;
 import java.io.File;
 import java.io.IOException;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.util.Log;
+
+
 public final class StandardProjectHandler {
 
 	private static final String TAG = StandardProjectHandler.class.getSimpleName();
@@ -170,6 +176,7 @@ public final class StandardProjectHandler {
 		defaultDroneProject.addSprite(createDroneSprite(upSpriteName, DroneBrickFactory.DroneBricks.DRONE_MOVE_UP_BRICK, -100,
 				-200, upFile, 2000));
 
+<<<<<<< HEAD
 		//Down Sprite
 		String downSpriteName = context.getString(R.string.default_drone_project_sprites_down);
 
@@ -242,6 +249,64 @@ public final class StandardProjectHandler {
 
 		StorageHandler.getInstance().saveProject(defaultDroneProject);
 		return defaultDroneProject;
+=======
+		/* DEBUG START LOAD DPAD IMAGE */
+
+		Log.i("ProjectManager<loadProject>", "ProjectName: " + projectName);
+
+		String path = Utils.buildPath(Utils.buildProjectPath(projectName), Constants.IMAGE_DIRECTORY);
+		String[] imagePath = new String[] { Utils.buildPath(path, Constants.VGP_IMAGE_PAD_CENTER),
+				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_UP), Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DOWN),
+				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_LEFT),
+				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_RIGHT),
+				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_UPLEFT),
+				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_UPRIGHT),
+				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DOWNLEFT),
+				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DOWNRIGHT) };
+		int[] resList = new int[] { org.catrobat.catroid.R.drawable.dpad_center,
+				org.catrobat.catroid.R.drawable.dpad_up, org.catrobat.catroid.R.drawable.dpad_down,
+				org.catrobat.catroid.R.drawable.dpad_left, org.catrobat.catroid.R.drawable.dpad_right,
+				org.catrobat.catroid.R.drawable.dpad_upleft, org.catrobat.catroid.R.drawable.dpad_upright,
+				org.catrobat.catroid.R.drawable.dpad_downleft, org.catrobat.catroid.R.drawable.dpad_downright };
+
+		for (int i = 0; i < imagePath.length; i++) {
+			File file = new File(imagePath[i]);
+			try {
+				Log.i("ProjectManager<loadProject>", "... create new file: " + imagePath[i]);
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				InputStream in = context.getResources().openRawResource(resList[i]);
+				OutputStream out = new BufferedOutputStream(new FileOutputStream(file), Constants.BUFFER_8K);
+				byte[] buffer = new byte[Constants.BUFFER_8K];
+				int length = 0;
+				while ((length = in.read(buffer)) > 0) {
+					out.write(buffer, 0, length);
+				}
+				in.close();
+				out.flush();
+				out.close();
+
+				//resize
+				int[] dimensions = ImageEditing.getImageDimensions(file.getAbsolutePath());
+				int originalWidth = dimensions[0];
+				int originalHeight = dimensions[1];
+				double ratio = (double) originalHeight / (double) originalWidth;
+
+				// scale the dpad, that its always 1/2 of the screen width
+				Bitmap bitmap = ImageEditing.getScaledBitmapFromPath(file.getAbsolutePath(), Values.SCREEN_WIDTH / 2,
+						(int) (Values.SCREEN_WIDTH / 2 * ratio), false);
+				StorageHandler.saveBitmapToImageFile(file, bitmap);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		/* DEBUG END */
+
+		return defaultProject;
+>>>>>>> c1724ae... stagelistener update (touch-handling, thread-handling, display images)
 	}
 
 	private static Sprite createDroneSprite(String spriteName, DroneBrickFactory.DroneBricks brickName, int xPostition,
