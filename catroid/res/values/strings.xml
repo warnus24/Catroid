@@ -422,7 +422,6 @@
     <string name="brick_note_default_value">"add comment here…"</string>
     <string name="brick_broadcast_default_value">"message 1"</string>
     
-    <string name="brick_when_key_pressed">When key pressed</string>
     <string name="brick_when_virtual_pad_pressed">When virtual d-pad pressed</string>
     <string name="brick_when_virtual_button_pressed">When virtual button pressed</string>
     <!--  -->
@@ -652,4 +651,12 @@
     </plurals>
     <!--  -->
 
+	<!-- Virtual Gamepad -->
+    <string name="virtual_gamepad_pad_up">up</string>
+    <string name="virtual_gamepad_pad_down">down</string>
+    <string name="virtual_gamepad_pad_left">left</string>
+    <string name="virtual_gamepad_pad_right">right</string>
+    <string name="virtual_gamepad_button_press">press</string>
+    <!--  -->
+    
 </resources>

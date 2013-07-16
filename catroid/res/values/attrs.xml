@@ -52,35 +52,17 @@
         <item>Nein</item>
     </string-array>
     
-    <!-- Xperia Play key spinner -->
-	<string-array name="xperia_play_key_chooser">
-		<item>Steuerkreuz (Oben)</item>
-		<item>Steuerkreuz (Unten)</item>
-		<item>Steuerkreuz (Links)</item>
-		<item>Steuerkreuz (Rechts)</item>
-		<item>Kreuz</item>
-		<item>Kreis</item>
-		<item>Quadrat</item>
-		<item>Dreieck</item>
-		<item>Links</item>
-		<item>Rechts</item>
-		<item>Start</item>
-		<item>Select</item>
-		<item>Menü</item>
-	</string-array>
-	
 	<!-- Virtual pad spinner -->
 	<string-array name="virtual_pad_chooser">
-		<item>Oben</item>
-		<item>Unten</item>
-		<item>Links</item>
-		<item>Rechts</item>
+		<item>@string/virtual_gamepad_pad_up</item>
+		<item>@string/virtual_gamepad_pad_down</item>
+		<item>@string/virtual_gamepad_pad_left</item>
+		<item>@string/virtual_gamepad_pad_right</item>
 	</string-array>
 	
 	<!-- Virtual button spinner -->
 	<string-array name="virtual_button_chooser">
-		<item>drücken</item>
-		<item>lange drücken</item>
+		<item>@string/virtual_gamepad_button_press</item>
 	</string-array>
 
     <declare-styleable name="BrickLayout">

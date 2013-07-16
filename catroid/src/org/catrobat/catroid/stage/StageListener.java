@@ -358,21 +358,6 @@ public class StageListener implements ApplicationListener {
 			}
 
 			@Override
-			public boolean keyDown(int keycode) {
-				try {
-					Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
-					if (sprite != null && sprite.isPaused) {
-						return super.keyDown(keycode);
-					} else if (sprite != null) {
-						sprite.createWhenKeyScriptActionSequence(keycode);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return super.keyDown(keycode);
-			}
-
-			@Override
 			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 				try {
 					//				Log.e("touchDown", "x=" + screenX);

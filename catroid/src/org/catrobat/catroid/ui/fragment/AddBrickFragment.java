@@ -80,8 +80,6 @@ import org.catrobat.catroid.content.bricks.TurnLeftBrick;
 import org.catrobat.catroid.content.bricks.TurnRightBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.content.bricks.WhenBrick;
-import org.catrobat.catroid.content.bricks.WhenKeyBrick;
-import org.catrobat.catroid.content.bricks.WhenKeyBrick.Key;
 import org.catrobat.catroid.content.bricks.WhenStartedBrick;
 import org.catrobat.catroid.content.bricks.WhenVirtualButtonBrick;
 import org.catrobat.catroid.content.bricks.WhenVirtualPadBrick;
@@ -356,9 +354,6 @@ public class AddBrickFragment extends SherlockListFragment {
 
 		RepeatBrick repeatBrick = new RepeatBrick(sprite, BrickValues.REPEAT);
 		controlBrickList.add(repeatBrick);
-
-		WhenKeyBrick whenKeyBrick = new WhenKeyBrick(sprite, null, Key.KEY_PADUP);
-		controlBrickList.add(whenKeyBrick);
 
 		WhenVirtualPadBrick whenVirtualPadBrick = new WhenVirtualPadBrick(sprite, null,
 				WhenVirtualPadBrick.Direction.UP);

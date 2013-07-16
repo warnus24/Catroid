@@ -425,7 +425,6 @@
     <string name="brick_note_default_value">"Anmerkung hier hinzufügen…" </string>
     <string name="brick_broadcast_default_value">"Nachricht 1"</string>
     
-    <string name="brick_when_key_pressed">Wenn Taste gedrückt</string>
     <string name="brick_when_virtual_pad_pressed">Wenn virtuelles Steuerkreuz gedrückt</string>
     <string name="brick_when_virtual_button_pressed">Wenn virtuelle Taste gedrückt</string>
     <!--  -->
@@ -648,6 +647,14 @@
         <item quantity="one">Variable ausgewählt!</item>
         <item quantity="other">Variablen ausgewählt!</item>
     </plurals>
+    <!--  -->
+
+	<!-- Virtual Gamepad -->
+    <string name="virtual_gamepad_pad_up">Oben</string>
+    <string name="virtual_gamepad_pad_down">Unten</string>
+    <string name="virtual_gamepad_pad_left">Links</string>
+    <string name="virtual_gamepad_pad_right">Rechts</string>
+    <string name="virtual_gamepad_button_press">drücken</string>
     <!--  -->
 
 </resources>

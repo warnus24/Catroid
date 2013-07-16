@@ -115,7 +115,6 @@ import org.catrobat.catroid.content.bricks.TurnLeftBrick;
 import org.catrobat.catroid.content.bricks.TurnRightBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.content.bricks.WhenBrick;
-import org.catrobat.catroid.content.bricks.WhenKeyBrick;
 import org.catrobat.catroid.content.bricks.WhenStartedBrick;
 import org.catrobat.catroid.content.bricks.WhenVirtualButtonBrick;
 import org.catrobat.catroid.content.bricks.WhenVirtualPadBrick;
@@ -257,6 +256,7 @@ public final class StorageHandler {
 		xstream.alias("waitBrick", WaitBrick.class);
 		xstream.alias("whenBrick", WhenBrick.class);
 		xstream.alias("whenStartedBrick", WhenStartedBrick.class);
+
 		xstream.alias("dronePlayLedAnimationBrick", DronePlayLedAnimationBrick.class);
 		xstream.alias("droneFlipBrick", DroneFlipBrick.class);
 		xstream.alias("droneTakeOffBrick", DroneTakeOffBrick.class);
@@ -268,6 +268,7 @@ public final class StorageHandler {
 		xstream.alias("droneMoveLeftBrick", DroneMoveLeftBrick.class);
 		xstream.alias("droneMoveRightBrick", DroneMoveRightBrick.class);
 		xstream.alias("whenKeyBrick", WhenKeyBrick.class);
+        
 		xstream.alias("whenVirtualPadBrick", WhenVirtualPadBrick.class);
 		xstream.alias("whenVirtualButtonBrick", WhenVirtualButtonBrick.class);
 	}
