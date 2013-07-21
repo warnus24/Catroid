@@ -268,7 +268,7 @@ public final class StorageHandler {
 		xstream.alias("droneMoveLeftBrick", DroneMoveLeftBrick.class);
 		xstream.alias("droneMoveRightBrick", DroneMoveRightBrick.class);
 		xstream.alias("whenKeyBrick", WhenKeyBrick.class);
-        
+
 		xstream.alias("whenVirtualPadBrick", WhenVirtualPadBrick.class);
 		xstream.alias("whenVirtualButtonBrick", WhenVirtualButtonBrick.class);
 	}

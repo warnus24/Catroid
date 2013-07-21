@@ -63,7 +63,6 @@ import java.io.IOException;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.util.Log;
 
 
 public final class StandardProjectHandler {
@@ -176,7 +175,7 @@ public final class StandardProjectHandler {
 		defaultDroneProject.addSprite(createDroneSprite(upSpriteName, DroneBrickFactory.DroneBricks.DRONE_MOVE_UP_BRICK, -100,
 				-200, upFile, 2000));
 
-<<<<<<< HEAD
+
 		//Down Sprite
 		String downSpriteName = context.getString(R.string.default_drone_project_sprites_down);
 
@@ -224,6 +223,7 @@ public final class StandardProjectHandler {
 				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_go_right, context, true,
 				backgroundImageScaleFactor);
 
+
 		defaultDroneProject.addSprite(createDroneSprite(rightSpriteName, DroneBrickFactory.DroneBricks.DRONE_MOVE_RIGHT_BRICK,
 				260, -325, rightFile, 2000));
 
@@ -249,7 +249,7 @@ public final class StandardProjectHandler {
 
 		StorageHandler.getInstance().saveProject(defaultDroneProject);
 		return defaultDroneProject;
-=======
+
 		/* DEBUG START LOAD DPAD IMAGE */
 
 		Log.i("ProjectManager<loadProject>", "ProjectName: " + projectName);
@@ -305,8 +305,11 @@ public final class StandardProjectHandler {
 
 		/* DEBUG END */
 
+		ProjectManager.loadVirtualGamepadImages(projectName, context);
+
+
 		return defaultProject;
->>>>>>> c1724ae... stagelistener update (touch-handling, thread-handling, display images)
+
 	}
 
 	private static Sprite createDroneSprite(String spriteName, DroneBrickFactory.DroneBricks brickName, int xPostition,
