@@ -22,8 +22,7 @@
  */
 package org.catrobat.catroid.stage;
 
-<<<<<<< HEAD
-=======
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,12 +37,11 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.WhenVirtualButtonScript;
 import org.catrobat.catroid.content.WhenVirtualPadScript;
-import org.catrobat.catroid.content.bricks.WhenVirtualPadBrick.Direction;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
 
->>>>>>> 8093ff1... Tests for virtual pad brick and virtual button brick
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -151,15 +149,13 @@ public class StageListener implements ApplicationListener {
 
 	public boolean axesOn = false;
 
-<<<<<<< HEAD
+
 	private byte[] thumbnail;
-=======
+
 	private boolean virtualGamepadSelected = false;
-<<<<<<< HEAD
->>>>>>> 8093ff1... Tests for virtual pad brick and virtual button brick
-=======
+
 	private Sprite vgpPadSprite;
->>>>>>> c1724ae... stagelistener update (touch-handling, thread-handling, display images)
+
 
 	StageListener() {
 	}
@@ -181,6 +177,7 @@ public class StageListener implements ApplicationListener {
 
 		stage = new Stage(virtualWidth, virtualHeight, true);
 		screenMode = ScreenModes.STRETCH;
+
 
 		//stage = new Stage(virtualWidth, virtualHeight, true);
 		stage = new Stage(virtualWidth, virtualHeight, true) {
@@ -455,6 +452,7 @@ public class StageListener implements ApplicationListener {
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 		initScreenMode();
 
+
 		sprites = project.getSpriteList();
 		for (Sprite sprite : sprites) {
 			sprite.resetSprite();
@@ -463,12 +461,10 @@ public class StageListener implements ApplicationListener {
 			sprite.resume();
 		sprites.get(0).look.setLookData(createWhiteBackgroundLookData());
 
-		for (int sprite = 0; sprite < sprites.size(); sprite++) {
-			stage.addActor(sprites.get(sprite).look);
-
-			for (int script = 0; script < sprites.get(sprite).getNumberOfScripts(); script++) {
-				if (sprites.get(sprite).getScript(script) instanceof WhenVirtualPadScript
-						|| sprites.get(sprite).getScript(script) instanceof WhenVirtualButtonScript) {
+		for (Sprite sprite : sprites) {
+			for (int script = 0; script < sprite.getNumberOfScripts(); script++) {
+				if (sprite.getScript(script) instanceof WhenVirtualPadScript
+						|| sprite.getScript(script) instanceof WhenVirtualButtonScript) {
 					virtualGamepadSelected = true;
 					break;
 				}
@@ -478,9 +474,32 @@ public class StageListener implements ApplicationListener {
 			}
 		}
 
+
 		passepartout = new Passepartout(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, maximizeViewPortWidth,
 				maximizeViewPortHeight, virtualWidth, virtualHeight);
 		stage.addActor(passepartout);
+
+		if (virtualGamepadSelected) {
+			stage = new VirtualGamepadStage(virtualWidth, virtualHeight, true);
+		} else {
+			stage = new Stage(virtualWidth, virtualHeight, true);
+		}
+
+		batch = stage.getSpriteBatch();
+
+		camera = (OrthographicCamera) stage.getCamera();
+		camera.position.set(0, 0, 0);
+
+		for (Sprite sprite : sprites) {
+			sprite.resetSprite();
+			stage.addActor(sprite.look);
+			sprite.resume();
+		}
+
+		if (sprites.size() > 0) {
+			sprites.get(0).look.setLookData(createWhiteBackgroundLookData());
+		}
+            
 
 		if (DEBUG) {
 			OrthoCamController camController = new OrthoCamController(camera);
@@ -493,6 +512,7 @@ public class StageListener implements ApplicationListener {
 			Log.i("GamepadSelected", "selected: " + virtualGamepadSelected);
 			if (virtualGamepadSelected) {
 				loadVirtualGamepadImagesLookData();
+				((VirtualGamepadStage) stage).setVgpPadSprite(vgpPadSprite);
 				Gdx.input.setInputProcessor(stage);
 				//Gdx.input.setInputProcessor(new GestureDetector(createPreStageGestureListener()));
 			} else {
@@ -889,10 +909,10 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
-	private VirtualGamepadGestureListener createPreStageGestureListener() {
-		VirtualGamepadGestureListener gestureListener = new VirtualGamepadGestureListener();
-		return gestureListener;
-	}
+	//	private VirtualGamepadGestureListener createPreStageGestureListener() {
+	//		VirtualGamepadGestureListener gestureListener = new VirtualGamepadGestureListener();
+	//		return gestureListener;
+	//	}
 
 	private void loadVirtualGamepadImagesLookData() {
 		try {
