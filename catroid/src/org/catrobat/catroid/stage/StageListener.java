@@ -499,7 +499,7 @@ public class StageListener implements ApplicationListener {
 		if (sprites.size() > 0) {
 			sprites.get(0).look.setLookData(createWhiteBackgroundLookData());
 		}
-            
+
 
 		if (DEBUG) {
 			OrthoCamController camController = new OrthoCamController(camera);
