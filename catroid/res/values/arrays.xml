@@ -49,6 +49,10 @@
 	<!-- Virtual button spinner -->
 	<string-array name="virtual_button_chooser">
 		<item>@string/virtual_gamepad_button_press</item>
+		<item>@string/virtual_gamepad_button_wipe_up</item>
+		<item>@string/virtual_gamepad_button_wipe_down</item>
+		<item>@string/virtual_gamepad_button_wipe_left</item>
+		<item>@string/virtual_gamepad_button_wipe_right</item>
 	</string-array>
     
 </resources>
