@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -69,7 +68,9 @@ import org.catrobat.catroid.utils.Utils;
 import org.catrobat.catroid.web.ServerCalls;
 
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -78,6 +79,8 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public final class ProjectManager implements OnLoadProjectCompleteListener, OnCheckTokenCompleteListener {
 	private static final ProjectManager INSTANCE = new ProjectManager();
@@ -487,12 +490,15 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_UPLEFT),
 				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_UPRIGHT),
 				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DOWNLEFT),
-				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DOWNRIGHT) };
+				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DOWNRIGHT),
+				Utils.buildPath(path, Constants.VGP_IMAGE_BUTTON_TOUCH),
+				Utils.buildPath(path, Constants.VGP_IMAGE_BUTTON_SWIPE) };
 		int[] resList = new int[] { org.catrobat.catroid.R.drawable.dpad_center,
 				org.catrobat.catroid.R.drawable.dpad_up, org.catrobat.catroid.R.drawable.dpad_down,
 				org.catrobat.catroid.R.drawable.dpad_left, org.catrobat.catroid.R.drawable.dpad_right,
 				org.catrobat.catroid.R.drawable.dpad_upleft, org.catrobat.catroid.R.drawable.dpad_upright,
-				org.catrobat.catroid.R.drawable.dpad_downleft, org.catrobat.catroid.R.drawable.dpad_downright };
+				org.catrobat.catroid.R.drawable.dpad_downleft, org.catrobat.catroid.R.drawable.dpad_downright,
+				org.catrobat.catroid.R.drawable.button_touch, org.catrobat.catroid.R.drawable.button_swipe };
 
 		for (int i = 0; i < imagePath.length; i++) {
 			File file = new File(imagePath[i]);

@@ -157,6 +157,8 @@ public class StageListener implements ApplicationListener {
 
 	private Sprite vgpPadSprite;
 
+	private Sprite vgpButtonSprite;
+	private byte[] thumbnail;
 
 	StageListener() {
 	}
@@ -510,10 +512,11 @@ public class StageListener implements ApplicationListener {
 			Gdx.input.setInputProcessor(multiplexer);
 			fpsLogger = new FPSLogger();
 		} else {
-			Log.i("GamepadSelected", "selected: " + virtualGamepadSelected);
 			if (virtualGamepadSelected) {
 				loadVirtualGamepadImagesLookData();
+				loadVirtualButtonImagesLookData();
 				((VirtualGamepadStage) stage).setVgpPadSprite(vgpPadSprite);
+				((VirtualGamepadStage) stage).setVgpButtonSprite(vgpButtonSprite);
 				Gdx.input.setInputProcessor(stage);
 			} else {
 				Gdx.input.setInputProcessor(stage);
@@ -915,7 +918,6 @@ public class StageListener implements ApplicationListener {
 
 	private void loadVirtualGamepadImagesLookData() {
 		try {
-
 			String path = Utils.buildPath(Utils.buildProjectPath(project.getName()), Constants.IMAGE_DIRECTORY);
 			String[] imageName = new String[] { Constants.VGP_IMAGE_PAD_CENTER, Constants.VGP_IMAGE_PAD_UP,
 					Constants.VGP_IMAGE_PAD_DOWN, Constants.VGP_IMAGE_PAD_LEFT, Constants.VGP_IMAGE_PAD_RIGHT,
@@ -928,8 +930,6 @@ public class StageListener implements ApplicationListener {
 				String filePath = Utils.buildPath(path, imageName[i]);
 				File file = new File(filePath);
 				if (file.exists()) {
-					Log.i("StageListener<create>", "filename: " + file.getName());
-
 					Pixmap pixmap = Utils.getPixmapFromFile(file);
 
 					LookData dpadLookData = new LookData();
@@ -958,13 +958,52 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
+	private void loadVirtualButtonImagesLookData() {
+		try {
+			String path = Utils.buildPath(Utils.buildProjectPath(project.getName()), Constants.IMAGE_DIRECTORY);
+			String[] imageName = new String[] { Constants.VGP_IMAGE_BUTTON_TOUCH, Constants.VGP_IMAGE_BUTTON_SWIPE };
+
+			ArrayList<LookData> lookDataList = new ArrayList<LookData>();
+
+			for (int i = 0; i < imageName.length; i++) {
+				String filePath = Utils.buildPath(path, imageName[i]);
+				File file = new File(filePath);
+				if (file.exists()) {
+					Pixmap pixmap = Utils.getPixmapFromFile(file);
+
+					LookData dpadLookData = new LookData();
+					dpadLookData.setLookName(imageName[i]);
+					dpadLookData.setLookFilename(file.getName());
+					dpadLookData.setPixmap(pixmap);
+					dpadLookData.setTextureRegion();
+					lookDataList.add(dpadLookData);
+				} else {
+					Log.e("StageListener<loadVirtualButtonImagesLookData>", "File do not exist. filePath: " + filePath);
+				}
+			}
+
+			vgpButtonSprite = new Sprite(Constants.VGP_SPRITE_BUTTON);
+			if (lookDataList.size() > 0) {
+				vgpButtonSprite.look.setLookData(lookDataList.get(0));
+				vgpButtonSprite.setLookDataList(lookDataList);
+			}
+			vgpButtonSprite.look.setVisible(false);
+
+			sprites.add(vgpButtonSprite);
+			stage.addActor(vgpButtonSprite.look);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void removeVirtualGamepadSprites() {
 		try {
 			for (int i = 0; i < sprites.size(); i++) {
-				if (sprites.get(i).getName().equals(Constants.VGP_SPRITE_PAD)) {
+				String name = sprites.get(i).getName();
+				if (name.equals(Constants.VGP_SPRITE_PAD) || name.equals(Constants.VGP_SPRITE_BUTTON)) {
 					sprites.remove(i);
 					i = 0;
-					break;
 				}
 			}
 		} catch (Exception e) {
