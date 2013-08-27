@@ -919,10 +919,8 @@ public class StageListener implements ApplicationListener {
 	private void loadVirtualGamepadImagesLookData() {
 		try {
 			String path = Utils.buildPath(Utils.buildProjectPath(project.getName()), Constants.IMAGE_DIRECTORY);
-			String[] imageName = new String[] { Constants.VGP_IMAGE_PAD_CENTER, Constants.VGP_IMAGE_PAD_UP,
-					Constants.VGP_IMAGE_PAD_DOWN, Constants.VGP_IMAGE_PAD_LEFT, Constants.VGP_IMAGE_PAD_RIGHT,
-					Constants.VGP_IMAGE_PAD_UPLEFT, Constants.VGP_IMAGE_PAD_UPRIGHT, Constants.VGP_IMAGE_PAD_DOWNLEFT,
-					Constants.VGP_IMAGE_PAD_DOWNRIGHT };
+			String[] imageName = new String[] { Constants.VGP_IMAGE_PAD_CENTER, Constants.VGP_IMAGE_PAD_STRAIGHT,
+					Constants.VGP_IMAGE_PAD_DIAGONAL };
 
 			ArrayList<LookData> lookDataList = new ArrayList<LookData>();
 

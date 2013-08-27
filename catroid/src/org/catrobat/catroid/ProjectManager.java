@@ -484,21 +484,13 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 
 		String path = Utils.buildPath(Utils.buildProjectPath(projectName), Constants.IMAGE_DIRECTORY);
 		String[] imagePath = new String[] { Utils.buildPath(path, Constants.VGP_IMAGE_PAD_CENTER),
-				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_UP), Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DOWN),
-				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_LEFT),
-				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_RIGHT),
-				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_UPLEFT),
-				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_UPRIGHT),
-				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DOWNLEFT),
-				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DOWNRIGHT),
+				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_STRAIGHT),
+				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DIAGONAL),
 				Utils.buildPath(path, Constants.VGP_IMAGE_BUTTON_TOUCH),
 				Utils.buildPath(path, Constants.VGP_IMAGE_BUTTON_SWIPE) };
-		int[] resList = new int[] { org.catrobat.catroid.R.drawable.dpad_center,
-				org.catrobat.catroid.R.drawable.dpad_up, org.catrobat.catroid.R.drawable.dpad_down,
-				org.catrobat.catroid.R.drawable.dpad_left, org.catrobat.catroid.R.drawable.dpad_right,
-				org.catrobat.catroid.R.drawable.dpad_upleft, org.catrobat.catroid.R.drawable.dpad_upright,
-				org.catrobat.catroid.R.drawable.dpad_downleft, org.catrobat.catroid.R.drawable.dpad_downright,
-				org.catrobat.catroid.R.drawable.button_touch, org.catrobat.catroid.R.drawable.button_swipe };
+		int[] resList = new int[] { org.catrobat.catroid.R.drawable.vgp_dpad_center,
+				org.catrobat.catroid.R.drawable.vgp_dpad_straight, org.catrobat.catroid.R.drawable.vgp_dpad_diagonal,
+				org.catrobat.catroid.R.drawable.vgp_button_touch, org.catrobat.catroid.R.drawable.vgp_button_swipe };
 
 		for (int i = 0; i < imagePath.length; i++) {
 			File file = new File(imagePath[i]);
