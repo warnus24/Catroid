@@ -1,4 +1,3 @@
-
 /**
  *  Catroid: An on-device visual programming system for Android devices
  *  Copyright (C) 2010-2013 The Catrobat Team
@@ -46,9 +45,14 @@ public class VirtualGamepadStage extends Stage {
 
 	private static int dPadInitValue = -99999;
 
-	private static double dPadMinMotion = 20.0;
-	private static double dPadMaxMotion = 90.0;
-	private static double buttonMotion = 20.0;
+	private static double DPAD_MIN_MOTION = 20.0;
+	private static double DPAD_MAX_MOTION = 90.0;
+	private static double BUTTON_MOTION = 20.0;
+
+	private static int DPAD_ITERATE_TIME = 15;
+	private static int BUTTON_ITERATE_TIME = 30;
+	private static int BUTTON_HOLD_START_TIME = 300;
+	private static int BUTTON_HOLD_ITERATE_TIME = 15;
 
 	private int dPadStartX;
 	private int dPadStartY;
@@ -57,6 +61,9 @@ public class VirtualGamepadStage extends Stage {
 
 	private DPadThread dPadThread;
 	private ButtonThread buttonThread;
+	private ButtonHoldThread buttonHoldThread;
+
+	private boolean buttonHoldActive;
 
 	private boolean dPadUp = false;
 	private boolean dPadDown = false;
@@ -89,6 +96,7 @@ public class VirtualGamepadStage extends Stage {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		try {
 			if (pointer == 0) {
+
 				dPadThread = new DPadThread();
 				dPadThread.start();
 
@@ -96,9 +104,18 @@ public class VirtualGamepadStage extends Stage {
 				vgpPadSprite.look.setYInUserInterfaceDimensionUnit(height / 2.0f - screenY);
 
 				vgpPadSprite.look.setVisible(true);
+
 			} else {
+
 				buttonStartX = screenX;
 				buttonStartY = screenY;
+
+				vgpButtonSprite.look.setXInUserInterfaceDimensionUnit(buttonStartX - width / 2.0f);
+				vgpButtonSprite.look.setYInUserInterfaceDimensionUnit(height / 2.0f - buttonStartY);
+
+				buttonHoldThread = new ButtonHoldThread();
+				buttonHoldThread.start();
+
 			}
 			return true;
 		} catch (Exception e) {
@@ -120,7 +137,7 @@ public class VirtualGamepadStage extends Stage {
 				}
 
 				double distance = Math.sqrt(Math.pow(dPadStartX - screenX, 2) + Math.pow(dPadStartY - screenY, 2));
-				if (distance <= dPadMinMotion || distance > dPadMaxMotion) {
+				if (distance <= DPAD_MIN_MOTION || distance > DPAD_MAX_MOTION) {
 					setDPadDirection(false, false, false, false);
 				} else {
 					boolean tmpUp = false;
@@ -129,15 +146,15 @@ public class VirtualGamepadStage extends Stage {
 					boolean tmpRight = false;
 
 					//direction
-					if (screenX > dPadStartX && (screenX - dPadMinMotion) > dPadStartX) {
+					if (screenX > dPadStartX && (screenX - DPAD_MIN_MOTION) > dPadStartX) {
 						tmpRight = true;
-					} else if (screenX < dPadStartX && (screenX + dPadMinMotion) < dPadStartX) {
+					} else if (screenX < dPadStartX && (screenX + DPAD_MIN_MOTION) < dPadStartX) {
 						tmpLeft = true;
 					}
 
-					if (screenY > dPadStartY && (screenY - dPadMinMotion) > dPadStartY) {
+					if (screenY > dPadStartY && (screenY - DPAD_MIN_MOTION) > dPadStartY) {
 						tmpDown = true;
-					} else if (screenY < dPadStartY && (screenY + dPadMinMotion) < dPadStartY) {
+					} else if (screenY < dPadStartY && (screenY + DPAD_MIN_MOTION) < dPadStartY) {
 						tmpUp = true;
 					}
 
@@ -163,7 +180,19 @@ public class VirtualGamepadStage extends Stage {
 
 				vgpPadSprite.look.setVisible(false);
 			} else {
-				handleButtonAction(screenX, screenY);
+
+				if (buttonHoldThread != null) {
+					buttonHoldThread.stopThread();
+				}
+
+				if (buttonHoldActive) {
+					buttonThread = new ButtonThread(vgpButtonSprite.look);
+					buttonThread.start();
+				} else {
+					handleButtonAction(screenX, screenY);
+				}
+				buttonStartX = dPadInitValue;
+				buttonStartY = dPadInitValue;
 			}
 			return true;
 		} catch (Exception e) {
@@ -289,12 +318,9 @@ public class VirtualGamepadStage extends Stage {
 			throw new Exception("VirtualGamepadStage<handleButtonAction> sprite is paused");
 		}
 
-		vgpButtonSprite.look.setXInUserInterfaceDimensionUnit(buttonStartX - width / 2.0f);
-		vgpButtonSprite.look.setYInUserInterfaceDimensionUnit(height / 2.0f - buttonStartY);
-
 		//handle button coordinates
 		double distance = Math.sqrt(Math.pow(buttonStartX - screenX, 2) + Math.pow(buttonStartY - screenY, 2));
-		if (distance <= buttonMotion) {
+		if (distance <= BUTTON_MOTION) {
 			for (LookData lookData : vgpButtonSprite.getLookDataList()) {
 				if (lookData.getLookName().equals(Constants.VGP_IMAGE_BUTTON_TOUCH)) {
 					vgpButtonSprite.look.setLookData(lookData);
@@ -351,10 +377,12 @@ public class VirtualGamepadStage extends Stage {
 			buttonThread.start();
 
 			sprite.createWhenVirtualButtonScriptActionSequence(wipeId);
-
-			buttonStartX = dPadInitValue;
-			buttonStartY = dPadInitValue;
 		}
+
+	}
+
+	private void handleButtonHoldAction(Sprite sprite) throws Exception {
+		sprite.createWhenVirtualButtonScriptActionSequence(WhenVirtualButtonBrick.Action.HOLD.getId());
 	}
 
 	public Sprite getVgpPadSprite() {
@@ -429,7 +457,7 @@ public class VirtualGamepadStage extends Stage {
 
 					handleDPadAction(sprite);
 
-					Thread.sleep(20);
+					Thread.sleep(DPAD_ITERATE_TIME);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -471,7 +499,7 @@ public class VirtualGamepadStage extends Stage {
 				while (transparency < 100.0f) {
 					transparency = transparency + 10.0f;
 					look.setTransparencyInUserInterfaceDimensionUnit(transparency);
-					Thread.sleep(30);
+					Thread.sleep(BUTTON_ITERATE_TIME);
 				}
 
 				look.setVisible(false);
@@ -482,4 +510,79 @@ public class VirtualGamepadStage extends Stage {
 		}
 	}
 
+	class ButtonHoldThread extends Thread {
+
+		private int time;
+		private boolean running;
+
+		public ButtonHoldThread() {
+			super();
+			time = BUTTON_HOLD_START_TIME;
+			running = false;
+		}
+
+		@Override
+		public void run() {
+			try {
+				while (running) {
+
+					if (time == BUTTON_HOLD_ITERATE_TIME) {
+						Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
+						if (sprite == null) {
+							sprite = getCurrentVirtualGamepadSprite();
+							if (sprite == null) {
+								running = false;
+								Log.e("DPadThread<run>", "sprite is null");
+								return;
+							}
+						} else if (sprite.isPaused) {
+							running = false;
+							return;
+						}
+
+						handleButtonHoldAction(sprite);
+					}
+
+					Thread.sleep(time);
+					time = BUTTON_HOLD_ITERATE_TIME;
+
+					//init button image - hold
+					if (!buttonHoldActive && running) {
+
+						for (LookData lookData : vgpButtonSprite.getLookDataList()) {
+							if (lookData.getLookName().equals(Constants.VGP_IMAGE_BUTTON_HOLD)) {
+								vgpButtonSprite.look.setLookData(lookData);
+								break;
+							}
+						}
+
+						buttonHoldActive = true;
+						vgpButtonSprite.look.setTransparencyInUserInterfaceDimensionUnit(0.0f);
+						vgpButtonSprite.look.setRotation(0.0f);
+						vgpButtonSprite.look.setVisible(true);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void start() {
+			try {
+				running = true;
+				buttonHoldActive = false;
+				super.start();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		public void stopThread() {
+			running = false;
+		}
+
+	}
+
 }
+>>>>>>> f3c778e... virtual gamepad refactoring

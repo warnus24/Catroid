@@ -657,6 +657,7 @@
     <string name="virtual_gamepad_pad_left">Left</string>
     <string name="virtual_gamepad_pad_right">Right</string>
     <string name="virtual_gamepad_button_press">Press</string>
+    <string name="virtual_gamepad_button_hold">Hold</string>
     <string name="virtual_gamepad_button_wipe_up">Wipe up</string>
     <string name="virtual_gamepad_button_wipe_down">Wipe down</string>
     <string name="virtual_gamepad_button_wipe_left">Wipe left</string>

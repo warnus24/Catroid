@@ -655,6 +655,7 @@
     <string name="virtual_gamepad_pad_left">Links</string>
     <string name="virtual_gamepad_pad_right">Rechts</string>
     <string name="virtual_gamepad_button_press">Drücken</string>
+    <string name="virtual_gamepad_button_hold">Gedrückt halten</string>
     <string name="virtual_gamepad_button_wipe_up">Nach oben wischen</string>
     <string name="virtual_gamepad_button_wipe_down">Nach unten wischen</string>
     <string name="virtual_gamepad_button_wipe_left">Nach links wischen</string>

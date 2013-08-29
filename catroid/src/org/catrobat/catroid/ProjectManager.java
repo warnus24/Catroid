@@ -487,10 +487,12 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_STRAIGHT),
 				Utils.buildPath(path, Constants.VGP_IMAGE_PAD_DIAGONAL),
 				Utils.buildPath(path, Constants.VGP_IMAGE_BUTTON_TOUCH),
+				Utils.buildPath(path, Constants.VGP_IMAGE_BUTTON_HOLD),
 				Utils.buildPath(path, Constants.VGP_IMAGE_BUTTON_SWIPE) };
 		int[] resList = new int[] { org.catrobat.catroid.R.drawable.vgp_dpad_center,
 				org.catrobat.catroid.R.drawable.vgp_dpad_straight, org.catrobat.catroid.R.drawable.vgp_dpad_diagonal,
-				org.catrobat.catroid.R.drawable.vgp_button_touch, org.catrobat.catroid.R.drawable.vgp_button_swipe };
+				org.catrobat.catroid.R.drawable.vgp_button_touch, org.catrobat.catroid.R.drawable.vgp_button_hold,
+				org.catrobat.catroid.R.drawable.vgp_button_swipe };
 
 		for (int i = 0; i < imagePath.length; i++) {
 			File file = new File(imagePath[i]);

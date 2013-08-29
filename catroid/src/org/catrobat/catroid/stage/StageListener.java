@@ -959,7 +959,8 @@ public class StageListener implements ApplicationListener {
 	private void loadVirtualButtonImagesLookData() {
 		try {
 			String path = Utils.buildPath(Utils.buildProjectPath(project.getName()), Constants.IMAGE_DIRECTORY);
-			String[] imageName = new String[] { Constants.VGP_IMAGE_BUTTON_TOUCH, Constants.VGP_IMAGE_BUTTON_SWIPE };
+			String[] imageName = new String[] { Constants.VGP_IMAGE_BUTTON_TOUCH, Constants.VGP_IMAGE_BUTTON_HOLD,
+					Constants.VGP_IMAGE_BUTTON_SWIPE };
 
 			ArrayList<LookData> lookDataList = new ArrayList<LookData>();
 
