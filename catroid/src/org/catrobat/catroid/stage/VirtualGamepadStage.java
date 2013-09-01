@@ -95,6 +95,7 @@ public class VirtualGamepadStage extends Stage {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		try {
+
 			if (pointer == 0) {
 
 				dPadThread = new DPadThread();
@@ -105,7 +106,7 @@ public class VirtualGamepadStage extends Stage {
 
 				vgpPadSprite.look.setVisible(true);
 
-			} else {
+			} else if (pointer == 1) {
 
 				buttonStartX = screenX;
 				buttonStartY = screenY;
@@ -117,6 +118,7 @@ public class VirtualGamepadStage extends Stage {
 				buttonHoldThread.start();
 
 			}
+
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -172,6 +174,7 @@ public class VirtualGamepadStage extends Stage {
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		try {
+
 			if (pointer == 0) {
 				dPadStartX = dPadInitValue;
 				dPadStartY = dPadInitValue;
@@ -179,7 +182,7 @@ public class VirtualGamepadStage extends Stage {
 				dPadThread.stopThread();
 
 				vgpPadSprite.look.setVisible(false);
-			} else {
+			} else if (pointer == 1) {
 
 				if (buttonHoldThread != null) {
 					buttonHoldThread.stopThread();
@@ -194,6 +197,7 @@ public class VirtualGamepadStage extends Stage {
 				buttonStartX = dPadInitValue;
 				buttonStartY = dPadInitValue;
 			}
+
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -585,4 +589,3 @@ public class VirtualGamepadStage extends Stage {
 	}
 
 }
->>>>>>> f3c778e... virtual gamepad refactoring
