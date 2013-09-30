@@ -54,6 +54,7 @@ import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
 import org.catrobat.catroid.robot.albert.RobotAlbert;
 import org.catrobat.catroid.robot.albert.RobotAlbertBtCommunicator;
+import org.catrobat.catroid.robot.albert.SensorRobotAlbert;
 import org.catrobat.catroid.ui.BaseActivity;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import org.catrobat.catroid.utils.LedUtil;
@@ -156,6 +157,11 @@ public class PreStageActivity extends BaseActivity {
 			if (bluetoothManager == null) {
 				bluetoothManager = new BluetoothManager(this);
 			}
+
+			//set flag to start thread to update distance sensor values in formula editor
+			SensorRobotAlbert sensor = SensorRobotAlbert.getSensorRobotAlbertInstance();
+			sensor.setBooleanAlbertBricks(true);
+
 			String waiting_text = getResources().getString(R.string.connecting_please_wait_robot_albert);
 			String title = getResources().getString(R.string.select_device_robot_albert);
 			bluetoothDeviceName = title;
@@ -174,6 +180,11 @@ public class PreStageActivity extends BaseActivity {
 					resourceInitialized();
 				}
 			}
+		} else {
+			//set flag not to start a thread to update distance sensor values in formula editor
+			//this is necessary, because if after running a project with this sensor and then edit it, not to use them anymore, then change the flag
+			SensorRobotAlbert sensor = SensorRobotAlbert.getSensorRobotAlbertInstance();
+			sensor.setBooleanAlbertBricks(false);
 		}
 
 		if ((requiredResources & Brick.CAMERA_LED ) > 0) {
