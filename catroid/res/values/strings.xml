@@ -386,6 +386,9 @@
     <string name="brick_led_on">Turn flashlight ON</string>
     <string name="brick_led_off">Turn flashlight OFF</string>
     <string name="brick_vibration">Vibrate for</string>
+    <string name="brick_say">Say</string>
+    <string name="for_label">for</string>
+    <string name="brick_think">Think</string>
     <!--  -->
 
 

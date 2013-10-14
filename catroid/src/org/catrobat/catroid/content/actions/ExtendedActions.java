@@ -358,6 +358,14 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
+	public static SayForBrickAction say(Sprite sprite, byte[] speechBubble, Formula duration) {
+		SayForBrickAction action = action(SayForBrickAction.class);
+		action.setSprite(sprite);
+		action.setText(speechBubble);
+		action.setDurationInSeconds(duration);
+		return action;
+	}
+
 	public static TemporalAction droneTakeOff() {
 		return action(DroneTakeoffAction.class);
 	}

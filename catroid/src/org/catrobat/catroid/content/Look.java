@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content;
 
+import android.util.Log;
+
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -38,6 +40,8 @@ import com.badlogic.gdx.utils.Array;
 
 import org.catrobat.catroid.common.LookData;
 
+import org.catrobat.catroid.stage.StageListener;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -45,7 +49,7 @@ public class Look extends Image {
 	private static final float DEGREE_UI_OFFSET = 90.0f;
 	private static ArrayList<Action> actionsToRestart = new ArrayList<Action>();
 	public boolean visible = true;
-	protected boolean imageChanged = false;
+	public boolean imageChanged = false;
 	protected boolean brightnessChanged = false;
 	protected LookData lookData;
 	protected Sprite sprite;
@@ -205,7 +209,7 @@ public class Look extends Image {
 				shader.setBrightness(brightness);
 				brightnessChanged = false;
 			}
-
+			Log.i("info", "checkImageChanged");
 			TextureRegion region = lookData.getTextureRegion();
 			TextureRegionDrawable drawable = new TextureRegionDrawable(region);
 			setDrawable(drawable);
@@ -403,5 +407,14 @@ public class Look extends Image {
 			setUniformf(BRIGHTNESS_STRING_IN_SHADER, brightness - 1f);
 			end();
 		}
+	}
+
+	public void showSpeechBubble(byte[] speechBubble) {
+		StageListener.bubble.put(this, new Pixmap(speechBubble, 0, speechBubble.length));
+
+	}
+
+	public void hideSpeechBubble() {
+		StageListener.bubble.remove(this);
 	}
 }

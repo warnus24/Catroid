@@ -59,7 +59,6 @@ public class LookData implements Serializable, Cloneable {
 	@Override
 	public LookData clone() {
 		LookData cloneLookData = new LookData();
-
 		cloneLookData.name = this.name;
 		cloneLookData.fileName = this.fileName;
 		String filePath = getPathToImageDirectory() + "/" + fileName;
@@ -79,14 +78,12 @@ public class LookData implements Serializable, Cloneable {
 	}
 
 	public TextureRegion getTextureRegion() {
-		if (region == null) {
-			region = new TextureRegion(new Texture(getPixmap()));
-		}
+		refreshTextureRegion();
 		return region;
 	}
 
-	public void setTextureRegion() {
-		this.region = new TextureRegion(new Texture(getPixmap()));
+	public void refreshTextureRegion() {
+		region = new TextureRegion(new Texture(getPixmap()));
 	}
 
 	public Pixmap getPixmap() {

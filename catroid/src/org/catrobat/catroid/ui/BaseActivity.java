@@ -35,10 +35,18 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.content.Project;
+import org.catrobat.catroid.content.Script;
+import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.bricks.Brick;
+import org.catrobat.catroid.content.bricks.BubbleBrickBaseType;
 import org.catrobat.catroid.ui.controller.BackPackListManager;
 import org.catrobat.catroid.ui.dialogs.AboutDialogFragment;
 import org.catrobat.catroid.ui.dialogs.TermsOfUseDialogFragment;
+
+import java.util.ArrayList;
 
 public class BaseActivity extends SherlockFragmentActivity {
 
@@ -152,5 +160,24 @@ public class BaseActivity extends SherlockFragmentActivity {
 
 	public void setTitleActionBar(String titleActionBar) {
 		this.titleActionBar = titleActionBar;
+	}
+
+	protected void setContextInCertainBricks() {
+		Project currentProject = ProjectManager.getInstance().getCurrentProject();
+
+		if (currentProject != null) {
+			ArrayList<Sprite> spriteList = (ArrayList<Sprite>) currentProject.getSpriteList();
+
+			for (Sprite sprite : spriteList) {
+				for (int index = 0; index < sprite.getNumberOfScripts(); index++) {
+					Script script = sprite.getScript(index);
+					for (Brick brick : script.getBrickList()) {
+						if (brick instanceof BubbleBrickBaseType) {
+							((BubbleBrickBaseType) brick).setContext(getApplicationContext());
+						}
+					}
+				}
+			}
+		}
 	}
 }
