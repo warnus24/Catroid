@@ -22,9 +22,10 @@
  */
 package org.catrobat.catroid.test.cucumber;
 
-import static org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import android.test.AndroidTestCase;
 
@@ -36,10 +37,23 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.catrobat.catroid.ProjectManager;
-import org.catrobat.catroid.content.*;
-import org.catrobat.catroid.content.bricks.*;
+import org.catrobat.catroid.content.BroadcastScript;
+import org.catrobat.catroid.content.Project;
+import org.catrobat.catroid.content.Script;
+import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.StartScript;
+import org.catrobat.catroid.content.bricks.Brick;
+import org.catrobat.catroid.content.bricks.BroadcastBrick;
+import org.catrobat.catroid.content.bricks.BroadcastWaitBrick;
+import org.catrobat.catroid.content.bricks.ChangeVariableBrick;
+import org.catrobat.catroid.content.bricks.LoopBeginBrick;
+import org.catrobat.catroid.content.bricks.LoopEndBrick;
+import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.SetVariableBrick;
+import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
+import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.test.cucumber.util.CallbackBrick;
@@ -67,17 +81,17 @@ public class ProgramSteps extends AndroidTestCase {
 
 	@Given("^I have a Program$")
 	public void I_have_a_program() throws IOException {
-		ProjectManager pm = ProjectManager.getInstance();
-		pm.initializeNewProject("Cucumber", getContext(), /*empty*/ true);
-		Project project = pm.getCurrentProject();
+		ProjectManager projectManager = ProjectManager.getInstance();
+		projectManager.initializeNewProject("Cucumber", getContext(), true);
+		Project project = projectManager.getCurrentProject();
 		Cucumber.put(Cucumber.KEY_PROJECT, project);
 	}
 
 	@Given("^this program has an Object '(\\w+)'$")
 	public void program_has_object(String name) {
-		int lookId = org.catrobat.catroid.R.drawable.default_project_mole_1;
-		ProjectManager pm = ProjectManager.getInstance();
-		Project project = pm.getCurrentProject();
+		int lookId = org.catrobat.catroid.R.drawable.default_project_mole_digged_out;
+		ProjectManager projectManager = ProjectManager.getInstance();
+		Project project = projectManager.getCurrentProject();
 		Sprite sprite = Util.addNewObjectWithLook(getContext(), project, name, lookId);
 		Cucumber.put(Cucumber.KEY_CURRENT_OBJECT, sprite);
 	}
@@ -117,36 +131,36 @@ public class ProgramSteps extends AndroidTestCase {
 	}
 
 	@And("^this script has a set '(\\w+)' to (\\d+.?\\d*) brick$")
-	public void script_has_set_var_to_val_brick(String a, String b) {
+	public void script_has_set_var_to_val_brick(String userVariableName, String userVariableValue) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 		Project project = ProjectManager.getInstance().getCurrentProject();
 
-		UserVariable varA = project.getUserVariables().getUserVariable(a, object);
-		if (varA == null) {
-			varA = project.getUserVariables().addSpriteUserVariableToSprite(object, a);
+		UserVariable userVariable = project.getUserVariables().getUserVariable(userVariableName, object);
+		if (userVariable == null) {
+			userVariable = project.getUserVariables().addSpriteUserVariableToSprite(object, userVariableName);
 		}
 
-		FormulaElement elemB = new FormulaElement(ElementType.NUMBER, b, null);
+		FormulaElement formulaElement = new FormulaElement(ElementType.NUMBER, userVariableValue, null);
 
-		Brick brick = new SetVariableBrick(object, new Formula(elemB), varA);
+		Brick brick = new SetVariableBrick(object, new Formula(formulaElement), userVariable);
 		script.addBrick(brick);
 	}
 
 	@And("^this script has a set '(\\w+)' to '(\\w+)' brick$")
-	public void script_has_set_var_to_var_brick(String a, String b) {
+	public void script_has_set_var_to_var_brick(String userVariableName, String userVariableValue) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 		Project project = ProjectManager.getInstance().getCurrentProject();
 
-		UserVariable varA = project.getUserVariables().getUserVariable(a, object);
-		if (varA == null) {
-			varA = project.getUserVariables().addSpriteUserVariableToSprite(object, a);
+		UserVariable userVariable = project.getUserVariables().getUserVariable(userVariableName, object);
+		if (userVariable == null) {
+			userVariable = project.getUserVariables().addSpriteUserVariableToSprite(object, userVariableName);
 		}
 
-		FormulaElement elemB = new FormulaElement(ElementType.USER_VARIABLE, b, null);
+		FormulaElement formulaElement = new FormulaElement(ElementType.USER_VARIABLE, userVariableValue, null);
 
-		Brick brick = new SetVariableBrick(object, new Formula(elemB), varA);
+		Brick brick = new SetVariableBrick(object, new Formula(formulaElement), userVariable);
 		script.addBrick(brick);
 	}
 
@@ -161,9 +175,9 @@ public class ProgramSteps extends AndroidTestCase {
 			variable = project.getUserVariables().addSpriteUserVariableToSprite(object, name);
 		}
 
-		FormulaElement elemValue = new FormulaElement(ElementType.NUMBER, value, null);
+		FormulaElement formulaElement = new FormulaElement(ElementType.NUMBER, value, null);
 
-		Brick brick = new ChangeVariableBrick(object, new Formula(elemValue), variable);
+		Brick brick = new ChangeVariableBrick(object, new Formula(formulaElement), variable);
 		script.addBrick(brick);
 	}
 
@@ -278,8 +292,15 @@ public class ProgramSteps extends AndroidTestCase {
 
 	@And("^I wait until the program has stopped$")
 	public void wait_until_program_has_stopped() throws InterruptedException {
-		// While there are still scripts running, the available permits should be < 1.
+		// While there are still scripts running, the available permits should
+		// be < 1.
 		programWaitLock.tryAcquire(1, 60, TimeUnit.SECONDS);
+	}
+
+	@And("^I wait for (\\d+) milliseconds?$")
+	public void i_wait_for_milliseconds(int milliseconds) {
+		Solo solo = (Solo) Cucumber.get(Cucumber.KEY_SOLO);
+		solo.sleep(milliseconds);
 	}
 
 	@Then("^the variable '(\\w+)' should be greater than or equal (\\d+.?\\d*)$")
@@ -325,8 +346,8 @@ public class ProgramSteps extends AndroidTestCase {
 
 	@Then("^I should see the printed output$")
 	public void I_should_see_printed_output(String text) throws IOException {
-		String actual = outputStream.toString().replace(System.getProperty("line.separator"), "");
-		String expected = text.replace(System.getProperty("line.separator"), "");
+		String actual = outputStream.toString().replace("\r", "").replace("\n", "");
+		String expected = text.replace("\r", "").replace("\n", "");
 		assertEquals("The printed output is wrong.", expected, actual);
 		outputStream.close();
 	}

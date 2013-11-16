@@ -20,31 +20,30 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.test.cucumber.util;
+package org.catrobat.catroid.test.cucumber;
 
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import android.test.AndroidTestCase;
 
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+
+import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.bricks.ShowBrick;
+import org.catrobat.catroid.content.bricks.SetYBrick;
 
-import java.util.List;
+public class SetYBrickSteps extends AndroidTestCase {
+	@Given("^this script has a Set y to (-?\\d+) brick$")
+	public void this_script_has_a_Set_y_to_brick(int yposition) {
+		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
+		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 
-public final class CallbackBrick extends ShowBrick {
-	private static final long serialVersionUID = 1L;
-	private final transient BrickCallback callback;
-
-	public CallbackBrick(Sprite sprite, BrickCallback callback) {
-		CallbackBrick.this.sprite = sprite;
-		this.callback = callback;
+		SetYBrick setYBrick = new SetYBrick(object, yposition);
+		script.addBrick(setYBrick);
 	}
 
-	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(new CallbackAction(callback));
-		return null;
-	}
-
-	public interface BrickCallback {
-		public void onCallback();
+	@Then("^'Object' should be a y position (-?\\d+)$")
+	public void object_should_be_a_y_position(float yposition) {
+		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
+		assertEquals("Y position was not updated", yposition, object.look.getYInUserInterfaceDimensionUnit());
 	}
 }

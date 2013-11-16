@@ -18,30 +18,24 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-Feature: Main menu
+Feature: Next look brick
 
-  In order to give the user a starting point
-  The main menu offers a number of distinctive options
+  A brick setting the next look of an Object
 
   Background:
     Given I have a Program
+    And this program has an Object 'Object'
+    And I add a look 'testImage'
 
-  Scenario: The main menu has a list of labeled buttons
-    Given I am in the main menu
-    Then I should see the following buttons
-      | Continue |
-      | New      |
-      | Programs |
-      | Help     |
-      | Explore  |
-      | Upload   |
+  Scenario Outline: Set the next look of an Object
+    Given 'Object' has a Start script
+    And this script has a Set look <firstLook> brick
+    And this script has a Set next look brick
+    When I start the program
+    And I wait for 200 milliseconds
+    Then 'Object' should have the look <secondLook> set
 
-  Scenario: The Continue button leads to the program view
-    Given I am in the main menu
-    When I press the Continue button
-    Then I should switch to the program view
-
-  Scenario: The Programs button leads to the programs view
-    Given I am in the main menu
-    When I press the Programs button
-    Then I should switch to the programs view
+    Examples:
+      | firstLook   | secondLook  |
+      | 'Object'    | 'testImage' |
+      | 'testImage' | 'Object'    |

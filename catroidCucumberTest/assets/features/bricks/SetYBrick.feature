@@ -18,30 +18,23 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-Feature: Main menu
+Feature: Set y brick
 
-  In order to give the user a starting point
-  The main menu offers a number of distinctive options
+  A brick setting the y coordinate of an Object
 
   Background:
     Given I have a Program
+    And this program has an Object 'Object'
 
-  Scenario: The main menu has a list of labeled buttons
-    Given I am in the main menu
-    Then I should see the following buttons
-      | Continue |
-      | New      |
-      | Programs |
-      | Help     |
-      | Explore  |
-      | Upload   |
+  Scenario Outline: Set y coordinate of an Object
+    Given 'Object' has a Start script
+    And this script has a Set y to <yposition> brick
+    When I start the program
+    And I wait until the program has stopped
+    Then 'Object' should be a y position <yposition>
 
-  Scenario: The Continue button leads to the program view
-    Given I am in the main menu
-    When I press the Continue button
-    Then I should switch to the program view
-
-  Scenario: The Programs button leads to the programs view
-    Given I am in the main menu
-    When I press the Programs button
-    Then I should switch to the programs view
+    Examples:
+      | yposition   |
+      | 100         |
+      | 2147483647  |
+      | -2147483648 |

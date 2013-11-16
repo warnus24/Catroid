@@ -20,31 +20,35 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.test.cucumber.util;
+package org.catrobat.catroid.test.cucumber;
 
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import android.test.AndroidTestCase;
 
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+
+import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.bricks.ShowBrick;
+import org.catrobat.catroid.content.bricks.HideBrick;
 
-import java.util.List;
+public class HideBrickSteps extends AndroidTestCase {
+	@Given("^this script has a hide brick$")
+	public void this_script_has_a_hide_brick() {
+		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
+		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 
-public final class CallbackBrick extends ShowBrick {
-	private static final long serialVersionUID = 1L;
-	private final transient BrickCallback callback;
-
-	public CallbackBrick(Sprite sprite, BrickCallback callback) {
-		CallbackBrick.this.sprite = sprite;
-		this.callback = callback;
+		HideBrick hideBrick = new HideBrick(object);
+		script.addBrick(hideBrick);
 	}
 
-	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(new CallbackAction(callback));
-		return null;
-	}
+	@Then("^I should( not)? see the Object$")
+	public void i_should_see_the_Object(String visible) {
+		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 
-	public interface BrickCallback {
-		public void onCallback();
+		if (visible == null) {
+			assertTrue("Object is not visible", object.look.visible);
+		} else {
+			assertFalse("Object is visible", object.look.visible);
+		}
 	}
 }

@@ -32,6 +32,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.MyProjectsActivity;
 import org.catrobat.catroid.ui.ProjectActivity;
@@ -41,25 +42,24 @@ import java.util.List;
 
 // CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class MainMenuSteps extends AndroidTestCase {
-	@Deprecated
 	@Given("^I am in the main menu$")
 	public void I_am_in_the_main_menu() {
 		Solo solo = (Solo) Cucumber.get(Cucumber.KEY_SOLO);
 		assertEquals("I am not in the main menu.", MainMenuActivity.class, solo.getCurrentActivity().getClass());
 	}
 
-	@Deprecated
 	@When("^I press the (\\w+) button$")
-	public void I_press_the_s_Button(String button) {
-		// searchButton(String) apparently returns true even for
-		// partial matches, but clickOnButton(String) doesn't work
-		// that way. Thus we must always use clickOnText(String) because
-		// the features may not contain the full text of the button.
+	public void i_press_the_button(String button) {
 		Solo solo = (Solo) Cucumber.get(Cucumber.KEY_SOLO);
-		solo.clickOnText(button);
+		if (button.equalsIgnoreCase("continue")) {
+			solo.clickOnText(solo.getString(R.string.main_menu_continue));
+		} else if (button.equalsIgnoreCase("programs")) {
+			solo.clickOnText(solo.getString(R.string.main_menu_programs));
+		} else {
+			fail("Button " + button + " not found");
+		}
 	}
 
-	@Deprecated
 	@Then("^I should see the following buttons$")
 	public void I_should_see_the_following_buttons(List<String> expectedButtons) {
 		Solo solo = (Solo) Cucumber.get(Cucumber.KEY_SOLO);
@@ -75,7 +75,6 @@ public class MainMenuSteps extends AndroidTestCase {
 		assertEquals("I do not see the expected buttons.", expectedButtons, actualButtons);
 	}
 
-	@Deprecated
 	@Then("^I should switch to the (\\w+) view$")
 	public void I_should_switch_to_the_s_view(String view) {
 		Class<? extends Activity> activityClass = null;
