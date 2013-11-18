@@ -28,13 +28,13 @@ Feature: Set y brick
 
   Scenario Outline: Set y coordinate of an Object
     Given 'Object' has a Start script
-    And this script has a Set y to <yposition> brick
+    And this script has a Set y to <yPosition> brick
     When I start the program
     And I wait until the program has stopped
-    Then 'Object' should be a y position <yposition>
+    Then 'Object' should be at y position <yPosition>
 
     Examples:
-      | yposition   |
+      | yPosition   |
       | 100         |
       | 2147483647  |
       | -2147483648 |

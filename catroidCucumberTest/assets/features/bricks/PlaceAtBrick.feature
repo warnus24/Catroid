@@ -18,23 +18,23 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-Feature: Set x brick
+Feature: Place at brick
 
-  A brick setting the x coordinate of an Object
+  A brick placing an Object at a position
 
   Background:
     Given I have a Program
     And this program has an Object 'Object'
 
-  Scenario Outline: Set x coordinate of an Object
+  Scenario Outline: Place an Object
     Given 'Object' has a Start script
-    And this script has a Set x to <xPosition> brick
+    And this script has a place at <xPosition> <yPosition> brick
     When I start the program
-    And I wait until the program has stopped
-    Then 'Object' should be at x position <xPosition>
+    And I wait for 200 milliseconds
+    Then 'Object' should be at position <xPosition> <yPosition>
 
     Examples:
-      | xPosition   |
-      | 100         |
-      | 2147483647  |
-      | -2147483648 |
+      | xPosition   | yPosition   |
+      | 200         | 100         |
+      | 2147483647  | 2147483647  |
+      | -2147483648 | -2147483648 |

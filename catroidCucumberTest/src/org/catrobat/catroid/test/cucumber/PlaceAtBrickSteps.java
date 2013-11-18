@@ -29,21 +29,22 @@ import cucumber.api.java.en.Then;
 
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.bricks.SetXBrick;
+import org.catrobat.catroid.content.bricks.PlaceAtBrick;
 
-public class SetXBrickSteps extends AndroidTestCase {
-	@Given("^this script has a Set x to (-?\\d+) brick$")
-	public void this_script_has_a_Set_x_to_brick(int xPosition) {
+public class PlaceAtBrickSteps extends AndroidTestCase {
+	@Given("^this script has a place at (-?\\d+) (-?\\d+) brick$")
+	public void this_script_has_a_place_at_brick(int xPosition, int yPosition) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 
-		SetXBrick setXBrick = new SetXBrick(object, xPosition);
-		script.addBrick(setXBrick);
+		PlaceAtBrick placeAtBrick = new PlaceAtBrick(object, xPosition, yPosition);
+		script.addBrick(placeAtBrick);
 	}
 
-	@Then("^'Object' should be at x position (-?\\d+)$")
-	public void object_should_be_at_x_position(int xPosition) {
+	@Then("^'Object' should be at position (-?\\d+) (-?\\d+)$")
+	public void object_should_be_at_position(int xPosition, int yPosition) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
-		assertEquals("X position was not updated", xPosition, (int) object.look.getXInUserInterfaceDimensionUnit());
+		assertEquals("x position was not updated.", xPosition, (int) object.look.getXInUserInterfaceDimensionUnit());
+		assertEquals("y position was not updated.", yPosition, (int) object.look.getYInUserInterfaceDimensionUnit());
 	}
 }

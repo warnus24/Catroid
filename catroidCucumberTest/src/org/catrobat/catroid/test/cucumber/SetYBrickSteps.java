@@ -33,17 +33,17 @@ import org.catrobat.catroid.content.bricks.SetYBrick;
 
 public class SetYBrickSteps extends AndroidTestCase {
 	@Given("^this script has a Set y to (-?\\d+) brick$")
-	public void this_script_has_a_Set_y_to_brick(int yposition) {
+	public void this_script_has_a_Set_y_to_brick(int yPosition) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 
-		SetYBrick setYBrick = new SetYBrick(object, yposition);
+		SetYBrick setYBrick = new SetYBrick(object, yPosition);
 		script.addBrick(setYBrick);
 	}
 
-	@Then("^'Object' should be a y position (-?\\d+)$")
-	public void object_should_be_a_y_position(float yposition) {
+	@Then("^'Object' should be at y position (-?\\d+)$")
+	public void object_should_be_at_y_position(int yPosition) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
-		assertEquals("Y position was not updated", yposition, object.look.getYInUserInterfaceDimensionUnit());
+		assertEquals("Y position was not updated", yPosition, (int) object.look.getYInUserInterfaceDimensionUnit());
 	}
 }
