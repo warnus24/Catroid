@@ -53,17 +53,5 @@ public class NextLookBrickSteps extends AndroidTestCase {
 
 		NextLookBrick nextLookBrick = new NextLookBrick(object);
 		script.addBrick(nextLookBrick);
-
-		//		currentLook = object.look;
 	}
-
-	//	@Then("^'(\\w+)' should have the next look set$")
-	//	public void should_have_the_next_look_set(String object) {
-	//		Project project = ProjectManager.getInstance().getCurrentProject();
-	//		Sprite sprite = Util.findSprite(project, object);
-	//
-	//		LookData lookData = sprite.getLookDataList().get(
-	//				(sprite.getLookDataList().indexOf(currentLook) + 1) % sprite.getLookDataList().size());
-	//		assertEquals(lookData, currentLook.getLookData());
-	//	}
 }
