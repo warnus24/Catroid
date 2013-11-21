@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.test.cucumber.util;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.content.Script;
@@ -31,7 +30,6 @@ import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.BrickBaseType;
 
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.List;
 
 public class PrintBrick extends BrickBaseType {
@@ -78,21 +76,5 @@ public class PrintBrick extends BrickBaseType {
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
 		sequence.addAction(new PrintAction(text, outputStream));
 		return null;
-	}
-
-	private class PrintAction extends Action {
-		private String text;
-		private PrintStream printStream;
-
-		PrintAction(String text, OutputStream outputStream) {
-			this.text = text;
-			this.printStream = new PrintStream(outputStream);
-		}
-
-		@Override
-		public boolean act(float v) {
-			printStream.print(text);
-			return true;
-		}
 	}
 }

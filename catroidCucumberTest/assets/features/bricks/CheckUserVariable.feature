@@ -18,39 +18,15 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-Feature: Print brick
-
-  A Print brick prints a given text on the screen.
+Feature: Check value of user variable
 
   Background:
     Given I have a Program
     And this program has an Object 'Object'
 
-  Scenario: A Print brick prints one line
+  Scenario:
     Given 'Object' has a Start script
-    And this script has a Print brick with 'Hello, world!'
+    And this script has a set 'myVariable1' to 5.3 brick
     When I start the program
-    And I wait until the program has stopped
-    Then I should see the printed output 'Hello, world!'
-
-  Scenario: A Print brick prints two lines
-    Given 'Object' has a Start script
-    And this script has a Print brick with
-      """
-      Hello,
-      world!
-      """
-    When I start the program
-    And I wait until the program has stopped
-    Then I should see the printed output
-      """
-      Hello,
-      world!
-      """
-
-  Scenario: A Print brick with an empty text
-    Given 'Object' has a Start script
-    And this script has a Print brick with ''
-    When I start the program
-    And I wait until the program has stopped
-    Then I should see no printed output
+    And I wait for 100 milliseconds
+    Then the variable 'myVariable1' should be equal 5.3

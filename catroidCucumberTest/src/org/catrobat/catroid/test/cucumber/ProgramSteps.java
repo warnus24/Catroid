@@ -23,7 +23,6 @@
 package org.catrobat.catroid.test.cucumber;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
@@ -327,16 +326,14 @@ public class ProgramSteps extends AndroidTestCase {
 		assertThat("The variable is > than the value.", actual, lessThanOrEqualTo(expected));
 	}
 
-	@Then("^the variable '(\\w+)' should be equal (\\d+.?\\d*)$")
-	public void var_should_equal_float(String name, float expected) {
+	@Then("^the variable '([\\w|\\d]+)' should be equal (.+)$")
+	public void var_should_equal_float(String userVariableName, float expectedValue) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Project project = ProjectManager.getInstance().getCurrentProject();
+		UserVariable userVariable = project.getUserVariables().getUserVariable(userVariableName, object);
 
-		UserVariable variable = project.getUserVariables().getUserVariable(name, object);
-		assertNotNull("The variable does not exist.", variable);
-
-		float actual = variable.getValue().floatValue();
-		assertThat("The variable is != the value.", actual, equalTo(expected));
+		assertNotNull("The variable does not exist.", userVariable);
+		assertEquals("The variable is != the value.", userVariable.getValue().floatValue(), expectedValue);
 	}
 
 	@Then("^I should see the printed output '(.*)'$")
@@ -350,5 +347,10 @@ public class ProgramSteps extends AndroidTestCase {
 		String expected = text.replace("\r", "").replace("\n", "");
 		assertEquals("The printed output is wrong.", expected, actual);
 		outputStream.close();
+	}
+
+	@Then("^I should see no printed output$")
+	public void i_should_see_no_printed_output() throws IOException {
+		I_should_see_printed_output("");
 	}
 }
