@@ -211,9 +211,6 @@ public class StageListener implements ApplicationListener {
 		for (Sprite sprite : sprites) {
 			sprite.pause();
 		}
-
-		Log.d("XXXXXXXXXXXXXX", "XXXXXXXXXXXXXXXXXXXX");
-
 	}
 
 	public void reloadProject(Context context, StageDialog stageDialog) {
@@ -244,6 +241,7 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void pause() {
+
 		try {
 			Handler btcHandler = RobotAlbert.getBTCHandler();
 			Log.d("StageListener Pause", "sendRobotAlbertMotorResetMessage()");
