@@ -55,6 +55,7 @@ import org.catrobat.catroid.bluetooth.BTConnectable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.UUID;
 
 /**
@@ -118,24 +119,6 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 				}
 
 			}
-
-			/*
-			 * try {
-			 * returnMessage = receiveMessage();
-			 * if ((returnMessage.length >= 2)
-			 * && ((returnMessage[0] == LCPMessage.REPLY_COMMAND) || (returnMessage[0] ==
-			 * LCPMessage.DIRECT_COMMAND_NOREPLY))) {
-			 * dispatchMessage(returnMessage);
-			 * }
-			 * 
-			 * } catch (IOException e) {
-			 * // don't inform the user when connection is already closed
-			 * if (connected) {
-			 * sendState(STATE_RECEIVEERROR);
-			 * }
-			 * return;
-			 * }
-			 */
 		}
 	}
 
@@ -182,20 +165,20 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 					return;
 				}
 
-				// try another method for connection, this should work on the HTC desire, credits to Michael Biermann
-				//				try {
-				//
-				//					Method mMethod = btDevice.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
-				//					btSocketTemporary = (BluetoothSocket) mMethod.invoke(btDevice, Integer.valueOf(1));
-				//					btSocketTemporary.connect();
-				//				} catch (Exception e1) {
-				//					if (uiHandler == null) {
-				//						throw new IOException();
-				//					} else {
-				//						sendState(STATE_CONNECTERROR);
-				//					}
-				//					return;
-				//				}
+				//try another method for connection, this should work on the HTC desire, credits to Michael Biermann
+				try {
+
+					Method mMethod = btDevice.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
+					btSocketTemporary = (BluetoothSocket) mMethod.invoke(btDevice, Integer.valueOf(1));
+					btSocketTemporary.connect();
+				} catch (Exception e1) {
+					if (uiHandler == null) {
+						throw new IOException();
+					} else {
+						sendState(STATE_CONNECTERROR);
+					}
+					return;
+				}
 			}
 			btSocket = btSocketTemporary;
 			inputStream = btSocket.getInputStream();
@@ -255,12 +238,6 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 		myHandler.removeMessages(0);
 		myHandler.removeMessages(1);
 		myHandler.removeMessages(2);
-
-		/*
-		 * moveMotor(0, 0, 0);
-		 * moveMotor(1, 0, 0);
-		 * moveMotor(2, 0, 0);
-		 */
 		resetRobotAlbert();
 
 	}

@@ -23,14 +23,15 @@
 package org.catrobat.catroid.formulaeditor;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.catrobat.catroid.robot.albert.SensorRobotAlbert;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
-
-public final class SensorHandler implements SensorEventListener, SensorCustomEventListener {
 	private static final String TAG = SensorHandler.class.getSimpleName();
 	private static SensorHandler instance = null;
 	private SensorManagerInterface sensorManager = null;
@@ -71,8 +72,13 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		instance.sensorManager.registerListener(instance, instance.rotationVectorSensor,
 				android.hardware.SensorManager.SENSOR_DELAY_NORMAL);
 		instance.sensorManager.registerListener(instance, Sensors.LOUDNESS);
-		instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_LEFT);
-		instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_RIGHT);
+
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		if ((sharedPreferences.getBoolean(SensorRobotAlbert.KEY_SETTINGS_ROBOT_ALBERT_BRICKS, false))) {
+			instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_LEFT);
+			instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_RIGHT);
+		}
+
 		FaceDetectionHandler.registerOnFaceDetectedListener(instance);
 		FaceDetectionHandler.registerOnFaceDetectionStatusListener(instance);
 	}

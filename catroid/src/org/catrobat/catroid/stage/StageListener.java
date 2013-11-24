@@ -238,9 +238,6 @@ public class StageListener implements ApplicationListener {
 		} catch (Exception e) {
 			Log.e("StageListener", e.getMessage());
 		}
-
-		Log.d("XXXXXXXXXXXXXX", "XXXXXXXXXXXXXXXXXXXX");
-
 	}
 
 	public void reloadProject(Context context, StageDialog stageDialog) {
@@ -274,6 +271,7 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void pause() {
+
 		try {
 			Handler btcHandler = RobotAlbert.getBTCHandler();
 			Log.d("StageListener Pause", "sendRobotAlbertMotorResetMessage()");
