@@ -30,7 +30,7 @@ Feature: Place at brick
     Given 'Object' has a Start script
     And this script has a place at <xPosition> <yPosition> brick
     When I start the program
-    And I wait for 200 milliseconds
+    And I wait until the program has stopped
     Then 'Object' should be at position <xPosition> <yPosition>
 
     Examples:
