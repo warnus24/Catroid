@@ -27,6 +27,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import com.jayway.android.robotium.solo.Solo;
 
@@ -130,7 +131,7 @@ public class ProgramSteps extends AndroidTestCase {
 	}
 
 	@And("^this script has a set '(\\w+)' to (\\d+.?\\d*) brick$")
-	public void script_has_set_var_to_val_brick(String userVariableName, String userVariableValue) {
+	public void script_has_set_variable_to_value_brick(String userVariableName, String userVariableValue) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 		Project project = ProjectManager.getInstance().getCurrentProject();
@@ -147,7 +148,7 @@ public class ProgramSteps extends AndroidTestCase {
 	}
 
 	@And("^this script has a set '(\\w+)' to '(\\w+)' brick$")
-	public void script_has_set_var_to_var_brick(String userVariableName, String userVariableValue) {
+	public void script_has_set_variable_to_variable_brick(String userVariableName, String userVariableValue) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 		Project project = ProjectManager.getInstance().getCurrentProject();
@@ -164,7 +165,7 @@ public class ProgramSteps extends AndroidTestCase {
 	}
 
 	@And("^this script has a change '(\\w+)' by (\\d+.?\\d*) brick$")
-	public void script_has_change_var_by_val_brick(String name, String value) {
+	public void script_has_change_variable_by_value_brick(String name, String value) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 		Project project = ProjectManager.getInstance().getCurrentProject();
@@ -219,7 +220,7 @@ public class ProgramSteps extends AndroidTestCase {
 	}
 
 	@And("^this script has a Wait (\\d+) milliseconds brick$")
-	public void script_has_wait_ms_brick(int millis) {
+	public void script_has_wait_milliseconds_brick(int millis) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 
@@ -228,7 +229,7 @@ public class ProgramSteps extends AndroidTestCase {
 	}
 
 	@And("^this script has a Wait (\\d+.?\\d*) seconds? brick$")
-	public void script_has_wait_s_brick(int seconds) {
+	public void script_has_wait_seconds_brick(int seconds) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 
@@ -303,7 +304,7 @@ public class ProgramSteps extends AndroidTestCase {
 	}
 
 	@Then("^the variable '(\\w+)' should be greater than or equal (\\d+.?\\d*)$")
-	public void var_should_greater_than_equal_float(String name, float expected) {
+	public void variable_should_greater_than_equal_float(String name, float expected) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Project project = ProjectManager.getInstance().getCurrentProject();
 
@@ -311,11 +312,11 @@ public class ProgramSteps extends AndroidTestCase {
 		assertNotNull("The variable does not exist.", variable);
 
 		float actual = variable.getValue().floatValue();
-		assertThat("The variable is < than the value.", actual, greaterThanOrEqualTo(expected));
+		assertThat("The variable is lesser than the value.", actual, greaterThanOrEqualTo(expected));
 	}
 
 	@Then("^the variable '(\\w+)' should be be less than or equal (\\d+.?\\d*)$")
-	public void var_should_less_than_equal_float(String name, float expected) {
+	public void variable_should_less_than_equal_float(String name, float expected) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Project project = ProjectManager.getInstance().getCurrentProject();
 
@@ -323,17 +324,19 @@ public class ProgramSteps extends AndroidTestCase {
 		assertNotNull("The variable does not exist.", variable);
 
 		float actual = variable.getValue().floatValue();
-		assertThat("The variable is > than the value.", actual, lessThanOrEqualTo(expected));
+		assertThat("The variable is greater than the value.", actual, lessThanOrEqualTo(expected));
 	}
 
 	@Then("^the variable '([\\w|\\d]+)' should be equal (.+)$")
-	public void var_should_equal_float(String userVariableName, float expectedValue) {
+	public void variable_should_equal_float(String userVariableName, float expectedValue) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Project project = ProjectManager.getInstance().getCurrentProject();
 		UserVariable userVariable = project.getUserVariables().getUserVariable(userVariableName, object);
 
+		Log.d("asdf", "lol u r: " + userVariable.getValue() + " but I want u 2 b: " + expectedValue);
+
 		assertNotNull("The variable does not exist.", userVariable);
-		assertEquals("The variable is != the value.", userVariable.getValue().floatValue(), expectedValue);
+		assertEquals("The variable has the wrong value.", userVariable.getValue().floatValue(), expectedValue);
 	}
 
 	@Then("^I should see the printed output '(.*)'$")
