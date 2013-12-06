@@ -31,6 +31,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.HideBrick;
 
+//CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class HideBrickSteps extends AndroidTestCase {
 	@Given("^this script has a hide brick$")
 	public void this_script_has_a_hide_brick() {

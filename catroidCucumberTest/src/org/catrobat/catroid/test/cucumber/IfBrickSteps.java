@@ -39,6 +39,7 @@ import org.catrobat.catroid.formulaeditor.Operators;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.test.cucumber.util.Util;
 
+//CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class IfBrickSteps extends AndroidTestCase {
 	@Given("^'([\\w|\\d]+)' has an user variable '([\\w|\\d]+)' with '(.+)'$")
 	public void object_has_an_user_variable_with(String objectName, String userVariableName, double userVariableValue) {

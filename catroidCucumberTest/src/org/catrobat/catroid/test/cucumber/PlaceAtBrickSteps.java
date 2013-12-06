@@ -31,6 +31,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.PlaceAtBrick;
 
+//CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class PlaceAtBrickSteps extends AndroidTestCase {
 	@Given("^this script has a place at (-?\\d+) (-?\\d+) brick$")
 	public void this_script_has_a_place_at_brick(int xPosition, int yPosition) {

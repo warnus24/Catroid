@@ -31,6 +31,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.SetXBrick;
 
+//CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class SetXBrickSteps extends AndroidTestCase {
 	@Given("^this script has a Set x to (-?\\d+) brick$")
 	public void this_script_has_a_Set_x_to_brick(int xPosition) {

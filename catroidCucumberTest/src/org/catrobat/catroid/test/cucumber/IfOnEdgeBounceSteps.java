@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+//CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class IfOnEdgeBounceSteps extends AndroidTestCase {
 	private Action ifOnEdgeBounceAction;
 	private Sprite sprite;

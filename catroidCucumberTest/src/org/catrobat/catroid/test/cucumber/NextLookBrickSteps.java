@@ -35,9 +35,8 @@ import org.catrobat.catroid.test.cucumber.util.Util;
 
 import java.io.File;
 
+//CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class NextLookBrickSteps extends AndroidTestCase {
-	//	Look currentLook;
-
 	@Given("^I add a look '(\\w+)'$")
 	public void i_add_a_look(String name) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);

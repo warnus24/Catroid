@@ -39,6 +39,7 @@ import org.catrobat.catroid.ui.ProgramMenuActivity;
 import org.catrobat.catroid.ui.ProjectActivity;
 import org.catrobat.catroid.ui.ScriptActivity;
 
+//CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class SetLookBrickSteps extends AndroidTestCase {
 	@Given("^this script has a Set look '(\\w+)' brick$")
 	public void this_script_has_a_set_look_brick(String name) {

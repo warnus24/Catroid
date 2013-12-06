@@ -31,6 +31,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.SetSizeToBrick;
 
+//CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class SetSizeToBrickSteps extends AndroidTestCase {
 	@Given("^this script has a Set size to (-?\\d+) brick$")
 	public void this_script_has_a_Set_size_to_brick(float size) {

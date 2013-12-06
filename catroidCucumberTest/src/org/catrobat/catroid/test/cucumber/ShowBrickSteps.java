@@ -30,6 +30,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.ShowBrick;
 
+//CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class ShowBrickSteps extends AndroidTestCase {
 	@Given("^'Object' (is|is not) visible$")
 	public void object_is_visible(String visible) {

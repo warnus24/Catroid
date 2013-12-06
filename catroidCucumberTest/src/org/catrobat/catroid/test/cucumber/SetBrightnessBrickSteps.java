@@ -31,6 +31,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.SetBrightnessBrick;
 
+//CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class SetBrightnessBrickSteps extends AndroidTestCase {
 	@Given("^this script has a Set brightness (.+) brick$")
 	public void this_script_has_a_Set_brightness_brick(float brightness) {

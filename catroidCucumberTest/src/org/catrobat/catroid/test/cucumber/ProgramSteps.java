@@ -27,7 +27,6 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import android.test.AndroidTestCase;
-import android.util.Log;
 
 import com.jayway.android.robotium.solo.Solo;
 
@@ -332,8 +331,6 @@ public class ProgramSteps extends AndroidTestCase {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Project project = ProjectManager.getInstance().getCurrentProject();
 		UserVariable userVariable = project.getUserVariables().getUserVariable(userVariableName, object);
-
-		Log.d("asdf", "lol u r: " + userVariable.getValue() + " but I want u 2 b: " + expectedValue);
 
 		assertNotNull("The variable does not exist.", userVariable);
 		assertEquals("The variable has the wrong value.", userVariable.getValue().floatValue(), expectedValue);
