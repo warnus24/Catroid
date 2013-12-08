@@ -82,7 +82,7 @@ public class Look extends Image {
 		this.addListener(new BroadcastListener() {
 			@Override
 			public void handleBroadcastEvent(BroadcastEvent event, String broadcastMessage) {
-				doHandleBroadcastEvent(broadcastMessage);
+				doHandleBroadcastEvent(event, broadcastMessage);
 			}
 
 			@Override

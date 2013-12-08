@@ -31,18 +31,18 @@ Feature: Broadcast & Wait Blocking Behavior (like in Scratch)
   Scenario: A waiting BroadcastWait brick is unblocked when the same broadcast message is present
     Given 'Object' has a Start script
     And this script has a BroadcastWait 'hello' brick
+    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with '-S1-'
     Given 'Object' has a Start script
     And this script has a Wait 300 milliseconds brick
     And this script has a Broadcast 'hello' brick
     Given 'Object' has a When 'hello' script
-    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with '-W1-'
     And this script has a Wait 400 milliseconds brick
     And this script has a Print brick with '-W2-'
     When I start the program
     And I wait until the program has stopped
-    Then I should see the printed output '-W1--S1--W1--W2-'
+    Then I should see the printed output '-W1--W1--S1--W2-'
 
   Scenario: A waiting BroadcastWait brick is unblocked via another BroadcastWait brick
     Given 'Object' has a Start script
@@ -58,4 +58,23 @@ Feature: Broadcast & Wait Blocking Behavior (like in Scratch)
     And this script has a Print brick with '-W1-'
     When I start the program
     And I wait until the program has stopped
-    Then I should see the printed output '-S1--W1--S2'
+    Then I should see the printed output '-S1--W1--S2-'
+
+  Scenario: A waiting BroadcastWait brick is unblocked when the same broadcast message is present and there are two When scripts
+    Given 'Object' has a Start script
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with '-S1-'
+    Given 'Object' has a When 'hello' script
+    And this script has a Wait 400 milliseconds brick
+    And this script has a Print brick with '-W1-'
+    Given 'Object' has a When 'hello' script
+    And this script has a Wait 500 milliseconds brick
+    And this script has a Print brick with '-W2-'
+    Given 'Object' has a Start script
+    And this script has a Wait 100 milliseconds brick
+    And this script has a Broadcast 'hello' brick
+    And this script has a Wait 100 milliseconds brick
+    And this script has a Print brick with '-S2-'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output '-S1--S2--W1--W2-'
