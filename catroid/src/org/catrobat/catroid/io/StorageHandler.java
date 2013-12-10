@@ -552,7 +552,7 @@ public final class StorageHandler {
 		FileChecksumContainer checksumCont = ProjectManager.getInstance().getFileChecksumContainer();
 
 		File outputFileDirectory = new File(imageDirectory.getAbsolutePath());
-		if (outputFileDirectory.exists() == false) {
+		if (!outputFileDirectory.exists()) {
 			outputFileDirectory.mkdirs();
 		}
 
@@ -580,24 +580,20 @@ public final class StorageHandler {
 		}
 	}
 
-	public File makeTempImageCopy(String inputFilePath) throws IOException {
-		File tempDirectory = new File(Constants.TMP_PATH);
-
+	public File makeTempImageCopy(String inputFilePath) throws IOException, IllegalArgumentException {
 		File inputFile = new File(inputFilePath);
 		if (!inputFile.exists() || !inputFile.canRead()) {
-			return null;
-		}
-
-		File outputFileDirectory = new File(tempDirectory.getAbsolutePath());
-		if (outputFileDirectory.exists() == false) {
-			outputFileDirectory.mkdirs();
+			throw new IllegalArgumentException("File doesn't exists");
 		}
 
 		File outputFile = new File(Constants.TMP_IMAGE_PATH);
 
-		File copiedFile = UtilFile.copyFile(outputFile, inputFile);
+		File outputFileDirectory = outputFile.getParentFile();
+		if (!outputFileDirectory.exists()) {
+			outputFileDirectory.mkdirs();
+		}
 
-		return copiedFile;
+		return UtilFile.copyFile(outputFile, inputFile);
 	}
 
 	public void deleteTempImageCopy() {
