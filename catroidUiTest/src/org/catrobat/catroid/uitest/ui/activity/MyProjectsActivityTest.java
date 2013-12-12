@@ -86,10 +86,10 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	private static final int IMAGE_RESOURCE_5 = org.catrobat.catroid.uitest.R.drawable.background_red;
 	private static final String MY_PROJECTS_ACTIVITY_TEST_TAG = MyProjectsActivityTest.class.getSimpleName();
 	private static final String KEY_SHOW_DETAILS = "showDetailsMyProjects";
-	private static final String ZIPFILE_NAME = "testzip";
+	private static final String ZIPFILE_NAME = "savedProjects.zip";
 
 	private File renameDirectory = null;
-	private boolean unzip;
+	private boolean unzip = false;
 	private boolean deleteCacheProjects = false;
 	private int numberOfCacheProjects = 27;
 	private String cacheProjectName = "cachetestProject";
@@ -114,8 +114,6 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		if (sharedPreferences.getBoolean(KEY_SHOW_DETAILS, true)) {
 			sharedPreferences.edit().putBoolean(KEY_SHOW_DETAILS, false).commit();
 		}
-
-		unzip = false;
 	}
 
 	@Override
@@ -143,9 +141,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		// but tests crashed with Nullpointer
 		super.tearDown();
 		ProjectManager.getInstance().deleteCurrentProject();
-		if (unzip) {
-			unzipProjects();
-		}
+		unzipProjects();
 	}
 
 	public void saveProjectsToZip() {
@@ -155,6 +151,10 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 
 		if (paths == null) {
 			fail("could not determine catroid directory");
+		}
+
+		if(paths.length != 0) {
+			unzip = true;
 		}
 
 		for (int i = 0; i < paths.length; i++) {
@@ -184,10 +184,17 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	}
 
 	public void unzipProjects() {
-		String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
-		File zipFile = new File(zipFileString);
-		UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
-		zipFile.delete();
+		if(unzip) {
+			unzip = false;
+			String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
+			File zipFile = new File(zipFileString);
+			if(zipFile.exists()) {
+				UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
+				zipFile.delete();
+			} else {
+				fail("zip file with saved project should exist and couldn't be restored!");
+			}
+		}
 	}
 
 	public void testOrientation() throws NameNotFoundException {
@@ -271,7 +278,6 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	}
 
 	public void testInvalidProject() {
-		unzip = true;
 		saveProjectsToZip();
 		try {
 			StandardProjectHandler.createAndSaveStandardProject(getActivity());
@@ -313,7 +319,6 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	}
 
 	public void testDeleteStandardProject() {
-		unzip = true;
 		saveProjectsToZip();
 		try {
 			StandardProjectHandler.createAndSaveStandardProject(getActivity());
@@ -664,7 +669,6 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	}
 
 	public void testDeleteAllProjects() {
-		unzip = true;
 		saveProjectsToZip();
 		createProjects();
 		solo.sleep(200);
@@ -885,7 +889,6 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	public void testCancelDeleteActionMode() {
 		// zipping of programs needed for jenkins
 		// test does not work without removing all programs
-		unzip = true;
 		saveProjectsToZip();
 		try {
 			StandardProjectHandler.createAndSaveStandardProject(getActivity());
