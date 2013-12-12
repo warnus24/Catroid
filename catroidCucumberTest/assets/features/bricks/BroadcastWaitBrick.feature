@@ -74,3 +74,19 @@ Feature: Broadcast wait brick
       I am the second When 'hello' script.
       I am the Start script.
       """
+
+  Scenario: Broadcast Wait chain
+    Given 'Object' has a Start script
+    And this script has a BroadcastWait 'a' brick
+    And this script has a Print brick with '1'
+    Given 'Object' has a When 'a' script
+    And this script has a BroadcastWait 'b' brick
+    And this script has a Print brick with '2'
+    Given 'Object' has a When 'b' script
+    And this script has a BroadcastWait 'c' brick
+    And this script has a Print brick with '3'
+    Given 'Object' has a When 'c' script
+    And this script has a Print brick with '4'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output '4321'

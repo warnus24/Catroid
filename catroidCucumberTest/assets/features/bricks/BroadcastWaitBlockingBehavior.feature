@@ -31,18 +31,18 @@ Feature: Broadcast & Wait Blocking Behavior (like in Scratch)
   Scenario: A waiting BroadcastWait brick is unblocked when the same broadcast message is present
     Given 'Object' has a Start script
     And this script has a BroadcastWait 'hello' brick
-    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with '-S1-'
     Given 'Object' has a Start script
-    And this script has a Wait 300 milliseconds brick
+    And this script has a Wait 600 milliseconds brick
     And this script has a Broadcast 'hello' brick
     Given 'Object' has a When 'hello' script
+    And this script has a Wait 300 milliseconds brick
     And this script has a Print brick with '-W1-'
-    And this script has a Wait 400 milliseconds brick
+    And this script has a Wait 500 milliseconds brick
     And this script has a Print brick with '-W2-'
     When I start the program
     And I wait until the program has stopped
-    Then I should see the printed output '-W1--W1--S1--W2-'
+    Then I should see the printed output '-W1--S1--W1--W2-'
 
   Scenario: A waiting BroadcastWait brick is unblocked via another BroadcastWait brick
     Given 'Object' has a Start script
@@ -78,3 +78,20 @@ Feature: Broadcast & Wait Blocking Behavior (like in Scratch)
     When I start the program
     And I wait until the program has stopped
     Then I should see the printed output '-S1--S2--W1--W2-'
+
+  Scenario: A BroadcastWait brick restarts When scripts
+    Given 'Object' has a Start script
+    And this script has a Repeat 5 times brick
+    And this script has a Broadcast 'go' brick
+    And this script has a Wait 2 second brick
+    And this script has a Repeat end brick
+    Given 'Object' has a When 'go' script
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with 'c'
+    Given 'Object' has a When 'hello' script
+    And this script has a Print brick with 'a'
+    And this script has a Wait 5 seconds brick
+    And this script has a Print brick with 'b'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'aaaaabc'

@@ -39,6 +39,10 @@ public class BroadcastNotifyAction extends Action {
 		return true;
 	}
 
+	public BroadcastEvent getEvent() {
+		return this.event;
+	}
+
 	public void setEvent(BroadcastEvent event) {
 		this.event = event;
 	}
