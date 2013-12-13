@@ -90,8 +90,51 @@ Feature: Broadcast & Wait Blocking Behavior (like in Scratch)
     And this script has a Print brick with 'c'
     Given 'Object' has a When 'hello' script
     And this script has a Print brick with 'a'
-    And this script has a Wait 5 seconds brick
+    And this script has a Wait 7 seconds brick
     And this script has a Print brick with 'b'
     When I start the program
     And I wait until the program has stopped
     Then I should see the printed output 'aaaaabc'
+
+  Scenario: A Broadcast brick restarts When scripts
+    Given 'Object' has a Start script
+    And this script has a Repeat 5 times brick
+    And this script has a Broadcast 'go' brick
+    And this script has a Wait 2 seconds brick
+    And this script has a Print brick with 'c'
+    And this script has a Wait 1 second brick
+    And this script has a Repeat end brick
+    Given 'Object' has a When 'go' script
+    And this script has a Broadcast 'hello' brick
+    And this script has a Print brick with 'a'
+    Given 'Object' has a When 'hello' script
+    And this script has a Wait 500 milliseconds brick
+    And this script has a Print brick with 'b'
+    And this script has a Wait 7 seconds brick
+    And this script has a Print brick with 'd'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'abcabcabcabcabcd'
+
+  Scenario: A BroadcastWait brick is resumed by a Broadcast brick
+    Given 'Object' has a Start script
+    And this script has a Repeat 2 times brick
+    And this script has a Broadcast 'go' brick
+    And this script has a Wait 9 seconds brick
+    And this script has a Repeat end brick
+    Given 'Object' has a When 'go' script
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Wait 2 seconds brick
+    And this script has a Print brick with 'd'
+    Given 'Object' has a Start script
+    And this script has a Wait 3 seconds brick
+    And this script has a Broadcast 'hello' brick
+    And this script has a Print brick with 'c'
+    Given 'Object' has a When 'hello' script
+    And this script has a Wait 1 second brick
+    And this script has a Print brick with 'a'
+    And this script has a Wait 10 seconds brick
+    And this script has a Print brick with 'b'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'acadabd'

@@ -46,8 +46,8 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 import java.io.File;
 
 public class SingleExecutionWhenBrickTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
-	private static int SCREEN_WIDTH;
-	private static int SCREEN_HEIGHT;
+	private static final int SCREEN_WIDTH = 480;
+	private static final int SCREEN_HEIGHT = 800;
 
 	private Project projectWhenBrick;
 	Sprite yellowSprite;

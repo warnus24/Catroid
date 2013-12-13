@@ -55,8 +55,9 @@ import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.stage.StageActivity;
-import org.catrobat.catroid.test.cucumber.util.CallbackBrick;
 import org.catrobat.catroid.test.cucumber.util.PrintBrick;
+import org.catrobat.catroid.test.cucumber.util.ScriptEndCallbackBrick;
+import org.catrobat.catroid.test.cucumber.util.ScriptStartCallbackBrick;
 import org.catrobat.catroid.test.cucumber.util.Util;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProjectActivity;
@@ -70,12 +71,10 @@ import java.util.concurrent.TimeUnit;
 // CHECKSTYLE DISABLE MethodNameCheck FOR 1000 LINES
 public class ProgramSteps extends AndroidTestCase {
 	private final Object programStartWaitLock = new Object();
+	private final Object programScriptWaitLock = new Object();
 	private boolean programHasStarted = false;
-	// Decrement once for every new script.
-	private int programWaitLockPermits = 1;
-	// Release once for each script that ends.
-	// Should be == 1 after every script ended.
-	private Semaphore programWaitLock;
+	private int numberOfStartedScripts = 0;
+	private Semaphore programHasFinished;
 	private OutputStream outputStream;
 
 	@Given("^I have a Program$")
@@ -97,14 +96,17 @@ public class ProgramSteps extends AndroidTestCase {
 
 	@Given("^'(\\w+)' has a Start script$")
 	public void object_has_start_script(String object) {
-		programWaitLockPermits -= 1;
 		Project project = ProjectManager.getInstance().getCurrentProject();
 		Sprite sprite = Util.findSprite(project, object);
 		StartScript script = new StartScript(sprite);
 
-		script.addBrick(new CallbackBrick(sprite, new CallbackBrick.BrickCallback() {
+		script.addBrick(new ScriptStartCallbackBrick(sprite, new ScriptStartCallbackBrick.BrickCallback() {
 			@Override
 			public void onCallback() {
+				synchronized (programScriptWaitLock) {
+					++numberOfStartedScripts;
+				}
+
 				synchronized (programStartWaitLock) {
 					if (!programHasStarted) {
 						programHasStarted = true;
@@ -120,10 +122,18 @@ public class ProgramSteps extends AndroidTestCase {
 
 	@Given("^'(\\w+)' has a When '(\\w+)' script$")
 	public void object_has_a_when_script(String object, String message) {
-		programWaitLockPermits -= 1;
 		Project project = ProjectManager.getInstance().getCurrentProject();
 		Sprite sprite = Util.findSprite(project, object);
 		BroadcastScript script = new BroadcastScript(sprite, message);
+
+		script.addBrick(new ScriptStartCallbackBrick(sprite, new ScriptStartCallbackBrick.BrickCallback() {
+			@Override
+			public void onCallback() {
+				synchronized (programScriptWaitLock) {
+					++numberOfStartedScripts;
+				}
+			}
+		}));
 
 		sprite.addScript(script);
 		Cucumber.put(Cucumber.KEY_CURRENT_SCRIPT, script);
@@ -256,7 +266,7 @@ public class ProgramSteps extends AndroidTestCase {
 
 	@When("^I start the program$")
 	public void I_start_the_program() throws InterruptedException {
-		programWaitLock = new Semaphore(programWaitLockPermits);
+		programHasFinished = new Semaphore(0);
 		addScriptEndCallbacks();
 
 		Solo solo = (Solo) Cucumber.get(Cucumber.KEY_SOLO);
@@ -279,21 +289,24 @@ public class ProgramSteps extends AndroidTestCase {
 		Project project = ProjectManager.getInstance().getCurrentProject();
 		for (Sprite sprite : project.getSpriteList()) {
 			for (int i = 0; i < sprite.getNumberOfScripts(); i++) {
-				sprite.getScript(i).addBrick(new CallbackBrick(sprite, new CallbackBrick.BrickCallback() {
-					@Override
-					public void onCallback() {
-						programWaitLock.release();
-					}
-				}));
+				sprite.getScript(i).addBrick(
+						new ScriptEndCallbackBrick(sprite, new ScriptEndCallbackBrick.BrickCallback() {
+							@Override
+							public void onCallback() {
+								synchronized (programScriptWaitLock) {
+									if (--numberOfStartedScripts == 0) {
+										programHasFinished.release();
+									}
+								}
+							}
+						}));
 			}
 		}
 	}
 
 	@And("^I wait until the program has stopped$")
 	public void wait_until_program_has_stopped() throws InterruptedException {
-		// While there are still scripts running, the available permits should
-		// be < 1.
-		programWaitLock.tryAcquire(1, 60, TimeUnit.SECONDS);
+		programHasFinished.tryAcquire(1, 60, TimeUnit.SECONDS);
 	}
 
 	@And("^I wait for (\\d+) milliseconds?$")

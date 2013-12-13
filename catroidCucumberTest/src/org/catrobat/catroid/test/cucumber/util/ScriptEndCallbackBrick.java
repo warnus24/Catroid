@@ -22,22 +22,24 @@
  */
 package org.catrobat.catroid.test.cucumber.util;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-public final class CallbackAction extends Action {
-	private final transient CallbackBrick.BrickCallback callback;
-	private boolean runOnce = true;
+import org.catrobat.catroid.content.Sprite;
 
-	public CallbackAction(CallbackBrick.BrickCallback callback) {
+import java.util.List;
+
+public final class ScriptEndCallbackBrick extends CallbackBrick {
+	private static final long serialVersionUID = 1L;
+	private final transient BrickCallback callback;
+
+	public ScriptEndCallbackBrick(Sprite sprite, BrickCallback callback) {
+		this.sprite = sprite;
 		this.callback = callback;
 	}
 
 	@Override
-	public boolean act(float delta) {
-		if (runOnce) {
-			runOnce = false;
-			callback.onCallback();
-		}
-		return true;
+	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
+		sequence.addAction(new CallbackAction(callback));
+		return null;
 	}
 }
