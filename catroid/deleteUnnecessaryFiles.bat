@@ -855,6 +855,9 @@ ATTRIB +h "dialog_text_dialog.xml" /s
 ATTRIB +h "dialog_web_warning.xml" /s
 ATTRIB +h "fragment_lwp_select_program.xml" /s
 ATTRIB +h "fragment_sound_soundlist_item.xml" /s
+ATTRIB +h "action_mode_select_all.xml" /s
+ATTRIB +h "activity_my_projects.xml" /s
+
 call:deleteAllFiles
 ATTRIB -h "activity_main_menu.xml" /s
 ATTRIB -h "activity_my_projects_list_item.xml" /s
@@ -871,6 +874,8 @@ ATTRIB -h "dialog_text_dialog.xml" /s
 ATTRIB -h "dialog_web_warning.xml" /s
 ATTRIB -h "fragment_lwp_select_program.xml" /s
 ATTRIB -h "fragment_sound_soundlist_item.xml" /s
+ATTRIB -h "action_mode_select_all.xml" /s
+ATTRIB -h "activity_my_projects.xml" /s
 @echo "| layout                                     |    DONE    |"
 @echo "+--------------------------------------------+------------+"
 
@@ -1005,8 +1010,19 @@ ATTRIB -h "livewallpapersettings.xml" /s
 @echo "+--------------------------------------------+------------+"
 @echo """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-:res.menu - delte whole
-call:deleteFolderAndSubfolder "%~dp0\res\menu"
+:-------
+:menu
+:-------
+cd "%~dp0\res\menu"
+ATTRIB +h "menu_actionmode.xml" /s
+ATTRIB +h "menu_selectprogram.xml" /s
+call:deleteAllFiles
+ATTRIB -h "menu_actionmode.xml" /s
+ATTRIB -h "menu_selectprogram.xml" /s
+@echo "| menu                                       |    DONE    |"
+@echo "+--------------------------------------------+------------+"
+@echo """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 
 echo.&pause.&goto:eof
 
