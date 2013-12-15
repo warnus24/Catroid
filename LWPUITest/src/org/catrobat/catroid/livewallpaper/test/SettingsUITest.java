@@ -50,9 +50,7 @@ public class SettingsUITest extends
 		
 	}
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		
+	protected void tearDown() throws Exception {	
 		if(this.defaultTestProject != null){
 			StorageHandler.getInstance().deleteProject(defaultTestProject);
 		}	
@@ -60,6 +58,9 @@ public class SettingsUITest extends
 		if(this.testProject1 != null){
 			StorageHandler.getInstance().deleteProject(testProject1);
 		}
+		
+		super.tearDown();
+		
 	}
 	
 	public void testComingUp()
