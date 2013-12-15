@@ -35,7 +35,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -93,8 +92,6 @@ public class StageListener implements ApplicationListener {
 	};
 
 	private ScreenModes screenMode;
-
-	private Texture axes;
 
 	private boolean makeTestPixels = false;
 	private byte[] testPixels;
@@ -163,7 +160,6 @@ public class StageListener implements ApplicationListener {
 			} else {
 				Gdx.input.setInputProcessor(stage);
 			}
-			axes = new Texture(Gdx.files.internal("stage/red_pixel.bmp"));
 		}
 	}
 
@@ -365,7 +361,7 @@ public class StageListener implements ApplicationListener {
 		if (font != null) {
 			font.dispose();
 		}
-		axes.dispose();
+
 		disposeTextures();
 	}
 
