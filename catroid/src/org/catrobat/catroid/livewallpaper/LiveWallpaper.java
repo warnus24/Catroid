@@ -67,9 +67,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	@Override
 	public void onCreate() {
 		//android.os.Debug.waitForDebugger();
-		super.onCreate();
 		INSTANCE = this;
 		if (!TEST) {
+			super.onCreate();
 			SharedPreferences sharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(getApplicationContext());
 			SoundManager.getInstance().soundDisabledByLwp = sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED,

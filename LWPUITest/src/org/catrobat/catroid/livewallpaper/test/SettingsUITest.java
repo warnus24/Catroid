@@ -19,13 +19,7 @@ public class SettingsUITest extends
 
 	private Solo solo;
 	private static final int DELAY = 1500;
-	
-	private static String DEFAULT_TEST_PROJECT_NAME = "Default Test Project"; 
-	private static String TEST_PROJECT_NAME1 = "Test Project 1"; 
-	
-	private Project defaultTestProject; 
-	private Project testProject1; 
-	
+	 
 	public SettingsUITest() {
 		super(LiveWallpaperSettings.class);
 	}
@@ -33,34 +27,13 @@ public class SettingsUITest extends
 	protected void setUp() throws Exception {
 		super.setUp();
 		solo = new Solo(getInstrumentation(),getActivity());
-		if(ProjectManager.getInstance().getCurrentProject()==null)
-		{
-			Log.d("LWP", "Current Project not set!!");
-			ProjectManager.getInstance().loadProject(solo.getString(R.string.default_project_name),getActivity().getApplicationContext(),false);
-		    
-		}
-		
-		//create a LiveWallpaper instance - needed for testing
-		LiveWallpaper lwp = new LiveWallpaper();
-		lwp.TEST = true; 
-		lwp.onCreate();
-		
-		this.defaultTestProject = TestUtils.createAndSetEmptyProject(DEFAULT_TEST_PROJECT_NAME); 
-		
+
+		ProjectManager.getInstance().loadProject(solo.getString(R.string.default_project_name),getActivity().getApplicationContext(),false);
 		
 	}
 
-	protected void tearDown() throws Exception {	
-		if(this.defaultTestProject != null){
-			StorageHandler.getInstance().deleteProject(defaultTestProject);
-		}	
-		
-		if(this.testProject1 != null){
-			StorageHandler.getInstance().deleteProject(testProject1);
-		}
-		
+	protected void tearDown() throws Exception {			
 		super.tearDown();
-		
 	}
 	
 	public void testComingUp()
@@ -107,22 +80,29 @@ public class SettingsUITest extends
 		
     public void testWallpaperSelection()
     {
-    	testProject1 = TestUtils.createEmptyProject(TEST_PROJECT_NAME1);
+    	LiveWallpaper lwp = new LiveWallpaper();
+		lwp.TEST = true; 
+		lwp.onCreate();
+		String testProjectName = "Test Project"; 
+		Project testProject = TestUtils.createEmptyProject(testProjectName);
+    	StorageHandler.getInstance().saveProject(testProject);
+		assertNotNull("The test project was not succesfully created", testProject); 
+		
     	Project previousProject = ProjectManager.getInstance().getCurrentProject(); 
-		solo.clickOnText(solo.getString(R.string.lwp_select_program));
-		solo.sleep(DELAY);
-		solo.clickOnText(TEST_PROJECT_NAME1);
-		solo.sleep(DELAY);
+		
+    	solo.clickOnText(solo.getString(R.string.lwp_select_program));
+		solo.sleep(200);
+		solo.clickOnText(testProjectName);
+		solo.sleep(200);
 		solo.clickOnText(solo.getString(R.string.yes));
-		solo.sleep(DELAY); 
-		solo.goBack(); 
+		solo.sleep(500); 
+		solo.goBack();
+		
 		Project newProject = ProjectManager.getInstance().getCurrentProject();
 		assertFalse("The project was not successfully changed", previousProject.getName().equals(newProject.getName()));
+		
+		StorageHandler.getInstance().deleteProject(testProject);
     }
     
-    public void testDelete()
-    {	
-    	
-    }
 	
 }
