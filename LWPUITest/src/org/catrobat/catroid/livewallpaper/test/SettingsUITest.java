@@ -1,9 +1,14 @@
 package org.catrobat.catroid.livewallpaper.test;
 
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.SoundManager;
+import org.catrobat.catroid.io.StorageHandler;
+import org.catrobat.catroid.livewallpaper.test.utils.TestUtils;
 import org.catrobat.catroid.livewallpaper.ui.LiveWallpaperSettings;
 import com.jayway.android.robotium.solo.Solo;
+
+import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.R;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
@@ -14,6 +19,13 @@ public class SettingsUITest extends
 
 	private Solo solo;
 	private static final int DELAY = 1500;
+	
+	private static String DEFAULT_TEST_PROJECT_NAME = "Default Test Project"; 
+	private static String TEST_PROJECT_NAME1 = "Test Project 1"; 
+	
+	private Project testProject1; 
+	private Project testProject2; 
+	
 	public SettingsUITest() {
 		super(LiveWallpaperSettings.class);
 	}
@@ -27,10 +39,27 @@ public class SettingsUITest extends
 			ProjectManager.getInstance().loadProject(solo.getString(R.string.default_project_name),getActivity().getApplicationContext(),false);
 		    
 		}
+		
+		//create a LiveWallpaper instance - needed for testing
+		LiveWallpaper lwp = new LiveWallpaper();
+		lwp.TEST = true; 
+		lwp.onCreate();
+		
+		this.testProject1 = TestUtils.createAndSetEmptyProject(DEFAULT_TEST_PROJECT_NAME); 
+		
+		
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
+		
+		if(this.testProject1 != null){
+			StorageHandler.getInstance().deleteProject(testProject1);
+		}	
+		
+		if(this.testProject2 != null){
+			StorageHandler.getInstance().deleteProject(testProject2);
+		}
 	}
 	
 	public void testComingUp()
@@ -76,12 +105,18 @@ public class SettingsUITest extends
 	}
 		
     public void testWallpaperSelection()
-    {	
+    {
+    	testProject2 = TestUtils.createEmptyProject(TEST_PROJECT_NAME1);
+    	Project previousProject = ProjectManager.getInstance().getCurrentProject(); 
 		solo.clickOnText(solo.getString(R.string.lwp_select_program));
 		solo.sleep(DELAY);
-		solo.clickOnText(solo.getString(R.string.default_project_name));
+		solo.clickOnText(TEST_PROJECT_NAME1);
 		solo.sleep(DELAY);
 		solo.clickOnText(solo.getString(R.string.yes));
+		solo.sleep(DELAY); 
+		solo.goBack(); 
+		Project newProject = ProjectManager.getInstance().getCurrentProject();
+		assertFalse("The project was not successfully changed", previousProject.getName().equals(newProject.getName()));
     }
     
     public void testDelete()

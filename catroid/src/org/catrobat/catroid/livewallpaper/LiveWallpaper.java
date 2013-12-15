@@ -62,15 +62,21 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private StageListener previewStageListener = null;
 	private StageListener homeScreenStageListener = null;
 
+	public boolean TEST = false;
+
 	@Override
 	public void onCreate() {
 		//android.os.Debug.waitForDebugger();
 		super.onCreate();
 		INSTANCE = this;
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		SoundManager.getInstance().soundDisabledByLwp = sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED,
-				false);
-		context = this;
+		if (!TEST) {
+			SharedPreferences sharedPreferences = PreferenceManager
+					.getDefaultSharedPreferences(getApplicationContext());
+			SoundManager.getInstance().soundDisabledByLwp = sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED,
+					false);
+			context = this;
+		}
+
 	}
 
 	public static LiveWallpaper getInstance() {
@@ -104,6 +110,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	}
 
 	public void changeWallpaperProgram() {
+		if (TEST) {
+			return;
+		}
 		previewEngine.changeWallpaperProgram();
 		//TODO
 		//homeEngine.changeWallpaperProgram();
