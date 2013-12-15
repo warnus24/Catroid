@@ -23,8 +23,8 @@ public class SettingsUITest extends
 	private static String DEFAULT_TEST_PROJECT_NAME = "Default Test Project"; 
 	private static String TEST_PROJECT_NAME1 = "Test Project 1"; 
 	
+	private Project defaultTestProject; 
 	private Project testProject1; 
-	private Project testProject2; 
 	
 	public SettingsUITest() {
 		super(LiveWallpaperSettings.class);
@@ -45,7 +45,7 @@ public class SettingsUITest extends
 		lwp.TEST = true; 
 		lwp.onCreate();
 		
-		this.testProject1 = TestUtils.createAndSetEmptyProject(DEFAULT_TEST_PROJECT_NAME); 
+		this.defaultTestProject = TestUtils.createAndSetEmptyProject(DEFAULT_TEST_PROJECT_NAME); 
 		
 		
 	}
@@ -53,12 +53,12 @@ public class SettingsUITest extends
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		
-		if(this.testProject1 != null){
-			StorageHandler.getInstance().deleteProject(testProject1);
+		if(this.defaultTestProject != null){
+			StorageHandler.getInstance().deleteProject(defaultTestProject);
 		}	
 		
-		if(this.testProject2 != null){
-			StorageHandler.getInstance().deleteProject(testProject2);
+		if(this.testProject1 != null){
+			StorageHandler.getInstance().deleteProject(testProject1);
 		}
 	}
 	
@@ -106,7 +106,7 @@ public class SettingsUITest extends
 		
     public void testWallpaperSelection()
     {
-    	testProject2 = TestUtils.createEmptyProject(TEST_PROJECT_NAME1);
+    	testProject1 = TestUtils.createEmptyProject(TEST_PROJECT_NAME1);
     	Project previousProject = ProjectManager.getInstance().getCurrentProject(); 
 		solo.clickOnText(solo.getString(R.string.lwp_select_program));
 		solo.sleep(DELAY);
