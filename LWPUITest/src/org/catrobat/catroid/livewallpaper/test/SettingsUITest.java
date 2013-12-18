@@ -11,6 +11,8 @@ import com.jayway.android.robotium.solo.Solo;
 
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.R;
+import org.catrobat.catroid.utils.Utils;
+
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
@@ -118,6 +120,16 @@ public class SettingsUITest extends
 		String currentProjectName = projectManager.getCurrentProject().getName();
 		assertTrue("The project was not successfully changed", currentProjectName.equals(TEST_PROJECT_NAME));
 			
+    }
+    
+    public void testAboutDialog()
+    {
+    	solo.clickOnActionBarItem(R.id.about);
+    	assertTrue("About pocket code text not found", solo.searchText(solo.getString(R.string.dialog_about_license_info)));
+    	assertTrue("About pocket code link not found", solo.searchText(solo.getString(R.string.dialog_about_catrobat_link_text)));
+    	assertTrue("About pocket code version not found", solo.searchText(Utils.getVersionName(getActivity().getApplicationContext())));
+
+
     }
     
 	

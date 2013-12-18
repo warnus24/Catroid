@@ -24,7 +24,6 @@ package org.catrobat.catroid.livewallpaper.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
@@ -65,15 +64,13 @@ public class SelectProgramActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home: {
-				Intent intent = new Intent(this, LiveWallpaperSettings.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				break;
-			}
 			case R.id.delete: {
 				selectProgramFragment.startDeleteActionMode();
 				break;
+			}
+			case R.id.about: {
+				AboutPocketCodeDialog aboutPocketCodeDialog = new AboutPocketCodeDialog(this);
+				aboutPocketCodeDialog.show();
 			}
 		}
 		return super.onOptionsItemSelected(item);
@@ -83,17 +80,6 @@ public class SelectProgramActivity extends BaseActivity {
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setTitle(R.string.lwp_select_program);
 		actionBar.setHomeButtonEnabled(true);
-	}
-
-	@Override
-	public boolean dispatchKeyEvent(KeyEvent event) {
-		//		if (selectProgramFragment.getActionModeActive()) {
-		//			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-		//				ProjectAdapter adapter = (ProjectAdapter) selectProgramFragment.getListAdapter();
-		//				adapter.clearCheckedProjects();
-		//			}
-		//		}
-		return super.dispatchKeyEvent(event);
 	}
 
 }

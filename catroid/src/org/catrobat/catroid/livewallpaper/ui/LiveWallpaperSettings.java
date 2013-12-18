@@ -24,14 +24,12 @@ package org.catrobat.catroid.livewallpaper.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -59,11 +57,8 @@ public class LiveWallpaperSettings extends PreferenceActivity {
 		@Override
 		public void onCreate(final Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.livewallpapersettings);
-			handleAboutPocketCodePreference();
-			handleAboutThisWallpaperPreference();
+			//addPreferencesFromResource(R.xml.livewallpapersettings);
 			//handleCreateWallpapers();
-			handleSelectProgramDialog();
 			handleAllowSoundsCheckBox();
 		}
 
@@ -71,25 +66,6 @@ public class LiveWallpaperSettings extends PreferenceActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			getActivity().getActionBar().setTitle(R.string.lwp_app_name);
 			return super.onCreateView(inflater, container, savedInstanceState);
-		}
-
-		private void handleSelectProgramDialog() {
-			Preference pref = findPreference(getResources().getString(R.string.lwp_select_program));
-
-			pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-				@Override
-				public boolean onPreferenceClick(Preference preference) {
-					Intent intent = new Intent(getActivity().getApplicationContext(), SelectProgramActivity.class);
-					startActivity(intent);
-					//					FragmentTransaction ft = getFragmentManager().beginTransaction();
-					//					ft.replace(android.R.id.content, new SelectProgramFragment());
-					//					ft.addToBackStack(null);
-					//					ft.commit();
-					return false;
-				}
-			});
-
 		}
 
 		private void handleAllowSoundsCheckBox() {
@@ -115,37 +91,6 @@ public class LiveWallpaperSettings extends PreferenceActivity {
 
 					}
 					editor.commit();
-					return false;
-				}
-			});
-
-		}
-
-		private void handleAboutThisWallpaperPreference() {
-			Preference pref = findPreference(getResources().getString(R.string.about_this_wallpaper));
-
-			pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-				@Override
-				public boolean onPreferenceClick(Preference preference) {
-					AboutWallpaperDialog aboutWallpaperDialog = new AboutWallpaperDialog(context);
-					aboutWallpaperDialog.show();
-					return false;
-				}
-			});
-
-		}
-
-		private void handleAboutPocketCodePreference() {
-			Preference licence = findPreference(getResources().getString(R.string.main_menu_about_pocketcode));
-
-			licence.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-				@Override
-				public boolean onPreferenceClick(Preference preference) {
-
-					AboutPocketCodeDialog aboutPocketCodeDialog = new AboutPocketCodeDialog(context);
-					aboutPocketCodeDialog.show();
 					return false;
 				}
 			});
