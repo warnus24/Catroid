@@ -16,18 +16,11 @@ import org.catrobat.catroid.utils.Utils;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
-import org.junit.*;
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.util.*;
-
 
 public class SettingsUITest extends
 		ActivityInstrumentationTestCase2<SelectProgramActivity> {
 
 	private static Solo solo;
-	private static final int DELAY = 1500;
 	
 	private static final String TEST_PROJECT_NAME = "Test project";
 	
