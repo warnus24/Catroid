@@ -19,7 +19,9 @@ import android.util.Log;
 public class SettingsUITest extends
 SingleLaunchActivityTestCase<SelectProgramActivity> {
 
-
+	
+	
+	private static final int ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX = 0;
 	private static final String TEST_PROJECT_NAME = "Test project";
 	private static final String PACKAGE = "org.catrobat.catroid.livewallpaper"; 
 	private Solo solo;
@@ -87,6 +89,18 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
 		assertTrue("The project was not successfully changed", currentProjectName.equals(TEST_PROJECT_NAME));			
     }
     
+		
+    public void testDeleteSingle(){
+    	solo.clickOnActionBarItem(R.id.delete);
+    	solo.clickOnText(TEST_PROJECT_NAME);
+    	solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
+    	solo.clickOnText(solo.getString(R.string.yes));
+    	assertFalse("The project was not deleted", solo.searchText(TEST_PROJECT_NAME));
+    }
     
+    public void testDeleteMultiple(){
+    	
+    }
+
 	
 }
