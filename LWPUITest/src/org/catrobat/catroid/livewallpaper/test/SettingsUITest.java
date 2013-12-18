@@ -1,6 +1,10 @@
 package org.catrobat.catroid.livewallpaper.test;
 
+import java.util.List;
+import java.util.Locale;
+
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.common.ProjectData;
 import org.catrobat.catroid.common.StandardProjectHandler;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.StorageHandler;
@@ -19,8 +23,6 @@ import android.util.Log;
 public class SettingsUITest extends
 SingleLaunchActivityTestCase<SelectProgramActivity> {
 
-	
-	
 	private static final int ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX = 0;
 	private static final String TEST_PROJECT_NAME = "Test project";
 	private static final String PACKAGE = "org.catrobat.catroid.livewallpaper"; 
@@ -55,16 +57,13 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
 		LiveWallpaper lwp = new LiveWallpaper();
 		lwp.TEST = true; 
 		lwp.onCreate();
+		
+		
 	}
 
 	protected void tearDown() throws Exception {
 		StorageHandler.getInstance().deleteProject(testProject);
 		super.tearDown();
-	}
-	
-	public void testComingUp()
-	{	
-		solo.assertCurrentActivity("SelectProgramActivity is not the current activity", SelectProgramActivity.class);
 	}
 	
     public void testAboutDialog()
@@ -90,15 +89,75 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
     }
     
 		
-    public void testDeleteSingle(){
+    public void testDeleteSingleProject(){
+    	solo.sleep(500);
+    	SelectProgramActivity selectProgramActvity = (SelectProgramActivity) solo.getCurrentActivity();
+     	List<ProjectData> projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
+     	int initialProgramCount = projectList.size();
+     	
     	solo.clickOnActionBarItem(R.id.delete);
+    	solo.clickOnText(TEST_PROJECT_NAME);
+    	solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
+    	
+    	assertTrue("The title of the confirmation dialog for deleting a project was not shown", 
+         		solo.searchText(solo.getString(R.string.dialog_confirm_delete_program_title)));
+    	
+        assertTrue("The content of the confirmation dialog for deleting a project was not shown", 
+         		solo.searchText(solo.getString(R.string.dialog_confirm_delete_program_message)));
+        
+        solo.clickOnText(solo.getString(R.string.no));
+        projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
+        assertEquals("The program count does not match the initial program count", initialProgramCount, projectList.size());
+        
+        solo.clickOnActionBarItem(R.id.delete);
     	solo.clickOnText(TEST_PROJECT_NAME);
     	solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
     	solo.clickOnText(solo.getString(R.string.yes));
     	assertFalse("The project was not deleted", solo.searchText(TEST_PROJECT_NAME));
+    	
+    	projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
+    	int expectedProgramCountAfterDeletion = initialProgramCount - 1; 
+    	assertEquals("The program count not okay after deleting one program", expectedProgramCountAfterDeletion, projectList.size());
     }
     
-    public void testDeleteMultiple(){
+    public void testDeleteCurrentProject(){
+    	assertEquals("The current project should be set to the standard project", solo.getString(R.string.default_project_name), projectManager.getCurrentProject().getName());
+    	solo.clickOnActionBarItem(R.id.delete);
+    	solo.clickOnText(solo.getString(R.string.default_project_name));
+    	solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
+    	assertTrue("The error dialog was not shown", solo.searchText(solo.getString(R.string.lwp_error_delete_current_program)));
+    }
+    
+    public void testDeleteAllProjects(){   	
+    	SelectProgramActivity selectProgramActvity = (SelectProgramActivity) solo.getCurrentActivity();
+     	List<ProjectData> projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
+     	int initialProgramCount = projectList.size(); 
+    	
+     	solo.clickOnActionBarItem(R.id.delete);
+    	String selectAll = solo.getString(R.string.select_all).toUpperCase(Locale.getDefault());
+        solo.clickOnText(selectAll);
+        solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
+        
+        assertTrue("The error dialog for deleting all projects but the current one was not shown", 
+        		solo.searchText(solo.getString(R.string.lwp_error_delete_multiple_program)));
+        solo.clickOnButton(solo.getString(R.string.yes));
+        
+        assertTrue("The confirmation dialog for deleting projects was not shown", 
+        		solo.searchText(solo.getString(R.string.dialog_confirm_delete_multiple_programs_title)));
+        
+        assertTrue("The title of the confirmation dialog for deleting projects was not shown", 
+        		solo.searchText(solo.getString(R.string.dialog_confirm_delete_program_message)));
+        
+        solo.clickOnButton(solo.getString(R.string.no));
+        assertTrue("The program count is not equal to program count before clicking on delete", projectList.size() == initialProgramCount);
+        
+        solo.clickOnActionBarItem(R.id.delete);
+        solo.clickOnText(selectAll);
+        solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
+        solo.clickOnText(solo.getString(R.string.yes));
+        solo.clickOnText(solo.getString(R.string.yes));
+        
+        assertTrue("The program count should be 1 after delete all projects but the current one", projectList.size() == 1);
     	
     }
 

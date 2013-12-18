@@ -2,6 +2,7 @@ package org.catrobat.catroid.livewallpaper.test.utils;
 
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.StorageHandler;
+import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,6 +26,7 @@ public class TestUtils {
 	public static void restartActivity(Activity myActivity)
 	{
 		Intent myIntent = new Intent(myActivity, myActivity.getClass()); 
+		myActivity.finish();
 		myIntent.setAction(Intent.ACTION_MAIN); 
 		myIntent.addCategory(Intent.CATEGORY_LAUNCHER); 
 		myIntent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY); 

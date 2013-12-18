@@ -79,7 +79,10 @@ public class SelectProgramActivity extends BaseActivity {
 	private void setUpActionBar() {
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setTitle(R.string.lwp_select_program);
-		actionBar.setHomeButtonEnabled(true);
+		actionBar.setHomeButtonEnabled(false);
 	}
 
+	public SelectProgramFragment getSelectProgramFragment() {
+		return selectProgramFragment;
+	}
 }

@@ -387,4 +387,8 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		adapter.setSelectMode(selectMode);
 		adapter.notifyDataSetChanged();
 	}
+
+	public List<ProjectData> getProjectList() {
+		return projectList;
+	}
 }
