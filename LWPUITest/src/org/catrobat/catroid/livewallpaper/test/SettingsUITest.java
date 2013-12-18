@@ -28,54 +28,45 @@ public class SettingsUITest extends
 	private static final int DELAY = 1500;
 	
 	private static final String TEST_PROJECT_NAME = "Test project";
-	private static Project testProject; 
 	
-	private static ProjectManager projectManager = ProjectManager.getInstance(); 
+	private ProjectManager projectManager = ProjectManager.getInstance(); 
 	
 	public SettingsUITest() {
 		super(SelectProgramActivity.class);
 	}
 
 
-	@BeforeClass
-	public static void oneTimeSetup(){
-//		if(projectManager.getCurrentProject() == null || projectManager.getCurrentProject().getName()!= solo.getString(R.string.default_project_name)){
-//		
-//			try{
-//				Project defaultProject = StandardProjectHandler.createAndSaveStandardProject(getActivity().getApplicationContext());
-//				projectManager.setProject(defaultProject);
-//			}
-//			catch(IllegalArgumentException e){
-//				Log.d("LWP", "The default project was not created because it probably already exists");
-//				Project defaultProject = StorageHandler.getInstance().loadProject(solo.getString(R.string.default_project_name));
-//				projectManager.setProject(defaultProject);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		testProject = TestUtils.createEmptyProjectWithoutSettingIt(getActivity().getApplicationContext()
-//	    			, TEST_PROJECT_NAME);
+	public void setUp() throws Exception {
+		super.setUp();
+		solo = new Solo(getInstrumentation(),getActivity());	
+		
+		if(projectManager.getCurrentProject() == null || projectManager.getCurrentProject().getName()!= solo.getString(R.string.default_project_name)){
+		
+			try{
+				Project defaultProject = StandardProjectHandler.createAndSaveStandardProject(getActivity().getApplicationContext());
+				projectManager.setProject(defaultProject);
+			}
+			catch(IllegalArgumentException e){
+				Log.d("LWP", "The default project was not created because it probably already exists");
+				Project defaultProject = StorageHandler.getInstance().loadProject(solo.getString(R.string.default_project_name));
+				projectManager.setProject(defaultProject);
+			}
+		}
+		
+		try{
+		TestUtils.createEmptyProjectWithoutSettingIt(getActivity().getApplicationContext()
+	    			, TEST_PROJECT_NAME);
+		}
+		catch(IllegalArgumentException e){
+			Log.d("LWP", "The test project was not created because it probably already exists");
+		}
 		LiveWallpaper lwp = new LiveWallpaper();
 		lwp.TEST = true; 
 		lwp.onCreate();
-	}
-	
-    @AfterClass
-	public static void oneTimeTearDown(){
-		StorageHandler.getInstance().deleteProject(testProject);
-	}
-	
-    @Before
-	public void setUp() throws Exception {
-		super.setUp();
-		solo = new Solo(getInstrumentation(),getActivity());		
 	
 	}
 
-	
-    @Test
+
 	public void testComingUp()
 	{	
 		solo.assertCurrentActivity("SelectProgramActivity is not the current activity", SelectProgramActivity.class);
@@ -114,18 +105,18 @@ public class SettingsUITest extends
 //		solo.goBack();
 //
 //	}
-		
-    @Test
+
     public void testWallpaperSelection()
     {
-//    	assertEquals("The current project should be set to the standard project", solo.getString(R.string.default_project_name), projectManager.getCurrentProject().getName());
-//    	
-//    	solo.clickOnText(TEST_PROJECT_NAME);
-//		solo.sleep(200);
-//		solo.clickOnText(solo.getString(R.string.yes));
-//		
-//		String currentProjectName = projectManager.getCurrentProject().getName();
-//		assertTrue("The project was not successfully changed", currentProjectName.equals(TEST_PROJECT_NAME));
+    	assertEquals("The current project should be set to the standard project", solo.getString(R.string.default_project_name), projectManager.getCurrentProject().getName());
+    	
+    	solo.clickOnText(TEST_PROJECT_NAME);
+		solo.sleep(200);
+		solo.clickOnText(solo.getString(R.string.yes));
+		solo.sleep(2000);
+		
+		String currentProjectName = projectManager.getCurrentProject().getName();
+		assertTrue("The project was not successfully changed", currentProjectName.equals(TEST_PROJECT_NAME));
 			
     }
     
