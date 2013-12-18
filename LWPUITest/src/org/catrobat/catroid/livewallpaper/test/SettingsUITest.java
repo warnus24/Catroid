@@ -11,25 +11,26 @@ import com.jayway.android.robotium.solo.Solo;
 
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.R;
-import android.app.Activity;
-import android.content.Intent;
-//import android.test.ActivityInstrumentationTestCase2;
+import org.catrobat.catroid.utils.Utils;
 import android.test.SingleLaunchActivityTestCase;
 import android.util.Log;
 
 
 public class SettingsUITest extends
-		SingleLaunchActivityTestCase<SelectProgramActivity> {
+SingleLaunchActivityTestCase<SelectProgramActivity> {
 
+
+	private static final String TEST_PROJECT_NAME = "Test project";
+	private static final String PACKAGE = "org.catrobat.catroid.livewallpaper"; 
 	private Solo solo;
-	private static String testProjectName = "Test project";
 	private Project testProject;
 	
 	private ProjectManager projectManager = ProjectManager.getInstance(); 
-	private static String pkg = "org.catrobat.catroid.livewallpaper";
+
 	public SettingsUITest() {
-		super(pkg,SelectProgramActivity.class);
+		super(PACKAGE,SelectProgramActivity.class);
 	}
+
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -48,7 +49,7 @@ public class SettingsUITest extends
 			ProjectManager.getInstance().setProject(defaultProject);
 		}
 		TestUtils.restartActivity(getActivity());
-		testProject = TestUtils.createEmptyProjectWithoutSettingIt(getActivity().getApplicationContext(), testProjectName);
+		testProject = TestUtils.createEmptyProjectWithoutSettingIt(getActivity().getApplicationContext(), TEST_PROJECT_NAME);
 		LiveWallpaper lwp = new LiveWallpaper();
 		lwp.TEST = true; 
 		lwp.onCreate();
@@ -64,53 +65,28 @@ public class SettingsUITest extends
 		solo.assertCurrentActivity("SelectProgramActivity is not the current activity", SelectProgramActivity.class);
 	}
 	
-//	public void testAboutButtton()
-//	{
-//		solo.clickOnText(solo.getString(R.string.about_this_wallpaper));
-//		solo.sleep(DELAY);
-//		assertTrue("The about this wallpaper title was not found", solo.searchText(solo.getString(R.string.about_this_wallpaper)));
-//
-//		assertTrue("The about this project title was not found", solo.searchText(ProjectManager.getInstance().getCurrentProject().getName()));
-//  		if(ProjectManager.getInstance().getCurrentProject().getDescription()!= "")//kein null Pointer 
-//		{
-//		  assertTrue("The Description of this wallpaper was not found", solo.searchText(solo.getString(ProjectManager.getInstance().getCurrentProject().getDescription())));
-//		}
-//		solo.goBack();	
-//		solo.clickOnText(solo.getString(R.string.main_menu_about_pocketcode));
-//		solo.sleep(DELAY);
-//		solo.goBack();
-//	}
-//	
-//	public void testPreferences()
-//	{
-//		assertFalse(SoundManager.getInstance().soundDisabledByLwp);
-//		assertFalse(solo.isCheckBoxChecked(solo.getString(R.string.lwp_allow_sounds)));
-//		solo.sleep(DELAY);
-//		solo.clickOnText(solo.getString(R.string.lwp_allow_sounds));
-//		assertFalse(solo.isCheckBoxChecked(solo.getString(R.string.lwp_allow_sounds)));
-//		
-//		solo.clickOnText(solo.getString(R.string.lwp_select_program));
-//		solo.sleep(DELAY);
-//		solo.clickOnText(solo.getString(R.string.default_project_name));
-//		solo.sleep(DELAY);
-//		solo.clickOnText(solo.getString(R.string.no));
-//		solo.goBack();
-//
-//	}
-		
+    public void testAboutDialog()
+    {
+    	solo.clickOnActionBarItem(R.id.about);
+    	assertTrue("About pocket code text not found", solo.searchText(solo.getString(R.string.dialog_about_license_info)));
+    	assertTrue("About pocket code link not found", solo.searchText(solo.getString(R.string.dialog_about_catrobat_link_text)));
+    	assertTrue("About pocket code version not found", solo.searchText(Utils.getVersionName(getActivity().getApplicationContext())));
+    	solo.goBack();
+    }
+    
     public void testWallpaperSelection()
     {
-    	//assertEquals("The current project should be set to the standard project", solo.getString(R.string.default_project_name), projectManager.getCurrentProject().getName());
-    	//solo.waitForText(testProjectName);
-    	solo.clickOnText(testProjectName);
+    	assertEquals("The current project should be set to the standard project", solo.getString(R.string.default_project_name), projectManager.getCurrentProject().getName());
+    	
+    	solo.clickOnText(TEST_PROJECT_NAME);
 		solo.sleep(200);
 		solo.clickOnText(solo.getString(R.string.yes));
-		solo.sleep(1000);
+		solo.sleep(2000);
 		
 		String currentProjectName = projectManager.getCurrentProject().getName();
-		assertTrue("The project was not successfully changed", currentProjectName.equals(testProjectName));
-			
+		assertTrue("The project was not successfully changed", currentProjectName.equals(TEST_PROJECT_NAME));			
     }
+    
     
 	
 }

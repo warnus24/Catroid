@@ -30,7 +30,6 @@ import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -365,7 +364,6 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 	private void deleteProject() {
 		StorageHandler.getInstance().deleteProject(projectToEdit);
-		Log.d("LWP", "Deleting " + projectToEdit.projectName);
 		projectList.remove(projectToEdit);
 	}
 

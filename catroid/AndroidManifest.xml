@@ -64,10 +64,6 @@
             <meta-data android:name="android.service.wallpaper" 
                 android:resource="@xml/livewallpaper"/> 
         </service>
-        
-		<activity
-     		 android:name="org.catrobat.catroid.livewallpaper.ui.LiveWallpaperSettings" android:exported="true" > 
-		</activity>
 		
 		<activity
      		 android:name="org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity" android:exported="true"
