@@ -1,21 +1,23 @@
 package org.catrobat.catroid.livewallpaper.test.utils;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.Project;
-import org.catrobat.catroid.content.Script;
-import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.StartScript;
+import org.catrobat.catroid.io.StorageHandler;
+
+import android.content.Context;
 
 public class TestUtils {
 
 	
-	public static Project createEmptyProject(String projectName) {
-		Project project = new Project(null, projectName);
-		Sprite firstSprite = new Sprite("cat");
-		Script testScript = new StartScript(firstSprite);
+	public static Project createEmptyProjectWithoutSettingIt(Context context, String projectName) {
+		if (StorageHandler.getInstance().projectExists(projectName)) {
+			throw new IllegalArgumentException("Project with name '" + projectName + "' already exists!");
+		}
+		Project emptyProject = new Project(context, projectName);
+		emptyProject.setDeviceData(context);
+		StorageHandler.getInstance().saveProject(emptyProject);
+		ProjectManager.getInstance().setProject(emptyProject);
 
-		firstSprite.addScript(testScript);
-		project.addSprite(firstSprite);
-		
-		return project;
+		return emptyProject;
 	}
 }
