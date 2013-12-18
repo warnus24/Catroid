@@ -11,20 +11,24 @@ import com.jayway.android.robotium.solo.Solo;
 
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.R;
-import android.test.ActivityInstrumentationTestCase2;
+import android.app.Activity;
+import android.content.Intent;
+//import android.test.ActivityInstrumentationTestCase2;
+import android.test.SingleLaunchActivityTestCase;
 import android.util.Log;
 
 
 public class SettingsUITest extends
-		ActivityInstrumentationTestCase2<SelectProgramActivity> {
+		SingleLaunchActivityTestCase<SelectProgramActivity> {
 
 	private Solo solo;
 	private static String testProjectName = "Test project";
+	private Project testProject;
 	
 	private ProjectManager projectManager = ProjectManager.getInstance(); 
-	
+	private static String pkg = "org.catrobat.catroid.livewallpaper";
 	public SettingsUITest() {
-		super(SelectProgramActivity.class);
+		super(pkg,SelectProgramActivity.class);
 	}
 
 	protected void setUp() throws Exception {
@@ -43,24 +47,15 @@ public class SettingsUITest extends
 			}
 			ProjectManager.getInstance().setProject(defaultProject);
 		}
-		
-    	try{
-			TestUtils.createEmptyProjectWithoutSettingIt(getActivity().getApplicationContext()
-	    			, testProjectName);
-		}
-		catch(IllegalArgumentException e){
-			Log.d("LWP", "The test project was not created because it probably already exists");
-		}
-    	
-		
+		TestUtils.restartActivity(getActivity());
+		testProject = TestUtils.createEmptyProjectWithoutSettingIt(getActivity().getApplicationContext(), testProjectName);
 		LiveWallpaper lwp = new LiveWallpaper();
 		lwp.TEST = true; 
 		lwp.onCreate();
-		
-		
 	}
 
 	protected void tearDown() throws Exception {
+		StorageHandler.getInstance().deleteProject(testProject);
 		super.tearDown();
 	}
 	
@@ -106,7 +101,6 @@ public class SettingsUITest extends
     public void testWallpaperSelection()
     {
     	//assertEquals("The current project should be set to the standard project", solo.getString(R.string.default_project_name), projectManager.getCurrentProject().getName());
-
     	//solo.waitForText(testProjectName);
     	solo.clickOnText(testProjectName);
 		solo.sleep(200);
