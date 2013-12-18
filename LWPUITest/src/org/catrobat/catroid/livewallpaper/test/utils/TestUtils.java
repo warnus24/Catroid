@@ -16,7 +16,7 @@ public class TestUtils {
 		Project emptyProject = new Project(context, projectName);
 		emptyProject.setDeviceData(context);
 		StorageHandler.getInstance().saveProject(emptyProject);
-		ProjectManager.getInstance().setProject(emptyProject);
+		//ProjectManager.getInstance().setProject(emptyProject);
 
 		return emptyProject;
 	}
