@@ -47,14 +47,14 @@ Feature: Broadcast & Wait Blocking Behavior (like in Scratch)
   Scenario: A waiting BroadcastWait brick is unblocked via another BroadcastWait brick
     Given 'Object' has a Start script
     And this script has a BroadcastWait 'hello' brick
-    And this script has a Wait 100 milliseconds brick
+    And this script has a Wait 1 second brick
     And this script has a Print brick with '-S1-'
     Given 'Object' has a Start script
-    And this script has a Wait 200 milliseconds brick
+    And this script has a Wait 2 seconds brick
     And this script has a BroadcastWait 'hello' brick
     And this script has a Print brick with '-S2-'
     Given 'Object' has a When 'hello' script
-    And this script has a Wait 1000 milliseconds brick
+    And this script has a Wait 5 seconds brick
     And this script has a Print brick with '-W1-'
     When I start the program
     And I wait until the program has stopped
@@ -120,7 +120,7 @@ Feature: Broadcast & Wait Blocking Behavior (like in Scratch)
     Given 'Object' has a Start script
     And this script has a Repeat 2 times brick
     And this script has a Broadcast 'go' brick
-    And this script has a Wait 9 seconds brick
+    And this script has a Wait 6 seconds brick
     And this script has a Repeat end brick
     Given 'Object' has a When 'go' script
     And this script has a BroadcastWait 'hello' brick
@@ -133,8 +133,39 @@ Feature: Broadcast & Wait Blocking Behavior (like in Scratch)
     Given 'Object' has a When 'hello' script
     And this script has a Wait 1 second brick
     And this script has a Print brick with 'a'
-    And this script has a Wait 10 seconds brick
+    And this script has a Wait 5 seconds brick
     And this script has a Print brick with 'b'
     When I start the program
     And I wait until the program has stopped
     Then I should see the printed output 'acadabd'
+
+  Scenario: A BroadcastWait waits for two When scripts and gets interrupted by a Broadcast
+    Given 'Object' has a Start script
+    And this script has a Repeat 2 times brick
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Wait 6 seconds brick
+    And this script has a Print brick with 'c'
+    And this script has a Wait 1 second brick
+    And this script has a Repeat end brick
+    Given 'Object' has a Start script
+    And this script has a Wait 2 seconds brick
+    And this script has a Broadcast 'hello' brick
+    Given 'Object' has a When 'hello' script
+    And this script has a Print brick with 'a'
+    Given 'Object' has a When 'hello' script
+    And this script has a Wait 3 seconds brick
+    And this script has a Print brick with 'b'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'aabcabc'
+
+  Scenario: A BroadcastWait with no When script
+    Given 'Object' has a Start script
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with 'a'
+    Given 'Object' has a Start script
+    And this script has a Wait 200 milliseconds brick
+    And this script has a Print brick with 'b'
+    When I start the program
+    And I wait for 400 milliseconds
+    Then I should see the printed output 'ab'

@@ -310,7 +310,7 @@ public class ProgramSteps extends AndroidTestCase {
 	}
 
 	@And("^I wait for (\\d+) milliseconds?$")
-	public void i_wait_for_milliseconds(int milliseconds) {
+	public void I_wait_for_milliseconds(int milliseconds) {
 		Solo solo = (Solo) Cucumber.get(Cucumber.KEY_SOLO);
 		solo.sleep(milliseconds);
 	}
@@ -363,7 +363,7 @@ public class ProgramSteps extends AndroidTestCase {
 	}
 
 	@Then("^I should see no printed output$")
-	public void i_should_see_no_printed_output() throws IOException {
+	public void I_should_see_no_printed_output() throws IOException {
 		I_should_see_printed_output("");
 	}
 }

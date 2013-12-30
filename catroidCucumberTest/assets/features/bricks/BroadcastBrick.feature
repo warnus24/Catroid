@@ -34,7 +34,6 @@ Feature: Broadcast brick
       I am the Start script.
       """
     Given 'Object' has a When 'hello' script
-    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with
       """
       I am the When 'hello' script.
@@ -56,7 +55,6 @@ Feature: Broadcast brick
       I am the Start script.
       """
     Given 'Object' has a When 'hello' script
-    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with
       """
       I am the first When 'hello' script.
@@ -75,33 +73,3 @@ Feature: Broadcast brick
       I am the Start script.
       I am the second When 'hello' script.
       """
-
-  Scenario: Two When scripts simulate a forever loop
-    Given 'Object' has a Start script
-    And this script has a Broadcast 'message1' brick
-    Given 'Object' has a When 'message1' script
-    And this script has a Print brick with 'm1'
-    And this script has a Wait 2 second brick
-    And this script has a Broadcast 'message2' brick
-    Given 'Object' has a When 'message2' script
-    And this script has a Print brick with 'm2'
-    And this script has a Wait 2 second brick
-    And this script has a Broadcast 'message1' brick
-    When I start the program
-    And I wait for 3100 milliseconds
-    Then I should see the printed output 'm1m2m1'
-
-  Scenario: Deadlock with BroadcastWait bricks
-    Given 'Object' has a Start script
-    And this script has a Broadcast 'message1' brick
-    Given 'Object' has a When 'message1' script
-    And this script has a Print brick with 'm1'
-    And this script has a Wait 2 second brick
-    And this script has a BroadcastWait 'message2' brick
-    Given 'Object' has a When 'message2' script
-    And this script has a Print brick with 'm2'
-    And this script has a Wait 2 second brick
-    And this script has a BroadcastWait 'message1' brick
-    When I start the program
-    And I wait for 10000 milliseconds
-    Then I should see the printed output 'm1m2'

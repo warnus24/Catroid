@@ -30,7 +30,7 @@ Feature: Restart When script
     Given 'Object' has a Start script
     And this script has a Broadcast 'hello' brick
     Given 'Object' has a Start script
-    And this script has a Wait 100 milliseconds brick
+    And this script has a Wait 300 milliseconds brick
     And this script has a Broadcast 'hello' brick
     Given 'Object' has a When 'hello' script
     And this script has a Print brick with

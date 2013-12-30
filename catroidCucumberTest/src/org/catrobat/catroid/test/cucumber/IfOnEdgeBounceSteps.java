@@ -23,7 +23,6 @@
 package org.catrobat.catroid.test.cucumber;
 
 import android.test.AndroidTestCase;
-import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 
@@ -88,7 +87,6 @@ public class IfOnEdgeBounceSteps extends AndroidTestCase {
 		expectedDirections = new HashMap<Float, Float>();
 
 		if (border.equalsIgnoreCase("top")) {
-			Log.d("asdf", "top");
 			borderPositionVertical = TOP_BORDER_POSITION;
 			borderPositionHorizontal = 0;
 			bouncePositionVertical = BOUNCE_TOP_POSITION;
@@ -109,7 +107,6 @@ public class IfOnEdgeBounceSteps extends AndroidTestCase {
 		}
 
 		if (border.equalsIgnoreCase("bottom")) {
-			Log.d("asdf", "bottom");
 			borderPositionVertical = BOTTOM_BORDER_POSITION;
 			borderPositionHorizontal = 0;
 			bouncePositionVertical = BOUNCE_BOTTOM_POSITION;
@@ -130,7 +127,6 @@ public class IfOnEdgeBounceSteps extends AndroidTestCase {
 		}
 
 		if (border.equalsIgnoreCase("left")) {
-			Log.d("asdf", "left");
 			borderPositionVertical = 0;
 			borderPositionHorizontal = LEFT_BORDER_POSITION;
 			bouncePositionVertical = 0;
@@ -151,7 +147,6 @@ public class IfOnEdgeBounceSteps extends AndroidTestCase {
 		}
 
 		if (border.equalsIgnoreCase("right")) {
-			Log.d("asdf", "right");
 			borderPositionVertical = 0;
 			borderPositionHorizontal = RIGHT_BORDER_POSITION;
 			bouncePositionVertical = 0;
