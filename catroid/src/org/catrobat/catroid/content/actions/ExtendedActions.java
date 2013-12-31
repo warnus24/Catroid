@@ -31,7 +31,6 @@ import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.content.BroadcastEvent;
 import org.catrobat.catroid.content.BroadcastEvent.BroadcastType;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.bricks.BroadcastWaitBrick;
 import org.catrobat.catroid.content.bricks.SpeakBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.UserVariable;
@@ -48,15 +47,13 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static BroadcastAction broadcastFromWaiter(Sprite sprite, BroadcastWaitBrick broadcastWaitBrick,
-			String broadcastMessage) {
+	public static BroadcastAction broadcastFromWaiter(Sprite sprite, String broadcastMessage) {
 		BroadcastAction action = action(BroadcastAction.class);
 		BroadcastEvent event = new BroadcastEvent();
 		event.setSenderSprite(sprite);
 		event.setBroadcastMessage(broadcastMessage);
 		event.setRun(false);
 		event.setType(BroadcastType.broadcastWait);
-		event.setBroadcastWaitBrick(broadcastWaitBrick);
 		action.setBroadcastEvent(event);
 		return action;
 	}

@@ -65,5 +65,20 @@ public class BeforeAfterSteps extends ActivityInstrumentationTestCase2<MainMenuA
 		Log.d(CucumberInstrumentation.TAG, "after step");
 		solo.finishOpenedActivities();
 		ProjectManager.getInstance().deleteCurrentProject();
+		resetGlobalState();
+	}
+
+	private void resetGlobalState() {
+		Cucumber.put(Cucumber.KEY_SOLO, null);
+		Cucumber.put(Cucumber.KEY_PROJECT, null);
+		Cucumber.put(Cucumber.KEY_DEFAULT_BACKGROUND_NAME, "");
+		Cucumber.put(Cucumber.KEY_DEFAULT_PROJECT_NAME, "");
+		Cucumber.put(Cucumber.KEY_DEFAULT_SPRITE_NAME, "");
+		Cucumber.put(Cucumber.KEY_CURRENT_OBJECT, null);
+		Cucumber.put(Cucumber.KEY_CURRENT_SCRIPT, null);
+		Cucumber.put(Cucumber.KEY_START_TIME_NANO, 0);
+		Cucumber.put(Cucumber.KEY_STOP_TIME_NANO, 0);
+		Cucumber.put(Cucumber.KEY_LOOP_BEGIN_BRICK, null);
+		Cucumber.put(Cucumber.KEY_IF_LOGIC_BEGIN_BRICK, null);
 	}
 }

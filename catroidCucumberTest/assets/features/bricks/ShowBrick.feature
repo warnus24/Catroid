@@ -31,5 +31,5 @@ Feature: Show brick
     And 'Object' is not visible
     And this script has a show brick
     When I start the program
-    And I wait for 200 milliseconds
+    And I wait for at least 200 milliseconds
     Then I should see the Object

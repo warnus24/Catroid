@@ -226,7 +226,7 @@ public class BroadcastWaitBrick extends BrickBaseType implements BroadcastMessag
 
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.broadcastFromWaiter(sprite, this, broadcastMessage));
+		sequence.addAction(ExtendedActions.broadcastFromWaiter(sprite, broadcastMessage));
 		return null;
 	}
 }

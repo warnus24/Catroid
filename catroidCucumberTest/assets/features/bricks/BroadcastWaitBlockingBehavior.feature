@@ -28,6 +28,17 @@ Feature: Broadcast & Wait Blocking Behavior (like in Scratch)
     Given I have a Program
     And this program has an Object 'Object'
 
+  Scenario: A BroadcastWait with no When script
+    Given 'Object' has a Start script
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with 'a'
+    Given 'Object' has a Start script
+    And this script has a Wait 200 milliseconds brick
+    And this script has a Print brick with 'b'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'ab'
+
   Scenario: A waiting BroadcastWait brick is unblocked when the same broadcast message is present
     Given 'Object' has a Start script
     And this script has a BroadcastWait 'hello' brick
@@ -159,13 +170,116 @@ Feature: Broadcast & Wait Blocking Behavior (like in Scratch)
     And I wait until the program has stopped
     Then I should see the printed output 'aabcabc'
 
-  Scenario: A BroadcastWait with no When script
+  Scenario: Correct consecutive executions of one BroadcastWait brick
     Given 'Object' has a Start script
+    And this script has a Repeat 2 times brick
     And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with 'c'
+    And this script has a Repeat end brick
+    Given 'Object' has a When 'hello' script
     And this script has a Print brick with 'a'
-    Given 'Object' has a Start script
-    And this script has a Wait 200 milliseconds brick
+    And this script has a Wait 1 second brick
     And this script has a Print brick with 'b'
     When I start the program
-    And I wait for 400 milliseconds
-    Then I should see the printed output 'ab'
+    And I wait until the program has stopped
+    Then I should see the printed output 'abcabc'
+
+  Scenario: A BroadcastWait brick waits for a short and a long When script and then is executed again
+    Given 'Object' has a Start script
+    And this script has a Repeat 2 times brick
+    And this script has a Broadcast 'go' brick
+    And this script has a Wait 3 seconds brick
+    And this script has a Repeat end brick
+    Given 'Object' has a When 'go' script
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with 'c'
+    Given 'Object' has a When 'hello' script
+    And this script has a Print brick with 'a'
+    Given 'Object' has a When 'hello' script
+    And this script has a Wait 5 seconds brick
+    And this script has a Print brick with 'b'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'aabc'
+
+  Scenario: A BroadcastWait brick sends a message and a different Object contains the corresponding When script
+    Given 'Object' has a Start script
+    And this script has a Repeat 2 times brick
+    And this script has a Print brick with 'a'
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with 'd'
+    And this script has a Repeat end brick
+    Given this program has an Object 'Object2'
+    Given 'Object2' has a When 'hello' script
+    And this script has a Print brick with 'b'
+    And this script has a Wait 3 seconds brick
+    And this script has a Print brick with 'c'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'abcdabcd'
+
+  Scenario: A BroadcastWait brick waits for two When scripts
+    Given 'Object' has a Start script
+    And this script has a Print brick with 'a'
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with 'd'
+    Given 'Object' has a When 'hello' script
+    And this script has a Print brick with 'b'
+    Given 'Object' has a When 'hello' script
+    And this script has a Wait 300 milliseconds brick
+    And this script has a Print brick with 'c'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'abcd'
+
+  Scenario: A Broadcast Wait brick waits for two when scripts from two different objects
+    Given 'Object' has a Start script
+    And this script has a Repeat 2 times brick
+    And this script has a Print brick with 'a'
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with 'd'
+    And this script has a Repeat end brick
+    Given this program has an Object 'Object2'
+    Given 'Object2' has a When 'hello' script
+    And this script has a Print brick with 'b'
+    Given this program has an Object 'Object3'
+    Given 'Object3' has a When 'hello' script
+    And this script has a Wait 300 milliseconds brick
+    And this script has a Print brick with 'c'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'abcdabcd'
+
+  Scenario: A Broadcast is sent after a BroadcastWait has finished
+    Given 'Object' has a Start script
+    And this script has a Print brick with 'a'
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with 'b'
+    Given this program has an Object 'Object2'
+    Given 'Object2' has a Start script
+    And this script has a Wait 2 second brick
+    And this script has a Print brick with 'd'
+    And this script has a Broadcast 'hello' brick
+    Given this program has an Object 'Object3'
+    Given 'Object3' has a When 'hello' script
+    And this script has a Print brick with 'c'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'acbdc'
+
+  Scenario: A BroadcastWait is sent after a Broadcast has finished
+    Given 'Object' has a Start script
+    And this script has a Wait 2 second brick
+    And this script has a Print brick with 'a'
+    And this script has a BroadcastWait 'hello' brick
+    And this script has a Print brick with 'b'
+    Given this program has an Object 'Object2'
+    Given 'Object2' has a Start script
+    And this script has a Print brick with 'd'
+    And this script has a Broadcast 'hello' brick
+    Given this program has an Object 'Object3'
+    Given 'Object3' has a When 'hello' script
+    And this script has a Print brick with 'c'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'dcacb'

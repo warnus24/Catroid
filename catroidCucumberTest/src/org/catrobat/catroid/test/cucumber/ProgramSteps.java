@@ -309,8 +309,8 @@ public class ProgramSteps extends AndroidTestCase {
 		programHasFinished.tryAcquire(1, 60, TimeUnit.SECONDS);
 	}
 
-	@And("^I wait for (\\d+) milliseconds?$")
-	public void I_wait_for_milliseconds(int milliseconds) {
+	@And("^I wait for at least (\\d+) milliseconds?$")
+	public void I_wait_for_at_least_milliseconds(int milliseconds) {
 		Solo solo = (Solo) Cucumber.get(Cucumber.KEY_SOLO);
 		solo.sleep(milliseconds);
 	}

@@ -28,5 +28,5 @@ Feature: Check value of user variable
     Given 'Object' has a Start script
     And this script has a set 'myVariable1' to 5.3 brick
     When I start the program
-    And I wait for 100 milliseconds
+    And I wait for at least 100 milliseconds
     Then the variable 'myVariable1' should be equal 5.3

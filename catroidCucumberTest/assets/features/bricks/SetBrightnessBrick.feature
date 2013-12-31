@@ -30,7 +30,7 @@ Feature: Set brightness brick
     Given 'Object' has a Start script
     And this script has a Set brightness <brightness> brick
     When I start the program
-    And I wait for 200 milliseconds
+    And I wait for at least 200 milliseconds
     Then 'Object' should have brightness <expected>
 
     Examples:

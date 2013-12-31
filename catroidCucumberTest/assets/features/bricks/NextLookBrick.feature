@@ -32,7 +32,7 @@ Feature: Next look brick
     And this script has a Set look <firstLook> brick
     And this script has a Set next look brick
     When I start the program
-    And I wait for 200 milliseconds
+    And I wait for at least 200 milliseconds
     Then 'Object' should have the look <secondLook> set
 
     Examples:

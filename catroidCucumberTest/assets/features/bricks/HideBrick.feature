@@ -31,5 +31,5 @@ Feature: Hide brick
     And 'Object' is visible
     And this script has a hide brick
     When I start the program
-    And I wait for 200 milliseconds
+    And I wait for at least 200 milliseconds
     Then I should not see the Object
