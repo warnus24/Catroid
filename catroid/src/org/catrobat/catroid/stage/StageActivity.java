@@ -22,8 +22,12 @@
  */
 package org.catrobat.catroid.stage;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -32,6 +36,7 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
+import org.catrobat.catroid.nfc.NfcHandler;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 
 public class StageActivity extends AndroidApplication {
@@ -40,6 +45,10 @@ public class StageActivity extends AndroidApplication {
 	public static StageListener stageListener;
 	private boolean resizePossible;
 	private StageDialog stageDialog;
+
+	private PendingIntent pendingIntent;
+
+	private NfcAdapter nfcAdapter;
 
 	public static final int STAGE_ACTIVITY_FINISH = 7777;
 
@@ -53,6 +62,22 @@ public class StageActivity extends AndroidApplication {
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		calculateScreenSizes();
 		initialize(stageListener, true);
+		pendingIntent = PendingIntent.getActivity(this, 0,
+				new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
+		nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		Log.d(TAG, "onCreate()");
+
+		if (nfcAdapter == null) {
+			Log.d(TAG, "could not get nfc adapter :(");
+		}
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Log.d(TAG, "processIntent");
+		NfcHandler.getInstance().processIntent(intent);
 	}
 
 	@Override
@@ -72,22 +97,38 @@ public class StageActivity extends AndroidApplication {
 	public void onPause() {
 		SensorHandler.stopSensorListeners();
 		super.onPause();
+		if (nfcAdapter != null) {
+			Log.d(TAG, "onPause()disableForegroundDispatch()");
+			nfcAdapter.disableForegroundDispatch(this);
+		}
 	}
 
 	@Override
 	public void onResume() {
 		SensorHandler.startSensorListener(this);
 		super.onResume();
+		if (nfcAdapter != null) {
+			Log.d(TAG, "onResume()enableForegroundDispatch()");
+			nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
+		}
 	}
 
 	public void pause() {
 		SensorHandler.stopSensorListeners();
 		stageListener.menuPause();
+		if (nfcAdapter != null) {
+			Log.d(TAG, "onPause()disableForegroundDispatch()");
+			nfcAdapter.disableForegroundDispatch(this);
+		}
 	}
 
 	public void resume() {
 		stageListener.menuResume();
 		SensorHandler.startSensorListener(this);
+		if (nfcAdapter != null) {
+			Log.d(TAG, "onResume()enableForegroundDispatch()");
+			nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
+		}
 	}
 
 	public boolean getResizePossible() {

@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content;
 
+import android.util.Log;
+
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
@@ -108,7 +110,6 @@ public class Sprite implements Serializable, Cloneable {
 				BroadcastScript script = (BroadcastScript) s;
 				SequenceAction action = createBroadcastScriptActionSequence(script);
 				look.putBroadcastSequenceAction(script.getBroadcastMessage(), action);
-
 			}
 		}
 	}
@@ -184,6 +185,19 @@ public class Sprite implements Serializable, Cloneable {
 		SequenceAction sequence = ExtendedActions.sequence();
 		s.run(sequence);
 		return sequence;
+	}
+
+	public void createWhenNfcScriptAction() {
+		ParallelAction whenParallelAction = ExtendedActions.parallel();
+		for (Script s : scriptList) {
+			if (s instanceof WhenNfcScript) {
+				SequenceAction sequence = createActionSequence(s);
+				whenParallelAction.addAction(sequence);
+				Log.d("NFC", "whennfcscript found");
+			}
+		}
+		look.setWhenParallelAction(whenParallelAction);
+		look.addAction(whenParallelAction);
 	}
 
 	public void startScriptBroadcast(Script s, boolean overload) {

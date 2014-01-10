@@ -379,6 +379,8 @@
         <item quantity="one">"second "</item>
         <item quantity="other">"seconds "</item>
     </plurals>
+    
+    <string name="brick_when_nfc">When NFC</string>
 
     <string name="brick_broadcast_receive">When I receive</string>
     <string name="brick_broadcast">Broadcast</string>
