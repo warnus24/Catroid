@@ -41,7 +41,9 @@ import org.catrobat.catroid.formulaeditor.Sensors;
 import org.catrobat.catroid.test.utils.Reflection;
 
 public class RepeatActionTest extends InstrumentationTestCase {
+
 	private static final int REPEAT_TIMES = 4;
+	private static final String NOT_NUMERICAL_STRING = "NOT_NUMERICAL_STRING";
 
 	@Override
 	protected void setUp() throws Exception {
@@ -196,5 +198,53 @@ public class RepeatActionTest extends InstrumentationTestCase {
 		assertEquals("Executed the wrong number of times!", 0, executedCount);
 		assertEquals("Loop was executed although repeats were set to zero!", expectedDeltaY,
 				(int) testSprite.look.getYInUserInterfaceDimensionUnit());
+	}
+
+	public void testBrickWithValidStringFormula() {
+		Sprite testSprite = new Sprite("sprite");
+		Script testScript = new StartScript(testSprite);
+		Formula stringFormula = new Formula(String.valueOf(REPEAT_TIMES));
+		RepeatBrick repeatBrick = new RepeatBrick(testSprite, stringFormula);
+		LoopEndBrick loopEndBrick = new LoopEndBrick(testSprite, repeatBrick);
+		repeatBrick.setLoopEndBrick(loopEndBrick);
+
+		final float startValue = testSprite.look.getYInUserInterfaceDimensionUnit();
+		final int deltaY = 5;
+
+		testScript.addBrick(repeatBrick);
+		testScript.addBrick(new ChangeYByNBrick(testSprite, deltaY));
+		testScript.addBrick(loopEndBrick);
+		testSprite.addScript(testScript);
+		testSprite.createStartScriptActionSequence();
+
+		while (!testSprite.look.getAllActionsAreFinished()) {
+			testSprite.look.act(1.0f);
+		}
+		assertEquals("Executed the wrong number of times!", startValue + deltaY * REPEAT_TIMES,
+				testSprite.look.getYInUserInterfaceDimensionUnit());
+	}
+
+	public void testBrickWithInValidStringFormula() {
+		Sprite testSprite = new Sprite("sprite");
+		Script testScript = new StartScript(testSprite);
+		Formula stringFormula = new Formula(String.valueOf(NOT_NUMERICAL_STRING));
+		RepeatBrick repeatBrick = new RepeatBrick(testSprite, stringFormula);
+		LoopEndBrick loopEndBrick = new LoopEndBrick(testSprite, repeatBrick);
+		repeatBrick.setLoopEndBrick(loopEndBrick);
+
+		final float startValue = testSprite.look.getYInUserInterfaceDimensionUnit();
+		final int deltaY = 5;
+
+		testScript.addBrick(repeatBrick);
+		testScript.addBrick(new ChangeYByNBrick(testSprite, deltaY));
+		testScript.addBrick(loopEndBrick);
+		testSprite.addScript(testScript);
+		testSprite.createStartScriptActionSequence();
+
+		while (!testSprite.look.getAllActionsAreFinished()) {
+			testSprite.look.act(1.0f);
+		}
+		assertEquals("Executed the wrong number of times!", startValue,
+				testSprite.look.getYInUserInterfaceDimensionUnit());
 	}
 }
