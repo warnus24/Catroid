@@ -64,11 +64,6 @@ public class ChangeVariableBrick extends BrickBaseType implements OnClickListene
 	private Formula variableFormula;
 	private transient AdapterView<?> adapterView;
 
-	public ChangeVariableBrick(Sprite sprite, Formula variableFormula) {
-		this.sprite = sprite;
-		this.variableFormula = variableFormula;
-	}
-
 	public ChangeVariableBrick(Sprite sprite, Formula variableFormula, UserVariable userVariable) {
 		this.sprite = sprite;
 		this.variableFormula = variableFormula;
