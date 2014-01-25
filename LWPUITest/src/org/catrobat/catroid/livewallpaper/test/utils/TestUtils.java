@@ -2,7 +2,7 @@ package org.catrobat.catroid.livewallpaper.test.utils;
 
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.StorageHandler;
-import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
+
 
 import android.app.Activity;
 import android.content.Context;
