@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ProjectData;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.common.StandardProjectHandler;
@@ -29,7 +30,6 @@ import android.view.WindowManager;
 public class SettingsUITest extends
 SingleLaunchActivityTestCase<SelectProgramActivity> {
 
-	private static final int ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX = 0;
 	private static final String TEST_PROJECT_NAME = "Test project";
 	private static final String PACKAGE = "org.catrobat.catroid.livewallpaper"; 
 	private Solo solo;
@@ -85,6 +85,7 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
     	assertTrue("About pocket code version not found", solo.searchText(Utils.getVersionName(getActivity().getApplicationContext())));
     	solo.goBack();
     }
+    
     
     public void testWallpaperSelection()
     {
