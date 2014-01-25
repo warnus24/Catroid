@@ -17,11 +17,12 @@ import com.jayway.android.robotium.solo.Solo;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.R;
 import org.catrobat.catroid.utils.Utils;
+
+import android.content.Context;
 import android.test.SingleLaunchActivityTestCase;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent.DispatcherState;
+
 import android.view.WindowManager;
 
 
@@ -45,7 +46,8 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
 		super.setUp();
 		solo = new Solo(getInstrumentation(),getActivity());
 		DisplayMetrics disp = new DisplayMetrics();
-		((WindowManager) getActivity().getSystemService(getActivity().getApplicationContext().WINDOW_SERVICE)).getDefaultDisplay().getMetrics(disp);
+		getActivity().getApplicationContext();
+		((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(disp);
 		ScreenValues.SCREEN_HEIGHT = disp.heightPixels;
 		ScreenValues.SCREEN_WIDTH = disp.widthPixels;
 		
@@ -106,27 +108,9 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
      	
     	solo.clickOnActionBarItem(R.id.delete);
     	solo.clickOnText(TEST_PROJECT_NAME);
-    	solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
-    	
-    	assertTrue("The title of the confirmation dialog for deleting a project was not shown", 
-         		solo.searchText(solo.getString(R.string.dialog_confirm_delete_program_title)));
-    	
-        assertTrue("The content of the confirmation dialog for deleting a project was not shown", 
-         		solo.searchText(solo.getString(R.string.dialog_confirm_delete_program_message)));
-        
-        solo.clickOnText(solo.getString(R.string.no));
-        projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
-        assertEquals("The program count does not match the initial program count", initialProgramCount, projectList.size());
-        
-        solo.clickOnActionBarItem(R.id.delete);
-    	solo.clickOnText(TEST_PROJECT_NAME);
-    	//solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
-    	float width = 0.9f * ScreenValues.SCREEN_WIDTH;
-    	float height = 0.7f * ScreenValues.SCREEN_HEIGHT;
-    	
 
-		Log.v("LWP", String.valueOf(width) + " " + String.valueOf(height));
-    	solo.clickOnScreen(width, height);
+    	clickOnOkayActionBarItem(solo);
+    	
     	solo.clickOnText(solo.getString(R.string.yes));
     	assertFalse("The project was not deleted", solo.searchText(TEST_PROJECT_NAME));
     	
@@ -139,7 +123,7 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
     	assertEquals("The current project should be set to the standard project", solo.getString(R.string.default_project_name), projectManager.getCurrentProject().getName());
     	solo.clickOnActionBarItem(R.id.delete);
     	solo.clickOnText(solo.getString(R.string.default_project_name));
-    	solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
+    	clickOnOkayActionBarItem(solo);
     	assertTrue("The error dialog was not shown", solo.searchText(solo.getString(R.string.lwp_error_delete_current_program)));
     }
     
@@ -151,7 +135,7 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
      	solo.clickOnActionBarItem(R.id.delete);
     	String selectAll = solo.getString(R.string.select_all).toUpperCase(Locale.getDefault());
         solo.clickOnText(selectAll);
-        solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
+        clickOnOkayActionBarItem(solo);
         
         assertTrue("The error dialog for deleting all projects but the current one was not shown", 
         		solo.searchText(solo.getString(R.string.lwp_error_delete_multiple_program)));
@@ -168,13 +152,20 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
         
         solo.clickOnActionBarItem(R.id.delete);
         solo.clickOnText(selectAll);
-        solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
+        clickOnOkayActionBarItem(solo);
         solo.clickOnText(solo.getString(R.string.yes));
         solo.clickOnText(solo.getString(R.string.yes));
         
         assertTrue("The program count should be 1 after delete all projects but the current one", projectList.size() == 1);
     	
     }
-
+    
+    private void clickOnOkayActionBarItem(Solo solo){
+    	
+    	float width = 0.09f * ScreenValues.SCREEN_WIDTH;
+    	float height = 0.07f * ScreenValues.SCREEN_HEIGHT;
+    	
+    	solo.clickOnScreen(width, height);
+    }
 	
 }
