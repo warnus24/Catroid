@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.ProjectData;
+import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.common.StandardProjectHandler;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.StorageHandler;
@@ -17,7 +18,11 @@ import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.R;
 import org.catrobat.catroid.utils.Utils;
 import android.test.SingleLaunchActivityTestCase;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.KeyEvent.DispatcherState;
+import android.view.WindowManager;
 
 
 public class SettingsUITest extends
@@ -38,9 +43,13 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		
 		solo = new Solo(getInstrumentation(),getActivity());
-			
+		DisplayMetrics disp = new DisplayMetrics();
+		((WindowManager) getActivity().getSystemService(getActivity().getApplicationContext().WINDOW_SERVICE)).getDefaultDisplay().getMetrics(disp);
+		ScreenValues.SCREEN_HEIGHT = disp.heightPixels;
+		ScreenValues.SCREEN_WIDTH = disp.widthPixels;
+		
+			Log.v("LWP", String.valueOf(ScreenValues.SCREEN_HEIGHT + " " + String.valueOf(ScreenValues.SCREEN_WIDTH)));
 		if(projectManager.getCurrentProject() == null || projectManager.getCurrentProject().getName()!= solo.getString(R.string.default_project_name)){
 			Project defaultProject; 
 			try{
@@ -111,7 +120,13 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
         
         solo.clickOnActionBarItem(R.id.delete);
     	solo.clickOnText(TEST_PROJECT_NAME);
-    	solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
+    	//solo.clickOnImage(ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX);
+    	float width = 0.9f * ScreenValues.SCREEN_WIDTH;
+    	float height = 0.7f * ScreenValues.SCREEN_HEIGHT;
+    	
+
+		Log.v("LWP", String.valueOf(width) + " " + String.valueOf(height));
+    	solo.clickOnScreen(width, height);
     	solo.clickOnText(solo.getString(R.string.yes));
     	assertFalse("The project was not deleted", solo.searchText(TEST_PROJECT_NAME));
     	
