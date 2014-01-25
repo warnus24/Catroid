@@ -79,6 +79,7 @@ public class SelectProgramActivity extends BaseActivity {
 	private void setUpActionBar() {
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setTitle(R.string.lwp_select_program);
+		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setHomeButtonEnabled(false);
 	}
 
