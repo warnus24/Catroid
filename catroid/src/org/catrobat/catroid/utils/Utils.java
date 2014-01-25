@@ -35,11 +35,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
@@ -491,6 +493,18 @@ public final class Utils {
 			return selectAllView;
 		}
 		return null;
+	}
+
+	public static boolean checkIfPocketCodeInstalled(Intent pocketCodeIntent, final Activity activity) {
+		List<ResolveInfo> packageList = activity.getPackageManager().queryIntentActivities(pocketCodeIntent,
+				PackageManager.MATCH_DEFAULT_ONLY);
+
+		if (packageList.size() <= 0) {
+			return false;
+		} else {
+			return true;
+		}
+
 	}
 
 }
