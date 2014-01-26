@@ -77,6 +77,7 @@ public class SelectProgramActivity extends BaseActivity {
 			case R.id.about: {
 				AboutPocketCodeDialog aboutPocketCodeDialog = new AboutPocketCodeDialog(this);
 				aboutPocketCodeDialog.show();
+				break;
 			}
 			case R.id.lwp_new: {
 				Intent pocketCodeIntent = new Intent("android.intent.action.MAIN");
@@ -92,6 +93,7 @@ public class SelectProgramActivity extends BaseActivity {
 					displayDownloadPocketCodeDialog();
 				}
 
+				break;
 			}
 		}
 		return super.onOptionsItemSelected(item);
