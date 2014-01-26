@@ -416,5 +416,6 @@
  	<string name="delete">Delete</string>
  	<string name="lwp_new">New</string>
  	<string name="lwp_about">About</string>
+ 	<string name="lwp_enable_sound">Enable sounds</string>
 
 </resources>

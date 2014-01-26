@@ -161,6 +161,12 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
     	
     }
     
+    public void testEnableSoundCheckBox(){
+    	solo.clickOnText(TEST_PROJECT_NAME);
+    	assertTrue("The set program dialog was not found", solo.searchText(solo.getString(R.string.lwp_confirm_set_program_message)));
+    	assertTrue("The enable sound text was not found", solo.searchText(solo.getString(R.string.lwp_enable_sound)));
+    }
+    
     private void clickOnOkayActionBarItem(Solo solo){
     	
     	float width = 0.09f * ScreenValues.SCREEN_WIDTH;
