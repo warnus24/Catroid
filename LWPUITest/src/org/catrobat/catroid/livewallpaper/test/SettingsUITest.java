@@ -157,7 +157,10 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
         solo.clickOnText(solo.getString(R.string.yes));
         solo.clickOnText(solo.getString(R.string.yes));
         
-        assertTrue("The program count should be 1 after delete all projects but the current one", projectList.size() == 1);
+        solo.sleep(2000);
+        selectProgramActvity = (SelectProgramActivity) solo.getCurrentActivity();
+        projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
+        assertTrue("The program count should be 1 after delete all projects but the current one but was " + projectList.size(), projectList.size() == 1);
     	
     }
     
