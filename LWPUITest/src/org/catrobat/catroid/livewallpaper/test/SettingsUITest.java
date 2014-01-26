@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.catrobat.catroid.ProjectManager;
-import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ProjectData;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.common.StandardProjectHandler;
@@ -163,8 +162,8 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
     
     private void clickOnOkayActionBarItem(Solo solo){
     	
-    	float width = 0.09f * ScreenValues.SCREEN_WIDTH;
-    	float height = 0.07f * ScreenValues.SCREEN_HEIGHT;
+    	float width = (9.0f * (float)ScreenValues.SCREEN_WIDTH)/100.0f;
+    	float height = (7.0f * (float)ScreenValues.SCREEN_HEIGHT)/100.0f;
     	
     	solo.clickOnScreen(width, height);
     }
