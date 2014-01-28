@@ -34,8 +34,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CheckForAssertionsTest extends TestCase {
-	private static final String[] DIRECTORIES = {"../catroidTest", "../catroidCucumberTest",};
-	private static final String[] IGNORED_FILES = {"MockGalleryActivity.java", "UiTestUtils.java",
+
+	private static final String[] DIRECTORIES = { "../catroid/src/androidTest", "../catroidCucumberTest", };
+
+	private static final String[] IGNORED_FILES = { "MockGalleryActivity.java", "UiTestUtils.java",
 			"SimulatedSensorManager.java", "SimulatedSoundRecorder.java", "TestUtils.java",
 			"MockPaintroidActivity.java", "TestMainMenuActivity.java", "TestErrorListenerInterface.java",
 			"XmlTestUtils.java", "MockSoundActivity.java", "Reflection.java",

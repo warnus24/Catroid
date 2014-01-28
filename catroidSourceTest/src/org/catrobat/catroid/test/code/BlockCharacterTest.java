@@ -34,10 +34,11 @@ import java.util.List;
 
 public class BlockCharacterTest extends TestCase {
 
-	private static final String[] DIRECTORIES = {"../catroidTest", "../catroid", "../catroidSourceTest",
-			"../catroidCucumberTest"};
-	private String errorMessages;
-	private boolean errorFound;
+	private static final String[] DIRECTORIES = {"../catroid", "../catroidSourceTest",
+			"../catroidCucumberTest" };
+
+        private String errorMessages;
+        private boolean errorFound;
 
 	private void checkFileForBlockCharacters(File file) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(file));

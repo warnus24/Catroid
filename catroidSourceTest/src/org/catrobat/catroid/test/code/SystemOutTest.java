@@ -37,7 +37,7 @@ public class SystemOutTest extends TestCase {
 	private String errorMessages;
 	private boolean errorFound;
 
-	private static final String[] SYSTEM_OUT_DIRECTORIES = { "../catroidTest", "../catroid", "../catroidCucumberTest" };
+	private static final String[] SYSTEM_OUT_DIRECTORIES = { "../catroid", "../catroidCucumberTest" };
 	private static final String[] STACK_TRACE_DIRECTORIES = { "../catroid", "../catroidCucumberTest" };
 	private static final String SYSTEM_OUT = "System.out";
 	private static final String PRINT_STACK_TRACE = ".printStackTrace()";
