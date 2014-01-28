@@ -22,16 +22,9 @@
  */
 package org.catrobat.catroid.physics.shapebuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.catrobat.catroid.common.LookData;
-import org.catrobat.catroid.physics.PhysicsWorldConverter;
 
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.math.EarClippingTriangulator;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.vividsolutions.jts.util.GeometricShapeFactory;
 
@@ -44,35 +37,6 @@ public class PhysicsShapeBuilderJTS implements PhysicsShapeBuilderStrategy {
 		int height = pixmap.getHeight();
 		GeometricShapeFactory gf = new GeometricShapeFactory();
 
-		List<Vector2> s = ImageProcessor.getShape(lookData.getPixmap());
-		//		List<Vector2> vec2 = new ArrayList<Vector2>();
-		EarClippingTriangulator triangulator = new EarClippingTriangulator();
-		//		for (Pixel p : s) {
-		//			Vector2 vec = new Vector2(p.x, p.y);
-		//			vec2.add(vec);
-		//			//			pixmap.drawPixel(p.x, p.y, Color.RED);
-		//		}
-		List<Vector2> triangles = triangulator.computeTriangles(s);
-		List<Vector2> convertedTriangles = new ArrayList<Vector2>();
-		List<Shape> shapes = new ArrayList<Shape>();
-
-		for (Vector2 triangle : triangles) {
-			triangle.x -= width / 2;
-			triangle.y = height - triangle.y - height / 2;
-			triangle = PhysicsWorldConverter.vecCatToBox2d(triangle);
-			convertedTriangles.add(triangle);
-		}
-
-		for (int i = 2; i < convertedTriangles.size(); i += 3) {
-			PolygonShape currentShape = new PolygonShape();
-			Vector2 a = convertedTriangles.get(i - 2);
-			Vector2 b = convertedTriangles.get(i - 1);
-			Vector2 c = convertedTriangles.get(i);
-			Vector2[] triangle = { a, b, c };
-			currentShape.set(triangle);
-			shapes.add(currentShape);
-		}
-
-		return shapes.toArray(new Shape[shapes.size()]);
+		return ImageProcessor.getShape(lookData.getPixmap());
 	}
 }

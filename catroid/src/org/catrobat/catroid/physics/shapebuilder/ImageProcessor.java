@@ -25,8 +25,17 @@ package org.catrobat.catroid.physics.shapebuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.catrobat.catroid.physics.PhysicsWorldConverter;
+import org.catrobat.catroid.physics.shapebuilder.polygondecomposition.PolygonDecomposer2;
+
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
 
 public class ImageProcessor {
 
@@ -34,7 +43,7 @@ public class ImageProcessor {
 	private static List<Vector2> resultingPoints = new ArrayList<Vector2>();
 	private static Pixmap pixmap;
 
-	public static List<Vector2> getShape(Pixmap pixmap) {
+	public static Shape[] getShape(Pixmap pixmap) {
 		points = new ArrayList<Pixel>();
 		ImageProcessor.pixmap = pixmap;
 		proceed();
@@ -44,7 +53,54 @@ public class ImageProcessor {
 			resultingPoints.add(toVec2);
 		}
 		resultingPoints = simplify(0.2f, 5);
-		return resultingPoints;
+		toCatroidCoordinates();
+		return divideShape();
+	}
+
+	private static void toCatroidCoordinates() {
+		List<Vector2> result = new ArrayList<Vector2>();
+		for (Vector2 point : resultingPoints) {
+			point.x -= pixmap.getWidth() / 2;
+			point.y = pixmap.getHeight() - point.y - pixmap.getHeight() / 2;
+			point = PhysicsWorldConverter.vecCatToBox2d(point);
+			result.add(point);
+		}
+		resultingPoints = new ArrayList<Vector2>(result);
+	}
+
+	private static Shape[] divideShape() {
+		Coordinate[] coords = new Coordinate[resultingPoints.size()];
+		for (int i = 0; i < resultingPoints.size(); i++) {
+			Vector2 vec = resultingPoints.get(i);
+			coords[i] = new Coordinate(vec.x, vec.y);
+		}
+
+		GeometryFactory fact = new GeometryFactory();
+
+		LinearRing ring = new GeometryFactory().createLinearRing(coords);
+		Polygon loadedPolygon = new Polygon(ring, null, fact);
+
+		List<Polygon> resultPolys = new ArrayList<Polygon>();
+
+		PolygonDecomposer2 decomposer = new PolygonDecomposer2();
+		decomposer.decompose(loadedPolygon, resultPolys);
+
+		//shovel that to vectors
+		List<Shape> shapes = new ArrayList<Shape>();
+		for (Polygon poly : resultPolys) {
+			PolygonShape currentShape = new PolygonShape();
+			Coordinate[] actualCoords = poly.getCoordinates();
+
+			Vector2[] vec = new Vector2[actualCoords.length];
+			for (int i = 0; i < actualCoords.length; i++) {
+				vec[i] = new Vector2((float) actualCoords[i].x, (float) actualCoords[i].y);
+			}
+
+			currentShape.set(shapes.toArray(new Vector2[shapes.size()]));
+			shapes.add(currentShape);
+		}
+
+		return shapes.toArray(new Shape[shapes.size()]);
 	}
 
 	public static int proceed() {
@@ -228,4 +284,5 @@ public class ImageProcessor {
 	private static float sq(float f1) {
 		return f1 * f1;
 	}
+
 }
