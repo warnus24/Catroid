@@ -102,12 +102,6 @@ public class ActionFactory extends Actions {
 		return action;
 	}
 
-	public Action createClearGraphicEffectAction(Sprite sprite) {
-		ClearGraphicEffectAction action = action(ClearGraphicEffectAction.class);
-		action.setSprite(sprite);
-		return action;
-	}
-
 	public Action createBroadcastAction(Sprite sprite, String broadcastMessage) {
 		BroadcastAction action = Actions.action(BroadcastAction.class);
 		BroadcastEvent event = new BroadcastEvent();
@@ -177,7 +171,7 @@ public class ActionFactory extends Actions {
 		return action;
 	}
 
-	public Action createClearGraphicEffect(Sprite sprite) {
+	public Action createClearGraphicEffectAction(Sprite sprite) {
 		ClearGraphicEffectAction action = Actions.action(ClearGraphicEffectAction.class);
 		action.setSprite(sprite);
 		return action;
@@ -411,7 +405,7 @@ public class ActionFactory extends Actions {
 		return action;
 	}
 
-	public Action createDelayAction(Sprite sprite, Formula delay) {
+	public WaitAction createDelayAction(Sprite sprite, Formula delay) {
 		WaitAction action = Actions.action(WaitAction.class);
 		action.setSprite(sprite);
 		action.setDelay(delay);
