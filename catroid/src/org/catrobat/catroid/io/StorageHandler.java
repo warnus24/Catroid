@@ -133,6 +133,7 @@ public final class StorageHandler {
 	private XStream xstream;
 
 	private File backPackSoundDirectory;
+	private FileInputStream fileInputStream;
 
 	private Lock loadSaveLock = new ReentrantLock();
 
@@ -244,13 +245,34 @@ public final class StorageHandler {
 		loadSaveLock.lock();
 		try {
 			File projectCodeFile = new File(buildProjectPath(projectName), PROJECTCODE_NAME);
-			return (Project) xstream.fromXML(new FileInputStream(projectCodeFile));
+			fileInputStream = new FileInputStream(projectCodeFile);
+			return (Project) xstream.fromXML(fileInputStream);
 		} catch (Exception exception) {
 			Log.e(TAG, "Loading project " + projectName + " failed.", exception);
 			return null;
 		} finally {
+			if (fileInputStream != null) {
+				try {
+					fileInputStream.close();
+				} catch (IOException ioException) {
+					Log.e(TAG, "can't close fileStream.", ioException);
+				}
+			}
 			loadSaveLock.unlock();
 		}
+	}
+
+	public boolean cancelLoadProject()
+	{
+		if (fileInputStream !=null){
+			try {
+				fileInputStream.close();
+				return true;
+			} catch (IOException ioException) {
+				Log.e(TAG, "can't close fileStream.", ioException);
+			}
+		}
+		return false;
 	}
 
 	public boolean saveProject(Project project) {
@@ -435,6 +457,33 @@ public final class StorageHandler {
 		} else {
 			File outputFile = new File(buildPath(imageDirectory.getAbsolutePath(), inputFile.getName()));
 			return copyAndResizeImage(outputFile, inputFile, imageDirectory);
+		}
+	}
+
+	public File makeTempImageCopy(String inputFilePath) throws IOException {
+		File tempDirectory = new File(Constants.TMP_PATH);
+
+		File inputFile = new File(inputFilePath);
+		if (!inputFile.exists() || !inputFile.canRead()) {
+			return null;
+		}
+
+		File outputFileDirectory = new File(tempDirectory.getAbsolutePath());
+		if (outputFileDirectory.exists() == false) {
+			outputFileDirectory.mkdirs();
+		}
+
+		File outputFile = new File(Constants.TMP_IMAGE_PATH);
+
+		File copiedFile = UtilFile.copyFile(outputFile, inputFile, tempDirectory);
+
+		return copiedFile;
+	}
+
+	public void deletTempImageCopy() {
+		File temporaryPictureFileInPocketPaint = new File(Constants.TMP_IMAGE_PATH);
+		if (temporaryPictureFileInPocketPaint.exists()) {
+			temporaryPictureFileInPocketPaint.delete();
 		}
 	}
 
