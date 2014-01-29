@@ -503,5 +503,4 @@ public final class Utils {
 			selectAllActionModeButton.setVisibility(View.GONE);
 		}
 	}
-
 }
