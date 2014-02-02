@@ -89,7 +89,10 @@ android {
             assets.srcDirs = ['catroidTest/assets']
 
             java.exclude 'org/catrobat/catroid/uitest/**'
-            java.exclude file('testexclusions.txt').readLines()
+            if(file('testexclusions.txt').exists()){
+                java.exclude file('testexclusions.txt').readLines()
+            }
+
         }
 
     }
