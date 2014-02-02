@@ -64,6 +64,7 @@ public final class StatusBarNotificationManager {
 		Intent uploadIntent = new Intent(context, MainMenuActivity.class);
 		uploadIntent.setAction(Intent.ACTION_MAIN);
 		uploadIntent = uploadIntent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+		//initial issue#51
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, notificationId, uploadIntent,
 				PendingIntent.FLAG_CANCEL_CURRENT);
 
