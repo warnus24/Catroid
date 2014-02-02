@@ -87,6 +87,9 @@ android {
             renderscript.srcDirs = ['catroidTest/src']
             res.srcDirs = ['catroidTest/res']
             assets.srcDirs = ['catroidTest/assets']
+
+            java.exclude 'org/catrobat/catroid/uitest/**'
+
         }
 
     }
