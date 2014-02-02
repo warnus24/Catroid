@@ -629,6 +629,7 @@ public final class StandardProjectHandler {
 		ballBroadcastScript2.addBrick(new PlaceAtBrick( -100, 300));
 		ballBroadcastScript2.addBrick(new SetVelocityBrick( new Vector2()));
 		SetLookBrick ballSetLookBrick2 = new SetLookBrick();
+
 		ballSetLookBrick2.setLook(ball2.getLookDataList().get(0));
 		ballBroadcastScript2.addBrick(ballSetLookBrick);
 		ball2.addScript(ballBroadcastScript2);
@@ -646,7 +647,7 @@ public final class StandardProjectHandler {
 		String ballBroadcastMessage3 = "restart ball3";
 		BroadcastBrick ballBroadcastBrick3 = new BroadcastBrick( ballBroadcastMessage3);
 		ballStartScript3.addBrick(ballBroadcastBrick3);
-		ball3.addScript(ballStartScript3);
+		ball3.addScript(ballStartScript);
 
 		BroadcastScript ballBroadcastScript3 = new BroadcastScript( ballBroadcastMessage3);
 		ballBroadcastScript3.addBrick(new PlaceAtBrick( 0, 300));
