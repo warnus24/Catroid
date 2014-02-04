@@ -386,6 +386,8 @@
     <string name="brick_note">Note</string>
     <string name="brick_forever">Forever</string>
     <string name="brick_repeat">Repeat</string>
+    <string name="brick_arduino_send">Send to Arduino</string>
+    
     <string name="dialog_edit_note_title">Edit note</string>
     <string name="dialog_edit_note_text">Note:</string>
 
@@ -404,6 +406,7 @@
     <string name="brick_variable_spinner_create_new_variable">New…</string>
     <string name="brick_note_default_value">"add comment here…"</string>
     <string name="brick_broadcast_default_value">"message 1"</string>
+    
     <!--  -->
 
 
@@ -582,6 +585,31 @@
         <item quantity="one">Variable selected!</item>
         <item quantity="other">Variables selected!</item>
     </plurals>
+    <!--  -->
+    
+    <!-- Arduino Strings -->
+    <string name="pin_0">0</string>
+    <string name="pin_1">1</string>
+	<string name="pin_2">2</string>
+	<string name="pin_3">3</string>
+	<string name="pin_4">4</string>
+	<string name="pin_5">5</string>
+	<string name="pin_6">6</string>
+	<string name="pin_7">7</string>
+	<string name="pin_8">8</string>
+	<string name="pin_9">9</string>
+	<string name="pin_10">10</string>
+	<string name="pin_11">11</string>
+	<string name="pin_12">12</string>
+	<string name="pin_13">13</string>
+	<string name="high">H</string>
+	<string name="low">L</string>
+	
+	<string name="brick_arduino_data_in_ok">OK</string>
+    <string name="brick_arduino_data_out_ok">OK</string>
+    <string name="brick_select_value">Send value and pin to Arduino</string>
+    <string name="brick_arduino_received_data">Receive data form Arduino</string>
+    
     <!--  -->
 
 </resources>

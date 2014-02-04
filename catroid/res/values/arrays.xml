@@ -45,4 +45,27 @@
         <item>@string/add_look_draw_new_image</item>
     </string-array>
 
+    <!-- Arduino pins spinner -->
+    <string-array name="arduino_pin_chooser">
+        <item>@string/pin_0</item>
+        <item>@string/pin_1</item>
+        <item>@string/pin_2</item>
+        <item>@string/pin_3</item>
+        <item>@string/pin_4</item>
+        <item>@string/pin_5</item>
+        <item>@string/pin_6</item>
+        <item>@string/pin_7</item>
+        <item>@string/pin_8</item>
+        <item>@string/pin_9</item>
+        <item>@string/pin_10</item>
+        <item>@string/pin_11</item>
+        <item>@string/pin_12</item>
+        <item>@string/pin_13</item>
+    </string-array>
+    
+    <!-- Arduino values spinner -->
+    <string-array name="arduino_value_chooser">
+        <item>@string/high</item>
+        <item>@string/low</item>
+    </string-array>
 </resources>
