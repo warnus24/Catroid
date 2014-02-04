@@ -192,11 +192,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
 				}
 
-				//				if (position == 13) {
-				//					pinNumberLowerByte = '1';
-				//					pinNumberHigherByte = '3';
-				//				}
-
 				adapterView = parent;
 			}
 
@@ -210,11 +205,17 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (position == 0) {
-					pinValue = 'L';
-					sendDataViaBluetooth(); //sends data, but brick isn't implemented into PC correctly
-				} else {
 					pinValue = 'H';
-					sendDataViaBluetooth();
+					ArduinoSendAction.initBluetoothConnection();
+					BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+					ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
+							pinNumberHigherByte);
+				} else {
+					pinValue = 'L';
+					ArduinoSendAction.initBluetoothConnection();
+					BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+					ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
+							pinNumberHigherByte);
 				}
 
 				adapterView = parent;
@@ -224,10 +225,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
-
-		//		BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
-		//		ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
-		//		ArduinoSendAction.initBluetoothConnection();
 
 		return view;
 	}

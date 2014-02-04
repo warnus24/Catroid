@@ -114,7 +114,7 @@ public class ArduinoSendAction extends Action {
 			return -4;
 		}
 
-		bluetoothSocket = tmpSocket; //nullpointer
+		bluetoothSocket = tmpSocket;
 		bluetoothAdapter.cancelDiscovery();
 
 		isBluetoothinitialized = true;
@@ -162,11 +162,11 @@ public class ArduinoSendAction extends Action {
 			outputBluetoothSocket.connect();
 			ERROR_OK = 2;
 		} catch (IOException e) {
-			try {
-				outputBluetoothSocket.close();
-			} catch (IOException e1) {
-				return -5;
-			}
+			//			try {
+			//				outputBluetoothSocket.close();
+			//			} catch (IOException e1) {
+			//				return -5;
+			//			}
 		}
 
 		try {
@@ -179,12 +179,18 @@ public class ArduinoSendAction extends Action {
 		//send data here via outputStream
 
 		try {
-			//			bluetoothOutputStream.write(pinNumberLowerByte);
-			//			bluetoothOutputStream.write(pinNumberHigherByte);
+			bluetoothOutputStream.write(pinNumberLowerByte);
+			bluetoothOutputStream.write(pinNumberHigherByte);
 			bluetoothOutputStream.write(pinValue);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+
+		try {
+			outputBluetoothSocket.close();
+		} catch (IOException e1) {
+			return -5;
 		}
 
 		return ERROR_OK;
