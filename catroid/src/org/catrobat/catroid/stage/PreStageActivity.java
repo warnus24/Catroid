@@ -393,7 +393,7 @@ public class PreStageActivity extends Activity {
 						resourceInitialized();
 						break;
 					case LegoNXTBtCommunicator.STATE_CONNECTERROR:
-						Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_SHORT).show();
+						Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_LONG).show();
 						connectingProgressDialog.dismiss();
 						legoNXT.destroyCommunicator();
 						legoNXT = null;
@@ -418,7 +418,9 @@ public class PreStageActivity extends Activity {
 					case RobotAlbertBtCommunicator.STATE_CONNECTERROR:
 						Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_SHORT).show();
 						connectingProgressDialog.dismiss();
-						robotAlbert.destroyCommunicator(); //exception thrown when program exit
+						if (robotAlbert != null) {
+							robotAlbert.destroyCommunicator(); //exception thrown when program exit
+						}
 						robotAlbert = null;
 						if (autoConnect) {
 							String waiting_text = getResources()
