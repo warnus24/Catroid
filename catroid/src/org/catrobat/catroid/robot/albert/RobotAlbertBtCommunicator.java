@@ -107,14 +107,19 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 				receiveMessage();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				Log.d("RobotAlbertBtComm", "Exception in run:receiveMessage occured: " + e.toString());
+				Log.d("RobotAlbertBtComm", "IOException in run:receiveMessage occured: " + e.toString());
 				//Log.d("Test", e.getMessage());
 				//This error occurs if robot albert is suddenly switched of
-				if (e.getMessage().equalsIgnoreCase("Software caused connection abort")) {
-					sendState(STATE_CONNECTERROR);
-					connected = false;
-				}
+				//if (e.getMessage().equalsIgnoreCase("Software caused connection abort")) {
+				sendState(STATE_CONNECTERROR);
+				connected = false;
+				//}
 
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Log.d("RobotAlbertBtComm", "Exception in run:receiveMessage occured: " + e.toString());
+				sendState(STATE_CONNECTERROR);
+				connected = false;
 			}
 		}
 	}
@@ -265,11 +270,11 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 	 * @return the message
 	 */
 	@Override
-	public byte[] receiveMessage() throws IOException {
+	public byte[] receiveMessage() throws IOException, Exception {
 
 		//Log.d("RobotAlbertBtComm", "receiveMessage");
 		if (inputStream == null) {
-			throw new IOException();
+			throw new IOException(" Software caused connection abort ");
 		}
 
 		byte[] buffer = new byte[100];
@@ -277,6 +282,33 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 		byte[] buf = new byte[1];
 		byte[] buf0 = new byte[2];
 		int count2 = 0;
+
+		int available = 0;
+		long timeStart = System.currentTimeMillis();
+		long timePast;
+
+		while (true) {
+			if (inputStream == null) {
+				throw new IOException(" Software caused connection abort ");
+			}
+			available = inputStream.available();
+			if (available > 0) {
+				break;
+			}
+			try {
+				Thread.sleep(3);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// here you can optionally check elapsed time, and time out
+			timePast = System.currentTimeMillis();
+			if ((timePast - timeStart) > 4000) {
+				Log.d("AlbertRobot-Timeout", "TIMEOUT for receive message occured");
+				throw new IOException(" Software caused connection abort because of timeout");
+			}
+
+		}
 
 		do {
 			//Log.d("test","checking 0xAA");
