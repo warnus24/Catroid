@@ -1,6 +1,6 @@
 /**
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2013 The Catrobat Team
+ * Copyright (C) 2010-2014 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -81,7 +81,7 @@ public class IfBrickSteps extends AndroidTestCase {
 		Formula validFormula = new Formula(1);
 		validFormula.setRoot(new FormulaElement(ElementType.OPERATOR, operatorName, null, new FormulaElement(
 				ElementType.NUMBER, Double.toString(number1), null), new FormulaElement(ElementType.NUMBER, Double
-				.toString(number2), null)));
+						.toString(number2), null)));
 
 		IfLogicBeginBrick ifLogicBeginBrick = new IfLogicBeginBrick(object, validFormula);
 		Cucumber.put(Cucumber.KEY_IF_LOGIC_BEGIN_BRICK, ifLogicBeginBrick);

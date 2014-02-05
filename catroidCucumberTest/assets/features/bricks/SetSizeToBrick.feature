@@ -1,5 +1,5 @@
 # Catroid: An on-device visual programming system for Android devices
-# Copyright (C) 2010-2013 The Catrobat Team
+# Copyright (C) 2010-2014 The Catrobat Team
 # (<http://developer.catrobat.org/credits>)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Feature: Set size to brick
-  
+
   A brick setting the size of an Object in percent
 
-  Background: 
+  Background:
     Given I have a Program
     And this program has an Object 'Object'
 
@@ -33,7 +33,7 @@ Feature: Set size to brick
     And I wait until the program has stopped
     Then 'Object' should have the size <expected>
 
-    Examples: 
+    Examples:
       | size | expected |
       | 70   | 70       |
       | -1   | 0        |
