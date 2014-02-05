@@ -85,7 +85,7 @@ public class ProgramSteps extends AndroidTestCase {
 		Cucumber.put(Cucumber.KEY_PROJECT, project);
 	}
 
-	@Given("^this program has an Object '(\\w+)'$")
+	@Given("^this program has an Object '(.+)'$")
 	public void program_has_object(String name) {
 		int lookId = org.catrobat.catroid.R.drawable.default_project_mole_digged_out;
 		ProjectManager projectManager = ProjectManager.getInstance();
@@ -94,7 +94,7 @@ public class ProgramSteps extends AndroidTestCase {
 		Cucumber.put(Cucumber.KEY_CURRENT_OBJECT, sprite);
 	}
 
-	@Given("^'(\\w+)' has a Start script$")
+	@Given("^'(.+)' has a Start script$")
 	public void object_has_start_script(String object) {
 		Project project = ProjectManager.getInstance().getCurrentProject();
 		Sprite sprite = Util.findSprite(project, object);
@@ -120,7 +120,7 @@ public class ProgramSteps extends AndroidTestCase {
 		Cucumber.put(Cucumber.KEY_CURRENT_SCRIPT, script);
 	}
 
-	@Given("^'(\\w+)' has a When '(\\w+)' script$")
+	@Given("^'(.+)' has a When '(.+)' script$")
 	public void object_has_a_when_script(String object, String message) {
 		Project project = ProjectManager.getInstance().getCurrentProject();
 		Sprite sprite = Util.findSprite(project, object);
@@ -210,7 +210,7 @@ public class ProgramSteps extends AndroidTestCase {
 		script.addBrick(brick);
 	}
 
-	@And("^this script has a Broadcast '(\\w+)' brick$")
+	@And("^this script has a Broadcast '(.+)' brick$")
 	public void script_has_broadcast_brick(String message) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
@@ -219,7 +219,7 @@ public class ProgramSteps extends AndroidTestCase {
 		script.addBrick(brick);
 	}
 
-	@And("^this script has a BroadcastWait '(\\w+)' brick$")
+	@And("^this script has a BroadcastWait '(.+)' brick$")
 	public void script_has_broadcast_wait_brick(String message) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
@@ -349,9 +349,18 @@ public class ProgramSteps extends AndroidTestCase {
 		assertEquals("The variable has the wrong value.", userVariable.getValue().floatValue(), expectedValue);
 	}
 
-	@Then("^I should see the printed output '(.*)'$")
+	@Then("^I should see the printed output '(\\w+)'$")
 	public void I_should_see_printed_output_s(String text) throws IOException {
 		I_should_see_printed_output(text);
+	}
+
+	@Then("^I should see the printed output '(\\w+)' or '(\\w+)'$")
+	public void I_should_see_printed_output_s(String text1, String text2) throws IOException {
+		String actual = outputStream.toString().replace("\r", "").replace("\n", "");
+		String expected1 = text1.replace("\r", "").replace("\n", "");
+		String expected2 = text2.replace("\r", "").replace("\n", "");
+		assertTrue("The printed output is wrong.", actual.equals(expected1) || actual.equals(expected2));
+		outputStream.close();
 	}
 
 	@Then("^I should see the printed output$")
