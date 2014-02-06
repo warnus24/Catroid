@@ -18,22 +18,22 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-Feature: Broadcast wait brick
+Feature: BroadcastAndWait brick
 
-  A Broadcast Wait brick should block the script until every other script responding to the message has finished.
+  A BroadcastAndWait brick should block the script until every other script responding to the message has finished.
 
   Background:
     Given I have a Program
     And this program has an Object 'Object'
 
-  Scenario: A Broadcast Wait brick sends a message in a program with one When script
+  Scenario: A BroadcastAndWait brick sends a message in a program with one WhenBroadcastReceived script
     Given 'Object' has a Start script
-    And this script has a BroadcastWait 'hello' brick
+    And this script has a BroadcastAndWait 'hello' brick
     And this script has a Print brick with
       """
       I am the Start script.
       """
-    Given 'Object' has a When 'hello' script
+    Given 'Object' has a WhenBroadcastReceived 'hello' script
     And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with
       """
@@ -47,20 +47,20 @@ Feature: Broadcast wait brick
       I am the Start script.
       """
 
-  Scenario: A Broadcast Wait brick sends a message in a program with two When scripts
+  Scenario: A BroadcastAndWait brick sends a message in a program with two WhenBroadcastReceived scripts
     Given 'Object' has a Start script
-    And this script has a BroadcastWait 'hello' brick
+    And this script has a BroadcastAndWait 'hello' brick
     And this script has a Print brick with
       """
       I am the Start script.
       """
-    Given 'Object' has a When 'hello' script
+    Given 'Object' has a WhenBroadcastReceived 'hello' script
     And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with
       """
       I am the first When 'hello' script.
       """
-    Given 'Object' has a When 'hello' script
+    Given 'Object' has a WhenBroadcastReceived 'hello' script
     And this script has a Wait 200 milliseconds brick
     And this script has a Print brick with
       """
@@ -75,17 +75,17 @@ Feature: Broadcast wait brick
       I am the Start script.
       """
 
-  Scenario: Broadcast Wait chain
+  Scenario: BroadcastAndWait chain
     Given 'Object' has a Start script
-    And this script has a BroadcastWait 'a' brick
+    And this script has a BroadcastAndWait 'a' brick
     And this script has a Print brick with '1'
-    Given 'Object' has a When 'a' script
-    And this script has a BroadcastWait 'b' brick
+    Given 'Object' has a WhenBroadcastReceived 'a' script
+    And this script has a BroadcastAndWait 'b' brick
     And this script has a Print brick with '2'
-    Given 'Object' has a When 'b' script
-    And this script has a BroadcastWait 'c' brick
+    Given 'Object' has a WhenBroadcastReceived 'b' script
+    And this script has a BroadcastAndWait 'c' brick
     And this script has a Print brick with '3'
-    Given 'Object' has a When 'c' script
+    Given 'Object' has a WhenBroadcastReceived 'c' script
     And this script has a Print brick with '4'
     When I start the program
     And I wait until the program has stopped

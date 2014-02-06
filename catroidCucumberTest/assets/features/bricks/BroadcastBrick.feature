@@ -20,20 +20,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Feature: Broadcast brick
 
-  A Broadcast brick should send a message and When scripts should react to it.
+  A Broadcast brick sends a message and WhenBroadcastReceived scripts react to it.
 
   Background:
     Given I have a Program
     And this program has an Object 'Object'
 
-  Scenario: A Broadcast brick sends a message in a program with one When script
+  Scenario: A Broadcast brick sends a message in a program with one WhenBroadcastReceived script.
     Given 'Object' has a Start script
     And this script has a Broadcast 'hello' brick
     And this script has a Print brick with
       """
       I am the Start script.
       """
-    Given 'Object' has a When 'hello' script
+    Given 'Object' has a WhenBroadcastReceived 'hello' script
     And this script has a Print brick with
       """
       I am the When 'hello' script.
@@ -46,7 +46,7 @@ Feature: Broadcast brick
       I am the When 'hello' script.
       """
 
-  Scenario: A Broadcast brick sends a message in a program with two When scripts
+  Scenario: A Broadcast brick sends a message in a program with two WhenBroadcastReceived scripts.
     Given 'Object' has a Start script
     And this script has a Broadcast 'hello' brick
     And this script has a Wait 200 milliseconds brick
@@ -54,12 +54,12 @@ Feature: Broadcast brick
       """
       I am the Start script.
       """
-    Given 'Object' has a When 'hello' script
+    Given 'Object' has a WhenBroadcastReceived 'hello' script
     And this script has a Print brick with
       """
       I am the first When 'hello' script.
       """
-    Given 'Object' has a When 'hello' script
+    Given 'Object' has a WhenBroadcastReceived 'hello' script
     And this script has a Wait 300 milliseconds brick
     And this script has a Print brick with
       """
@@ -73,3 +73,16 @@ Feature: Broadcast brick
       I am the Start script.
       I am the second When 'hello' script.
       """
+
+  Scenario: A Broadcast brick sends a message in a program with two WhenBroadcastReceived scripts. The order of the
+    execution of the WhenBroadcastReceived scripts is arbitrary.
+
+    Given 'Object' has a Start script
+    And this script has a Broadcast 'hello' brick
+    Given 'Object' has a WhenBroadcastReceived 'hello' script
+    And this script has a Print brick with 'a'
+    Given 'Object' has a WhenBroadcastReceived 'hello' script
+    And this script has a Print brick with 'b'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'ab' or 'ba'

@@ -120,8 +120,8 @@ public class ProgramSteps extends AndroidTestCase {
 		Cucumber.put(Cucumber.KEY_CURRENT_SCRIPT, script);
 	}
 
-	@Given("^'(.+)' has a When '(.+)' script$")
-	public void object_has_a_when_script(String object, String message) {
+	@Given("^'(.+)' has a WhenBroadcastReceived '(.+)' script$")
+	public void object_has_a_when_broadcast_received_script(String object, String message) {
 		Project project = ProjectManager.getInstance().getCurrentProject();
 		Sprite sprite = Util.findSprite(project, object);
 		BroadcastScript script = new BroadcastScript(sprite, message);
@@ -219,8 +219,8 @@ public class ProgramSteps extends AndroidTestCase {
 		script.addBrick(brick);
 	}
 
-	@And("^this script has a BroadcastWait '(.+)' brick$")
-	public void script_has_broadcast_wait_brick(String message) {
+	@And("^this script has a BroadcastAndWait '(.+)' brick$")
+	public void script_has_broadcast_and_wait_brick(String message) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 
@@ -349,7 +349,7 @@ public class ProgramSteps extends AndroidTestCase {
 		assertEquals("The variable has the wrong value.", userVariable.getValue().floatValue(), expectedValue);
 	}
 
-	@Then("^I should see the printed output '(\\w+)'$")
+	@Then("^I should see the printed output '([\\w| |-|,|!]+)'$")
 	public void I_should_see_printed_output_s(String text) throws IOException {
 		I_should_see_printed_output(text);
 	}

@@ -18,21 +18,21 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-Feature: Restart When script
+Feature: Restart WhenBroadcastReceived script
 
-  A When script should be restarted when the message is broadcast again while the script is still running.
+  A WhenBroadcastReceived script should be restarted when the message is broadcast again while the script is still running.
 
   Background:
     Given I have a Program
     And this program has an Object 'Object'
 
-  Scenario: A program with two start scripts and one When script
+  Scenario: A program with two start scripts and one WhenBroadcastReceived script
     Given 'Object' has a Start script
     And this script has a Broadcast 'hello' brick
     Given 'Object' has a Start script
     And this script has a Wait 300 milliseconds brick
     And this script has a Broadcast 'hello' brick
-    Given 'Object' has a When 'hello' script
+    Given 'Object' has a WhenBroadcastReceived 'hello' script
     And this script has a Print brick with
       """
       I am the When 'hello' script (1).
