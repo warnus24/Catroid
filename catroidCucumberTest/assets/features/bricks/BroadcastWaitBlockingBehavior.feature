@@ -40,7 +40,7 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
     And this script has a BroadcastAndWait 'This message does not matter as there is no receiver script' brick
     And this script has a Print brick with 'a'
     Given 'test object' has a Start script
-    And this script has a Wait 200 milliseconds brick
+    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with 'b'
     When I start the program
     And I wait until the program has stopped
@@ -49,36 +49,35 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
   Scenario: A waiting BroadcastAndWait brick is unblocked when the broadcast message is sent again.
 
     Given 'test object' has a Start script
-    And this script has a BroadcastAndWait 'Print b after 0.3 seconds, and then c after another 0.5 seconds' brick
-    And this script has a Print brick with 'a'
+    And this script has a BroadcastAndWait 'Print a after 0.1 seconds, and then b after another 0.3 seconds' brick
+    And this script has a Print brick with 'c'
     Given 'test object' has a Start script
-    And this script has a Wait 600 milliseconds brick
-    And this script has a Broadcast 'Print b after 0.3 seconds, and then c after another 0.5 seconds' brick
-    Given 'test object' has a WhenBroadcastReceived 'Print b after 0.3 seconds, and then c after another 0.5 seconds' script
+    And this script has a Wait 200 milliseconds brick
+    And this script has a Broadcast 'Print a after 0.1 seconds, and then b after another 0.3 seconds' brick
+    Given 'test object' has a WhenBroadcastReceived 'Print a after 0.1 seconds, and then b after another 0.3 seconds' script
+    And this script has a Wait 100 milliseconds brick
+    And this script has a Print brick with 'a'
     And this script has a Wait 300 milliseconds brick
     And this script has a Print brick with 'b'
-    And this script has a Wait 500 milliseconds brick
-    And this script has a Print brick with 'c'
     When I start the program
     And I wait until the program has stopped
-    Then I should see the printed output 'babc'
+    Then I should see the printed output 'acab'
 
   Scenario: A waiting BroadcastAndWait brick is unblocked via another BroadcastAndWait brick.
 
     Given 'test object' has a Start script
-    And this script has a BroadcastAndWait 'Print b after 5 seconds' brick
-    And this script has a Wait 1 second brick
+    And this script has a BroadcastAndWait 'Print b after 0.2 seconds' brick
     And this script has a Print brick with 'a'
     Given 'test object' has a Start script
-    And this script has a Wait 2 seconds brick
-    And this script has a BroadcastAndWait 'Print b after 5 seconds' brick
-    And this script has a Print brick with 'd'
-    Given 'test object' has a WhenBroadcastReceived 'Print b after 5 seconds' script
-    And this script has a Wait 5 seconds brick
+    And this script has a Wait 100 milliseconds brick
+    And this script has a BroadcastAndWait 'Print b after 0.2 seconds' brick
+    And this script has a Print brick with 'c'
+    Given 'test object' has a WhenBroadcastReceived 'Print b after 0.2 seconds' script
+    And this script has a Wait 200 milliseconds brick
     And this script has a Print brick with 'b'
     When I start the program
     And I wait until the program has stopped
-    Then I should see the printed output 'abd'
+    Then I should see the printed output 'abc'
 
   Scenario: A waiting BroadcastAndWait brick is unblocked when the same broadcast message is sent again and there are
     two WhenBroadcastReceived scripts responding to the same message.
@@ -87,15 +86,15 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
     And this script has a BroadcastAndWait 'Print b and c from different scripts' brick
     And this script has a Print brick with 'a'
     Given 'test object' has a WhenBroadcastReceived 'Print b and c from different scripts' script
-    And this script has a Wait 400 milliseconds brick
+    And this script has a Wait 300 milliseconds brick
     And this script has a Print brick with 'b'
     Given 'test object' has a WhenBroadcastReceived 'Print b and c from different scripts' script
-    And this script has a Wait 500 milliseconds brick
+    And this script has a Wait 400 milliseconds brick
     And this script has a Print brick with 'c'
     Given 'test object' has a Start script
     And this script has a Wait 100 milliseconds brick
     And this script has a Broadcast 'Print b and c from different scripts' brick
-    And this script has a Wait 100 milliseconds brick
+    And this script has a Wait 200 milliseconds brick
     And this script has a Print brick with 'd'
     When I start the program
     And I wait until the program has stopped
@@ -104,41 +103,39 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
   Scenario: A BroadcastAndWait brick repeatedly triggers a WhenBroadcastReceived script which is restarted immediately.
 
     Given 'test object' has a Start script
-    And this script has a Repeat 5 times brick
+    And this script has a Repeat 3 times brick
     And this script has a Broadcast 'Send the BroadcastAndWait message' brick
-    And this script has a Wait 2 second brick
     And this script has a Repeat end brick
     Given 'test object' has a WhenBroadcastReceived 'Send the BroadcastAndWait message' script
-    And this script has a BroadcastAndWait 'Print a, then b after 7 seconds' brick
+    And this script has a BroadcastAndWait 'Print a, then b after 0.1 seconds' brick
     And this script has a Print brick with 'c'
-    Given 'test object' has a WhenBroadcastReceived 'Print a, then b after 7 seconds' script
+    Given 'test object' has a WhenBroadcastReceived 'Print a, then b after 0.1 seconds' script
     And this script has a Print brick with 'a'
-    And this script has a Wait 7 seconds brick
+    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with 'b'
     When I start the program
     And I wait until the program has stopped
-    Then I should see the printed output 'aaaaabc'
+    Then I should see the printed output 'aaabc'
 
   Scenario: A Broadcast brick repeatedly triggers a WhenBroadcastReceived script which is restarted immediately.
 
     Given 'test object' has a Start script
-    And this script has a Repeat 5 times brick
-    And this script has a Broadcast 'Send the Broadcast message' brick
-    And this script has a Wait 2 seconds brick
+    And this script has a Repeat 3 times brick
+    And this script has a Broadcast 'Send the second broadcast message' brick
+    And this script has a Wait 200 milliseconds brick
     And this script has a Print brick with 'c'
-    And this script has a Wait 1 second brick
     And this script has a Repeat end brick
-    Given 'test object' has a WhenBroadcastReceived 'Send the Broadcast message' script
-    And this script has a Broadcast 'Print b after 0.5 seconds, then d after another 7 seconds' brick
+    Given 'test object' has a WhenBroadcastReceived 'Send the second broadcast message' script
+    And this script has a Broadcast 'Print b after 0.1 seconds, then d after another 0.3 seconds' brick
     And this script has a Print brick with 'a'
-    Given 'test object' has a WhenBroadcastReceived 'Print b after 0.5 seconds, then d after another 7 seconds' script
-    And this script has a Wait 500 milliseconds brick
+    Given 'test object' has a WhenBroadcastReceived 'Print b after 0.1 seconds, then d after another 0.3 seconds' script
+    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with 'b'
-    And this script has a Wait 7 seconds brick
+    And this script has a Wait 300 milliseconds brick
     And this script has a Print brick with 'd'
     When I start the program
     And I wait until the program has stopped
-    Then I should see the printed output 'abcabcabcabcabcd'
+    Then I should see the printed output 'abcabcabcd'
 
   Scenario: A BroadcastAndWait brick is unblocked by a Broadcast brick. After that the BroadcastAndWait is triggered
     again.
@@ -146,20 +143,20 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
     Given 'test object' has a Start script
     And this script has a Repeat 2 times brick
     And this script has a Broadcast 'Send the BroadcastAndWait message' brick
-    And this script has a Wait 6 seconds brick
+    And this script has a Wait 600 milliseconds brick
     And this script has a Repeat end brick
     Given 'test object' has a WhenBroadcastReceived 'Send the BroadcastAndWait message' script
-    And this script has a BroadcastAndWait 'Print a after 1 second, then b after another 5 seconds' brick
-    And this script has a Wait 2 seconds brick
+    And this script has a BroadcastAndWait 'Print a after 0.1 seconds, then b after another 0.2 seconds' brick
+    And this script has a Wait 200 milliseconds brick
     And this script has a Print brick with 'd'
     Given 'test object' has a Start script
-    And this script has a Wait 3 seconds brick
-    And this script has a Broadcast 'Print a after 1 second, then b after another 5 seconds' brick
+    And this script has a Wait 300 milliseconds brick
+    And this script has a Broadcast 'Print a after 0.1 seconds, then b after another 0.2 seconds' brick
     And this script has a Print brick with 'c'
-    Given 'test object' has a WhenBroadcastReceived 'Print a after 1 second, then b after another 5 seconds' script
-    And this script has a Wait 1 second brick
+    Given 'test object' has a WhenBroadcastReceived 'Print a after 0.1 seconds, then b after another 0.2 seconds' script
+    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with 'a'
-    And this script has a Wait 5 seconds brick
+    And this script has a Wait 400 milliseconds brick
     And this script has a Print brick with 'b'
     When I start the program
     And I wait until the program has stopped
@@ -171,17 +168,16 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
     Given 'test object' has a Start script
     And this script has a Repeat 2 times brick
     And this script has a BroadcastAndWait 'Print a and b from two different scripts' brick
-    And this script has a Wait 6 seconds brick
+    And this script has a Wait 300 milliseconds brick
     And this script has a Print brick with 'c'
-    And this script has a Wait 1 second brick
     And this script has a Repeat end brick
     Given 'test object' has a Start script
-    And this script has a Wait 2 seconds brick
+    And this script has a Wait 100 milliseconds brick
     And this script has a Broadcast 'Print a and b from two different scripts' brick
     Given 'test object' has a WhenBroadcastReceived 'Print a and b from two different scripts' script
     And this script has a Print brick with 'a'
     Given 'test object' has a WhenBroadcastReceived 'Print a and b from two different scripts' script
-    And this script has a Wait 3 seconds brick
+    And this script has a Wait 200 milliseconds brick
     And this script has a Print brick with 'b'
     When I start the program
     And I wait until the program has stopped
@@ -191,32 +187,30 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
 
     Given 'test object' has a Start script
     And this script has a Repeat 2 times brick
-    And this script has a BroadcastAndWait 'Print a, then b after 1 second' brick
-    And this script has a Print brick with 'c'
-    And this script has a Repeat end brick
-    Given 'test object' has a WhenBroadcastReceived 'Print a, then b after 1 second' script
-    And this script has a Print brick with 'a'
-    And this script has a Wait 1 second brick
+    And this script has a BroadcastAndWait 'Print a immediately' brick
     And this script has a Print brick with 'b'
+    And this script has a Repeat end brick
+    Given 'test object' has a WhenBroadcastReceived 'Print a immediately' script
+    And this script has a Print brick with 'a'
     When I start the program
     And I wait until the program has stopped
-    Then I should see the printed output 'abcabc'
+    Then I should see the printed output 'abab'
 
   Scenario: A BroadcastAndWait brick waits for a short and a long WhenBroadcastReceived script. The same
     BroadcastAndWait is triggered again before the long one finishes.
 
     Given 'test object' has a Start script
     And this script has a Repeat 2 times brick
-    And this script has a Broadcast 'go' brick
-    And this script has a Wait 3 seconds brick
+    And this script has a Broadcast 'Send the BroadcastAndWait message' brick
+    And this script has a Wait 200 milliseconds brick
     And this script has a Repeat end brick
-    Given 'test object' has a WhenBroadcastReceived 'go' script
-    And this script has a BroadcastAndWait 'Print a immediately and b after 5 seconds' brick
+    Given 'test object' has a WhenBroadcastReceived 'Send the BroadcastAndWait message' script
+    And this script has a BroadcastAndWait 'Print a immediately and b after 0.3 seconds' brick
     And this script has a Print brick with 'c'
-    Given 'test object' has a WhenBroadcastReceived 'Print a immediately and b after 5 seconds' script
+    Given 'test object' has a WhenBroadcastReceived 'Print a immediately and b after 0.3 seconds' script
     And this script has a Print brick with 'a'
-    Given 'test object' has a WhenBroadcastReceived 'Print a immediately and b after 5 seconds' script
-    And this script has a Wait 5 seconds brick
+    Given 'test object' has a WhenBroadcastReceived 'Print a immediately and b after 0.3 seconds' script
+    And this script has a Wait 300 milliseconds brick
     And this script has a Print brick with 'b'
     When I start the program
     And I wait until the program has stopped
@@ -228,17 +222,15 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
     Given 'test object' has a Start script
     And this script has a Repeat 2 times brick
     And this script has a Print brick with 'a'
-    And this script has a BroadcastAndWait 'Print b immediately and c after 3 seconds' brick
-    And this script has a Print brick with 'd'
+    And this script has a BroadcastAndWait 'Print b immediately' brick
+    And this script has a Print brick with 'c'
     And this script has a Repeat end brick
     Given this program has an Object '2nd test object'
-    Given '2nd test object' has a WhenBroadcastReceived 'Print b immediately and c after 3 seconds' script
+    Given '2nd test object' has a WhenBroadcastReceived 'Print b immediately' script
     And this script has a Print brick with 'b'
-    And this script has a Wait 3 seconds brick
-    And this script has a Print brick with 'c'
     When I start the program
     And I wait until the program has stopped
-    Then I should see the printed output 'abcdabcd'
+    Then I should see the printed output 'abcabc'
 
   Scenario: A BroadcastAndWait brick waits for two WhenBroadcastReceived scripts to finish.
 
@@ -249,7 +241,7 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
     Given 'test object' has a WhenBroadcastReceived 'Print b and c from two different scripts' script
     And this script has a Print brick with 'b'
     Given 'test object' has a WhenBroadcastReceived 'Print b and c from two different scripts' script
-    And this script has a Wait 300 milliseconds brick
+    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with 'c'
     When I start the program
     And I wait until the program has stopped
@@ -258,35 +250,33 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
   Scenario: A BroadcastAndWait brick waits for two WhenBroadcastReceived scripts from two different objects to finish.
 
     Given 'test object' has a Start script
-    And this script has a Repeat 2 times brick
     And this script has a Print brick with 'a'
     And this script has a BroadcastAndWait 'Print b and c from two different objects' brick
     And this script has a Print brick with 'd'
-    And this script has a Repeat end brick
     Given this program has an Object '2nd test object'
     Given '2nd test object' has a WhenBroadcastReceived 'Print b and c from two different objects' script
     And this script has a Print brick with 'b'
     Given this program has an Object '3rd test object'
     Given '3rd test object' has a WhenBroadcastReceived 'Print b and c from two different objects' script
-    And this script has a Wait 300 milliseconds brick
+    And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with 'c'
     When I start the program
     And I wait until the program has stopped
-    Then I should see the printed output 'abcdabcd'
+    Then I should see the printed output 'abcd'
 
   Scenario: A Broadcast is sent after a BroadcastAndWait has finished.
 
     Given 'test object' has a Start script
     And this script has a Print brick with 'a'
-    And this script has a BroadcastAndWait 'Print c' brick
+    And this script has a BroadcastAndWait 'Print c immediately' brick
     And this script has a Print brick with 'b'
     Given this program has an Object '2nd test object'
     Given '2nd test object' has a Start script
-    And this script has a Wait 2 second brick
+    And this script has a Wait 300 milliseconds brick
     And this script has a Print brick with 'd'
-    And this script has a Broadcast 'Print c' brick
+    And this script has a Broadcast 'Print c immediately' brick
     Given this program has an Object '3rd test object'
-    Given '3rd test object' has a WhenBroadcastReceived 'Print c' script
+    Given '3rd test object' has a WhenBroadcastReceived 'Print c immediately' script
     And this script has a Print brick with 'c'
     When I start the program
     And I wait until the program has stopped
@@ -295,16 +285,16 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
   Scenario: A BroadcastAndWait is sent after a Broadcast has finished.
 
     Given 'test object' has a Start script
-    And this script has a Wait 2 second brick
+    And this script has a Wait 200 milliseconds brick
     And this script has a Print brick with 'a'
-    And this script has a BroadcastAndWait 'Print c' brick
+    And this script has a BroadcastAndWait 'Print c immediately' brick
     And this script has a Print brick with 'b'
     Given this program has an Object '2nd test object'
     Given '2nd test object' has a Start script
     And this script has a Print brick with 'd'
-    And this script has a Broadcast 'Print c' brick
+    And this script has a Broadcast 'Print c immediately' brick
     Given this program has an Object '3rd test object'
-    Given '3rd test object' has a WhenBroadcastReceived 'Print c' script
+    Given '3rd test object' has a WhenBroadcastReceived 'Print c immediately' script
     And this script has a Print brick with 'c'
     When I start the program
     And I wait until the program has stopped
