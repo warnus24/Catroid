@@ -22,10 +22,13 @@
  */
 package org.catrobat.catroid.formulaeditor;
 
+import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
+import org.catrobat.catroid.content.actions.ArduinoSendAction;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -276,6 +279,19 @@ public class FormulaElement implements Serializable {
 			case FALSE:
 				return 0.0;
 
+			case ARDUINO:
+				//split up the pin number
+				char pinNumberLowerByte = left.toString().charAt(left.toString().length() - 4);
+				char pinNumberHigherByte = left.toString().charAt(left.toString().length() - 3);
+				char pinValue = 'R'; //R stands for read
+				//send request for the pin to Arduino
+				ArduinoSendAction.initBluetoothConnection();
+				BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+				//receive answer from Arduino
+				int pinValueFormArduino = ArduinoReceiveAction.receiveDataViaBluetoothSocket(tmpSocket, pinValue,
+						pinNumberLowerByte, pinNumberHigherByte);
+				return (double) pinValueFormArduino;
+
 		}
 
 		return 0d;
@@ -435,9 +451,9 @@ public class FormulaElement implements Serializable {
 	}
 
 	public boolean containsElement(ElementType elementType) {
-		if (type.equals(elementType) 
-				|| (leftChild != null && leftChild.containsElement(elementType)) 
-				|| (rightChild != null && rightChild.containsElement(elementType))) {
+		if (type.equals(elementType)
+				|| (leftChild != null && (leftChild.containsElement(elementType) || (rightChild != null)
+						&& (rightChild.containsElement(elementType))))) {
 			return true;
 		}
 		return false;

@@ -67,6 +67,8 @@
     <string name="preference_title">Settings</string>
     <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorms bricks</string>
     <string name="preference_description_mindstorm_bricks">Allow to control Lego Mindstorms robots</string>
+    <string name="preference_title_enable_arduino_bricks">Arduino bricks</string>
+    <string name="preference_description_arduino_bricks">Allow to control Arduino bricks</string>
     <!--  -->
 
 
@@ -303,6 +305,7 @@
     <string name="category_control">Control</string>
     <string name="category_variables">Variables</string>
     <string name="category_lego_nxt">Lego NXT</string>
+    <string name="category_arduino">Arduino</string>
     <!--  -->
 
 
@@ -542,6 +545,7 @@
     <string name="formula_editor_sensor_x_inclination">inclination_x</string>
     <string name="formula_editor_sensor_y_inclination">inclination_y</string>
     <string name="formula_editor_sensor_loudness">loudness</string>
+    <string name="formula_editor_sensor_arduino_read_pin_value">Arduino</string>
     <string name="formula_editor_object_x">position_x</string>
     <string name="formula_editor_object_y">position_y</string>
     <string name="formula_editor_object_ghosteffect">transparency</string>
@@ -588,27 +592,24 @@
     <!--  -->
     
     <!-- Arduino Strings -->
-    <string name="pin_0">0</string>
-    <string name="pin_1">1</string>
-	<string name="pin_2">2</string>
-	<string name="pin_3">3</string>
-	<string name="pin_4">4</string>
-	<string name="pin_5">5</string>
-	<string name="pin_6">6</string>
-	<string name="pin_7">7</string>
-	<string name="pin_8">8</string>
-	<string name="pin_9">9</string>
-	<string name="pin_10">10</string>
-	<string name="pin_11">11</string>
-	<string name="pin_12">12</string>
-	<string name="pin_13">13</string>
-	<string name="high">H</string>
-	<string name="low">L</string>
+    <!--  <string name="pin_0">0</string> -->
+    <string name="pin_1">1</string> <!-- serial Tx -->
+	<!--  <string name="pin_2">2</string> -->
+	<string name="pin_3">3</string> <!-- PWM -->
+	<string name="pin_4">4</string> <!-- digital I/O -->
+	<string name="pin_5">5</string> <!-- PWM -->
+	<string name="pin_6">6</string> <!-- PWM -->
+	<!--  <string name="pin_7">7</string> -->
+	<string name="pin_8">8</string> <!-- digital I/O -->
+	<string name="pin_9">9</string> <!-- PWM -->
+	<string name="pin_10">10</string> <!-- PWM -->
+	<string name="pin_11">11</string> <!-- PWM -->
+	<string name="pin_12">12</string> <!-- digital I/O -->
+	<string name="pin_13">13</string> <!-- built-in LED pin -->
+	<string name="high">1</string>
+	<string name="low">0</string>
 	
-	<string name="brick_arduino_data_in_ok">OK</string>
-    <string name="brick_arduino_data_out_ok">OK</string>
     <string name="brick_select_value">Send value and pin to Arduino</string>
-    <string name="brick_arduino_received_data">Receive data form Arduino</string>
     
     <!--  -->
 

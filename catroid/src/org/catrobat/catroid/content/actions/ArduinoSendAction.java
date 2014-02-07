@@ -68,11 +68,6 @@ public class ArduinoSendAction extends Action {
 		this.pinValue = pinValue;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.badlogic.gdx.scenes.scene2d.Action#act(float)
-	 */
 	@Override
 	public boolean act(float delta) {
 		// TODO Auto-generated method stub
@@ -121,35 +116,12 @@ public class ArduinoSendAction extends Action {
 		return ERROR_OK;
 	}
 
-	//for testing only
-	//I checked the Manifest-file, Bluetooth-permissions are available!
-	public static void turnOnBluetooth() {
-		bluetoothAdapter.enable();
-		if (!bluetoothAdapter.isEnabled()) {
-			ERROR_OK = -3;
-		}
-
-		//		try {
-		//			tmpSocket = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
-		//			ERROR_OK = 1;
-		//		} catch (IOException e) {
-		//
-		//		}
-		//
-		//		bluetoothSocket = tmpSocket; //nullpointer
-		//		bluetoothAdapter.cancelDiscovery();
-		//
-		//		isBluetoothinitialized = true;
-	}
-
 	public static void turnOffBluetooth() {
 		bluetoothAdapter.disable();
 		if (bluetoothAdapter.isEnabled()) {
 			ERROR_OK = -3;
 		}
 	}
-
-	//
 
 	public static BluetoothSocket getBluetoothSocket() {
 		return bluetoothSocket;
@@ -162,11 +134,8 @@ public class ArduinoSendAction extends Action {
 			outputBluetoothSocket.connect();
 			ERROR_OK = 2;
 		} catch (IOException e) {
-			//			try {
-			//				outputBluetoothSocket.close();
-			//			} catch (IOException e1) {
-			//				return -5;
-			//			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		try {
@@ -175,8 +144,6 @@ public class ArduinoSendAction extends Action {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		//send data here via outputStream
 
 		try {
 			bluetoothOutputStream.write(pinNumberLowerByte);

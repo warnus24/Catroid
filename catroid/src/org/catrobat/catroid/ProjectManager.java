@@ -160,14 +160,6 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
 	}
 
-	public boolean cancelLoadProject() {
-		return StorageHandler.getInstance().cancelLoadProject();
-	}
-
-	public boolean canLoadProject(String projectName) {
-		return StorageHandler.getInstance().loadProject(projectName) != null;
-	}
-
 	public void saveProject() {
 		if (project == null) {
 			return;
@@ -357,11 +349,6 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 
 	@Override
 	public void onLoadProjectSuccess(boolean startProjectActivity) {
-
-	}
-
-	@Override
-	public void onLoadProjectFailure() {
 
 	}
 }

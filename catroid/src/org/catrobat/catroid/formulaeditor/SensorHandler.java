@@ -44,6 +44,8 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 
 	private float loudness = 0f;
 
+	private float arduinoPinValue = 0f;
+
 	private SensorHandler(Context context) {
 		sensorManager = new SensorManager(
 				(android.hardware.SensorManager) context.getSystemService(Context.SENSOR_SERVICE));
@@ -63,6 +65,7 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		instance.sensorManager.registerListener(instance, instance.rotationVectorSensor,
 				android.hardware.SensorManager.SENSOR_DELAY_NORMAL);
 		instance.sensorManager.registerListener(instance, Sensors.LOUDNESS);
+		instance.sensorManager.registerListener(instance, Sensors.ARDUINO);
 	}
 
 	public static void registerListener(SensorEventListener listener) {
@@ -147,6 +150,9 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 
 			case LOUDNESS:
 				return Double.valueOf(instance.loudness);
+
+			case ARDUINO:
+				return Double.valueOf(instance.arduinoPinValue);
 		}
 		return 0d;
 	}

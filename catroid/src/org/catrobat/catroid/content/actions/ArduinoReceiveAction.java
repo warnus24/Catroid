@@ -30,10 +30,11 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.UUID;
 
 /**
- * @author Adrian
+ * @author Adrian Schnedlitz
  * 
  */
 public class ArduinoReceiveAction extends Action {
@@ -112,31 +113,36 @@ public class ArduinoReceiveAction extends Action {
 		return ERROR_OK;
 	}
 
-	//for testing only
-	//I checked the Manifest-file, Bluetooth-permissions are available!
-	public static void turnOnBluetooth() {
-		bluetoothAdapter.enable();
-		if (!bluetoothAdapter.isEnabled()) {
-			ERROR_OK = -3;
-		}
-	}
-
-	//
-
 	public static BluetoothSocket getBluetoothSocket() {
 		return bluetoothSocket;
 	}
 
-	public static int receiveDataViaBluetoothSocket(BluetoothSocket inputBluetoothSocket) {
+	public static int receiveDataViaBluetoothSocket(BluetoothSocket inputBluetoothSocket, char pinValue,
+			char pinNumberLowerByte, char pinNumberHigherByte) {
+
+		OutputStream bluetoothOutputStream = null;
 
 		try {
 			inputBluetoothSocket.connect();
 		} catch (IOException e) {
-			//			try {
-			//				inputBluetoothSocket.close();
-			//			} catch (IOException e1) {
-			//				return -5;
-			//			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			bluetoothOutputStream = inputBluetoothSocket.getOutputStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			bluetoothOutputStream.write(pinNumberLowerByte);
+			bluetoothOutputStream.write(pinNumberHigherByte);
+			bluetoothOutputStream.write(pinValue);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		try {
@@ -146,7 +152,6 @@ public class ArduinoReceiveAction extends Action {
 			e.printStackTrace();
 		}
 
-		//receive data here via inputStream
 		int inputMessage = 0;
 		try {
 			inputMessage = bluetoothInputStream.read();

@@ -101,6 +101,8 @@ public class CategoryBricksFactory {
 			return setupVariablesCategoryList(sprite);
 		} else if (category.equals(context.getString(R.string.category_lego_nxt))) {
 			return setupLegoNxtCategoryList(sprite);
+		} else if (category.equals(context.getString(R.string.category_arduino))) {
+			return setupArduinoCategoryList(sprite);
 		}
 
 		return new ArrayList<Brick>();
@@ -121,8 +123,6 @@ public class CategoryBricksFactory {
 		controlBrickList.add(new ForeverBrick(sprite));
 		controlBrickList.add(new IfLogicBeginBrick(sprite, 0));
 		controlBrickList.add(new RepeatBrick(sprite, BrickValues.REPEAT));
-
-		controlBrickList.add(new ArduinoSendBrick(sprite));
 
 		return controlBrickList;
 	}
@@ -207,6 +207,12 @@ public class CategoryBricksFactory {
 		legoNXTBrickList.add(new LegoNxtPlayToneBrick(sprite, BrickValues.LEGO_FREQUENCY, BrickValues.LEGO_DURATION));
 
 		return legoNXTBrickList;
+	}
+
+	private List<Brick> setupArduinoCategoryList(Sprite sprite) {
+		List<Brick> arduinoBrickList = new ArrayList<Brick>();
+		arduinoBrickList.add(new ArduinoSendBrick(sprite));
+		return arduinoBrickList;
 	}
 
 	private boolean isBackground(Sprite sprite) {

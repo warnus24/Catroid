@@ -82,8 +82,7 @@ public class StageListener implements ApplicationListener {
 	private boolean firstStart = true;
 	private boolean reloadProject = false;
 
-	private static boolean checkIfAutomaticScreenshotShouldBeTaken = true;
-	private boolean makeAutomaticScreenshot = true;
+	private static boolean makeAutomaticScreenshot = true;
 	private boolean makeScreenshot = false;
 	private String pathForScreenshot;
 	private int screenshotWidth;
@@ -185,9 +184,6 @@ public class StageListener implements ApplicationListener {
 
 		axes = new Texture(Gdx.files.internal("stage/red_pixel.bmp"));
 		skipFirstFrameForAutomaticScreenshot = true;
-		if (checkIfAutomaticScreenshotShouldBeTaken) {
-			makeAutomaticScreenshot = project.manualScreenshotExists(SCREENSHOT_MANUAL_FILE_NAME);
-		}
 	}
 
 	void menuResume() {

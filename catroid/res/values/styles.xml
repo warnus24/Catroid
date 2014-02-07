@@ -463,6 +463,11 @@
         <item name="android:background">@drawable/brick_selection_background_lego</item>
         <item name="android:drawableRight">@drawable/main_menu_button_arrow_lego</item>
     </style>
+    
+   	<style name="BrickCategoryText.Arduino">
+        <item name="android:background">@drawable/brick_selection_background_arduino</item>
+        <item name="android:drawableRight">@drawable/main_menu_button_arrow_arduino</item>
+    </style>
 
     <style name="ScriptActivitySpinnerItemTextAppearance">
         <item name="android:textColor">@color/abs__background_holo_light</item>

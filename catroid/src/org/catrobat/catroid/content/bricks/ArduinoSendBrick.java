@@ -74,7 +74,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_ARDUINO; //instead of NO_RESOURCES
+		return BLUETOOTH_ARDUINO;
 	}
 
 	@Override
@@ -175,8 +175,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		arduinoValueSpinner.setAdapter(spinnerAdapterWrapper);
 		arduinoValueSpinner.setAdapter(arduinoValueAdapter);
 
-		// Spinner OnSelectedItemListener:
-
 		arduinoPinSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -229,15 +227,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		return view;
 	}
 
-	private void sendDataViaBluetooth() {
-		//calling methods for data transfer
-		ArduinoSendAction.turnOnBluetooth();
-		ArduinoSendAction.initBluetoothConnection();
-
-		BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
-		ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
-	}
-
 	private ArrayAdapter<SoundInfo> createArduinoPinAdapter(Context context) {
 		ArrayAdapter<SoundInfo> arrayAdapter = new ArrayAdapter<SoundInfo>(context,
 				android.R.layout.simple_spinner_item);
@@ -245,9 +234,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		SoundInfo dummySoundInfo = new SoundInfo();
 		dummySoundInfo.setTitle(context.getString(R.string.new_broadcast_message));
 		arrayAdapter.add(dummySoundInfo);
-		//		for (SoundInfo soundInfo : sprite.) {  //requires new method in Sprite.java ?!?
-		//			arrayAdapter.add(soundInfo);
-		//		}
+
 		return arrayAdapter;
 	}
 
@@ -255,12 +242,10 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	public View getViewWithAlpha(int alphaValue) {
 
 		if (view != null) {
-			//			Log.d("TAG", "VIEW != NULL");
 			View layout = view.findViewById(R.id.brick_arduino_send_layout);
 			Drawable background = layout.getBackground();
 			background.setAlpha(alphaValue);
 
-			//TODO Set alpha value on all bricks
 			Spinner pinSpinner = (Spinner) view.findViewById(R.id.brick_arduino_send_pin_spinner);
 			pinSpinner.getBackground().setAlpha(alphaValue);
 
@@ -325,10 +310,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 		@Override
 		public long getItemId(int paramInt) {
-			//			SoundInfo currentSound = spinnerAdapter.getItem(paramInt);
-			//			if (!currentSound.getTitle().equals(context.getString(R.string.new_broadcast_message))) {
-			//				oldSelectedSound = currentSound;
-			//			}
 			return spinnerAdapter.getItemId(paramInt);
 		}
 
@@ -341,9 +322,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		public View getView(int paramInt, View paramView, ViewGroup paramViewGroup) {
 			if (isTouchInDropDownView) {
 				isTouchInDropDownView = false;
-				//				if (paramInt == 0) {
-				//					switchToSoundFragmentFromScriptFragment();
-				//				}
 			}
 			return spinnerAdapter.getView(paramInt, paramView, paramViewGroup);
 		}
@@ -377,12 +355,5 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 			return dropDownView;
 		}
-
-		//		private void switchToSoundFragmentFromScriptFragment() {
-		//			ScriptActivity scriptActivity = ((ScriptActivity) context);
-		//			scriptActivity.switchToFragmentFromScriptFragment(ScriptActivity.FRAGMENT_SOUNDS);
-		//
-		//			setOnSoundInfoListChangedAfterNewListener(context);
-		//		}
 	}
 }

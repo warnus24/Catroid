@@ -36,7 +36,6 @@ import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageActivity;
@@ -62,16 +61,9 @@ public class ProjectActivity extends BaseActivity {
 	protected void onStart() {
 		super.onStart();
 
-		String programName;
-		Bundle bundle = getIntent().getExtras();
-		if (bundle != null) {
-			programName = bundle.getString(Constants.PROJECTNAME_TO_LOAD);
-		} else {
-			programName = ProjectManager.getInstance().getCurrentProject().getName();
-		}
-
 		final ActionBar actionBar = getSupportActionBar();
-		actionBar.setTitle(programName);
+		String title = ProjectManager.getInstance().getCurrentProject().getName();
+		actionBar.setTitle(title);
 		actionBar.setHomeButtonEnabled(true);
 
 		spritesListFragment = (SpritesListFragment) getSupportFragmentManager().findFragmentById(
@@ -80,17 +72,13 @@ public class ProjectActivity extends BaseActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (spritesListFragment != null && spritesListFragment.isLoading == false) {
-			handleShowDetails(spritesListFragment.getShowDetails(), menu.findItem(R.id.show_details));
-		}
+		handleShowDetails(spritesListFragment.getShowDetails(), menu.findItem(R.id.show_details));
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		if (spritesListFragment != null && spritesListFragment.isLoading == false) {
-			getSupportMenuInflater().inflate(R.menu.menu_current_project, menu);
-		}
+		getSupportMenuInflater().inflate(R.menu.menu_current_project, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
