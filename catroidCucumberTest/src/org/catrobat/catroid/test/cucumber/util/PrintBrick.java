@@ -22,40 +22,28 @@
  */
 package org.catrobat.catroid.test.cucumber.util;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.view.View;
-import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.TextView;
-
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.BrickBaseType;
+import org.catrobat.catroid.content.bricks.SpeakBrick;
 
 import java.io.OutputStream;
 import java.util.List;
 
-public class PrintBrick extends BrickBaseType {
+public class PrintBrick extends SpeakBrick {
 	private static final long serialVersionUID = 1L;
 	private String text;
 	private OutputStream outputStream;
 
 	public PrintBrick(Sprite sprite, String text) {
-		this.outputStream = System.//
-				out;
+		this.outputStream = System.out;
 		this.sprite = sprite;
 		this.text = text;
 	}
 
 	public PrintBrick() {
-		this.outputStream = System.//
-				out;
+		this.outputStream = System.out;
 	}
 
 	public void setOutputStream(OutputStream outputStream) {
@@ -63,66 +51,10 @@ public class PrintBrick extends BrickBaseType {
 	}
 
 	@Override
-	public int getRequiredResources() {
-		return NO_RESOURCES;
-	}
-
-	@Override
-	public View getView(Context context, int brickId, BaseAdapter baseAdapter) {
-		if (animationState) {
-			return view;
-		}
-		view = View.inflate(context, R.layout.brick_print, null);
-		view = getViewWithAlpha(alphaValue);
-
-		setCheckboxView(R.id.brick_print_checkbox);
-		final Brick brickInstance = this;
-		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				checked = isChecked;
-				adapter.handleCheck(brickInstance, isChecked);
-			}
-		});
-
-		TextView textView = (TextView) view.findViewById(R.id.brick_print_text);
-		textView.setText(this.text);
-
-		return view;
-	}
-
-	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
-		PrintBrick copyBrick = (PrintBrick) clone();
-		copyBrick.sprite = sprite;
-		return copyBrick;
-	}
-
-	@Override
-	public View getViewWithAlpha(int alphaValue) {
-		if (view != null) {
-			View layout = view.findViewById(R.id.brick_print_layout);
-			Drawable background = layout.getBackground();
-			background.setAlpha(alphaValue);
-			this.alphaValue = (alphaValue);
-
-			TextView printLabel = (TextView) view.findViewById(R.id.brick_print_label);
-			printLabel.setTextColor(printLabel.getTextColors().withAlpha(alphaValue));
-		}
-
-		return view;
-	}
-
-	@Override
 	public Brick clone() {
 		PrintBrick brick = new PrintBrick(sprite, text);
 		brick.outputStream = this.outputStream;
 		return brick;
-	}
-
-	@Override
-	public View getPrototypeView(Context context) {
-		return View.inflate(context, R.layout.brick_print, null);
 	}
 
 	@Override

@@ -420,11 +420,6 @@
     <!--  -->
 
 
-    <!-- Print brick -->
-    <string name="brick_print">Print</string>
-    <!--  -->
-
-
     <!-- defaultValues -->
     <string name="default_project_name">My first program</string>
     <string name="default_project_sprites_mole_name">Mole</string>
