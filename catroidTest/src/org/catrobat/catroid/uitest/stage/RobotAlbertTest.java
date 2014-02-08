@@ -41,7 +41,9 @@ import org.catrobat.catroid.content.bricks.RobotAlbertFrontLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertRgbLedEyeActionBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
+import org.catrobat.catroid.content.bricks.SetVariableBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.robot.albert.ControlCommands;
 import org.catrobat.catroid.stage.StageActivity;
@@ -80,6 +82,8 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 
 	//ArrayList<byte[]> sentCommands = new ArrayList<byte[]>();
 	ByteArrayBuffer sendCommands = new ByteArrayBuffer(1024);
+	UserVariablesContainer userVariablesContainer = null;
+	private Sprite sprite;
 
 	public RobotAlbertTest() {
 		super(MainMenuActivity.class);
@@ -101,6 +105,26 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 
 		createTestproject(projectName);
 
+		//UiTestUtils.getIntoScriptActivityFromMainMenu(solo);
+		solo.clickOnText(solo.getString(R.string.main_menu_continue));
+		solo.sleep(500);
+		solo.clickOnText(spriteName);
+		solo.sleep(500);
+		solo.clickOnText(solo.getString(R.string.scripts));
+		solo.sleep(1000);
+
+		solo.clickOnText("0,0");
+		//solo.sleep(50000);
+		solo.sleep(1000);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.sleep(1000);
+		solo.waitForText(getActivity().getString(R.string.formula_editor_sensor_albert_robot_distance_left));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_albert_robot_distance_left));
+		solo.sleep(1000);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
+
+		//solo.sleep(100000);
+
 		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		assertTrue("Bluetooth not supported on device", bluetoothAdapter != null);
 		if (!bluetoothAdapter.isEnabled()) {
@@ -113,9 +137,10 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		DeviceListActivity deviceListActivity = new DeviceListActivity();
 		Reflection.setPrivateField(deviceListActivity, "autoConnectIDs", autoConnectIDs);
 
-		solo.clickOnText(solo.getString(R.string.main_menu_continue));
-		solo.waitForActivity(ProjectActivity.class.getSimpleName());
-		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
+		/*
+		 * solo.clickOnText(solo.getString(R.string.main_menu_continue));
+		 * solo.waitForActivity(ProjectActivity.class.getSimpleName());
+		 */UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 		solo.sleep(2000);
 
 		ListView deviceList = solo.getCurrentViews(ListView.class).get(0);
@@ -146,6 +171,9 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		Log.d("TestRobotAlbert", "Array comparision successful: " + ok);
 
 		//dummy.sendSetVariableCommandToDummyServer(name, value)
+		double distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+		Log.d("RobotAlbertTest", "left=" + distanceLeft);
+		assertEquals("Variable has the wrong value after stage", 50.0, distanceLeft);
 
 		int lenRec = receivedBuffer.length();
 		int lenSent1 = sendCommands.length();
@@ -205,8 +233,13 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		Script startScript = new StartScript(firstSprite);
 		Script whenScript = new WhenScript(firstSprite);
 		SetLookBrick setLookBrick = new SetLookBrick(firstSprite);
+		sprite = firstSprite;
 
-		byte[] sensorCmd = createSensorCommand();
+		//		UserVariablesContainer userVariablesContainer = new UserVariablesContainer();
+		//		userVariablesContainer.addProjectUserVariable("p1");
+		//		userVariablesContainer.addSpriteUserVariable("sprite_var1");
+
+		//byte[] sensorCmd = createSensorCommand();
 		//sendCommands.append(sensorCmd, 0, sensorCmd.length);
 
 		RobotAlbertMotorActionBrick legoMotorActionBrick = new RobotAlbertMotorActionBrick(firstSprite,
@@ -246,12 +279,15 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		commandLength = command.length;
 		sendCommands.append(command, 0, commandLength);
 
+		SetVariableBrick setVariableBrick = new SetVariableBrick(firstSprite, 0.0);
+
 		//sendCommands.append(sensorCmd, 0, sensorCmd.length);
 
 		whenScript.addBrick(legoMotorActionBrick);
 		whenScript.addBrick(robotAlbertFrontLedBrick);
 		whenScript.addBrick(robotAlbertBuzzerBrick);
 		whenScript.addBrick(robotAlbertRgbLedEyeActionBrick);
+		whenScript.addBrick(setVariableBrick);
 
 		startScript.addBrick(setLookBrick);
 		firstSprite.addScript(startScript);
@@ -260,6 +296,15 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		ArrayList<Sprite> spriteList = new ArrayList<Sprite>();
 		spriteList.add(firstSprite);
 		Project project = UiTestUtils.createProject(projectName, spriteList, getActivity());
+		userVariablesContainer = project.getUserVariables();
+		userVariablesContainer.addProjectUserVariable("p1");
+		//userVariablesContainer.addProjectUserVariable("p2");
+		userVariablesContainer.addSpriteUserVariable("sprite_var1");
+		//userVariablesContainer.addSpriteUserVariable("sprite_var2");
+
+		setVariableBrick = new SetVariableBrick(firstSprite, 0.0);
+		//script.addBrick(setVariableBrick);
+		//setVariableBrick2 = new SetVariableBrick(firstSprite, 1.1);
 
 		String imageName = "image";
 		File image = UiTestUtils.saveFileToProject(projectName, imageName, IMAGE_FILE_ID, getInstrumentation()
@@ -273,25 +318,6 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 
 		StorageHandler.getInstance().saveProject(project);
 
-	}
-
-	private byte[] createSensorCommand() {
-		byte[] buffer = new byte[52];
-		buffer[0] = (byte) 0xAA;
-		buffer[1] = (byte) 0x55;
-		buffer[2] = (byte) 52;
-		buffer[3] = (byte) 6;
-		buffer[13] = (byte) 50;
-		buffer[14] = (byte) 50;
-		buffer[15] = (byte) 50;
-		buffer[16] = (byte) 50;
-		buffer[17] = (byte) 50;
-		buffer[18] = (byte) 50;
-		buffer[19] = (byte) 50;
-		buffer[20] = (byte) 50;
-		buffer[50] = (byte) 0x0D;
-		buffer[51] = (byte) 0x0A;
-		return buffer;
 	}
 
 	private ByteArrayBuffer removeSensorCommands(ByteArrayBuffer buffer) {
