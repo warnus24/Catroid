@@ -181,7 +181,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 				String tempSavingString = "00";
 				tempSavingString = parent.getItemAtPosition(position).toString();
-				if (position < 10) {
+				if (tempSavingString.length() < 2) {
 					pinNumberLowerByte = '0';
 					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
 				} else {
@@ -202,7 +202,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				if (position == 0) {
+				if (position == 1) {
 					pinValue = 'H';
 					ArduinoSendAction.initBluetoothConnection();
 					BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();

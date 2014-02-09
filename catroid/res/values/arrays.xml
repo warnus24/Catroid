@@ -65,7 +65,7 @@
     
     <!-- Arduino values spinner -->
     <string-array name="arduino_value_chooser">
-        <item>@string/high</item>
         <item>@string/low</item>
+        <item>@string/high</item>
     </string-array>
 </resources>

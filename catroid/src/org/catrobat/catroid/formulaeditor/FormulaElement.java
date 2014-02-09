@@ -28,7 +28,6 @@ import android.util.Log;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
-import org.catrobat.catroid.content.actions.ArduinoSendAction;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -285,12 +284,18 @@ public class FormulaElement implements Serializable {
 				char pinNumberHigherByte = left.toString().charAt(left.toString().length() - 3);
 				char pinValue = 'R'; //R stands for read
 				//send request for the pin to Arduino
-				ArduinoSendAction.initBluetoothConnection();
-				BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+				ArduinoReceiveAction.initBluetoothConnection();
+				BluetoothSocket tmpSocket = ArduinoReceiveAction.getBluetoothSocket();
 				//receive answer from Arduino
 				int pinValueFormArduino = ArduinoReceiveAction.receiveDataViaBluetoothSocket(tmpSocket, pinValue,
 						pinNumberLowerByte, pinNumberHigherByte);
-				return (double) pinValueFormArduino;
+				if (pinValueFormArduino == 72) {
+					return 1.0;
+				} else if (pinValueFormArduino == 76) {
+					return 0.0;
+				} else {
+					return (double) pinValueFormArduino;
+				}
 
 		}
 
