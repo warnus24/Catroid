@@ -31,7 +31,7 @@ import org.catrobat.catroid.formulaeditor.Sensors;
 
 import java.util.ArrayList;
 
-public final class SensorRobotAlbert {
+public class SensorRobotAlbert {
 
 	private static SensorRobotAlbert instance = null;
 	private static final int UPDATE_INTERVAL = 50; //New sensordata comes around every 40ms

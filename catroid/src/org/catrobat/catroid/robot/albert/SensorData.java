@@ -22,7 +22,7 @@
  */
 package org.catrobat.catroid.robot.albert;
 
-public final class SensorData {
+public class SensorData {
 
 	private static SensorData instance = null;
 
