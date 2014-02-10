@@ -92,8 +92,8 @@ public class PreStageActivity extends BaseActivity {
 
 	private static RobotAlbert robotAlbert;
 
-	private boolean nxt_active = false;
-	private boolean robot_albert_active = false;
+	private boolean nxtActive = false;
+	private boolean robotAlbertActive = false;
 
 	private Intent returnToActivityIntent = null;
 
@@ -128,7 +128,7 @@ public class PreStageActivity extends BaseActivity {
 				Toast.makeText(PreStageActivity.this, R.string.notification_blueth_err, Toast.LENGTH_LONG).show();
 				resourceFailed();
 			} else if (bluetoothState == BluetoothManager.BLUETOOTH_ALREADY_ON) {
-				nxt_active = true;
+				nxtActive = true;
 
 				if (legoNXT == null) {
 					startBluetoothCommunication(true);
@@ -162,7 +162,7 @@ public class PreStageActivity extends BaseActivity {
 			SensorRobotAlbert sensor = SensorRobotAlbert.getSensorRobotAlbertInstance();
 			sensor.setBooleanAlbertBricks(true);
 
-			String waiting_text = getResources().getString(R.string.connecting_please_wait_robot_albert);
+			String waiting_text = getResources().getString(R.string.connectingPleaseWaitRobotAlbert);
 			String title = getResources().getString(R.string.select_device_robot_albert);
 			bluetoothDeviceName = title;
 			bluetoothDeviceWaitingText = waiting_text;
@@ -173,7 +173,7 @@ public class PreStageActivity extends BaseActivity {
 				resourceFailed();
 			} else if (bluetoothState == BluetoothManager.BLUETOOTH_ALREADY_ON) {
 				Log.d("PrestageActivity", "Bluetooth already on");
-				robot_albert_active = true;
+				robotAlbertActive = true;
 				if (robotAlbert == null) {
 					startBluetoothCommunication(true, title, waiting_text);
 				} else {
@@ -368,9 +368,9 @@ public class PreStageActivity extends BaseActivity {
 		this.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 	}
 
-	private void startBluetoothCommunication(boolean autoConnect, String title, String waiting_text) {
+	private void startBluetoothCommunication(boolean autoConnect, String title, String waitingText) {
 		Log.d("PreStageActivity", "startBluetoothCommunication with custom Title");
-		connectingProgressDialog = ProgressDialog.show(this, "", waiting_text, true);
+		connectingProgressDialog = ProgressDialog.show(this, "", waitingText, true);
 		Intent serverIntent = new Intent(this, DeviceListActivity.class);
 		serverIntent.putExtra(DeviceListActivity.AUTO_CONNECT, autoConnect);
 		serverIntent.putExtra(DeviceListActivity.OTHER_DEVICE_TITLE, title);
@@ -396,7 +396,7 @@ public class PreStageActivity extends BaseActivity {
 			case REQUEST_ENABLE_BLUETOOTH:
 				switch (resultCode) {
 					case Activity.RESULT_OK:
-						nxt_active = true;
+						nxtActive = true;
 						startBluetoothCommunication(true);
 						break;
 					case Activity.RESULT_CANCELED:
@@ -411,7 +411,7 @@ public class PreStageActivity extends BaseActivity {
 				switch (resultCode) {
 					case Activity.RESULT_OK:
 						Log.d("test", "test data=" + data);
-						robot_albert_active = true;
+						robotAlbertActive = true;
 						startBluetoothCommunication(true, bluetoothDeviceName, bluetoothDeviceWaitingText);
 						break;
 					case Activity.RESULT_CANCELED:
@@ -425,14 +425,14 @@ public class PreStageActivity extends BaseActivity {
 			case REQUEST_CONNECT_DEVICE:
 				switch (resultCode) {
 					case Activity.RESULT_OK:
-						if (nxt_active == true) {
+						if (nxtActive == true) {
 							Log.d("LegoNXT", "PreStageActivity:onActivityResult: NXT recognized");
 							legoNXT = new LegoNXT(this, recieveHandler);
 							String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
 							autoConnect = data.getExtras().getBoolean(DeviceListActivity.AUTO_CONNECT);
 							legoNXT.startBTCommunicator(address);
 						}
-						if (robot_albert_active == true) {
+						if (robotAlbertActive == true) {
 							Log.d("RobotAlbert", "PreStageActivity:onActivityResult: Albert recognized");
 							robotAlbert = new RobotAlbert(this, recieveHandler);
 							String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
@@ -523,7 +523,7 @@ public class PreStageActivity extends BaseActivity {
 
 			Log.i("bt", "message" + myMessage.getData().getInt("message"));
 
-			if (nxt_active == true) {
+			if (nxtActive == true) {
 				Log.d("LegoNXT", "recieveHandler:handleMessage: NXT recognized");
 				switch (myMessage.getData().getInt("message")) {
 					case LegoNXTBtCommunicator.STATE_CONNECTED:
@@ -546,7 +546,7 @@ public class PreStageActivity extends BaseActivity {
 				default:
 					return;
 			}
-			if (robot_albert_active == true) {
+			if (robotAlbertActive == true) {
 
 				Log.d("RobotAlbert", "recieveHandler:handleMessage: Albert recognized");
 
@@ -564,10 +564,9 @@ public class PreStageActivity extends BaseActivity {
 						}
 						robotAlbert = null;
 						if (autoConnect) {
-							String waiting_text = getResources()
-									.getString(R.string.connecting_please_wait_robot_albert);
+							String waitingText = getResources().getString(R.string.connectingPleaseWaitRobotAlbert);
 							String title = getResources().getString(R.string.select_device_robot_albert);
-							startBluetoothCommunication(false, title, waiting_text);
+							startBluetoothCommunication(false, title, waitingText);
 						} else {
 							resourceFailed();
 						}

@@ -59,9 +59,7 @@ public class BluetoothManager {
 		}
 	}
 
-	public int activateBluetooth(String title, String waiting_text) {
-
-		Log.d("clown", "clown");
+	public int activateBluetooth(String title, String waitingText) {
 		bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if (bluetoothAdapter == null) {
 			return BLUETOOTH_NOT_SUPPORTED;// Device does not support Bluetooth
@@ -73,8 +71,6 @@ public class BluetoothManager {
 			Log.d("BluetoothManager", "After enable Bluetooth");
 			return BLUETOOTH_ACTIVATING;
 		} else {
-			//Log.d("TAG", "LOOP!!!!!");
-			//connectLegoNXT();
 			Log.d("BluetoothManager", "activateBluetooth:BLUETOOTH_ALREADY_ON");
 			return BLUETOOTH_ALREADY_ON;
 		}

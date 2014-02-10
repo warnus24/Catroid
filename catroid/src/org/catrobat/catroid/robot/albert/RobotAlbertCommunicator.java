@@ -42,6 +42,7 @@
  */
 package org.catrobat.catroid.robot.albert;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,6 +52,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.ArrayList;
 
+//This code is based on the nxt-implementation
 public abstract class RobotAlbertCommunicator extends Thread {
 	public static final int MOTOR_LEFT = 0;
 	public static final int MOTOR_RIGHT = 1;
@@ -83,14 +85,14 @@ public abstract class RobotAlbertCommunicator extends Thread {
 	protected static ArrayList<byte[]> receivedMessages = new ArrayList<byte[]>();
 	protected byte[] returnMessage;
 
-	protected Resources mResources;
+	protected Resources resources;
 
 	protected ControlCommands commands = new ControlCommands();
 	protected SensorData sensors = SensorData.getInstance();
 
 	public RobotAlbertCommunicator(Handler uiHandler, Resources resources) {
 		this.uiHandler = uiHandler;
-		this.mResources = resources;
+		this.resources = resources;
 	}
 
 	public static ArrayList<byte[]> getReceivedMessageList() {
@@ -186,93 +188,62 @@ public abstract class RobotAlbertCommunicator extends Thread {
 		sendCommandMessage(commands.getCommandMessage());
 	}
 
-	protected synchronized void sendCommandMessage(byte[] command_message) {
+	protected synchronized void sendCommandMessage(byte[] commandMessage) {
 		try {
-			sendMessage(command_message);
+			sendMessage(commandMessage);
 		} catch (IOException e) {
 			sendState(STATE_SENDERROR);
 		}
 	}
 
 	// receive messages from the UI
+	@SuppressLint("HandlerLeak")
 	final Handler myHandler = new Handler() {
 		@Override
 		public void handleMessage(Message message) {
-			byte[] command_message;
+
+			byte[] commandMessage;
 			switch (message.what) {
 				case MOTOR_COMMAND:
-					Log.d("Albert", "create command-message");
 					int motor = message.getData().getInt("motor");
 					int speed = message.getData().getInt("speed");
 					switch (motor) {
 						case MOTOR_LEFT:
-							Log.d("Albert", "set speed of left-motor:" + speed);
 							commands.setSpeedOfLeftMotor(speed);
 							break;
 						case MOTOR_RIGHT:
-							Log.d("Albert", "set speed of right-motor:" + speed);
 							commands.setSpeedOfRightMotor(speed);
 							break;
 						case MOTOR_BOTH:
-							Log.d("Albert", "set speed of both-motors:" + speed);
 							commands.setSpeedOfLeftMotor(speed);
 							commands.setSpeedOfRightMotor(speed);
 							break;
 						default:
 							Log.d("Albert", "Handler: ERROR: default-Motor !!!!!!!!!!!!!!!");
 					}
-					command_message = commands.getCommandMessage();
-					Log.d("Albert", "buffer[5]=" + command_message[5] + " (sendFrameNo)");
-					Log.d("Albert", "buffer[2]=" + command_message[2]);
-					Log.d("Albert", "buffer[3]=" + command_message[3]);
-					Log.d("Albert", "buffer[7]=" + command_message[7]);
-					Log.d("Albert", "buffer[8]=" + command_message[8]);
-					Log.d("Albert", "buffer[9]=" + command_message[9]);
-					Log.d("Albert", "buffer[21]=" + command_message[21]);
-					sendCommandMessage(command_message);
+					commandMessage = commands.getCommandMessage();
+					sendCommandMessage(commandMessage);
 					break;
 				case MOTOR_RESET_COMMAND:
-					//int motor = MOTOR_BOTH;
-					Log.d("RobotAlbertC.Handler", "MotorResetCommand received");
 					commands.setSpeedOfLeftMotor(0);
 					commands.setSpeedOfRightMotor(0);
 					commands.setBuzzer(0);
 					commands.setLeftEye(255, 255, 255);
 					commands.setRightEye(255, 255, 255);
-					command_message = commands.getCommandMessage();
-					Log.d("Albert", "buffer[5]=" + command_message[5] + " (sendFrameNo)");
-					Log.d("Albert", "buffer[2]=" + command_message[2]);
-					Log.d("Albert", "buffer[3]=" + command_message[3]);
-					Log.d("Albert", "buffer[7]=" + command_message[7]);
-					Log.d("Albert", "buffer[8]=" + command_message[8]);
-					Log.d("Albert", "buffer[9]=" + command_message[9]);
-					Log.d("Albert", "buffer[10]=" + command_message[10]);
-					Log.d("Albert", "buffer[21]=" + command_message[21]);
-					sendCommandMessage(command_message);
+					commandMessage = commands.getCommandMessage();
+					sendCommandMessage(commandMessage);
 					break;
 				case BUZZER_COMMAND:
-					Log.d("RobotAlbertC.Handler", "BuzzerCommand received");
 					int buzzer = message.getData().getInt("buzzer");
 					commands.setBuzzer(buzzer);
-					command_message = commands.getCommandMessage();
-					Log.d("Albert", "buffer[5]=" + command_message[5] + " (sendFrameNo)");
-					Log.d("Albert", "buffer[2]=" + command_message[2]);
-					Log.d("Albert", "buffer[3]=" + command_message[3]);
-					Log.d("Albert", "buffer[7]=" + command_message[7]);
-					Log.d("Albert", "buffer[8]=" + command_message[8]);
-					Log.d("Albert", "buffer[9]=" + command_message[9]);
-					Log.d("Albert", "buffer[10]=" + command_message[10]);
-					Log.d("Albert", "buffer[21]=" + command_message[21]);
-					sendCommandMessage(command_message);
+					commandMessage = commands.getCommandMessage();
+					sendCommandMessage(commandMessage);
 					break;
 				case FRONT_LED_COMMAND:
-					Log.d("RobotAlbertC.Handler", "FrontLEDCommand received");
 					int status = message.getData().getInt("frontLED");
 					commands.setFrontLed(status);
-					command_message = commands.getCommandMessage();
-					Log.d("Albert", "buffer[5]=" + command_message[5] + " (sendFrameNo)");
-					Log.d("Albert", "buffer[17]=" + command_message[17]);
-					sendCommandMessage(command_message);
+					commandMessage = commands.getCommandMessage();
+					sendCommandMessage(commandMessage);
 					break;
 				case RGB_EYE_COMMAND:
 					Log.d("Albert", "create command-message");
@@ -282,37 +253,26 @@ public abstract class RobotAlbertCommunicator extends Thread {
 					int blue = message.getData().getInt("blue");
 					switch (eye) {
 						case EYE_LEFT:
-							Log.d("Albert", "set left-eye:");
 							commands.setLeftEye(red, green, blue);
 							break;
 						case EYE_RIGHT:
-							Log.d("Albert", "set right-eye:");
 							commands.setRightEye(red, green, blue);
 							break;
 						case EYE_BOTH:
-							Log.d("Albert", "set both-eyes:");
 							commands.setLeftEye(red, green, blue);
 							commands.setRightEye(red, green, blue);
 							break;
 						default:
 							Log.d("Albert", "Handler: ERROR: default-Motor !!!!!!!!!!!!!!!");
 					}
-					command_message = commands.getCommandMessage();
-					Log.d("Albert", "buffer[5]=" + command_message[5] + " (sendFrameNo)");
-					Log.d("Albert", "buffer[11]=" + command_message[11]);
-					Log.d("Albert", "buffer[12]=" + command_message[12]);
-					Log.d("Albert", "buffer[13]=" + command_message[13]);
-					Log.d("Albert", "buffer[14]=" + command_message[14]);
-					Log.d("Albert", "buffer[15]=" + command_message[15]);
-					Log.d("Albert", "buffer[16]=" + command_message[16]);
-					sendCommandMessage(command_message);
+					commandMessage = commands.getCommandMessage();
+					sendCommandMessage(commandMessage);
 					break;
 
 				default:
 					Log.d("RobotAlbertCommunicator", "handleMessage: Default !!!!!!!!!!!!!!!");
 					break;
 			}
-			Log.d("Albert", "Handler:albertMoveForward()");
 		}
 
 	};
