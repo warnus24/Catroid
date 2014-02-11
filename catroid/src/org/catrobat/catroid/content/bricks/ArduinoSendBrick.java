@@ -52,13 +52,15 @@ import java.util.List;
 
 public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedListener {
 
-	//TODO Change this to a proper value
 	private static final long serialVersionUID = 1l;
 	private transient View prototypeView;
 	private transient AdapterView<?> adapterView;
 	private char pinValue = 'H';
 	private char pinNumberLowerByte = '0';
 	private char pinNumberHigherByte = '0';
+
+	public ArduinoSendBrick() {
+	}
 
 	public ArduinoSendBrick(Sprite sprite) {
 		this.sprite = sprite;
@@ -116,7 +118,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 		view = View.inflate(context, R.layout.brick_arduino_send, null);
 		view = getViewWithAlpha(alphaValue);
-
 		setCheckboxView(R.id.brick_arduino_send_checkbox);
 
 		final Brick brickInstance = this;
@@ -131,21 +132,18 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		final Spinner arduinoPinSpinner = (Spinner) view.findViewById(R.id.brick_arduino_send_pin_spinner);
 		final Spinner arduinoValueSpinner = (Spinner) view.findViewById(R.id.brick_arduino_send_value_spinner);
 
-		if (!(checkbox.getVisibility() == View.VISIBLE)) {
-			arduinoPinSpinner.setClickable(true);
-			arduinoPinSpinner.setEnabled(true);
-			arduinoValueSpinner.setClickable(true);
-			arduinoValueSpinner.setEnabled(true);
-		} else {
+		if (checkbox.getVisibility() == View.VISIBLE) {
 			arduinoPinSpinner.setClickable(false);
 			arduinoPinSpinner.setEnabled(false);
 			arduinoValueSpinner.setClickable(false);
 			arduinoValueSpinner.setEnabled(false);
-		}
-
-		if (!(checkbox.getVisibility() == View.VISIBLE)) {
-			arduinoPinSpinner.setOnItemSelectedListener(this);
-			arduinoValueSpinner.setOnItemSelectedListener(this);
+		} else {
+			arduinoPinSpinner.setClickable(true);
+			arduinoPinSpinner.setEnabled(true);
+            arduinoPinSpinner.setOnItemSelectedListener(this);
+			arduinoValueSpinner.setClickable(true);
+			arduinoValueSpinner.setEnabled(true);
+            arduinoValueSpinner.setOnItemSelectedListener(this);
 		}
 
 		final ArrayAdapter<SoundInfo> spinnerAdapter = createArduinoPinAdapter(context);
@@ -166,7 +164,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		arduinoValueSpinner.setAdapter(arduinoValueAdapter);
 
 		arduinoPinSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String tempSavingString = "00";
@@ -175,11 +172,9 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 					pinNumberLowerByte = '0';
 					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
 				} else {
-
 					pinNumberLowerByte = tempSavingString.charAt(tempSavingString.length() - 2);
 					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
 				}
-
 				adapterView = parent;
 			}
 
@@ -189,7 +184,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		});
 
 		arduinoValueSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (position == 1) {
@@ -205,7 +199,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 					ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
 							pinNumberHigherByte);
 				}
-
 				adapterView = parent;
 			}
 
@@ -213,7 +206,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
-
 		return view;
 	}
 
@@ -224,13 +216,11 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		SoundInfo dummySoundInfo = new SoundInfo();
 		dummySoundInfo.setTitle(context.getString(R.string.new_broadcast_message));
 		arrayAdapter.add(dummySoundInfo);
-
 		return arrayAdapter;
 	}
 
 	@Override
 	public View getViewWithAlpha(int alphaValue) {
-
 		if (view != null) {
 			View layout = view.findViewById(R.id.brick_arduino_send_layout);
 			Drawable background = layout.getBackground();
@@ -244,7 +234,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 			this.alphaValue = (alphaValue);
 		}
-
 		return view;
 	}
 
@@ -256,7 +245,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
 		adapterView = parent;
 	}
 
