@@ -279,22 +279,32 @@ public class FormulaElement implements Serializable {
 				return 0.0;
 
 			case ARDUINO:
+				char pinNumberLowerByte = '0';
+				char pinNumberHigherByte = '0';
 				//split up the pin number
-				char pinNumberLowerByte = left.toString().charAt(left.toString().length() - 4);
-				char pinNumberHigherByte = left.toString().charAt(left.toString().length() - 3);
+				if (left.toString().length() > 4) {
+					return -1.0;
+				}
+
+				if (left.toString().length() < 4) {
+					pinNumberHigherByte = left.toString().charAt(left.toString().length() - 3);
+				} else {
+					pinNumberLowerByte = left.toString().charAt(left.toString().length() - 4);
+					pinNumberHigherByte = left.toString().charAt(left.toString().length() - 3);
+				}
 				char pinValue = 'R'; //R stands for read
 				//send request for the pin to Arduino
 				ArduinoReceiveAction.initBluetoothConnection();
 				BluetoothSocket tmpSocket = ArduinoReceiveAction.getBluetoothSocket();
 				//receive answer from Arduino
-				int pinValueFormArduino = ArduinoReceiveAction.receiveDataViaBluetoothSocket(tmpSocket, pinValue,
+				int pinValueFromArduino = ArduinoReceiveAction.receiveDataViaBluetoothSocket(tmpSocket, pinValue,
 						pinNumberLowerByte, pinNumberHigherByte);
-				if (pinValueFormArduino == 72) {
+				if (pinValueFromArduino == 72) {
 					return 1.0;
-				} else if (pinValueFormArduino == 76) {
+				} else if (pinValueFromArduino == 76) {
 					return 0.0;
 				} else {
-					return (double) pinValueFormArduino;
+					return (double) pinValueFromArduino;
 				}
 
 		}
@@ -409,6 +419,10 @@ public class FormulaElement implements Serializable {
 	public void setLeftChild(FormulaElement leftChild) {
 		this.leftChild = leftChild;
 		this.leftChild.parent = this;
+	}
+
+	public FormulaElement getLeftChild() {
+		return leftChild;
 	}
 
 	public void replaceElement(FormulaElement current) {
