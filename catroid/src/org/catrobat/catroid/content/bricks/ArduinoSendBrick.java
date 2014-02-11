@@ -50,11 +50,6 @@ import org.catrobat.catroid.content.actions.ExtendedActions;
 
 import java.util.List;
 
-/**
- * @author Adrian Schnedlitz
- * 
- */
-
 public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedListener {
 
 	//TODO Change this to a proper value
@@ -64,9 +59,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	private char pinValue = 'H';
 	private char pinNumberLowerByte = '0';
 	private char pinNumberHigherByte = '0';
-
-	public ArduinoSendBrick() {
-	}
 
 	public ArduinoSendBrick(Sprite sprite) {
 		this.sprite = sprite;
@@ -95,8 +87,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		Spinner arduinoValueSpinner = (Spinner) prototypeView.findViewById(R.id.brick_arduino_send_value_spinner);
 		arduinoValueSpinner.setFocusableInTouchMode(false);
 		arduinoValueSpinner.setFocusable(false);
-
-		//correct way to fill a spinner with values
 
 		ArrayAdapter<CharSequence> pinSpinnerAdapter = ArrayAdapter.createFromResource(context,
 				R.array.arduino_pin_chooser, android.R.layout.simple_spinner_item);
@@ -176,9 +166,9 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		arduinoValueSpinner.setAdapter(arduinoValueAdapter);
 
 		arduinoPinSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
 				String tempSavingString = "00";
 				tempSavingString = parent.getItemAtPosition(position).toString();
 				if (tempSavingString.length() < 2) {
@@ -278,13 +268,11 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 		protected Context context;
 		protected ArrayAdapter<SoundInfo> spinnerAdapter;
-
 		private boolean isTouchInDropDownView;
 
 		public SpinnerAdapterWrapper(Context context, ArrayAdapter<SoundInfo> spinnerAdapter) {
 			this.context = context;
 			this.spinnerAdapter = spinnerAdapter;
-
 			this.isTouchInDropDownView = false;
 		}
 
@@ -344,7 +332,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		@Override
 		public View getDropDownView(int paramInt, View paramView, ViewGroup paramViewGroup) {
 			View dropDownView = spinnerAdapter.getDropDownView(paramInt, paramView, paramViewGroup);
-
 			dropDownView.setOnTouchListener(new OnTouchListener() {
 				@Override
 				public boolean onTouch(View paramView, MotionEvent paramMotionEvent) {
@@ -352,7 +339,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 					return false;
 				}
 			});
-
 			return dropDownView;
 		}
 	}
