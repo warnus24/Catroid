@@ -261,6 +261,17 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		activity.setDeleteModeListener(this);
 	}
 
+	private int getRequiredRessources() {
+		ArrayList<Sprite> spriteList = (ArrayList<Sprite>) ProjectManager.getInstance().getCurrentProject()
+				.getSpriteList();
+
+		int ressources = Brick.NO_RESOURCES;
+		for (Sprite sprite : spriteList) {
+			ressources |= sprite.getRequiredResources();
+		}
+		return ressources;
+	}
+
 	@Override
 	public void onStart() {
 		super.onStart();

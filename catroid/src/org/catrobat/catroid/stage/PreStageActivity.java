@@ -119,7 +119,6 @@ public class PreStageActivity extends BaseActivity {
 		}
 
 		if ((requiredResources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
-			Log.d("LegoNXT", "LegoNXT-Brick recognized");
 			bluetoothManager = new BluetoothManager(this);
 
 			int bluetoothState = bluetoothManager.activateBluetooth();

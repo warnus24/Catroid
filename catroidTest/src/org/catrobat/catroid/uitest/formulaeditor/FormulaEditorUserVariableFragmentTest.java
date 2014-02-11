@@ -510,14 +510,14 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 
 		createUserVariableFromVariableFragment("global", true);
 		createUserVariableFromVariableFragment("local", false);
-
+		solo.sleep(1000);
 		String selectAll = solo.getString(R.string.select_all).toUpperCase(Locale.getDefault());
 
-		solo.sleep(400);
-
+		solo.sleep(1000);
 		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, getActivity());
+		solo.sleep(1000);
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
-
+		solo.sleep(1000);
 		solo.clickOnText(selectAll);
 		solo.sleep(100);
 		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
@@ -529,8 +529,9 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
 
 		UiTestUtils.clickOnCheckBox(solo, 0);
-		UiTestUtils.clickOnCheckBox(solo, 1);
-		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
+		solo.sleep(100);
+		UiTestUtils.clickOnCheckBox(solo, 1);		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
+		solo.sleep(200);
 	}
 
 	private void createProject(String projectName) throws InterruptedException {
