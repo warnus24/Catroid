@@ -294,7 +294,6 @@ public class InternFormulaParser {
 		}
 		if (functionTree.getValue().equals(Functions.ARDUINO.name())) {
 			if ((functionTree.getLeftChild().getValue().charAt(0) > '1')
-					|| (functionTree.getLeftChild().getValue().charAt(0) < '0')
 					|| (functionTree.getLeftChild().getValue().length() > 2)) {
 				throw new InternFormulaParserException("Parse Error");
 			}

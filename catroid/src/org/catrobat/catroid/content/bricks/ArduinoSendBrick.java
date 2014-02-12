@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.content.bricks;
 
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
@@ -45,7 +44,6 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.actions.ArduinoSendAction;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 
 import java.util.List;
@@ -140,10 +138,10 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		} else {
 			arduinoPinSpinner.setClickable(true);
 			arduinoPinSpinner.setEnabled(true);
-            arduinoPinSpinner.setOnItemSelectedListener(this);
+			arduinoPinSpinner.setOnItemSelectedListener(this);
 			arduinoValueSpinner.setClickable(true);
 			arduinoValueSpinner.setEnabled(true);
-            arduinoValueSpinner.setOnItemSelectedListener(this);
+			arduinoValueSpinner.setOnItemSelectedListener(this);
 		}
 
 		final ArrayAdapter<SoundInfo> spinnerAdapter = createArduinoPinAdapter(context);
@@ -188,16 +186,16 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (position == 1) {
 					pinValue = 'H';
-					ArduinoSendAction.initBluetoothConnection();
-					BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
-					ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
-							pinNumberHigherByte);
+					//					ArduinoSendAction.initBluetoothConnection();
+					//					BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+					//					ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
+					//							pinNumberHigherByte);
 				} else {
 					pinValue = 'L';
-					ArduinoSendAction.initBluetoothConnection();
-					BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
-					ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
-							pinNumberHigherByte);
+					//					ArduinoSendAction.initBluetoothConnection();
+					//					BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+					//					ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
+					//							pinNumberHigherByte);
 				}
 				adapterView = parent;
 			}
