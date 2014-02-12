@@ -307,6 +307,7 @@ public class ProgramSteps extends AndroidTestCase {
 	@And("^I wait until the program has stopped$")
 	public void wait_until_program_has_stopped() throws InterruptedException {
 		programHasFinished.tryAcquire(1, 60, TimeUnit.SECONDS);
+		I_wait_for_at_least_milliseconds(500);
 	}
 
 	@And("^I wait for at least (\\d+) milliseconds?$")

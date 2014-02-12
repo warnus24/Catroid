@@ -37,6 +37,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.BroadcastSequenceMap;
 import org.catrobat.catroid.common.BroadcastWaitSequenceMap;
 import org.catrobat.catroid.common.LookData;
@@ -377,6 +378,24 @@ public class Look extends Image {
 			addOrRestartAction(broadcastWaitAction);
 		}
 		BroadcastWaitSequenceMap.put(broadcastMessage, actionList);
+	}
+
+	private boolean handleAction(Action action) {
+		for (Sprite sprites : ProjectManager.getInstance().getCurrentProject().getSpriteList()) {
+			for (Action actionOfLook : sprites.look.getActions()) {
+				if (action == actionOfLook) {
+					actionOfLook.restart();
+					return true;
+				} else {
+					if (actionOfLook instanceof SequenceAction && ((SequenceAction) actionOfLook).getActions().size > 0
+							&& ((SequenceAction) actionOfLook).getActions().get(0) == action) {
+						actionOfLook.restart();
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	private class BrightnessContrastShader extends ShaderProgram {
