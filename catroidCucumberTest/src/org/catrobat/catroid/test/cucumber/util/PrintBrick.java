@@ -37,13 +37,15 @@ public class PrintBrick extends SpeakBrick {
 	private OutputStream outputStream;
 
 	public PrintBrick(Sprite sprite, String text) {
-		this.outputStream = System.out;
+		this.outputStream = System.//
+		out;
 		this.sprite = sprite;
 		this.text = text;
 	}
 
 	public PrintBrick() {
-		this.outputStream = System.out;
+		this.outputStream = System.//
+		out;
 	}
 
 	public void setOutputStream(OutputStream outputStream) {
