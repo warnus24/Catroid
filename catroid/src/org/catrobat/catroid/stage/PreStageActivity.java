@@ -50,7 +50,10 @@ import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Queue;
 
 @SuppressWarnings("deprecation")
 public class PreStageActivity extends Activity {
@@ -65,6 +68,7 @@ public class PreStageActivity extends Activity {
 	private ProgressDialog connectingProgressDialog;
 	private static TextToSpeech textToSpeech;
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
+	private Queue<Bundle> BTResourceQueue;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,7 @@ public class PreStageActivity extends Activity {
 		requiredResourceCounter = Integer.bitCount(requiredResources);
 
 		setContentView(R.layout.activity_prestage);
+		BTResourceQueue = new LinkedList<Bundle>();
 
 		if ((requiredResources & Brick.TEXT_TO_SPEECH) > 0) {
 			Intent checkIntent = new Intent();
@@ -85,10 +90,25 @@ public class PreStageActivity extends Activity {
 				legoNXT.destroyCommunicator();
 				legoNXT = null;
 			}
-			startBluetoothCommunication();
+			Bundle bundle = new Bundle();
+			bundle.putInt(BTDeviceActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_LEGO_NXT);
+			bundle.putString(BTDeviceActivity.RESOURCE_NAME_TEXT, getResources().getString(R.string.select_device_nxt));
+			BTResourceQueue.add(bundle);
+			//startBluetoothCommunication();
 		}
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
+		}
+		if (true) {
+			initNextBTRessource();
+		}
+	}
+
+	private void initNextBTRessource() {
+		if (BTResourceQueue.iterator().hasNext()) {
+			Iterator<Bundle> iterator = BTResourceQueue.iterator();
+			startBluetoothCommunication(iterator.next());
+			iterator.remove();
 		}
 	}
 
@@ -148,10 +168,14 @@ public class PreStageActivity extends Activity {
 		finish();
 	}
 
-	private void startBluetoothCommunication() {
+	private void startBluetoothCommunication(Bundle bundle) {
 		connectingProgressDialog = ProgressDialog.show(this, "",
 				getResources().getString(R.string.connecting_please_wait), true);
 		Intent serverIntent = new Intent(this, BTDeviceActivity.class);
+		Bundle data = new Bundle();
+		data.putInt(BTDeviceActivity.RESOURCE_CONSTANT, bundle.getInt(BTDeviceActivity.RESOURCE_CONSTANT));
+		data.putString(BTDeviceActivity.RESOURCE_NAME_TEXT, bundle.getString(BTDeviceActivity.RESOURCE_NAME_TEXT));
+		serverIntent.putExtras(data);
 		this.startActivityForResult(serverIntent, REQUEST_ENABLE_BLUETOOTH);
 	}
 
@@ -174,17 +198,20 @@ public class PreStageActivity extends Activity {
 			case REQUEST_ENABLE_BLUETOOTH:
 				switch (resultCode) {
 					case Activity.RESULT_OK:
-						legoNXT = new LegoNXT(this, recieveHandler);
-						String address = data.getExtras().getString(BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
-						legoNXT.startBTCommunicator(address);
+						Bundle bundle = data.getExtras();
+						switch (bundle.getInt(BTDeviceActivity.RESOURCE_CONSTANT)) {
+							case (Brick.BLUETOOTH_LEGO_NXT):
+								legoNXT = new LegoNXT(this, recieveHandler);
+								String address = data.getExtras().getString(BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
+								legoNXT.startBTCommunicator(address);
+								break;
+						}
 						break;
 					case BTDeviceActivity.BLUETOOTH_ACTIVATION_CANCELED:
 						connectingProgressDialog.dismiss();
 						resourceFailed();
 						break;
 					case Activity.RESULT_CANCELED:
-						//Toast.makeText(PreStageActivity.this, R.string.notification_blueth_err, Toast.LENGTH_LONG)
-						//.show();
 						Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_LONG).show();
 						connectingProgressDialog.dismiss();
 						resourceFailed();
@@ -269,6 +296,7 @@ public class PreStageActivity extends Activity {
 				case LegoNXTBtCommunicator.STATE_CONNECTED:
 					connectingProgressDialog.dismiss();
 					resourceInitialized();
+					initNextBTRessource();
 					break;
 				case LegoNXTBtCommunicator.STATE_CONNECTERROR:
 					Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_SHORT).show();

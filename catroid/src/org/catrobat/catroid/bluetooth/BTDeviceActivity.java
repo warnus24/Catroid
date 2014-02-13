@@ -77,13 +77,16 @@ public class BTDeviceActivity extends Activity {
 	public static final int BLUETOOTH_ACTIVATION_CANCELED = -101;
 
 	public static final String PAIRING = "pairing";
-	public static final String AUTO_CONNECT = "auto_connect";
 	public static final String DEVICE_NAME_AND_ADDRESS = "device_infos";
 	public static final String EXTRA_DEVICE_ADDRESS = "device_address";
+	public static final String RESOURCE_CONSTANT = "resource_constant";
+	public static final String RESOURCE_NAME_TEXT = "resource_text";
 
 	private BluetoothAdapter btAdapter;
 	private ArrayAdapter<String> pairedDevicesArrayAdapter;
 	private ArrayAdapter<String> newDevicesArrayAdapter;
+	private int resourceConstant;
+	private String resourceText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +94,12 @@ public class BTDeviceActivity extends Activity {
 
 		this.setVisible(false);
 
+		resourceConstant = this.getIntent().getExtras().getInt(RESOURCE_CONSTANT);
+		resourceText = this.getIntent().getExtras().getString(RESOURCE_NAME_TEXT);
+
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.device_list);
-		setTitle(R.string.select_device);
+		setTitle(resourceText);
 
 		setResult(Activity.RESULT_CANCELED);
 
@@ -269,6 +275,7 @@ public class BTDeviceActivity extends Activity {
 			data.putString(DEVICE_NAME_AND_ADDRESS, info);
 			data.putString(EXTRA_DEVICE_ADDRESS, address);
 			data.putBoolean(PAIRING, av.getId() == R.id.new_devices);
+			data.putInt(RESOURCE_CONSTANT, resourceConstant);
 			intent.putExtras(data);
 			setResult(RESULT_OK, intent);
 			finish();
