@@ -85,6 +85,11 @@ public class ProgramSteps extends AndroidTestCase {
 		Cucumber.put(Cucumber.KEY_PROJECT, project);
 	}
 
+	@Given("^Object '(.+)' has the following scripts?$")
+	public void Object_has_the_following_scripts(String object) {
+		// not used (yet)
+	}
+
 	@Given("^this program has an Object '(.+)'$")
 	public void program_has_object(String name) {
 		int lookId = org.catrobat.catroid.R.drawable.default_project_mole_digged_out;
@@ -92,6 +97,11 @@ public class ProgramSteps extends AndroidTestCase {
 		Project project = projectManager.getCurrentProject();
 		Sprite sprite = Util.addNewObjectWithLook(getContext(), project, name, lookId);
 		Cucumber.put(Cucumber.KEY_CURRENT_OBJECT, sprite);
+	}
+
+	@When("^program started$")
+	public void program_started() {
+		object_has_start_script(((Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT)).getName());
 	}
 
 	@Given("^'(.+)' has a Start script$")
@@ -118,6 +128,12 @@ public class ProgramSteps extends AndroidTestCase {
 
 		sprite.addScript(script);
 		Cucumber.put(Cucumber.KEY_CURRENT_SCRIPT, script);
+	}
+
+	@When("^I receive '(.+)'$")
+	public void I_receive(String message) {
+		object_has_a_when_broadcast_received_script(((Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT)).getName(),
+				message);
 	}
 
 	@Given("^'(.+)' has a WhenBroadcastReceived '(.+)' script$")
@@ -190,6 +206,11 @@ public class ProgramSteps extends AndroidTestCase {
 		script.addBrick(brick);
 	}
 
+	@Given("^repeat (\\d+) times?$")
+	public void repeat_times(int iterations) {
+		script_has_repeat_times_brick(iterations);
+	}
+
 	@And("^this script has a Repeat (\\d+) times brick$")
 	public void script_has_repeat_times_brick(int iterations) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
@@ -198,6 +219,11 @@ public class ProgramSteps extends AndroidTestCase {
 		Brick brick = new RepeatBrick(object, new Formula(iterations));
 		Cucumber.put(Cucumber.KEY_LOOP_BEGIN_BRICK, brick);
 		script.addBrick(brick);
+	}
+
+	@And("^end of loop$")
+	public void end_of_loop() {
+		script_has_repeat_end_brick();
 	}
 
 	@And("^this script has a Repeat end brick$")
@@ -210,6 +236,11 @@ public class ProgramSteps extends AndroidTestCase {
 		script.addBrick(brick);
 	}
 
+	@And("^broadcast '(.+)'$")
+	public void broadcast(String message) {
+		script_has_broadcast_brick(message);
+	}
+
 	@And("^this script has a Broadcast '(.+)' brick$")
 	public void script_has_broadcast_brick(String message) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
@@ -217,6 +248,11 @@ public class ProgramSteps extends AndroidTestCase {
 
 		BroadcastBrick brick = new BroadcastBrick(object, message);
 		script.addBrick(brick);
+	}
+
+	@Given("^broadcast '(.+)' and wait$")
+	public void broadcast_and_wait(String message) {
+		script_has_broadcast_and_wait_brick(message);
 	}
 
 	@And("^this script has a BroadcastAndWait '(.+)' brick$")
@@ -228,6 +264,11 @@ public class ProgramSteps extends AndroidTestCase {
 		script.addBrick(brick);
 	}
 
+	@Given("^wait (\\d+|\\d+\\.\\d+) seconds?$")
+	public void wait_seconds(float seconds) {
+		script_has_wait_seconds_brick(seconds);
+	}
+
 	@And("^this script has a Wait (\\d+) milliseconds brick$")
 	public void script_has_wait_milliseconds_brick(int millis) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
@@ -237,13 +278,18 @@ public class ProgramSteps extends AndroidTestCase {
 		script.addBrick(brick);
 	}
 
-	@And("^this script has a Wait (\\d+.?\\d*) seconds? brick$")
-	public void script_has_wait_seconds_brick(int seconds) {
+	@And("^this script has a Wait (\\d+|\\d+\\.\\d+) seconds? brick$")
+	public void script_has_wait_seconds_brick(float seconds) {
 		Sprite object = (Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT);
 		Script script = (Script) Cucumber.get(Cucumber.KEY_CURRENT_SCRIPT);
 
-		WaitBrick brick = new WaitBrick(object, seconds * 1000);
+		WaitBrick brick = new WaitBrick(object, (int) (seconds * 1000));
 		script.addBrick(brick);
+	}
+
+	@And("^print '(.+)'$")
+	public void print(String text) {
+		script_has_a_print_brick(text);
 	}
 
 	@And("^this script has a Print brick with '(.*)'$")

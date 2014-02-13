@@ -122,16 +122,16 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
     Given 'test object' has a Start script
     And this script has a Repeat 3 times brick
     And this script has a Broadcast 'Send the second broadcast message' brick
-    And this script has a Wait 200 milliseconds brick
+    And this script has a Wait 400 milliseconds brick
     And this script has a Print brick with 'c'
     And this script has a Repeat end brick
     Given 'test object' has a WhenBroadcastReceived 'Send the second broadcast message' script
-    And this script has a Broadcast 'Print b after 0.1 seconds, then d after another 0.3 seconds' brick
+    And this script has a Broadcast 'Print b after 0.1 seconds, then d after another 0.5 seconds' brick
     And this script has a Print brick with 'a'
-    Given 'test object' has a WhenBroadcastReceived 'Print b after 0.1 seconds, then d after another 0.3 seconds' script
+    Given 'test object' has a WhenBroadcastReceived 'Print b after 0.1 seconds, then d after another 0.5 seconds' script
     And this script has a Wait 100 milliseconds brick
     And this script has a Print brick with 'b'
-    And this script has a Wait 300 milliseconds brick
+    And this script has a Wait 500 milliseconds brick
     And this script has a Print brick with 'd'
     When I start the program
     And I wait until the program has stopped
