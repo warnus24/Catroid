@@ -99,6 +99,10 @@ public class PreStageActivity extends Activity {
 
 			}
 		}
+		if ((requiredResources & Brick.BLUETOOTH_ARDUINO) > 0) {
+			//Arduino Bluetooth Toast here
+		}
+
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}
