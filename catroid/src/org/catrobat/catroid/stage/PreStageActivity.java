@@ -39,10 +39,10 @@ import android.widget.Toast;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-
 import org.catrobat.catroid.bluetooth.BTDeviceActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.actions.ArduinoSendAction;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
@@ -71,14 +71,12 @@ public class PreStageActivity extends Activity {
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
 	private Queue<Bundle> BTResourceQueue;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		int requiredResources = getRequiredRessources();
 		requiredResourceCounter = Integer.bitCount(requiredResources);
-
 
 		setContentView(R.layout.activity_prestage);
 		BTResourceQueue = new LinkedList<Bundle>();
@@ -101,7 +99,11 @@ public class PreStageActivity extends Activity {
 			//startBluetoothCommunication();
 		}
 		if ((requiredResources & Brick.BLUETOOTH_ARDUINO) > 0) {
-			//Arduino Bluetooth Toast here
+			Bundle bundle = new Bundle();
+			bundle.putInt(BTDeviceActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_ARDUINO);
+			bundle.putString(BTDeviceActivity.RESOURCE_NAME_TEXT,
+					getResources().getString(R.string.select_device_arduino));
+			BTResourceQueue.add(bundle);
 		}
 
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
@@ -176,7 +178,6 @@ public class PreStageActivity extends Activity {
 		finish();
 	}
 
-
 	private void startBluetoothCommunication(Bundle bundle) {
 		connectingProgressDialog = ProgressDialog.show(this, "",
 				getResources().getString(R.string.connecting_please_wait), true);
@@ -216,6 +217,14 @@ public class PreStageActivity extends Activity {
 								legoNXT = new LegoNXT(this, recieveHandler);
 								String address = data.getExtras().getString(BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
 								legoNXT.startBTCommunicator(address);
+								break;
+							case (Brick.BLUETOOTH_ARDUINO):
+								String arduinoMacAddress = data.getExtras().getString(
+										BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
+								ArduinoSendAction.initBluetoothConnection(arduinoMacAddress);
+
+								connectingProgressDialog.dismiss();
+								resourceInitialized();
 								break;
 						}
 						break;
