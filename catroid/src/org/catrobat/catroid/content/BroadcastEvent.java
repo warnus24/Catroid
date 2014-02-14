@@ -30,18 +30,9 @@ public class BroadcastEvent extends Event {
 
 	private BroadcastType type;
 	private String broadcastMessage;
-	private Sprite senderSprite;
 	private boolean run = true;
 	private int numberOfReceivers = 0;
 	private int numberOfFinishedReceivers = 0;
-
-	public Sprite getSenderSprite() {
-		return senderSprite;
-	}
-
-	public void setSenderSprite(Sprite senderSprite) {
-		this.senderSprite = senderSprite;
-	}
 
 	public String getBroadcastMessage() {
 		return broadcastMessage;

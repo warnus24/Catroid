@@ -40,7 +40,6 @@ public class ExtendedActions extends Actions {
 	public static BroadcastAction broadcast(Sprite sprite, String broadcastMessage) {
 		BroadcastAction action = action(BroadcastAction.class);
 		BroadcastEvent event = new BroadcastEvent();
-		event.setSenderSprite(sprite);
 		event.setBroadcastMessage(broadcastMessage);
 		event.setType(BroadcastType.broadcast);
 		action.setBroadcastEvent(event);
@@ -50,7 +49,6 @@ public class ExtendedActions extends Actions {
 	public static BroadcastAction broadcastFromWaiter(Sprite sprite, String broadcastMessage) {
 		BroadcastAction action = action(BroadcastAction.class);
 		BroadcastEvent event = new BroadcastEvent();
-		event.setSenderSprite(sprite);
 		event.setBroadcastMessage(broadcastMessage);
 		event.setRun(false);
 		event.setType(BroadcastType.broadcastWait);
