@@ -81,7 +81,8 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
 			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
 			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
-			R.string.formula_editor_sensor_arduino_read_pin_value };
+			R.string.formula_editor_sensor_arduino_read_pin_value_digital,
+			R.string.formula_editor_sensor_arduino_read_pin_value_analog };
 
 	private String tag;
 	private String[] items;

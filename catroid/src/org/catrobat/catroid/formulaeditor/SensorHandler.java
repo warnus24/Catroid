@@ -44,7 +44,8 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 
 	private float loudness = 0f;
 
-	private float arduinoPinValue = 0f;
+	private float arduinoPinValueDigital = 0f;
+	private float arduinoPinValueAnalog = 0f;
 
 	private SensorHandler(Context context) {
 		sensorManager = new SensorManager(
@@ -65,7 +66,8 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		instance.sensorManager.registerListener(instance, instance.rotationVectorSensor,
 				android.hardware.SensorManager.SENSOR_DELAY_NORMAL);
 		instance.sensorManager.registerListener(instance, Sensors.LOUDNESS);
-		instance.sensorManager.registerListener(instance, Sensors.ARDUINO);
+		instance.sensorManager.registerListener(instance, Sensors.ARDUINODIGITAL);
+		instance.sensorManager.registerListener(instance, Sensors.ARDUINOANALOG);
 	}
 
 	public static void registerListener(SensorEventListener listener) {
@@ -151,8 +153,11 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 			case LOUDNESS:
 				return Double.valueOf(instance.loudness);
 
-			case ARDUINO:
-				return Double.valueOf(instance.arduinoPinValue);
+			case ARDUINODIGITAL:
+				return Double.valueOf(instance.arduinoPinValueDigital);
+
+			case ARDUINOANALOG:
+				return Double.valueOf(instance.arduinoPinValueAnalog);
 		}
 		return 0d;
 	}
