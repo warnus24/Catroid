@@ -25,7 +25,6 @@ package org.catrobat.catroid.bluetooth;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.res.Resources;
 
 import org.catrobat.catroid.stage.StageObserver;
 
@@ -40,7 +39,6 @@ public class BTConnection extends StageObserver {
 	private BluetoothSocket btSocket = null;
 	private String macAddress;
 	private UUID uiid;
-	private Resources resources;
 
 	// don't use this UUID in Production, NXT uses it, check other Projects (Albert, Ardoino..) and use similar UUID
 	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -49,12 +47,11 @@ public class BTConnection extends StageObserver {
 		CONNECTED, NOT_CONNECTED, ERROR_ADAPTER, ERROR_SOCKET, ERROR_BONDING, ERROR_CLOSING
 	}
 
-	public BTConnection(Resources resources, String macAddress) {
-		this(resources, macAddress, SERIAL_PORT_SERVICE_CLASS_UUID);
+	public BTConnection(String macAddress) {
+		this(macAddress, SERIAL_PORT_SERVICE_CLASS_UUID);
 	}
 
-	public BTConnection(Resources resources, String macAddress, UUID uiid) {
-		this.resources = resources;
+	public BTConnection(String macAddress, UUID uiid) {
 		this.macAddress = macAddress;
 		this.uiid = uiid;
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -146,15 +143,14 @@ public class BTConnection extends StageObserver {
 	protected void errorToasts(States state) {
 		switch (state) {
 			case ERROR_ADAPTER:
-				sendToast(resources.getString(android.R.string.no_paired_nxt));
+				//Toast.makeText(this, resources.getString(R.string.no_paired_nxt), Toast.LENGTH_LONG).show();
 				break;
 			case ERROR_SOCKET:
-				sendToast(resources.getString(android.R.string.no_paired_nxt));
+				//sendToast(resources.getString(R.string.no_paired_nxt));
 				break;
 			case ERROR_BONDING:
-				sendToast(resources.getString(android.R.string.pairing_message));
+				//sendToast(resources.getString(R.string.pairing_message));
 				break;
 		}
 	}
-
 }

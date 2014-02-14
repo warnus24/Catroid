@@ -104,7 +104,7 @@ public abstract class LegoNXTCommunicator extends BTConnection implements Runnab
 	protected Resources resources;
 
 	public LegoNXTCommunicator(Handler uiHandler, Resources resources, String macAddress) {
-		super(resources, macAddress);
+		super(macAddress);
 		this.uiHandler = uiHandler;
 		this.resources = resources;
 	}
