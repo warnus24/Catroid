@@ -127,7 +127,8 @@ public class PreStageActivity extends Activity {
 			textToSpeech.shutdown();
 		}
 		if (legoNXT != null) {
-			legoNXT.pauseCommunicator();
+			legoNXT.destroyCommunicator();
+			legoNXT = null;
 		}
 	}
 

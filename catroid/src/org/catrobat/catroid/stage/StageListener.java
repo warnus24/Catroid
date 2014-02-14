@@ -59,8 +59,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Observable;
 
-public class StageListener implements ApplicationListener {
+public class StageListener extends Observable implements ApplicationListener {
 
 	private static final int AXIS_WIDTH = 4;
 	private static final float DELTA_ACTIONS_DIVIDER_MAXIMUM = 50f;
@@ -181,6 +182,9 @@ public class StageListener implements ApplicationListener {
 			Gdx.input.setInputProcessor(stage);
 		}
 
+		setChanged();
+		notifyObservers(StageObserver.ObservedEvent.STAGE_CREATE);
+
 		axes = new Texture(Gdx.files.internal("stage/red_pixel.bmp"));
 		skipFirstFrameForAutomaticScreenshot = true;
 		if (checkIfAutomaticScreenshotShouldBeTaken) {
@@ -196,6 +200,10 @@ public class StageListener implements ApplicationListener {
 		if (reloadProject) {
 			return;
 		}
+
+		setChanged();
+		notifyObservers(StageObserver.ObservedEvent.STAGE_RESUME);
+
 		paused = false;
 		SoundManager.getInstance().resume();
 		for (Sprite sprite : sprites) {
@@ -207,6 +215,10 @@ public class StageListener implements ApplicationListener {
 		if (finished || reloadProject) {
 			return;
 		}
+
+		setChanged();
+		notifyObservers(StageObserver.ObservedEvent.STAGE_PAUSE);
+
 		paused = true;
 		SoundManager.getInstance().pause();
 		for (Sprite sprite : sprites) {
@@ -227,6 +239,10 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void resume() {
+
+		setChanged();
+		notifyObservers(StageObserver.ObservedEvent.STAGE_RESUME);
+
 		if (!paused) {
 			SoundManager.getInstance().resume();
 			for (Sprite sprite : sprites) {
@@ -245,6 +261,10 @@ public class StageListener implements ApplicationListener {
 		if (finished) {
 			return;
 		}
+
+		setChanged();
+		notifyObservers(StageObserver.ObservedEvent.STAGE_PAUSE);
+
 		if (!paused) {
 			SoundManager.getInstance().pause();
 			for (Sprite sprite : sprites) {
@@ -255,6 +275,10 @@ public class StageListener implements ApplicationListener {
 
 	public void finish() {
 		finished = true;
+
+		setChanged();
+		notifyObservers(StageObserver.ObservedEvent.STAGE_DISPOSE);
+
 		SoundManager.getInstance().clear();
 		if (thumbnail != null && !makeAutomaticScreenshot) {
 			saveScreenshot(thumbnail, SCREENSHOT_AUTOMATIC_FILE_NAME);

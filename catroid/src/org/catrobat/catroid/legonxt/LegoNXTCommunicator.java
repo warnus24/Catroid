@@ -49,6 +49,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import org.catrobat.catroid.bluetooth.BTConnection;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -58,7 +60,7 @@ import java.util.ArrayList;
  * Objects of this class can either be run as standalone thread or controlled
  * by the owners, i.e. calling the send/recive methods by themselves.
  */
-public abstract class LegoNXTCommunicator extends Thread {
+public abstract class LegoNXTCommunicator extends BTConnection implements Runnable {
 	public static final int MOTOR_A = 0;
 	public static final int MOTOR_B = 1;
 	public static final int MOTOR_C = 2;
@@ -101,7 +103,8 @@ public abstract class LegoNXTCommunicator extends Thread {
 
 	protected Resources resources;
 
-	public LegoNXTCommunicator(Handler uiHandler, Resources resources) {
+	public LegoNXTCommunicator(Handler uiHandler, Resources resources, String macAddress) {
+		super(macAddress);
 		this.uiHandler = uiHandler;
 		this.resources = resources;
 	}
@@ -151,7 +154,7 @@ public abstract class LegoNXTCommunicator extends Thread {
 	 * Closes the bluetooth connection. On error the method either sends a message
 	 * to it's owner or creates an exception in the case of no message handler.
 	 */
-	public abstract void destroyNXTconnection() throws IOException;
+	public abstract void destroyNXTconnection();
 
 	/**
 	 * Sends a message on the opened OutputStream

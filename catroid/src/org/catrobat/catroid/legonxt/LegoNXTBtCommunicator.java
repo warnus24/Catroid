@@ -42,20 +42,12 @@
  */
 package org.catrobat.catroid.legonxt;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.res.Resources;
 import android.os.Handler;
-
-import org.catrobat.catroid.R;
-import org.catrobat.catroid.bluetooth.BTConnectable;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
-import java.util.UUID;
 
 /**
  * This class is for talking to a LEGO NXT robot via bluetooth.
@@ -65,27 +57,17 @@ import java.util.UUID;
  */
 public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 
-	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	private OutputStream nxtOutputStream;
+	private InputStream nxtInputStream;
+
+	//private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	// this is the only OUI registered by LEGO, see http://standards.ieee.org/regauth/oui/index.shtml
 
-	private BluetoothAdapter btAdapter;
-	private BluetoothSocket nxtBTsocket = null;
-	private OutputStream nxtOutputStream = null;
-	private InputStream nxtInputStream = null;
+	private LegoNXT myOwner;
 
-	private String macAddress;
-	private BTConnectable myOwner;
-
-	public LegoNXTBtCommunicator(BTConnectable myOwner, Handler uiHandler, BluetoothAdapter btAdapter,
-			Resources resources) {
-		super(uiHandler, resources);
-
+	public LegoNXTBtCommunicator(LegoNXT myOwner, Handler uiHandler, Resources resources, String macAddress) {
+		super(uiHandler, resources, macAddress);
 		this.myOwner = myOwner;
-		this.btAdapter = btAdapter;
-	}
-
-	public void setMACAddress(String mMACaddress) {
-		this.macAddress = mMACaddress;
 	}
 
 	/**
@@ -94,12 +76,6 @@ public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 	 */
 	@Override
 	public void run() {
-
-		try {
-			createNXTconnection();
-		} catch (IOException e) {
-		}
-
 		while (connected) {
 			try {
 				returnMessage = receiveMessage();
@@ -127,71 +103,28 @@ public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 	 *      On error the method either sends a message to it's owner or creates an exception in the
 	 *      case of no message handler.
 	 */
+
 	@Override
 	public void createNXTconnection() throws IOException {
-		try {
-			BluetoothSocket nxtBTSocketTemporary;
-			BluetoothDevice nxtDevice = null;
-			nxtDevice = btAdapter.getRemoteDevice(macAddress);
-			if (nxtDevice == null) {
-				if (uiHandler == null) {
-					throw new IOException();
-				} else {
-					sendToast(resources.getString(R.string.no_paired_nxt));
-					sendState(STATE_CONNECTERROR);
-					return;
-				}
-			}
-
-			nxtBTSocketTemporary = nxtDevice.createRfcommSocketToServiceRecord(SERIAL_PORT_SERVICE_CLASS_UUID);
-			try {
-
-				nxtBTSocketTemporary.connect();
-
-			} catch (IOException e) {
-				if (myOwner.isPairing()) {
-					if (uiHandler != null) {
-						sendToast(resources.getString(R.string.pairing_message));
-						sendState(STATE_CONNECTERROR_PAIRING);
-					} else {
-						throw e;
-					}
-					return;
-				}
-
-				// try another method for connection, this should work on the HTC desire, credits to Michael Biermann
-				try {
-
-					Method mMethod = nxtDevice.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
-					nxtBTSocketTemporary = (BluetoothSocket) mMethod.invoke(nxtDevice, Integer.valueOf(1));
-					nxtBTSocketTemporary.connect();
-				} catch (Exception e1) {
-					if (uiHandler == null) {
-						throw new IOException();
-					} else {
-						sendState(STATE_CONNECTERROR);
-					}
-					return;
-				}
-			}
-			nxtBTsocket = nxtBTSocketTemporary;
-			nxtInputStream = nxtBTsocket.getInputStream();
-			nxtOutputStream = nxtBTsocket.getOutputStream();
-			connected = true;
-		} catch (IOException e) {
-			if (uiHandler == null) {
-				throw e;
-			} else {
-				if (myOwner.isPairing()) {
-					sendToast(resources.getString(R.string.pairing_message));
-				}
+		States state = connect();
+		switch (state) {
+			case CONNECTED:
+				sendState(STATE_CONNECTED);
+				nxtOutputStream = getBTSocket().getOutputStream();
+				nxtInputStream = getBTSocket().getInputStream();
+				break;
+			case ERROR_ADAPTER:
 				sendState(STATE_CONNECTERROR);
-				return;
-			}
-		}
-		// everything was OK
-		if (uiHandler != null) {
-			sendState(STATE_CONNECTED);
+				throw new IOException();
+			case ERROR_BONDING:
+				sendState(STATE_CONNECTERROR_PAIRING);
+				throw new IOException();
+			case ERROR_SOCKET:
+				sendState(STATE_CONNECTERROR);
+				throw new IOException();
+
+			default:
+				throw new IOException();
 		}
 	}
 
@@ -200,29 +133,36 @@ public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 	 * to it's owner or creates an exception in the case of no message handler.
 	 */
 	@Override
-	public void destroyNXTconnection() throws IOException {
-
-		if (connected) {
-			stopAllNXTMovement();
-		}
-
+	public void destroyNXTconnection() {
+		stopAllNXTMovement();
 		try {
-			if (nxtBTsocket != null) {
-				connected = false;
-				nxtBTsocket.close();
-				nxtBTsocket = null;
+			if (nxtOutputStream != null) {
+				nxtOutputStream.close();
 			}
-
-			nxtInputStream = null;
-			nxtOutputStream = null;
-
-		} catch (IOException e) {
-			if (uiHandler == null) {
-				throw e;
-			} else {
-				sendToast(resources.getString(R.string.problem_at_closing));
+			if (nxtInputStream != null) {
+				nxtInputStream.close();
 			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
+		//
+		//		try {
+		//			if (nxtBTsocket != null) {
+		//				connected = false;
+		//				nxtBTsocket.close();
+		//				nxtBTsocket = null;
+		//			}
+		//
+		//			nxtInputStream = null;
+		//			nxtOutputStream = null;
+		//
+		//		} catch (IOException e) {
+		//			if (uiHandler == null) {
+		//				throw e;
+		//			} else {
+		//				sendToast(resources.getString(R.string.problem_at_closing));
+		//			}
+		//		}
 	}
 
 	@Override
@@ -274,6 +214,24 @@ public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 		nxtInputStream.read(returnMessage);
 		//Log.i("bt", returnMessage.toString());
 		return returnMessage;
+	}
+
+	@Override
+	public void onStagePause() {
+		stopAllNXTMovement();
+		super.onStagePause();
+	}
+
+	@Override
+	public void onStageResume() {
+		//stopAllNXTMovement();
+		super.onStageResume();
+	}
+
+	@Override
+	public void onStageDispose() {
+		destroyNXTconnection();
+		super.onStageDispose();
 	}
 
 }
