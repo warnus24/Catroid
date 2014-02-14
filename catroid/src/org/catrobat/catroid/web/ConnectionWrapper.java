@@ -67,8 +67,8 @@ public class ConnectionWrapper {
 			HttpRequest.setConnectionFactory(new OkConnectionFactory(okHttpClient));
 			HttpRequest uploadRequest = HttpRequest.post(urlString).chunk(0);
 
-			for (String key : postValues.keySet()) {
-				uploadRequest.part(key, postValues.get(key));
+			for (HashMap.Entry<String, String> entry : postValues.entrySet()) {
+				uploadRequest.part(entry.getKey(), entry.getValue());
 			}
 			File file = new File(filePath);
 			uploadRequest.part(fileTag, fileName, file);
