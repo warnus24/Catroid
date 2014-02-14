@@ -51,7 +51,7 @@ import java.io.IOException;
 
 public class LegoNXT {
 
-	private static final int REQUEST_CONNECT_DEVICE = 1000;
+	//private static final int REQUEST_CONNECT_DEVICE = 1000;
 	private static final int TONE_COMMAND = 101;
 
 	private LegoNXTCommunicator myNXTCommunicator;

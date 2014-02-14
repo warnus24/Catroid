@@ -63,11 +63,11 @@ public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 	//private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	// this is the only OUI registered by LEGO, see http://standards.ieee.org/regauth/oui/index.shtml
 
-	private LegoNXT myOwner;
+	//private LegoNXT myOwner;
 
 	public LegoNXTBtCommunicator(LegoNXT myOwner, Handler uiHandler, Resources resources, String macAddress) {
 		super(uiHandler, resources, macAddress);
-		this.myOwner = myOwner;
+		//this.myOwner = myOwner;
 	}
 
 	/**
