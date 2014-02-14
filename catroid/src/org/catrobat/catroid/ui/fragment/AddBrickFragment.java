@@ -68,7 +68,6 @@ import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.UserBrickScriptActivity;
 import org.catrobat.catroid.ui.adapter.PrototypeBrickAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddBrickFragment extends SherlockListFragment implements DeleteModeListener, PrototypeBrickAdapter.OnBrickCheckedListener {
@@ -259,17 +258,6 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 
 		ScriptActivity activity = (ScriptActivity) scriptFragment.getActivity();
 		activity.setDeleteModeListener(this);
-	}
-
-	private int getRequiredRessources() {
-		ArrayList<Sprite> spriteList = (ArrayList<Sprite>) ProjectManager.getInstance().getCurrentProject()
-				.getSpriteList();
-
-		int ressources = Brick.NO_RESOURCES;
-		for (Sprite sprite : spriteList) {
-			ressources |= sprite.getRequiredResources();
-		}
-		return ressources;
 	}
 
 	@Override
