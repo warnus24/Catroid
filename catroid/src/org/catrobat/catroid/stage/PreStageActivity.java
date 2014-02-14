@@ -68,7 +68,7 @@ public class PreStageActivity extends Activity {
 	private ProgressDialog connectingProgressDialog;
 	private static TextToSpeech textToSpeech;
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
-	private Queue<Bundle> BTResourceQueue;
+	private Queue<Bundle> btResourceQueue;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,7 @@ public class PreStageActivity extends Activity {
 		requiredResourceCounter = Integer.bitCount(requiredResources);
 
 		setContentView(R.layout.activity_prestage);
-		BTResourceQueue = new LinkedList<Bundle>();
+		btResourceQueue = new LinkedList<Bundle>();
 
 		if ((requiredResources & Brick.TEXT_TO_SPEECH) > 0) {
 			Intent checkIntent = new Intent();
@@ -86,14 +86,10 @@ public class PreStageActivity extends Activity {
 			startActivityForResult(checkIntent, REQUEST_TEXT_TO_SPEECH);
 		}
 		if ((requiredResources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
-			if (legoNXT != null) {
-				legoNXT.destroyCommunicator();
-				legoNXT = null;
-			}
 			Bundle bundle = new Bundle();
 			bundle.putInt(BTDeviceActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_LEGO_NXT);
 			bundle.putString(BTDeviceActivity.RESOURCE_NAME_TEXT, getResources().getString(R.string.select_device_nxt));
-			BTResourceQueue.add(bundle);
+			btResourceQueue.add(bundle);
 			//startBluetoothCommunication();
 		}
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
@@ -105,8 +101,8 @@ public class PreStageActivity extends Activity {
 	}
 
 	private void initNextBTRessource() {
-		if (BTResourceQueue.iterator().hasNext()) {
-			Iterator<Bundle> iterator = BTResourceQueue.iterator();
+		if (btResourceQueue.iterator().hasNext()) {
+			Iterator<Bundle> iterator = btResourceQueue.iterator();
 			startBluetoothCommunication(iterator.next());
 			iterator.remove();
 		}
