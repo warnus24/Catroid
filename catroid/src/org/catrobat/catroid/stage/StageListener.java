@@ -187,6 +187,10 @@ public class StageListener implements ApplicationListener {
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 		initScreenMode();
 
+
+		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
+		initScreenMode();
+
 	}
 
 	void menuResume() {
@@ -253,7 +257,6 @@ public class StageListener implements ApplicationListener {
 	public void finish() {
 		finished = true;
 		SoundManager.getInstance().clear();
-
 		if (thumbnail != null && !makeAutomaticScreenshot) {
 			saveScreenshot(thumbnail, SCREENSHOT_AUTOMATIC_FILE_NAME);
 		}
@@ -466,15 +469,12 @@ public class StageListener implements ApplicationListener {
 		return testPixels;
 	}
 
-
 	public void toggleScreenMode() {
 		switch (project.getScreenMode()) {
 			case MAXIMIZE:
-
 				project.setScreenMode(ScreenModes.STRETCH);
 				break;
 			case STRETCH:
-
 				project.setScreenMode(ScreenModes.MAXIMIZE);
 				break;
 		}

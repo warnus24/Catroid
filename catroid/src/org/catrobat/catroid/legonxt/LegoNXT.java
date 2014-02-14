@@ -50,7 +50,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import org.catrobat.catroid.bluetooth.BTConnectable;
-import org.catrobat.catroid.bluetooth.DeviceListActivity;
+import org.catrobat.catroid.bluetooth.BTDeviceActivity;
 
 import java.io.IOException;
 
@@ -156,7 +156,7 @@ public class LegoNXT implements BTConnectable {
 	}
 
 	public void connectLegoNXT() {
-		Intent serverIntent = new Intent(this.activity, DeviceListActivity.class);
+		Intent serverIntent = new Intent(this.activity, BTDeviceActivity.class);
 		activity.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 
 	}
