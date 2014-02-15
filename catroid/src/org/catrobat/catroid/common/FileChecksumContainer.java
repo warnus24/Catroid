@@ -28,25 +28,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FileChecksumContainer implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	private class FileInfo {
+		private final String path;
 		private int usageCounter;
-		private String path;
+
+		private FileInfo(String path) {
+			this.path = path;
+		}
+
+		private boolean isUnused() {
+			return usageCounter < 1;
+		}
 	}
 
 	private Map<String, FileInfo> checksumFileInfoMap = new HashMap<String, FileInfo>();
 
-	public boolean addChecksum(String checksum, String path) {
+	public boolean addChecksum(String checksum, String filepath) {
 		if (checksumFileInfoMap.containsKey(checksum)) {
 			FileInfo fileInfo = checksumFileInfoMap.get(checksum);
-			++fileInfo.usageCounter;
+			fileInfo.usageCounter++;
 			return false;
 		} else {
-			FileInfo fileInfo = new FileInfo();
+			FileInfo fileInfo = new FileInfo(filepath);
 			fileInfo.usageCounter = 1;
-			fileInfo.path = path;
 			checksumFileInfoMap.put(checksum, fileInfo);
 			return true;
 		}
@@ -69,39 +75,35 @@ public class FileChecksumContainer implements Serializable {
 	}
 
 	public void incrementUsage(String filepath) throws FileNotFoundException {
-		String checksum = null;
-		for (Map.Entry<String, FileInfo> entry : checksumFileInfoMap.entrySet()) {
-
-			if (entry.getValue().path.equalsIgnoreCase(filepath)) {
-				checksum = entry.getKey();
-				break;
-			}
-		}
-		if (checksum == null) {
-			throw new FileNotFoundException();
-		}
-		FileInfo fileInfo = checksumFileInfoMap.get(checksum);
+		FileInfo fileInfo = getFileInfo(filepath);
 		fileInfo.usageCounter++;
 	}
 
 	public boolean decrementUsage(String filepath) throws FileNotFoundException {
-		String checksum = null;
-		for (Map.Entry<String, FileInfo> entry : checksumFileInfoMap.entrySet()) {
-
-			if (entry.getValue().path.equalsIgnoreCase(filepath)) {
-				checksum = entry.getKey();
-				break;
-			}
-		}
-		if (checksum == null) {
-			throw new FileNotFoundException();
-		}
-		FileInfo fileInfo = checksumFileInfoMap.get(checksum);
+		FileInfo fileInfo = getFileInfo(filepath);
 		fileInfo.usageCounter--;
-		if (fileInfo.usageCounter < 1) {
-			checksumFileInfoMap.remove(checksum);
+
+		if (fileInfo.isUnused()) {
+			checksumFileInfoMap.remove(getChecksum(filepath));
 			return true;
 		}
 		return false;
+	}
+
+	private FileInfo getFileInfo(String filepath) throws FileNotFoundException {
+		String checksum = getChecksum(filepath);
+		if (checksum == null) {
+			throw new FileNotFoundException();
+		}
+		return checksumFileInfoMap.get(checksum);
+	}
+
+	private String getChecksum(String filepath) {
+		for (Map.Entry<String, FileInfo> entry : checksumFileInfoMap.entrySet()) {
+			if (entry.getValue().path.equalsIgnoreCase(filepath)) {
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 }
