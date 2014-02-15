@@ -93,7 +93,7 @@ public class BTDeviceActivity extends Activity {
 
 		this.setVisible(false);
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if (extras != null) {
             resourceConstant = extras.getInt(RESOURCE_CONSTANT);
             setTitle(extras.getString(RESOURCE_NAME_TEXT));
         } else {
@@ -130,8 +130,6 @@ public class BTDeviceActivity extends Activity {
 
 		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 		this.registerReceiver(receiver, filter);
-
-		//btAdapter = BluetoothAdapter.getDefaultAdapter();
 
 		int activateBluetooth = activateBluetooth();
 		if (activateBluetooth == BLUETOOTH_NOT_SUPPORTED) {

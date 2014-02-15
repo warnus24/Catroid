@@ -90,7 +90,6 @@ public class PreStageActivity extends Activity {
 			bundle.putInt(BTDeviceActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_LEGO_NXT);
 			bundle.putString(BTDeviceActivity.RESOURCE_NAME_TEXT, getResources().getString(R.string.select_device_nxt));
 			btResourceQueue.add(bundle);
-			//startBluetoothCommunication();
 		}
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();

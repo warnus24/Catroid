@@ -56,8 +56,8 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
