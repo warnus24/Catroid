@@ -63,9 +63,6 @@ public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 	private OutputStream nxtOutputStream;
 	private InputStream nxtInputStream;
 
-	//private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	// this is the only OUI registered by LEGO, see http://standards.ieee.org/regauth/oui/index.shtml
-
 	//private LegoNXT myOwner;
 
 	public LegoNXTBtCommunicator(LegoNXT myOwner, Handler uiHandler, Resources resources, String macAddress) {
@@ -86,7 +83,6 @@ public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 						&& ((returnMessage[0] == LCPMessage.REPLY_COMMAND) || (returnMessage[0] == LCPMessage.DIRECT_COMMAND_NOREPLY))) {
 					dispatchMessage(returnMessage);
 				}
-
 			} catch (IOException e) {
 				// don't inform the user when connection is already closed
 				if (connected) {

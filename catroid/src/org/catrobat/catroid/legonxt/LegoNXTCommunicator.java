@@ -190,7 +190,6 @@ public abstract class LegoNXTCommunicator extends BTConnection implements Runnab
 	}
 
 	protected void sendMessageAndState(byte[] message) {
-
 		try {
 			sendMessage(message);
 		} catch (IOException e) {
@@ -221,12 +220,12 @@ public abstract class LegoNXTCommunicator extends BTConnection implements Runnab
 		switch (message[1]) {
 
 			case LCPMessage.SET_OUTPUT_STATE:
-				//sendState(RECEIVED_MESSAGE, message);
+				sendState(RECEIVED_MESSAGE, message);
 				analyzeMessageSetOutputState(message);
 				break;
 
 			case LCPMessage.GET_OUTPUT_STATE:
-				//sendState(RECEIVED_MESSAGE, message);
+				sendState(RECEIVED_MESSAGE, message);
 				receivedMessages.add(message);
 				analyzeMessageGetOutputState(message);
 				break;

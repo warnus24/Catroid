@@ -42,11 +42,12 @@ public class BTConnection extends StageObserver {
     private static final String TAG = BTConnection.class.getSimpleName();
 
 
-	private BluetoothAdapter btAdapter = null;
-	private BluetoothDevice btDevice = null;
-	private BluetoothSocket btSocket = null;
-	private final String macAddress;
-	private final UUID uuid;
+	private final BluetoothAdapter btAdapter;
+    private final String macAddress;
+    private final UUID uuid;
+	private BluetoothDevice btDevice;
+	private BluetoothSocket btSocket;
+    private States state;
 
 	public static enum States {
 		CONNECTED, NOT_CONNECTED, ERROR_ADAPTER, ERROR_SOCKET, ERROR_BONDING, ERROR_CLOSING
@@ -60,11 +61,11 @@ public class BTConnection extends StageObserver {
 		this.macAddress = macAddress;
 		this.uuid = uuid;
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
+        state = States.NOT_CONNECTED;
 	}
 
 	public States connect() {
 		try {
-
 			if (btAdapter.getState() != BluetoothAdapter.STATE_ON) {
 				//sendToast(resources.getString(R.string.no_paired_nxt));
 				return States.ERROR_ADAPTER;
@@ -121,6 +122,10 @@ public class BTConnection extends StageObserver {
 	public BluetoothSocket getBTSocket() {
 		return btSocket;
 	}
+
+    public States getState() {
+        return state;
+    }
 
 	@Override
 	public void onStageCreate() {
