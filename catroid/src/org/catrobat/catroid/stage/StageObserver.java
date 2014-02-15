@@ -31,7 +31,7 @@ public abstract class StageObserver implements Observer {
 	}
 
 	@Override
-	public void update(Observable observable, Object data) {
+	public final void update(Observable observable, Object data) {
 		if (data instanceof ObservedEvent) {
 			ObservedEvent event = (ObservedEvent) data;
 			switch (event) {
