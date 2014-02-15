@@ -25,6 +25,7 @@ package org.catrobat.catroid.bluetooth;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import org.catrobat.catroid.stage.StageObserver;
 
@@ -34,14 +35,18 @@ import java.util.UUID;
 
 public class BTConnection extends StageObserver {
 
+    // don't use this UUID in Production, NXT uses it, check other Projects (Albert, Ardoino..) and use similar UUID
+    private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
+    private static final String reflectionMethodName = "createRfcommSocket";
+    private static final String TAG = BTConnection.class.getSimpleName();
+
+
 	private BluetoothAdapter btAdapter = null;
 	private BluetoothDevice btDevice = null;
 	private BluetoothSocket btSocket = null;
 	private String macAddress;
-	private UUID uiid;
-
-	// don't use this UUID in Production, NXT uses it, check other Projects (Albert, Ardoino..) and use similar UUID
-	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	private UUID uuid;
 
 	public static enum States {
 		CONNECTED, NOT_CONNECTED, ERROR_ADAPTER, ERROR_SOCKET, ERROR_BONDING, ERROR_CLOSING
@@ -51,9 +56,9 @@ public class BTConnection extends StageObserver {
 		this(macAddress, SERIAL_PORT_SERVICE_CLASS_UUID);
 	}
 
-	public BTConnection(String macAddress, UUID uiid) {
+	public BTConnection(String macAddress, UUID uuid) {
 		this.macAddress = macAddress;
-		this.uiid = uiid;
+		this.uuid = uuid;
 		btAdapter = BluetoothAdapter.getDefaultAdapter();
 	}
 
@@ -71,32 +76,31 @@ public class BTConnection extends StageObserver {
 				return States.ERROR_SOCKET;
 			}
 
-			btSocket = btDevice.createRfcommSocketToServiceRecord(uiid);
+			btSocket = btDevice.createRfcommSocketToServiceRecord(uuid);
 			try {
 				btSocket.connect();
 			} catch (IOException ioEx) {
 				if (btDevice.getBondState() != BluetoothDevice.BOND_BONDED) {
 					errorToasts(States.ERROR_BONDING);
-					ioEx.printStackTrace();
+                    Log.e(TAG, Log.getStackTraceString(ioEx));
 					return States.ERROR_BONDING;
 				}
 
 				// try another method for connection, this should work on the HTC desire, credits to Michael Biermann
 				try {
-					Method mMethod = btDevice.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
+					Method mMethod = btDevice.getClass().getMethod(reflectionMethodName, new Class[] { int.class });
 					btSocket = (BluetoothSocket) mMethod.invoke(btDevice, Integer.valueOf(1));
 					btSocket.connect();
 					return States.CONNECTED;
-				} catch (Exception e1) {
-					e1.printStackTrace();
-					return States.ERROR_SOCKET;
+				} catch (Exception ex) {
+                    Log.e(TAG, Log.getStackTraceString(ex));
+                    return States.ERROR_SOCKET;
 				}
 			}
 		} catch (IOException e) {
-
 			if (btDevice.getBondState() != BluetoothDevice.BOND_BONDED) {
 				errorToasts(States.ERROR_BONDING);
-				e.printStackTrace();
+                Log.e(TAG, Log.getStackTraceString(e));
 				return States.ERROR_BONDING;
 			}
 			return States.ERROR_SOCKET;
@@ -111,7 +115,7 @@ public class BTConnection extends StageObserver {
 				btSocket = null;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+            Log.e(TAG, Log.getStackTraceString(e));
 		}
 	}
 

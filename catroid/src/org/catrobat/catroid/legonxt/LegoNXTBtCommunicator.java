@@ -44,6 +44,7 @@ package org.catrobat.catroid.legonxt;
 
 import android.content.res.Resources;
 import android.os.Handler;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,6 +57,8 @@ import java.io.OutputStream;
  * by the owners, i.e. calling the send/recive methods by themselves.
  */
 public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
+
+    private static final String TAG = LegoNXTBtCommunicator.class.getSimpleName();
 
 	private OutputStream nxtOutputStream;
 	private InputStream nxtInputStream;
@@ -143,7 +146,7 @@ public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 				nxtInputStream.close();
 			}
 		} catch (IOException ex) {
-			ex.printStackTrace();
+            Log.e(TAG, Log.getStackTraceString(ex));
 		}
 		//
 		//		try {
