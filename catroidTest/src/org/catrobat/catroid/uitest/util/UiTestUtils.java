@@ -172,8 +172,6 @@ public final class UiTestUtils {
 	public static final String DEFAULT_TEST_PROJECT_NAME_MIXED_CASE = "TeStPROjeCt";
 	public static final String COPIED_PROJECT_NAME = "copiedProject";
 	public static final String JAPANESE_PROJECT_NAME = "これは例の説明です。";
-
-	//private static final int ACTION_MODE_ACCEPT_IMAGE_BUTTON_INDEX = 0;
 	private static final int DRAG_FRAMES = 35;
 
 	public static final int SCRIPTS_INDEX = 0;
