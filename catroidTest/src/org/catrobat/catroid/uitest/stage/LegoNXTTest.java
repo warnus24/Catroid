@@ -56,6 +56,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -80,7 +81,7 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 	private final String projectName = UiTestUtils.PROJECTNAME1;
 	private final String spriteName = "testSprite";
 
-	ArrayList<int[]> commands = new ArrayList<int[]>();
+	List<int[]> commands = new ArrayList<int[]>();
 
 	public LegoNXTTest() {
 		super(MainMenuActivity.class);
@@ -132,7 +133,7 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 		solo.clickOnScreen(ScreenValues.SCREEN_WIDTH / 2, ScreenValues.SCREEN_HEIGHT / 2);
 		solo.sleep(10000);
 
-		ArrayList<byte[]> executedCommands = LegoNXTCommunicator.getReceivedMessageList();
+		List<byte[]> executedCommands = LegoNXTCommunicator.getReceivedMessageList();
 		assertEquals("Commands seem to have not been executed! Connected to correct device??", commands.size(),
 				executedCommands.size());
 
