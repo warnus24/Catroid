@@ -95,12 +95,12 @@ public class PreStageActivity extends Activity {
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}
-		if (true) {
-			initNextBTRessource();
+		if (!btResourceQueue.isEmpty()) {
+			initNextBTResource();
 		}
 	}
 
-	private void initNextBTRessource() {
+	private void initNextBTResource() {
 		if (btResourceQueue.iterator().hasNext()) {
 			Iterator<Bundle> iterator = btResourceQueue.iterator();
 			startBluetoothCommunication(iterator.next());
@@ -293,7 +293,7 @@ public class PreStageActivity extends Activity {
 				case LegoNXTBtCommunicator.STATE_CONNECTED:
 					connectingProgressDialog.dismiss();
 					resourceInitialized();
-					initNextBTRessource();
+					initNextBTResource();
 					break;
 				case LegoNXTBtCommunicator.STATE_CONNECTERROR:
 					Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_SHORT).show();
