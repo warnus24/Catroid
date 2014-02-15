@@ -284,7 +284,6 @@ public abstract class LegoNXTCommunicator extends BTConnection implements Runnab
 	protected void waitSomeTime(int millis) {
 		try {
 			Thread.sleep(millis);
-
 		} catch (InterruptedException e) {
 		}
 	}

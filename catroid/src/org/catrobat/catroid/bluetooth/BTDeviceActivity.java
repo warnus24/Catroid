@@ -92,13 +92,16 @@ public class BTDeviceActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		this.setVisible(false);
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            resourceConstant = extras.getInt(RESOURCE_CONSTANT);
+            setTitle(extras.getString(RESOURCE_NAME_TEXT));
+        } else {
+            throw new NullPointerException("Extras Missing");
+        }
 
-		resourceConstant = this.getIntent().getExtras().getInt(RESOURCE_CONSTANT);
-        String resourceText = this.getIntent().getExtras().getString(RESOURCE_NAME_TEXT);
-
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.device_list);
-		setTitle(resourceText);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setContentView(R.layout.device_list);
 
 		setResult(Activity.RESULT_CANCELED);
 
@@ -161,16 +164,12 @@ public class BTDeviceActivity extends Activity {
 	private void addPairedDevices() {
 		Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
 
-		//BluetoothDevice legoNXT = null;
-		//int possibleConnections = 0;
-		if (pairedDevices.size() > 0) {
+		if (pairedDevices != null && pairedDevices.size() > 0) {
 			findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
 			for (BluetoothDevice device : pairedDevices) {
 				pairedDevicesArrayAdapter.add(device.getName() + "-" + device.getAddress());
 			}
-		}
-
-		if (pairedDevices.size() == 0) {
+		} else {
 			String noDevices = getResources().getText(R.string.none_paired).toString();
 			pairedDevicesArrayAdapter.add(noDevices);
 		}
@@ -257,7 +256,7 @@ public class BTDeviceActivity extends Activity {
 		}
 	}
 
-	private OnItemClickListener deviceClickListener = new OnItemClickListener() {
+	private final OnItemClickListener deviceClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> av, View view, int arg2, long arg3) {
 			String info = ((TextView) view).getText().toString();

@@ -45,8 +45,8 @@ public class BTConnection extends StageObserver {
 	private BluetoothAdapter btAdapter = null;
 	private BluetoothDevice btDevice = null;
 	private BluetoothSocket btSocket = null;
-	private String macAddress;
-	private UUID uuid;
+	private final String macAddress;
+	private final UUID uuid;
 
 	public static enum States {
 		CONNECTED, NOT_CONNECTED, ERROR_ADAPTER, ERROR_SOCKET, ERROR_BONDING, ERROR_CLOSING
@@ -71,11 +71,6 @@ public class BTConnection extends StageObserver {
 			}
 
 			btDevice = btAdapter.getRemoteDevice(macAddress);
-			if (btDevice == null) {
-				errorToasts(States.ERROR_SOCKET);
-				return States.ERROR_SOCKET;
-			}
-
 			btSocket = btDevice.createRfcommSocketToServiceRecord(uuid);
 			try {
 				btSocket.connect();

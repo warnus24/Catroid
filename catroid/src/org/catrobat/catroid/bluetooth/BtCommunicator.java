@@ -24,7 +24,7 @@ package org.catrobat.catroid.bluetooth;
 
 import android.os.Handler;
 
-// TODO Not needed for LegoNXT anymore, functionality now in LegoNXTBtCommunicator! Maybe refactor similary for arduino or move to arduino package...
+// TODO Not needed for LegoNXT anymore, functionality now in LegoNXTBtCommunicator! Maybe refactor similarly for ardoino or move to ardoino package...
 public interface BtCommunicator {
 
 	// this is the only OUI registered by LEGO, see http://standards.ieee.org/regauth/oui/index.shtml
