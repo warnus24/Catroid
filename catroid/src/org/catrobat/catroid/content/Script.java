@@ -24,10 +24,14 @@ package org.catrobat.catroid.content;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import org.catrobat.catroid.content.bricks.ArduinoSendBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfLogicElseBrick;
 import org.catrobat.catroid.content.bricks.IfLogicEndBrick;
+import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
+import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick;
+import org.catrobat.catroid.content.bricks.LegoNxtPlayToneBrick;
 import org.catrobat.catroid.content.bricks.LoopBeginBrick;
 import org.catrobat.catroid.content.bricks.LoopEndBrick;
 import org.catrobat.catroid.content.bricks.NestingBrick;
@@ -146,16 +150,24 @@ public abstract class Script implements Serializable {
 		return -1;
 	}
 
-	//
-	//	public boolean containsBluetoothBrick() {
-	//		for (Brick brick : brickList) {
-	//			if ((brick instanceof NXTMotorActionBrick) || (brick instanceof NXTMotorTurnAngleBrick)
-	//					|| (brick instanceof NXTMotorStopBrick) || (brick instanceof NXTPlayToneBrick)) {
-	//				return true;
-	//			}
-	//		}
-	//		return false;
-	//	}
+	public boolean containsBluetoothLegoBrick() {
+		for (Brick brick : brickList) {
+			if ((brick instanceof LegoNxtMotorActionBrick) || (brick instanceof LegoNxtMotorStopBrick)
+					|| (brick instanceof LegoNxtPlayToneBrick)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean containsBluetoothArduinoBrick() {
+		for (Brick brick : brickList) {
+			if (brick instanceof ArduinoSendBrick) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public Brick getBrick(int index) {
 		if (index < 0 || index >= brickList.size()) {
