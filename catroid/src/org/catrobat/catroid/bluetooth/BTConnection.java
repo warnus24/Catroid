@@ -38,7 +38,7 @@ public class BTConnection extends StageObserver {
     // don't use this UUID in Production, NXT uses it, check other Projects (Albert, Ardoino..) and use similar UUID
     private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    private static final String reflectionMethodName = "createRfcommSocket";
+    private static final String REFLECTION_METHOD_NAME = "createRfcommSocket";
     private static final String TAG = BTConnection.class.getSimpleName();
 
 
@@ -88,7 +88,7 @@ public class BTConnection extends StageObserver {
 
 				// try another method for connection, this should work on the HTC desire, credits to Michael Biermann
 				try {
-					Method mMethod = btDevice.getClass().getMethod(reflectionMethodName, new Class[] { int.class });
+					Method mMethod = btDevice.getClass().getMethod(REFLECTION_METHOD_NAME, new Class[] { int.class });
 					btSocket = (BluetoothSocket) mMethod.invoke(btDevice, Integer.valueOf(1));
 					btSocket.connect();
 					return States.CONNECTED;

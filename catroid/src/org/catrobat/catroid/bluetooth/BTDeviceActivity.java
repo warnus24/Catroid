@@ -86,7 +86,6 @@ public class BTDeviceActivity extends Activity {
 	private ArrayAdapter<String> pairedDevicesArrayAdapter;
 	private ArrayAdapter<String> newDevicesArrayAdapter;
 	private int resourceConstant;
-	private String resourceText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +94,7 @@ public class BTDeviceActivity extends Activity {
 		this.setVisible(false);
 
 		resourceConstant = this.getIntent().getExtras().getInt(RESOURCE_CONSTANT);
-		resourceText = this.getIntent().getExtras().getString(RESOURCE_NAME_TEXT);
+        String resourceText = this.getIntent().getExtras().getString(RESOURCE_NAME_TEXT);
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.device_list);
@@ -261,7 +260,6 @@ public class BTDeviceActivity extends Activity {
 	private OnItemClickListener deviceClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> av, View view, int arg2, long arg3) {
-
 			String info = ((TextView) view).getText().toString();
 			if (info.lastIndexOf('-') != info.length() - 18) {
 				return;

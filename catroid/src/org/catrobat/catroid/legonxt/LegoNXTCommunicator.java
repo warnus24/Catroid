@@ -53,6 +53,7 @@ import org.catrobat.catroid.bluetooth.BTConnection;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is for talking to a LEGO NXT robot via bluetooth.
@@ -98,7 +99,7 @@ public abstract class LegoNXTCommunicator extends BTConnection implements Runnab
 	protected Handler uiHandler;
 	private static boolean requestConfirmFromDevice = false;
 
-	protected static ArrayList<byte[]> receivedMessages = new ArrayList<byte[]>();
+	protected static List<byte[]> receivedMessages = new ArrayList<byte[]>();
 	protected byte[] returnMessage;
 
 	protected Resources resources;
@@ -109,7 +110,7 @@ public abstract class LegoNXTCommunicator extends BTConnection implements Runnab
 		this.resources = resources;
 	}
 
-	public static ArrayList<byte[]> getReceivedMessageList() {
+	public static List<byte[]> getReceivedMessageList() {
 		return receivedMessages;
 	}
 
@@ -312,7 +313,6 @@ public abstract class LegoNXTCommunicator extends BTConnection implements Runnab
 	final Handler myHandler = new Handler() {
 		@Override
 		public void handleMessage(Message myMessage) {
-
 			switch (myMessage.what) {
 				case TONE_COMMAND:
 					doBeep(myMessage.getData().getInt("frequency"), myMessage.getData().getInt("duration"));
@@ -327,9 +327,7 @@ public abstract class LegoNXTCommunicator extends BTConnection implements Runnab
 					speed = myMessage.getData().getInt("speed");
 					angle = myMessage.getData().getInt("angle");
 					moveMotor(motor, speed, angle);
-
 					break;
-
 			}
 		}
 	};
