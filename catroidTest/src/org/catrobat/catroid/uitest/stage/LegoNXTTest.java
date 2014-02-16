@@ -27,7 +27,7 @@ import android.bluetooth.BluetoothDevice;
 import android.widget.ListView;
 
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.bluetooth.DeviceListActivity;
+import org.catrobat.catroid.bluetooth.BTDeviceActivity;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.content.Project;
@@ -107,7 +107,7 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 
 		ArrayList<String> autoConnectIDs = new ArrayList<String>();
 		autoConnectIDs.add("IM_NOT_A_MAC_ADDRESS");
-		DeviceListActivity deviceListActivity = new DeviceListActivity();
+		BTDeviceActivity deviceListActivity = new BTDeviceActivity();
 		Reflection.setPrivateField(deviceListActivity, "autoConnectIDs", autoConnectIDs);
 
 		solo.clickOnText(solo.getString(R.string.main_menu_continue));
@@ -201,7 +201,7 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 
 		ArrayList<String> autoConnectIDs = new ArrayList<String>();
 		autoConnectIDs.add(connectedDeviceMacAdress);
-		DeviceListActivity deviceListActivity = new DeviceListActivity();
+		BTDeviceActivity deviceListActivity = new BTDeviceActivity();
 		Reflection.setPrivateField(deviceListActivity, "autoConnectIDs", autoConnectIDs);
 
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
@@ -251,7 +251,7 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 
 		ArrayList<String> autoConnectIDs = new ArrayList<String>();
 		autoConnectIDs.add("IM_NOT_A_MAC_ADDRESS");
-		DeviceListActivity deviceListActivity = new DeviceListActivity();
+		BTDeviceActivity deviceListActivity = new BTDeviceActivity();
 		Reflection.setPrivateField(deviceListActivity, "autoConnectIDs", autoConnectIDs);
 
 		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -265,12 +265,12 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 		solo.waitForActivity(ProjectActivity.class.getSimpleName());
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 		solo.sleep(1000);
-		solo.assertCurrentActivity("Devicelist not shown!", DeviceListActivity.class);
+		solo.assertCurrentActivity("Devicelist not shown!", BTDeviceActivity.class);
 		solo.goBack();
 		solo.sleep(1000);
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 		solo.sleep(1000);
-		solo.assertCurrentActivity("Devicelist not shown!", DeviceListActivity.class);
+		solo.assertCurrentActivity("Devicelist not shown!", BTDeviceActivity.class);
 
 	}
 

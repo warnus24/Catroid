@@ -467,7 +467,8 @@
     <string name="title_paired_devices">Verbundene Geräte</string>
     <string name="title_other_devices">Neue Geräte</string>
     <string name="button_scan">Suche Bluetooth Geräte</string>
-    <string name="select_device">Wähle dein Lego Mindstorms NXT</string>
+    <string name="select_device_nxt">Wähle dein Lego Mindstorms NXT</string>
+    <string name="select_device_arduino">Wähle dein Arduino Board</string>
     <string name="scanning">Suche</string>
     <string name="connecting_please_wait">Verbinde zum Lego NXT.\nBitte warten…</string>
     <string name="pairing_message">Verbinde nach dem Pairing.</string>

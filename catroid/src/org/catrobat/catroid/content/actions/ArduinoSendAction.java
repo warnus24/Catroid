@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.UUID;
 
-
 public class ArduinoSendAction extends Action {
 
 	private char pinNumberHigherByte, pinNumberLowerByte;
@@ -42,21 +41,23 @@ public class ArduinoSendAction extends Action {
 	private static Boolean isBluetoothinitialized = false;
 
 	//TODO change this
-	private static String MACaddr = "00:07:80:49:8B:61"; //MAC address of the Arduino BT-board
+	//private static String MACaddr = "00:07:80:49:8B:61"; //MAC address of the Arduino BT-board
+	private static String MACaddr = "";
 	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-	private static BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(MACaddr);
+	//private static BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(MACaddr);
+	private static BluetoothDevice bluetoothDevice = null;
 	private static BluetoothSocket bluetoothSocket = null;
 	private static BluetoothSocket tmpSocket = null;
 	private static OutputStream bluetoothOutputStream = null;
 
-    public static BluetoothSocket getBluetoothSocket() {
-        return bluetoothSocket;
-    }
+	public static BluetoothSocket getBluetoothSocket() {
+		return bluetoothSocket;
+	}
 
 	public void setPinNumberHigherByte(char pinNumberHigherByte) {
-        this.pinNumberHigherByte = pinNumberHigherByte;
+		this.pinNumberHigherByte = pinNumberHigherByte;
 	}
 
 	public void setPinNumberLowerByte(char pinNumberLowerByte) {
@@ -70,7 +71,7 @@ public class ArduinoSendAction extends Action {
 	@Override
 	public boolean act(float delta) {
 		if (!isBluetoothinitialized) {
-			this.initBluetoothConnection();
+			//			this.initBluetoothConnection();
 		}
 		return false;
 	}
@@ -78,23 +79,33 @@ public class ArduinoSendAction extends Action {
 	public void setDigitalPin(int pin, int value) {
 	}
 
-	public static void initBluetoothConnection() {
-		if (bluetoothAdapter == null || bluetoothDevice == null) {
-			return;
-		}
-		bluetoothAdapter.enable();
-		if (!bluetoothAdapter.isEnabled()) {
-			return;
-		}
+	public static void initBluetoothConnection(String MACadress) {
+
+		setBluetoothDevice(bluetoothAdapter.getRemoteDevice(MACadress));
+
 		try {
 			tmpSocket = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
 		} catch (IOException e) {
-            e.printStackTrace();
+			e.printStackTrace();
 		}
 
 		bluetoothSocket = tmpSocket;
-		bluetoothAdapter.cancelDiscovery();
 		isBluetoothinitialized = true;
+	}
+
+	/**
+	 * @return the bluetoothDevice
+	 */
+	public static BluetoothDevice getBluetoothDevice() {
+		return bluetoothDevice;
+	}
+
+	/**
+	 * @param bluetoothDevice
+	 *            the bluetoothDevice to set
+	 */
+	public static void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
+		ArduinoSendAction.bluetoothDevice = bluetoothDevice;
 	}
 
 	public static void turnOffBluetooth() {
@@ -105,11 +116,11 @@ public class ArduinoSendAction extends Action {
 			char pinNumberLowerByte, char pinNumberHigherByte) {
 		try {
 			outputBluetoothSocket.connect();
-            bluetoothOutputStream = outputBluetoothSocket.getOutputStream();
-            bluetoothOutputStream.write(pinNumberLowerByte);
-            bluetoothOutputStream.write(pinNumberHigherByte);
-            bluetoothOutputStream.write(pinValue);
-            outputBluetoothSocket.close();
+			bluetoothOutputStream = outputBluetoothSocket.getOutputStream();
+			bluetoothOutputStream.write(pinNumberLowerByte);
+			bluetoothOutputStream.write(pinNumberHigherByte);
+			bluetoothOutputStream.write(pinValue);
+			outputBluetoothSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
