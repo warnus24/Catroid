@@ -36,6 +36,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.ViewSwitchLock;
@@ -138,10 +139,12 @@ public class BrickCategoryFragment extends SherlockListFragment {
 		categories.add(inflater.inflate(R.layout.brick_category_uservariables, null));
 
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		if (sharedPreferences.getBoolean("setting_arduino_bricks", false)) {
+		if (ProjectManager.getInstance().getCurrentProject().checkIfProjectContainsBluetoothBricks()
+				|| sharedPreferences.getBoolean("setting_arduino_bricks", false)) {
 			categories.add(inflater.inflate(R.layout.brick_category_arduino, null));
 		}
-		if (sharedPreferences.getBoolean("setting_mindstorm_bricks", false)) {
+		if (ProjectManager.getInstance().getCurrentProject().checkIfProjectContainsBluetoothBricks()
+				|| sharedPreferences.getBoolean("setting_mindstorm_bricks", false)) {
 			categories.add(inflater.inflate(R.layout.brick_category_lego_nxt, null));
 		}
 

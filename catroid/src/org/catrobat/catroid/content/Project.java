@@ -205,4 +205,17 @@ public class Project implements Serializable {
 		}
 		return true;
 	}
+
+	public boolean checkIfProjectContainsBluetoothBricks() {
+		for (Sprite currentSprite : spriteList) {
+			for (int scriptIndex = 0; scriptIndex < currentSprite.getNumberOfScripts(); scriptIndex++) {
+				Script currentScript = currentSprite.getScript(scriptIndex);
+				if ((currentScript.containsBluetoothArduinoBrick()) || (currentScript.containsBluetoothLegoBrick())) {
+					return true;
+				}
+
+			}
+		}
+		return false;
+	}
 }
