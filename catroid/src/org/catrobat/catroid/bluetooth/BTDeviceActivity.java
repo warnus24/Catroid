@@ -134,9 +134,7 @@ public class BTDeviceActivity extends Activity {
 		int activateBluetooth = activateBluetooth();
 		if (activateBluetooth == BLUETOOTH_NOT_SUPPORTED) {
 			errorHandling(BLUETOOTH_NOT_SUPPORTED);
-		}
-
-		if (activateBluetooth != BLUETOOTH_ACTIVATING) {
+		} else if (activateBluetooth != BLUETOOTH_ACTIVATING) {
 			addPairedDevices();
 			this.setVisible(true);
 		}

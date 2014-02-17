@@ -69,6 +69,7 @@ public class PreStageActivity extends Activity {
 	private static TextToSpeech textToSpeech;
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
 	private Queue<Bundle> btResourceQueue;
+    private Intent btDeviceActivity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -167,12 +168,12 @@ public class PreStageActivity extends Activity {
 	private void startBluetoothCommunication(Bundle bundle) {
 		connectingProgressDialog = ProgressDialog.show(this, "",
 				getResources().getString(R.string.connecting_please_wait), true);
-		Intent serverIntent = new Intent(this, BTDeviceActivity.class);
+		btDeviceActivity = new Intent(this, BTDeviceActivity.class);
 		Bundle data = new Bundle();
 		data.putInt(BTDeviceActivity.RESOURCE_CONSTANT, bundle.getInt(BTDeviceActivity.RESOURCE_CONSTANT));
 		data.putString(BTDeviceActivity.RESOURCE_NAME_TEXT, bundle.getString(BTDeviceActivity.RESOURCE_NAME_TEXT));
-		serverIntent.putExtras(data);
-		this.startActivityForResult(serverIntent, REQUEST_ENABLE_BLUETOOTH);
+        btDeviceActivity.putExtras(data);
+		this.startActivityForResult(btDeviceActivity, REQUEST_ENABLE_BLUETOOTH);
 	}
 
 	private int getRequiredRessources() {
@@ -212,6 +213,9 @@ public class PreStageActivity extends Activity {
 						connectingProgressDialog.dismiss();
 						resourceFailed();
 						break;
+                    default:
+                        connectingProgressDialog.dismiss();
+                        break;
 				}
 				break;
 
