@@ -55,34 +55,34 @@ public class LegoNXT {
 	private static final int TONE_COMMAND = 101;
     private static final String TAG = LegoNXT.class.getSimpleName();
 
-	private LegoNXTCommunicator myNXTCommunicator;
+	private LegoNXTBtCommunicator myNXTCommunicator;
 
 	private static Handler btcHandler;
-	private Handler recieverHandler;
+	//private Handler recieverHandler;
 	private Activity activity;
 
-	public LegoNXT(Activity activity, Handler recieverHandler) {
+	public LegoNXT(Activity activity) {
 		this.activity = activity;
-		this.recieverHandler = recieverHandler;
+		//this.recieverHandler = recieverHandler;
 	}
 
-	public void startBTCommunicator(String macAddress) {
+	public void startBTCommunicator(String macAddress) throws IOException {
 
 		if (myNXTCommunicator != null) {
 			myNXTCommunicator.onStageDispose();
 		}
-
-		myNXTCommunicator = new LegoNXTBtCommunicator(this, recieverHandler, activity.getResources(), macAddress);
+        Log.i("NXT", "create NXTCommunicator");
+		myNXTCommunicator = new LegoNXTBtCommunicator(this, activity.getResources(), macAddress);
 		btcHandler = myNXTCommunicator.getHandler();
+        Thread t1 = new Thread( myNXTCommunicator );
 
-		try {
-			myNXTCommunicator.createNXTconnection();
-		} catch (IOException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-			myNXTCommunicator.onStageDispose();
-			return;
-		}
-		myNXTCommunicator.run();
+        Log.i("NXT", "NXTconnection");
+		myNXTCommunicator.createNXTconnection();
+
+        Log.i("NXT", "run");
+
+        t1.start();
+        Log.i("NXT", "return");
 	}
 
 	/**

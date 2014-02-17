@@ -127,6 +127,10 @@ public class BTConnection extends StageObserver {
         return state;
     }
 
+    public void setState(States state) {
+        this.state = state;
+    }
+
 	@Override
 	public void onStageCreate() {
 	}

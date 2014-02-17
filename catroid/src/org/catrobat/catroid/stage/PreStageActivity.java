@@ -48,6 +48,7 @@ import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -55,7 +56,6 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Queue;
 
-@SuppressWarnings("deprecation")
 public class PreStageActivity extends Activity {
 	private static final String TAG = PreStageActivity.class.getSimpleName();
 
@@ -198,10 +198,21 @@ public class PreStageActivity extends Activity {
 						Bundle bundle = data.getExtras();
 						switch (bundle.getInt(BTDeviceActivity.RESOURCE_CONSTANT)) {
 							case (Brick.BLUETOOTH_LEGO_NXT):
-								legoNXT = new LegoNXT(this, recieveHandler);
+								legoNXT = new LegoNXT(this);
 								String address = data.getExtras().getString(BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
-								legoNXT.startBTCommunicator(address);
-								break;
+                                try {
+                                    Log.i("preStage", "start NXTCommunicator");
+                                    legoNXT.startBTCommunicator(address);
+                                    Log.i("preStage", "done NXTCommunicator");
+                                    connectingProgressDialog.dismiss();
+                                    resourceInitialized();
+                                    initNextBTResource();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    legoNXT = null;
+                                    resourceFailed();
+                                }
+                                break;
 						}
 						break;
 					case BTDeviceActivity.BLUETOOTH_ACTIVATION_CANCELED:
@@ -283,29 +294,4 @@ public class PreStageActivity extends Activity {
 			}
 		}
 	}
-
-	//messages from Lego NXT device can be handled here
-	// TODO should be fixed - could lead to problems
-	@SuppressLint("HandlerLeak")
-	final Handler recieveHandler = new Handler() {
-		@Override
-		public void handleMessage(Message myMessage) {
-
-			Log.i("bt", "message" + myMessage.getData().getInt("message"));
-			switch (myMessage.getData().getInt("message")) {
-				case LegoNXTBtCommunicator.STATE_CONNECTED:
-					connectingProgressDialog.dismiss();
-					resourceInitialized();
-					initNextBTResource();
-					break;
-				case LegoNXTBtCommunicator.STATE_CONNECTERROR:
-					Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_SHORT).show();
-					connectingProgressDialog.dismiss();
-					legoNXT.destroyCommunicator();
-					legoNXT = null;
-					resourceFailed();
-					break;
-			}
-		}
-	};
 }
