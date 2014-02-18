@@ -85,7 +85,7 @@ public class ProgramSteps extends AndroidTestCase {
 		Cucumber.put(Cucumber.KEY_PROJECT, project);
 	}
 
-	@Given("^Object '(.+)' has the following scripts?$")
+	@Given("^Object '(.+)' has the following scripts?:$")
 	public void Object_has_the_following_scripts(String object) {
 		// not used (yet)
 	}
@@ -99,7 +99,7 @@ public class ProgramSteps extends AndroidTestCase {
 		Cucumber.put(Cucumber.KEY_CURRENT_OBJECT, sprite);
 	}
 
-	@When("^program started$")
+	@When("^when program started$")
 	public void program_started() {
 		object_has_start_script(((Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT)).getName());
 	}
@@ -130,7 +130,7 @@ public class ProgramSteps extends AndroidTestCase {
 		Cucumber.put(Cucumber.KEY_CURRENT_SCRIPT, script);
 	}
 
-	@When("^I receive '(.+)'$")
+	@When("^when I receive '(.+)'$")
 	public void I_receive(String message) {
 		object_has_a_when_broadcast_received_script(((Sprite) Cucumber.get(Cucumber.KEY_CURRENT_OBJECT)).getName(),
 				message);
