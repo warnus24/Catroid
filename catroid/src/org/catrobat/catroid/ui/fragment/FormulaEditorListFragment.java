@@ -44,7 +44,6 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.formulaeditor.Sensors;
 
 public class FormulaEditorListFragment extends SherlockListFragment implements Dialog.OnKeyListener {
 
@@ -129,14 +128,32 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 		} else if (tag == LOGIC_TAG) {
 			itemsIds = LOGIC_ITEMS;
 		} else if (tag == SENSOR_TAG) {
+			itemsIds = SENSOR_ITEMS;
+		}
 
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-			if ((sharedPreferences.getBoolean(Sensors.ARDUINOANALOG.name(), false))
-					|| (sharedPreferences.getBoolean(Sensors.ARDUINODIGITAL.name(), false))) {
-				itemsIds = SENSOR_ITEMS_WITH_ARDUINO;
-			} else {
-				itemsIds = SENSOR_ITEMS;
-			}
+		items = new String[itemsIds.length];
+		int index = 0;
+		for (Integer item : itemsIds) {
+			items[index] = getString(item);
+			index++;
+		}
+
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+				R.layout.fragment_formula_editor_list_item, items);
+		setListAdapter(arrayAdapter);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		this.tag = getArguments().getString(FRAGMENT_TAG_BUNDLE_ARGUMENT);
+
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		if (sharedPreferences.getBoolean("setting_arduino_bricks", false)) {
+			itemsIds = SENSOR_ITEMS_WITH_ARDUINO;
+		} else {
+			itemsIds = SENSOR_ITEMS;
 		}
 
 		items = new String[itemsIds.length];

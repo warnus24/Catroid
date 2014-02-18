@@ -28,13 +28,12 @@ import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Formula implements Serializable {
 
