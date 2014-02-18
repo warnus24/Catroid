@@ -43,6 +43,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 
 public class FormulaEditorListFragment extends SherlockListFragment implements Dialog.OnKeyListener {
@@ -152,8 +153,16 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		if (sharedPreferences.getBoolean("setting_arduino_bricks", false)) {
 			itemsIds = SENSOR_ITEMS_WITH_ARDUINO;
+			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(true);
+			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
+		} else if (sharedPreferences.getBoolean("setting_mindstorm_bricks", false)) {
+			itemsIds = SENSOR_ITEMS_WITH_ARDUINO; //must be changed to Mindstorm Sensors
+			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(true);
+			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
 		} else {
 			itemsIds = SENSOR_ITEMS;
+			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
+			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
 		}
 
 		items = new String[itemsIds.length];
