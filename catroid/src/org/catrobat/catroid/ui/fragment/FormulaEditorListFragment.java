@@ -25,7 +25,9 @@ package org.catrobat.catroid.ui.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -42,6 +44,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.formulaeditor.Sensors;
 
 public class FormulaEditorListFragment extends SherlockListFragment implements Dialog.OnKeyListener {
 
@@ -78,6 +81,11 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_function_max, R.string.formula_editor_function_min };
 
 	private static final int[] SENSOR_ITEMS = { R.string.formula_editor_sensor_x_acceleration,
+			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
+			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
+			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness };
+
+	private static final int[] SENSOR_ITEMS_WITH_ARDUINO = { R.string.formula_editor_sensor_x_acceleration,
 			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
 			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
 			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
@@ -121,7 +129,14 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 		} else if (tag == LOGIC_TAG) {
 			itemsIds = LOGIC_ITEMS;
 		} else if (tag == SENSOR_TAG) {
-			itemsIds = SENSOR_ITEMS;
+
+			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			if ((sharedPreferences.getBoolean(Sensors.ARDUINOANALOG.name(), false))
+					|| (sharedPreferences.getBoolean(Sensors.ARDUINODIGITAL.name(), false))) {
+				itemsIds = SENSOR_ITEMS_WITH_ARDUINO;
+			} else {
+				itemsIds = SENSOR_ITEMS;
+			}
 		}
 
 		items = new String[itemsIds.length];

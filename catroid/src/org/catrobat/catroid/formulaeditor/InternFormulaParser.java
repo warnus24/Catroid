@@ -294,7 +294,7 @@ public class InternFormulaParser {
 		}
 		if (functionTree.getValue().equals(Functions.ARDUINODIGITAL.name())) {
 			if ((functionTree.getLeftChild().getValue().charAt(0) > '1')
-					|| (functionTree.getLeftChild().getValue().length() > 2)) {
+					|| (functionTree.getLeftChild().getValue().length() > '2')) {
 				throw new InternFormulaParserException("Parse Error");
 			}
 			if ((functionTree.getLeftChild().getValue().charAt(0) == '0')
@@ -310,12 +310,12 @@ public class InternFormulaParser {
 				throw new InternFormulaParserException("Parse Error");
 			}
 			if ((functionTree.getLeftChild().getValue().charAt(0) == '1')
-					&& (functionTree.getLeftChild().getValue().charAt(1) > 3)) {
+					&& (functionTree.getLeftChild().getValue().charAt(1) > '3')) {
 				throw new InternFormulaParserException("Parse Error");
 			}
 		}
 		if (functionTree.getValue().equals(Functions.ARDUINOANALOG.name())) {
-			if ((functionTree.getLeftChild().getValue().charAt(0) > '1')
+			if ((functionTree.getLeftChild().getValue().charAt(0) > '0')
 					|| (functionTree.getLeftChild().getValue().length() > 2)) {
 				throw new InternFormulaParserException("Parse Error");
 			}
@@ -324,7 +324,7 @@ public class InternFormulaParser {
 				throw new InternFormulaParserException("Parse Error");
 			}
 			if ((functionTree.getLeftChild().getValue().charAt(0) == '0')
-					&& (functionTree.getLeftChild().getValue().charAt(1) > 5)) {
+					&& (functionTree.getLeftChild().getValue().charAt(1) > '5')) {
 				throw new InternFormulaParserException("Parse Error");
 			}
 		}
