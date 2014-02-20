@@ -33,6 +33,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Formula implements Serializable {
 
@@ -191,6 +192,18 @@ public class Formula implements Serializable {
 		}
 
 		return new Formula(0);
+	}
+
+	public boolean containsArduinoSensors() {
+		List<InternToken> internTokenList = formulaTree.getInternTokenList();
+		for (InternToken internToken : internTokenList) {
+			if ((internToken.isSensor() == true)
+					&& (internToken.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINOANALOG.toString()) || internToken
+							.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString()))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
