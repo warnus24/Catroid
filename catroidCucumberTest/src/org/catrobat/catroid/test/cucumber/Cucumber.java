@@ -28,7 +28,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-@CucumberOptions()
+@CucumberOptions(features = { "features/bricks/BroadcastWaitBlockingBehavior.feature", }, format = { "pretty",
+		"html:/sdcard/cucumber/report" })
 public final class Cucumber {
 	public static final String KEY_SOLO = "KEY_SOLO";
 	public static final String KEY_PROJECT = "KEY_PROJECT";
