@@ -23,14 +23,19 @@
 package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.common.MessageContainer;
+
+import org.catrobat.catroid.common.NfcTagContainer;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.WhenNfcScript;
@@ -76,7 +81,11 @@ public class WhenNfcBrick extends ScriptBrick {
 		if (animationState) {
 			return view;
 		}
+        if (view == null) {
+            alphaValue = 255;
+        }
 		view = View.inflate(context, R.layout.brick_when_nfc, null);
+        view = getViewWithAlpha(alphaValue);
 
 		setCheckboxView(R.id.brick_when_nfc_checkbox);
 
@@ -91,8 +100,7 @@ public class WhenNfcBrick extends ScriptBrick {
 			nfcSpinner.setEnabled(false);
 		}
 
-		// TODO: here we need a "TagContainer" instead of the MessageContainer
-		nfcSpinner.setAdapter(MessageContainer.getMessageAdapter(context));
+        nfcSpinner.setAdapter(NfcTagContainer.getMessageAdapter(context));
 		nfcSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -101,7 +109,7 @@ public class WhenNfcBrick extends ScriptBrick {
 
 				// TODO: change new_broad_cast_message to something generic
 
-				if (selectedTag.equals(context.getString(R.string.new_broadcast_message))) {
+				if (selectedTag.equals(context.getString(R.string.new_nfc_tag))) {
 					showNewTagDialog(nfcSpinner);
 				} else {
 					tagName = selectedTag;
@@ -120,7 +128,7 @@ public class WhenNfcBrick extends ScriptBrick {
 	}
 
 	private void setSpinnerSelection(Spinner spinner) {
-		int position = MessageContainer.getPositionOfMessageInAdapter(spinner.getContext(), tagName);
+		int position = NfcTagContainer.getPositionOfMessageInAdapter(spinner.getContext(), tagName);
 		spinner.setSelection(position, true);
 	}
 
@@ -130,6 +138,36 @@ public class WhenNfcBrick extends ScriptBrick {
 
 	@Override
 	public View getPrototypeView(Context context) {
-		return getView(context, 0, null);
+        View prototypeView = View.inflate(context, R.layout.brick_when_nfc,null);
+        Spinner nfcSpinner = (Spinner) prototypeView.findViewById(R.id.brick_when_nfc_spinner);
+        nfcSpinner.setFocusableInTouchMode(false);
+        nfcSpinner.setFocusable(false);
+        SpinnerAdapter nfcSpinnerAdapter = NfcTagContainer.getMessageAdapter(context);
+        nfcSpinner.setAdapter(nfcSpinnerAdapter);
+        setSpinnerSelection(nfcSpinner);
+        return prototypeView;
 	}
+
+    @Override
+    public View getViewWithAlpha(int alphaValue) {
+
+        if (view != null) {
+
+            View layout = view.findViewById(R.id.brick_when_nfc_layout);
+            Drawable background = layout.getBackground();
+            background.setAlpha(alphaValue);
+
+            TextView textWhenNfcLabel = (TextView) view.findViewById(R.id.brick_when_nfc_label);
+            textWhenNfcLabel.setTextColor(textWhenNfcLabel.getTextColors().withAlpha(alphaValue));
+            Spinner nfcSpiner = (Spinner) view.findViewById(R.id.brick_when_nfc_spinner);
+            ColorStateList color = textWhenNfcLabel.getTextColors().withAlpha(alphaValue);
+            nfcSpiner.getBackground().setAlpha(alphaValue);
+            if(adapterView != null){
+                ((TextView)adapterView.getChildAt(0)).setTextColor(color);
+            }
+            this.alphaValue = alphaValue;
+
+        }
+        return view;
+    }
 }

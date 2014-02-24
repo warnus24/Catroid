@@ -34,6 +34,7 @@ public class WhenNfcScript extends Script {
 
 	private static final long serialVersionUID = 1L;
 
+
 	public WhenNfcScript(Sprite sprite) {
 		super(sprite);
 	}

@@ -294,6 +294,11 @@
     <string name="dialog_new_broadcast_message_name">message:</string>
     <!--  -->
 
+    <!-- NFC spinner -->
+    <string name="new_nfc_tag">New…</string>
+    <string name="brick_when_nfc_default_all">all</string>
+    <!-- -->
+
 
     <!-- Brick categories -->
     <string name="categories">Categories</string>
