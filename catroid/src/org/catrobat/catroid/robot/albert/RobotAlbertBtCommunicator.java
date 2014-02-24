@@ -61,7 +61,7 @@ import java.util.UUID;
 //This code is based on the nxt-implementation
 public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 
-	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fc");
+	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
 	private static final byte PACKET_HEADER_1 = (byte) 0xAA;
 	private static final byte PACKET_HEADER_2 = 0x55;
