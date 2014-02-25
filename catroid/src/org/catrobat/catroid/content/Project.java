@@ -221,4 +221,17 @@ public class Project implements Serializable {
 	public void setIsLegoProject(boolean isLegoProject) {
 		xmlHeader.setLegoProject(isLegoProject);
 	}
+
+	public boolean containsArduinoBricks() {
+		boolean isArduinoProject = false;
+		for (Sprite currentSprite : spriteList) {
+			for (int scriptIndex = 0; scriptIndex < currentSprite.getNumberOfScripts(); scriptIndex++) {
+				Script currentScript = currentSprite.getScript(scriptIndex);
+				if (currentScript.containsBluetoothArduinoBrick()) {
+					isArduinoProject = true;
+				}
+			}
+		}
+		return isArduinoProject;
+	}
 }

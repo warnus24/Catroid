@@ -105,6 +105,14 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		setUpActionBar();
 		currentBrick = (Brick) getArguments().getSerializable(BRICK_BUNDLE_ARGUMENT);
 		currentFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT);
+
+		if (currentFormula.containsArduinoSensors()) {
+			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(true);
+			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
+		} else {
+			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
+			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(true);
+		}
 	}
 
 	private void setUpActionBar() {
