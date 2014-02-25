@@ -156,11 +156,6 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		Log.d("TestRobotAlbert_New", receivedBuffer.toByteArray().toString());
 		Log.d("TestRobotAlbert", "Array comparision successful: " + ok);
 
-		double distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
-		Log.d("RobotAlbertTest", "left=" + distanceLeft);
-		//BluetoothServer always sends a distance of 50
-		//assertEquals("Variable has the wrong value after stage", 50.0, distanceLeft);
-
 		int lenRec = receivedBuffer.length();
 		int lenSent1 = sendCommands.length();
 
@@ -168,6 +163,11 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 				"lenRec=" + lenRec + "\nlenSent1=" + lenSent1 + "\nlenWithSensor=" + receivedBufferOld.length());
 		assertTrue("messages reveived and sent are not equal", ok == true);
 		Log.d("temp", receivedBuffer.toString());
+
+		double distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+		Log.d("RobotAlbertTest", "left=" + distanceLeft);
+		//BluetoothServer always sends a distance of 50
+		assertEquals("Variable has the wrong value after stage", 50.0, distanceLeft);
 
 		solo.sleep(1000);
 		Log.d("TestRobotAlbert", "before goback");
