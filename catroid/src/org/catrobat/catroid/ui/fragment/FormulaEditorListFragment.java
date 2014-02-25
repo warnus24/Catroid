@@ -154,6 +154,7 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 		this.tag = getArguments().getString(FRAGMENT_TAG_BUNDLE_ARGUMENT);
 
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
 		if (sharedPreferences.getBoolean("setting_arduino_bricks", false)
 				|| ProjectManager.getInstance().getCurrentProject().checkIfArduinoProject()
 				|| ProjectManager.getInstance().getCurrentProject().containsArduinoBricks()) {
