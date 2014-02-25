@@ -160,6 +160,7 @@ public class BTDummyClient {
 				}
 
 			} catch (IOException e) {
+
 				Log.d("Multiplayer", "TestReceiver Thread END in Exeption");
 				Log.d("Multiplayer", e.getMessage());
 			}
