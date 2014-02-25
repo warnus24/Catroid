@@ -22,6 +22,7 @@
  */
 package org.catrobat.catroid.content;
 
+import org.catrobat.catroid.common.NfcTagContainer;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.IfLogicEndBrick;
 import org.catrobat.catroid.content.bricks.LoopEndBrick;
@@ -33,10 +34,12 @@ import java.util.ArrayList;
 public class WhenNfcScript extends Script {
 
 	private static final long serialVersionUID = 1L;
+    private String nfcTagName;
 
 
 	public WhenNfcScript(Sprite sprite) {
 		super(sprite);
+
 	}
 
 	@Override
@@ -64,4 +67,11 @@ public class WhenNfcScript extends Script {
 		return brick;
 	}
 
+    public void setTagName(String tagName) {
+        NfcTagContainer.addTagName(tagName);
+    }
+
+    public String getTagName() {
+        return nfcTagName;
+    }
 }

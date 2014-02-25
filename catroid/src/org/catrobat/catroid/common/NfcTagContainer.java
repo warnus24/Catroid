@@ -24,68 +24,58 @@ package org.catrobat.catroid.common;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
-import android.widget.SpinnerAdapter;
 
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.BroadcastScript;
-import org.catrobat.catroid.content.WhenNfcScript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class NfcTagContainer {
-
-    private static ArrayAdapter<String> messageAdapter = null;
-    private static Map<String, List<WhenNfcScript>> receiverMap = new HashMap<String, List<WhenNfcScript>>();
+    private static ArrayAdapter<String> tagNameAdapter = null;
+    private static List<String> tagNameList = new ArrayList<String>();
+    private static Map<Double,String> mapUidToTagName = new HashMap<Double, String>();
 
     private NfcTagContainer() {
         throw new AssertionError();
     }
 
     public static ArrayAdapter<String> getMessageAdapter(Context context) {
-        if (messageAdapter == null) {
-            messageAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item);
-            messageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            messageAdapter.add(context.getString(R.string.new_nfc_tag));
-            if (receiverMap.isEmpty()) {
-                addMessage(context.getString(R.string.brick_when_nfc_default_all));
-            } else {
-                for (String message : receiverMap.keySet()) {
-                    addMessageToAdapter(message);
-                }
+        if (tagNameAdapter == null) {
+            tagNameAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, tagNameList);
+            tagNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            if (tagNameList.isEmpty()) {
+                addTagName(context.getString(R.string.new_nfc_tag));
+                addTagName(context.getString(R.string.brick_when_nfc_default_all));
             }
         }
-        return messageAdapter;
+        return tagNameAdapter;
     }
 
 
-    public static void addMessage(String message) {
-        if (message == null || message.isEmpty()) {
+    public static void addTagName(String tagName) {
+        if (tagName == null || tagName.isEmpty()) {
             return;
         }
 
-        if (!receiverMap.containsKey(message)) {
-            receiverMap.put(message, new ArrayList<WhenNfcScript>());
-            addMessageToAdapter(message);
+        if(!tagNameList.contains(tagName)){
+            tagNameList.add(tagName);
         }
     }
 
-
-    private static void addMessageToAdapter(String message) {
-        if (messageAdapter != null) {
-            if (messageAdapter.getPosition(message) < 0) {
-                messageAdapter.add(message);
-            }
-        }
-    }
 
     public static int getPositionOfMessageInAdapter(Context context, String tagName) {
-        if (messageAdapter == null) {
+        if (tagNameAdapter == null) {
             getMessageAdapter(context);
         }
-        return messageAdapter.getPosition(tagName);
+        return tagNameAdapter.getPosition(tagName);
     }
 
+    public static String getNameForUid(Double uid) {
+        return mapUidToTagName.get(uid);
+    }
 }

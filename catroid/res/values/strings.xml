@@ -297,6 +297,8 @@
     <!-- NFC spinner -->
     <string name="new_nfc_tag">New…</string>
     <string name="brick_when_nfc_default_all">all</string>
+    <string name="dialog_new_nfc_tag_title">New NFC Tag</string>
+    <string name="dialog_new_nfc_tag_name">NFC Tag:</string>
     <!-- -->
 
 

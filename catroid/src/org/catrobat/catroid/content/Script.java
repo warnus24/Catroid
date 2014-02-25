@@ -34,6 +34,7 @@ import org.catrobat.catroid.content.bricks.NestingBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
 
 import java.io.Serializable;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -185,4 +186,5 @@ public abstract class Script implements Serializable {
 		copiedLoopBeginBrick.setLoopEndBrick(copiedBrick);
 		copiedBrick.setLoopBeginBrick(copiedLoopBeginBrick);
 	}
+
 }
