@@ -81,7 +81,8 @@ public class BTDummyClient {
 				Log.d("TestRobotAlbert", "before btSocket.connect();");
 
 				try {
-					Method mMethod = dummyServer.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
+					Method mMethod = dummyServer.getClass().getMethod("createInsecureRfcommSocket",
+							new Class[] { int.class });
 					btSocket = (BluetoothSocket) mMethod.invoke(dummyServer, Integer.valueOf(1));
 					btSocket.connect();
 					inputStream = btSocket.getInputStream();
