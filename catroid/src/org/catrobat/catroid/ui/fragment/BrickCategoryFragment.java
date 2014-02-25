@@ -139,9 +139,11 @@ public class BrickCategoryFragment extends SherlockListFragment {
 		categories.add(inflater.inflate(R.layout.brick_category_uservariables, null));
 
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
 		if (ProjectManager.getInstance().getCurrentProject().checkIfArduinoProject()
 				|| sharedPreferences.getBoolean("setting_arduino_bricks", false)
 				|| ProjectManager.getInstance().getCurrentProject().containsArduinoBricks()) {
+			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(true);
 			categories.add(inflater.inflate(R.layout.brick_category_arduino, null));
 		}
 		if (ProjectManager.getInstance().getCurrentProject().checkIfLegoProject()
