@@ -85,8 +85,9 @@ public class BTDummyClient {
 							new Class[] { int.class });
 					btSocket = (BluetoothSocket) mMethod.invoke(dummyServer, Integer.valueOf(1));
 					btSocket.connect();
-					inputStream = btSocket.getInputStream();
-					outputStream = btSocket.getOutputStream();
+					this.outputStream = btSocket.getOutputStream();
+					outputStream.write(option.getBytes(), 0, option.length());
+					outputStream.flush();
 					connected = true;
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -143,7 +144,7 @@ public class BTDummyClient {
 		@Override
 		public void run() {
 			try {
-				//inputStream = btSocket.getInputStream();
+				inputStream = btSocket.getInputStream();
 				byte[] buffer = new byte[1024];
 				int receivedbytes = 0;
 
