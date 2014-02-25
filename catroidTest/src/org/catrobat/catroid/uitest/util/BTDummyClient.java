@@ -46,8 +46,8 @@ public class BTDummyClient {
 	private InputStream inputStream = null;
 	//  private String MACAddress = "00:1F:3A:E9:70:58"; // Martin Laptop
 	//	private String MACAddress = "EC:55:F9:DE:41:6A"; // Manuel Laptop
-	//private String macAddress = "40:2C:F4:69:D0:21"; // Michael Laptop
-	private String macAddress = "00:02:72:17:60:F0"; // kittyslave-0
+	private String macAddress = "40:2C:F4:69:D0:21"; // Michael Laptop
+	//private String macAddress = "00:02:72:17:60:F0"; // kittyslave-0
 	private ByteArrayBuffer receivedFeedback = new ByteArrayBuffer(1024);
 	private boolean connected = false;
 
@@ -80,16 +80,31 @@ public class BTDummyClient {
 				btAdapter.cancelDiscovery();
 				Log.d("TestRobotAlbert", "before btSocket.connect();");
 				try {
-					btSocket.connect();
-					Log.d("TestRobotAlbert", "after btSocket.connect();");
+					throw new Exception();
+					//btSocket.connect();
+
+					//Log.d("TestRobotAlbert", "after btSocket.connect();");
+					//connected = true;
+					//this.outputStream = btSocket.getOutputStream();
+					//outputStream.write(option.getBytes(), 0, option.length());
+					//outputStream.flush();
 				} catch (Exception e1) {
 					Method mMethod;
 					try {
 						Log.d("TestRobotAlbert", "testing 2nd variant");
-						mMethod = dummyServer.getClass().getMethod("createInsecureRfcommSocket",
-								new Class[] { int.class });
-						btSocket = (BluetoothSocket) mMethod.invoke(dummyServer, Integer.valueOf(1));
+						//mMethod = dummyServer.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
+						//btSocket = (BluetoothSocket) mMethod.invoke(dummyServer, Integer.valueOf(1));
+						btSocket = BluetoothAdapter
+								.getDefaultAdapter()
+								.getRemoteDevice(dummyServer.getAddress())
+								.createRfcommSocketToServiceRecord(
+										UUID.fromString("eb8ec53a-f070-46e0-b6ff-1645c931f858"));
 						btSocket.connect();
+						Log.d("TestRobotAlbert", "after btSocket.connect();");
+						connected = true;
+						this.outputStream = btSocket.getOutputStream();
+						outputStream.write(option.getBytes(), 0, option.length());
+						outputStream.flush();
 
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -100,12 +115,6 @@ public class BTDummyClient {
 				//				Log.d("TestRobotAlbert", "after btSocket.connect();");
 
 				Log.d("TestRobotAlbert", "connection established");
-
-				connected = true;
-
-				this.outputStream = btSocket.getOutputStream();
-				outputStream.write(option.getBytes(), 0, option.length());
-				outputStream.flush();
 
 				readFeedbackThread.start();
 			} catch (IOException e) {
