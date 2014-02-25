@@ -45,6 +45,7 @@ import com.actionbarsherlock.view.Menu;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.formulaeditor.Formula;
 
 public class FormulaEditorListFragment extends SherlockListFragment implements Dialog.OnKeyListener {
 
@@ -57,6 +58,8 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 	public static final String FRAGMENT_TAG_BUNDLE_ARGUMENT = "fragmentTag";
 
 	public static final String[] TAGS = { OBJECT_TAG, MATH_TAG, LOGIC_TAG, SENSOR_TAG };
+
+	private Formula currentFormula;
 
 	private static final int[] OBJECT_ITEMS = { R.string.formula_editor_object_x, R.string.formula_editor_object_y,
 			R.string.formula_editor_object_ghosteffect, R.string.formula_editor_object_brightness,
@@ -151,12 +154,15 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 		this.tag = getArguments().getString(FRAGMENT_TAG_BUNDLE_ARGUMENT);
 
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		if (sharedPreferences.getBoolean("setting_arduino_bricks", false)) {
+		if (sharedPreferences.getBoolean("setting_arduino_bricks", false)
+				|| ProjectManager.getInstance().getCurrentProject().checkIfArduinoProject()
+				|| ProjectManager.getInstance().getCurrentProject().containsArduinoBricks()) {
 			itemsIds = SENSOR_ITEMS_WITH_ARDUINO;
 			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(true);
 			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
-		} else if (sharedPreferences.getBoolean("setting_mindstorm_bricks", false)) {
-			itemsIds = SENSOR_ITEMS_WITH_ARDUINO; //must be changed to Mindstorm Sensors
+		} else if ((sharedPreferences.getBoolean("setting_mindstorm_bricks", false))
+				|| (ProjectManager.getInstance().getCurrentProject().checkIfLegoProject())) {
+			itemsIds = SENSOR_ITEMS; //must be changed to Mindstorm Sensors
 			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(true);
 			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
 		} else {
