@@ -77,7 +77,7 @@ public class BTDummyClient {
 				//btSocket = dummyServer.createRfcommSocketToServiceRecord(SERIAL_PORT_SERVICE_CLASS_UUID);
 				btSocket = dummyServer.createRfcommSocketToServiceRecord(DUMMYCONNECTIONUUID);
 				Log.d("TestRobotAlbert", "before btAdapter.cancelDiscovery();");
-				btAdapter.cancelDiscovery();
+				//btAdapter.cancelDiscovery();
 				Log.d("TestRobotAlbert", "before btSocket.connect();");
 				try {
 					throw new Exception();
