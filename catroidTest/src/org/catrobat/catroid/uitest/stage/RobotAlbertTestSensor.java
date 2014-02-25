@@ -59,7 +59,7 @@ public class RobotAlbertTestSensor extends BaseActivityInstrumentationTestCase<M
 	// e.g. kittyroid-0, kittyslave-0
 	//private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "T420";
 
-	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kittyslave";
+	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kittyslave-1";
 
 	private final String projectName = UiTestUtils.PROJECTNAME1;
 	private final String spriteName = "testSprite";
@@ -141,13 +141,20 @@ public class RobotAlbertTestSensor extends BaseActivityInstrumentationTestCase<M
 		solo.clickOnText(connectedDeviceName);
 
 		solo.sleep(5000);
+		double distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
 		solo.sleep(10000);
 		solo.assertCurrentActivity("Not in stage - connection to bluetooth-device failed", StageActivity.class);
+
+		if (distanceLeft == 0.0) {
+			distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+		}
 
 		solo.clickOnScreen(ScreenValues.SCREEN_WIDTH / 2, ScreenValues.SCREEN_HEIGHT / 2);
 		solo.sleep(5000);
 
-		double distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+		if (distanceLeft == 0.0) {
+			distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+		}
 		Log.d("RobotAlbertTest", "left=" + distanceLeft);
 		assertEquals("Variable has the wrong value after stage", 50.0, distanceLeft);
 
