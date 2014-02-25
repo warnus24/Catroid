@@ -28,13 +28,12 @@ import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Formula implements Serializable {
 
@@ -86,30 +85,6 @@ public class Formula implements Serializable {
 			formulaTree = new FormulaElement(ElementType.NUMBER, value.toString(), null);
 			internFormula = new InternFormula(formulaTree.getInternTokenList());
 		}
-	}
-
-	public Formula(String value) {
-		if (value.equalsIgnoreCase(Sensors.ARDUINOANALOG.toString())) {
-			formulaTree = new FormulaElement(ElementType.SENSOR, Sensors.ARDUINOANALOG.toString(), null);
-		} else if (value.equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString())) {
-			formulaTree = new FormulaElement(ElementType.SENSOR, Sensors.ARDUINODIGITAL.toString(), null);
-		} else {
-			formulaTree = new FormulaElement(ElementType.NUMBER, value.toString(), null);
-		}
-
-		internFormula = new InternFormula(formulaTree.getInternTokenList());
-	}
-
-	public boolean containsArduinoSensors() {
-		List<InternToken> internTokenList = formulaTree.getInternTokenList();
-		for (InternToken internToken : internTokenList) {
-			if ((internToken.isSensor() == true)
-					&& (internToken.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINOANALOG.toString()) || internToken
-							.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString()))) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public void setDisplayText(String text) {
@@ -217,6 +192,18 @@ public class Formula implements Serializable {
 		}
 
 		return new Formula(0);
+	}
+
+	public boolean containsArduinoSensors() {
+		List<InternToken> internTokenList = formulaTree.getInternTokenList();
+		for (InternToken internToken : internTokenList) {
+			if ((internToken.isSensor() == true)
+					&& (internToken.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINOANALOG.toString()) || internToken
+							.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString()))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
