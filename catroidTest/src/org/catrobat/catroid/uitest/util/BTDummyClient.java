@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
@@ -52,8 +53,10 @@ public class BTDummyClient {
 
 	private static final String CLOSECONNECTION = "closethisconnection";
 	private static final String COMMANDSETVARIABLE = "setvariable;";
-	//public static final UUID DUMMYCONNECTIONUUID = UUID.fromString("eb8ec53af07046e0b6ff1645c931f858");
+
 	public static final UUID DUMMYCONNECTIONUUID = UUID.fromString("eb8ec53a-f070-46e0-b6ff-1645c931f858");
+	//public static final UUID DUMMYCONNECTIONUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fd");
+
 	//public static final UUID TEMPUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 	//public static final UUID TEMPUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 	//public static final UUID DUMMYCONNECTIONUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -71,12 +74,33 @@ public class BTDummyClient {
 
 		if (!connected) {
 			try {
+				//btSocket = dummyServer.createRfcommSocketToServiceRecord(SERIAL_PORT_SERVICE_CLASS_UUID);
 				btSocket = dummyServer.createRfcommSocketToServiceRecord(DUMMYCONNECTIONUUID);
 				Log.d("TestRobotAlbert", "before btAdapter.cancelDiscovery();");
 				btAdapter.cancelDiscovery();
 				Log.d("TestRobotAlbert", "before btSocket.connect();");
-				btSocket.connect();
-				Log.d("TestRobotAlbert", "after btSocket.connect();");
+				try {
+					btSocket.connect();
+					Log.d("TestRobotAlbert", "after btSocket.connect();");
+				} catch (Exception e1) {
+					Method mMethod;
+					try {
+						Log.d("TestRobotAlbert", "testing 2nd variant");
+						mMethod = dummyServer.getClass().getMethod("createInsecureRfcommSocket",
+								new Class[] { int.class });
+						btSocket = (BluetoothSocket) mMethod.invoke(dummyServer, Integer.valueOf(1));
+						btSocket.connect();
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						Log.d("TestRobotAlbert", "error: testing 2nd variant");
+						Log.d("BTDummyClient.EEEEEERRRRRRROOOOORRRRR", e.getMessage());
+					}
+				}
+				//				Log.d("TestRobotAlbert", "after btSocket.connect();");
+
+				Log.d("TestRobotAlbert", "connection established");
+
 				connected = true;
 
 				this.outputStream = btSocket.getOutputStream();
@@ -86,6 +110,7 @@ public class BTDummyClient {
 				readFeedbackThread.start();
 			} catch (IOException e) {
 				Log.e("DummyServer", "DummyServer is not running pls start it");
+				Log.e("DummyServer", e.getMessage());
 				return;
 			}
 		}
