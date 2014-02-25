@@ -40,7 +40,6 @@ import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.io.File;
-import java.util.Arrays;
 
 public class TouchAxisTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
@@ -69,7 +68,8 @@ public class TouchAxisTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		byte[] blackPixel = { (byte) 0, (byte) 0, (byte) 0, (byte) 255 };
 		byte[] screenPixel = StageActivity.stageListener.getPixels(ScreenValues.SCREEN_WIDTH / 2, 100, 1, 1);
 
-		assertTrue("Pixels didn't match! Touch area is off!", Arrays.equals(blackPixel, screenPixel));
+		assertTrue("Pixels didn't match! Touch area is off!",
+				UiTestUtils.comparePixelRgbaArrays(blackPixel, screenPixel));
 	}
 
 	private void createProject() {

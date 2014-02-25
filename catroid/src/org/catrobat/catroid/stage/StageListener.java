@@ -441,7 +441,11 @@ public class StageListener implements ApplicationListener {
 		FileHandle image = Gdx.files.absolute(pathForScreenshot + fileName);
 		OutputStream stream = image.write(false);
 		try {
-			new File(pathForScreenshot + Constants.NO_MEDIA_FILE).createNewFile();
+			File imageFile = new File(pathForScreenshot + Constants.NO_MEDIA_FILE);
+			if (!imageFile.exists() && !imageFile.createNewFile()) {
+				return false;
+			}
+
 			centerSquareBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 			stream.close();
 		} catch (IOException e) {
@@ -459,7 +463,7 @@ public class StageListener implements ApplicationListener {
 		while (makeTestPixels) {
 			Thread.yield();
 		}
-		return testPixels;
+		return testPixels.clone();
 	}
 
 	public void toggleScreenMode() {
