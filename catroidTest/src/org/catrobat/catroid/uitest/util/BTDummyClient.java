@@ -143,7 +143,7 @@ public class BTDummyClient {
 		@Override
 		public void run() {
 			try {
-				inputStream = btSocket.getInputStream();
+				//inputStream = btSocket.getInputStream();
 				byte[] buffer = new byte[1024];
 				int receivedbytes = 0;
 
