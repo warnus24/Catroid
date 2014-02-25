@@ -145,8 +145,18 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		solo.sleep(6000);
 		solo.assertCurrentActivity("Not in stage - connection to bluetooth-device failed", StageActivity.class);
 
+		double distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+
 		solo.clickOnScreen(ScreenValues.SCREEN_WIDTH / 2, ScreenValues.SCREEN_HEIGHT / 2);
-		solo.sleep(5000);
+		//solo.sleep(5000);
+		solo.sleep(2000);
+		if (distanceLeft == 0.0) {
+			distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+		}
+		solo.sleep(3000);
+		if (distanceLeft == 0.0) {
+			distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+		}
 
 		ByteArrayBuffer receivedBufferOld = dummy.getReceivedFeedback();
 		ByteArrayBuffer receivedBuffer = removeSensorCommands(receivedBufferOld);
@@ -164,7 +174,10 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		assertTrue("messages reveived and sent are not equal", ok == true);
 		Log.d("temp", receivedBuffer.toString());
 
-		double distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+		if (distanceLeft == 0.0) {
+			distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+		}
+		//double distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
 		Log.d("RobotAlbertTest", "left=" + distanceLeft);
 		//BluetoothServer always sends a distance of 50
 		assertEquals("Variable has the wrong value after stage", 50.0, distanceLeft);
