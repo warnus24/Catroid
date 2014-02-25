@@ -80,54 +80,54 @@ public class BTDummyClient {
 				//btAdapter.cancelDiscovery();
 				Log.d("TestRobotAlbert", "before btSocket.connect();");
 
-				try {
-					Method mMethod = dummyServer.getClass().getMethod("createInsecureRfcommSocket",
-							new Class[] { int.class });
-					btSocket = (BluetoothSocket) mMethod.invoke(dummyServer, Integer.valueOf(1));
-					btSocket.connect();
-					this.outputStream = btSocket.getOutputStream();
-					outputStream.write(option.getBytes(), 0, option.length());
-					outputStream.flush();
-					connected = true;
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					Log.e("HHHHHHHHHHHHHHHHHIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", e.getMessage());
-				}
-
 				//				try {
-				//					throw new Exception();
-				//					//btSocket.connect();
-				//
-				//					//Log.d("TestRobotAlbert", "after btSocket.connect();");
-				//					//connected = true;
-				//					//this.outputStream = btSocket.getOutputStream();
-				//					//outputStream.write(option.getBytes(), 0, option.length());
-				//					//outputStream.flush();
-				//				} catch (Exception e1) {
-				//					Method mMethod;
-				//					try {
-				//						Log.d("TestRobotAlbert", "testing 2nd variant");
-				//						//mMethod = dummyServer.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
-				//						//btSocket = (BluetoothSocket) mMethod.invoke(dummyServer, Integer.valueOf(1));
-				//						btSocket = BluetoothAdapter
-				//								.getDefaultAdapter()
-				//								.getRemoteDevice(dummyServer.getAddress())
-				//								.createRfcommSocketToServiceRecord(
-				//										UUID.fromString("eb8ec53a-f070-46e0-b6ff-1645c931f858"));
-				//						btSocket.connect();
-				//						Log.d("TestRobotAlbert", "after btSocket.connect();");
-				//						connected = true;
-				//						this.outputStream = btSocket.getOutputStream();
-				//						outputStream.write(option.getBytes(), 0, option.length());
-				//						outputStream.flush();
-				//
-				//					} catch (Exception e) {
-				//						// TODO Auto-generated catch block
-				//						Log.d("TestRobotAlbert", "error: testing 2nd variant");
-				//						Log.d("BTDummyClient.EEEEEERRRRRRROOOOORRRRR", e.getMessage());
-				//					}
+				//					Method mMethod = dummyServer.getClass().getMethod("createInsecureRfcommSocket",
+				//							new Class[] { int.class });
+				//					btSocket = (BluetoothSocket) mMethod.invoke(dummyServer, Integer.valueOf(1));
+				//					btSocket.connect();
+				//					this.outputStream = btSocket.getOutputStream();
+				//					outputStream.write(option.getBytes(), 0, option.length());
+				//					outputStream.flush();
+				//					connected = true;
+				//				} catch (Exception e) {
+				//					// TODO Auto-generated catch block
+				//					Log.e("HHHHHHHHHHHHHHHHHIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", e.getMessage());
 				//				}
-				//				Log.d("TestRobotAlbert", "after btSocket.connect();");
+
+				try {
+					throw new Exception();
+					//btSocket.connect();
+
+					//Log.d("TestRobotAlbert", "after btSocket.connect();");
+					//connected = true;
+					//this.outputStream = btSocket.getOutputStream();
+					//outputStream.write(option.getBytes(), 0, option.length());
+					//outputStream.flush();
+				} catch (Exception e1) {
+					Method mMethod;
+					try {
+						Log.d("TestRobotAlbert", "testing 2nd variant");
+						//mMethod = dummyServer.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
+						//btSocket = (BluetoothSocket) mMethod.invoke(dummyServer, Integer.valueOf(1));
+						btSocket = BluetoothAdapter
+								.getDefaultAdapter()
+								.getRemoteDevice(dummyServer.getAddress())
+								.createRfcommSocketToServiceRecord(
+										UUID.fromString("eb8ec53a-f070-46e0-b6ff-1645c931f858"));
+						btSocket.connect();
+						Log.d("TestRobotAlbert", "after btSocket.connect();");
+						connected = true;
+						this.outputStream = btSocket.getOutputStream();
+						outputStream.write(option.getBytes(), 0, option.length());
+						outputStream.flush();
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						Log.d("TestRobotAlbert", "error: testing 2nd variant");
+						Log.d("BTDummyClient.EEEEEERRRRRRROOOOORRRRR", e.getMessage());
+					}
+				}
+				Log.d("TestRobotAlbert", "after btSocket.connect();");
 
 				Log.d("TestRobotAlbert", "connection established");
 
