@@ -58,6 +58,7 @@ public class RobotAlbertTestSensor extends BaseActivityInstrumentationTestCase<M
 	// Bluetooth server is running with a name that starts with 'kitty'
 	// e.g. kittyroid-0, kittyslave-0
 	//private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "T420";
+
 	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kittyslave";
 
 	private final String projectName = UiTestUtils.PROJECTNAME1;
