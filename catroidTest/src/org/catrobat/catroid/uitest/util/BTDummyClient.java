@@ -72,9 +72,9 @@ public class BTDummyClient {
 		if (!connected) {
 			try {
 				btSocket = dummyServer.createRfcommSocketToServiceRecord(DUMMYCONNECTIONUUID);
-				Log.d("TestRobotAlbert", "before btSocket.connect();");
-				//perhaps try to cancelDiscovery() (but shouldn't make a difference)
+				Log.d("TestRobotAlbert", "before btAdapter.cancelDiscovery();");
 				btAdapter.cancelDiscovery();
+				Log.d("TestRobotAlbert", "before btSocket.connect();");
 				btSocket.connect();
 				Log.d("TestRobotAlbert", "after btSocket.connect();");
 				connected = true;
