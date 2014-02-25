@@ -90,6 +90,7 @@ public class NfcHandler {
 
         String nameForUid = NfcTagContainer.getNameForUid(uid);
 
+
 		for (Sprite sprite : spriteList) {
 			sprite.createWhenNfcScriptAction(nameForUid);
 		}

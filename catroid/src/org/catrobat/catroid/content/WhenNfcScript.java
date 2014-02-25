@@ -35,9 +35,10 @@ public class WhenNfcScript extends Script {
 
 	private static final long serialVersionUID = 1L;
     private String nfcTagName;
+    private boolean matchAll = true;
 
 
-	public WhenNfcScript(Sprite sprite) {
+    public WhenNfcScript(Sprite sprite) {
 		super(sprite);
 
 	}
@@ -74,5 +75,13 @@ public class WhenNfcScript extends Script {
 
     public String getTagName() {
         return nfcTagName;
+    }
+
+    public void setMatchAll(boolean matchAll) {
+        this.matchAll = matchAll;
+    }
+
+    public boolean isMatchAll() {
+        return matchAll;
     }
 }

@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content;
 
+import android.content.res.Resources;
+
 import org.catrobat.catroid.R;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -191,7 +193,8 @@ public class Sprite implements Serializable, Cloneable {
 		for (Script s : scriptList) {
 			if (s instanceof WhenNfcScript) {
                 WhenNfcScript whenNfcScript = (WhenNfcScript)s;
-                if(whenNfcScript.getTagName().equals(R.string.brick_when_nfc_default_all)
+
+                if(whenNfcScript.isMatchAll()
                     || (tagName != null) && whenNfcScript.getTagName().equals(tagName))
                 {
 				    SequenceAction sequence = createActionSequence(s);

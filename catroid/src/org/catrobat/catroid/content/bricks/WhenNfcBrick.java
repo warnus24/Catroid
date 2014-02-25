@@ -113,6 +113,7 @@ public class WhenNfcBrick extends ScriptBrick {
 				} else {
 					adapterView = parent;
                     whenNfcScript.setTagName(selectedTag);
+                    whenNfcScript.setMatchAll(selectedTag.equals(context.getString(R.string.brick_when_nfc_default_all)));
 				}
 			}
 
@@ -151,6 +152,7 @@ public class WhenNfcBrick extends ScriptBrick {
                     return false;
                 }
                 whenNfcScript.setTagName(newTag);
+                whenNfcScript.setMatchAll(newTag.equals(context.getString(R.string.brick_when_nfc_default_all)));
                 setSpinnerSelection(nfcSpinner);
                 return true;
             }
