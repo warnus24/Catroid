@@ -127,10 +127,11 @@ public class WhenNfcBrick extends ScriptBrick {
 	}
 
 	private void setSpinnerSelection(Spinner spinner) {
+        int position = 1;
         if(whenNfcScript != null && whenNfcScript.getTagName() != null){
-		    int position = NfcTagContainer.getPositionOfMessageInAdapter(spinner.getContext(), whenNfcScript.getTagName());
-		    spinner.setSelection(position, true);
+		    position = NfcTagContainer.getPositionOfMessageInAdapter(spinner.getContext(), whenNfcScript.getTagName());
         }
+        spinner.setSelection(position, true);
 	}
 
 	protected void showNewTagDialog(final Spinner nfcSpinner) {

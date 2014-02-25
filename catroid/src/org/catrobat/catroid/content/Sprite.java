@@ -191,8 +191,9 @@ public class Sprite implements Serializable, Cloneable {
 		for (Script s : scriptList) {
 			if (s instanceof WhenNfcScript) {
                 WhenNfcScript whenNfcScript = (WhenNfcScript)s;
-                if(whenNfcScript.getTagName().equals(tagName)
-                        || whenNfcScript.getTagName().equals(R.string.brick_when_nfc_default_all)){
+                if(whenNfcScript.getTagName().equals(R.string.brick_when_nfc_default_all)
+                    || (tagName != null) && whenNfcScript.getTagName().equals(tagName))
+                {
 				    SequenceAction sequence = createActionSequence(s);
 				    whenParallelAction.addAction(sequence);
                 }

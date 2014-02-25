@@ -68,6 +68,7 @@ public class WhenNfcScript extends Script {
 	}
 
     public void setTagName(String tagName) {
+        this.nfcTagName = tagName;
         NfcTagContainer.addTagName(tagName);
     }
 
