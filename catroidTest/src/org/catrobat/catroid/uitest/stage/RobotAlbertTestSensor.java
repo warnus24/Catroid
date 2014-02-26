@@ -57,9 +57,9 @@ public class RobotAlbertTestSensor extends BaseActivityInstrumentationTestCase<M
 	// needed for testdevices
 	// Bluetooth server is running with a name that starts with 'kitty'
 	// e.g. kittyroid-0, kittyslave-0
-	//private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "T420";
-
-	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kittyslave-1";
+	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "T420";
+	//private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kittyslave-0";
+	//private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kittyslave-1";
 
 	private final String projectName = UiTestUtils.PROJECTNAME1;
 	private final String spriteName = "testSprite";
@@ -142,7 +142,7 @@ public class RobotAlbertTestSensor extends BaseActivityInstrumentationTestCase<M
 
 		solo.sleep(5000);
 		double distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
-		solo.sleep(10000);
+		solo.sleep(1000);
 		solo.assertCurrentActivity("Not in stage - connection to bluetooth-device failed", StageActivity.class);
 
 		if (distanceLeft == 0.0) {
