@@ -19,6 +19,9 @@ import org.catrobat.catroid.livewallpaper.R;
 import org.catrobat.catroid.utils.Utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 import android.test.SingleLaunchActivityTestCase;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -156,8 +159,30 @@ SingleLaunchActivityTestCase<SelectProgramActivity> {
         solo.clickOnText(solo.getString(R.string.yes));
         solo.clickOnText(solo.getString(R.string.yes));
         
-        assertTrue("The program count should be 1 after delete all projects but the current one", projectList.size() == 1);
+        solo.sleep(2000);
+        selectProgramActvity = (SelectProgramActivity) solo.getCurrentActivity();
+        projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
+        assertTrue("The program count should be 1 after delete all projects but the current one but was " + projectList.size(), projectList.size() == 1);
     	
+    }
+    
+    public void testEnableSoundCheckBox(){
+    	solo.clickOnText(TEST_PROJECT_NAME);
+    	assertTrue("The set program dialog was not found", solo.searchText(solo.getString(R.string.lwp_confirm_set_program_message)));
+    	assertTrue("The enable sound text was not found", solo.searchText(solo.getString(R.string.lwp_enable_sound)));
+    	
+    	SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		Editor editor = sharedPreferences.edit();
+		editor.putBoolean(Constants.PREF_SOUND_DISABLED, true);
+		editor.commit();
+    	
+    	solo.clickOnText(solo.getString(R.string.lwp_enable_sound));
+    	
+    	assertFalse("The sound should have been enabled but it's not", sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, true));
+    
+    	solo.clickOnText(solo.getString(R.string.lwp_enable_sound));
+    	
+    	assertTrue("The sound should have been disabled but it's not", sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
     }
     
     private void clickOnOkayActionBarItem(Solo solo){

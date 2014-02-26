@@ -34,6 +34,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -44,6 +48,7 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ProjectData;
 import org.catrobat.catroid.content.Project;
+import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.R;
@@ -180,8 +185,40 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	@Override
 	public void onProjectClicked(int position) {
 		selectedProject = projectList.get(position).projectName;
+		CheckBox checkBox = new CheckBox(getActivity());
+		checkBox.setText(R.string.lwp_enable_sound);
 
-		AlertDialog.Builder builder = new CustomAlertDialogBuilder(getActivity());
+		final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		checkBox.setChecked(!sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
+
+		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+				//SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+				Editor editor = sharedPreferences.edit();
+
+				if (isChecked) {
+					SoundManager.getInstance().soundDisabledByLwp = false;
+					editor.putBoolean(Constants.PREF_SOUND_DISABLED, false);
+				} else {
+					SoundManager.getInstance().soundDisabledByLwp = true;
+					editor.putBoolean(Constants.PREF_SOUND_DISABLED, true);
+				}
+
+				editor.commit();
+
+			}
+
+		});
+
+		LinearLayout linearLayout = new LinearLayout(getActivity());
+		linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT));
+		linearLayout.addView(checkBox);
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setView(linearLayout);
 		builder.setTitle(selectedProject);
 		builder.setMessage(R.string.lwp_confirm_set_program_message);
 		builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
