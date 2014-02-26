@@ -87,6 +87,8 @@ public class StageListener implements ApplicationListener {
 	private int screenWidth;
 	private int screenHeight;
 
+	private Thread postExecThread = null;
+
 	private enum ScreenModes {
 		STRETCH, MAXIMIZE
 	};
@@ -185,11 +187,11 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
-	public void reloadProject(Context context) {
+	public void reloadProject(Context context, Thread postExec) {
 		if (reloadProject) {
 			return;
 		}
-
+		postExecThread = postExec;
 		project.getUserVariables().resetAllUserVariables();
 
 		if (this.isLiveWallpaper) {

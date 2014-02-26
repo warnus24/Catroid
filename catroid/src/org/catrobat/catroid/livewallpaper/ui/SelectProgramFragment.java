@@ -69,7 +69,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 	private ActionMode actionMode;
 	private static String deleteActionModeTitle;
-
+	private Thread loading;
 	private ProjectData projectToEdit;
 
 	private ProjectManager projectManager = ProjectManager.getInstance();
@@ -161,9 +161,11 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 		@Override
 		protected void onPostExecute(Void result) {
-			LiveWallpaper.getInstance().changeWallpaperProgram();
+			Thread postExec = Thread.currentThread();
+			LiveWallpaper.getInstance().changeWallpaperProgram(postExec);
 			//			getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
 			//			getFragmentManager().popBackStack();
+
 			if (progress.isShowing()) {
 				progress.dismiss();
 			}
@@ -186,13 +188,16 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
+
 			}
 		});
 
 		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				new LoadProject().execute();
+				LoadProject Loader = new LoadProject();
+				Loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				//getActivity().finish();
 			}
 		});
 		AlertDialog alertDialog = builder.create();

@@ -57,6 +57,22 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private Context context;
 
 	private LiveWallpaperEngine previewEngine;
+
+	/**
+	 * @return the previewEngine
+	 */
+	public LiveWallpaperEngine getPreviewEngine() {
+		return previewEngine;
+	}
+
+	/**
+	 * @param previewEngine
+	 *            the previewEngine to set
+	 */
+	public void setPreviewEngine(LiveWallpaperEngine previewEngine) {
+		this.previewEngine = previewEngine;
+	}
+
 	private LiveWallpaperEngine homeEngine;
 
 	private StageListener previewStageListener = null;
@@ -109,11 +125,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 	}
 
-	public void changeWallpaperProgram() {
+	public void changeWallpaperProgram(Thread postExec) {
 		if (TEST) {
 			return;
 		}
-		previewEngine.changeWallpaperProgram();
+		previewEngine.changeWallpaperProgram(postExec);
 		//TODO
 		//homeEngine.changeWallpaperProgram();
 	}
@@ -155,7 +171,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	}
 
-	class LiveWallpaperEngine extends AndroidWallpaperEngine {
+	public class LiveWallpaperEngine extends AndroidWallpaperEngine {
 
 		public String name = "";
 		private static final int REFRESH_RATE = 300;
@@ -255,9 +271,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			super.onDestroy();
 		}
 
-		public void changeWallpaperProgram() {
-			getLocalStageListener().reloadProject(getApplicationContext());
+		public void changeWallpaperProgram(Thread postExec) {
+			getLocalStageListener().reloadProject(getApplicationContext(), postExec);
 			activateTextToSpeechIfNeeded();
+
 		}
 
 		private void activateTextToSpeechIfNeeded() {
