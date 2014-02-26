@@ -76,6 +76,7 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 			instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_LEFT);
 			instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_RIGHT);
 		} else if (sensor.getBooleanAlbertBricksUsed()) {
+			Log.d("SensorHandler:RobotAlbert", "register listener for robot Albert");
 			instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_LEFT);
 			instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_RIGHT);
 		}
@@ -165,6 +166,9 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 			case LOUDNESS:
 				return Double.valueOf(instance.loudness);
 			case ALBERT_ROBOT_DISTANCE_LEFT:
+				Log.d("SensorHandler: RobotAlbert",
+						"getSensorValue: left distance = " + Double.valueOf(instance.albertRobotDistanceLeft) + " or "
+								+ Float.valueOf(instance.albertRobotDistanceLeft));
 				return Double.valueOf(instance.albertRobotDistanceLeft);
 			case ALBERT_ROBOT_DISTANCE_RIGHT:
 				return Double.valueOf(instance.albertRobotDistanceRight);
@@ -201,6 +205,8 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 				instance.loudness = event.values[0];
 				break;
 			case ALBERT_ROBOT_DISTANCE_LEFT:
+				Log.d("SensorHandler: RobotAlbert", "onCustomSensorChanged: ALBERT_ROBOT_DISTANCE_LEFT = "
+						+ event.values[0] + " " + event.values[1]);
 				instance.albertRobotDistanceLeft = event.values[0];
 				break;
 			case ALBERT_ROBOT_DISTANCE_RIGHT:
