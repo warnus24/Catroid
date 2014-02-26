@@ -72,14 +72,14 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		SensorRobotAlbert sensor = SensorRobotAlbert.getSensorRobotAlbertInstance();
-		if ((sharedPreferences.getBoolean(SensorRobotAlbert.KEY_SETTINGS_ROBOT_ALBERT_BRICKS, false))) {
-			instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_LEFT);
-			instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_RIGHT);
-		} else if (sensor.getBooleanAlbertBricksUsed()) {
-			Log.d("SensorHandler:RobotAlbert", "register listener for robot Albert");
-			instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_LEFT);
-			instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_RIGHT);
-		}
+		//if ((sharedPreferences.getBoolean(SensorRobotAlbert.KEY_SETTINGS_ROBOT_ALBERT_BRICKS, false))) {
+		//	instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_LEFT);
+		//	instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_RIGHT);
+		//} else if (sensor.getBooleanAlbertBricksUsed()) {
+		Log.d("SensorHandler:RobotAlbert", "register listener for robot Albert");
+		instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_LEFT);
+		instance.sensorManager.registerListener(instance, Sensors.ALBERT_ROBOT_DISTANCE_RIGHT);
+		//}
 
 	}
 
