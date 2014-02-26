@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ProjectData;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.common.StandardProjectHandler;
