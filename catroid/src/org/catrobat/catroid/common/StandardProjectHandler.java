@@ -575,6 +575,7 @@ public final class StandardProjectHandler {
 		Sprite rightHardBouncerBouncer = new Sprite("Right hard bouncer bouncer");
 
 		Sprite leftVerticalWall = new Sprite("Left vertical wall");
+
 		Sprite leftBottomWall = new Sprite("Left bottom wall");
 		Sprite rightVerticalWall = new Sprite("Right vertical wall");
 		Sprite rightBottomWall = new Sprite("Right bottom wall");
@@ -589,10 +590,12 @@ public final class StandardProjectHandler {
 		createElement(background, "background_480_800", R.drawable.background_480_800, new Vector2(), Float.NaN);
 		StartScript startScript = new StartScript();
 		startScript.addBrick(new SetGravityBrick( new Vector2(0.0f, -8.0f)));
+
 		ball.addScript(startScript);
 
-		Script ballStartScript = createElement(ball, "pinball", R.drawable.pinball, new Vector2(-200.0f, 300.0f),
+		Script ballStartScript = createElement(ball, "pinball", R.drawable.pinball, new Vector2(0.0f, 250.0f),
 				Float.NaN);
+
 		setPhysicProperties(ball, ballStartScript, PhysicsObject.Type.DYNAMIC, 20.0f, 80.0f);
 
 		// Ball v2
@@ -672,7 +675,6 @@ public final class StandardProjectHandler {
 		setPhysicProperties(rightArm, rightArmStartScript, PhysicsObject.Type.FIXED, 50.0f, -1.0f);
 		createMovingArm(rightArm, rightButtonPressed, -armMovingSpeed);
 
-
 		// Lower walls
 		//		Script leftVerticalWallStartScript = createElement(leftVerticalWall, "vertical_wall", R.drawable.vertical_wall,
 		//				new Vector2(-232.0f, -160.0f), 8.0f);
@@ -682,7 +684,7 @@ public final class StandardProjectHandler {
 		//		setPhysicProperties(rightVerticalWall, rightVerticalWallStartScript, PhysicsObject.Type.FIXED, 5.0f, -1.0f);
 		//
 		Script leftBottomWallStartScript = createElement(leftBottomWall, "wall_bottom", R.drawable.wall_bottom,
-				new Vector2(-155.0f, -255.0f), 58.5f);
+				new Vector2(0.0f, -100.0f), 90f);
 		setPhysicProperties(leftBottomWall, leftBottomWallStartScript, PhysicsObject.Type.FIXED, 5.0f, -1.0f);
 
 		Script rightBottomWallStartScript = createElement(rightBottomWall, "wall_bottom", R.drawable.wall_bottom,
@@ -742,7 +744,7 @@ public final class StandardProjectHandler {
 		defaultProject.addSprite(rightButton);
 
 		defaultProject.addSprite(ball);
-		//		defaultProject.addSprite(ball2);
+		defaultProject.addSprite(ball2);
 		//		defaultProject.addSprite(ball3);
 		//		defaultProject.addSprite(leftArm);
 		//		defaultProject.addSprite(rightArm);
