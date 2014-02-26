@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content.actions;
 
+import android.util.Log;
+
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import org.catrobat.catroid.content.Sprite;
@@ -40,6 +42,7 @@ public class RobotAlbertDistanceSensorLeftAction extends TemporalAction {
 			return;
 		}
 		int value = RobotAlbert.getRobotAlbertDistanceSensorLeftMessage();
+		Log.d("RobotAlbertDistanceSensor", "getRobotAlbertDistanceSensorLeftMessage = value");
 		userVariable.setValue(value);
 
 	}

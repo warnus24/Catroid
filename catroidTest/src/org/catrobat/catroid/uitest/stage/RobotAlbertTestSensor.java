@@ -156,6 +156,10 @@ public class RobotAlbertTestSensor extends BaseActivityInstrumentationTestCase<M
 			distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
 		}
 		Log.d("RobotAlbertTest", "left=" + distanceLeft);
+		if (distanceLeft == 0.0) {
+			Log.d("RobotAlbertTest", "EEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOORRRRRRRRR: distanceLeft == 0.0");
+		}
+
 		assertEquals("Variable has the wrong value after stage", 50.0, distanceLeft);
 
 		solo.sleep(1000);

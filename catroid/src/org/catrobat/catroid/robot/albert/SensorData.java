@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.robot.albert;
 
+import android.util.Log;
+
 public final class SensorData {
 
 	private static SensorData instance = null;
@@ -41,10 +43,12 @@ public final class SensorData {
 	}
 
 	public void setValueOfLeftDistanceSensor(int value) {
+		Log.d("TTTTTEEEEEEEESSSSSSSTTTTTT", "SensorData: setValueOfLeftDistanceSensor = " + value);
 		leftDistanceSensor = value;
 	}
 
 	public int getValueOfLeftDistanceSensor() {
+		Log.d("TTTTTEEEEEEEESSSSSSSTTTTTT", "SensorData: getValueOfLeftDistanceSensor = " + leftDistanceSensor);
 		return leftDistanceSensor;
 	}
 
