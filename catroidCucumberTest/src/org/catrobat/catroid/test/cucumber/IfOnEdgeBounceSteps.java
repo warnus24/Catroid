@@ -171,20 +171,20 @@ public class IfOnEdgeBounceSteps extends AndroidTestCase {
 
 	@When("^an Object would move beyond the (up|bottom) (left|right) corner in (-?\\d+) direction$")
 	public void an_Object_would_move_beyond_the_corner_in_direction(String vertical, String horizontal,
-			float glide_direction) {
+			float glideDirection) {
 		if ((!vertical.equalsIgnoreCase("up") && !vertical.equalsIgnoreCase("bottom"))
 				|| (!horizontal.equalsIgnoreCase("left") && !horizontal.equalsIgnoreCase("right"))) {
 			fail("Corner must be <up|bottom> <left|right>");
 		}
 
-		if (glide_direction < -180f || glide_direction > 180) {
+		if (glideDirection < -180f || glideDirection > 180) {
 			fail("Direction must be between -180 and 180");
 		}
 
 		if (vertical.equalsIgnoreCase("up") && horizontal.equalsIgnoreCase("left")) {
 			borderPositionHorizontal = LEFT_BORDER_POSITION;
 			borderPositionVertical = TOP_BORDER_POSITION;
-			direction = glide_direction;
+			direction = glideDirection;
 			bouncePositionHorizontal = BOUNCE_LEFT_POSITION;
 			bouncePositionVertical = BOUNCE_TOP_POSITION;
 		}
@@ -192,7 +192,7 @@ public class IfOnEdgeBounceSteps extends AndroidTestCase {
 		if (vertical.equalsIgnoreCase("up") && horizontal.equalsIgnoreCase("right")) {
 			borderPositionHorizontal = RIGHT_BORDER_POSITION;
 			borderPositionVertical = TOP_BORDER_POSITION;
-			direction = glide_direction;
+			direction = glideDirection;
 			bouncePositionHorizontal = BOUNCE_RIGHT_POSITION;
 			bouncePositionVertical = BOUNCE_TOP_POSITION;
 		}
@@ -200,7 +200,7 @@ public class IfOnEdgeBounceSteps extends AndroidTestCase {
 		if (vertical.equalsIgnoreCase("bottom") && horizontal.equalsIgnoreCase("left")) {
 			borderPositionHorizontal = LEFT_BORDER_POSITION;
 			borderPositionVertical = BOTTOM_BORDER_POSITION;
-			direction = glide_direction;
+			direction = glideDirection;
 			bouncePositionHorizontal = BOUNCE_LEFT_POSITION;
 			bouncePositionVertical = BOUNCE_BOTTOM_POSITION;
 		}
@@ -208,7 +208,7 @@ public class IfOnEdgeBounceSteps extends AndroidTestCase {
 		if (vertical.equalsIgnoreCase("bottom") && horizontal.equalsIgnoreCase("right")) {
 			borderPositionHorizontal = RIGHT_BORDER_POSITION;
 			borderPositionVertical = BOTTOM_BORDER_POSITION;
-			direction = glide_direction;
+			direction = glideDirection;
 			bouncePositionHorizontal = BOUNCE_RIGHT_POSITION;
 			bouncePositionVertical = BOUNCE_BOTTOM_POSITION;
 		}
@@ -254,10 +254,10 @@ public class IfOnEdgeBounceSteps extends AndroidTestCase {
 		assertTrue("A 60Â° direction is missing", expectedDirections.containsKey(60f));
 	}
 
-	private void setPositionAndDirection(float x, float y, float glide_direction) {
+	private void setPositionAndDirection(float x, float y, float glideDirection) {
 		Look look = sprite.look;
 		look.setPositionInUserInterfaceDimensionUnit(x, y);
-		look.setDirectionInUserInterfaceDimensionUnit(glide_direction);
+		look.setDirectionInUserInterfaceDimensionUnit(glideDirection);
 	}
 
 	private void executeIfOnEdgeBounceAction() {
