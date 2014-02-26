@@ -32,16 +32,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
-import org.catrobat.catroid.ProjectManager;
-import org.catrobat.catroid.common.BroadcastSequenceMap;
-import org.catrobat.catroid.common.BroadcastWaitSequenceMap;
 import org.catrobat.catroid.common.LookData;
-import org.catrobat.catroid.content.actions.ExtendedActions;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -354,48 +349,6 @@ public class Look extends Image {
 
 	public void changeBrightnessInUserInterfaceDimensionUnit(float changePercent) {
 		setBrightnessInUserInterfaceDimensionUnit(getBrightnessInUserInterfaceDimensionUnit() + changePercent);
-	}
-
-	private void addOrRestartAction(Action action) {
-		if (action.getActor() == null) {
-			if (!getActions().contains(action, false)) {
-				addAction(action);
-			}
-		} else {
-			if (!BroadcastSequenceMap.actionsToRestart.contains(action)) {
-				BroadcastSequenceMap.actionsToRestart.add(action);
-			}
-		}
-	}
-
-	private void addBroadcastMessageToBroadcastWaitSequenceMap(BroadcastEvent event, String broadcastMessage) {
-		ArrayList<SequenceAction> actionList = new ArrayList<SequenceAction>();
-		for (SequenceAction action : BroadcastSequenceMap.get(broadcastMessage)) {
-			event.raiseNumberOfReceivers();
-			SequenceAction broadcastWaitAction = ExtendedActions.sequence(action,
-					ExtendedActions.broadcastNotify(event));
-			actionList.add(broadcastWaitAction);
-			addOrRestartAction(broadcastWaitAction);
-		}
-		BroadcastWaitSequenceMap.put(broadcastMessage, actionList);
-	}
-
-	private boolean handleAction(Action action) {
-		for (Sprite sprites : ProjectManager.getInstance().getCurrentProject().getSpriteList()) {
-			for (Action actionOfLook : sprites.look.getActions()) {
-				if (action == actionOfLook) {
-					actionOfLook.restart();
-					return true;
-				} else {
-					if (actionOfLook instanceof SequenceAction && ((SequenceAction) actionOfLook).getActions().size > 0
-							&& ((SequenceAction) actionOfLook).getActions().get(0) == action) {
-						actionOfLook.restart();
-						return true;
-					}
-				}
-			}
-		}
-		return false;
 	}
 
 	private class BrightnessContrastShader extends ShaderProgram {
