@@ -6,7 +6,8 @@
 *.metadata
 
 #IntelliJ IDEA
-.idea
+.idea/*
+!.idea/codeStyleSettings.xml
 *.iml
 *.ipr
 *.iws
