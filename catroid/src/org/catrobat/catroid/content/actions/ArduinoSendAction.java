@@ -70,13 +70,7 @@ public class ArduinoSendAction extends Action {
 
 	@Override
 	public boolean act(float delta) {
-		if (!isBluetoothinitialized) {
-			//			this.initBluetoothConnection();
-		}
 		return false;
-	}
-
-	public void setDigitalPin(int pin, int value) {
 	}
 
 	public static void initBluetoothConnection(String MACadress) {
