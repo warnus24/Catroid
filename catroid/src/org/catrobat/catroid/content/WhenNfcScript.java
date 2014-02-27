@@ -34,13 +34,17 @@ import java.util.ArrayList;
 public class WhenNfcScript extends Script {
 
 	private static final long serialVersionUID = 1L;
-    private String nfcTagName;
-    private boolean matchAll = true;
+	private String nfcTagName;
+	private boolean matchAll = true;
 
-
-    public WhenNfcScript(Sprite sprite) {
+	public WhenNfcScript(Sprite sprite) {
 		super(sprite);
 
+	}
+
+	public WhenNfcScript(Sprite sprite, String nfcTagName) {
+		super(sprite);
+		this.nfcTagName = nfcTagName;
 	}
 
 	@Override
@@ -68,20 +72,20 @@ public class WhenNfcScript extends Script {
 		return brick;
 	}
 
-    public void setTagName(String tagName) {
-        this.nfcTagName = tagName;
-        NfcTagContainer.addTagName(tagName);
-    }
+	public void setTagName(String tagName) {
+		this.nfcTagName = tagName;
+		NfcTagContainer.addTagName(tagName);
+	}
 
-    public String getTagName() {
-        return nfcTagName;
-    }
+	public String getTagName() {
+		return nfcTagName;
+	}
 
-    public void setMatchAll(boolean matchAll) {
-        this.matchAll = matchAll;
-    }
+	public void setMatchAll(boolean matchAll) {
+		this.matchAll = matchAll;
+	}
 
-    public boolean isMatchAll() {
-        return matchAll;
-    }
+	public boolean isMatchAll() {
+		return matchAll;
+	}
 }

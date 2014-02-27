@@ -33,47 +33,49 @@ import java.util.List;
 import java.util.Map;
 
 public class NfcTagContainer {
-    private static ArrayAdapter<String> tagNameAdapter = null;
-    private static List<String> tagNameList = new ArrayList<String>();
-    private static Map<Double,String> mapUidToTagName = new HashMap<Double, String>();
+	private static ArrayAdapter<String> tagNameAdapter = null;
+	private static List<String> tagNameList = new ArrayList<String>();
+	private static Map<Double, String> mapUidToTagName = new HashMap<Double, String>();
 
-    private NfcTagContainer() {
-        throw new AssertionError();
-    }
+	private NfcTagContainer() {
+		throw new AssertionError();
+	}
 
-    public static ArrayAdapter<String> getMessageAdapter(Context context) {
-        if (tagNameAdapter == null) {
-            tagNameAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, tagNameList);
-            tagNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	public static ArrayAdapter<String> getMessageAdapter(Context context) {
+		if (tagNameAdapter == null) {
+			tagNameAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, tagNameList);
+			tagNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            if (tagNameList.isEmpty()) {
-                addTagName(context.getString(R.string.new_nfc_tag));
-                addTagName(context.getString(R.string.brick_when_nfc_default_all));
-            }
-        }
-        return tagNameAdapter;
-    }
+			if (tagNameList.isEmpty()) {
+				addTagName(context.getString(R.string.new_nfc_tag));
+				addTagName(context.getString(R.string.brick_when_nfc_default_all));
+			}
+		}
+		return tagNameAdapter;
+	}
 
+	public static void addTagName(String tagName) {
+		if (tagName == null || tagName.isEmpty()) {
+			return;
+		}
 
-    public static void addTagName(String tagName) {
-        if (tagName == null || tagName.isEmpty()) {
-            return;
-        }
+		if (!tagNameList.contains(tagName)) {
+			tagNameList.add(tagName);
+		}
+	}
 
-        if(!tagNameList.contains(tagName)){
-            tagNameList.add(tagName);
-        }
-    }
+	public static int getPositionOfMessageInAdapter(Context context, String tagName) {
+		if (tagNameAdapter == null) {
+			getMessageAdapter(context);
+		}
+		return tagNameAdapter.getPosition(tagName);
+	}
 
+	public static String getNameForUid(Double uid) {
+		return mapUidToTagName.get(uid);
+	}
 
-    public static int getPositionOfMessageInAdapter(Context context, String tagName) {
-        if (tagNameAdapter == null) {
-            getMessageAdapter(context);
-        }
-        return tagNameAdapter.getPosition(tagName);
-    }
-
-    public static String getNameForUid(Double uid) {
-        return mapUidToTagName.get(uid);
-    }
+	public static String getFirst(Context context) {
+		return getMessageAdapter(context).getItem(1);
+	}
 }

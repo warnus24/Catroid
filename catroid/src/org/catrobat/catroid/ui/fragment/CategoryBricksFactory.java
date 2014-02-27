@@ -28,6 +28,7 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.common.MessageContainer;
+import org.catrobat.catroid.common.NfcTagContainer;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.BroadcastBrick;
@@ -122,7 +123,8 @@ public class CategoryBricksFactory {
 		controlBrickList.add(new IfLogicBeginBrick(sprite, 0));
 		controlBrickList.add(new RepeatBrick(sprite, BrickValues.REPEAT));
 
-		controlBrickList.add(new WhenNfcBrick(sprite));
+		final String tagName = NfcTagContainer.getFirst(context);
+		controlBrickList.add(new WhenNfcBrick(sprite, tagName));
 
 		return controlBrickList;
 	}
