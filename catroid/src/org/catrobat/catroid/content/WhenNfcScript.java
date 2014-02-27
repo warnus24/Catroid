@@ -39,7 +39,6 @@ public class WhenNfcScript extends Script {
 
 	public WhenNfcScript(Sprite sprite) {
 		super(sprite);
-
 	}
 
 	public WhenNfcScript(Sprite sprite, String nfcTagName) {

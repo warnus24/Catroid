@@ -52,6 +52,7 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
+import org.catrobat.catroid.content.WhenNfcScript;
 import org.catrobat.catroid.content.WhenScript;
 import org.catrobat.catroid.content.XmlHeader;
 import org.catrobat.catroid.content.bricks.BrickBaseType;
@@ -224,6 +225,8 @@ public final class StorageHandler {
 		xstream.alias("waitBrick", WaitBrick.class);
 		xstream.alias("whenBrick", WhenBrick.class);
 		xstream.alias("whenStartedBrick", WhenStartedBrick.class);
+
+		xstream.alias("whenNfcScript", WhenNfcScript.class);
 	}
 
 	private void createCatroidRoot() {
@@ -262,9 +265,8 @@ public final class StorageHandler {
 		}
 	}
 
-	public boolean cancelLoadProject()
-	{
-		if (fileInputStream !=null){
+	public boolean cancelLoadProject() {
+		if (fileInputStream != null) {
 			try {
 				fileInputStream.close();
 				return true;

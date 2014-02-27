@@ -54,11 +54,13 @@ public class WhenNfcBrick extends ScriptBrick {
 	public WhenNfcBrick(Sprite sprite, String tagName) {
 		this.sprite = sprite;
 		this.whenNfcScript = new WhenNfcScript(sprite, tagName);
+		NfcTagContainer.addTagName(tagName);
 	}
 
 	public WhenNfcBrick(Sprite sprite, WhenNfcScript script) {
 		this.sprite = sprite;
 		this.whenNfcScript = script;
+		NfcTagContainer.addTagName(script.getTagName());
 	}
 
 	@Override
