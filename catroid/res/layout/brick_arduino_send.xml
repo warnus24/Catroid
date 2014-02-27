@@ -48,7 +48,7 @@
         <TextView
             android:id="@+id/brick_arduino_send_value_text_view"
             style="@style/BrickText.SingleLine"
-            android:text="@string/brick_select_value" />
+            android:text="@string/brick_arduino_select_value" />
         
          <Spinner
             android:id="@+id/brick_arduino_send_pin_spinner"
