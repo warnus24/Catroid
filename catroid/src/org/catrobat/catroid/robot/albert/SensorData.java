@@ -24,16 +24,15 @@ package org.catrobat.catroid.robot.albert;
 
 public final class SensorData {
 
-	private static SensorData instance = null;
+	private static SensorData instance;
 
-	//Sensor variables
-	private int leftDistanceSensor = 0; //0=infinity 100=0mm
-	private int rightDistanceSensor = 0;
+	private int leftDistanceSensor; // 0 = infinity, 100 = 0mm
+	private int rightDistanceSensor;
 
 	private SensorData() {
 	}
 
-	public static SensorData getInstance() {
+	public static synchronized SensorData getInstance() {
 		if (instance == null) {
 			instance = new SensorData();
 		}

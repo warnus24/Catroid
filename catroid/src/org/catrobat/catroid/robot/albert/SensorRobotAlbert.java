@@ -30,33 +30,34 @@ import org.catrobat.catroid.formulaeditor.SensorCustomEventListener;
 import org.catrobat.catroid.formulaeditor.Sensors;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public final class SensorRobotAlbert {
 
-	private static SensorRobotAlbert instance = null;
-	private static final int UPDATE_INTERVAL = 50; //New sensordata comes around every 40ms
-
-	private ArrayList<SensorCustomEventListener> listenerList = new ArrayList<SensorCustomEventListener>();
-
-	private Handler handler;
-	private float[] distance = new float[2];
-	private static boolean debugOutput = false;
-
 	public static final String KEY_SETTINGS_ROBOT_ALBERT_BRICKS = "setting_robot_albert_bricks";
-	public boolean usingRobotAlbertBricks = false;
+
+	private static final int UPDATE_INTERVAL = 50; //New sensor data comes around every 40ms
+	private static final String TAG = SensorRobotAlbert.class.getSimpleName();
+
+	private static SensorRobotAlbert instance;
+	private static boolean debugOutput;
+
+	private boolean usingRobotAlbertBricks;
+	private List<SensorCustomEventListener> listenerList = new ArrayList<SensorCustomEventListener>();
+	private Handler handler;
 
 	//Periodic update the distance_value
-	Runnable updateDistance = new Runnable() {
+	private Runnable updateDistance = new Runnable() {
 		@Override
 		public void run() {
-
+			float[] distance = new float[2];
 			distance[0] = SensorData.getInstance().getValueOfLeftDistanceSensor();
 			distance[1] = SensorData.getInstance().getValueOfRightDistanceSensor();
 
-			if (debugOutput == true) {
-				Log.d("SensorRobotAlbert", "LeftSensorvalue:  "
+			if (debugOutput) {
+				Log.d(TAG, "Left Sensor value:  "
 						+ SensorData.getInstance().getValueOfLeftDistanceSensor());
-				Log.d("SensorRobotAlbert", "RightSensorvalue: "
+				Log.d(TAG, "Right Sensor value: "
 						+ SensorData.getInstance().getValueOfRightDistanceSensor());
 			}
 
@@ -72,9 +73,9 @@ public final class SensorRobotAlbert {
 
 	private SensorRobotAlbert() {
 		handler = new Handler();
-	};
+	}
 
-	public static SensorRobotAlbert getSensorRobotAlbertInstance() {
+	public static synchronized SensorRobotAlbert getSensorRobotAlbertInstance() {
 		if (instance == null) {
 			instance = new SensorRobotAlbert();
 		}
@@ -82,8 +83,7 @@ public final class SensorRobotAlbert {
 	}
 
 	public synchronized boolean registerListener(SensorCustomEventListener listener) {
-
-		if (usingRobotAlbertBricks == false) {
+		if (!usingRobotAlbertBricks) {
 			return false;
 		}
 
@@ -91,25 +91,16 @@ public final class SensorRobotAlbert {
 			return true;
 		}
 		listenerList.add(listener);
-
-		try {
-			updateDistance.run();
-		} catch (Exception e) {
-			Log.w(SensorRobotAlbert.class.getSimpleName(), "Could not register SensorCustomEventListener", e);
-			listenerList.remove(listener);
-			return false;
-		}
-
+		updateDistance.run();
 		return true;
 	}
 
 	public synchronized void unregisterListener(SensorCustomEventListener listener) {
 		if (listenerList.contains(listener)) {
 			listenerList.remove(listener);
-			if (listenerList.size() == 0) {
+			if (listenerList.isEmpty()) {
 				handler.removeCallbacks(updateDistance);
 			}
-
 		}
 	}
 

@@ -52,7 +52,6 @@ import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenModes;
 import org.catrobat.catroid.common.ScreenValues;
-import org.catrobat.catroid.common.Values;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.SoundManager;
@@ -73,6 +72,7 @@ public class StageListener implements ApplicationListener {
 	private static final float DELTA_ACTIONS_DIVIDER_MAXIMUM = 50f;
 	private static final int ACTIONS_COMPUTATION_TIME_MAXIMUM = 8;
 	private static final boolean DEBUG = false;
+	private static final String TAG = StageListener.class.getSimpleName();
 
 	// needed for UiTests - is disabled to fix crashes with EMMA coverage
 	// CHECKSTYLE DISABLE StaticVariableNameCheck FOR 1 LINES
@@ -255,7 +255,8 @@ public class StageListener implements ApplicationListener {
 				Log.d("StageListener Pause", "sendRobotAlbertMotorResetMessage finished!");
 			}
 
-		} catch (Exception e) {
+		} catch (Exception exception) {
+			Log.e(TAG, Log.getStackTraceString(exception));
 		}
 
 		if (finished || (sprites == null)) {

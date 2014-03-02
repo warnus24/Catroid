@@ -286,7 +286,6 @@ public class StageDialogTest extends BaseActivityInstrumentationTestCase<MainMen
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
 		solo.waitForFragmentById(R.id.fragment_projects_list);
 		solo.sleep(200);
-		Log.d("testme", "3");
 		assertTrue("Cannot click project.", UiTestUtils.clickOnTextInList(solo, testProject));
 		solo.sleep(200);
 		Log.d("testme", "4");

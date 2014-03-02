@@ -127,20 +127,21 @@ public class PreStageActivity extends Activity {
 			SensorRobotAlbert sensor = SensorRobotAlbert.getSensorRobotAlbertInstance();
 			sensor.setBooleanAlbertBricks(true);
 
-			String waiting_text = getResources().getString(R.string.connectingPleaseWaitRobotAlbert);
-			String title = getResources().getString(R.string.select_device_robot_albert);
+			String waitingText = getResources().getString(R.string.robot_albert_connecting_please_wait);
+			String title = getResources().getString(R.string.robot_albert_select_device);
 			bluetoothDeviceName = title;
-			bluetoothDeviceWaitingText = waiting_text;
-			int bluetoothState = bluetoothManager.activateBluetooth(title, waiting_text);
+			bluetoothDeviceWaitingText = waitingText;
+			int bluetoothState = bluetoothManager.activateBluetooth(title, waitingText);
 			if (bluetoothState == BluetoothManager.BLUETOOTH_NOT_SUPPORTED) {
-				Log.d("PreStageActivity", "Bluetooth not supported");
+				Log.e(TAG, "Bluetooth not supported");
 				Toast.makeText(PreStageActivity.this, R.string.notification_blueth_err, Toast.LENGTH_LONG).show();
 				resourceFailed();
 			} else if (bluetoothState == BluetoothManager.BLUETOOTH_ALREADY_ON) {
-				Log.d("PrestageActivity", "Bluetooth already on");
+				Log.d(TAG, "Bluetooth already on");
 				robotAlbertActive = true;
 				if (robotAlbert == null) {
-					startBluetoothCommunication(true, title, waiting_text);
+					Log.d(TAG, "Starting Albert BT");
+					startBluetoothCommunication(true, title, waitingText);
 				} else {
 					resourceInitialized();
 				}
@@ -229,7 +230,7 @@ public class PreStageActivity extends Activity {
 	}
 
 	private void startBluetoothCommunication(boolean autoConnect, String title, String waitingText) {
-		Log.d("PreStageActivity", "startBluetoothCommunication with custom Title");
+		Log.d(TAG, "startBluetoothCommunication with custom Title");
 		connectingProgressDialog = ProgressDialog.show(this, "", waitingText, true);
 		Intent serverIntent = new Intent(this, DeviceListActivity.class);
 		serverIntent.putExtra(DeviceListActivity.AUTO_CONNECT, autoConnect);
@@ -414,7 +415,7 @@ public class PreStageActivity extends Activity {
 						connectingProgressDialog.dismiss();
 						resourceInitialized();
 						break;
-					case RobotAlbertBtCommunicator.STATE_CONNECTERROR:
+					case RobotAlbertBtCommunicator.STATE_CONNECT_ERROR:
 						Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_SHORT).show();
 						connectingProgressDialog.dismiss();
 						if (robotAlbert != null) {
@@ -422,8 +423,8 @@ public class PreStageActivity extends Activity {
 						}
 						robotAlbert = null;
 						if (autoConnect) {
-							String waitingText = getResources().getString(R.string.connectingPleaseWaitRobotAlbert);
-							String title = getResources().getString(R.string.select_device_robot_albert);
+							String waitingText = getResources().getString(R.string.robot_albert_connecting_please_wait);
+							String title = getResources().getString(R.string.robot_albert_select_device);
 							startBluetoothCommunication(false, title, waitingText);
 						} else {
 							resourceFailed();

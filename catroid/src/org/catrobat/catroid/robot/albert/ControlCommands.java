@@ -42,48 +42,50 @@
  */
 package org.catrobat.catroid.robot.albert;
 
+import java.util.Arrays;
+
 public class ControlCommands {
 
-	//for Albert-Robot-Test
-	private byte[] buffer = new byte[22];
+	// for Tests
+	private final byte[]buffer = new byte[22];
 
-	//Actor variables
-	private int speedMotorLeft = 0; // -100...+100
-	private int speedMotorRight = 0; // -100...+100
-	private int buzzer = 0;
-	private int leftLedGreen = 0; // 0...255
-	private int leftLedBlue = 0; // 0...255
-	private int leftLedRed = 0; // 0...255
-	private int rightLedGreen = 0; // 0...255
-	private int rightLedBlue = 0; // 0...255
-	private int rightLedRed = 0; // 0...255
-	private int frontLed = 0; //Front-LED 0...1
-	private int bodyLed = 0; //Body-LED 0...255
-	private byte sendFrameNumber = 0;
+	// Actor variables
+	private int speedMotorLeft;		// -100...+100
+	private int speedMotorRight;	// -100...+100
+	private int buzzer;
+	private int leftLedGreen;		// 0...255
+	private int leftLedBlue; 		// 0...255
+	private int leftLedRed;			// 0...255
+	private int rightLedGreen;		// 0...255
+	private int rightLedBlue;		// 0...255
+	private int rightLedRed;		// 0...255
+	private int frontLed;			// Front-LED 0...1
+	private int bodyLed;			// Body-LED 0...255
+	private byte sendFrameNumber = 1;
 
 	public ControlCommands() {
-		buffer[0] = (byte) 0xAA;
-		buffer[1] = (byte) 0x55;
+		buffer[0] = (byte) 0xAA;	// HEADER
+		buffer[1] = (byte) 0x55;	// HEADER
 		buffer[2] = (byte) 20;
 		buffer[3] = (byte) 6;
 		buffer[4] = (byte) 0x11;
 		buffer[5] = sendFrameNumber;
 		buffer[6] = (byte) 0;
 		buffer[7] = (byte) 0xFF;
-		buffer[8] = (byte) 0; //Left motor
-		buffer[9] = (byte) 0; //Right motor
-		buffer[10] = (byte) 0; //Buzzer
-		buffer[11] = (byte) 0; //Left LED Red
-		buffer[12] = (byte) 0; //Left LED Green
-		buffer[13] = (byte) 0; //Left LED Blue
-		buffer[14] = (byte) 0; //Right LED Red
-		buffer[15] = (byte) 0; //Right LED Green
-		buffer[16] = (byte) 0; //Right LED Blue
-		buffer[17] = (byte) 0; //Front-LED 0...1
-		buffer[18] = (byte) 0; //Reserved
-		buffer[19] = (byte) 0; //Body-LED 0...255
-		buffer[20] = (byte) 0x0D;
-		buffer[21] = (byte) 0x0A;
+		buffer[8] = (byte) 0;		// Left motor
+		buffer[9] = (byte) 0;		// Right motor
+		buffer[10] = (byte) 0;		// Buzzer
+		buffer[11] = (byte) 0;		// Left LED Red
+		buffer[12] = (byte) 0;		// Left LED Green
+		buffer[13] = (byte) 0;		// Left LED Blue
+		buffer[14] = (byte) 0;		// Right LED Red
+		buffer[15] = (byte) 0;		// Right LED Green
+		buffer[16] = (byte) 0;		// Right LED Blue
+		buffer[17] = (byte) 0;		// Front-LED 0...1
+		buffer[18] = (byte) 0;		// Reserved
+		buffer[19] = (byte) 0;		// Body-LED 0...255
+		buffer[20] = (byte) 0x0D;	// TAIL
+		buffer[21] = (byte) 0x0A;	// TAIL
 	}
 
 	public void setSpeedOfLeftMotor(int speed) {
@@ -100,6 +102,10 @@ public class ControlCommands {
 
 	public void setFrontLed(int status) {
 		frontLed = status;
+	}
+
+	public void setBodyLed(int bodyLedStatus) {
+		bodyLed = bodyLedStatus;
 	}
 
 	public void setLeftEye(int red, int green, int blue) {
@@ -128,7 +134,7 @@ public class ControlCommands {
 		buffer[16] = (byte) rightLedBlue;
 		buffer[17] = (byte) frontLed;
 		buffer[19] = (byte) bodyLed;
-		return buffer;
+		return Arrays.copyOf(buffer, buffer.length);
 	}
 
 	public void resetRobotAlbert() {
