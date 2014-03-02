@@ -47,29 +47,27 @@ import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import org.catrobat.catroid.bluetooth.BTConnectable;
+import android.util.Log;
 
 import java.io.IOException;
 
 //This code is based on the nxt-implementation
-public class RobotAlbert implements BTConnectable {
+public class RobotAlbert {
 
 	private static RobotAlbertCommunicator myCommunicator;
-
-	private boolean pairing;
-	private static Handler btcHandler = null;
-	private Handler recieverHandler;
-	private Activity activity;
-
 	private static final int MOTOR_COMMAND = 102;
 	private static final int BUZZER_COMMAND = 104;
 	private static final int RGB_EYE_COMMAND = 105;
 	private static final int FRONT_LED_COMMAND = 106;
+	private static final String TAG = RobotAlbert.class.getSimpleName();
 
-	public RobotAlbert(Activity activity, Handler recieverHandler) {
-		this.activity = activity;
-		this.recieverHandler = recieverHandler;
+	private static Handler btcHandler;
+	private Handler albertReceiverHandler;
+	private Activity activity;
+
+	public RobotAlbert(Activity parentActivity, Handler receiverHandler) {
+		activity = parentActivity;
+		albertReceiverHandler = receiverHandler;
 	}
 
 	public void startBTCommunicator(String macAddress) {
@@ -77,11 +75,12 @@ public class RobotAlbert implements BTConnectable {
 		if (myCommunicator != null) {
 			try {
 				myCommunicator.destroyConnection();
-			} catch (IOException e) {
+			} catch (IOException ioException) {
+				Log.e(TAG, "Error destroying connection", ioException);
 			}
 		}
 
-		myCommunicator = new RobotAlbertBtCommunicator(this, recieverHandler, BluetoothAdapter.getDefaultAdapter(),
+		myCommunicator = new RobotAlbertBtCommunicator(this, albertReceiverHandler, BluetoothAdapter.getDefaultAdapter(),
 				activity.getResources());
 		btcHandler = myCommunicator.getHandler();
 
@@ -95,8 +94,8 @@ public class RobotAlbert implements BTConnectable {
 			try {
 				myCommunicator.stopAllMovement();
 				myCommunicator.destroyConnection();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ioException) {
+				Log.e(TAG, "Error destroying connection", ioException);
 			}
 			myCommunicator = null;
 		}
@@ -147,22 +146,15 @@ public class RobotAlbert implements BTConnectable {
 	}
 
 	public static int getRobotAlbertDistanceSensorLeftMessage() {
-		int value = myCommunicator.sensors.getValueOfLeftDistanceSensor();
-		return value;
+		return myCommunicator.sensors.getValueOfLeftDistanceSensor();
 	}
 
 	public static int getRobotAlbertDistanceSensorRightMessage() {
-		int value = myCommunicator.sensors.getValueOfRightDistanceSensor();
-		return value;
+		return myCommunicator.sensors.getValueOfRightDistanceSensor();
 	}
 
 	public static Handler getBTCHandler() {
 		return btcHandler;
-	}
-
-	@Override
-	public boolean isPairing() {
-		return pairing;
 	}
 
 }

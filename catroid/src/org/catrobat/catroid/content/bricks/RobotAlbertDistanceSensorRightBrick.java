@@ -131,14 +131,13 @@ public class RobotAlbertDistanceSensorRightBrick extends BrickBaseType implement
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_UP) {
-					if (((Spinner) v).getSelectedItemPosition() == 0 && ((Spinner) v).getAdapter().getCount() == 1) {
-						NewVariableDialog dialog = new NewVariableDialog((Spinner) v);
-						dialog.addVariableDialogListener(RobotAlbertDistanceSensorRightBrick.this);
-						dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
-								NewVariableDialog.DIALOG_FRAGMENT_TAG);
-						return true;
-					}
+				if (event.getAction() == MotionEvent.ACTION_UP && ((Spinner) v).getSelectedItemPosition() == 0 &&
+					((Spinner) v).getAdapter().getCount() == 1) {
+					NewVariableDialog dialog = new NewVariableDialog((Spinner) v);
+					dialog.addVariableDialogListener(RobotAlbertDistanceSensorRightBrick.this);
+					dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
+							NewVariableDialog.DIALOG_FRAGMENT_TAG);
+					return true;
 				}
 				return false;
 			}
@@ -228,10 +227,8 @@ public class RobotAlbertDistanceSensorRightBrick extends BrickBaseType implement
 	}
 
 	private void updateUserVariableIfDeleted(UserVariableAdapterWrapper userVariableAdapterWrapper) {
-		if (userVariable != null) {
-			if (userVariableAdapterWrapper.getPositionOfItem(userVariable) == 0) {
-				userVariable = null;
-			}
+		if (userVariable != null && userVariableAdapterWrapper.getPositionOfItem(userVariable) == 0) {
+			userVariable = null;
 		}
 	}
 

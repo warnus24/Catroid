@@ -84,9 +84,4 @@ public final class BrickValues {
 	public static final int ROBOT_ALBERT_RGB_LED_EYE = 2;
 	public static final int ROBOT_ALBERT_FRONT_LED = 1;
 
-	// Suppress default constructor for noninstantiability
-	private BrickValues() {
-		throw new AssertionError();
-	}
-
 }

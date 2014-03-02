@@ -50,11 +50,11 @@ import android.os.Handler;
 import android.util.Log;
 
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.bluetooth.BTConnectable;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
@@ -62,24 +62,27 @@ import java.util.UUID;
 public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 
 	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fc");
+	private static final String TAG = RobotAlbertBtCommunicator.class.getSimpleName();
+	private static final String NOTHING_ON_STREAM_ERROR_STRING = "Nothing on Stream, even tough it was 'available'";
 
 	private static final byte PACKET_HEADER_1 = (byte) 0xAA;
 	private static final byte PACKET_HEADER_2 = 0x55;
 	private static final byte PACKET_TAIL_1 = 0x0D;
 	private static final byte PACKET_TAIL_2 = 0x0A;
-
 	private static final byte COMMAND_SENSOR = 0x06;
 	private static final byte COMMAND_EXTERNAL = 0x20;
-	private BluetoothAdapter btAdapter;
-	private BluetoothSocket btSocket = null;
-	private OutputStream outputStream = null;
-	private InputStream inputStream = null;
+	private static final int STREAM_ERROR = -1;
 
-	private String mMacAddress;
-	private BTConnectable myOwner;
 	private static boolean debugOutput = false;
 
-	public RobotAlbertBtCommunicator(BTConnectable myOwner, Handler uiHandler, BluetoothAdapter btAdapter,
+	private BluetoothAdapter btAdapter;
+	private BluetoothSocket btSocket;
+	private OutputStream outputStream;
+	private InputStream inputStream;
+	private String macAddress;
+	private RobotAlbert myOwner;
+
+	public RobotAlbertBtCommunicator(RobotAlbert myOwner, Handler uiHandler, BluetoothAdapter btAdapter,
 			Resources resources) {
 		super(uiHandler, resources);
 
@@ -88,30 +91,24 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 	}
 
 	public void setMACAddress(String mMACaddress) {
-		this.mMacAddress = mMACaddress;
+		this.macAddress = mMACaddress;
 	}
 
 	@Override
 	public void run() {
-
 		try {
 			createConnection();
-		} catch (IOException e) {
+		} catch (IOException ioException) {
+			Log.e(TAG, "IOException in run:receiveMessage occurred: ", ioException);
 		}
 
 		while (connected) {
 			try {
 				receiveMessage();
-			} catch (IOException e) {
-				Log.d("RobotAlbertBtComm", "IOException in run:receiveMessage occured: " + e.toString());
-				if (connected == true) {
-					sendState(STATE_CONNECTERROR);
-					connected = false;
-				}
-			} catch (Exception e) {
-				Log.d("RobotAlbertBtComm", "Exception in run:receiveMessage occured: " + e.toString());
-				if (connected == true) {
-					sendState(STATE_CONNECTERROR);
+			} catch (IOException ioException) {
+				Log.e(TAG, "IOException in run:receiveMessage occurred: ", ioException);
+				if (connected) {
+					sendState(STATE_CONNECT_ERROR);
 					connected = false;
 				}
 			}
@@ -120,65 +117,33 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 
 	@Override
 	public void createConnection() throws IOException {
+	
+		BluetoothSocket btSocketTemporary;
+		BluetoothDevice btDevice;
+		btDevice = btAdapter.getRemoteDevice(macAddress);
+		btSocketTemporary = btDevice.createRfcommSocketToServiceRecord(SERIAL_PORT_SERVICE_CLASS_UUID);
+
 		try {
-			BluetoothSocket btSocketTemporary;
-			BluetoothDevice btDevice = null;
-			btDevice = btAdapter.getRemoteDevice(mMacAddress);
-			if (btDevice == null) {
-				if (uiHandler == null) {
-					throw new IOException();
-				} else {
-					sendToast(resources.getString(R.string.no_paired_nxt));
-					sendState(STATE_CONNECTERROR);
-					return;
-				}
-			}
-
-			btSocketTemporary = btDevice.createRfcommSocketToServiceRecord(SERIAL_PORT_SERVICE_CLASS_UUID);
+			btSocketTemporary.connect();
+		} catch (IOException ioException) {
+			//try another method for connection, this should work on the HTC desire, credits to Michael Biermann
 			try {
+				Method mMethod = btDevice.getClass().getMethod("createRfcommSocket", new Class[] {
+						int.class });
+				btSocketTemporary = (BluetoothSocket) mMethod.invoke(btDevice, 1);
 				btSocketTemporary.connect();
-
-			} catch (IOException e) {
-				if (myOwner.isPairing()) {
-					if (uiHandler != null) {
-						sendToast(resources.getString(R.string.pairing_message));
-						sendState(STATE_CONNECTERROR_PAIRING);
-					} else {
-						throw e;
-					}
-					return;
-				}
-
-				//try another method for connection, this should work on the HTC desire, credits to Michael Biermann
-				try {
-
-					Method mMethod = btDevice.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
-					btSocketTemporary = (BluetoothSocket) mMethod.invoke(btDevice, Integer.valueOf(1));
-					btSocketTemporary.connect();
-				} catch (Exception e1) {
-					if (uiHandler == null) {
-						throw new IOException();
-					} else {
-						sendState(STATE_CONNECTERROR);
-					}
-					return;
-				}
-			}
-			btSocket = btSocketTemporary;
-			inputStream = btSocket.getInputStream();
-			outputStream = btSocket.getOutputStream();
-			connected = true;
-		} catch (IOException e) {
-			if (uiHandler == null) {
-				throw e;
-			} else {
-				if (myOwner.isPairing()) {
-					sendToast(resources.getString(R.string.pairing_message));
-				}
-				sendState(STATE_CONNECTERROR);
-				return;
+			} catch (NoSuchMethodException noSuchMethodException) {
+				throw new IOException();
+			} catch (InvocationTargetException invocationTargetException) {
+				throw new IOException();
+			} catch (IllegalAccessException illegalAccessException) {
+				throw new IOException();
 			}
 		}
+		btSocket = btSocketTemporary;
+		inputStream = btSocket.getInputStream();
+		outputStream = btSocket.getOutputStream();
+		connected = true;
 		// everything was OK
 		if (uiHandler != null) {
 			sendState(STATE_CONNECTED);
@@ -187,9 +152,7 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 
 	@Override
 	public void destroyConnection() throws IOException {
-
-		Log.d("RobotAlbertBtComm", "destroyRobotAlbertConnection");
-
+		Log.d(TAG, "destroyRobotAlbertConnection");
 		if (connected) {
 			stopAllMovement();
 		}
@@ -200,13 +163,11 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 				btSocket.close();
 				btSocket = null;
 			}
-
 			inputStream = null;
 			outputStream = null;
-
-		} catch (IOException e) {
+		} catch (IOException ioException) {
 			if (uiHandler == null) {
-				throw e;
+				throw ioException;
 			} else {
 				sendToast(resources.getString(R.string.problem_at_closing));
 			}
@@ -229,16 +190,11 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 	 */
 	@Override
 	public void sendMessage(byte[] message) throws IOException {
-
-		try {
 			if (outputStream == null) {
-				throw new IOException();
+				throw new IOException("Output Stream was null");
 			}
 			outputStream.write(message, 0, message.length);
 			outputStream.flush();
-		} catch (Exception e) {
-			Log.d("RobotAlbertBtComm", "ERROR: Exception occured in sendMessage " + e.getMessage());
-		}
 	}
 
 	/**
@@ -247,22 +203,24 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 	 * @return the message
 	 */
 	@Override
-	public byte[] receiveMessage() throws IOException, Exception {
-
+	public byte[] receiveMessage() throws IOException {
 		if (inputStream == null) {
 			throw new IOException(" Software caused connection abort ");
 		}
 
-		@SuppressWarnings("unused")
-		int read = 0;
+		int read;
 		byte[] buf = new byte[1];
 
 		int count = 0;
-
 		do {
 			do {
 				checkIfDataIsAvailable(1);
 				read = inputStream.read(buf);
+				if (read == STREAM_ERROR) {
+					Log.e(TAG, NOTHING_ON_STREAM_ERROR_STRING);
+					return null;
+				}
+
 				count++;
 				if (count > 400) {
 					return null;
@@ -271,18 +229,30 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 
 			checkIfDataIsAvailable(1);
 			read = inputStream.read(buf);
+			if (read == STREAM_ERROR) {
+				Log.e(TAG, NOTHING_ON_STREAM_ERROR_STRING);
+				return null;
+			}
 		} while (buf[0] != PACKET_HEADER_2);
 
 		byte[] length = new byte[1];
 		checkIfDataIsAvailable(1);
 		read = inputStream.read(length);
+		if (read == STREAM_ERROR) {
+			Log.e(TAG, NOTHING_ON_STREAM_ERROR_STRING);
+			return null;
+		}
 
 		byte[] buffer = new byte[length[0] - 1];
 		checkIfDataIsAvailable(length[0] - 1);
 		read = inputStream.read(buffer);
+		if (read == STREAM_ERROR) {
+			Log.e(TAG, NOTHING_ON_STREAM_ERROR_STRING);
+			return null;
+		}
 
 		if (buffer[length[0] - 3] != PACKET_TAIL_1 || buffer[length[0] - 2] != PACKET_TAIL_2) {
-			Log.d("RobotAlbertBtComm", "ERROR: Packet tail not found!");
+			Log.e(TAG, "ERROR: Packet tail not found!");
 			return null;
 		}
 
@@ -316,30 +286,32 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 				sensors.setValueOfLeftDistanceSensor(leftDistance);
 				sensors.setValueOfRightDistanceSensor(rightDistance);
 
-				if (DEBUG_OUTPUT == true) {
-					Log.d("RobotAlbertBtComm", "receiveMessage:  leftDistance=" + leftDistance);
-					Log.d("RobotAlbertBtComm", "receiveMessage: rightDistance=" + rightDistance);
+				if (debugOutput) {
+					Log.d(TAG, "sensor packet found");
+					Log.d(TAG, "receiveMessage:  leftDistance=" + leftDistance);
+					Log.d(TAG, "receiveMessage: rightDistance=" + rightDistance);
 				}
 
 				break;
 			case COMMAND_EXTERNAL:
-				Log.d("RobotAlbertBtComm", "External Packet received!");
+				Log.d(TAG, "External Packet received!");
 				break;
 
 			default:
-				Log.d("RobotAlbertBtComm", "Unknown Command! id = " + buffer[0]);
+				Log.d(TAG, "Unknown Command! id = " + buffer[0]);
 				break;
 		}
 		return buffer;
 	}
 
-	public void checkIfDataIsAvailable(int neededBytes) throws IOException {
-		int available = 0;
+	private void checkIfDataIsAvailable(int neededBytes) throws IOException {
+		int available;
 		long timeStart = System.currentTimeMillis();
 		long timePast;
 
 		while (true) {
 			if (inputStream == null) {
+				Log.e(TAG, "Stream was null");
 				throw new IOException(" Software caused connection abort ");
 			}
 			available = inputStream.available();
@@ -348,16 +320,15 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 			}
 			try {
 				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (InterruptedException interruptedException) {
+				Log.e(TAG, "Thread interrupted", interruptedException);
 			}
 			// here you can optionally check elapsed time, and time out
 			timePast = System.currentTimeMillis();
 			if ((timePast - timeStart) > 16000) {
-				Log.d("AlbertRobot-Timeout", "TIMEOUT for receive message occured");
+				Log.e(TAG, "TIMEOUT for receive message occurred");
 				throw new IOException(" Software caused connection abort because of timeout");
 			}
 		}
 	}
-
 }

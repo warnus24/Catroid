@@ -56,20 +56,18 @@ public abstract class RobotAlbertCommunicator extends Thread {
 	public static final int MOTOR_LEFT = 0;
 	public static final int MOTOR_RIGHT = 1;
 	public static final int MOTOR_BOTH = 2;
-
 	public static final int EYE_LEFT = 0;
 	public static final int EYE_RIGHT = 1;
 	public static final int EYE_BOTH = 2;
 
 	public static final int DISCONNECT = 99;
-
 	public static final int DISPLAY_TOAST = 1000;
 	public static final int STATE_CONNECTED = 1001;
-	public static final int STATE_CONNECTERROR = 1002;
-	public static final int STATE_CONNECTERROR_PAIRING = 1022;
+	public static final int STATE_CONNECT_ERROR = 1002;
+	public static final int STATE_CONNECT_ERROR_PAIRING = 1022;
 	public static final int MOTOR_STATE = 1003;
-	public static final int STATE_RECEIVEERROR = 1004;
-	public static final int STATE_SENDERROR = 1005;
+	public static final int STATE_RECEIVE_ERROR = 1004;
+	public static final int STATE_SEND_ERROR = 1005;
 	public static final int RECEIVED_MESSAGE = 1111;
 
 	public static final int MOTOR_COMMAND = 102;
@@ -78,7 +76,9 @@ public abstract class RobotAlbertCommunicator extends Thread {
 	public static final int RGB_EYE_COMMAND = 105;
 	public static final int FRONT_LED_COMMAND = 106;
 
-	protected boolean connected = false;
+	public static final String TAG = RobotAlbertCommunicator.class.getSimpleName();
+
+	protected boolean connected;
 	protected Handler uiHandler;
 
 	protected Resources resources;
@@ -86,9 +86,10 @@ public abstract class RobotAlbertCommunicator extends Thread {
 	protected ControlCommands commands = new ControlCommands();
 	protected SensorData sensors = SensorData.getInstance();
 
-	public RobotAlbertCommunicator(Handler uiHandler, Resources resources) {
-		this.uiHandler = uiHandler;
-		this.resources = resources;
+	public RobotAlbertCommunicator(Handler albertUIHandler, Resources albertResources) {
+		super();
+		uiHandler = albertUIHandler;
+		resources = albertResources;
 	}
 
 	public Handler getHandler() {
@@ -140,7 +141,7 @@ public abstract class RobotAlbertCommunicator extends Thread {
 	 * @return the message
 	 */
 
-	public abstract byte[] receiveMessage() throws IOException, Exception;
+	public abstract byte[] receiveMessage() throws IOException;
 
 	public abstract void stopAllMovement();
 
@@ -180,7 +181,7 @@ public abstract class RobotAlbertCommunicator extends Thread {
 		try {
 			sendMessage(commandMessage);
 		} catch (IOException e) {
-			sendState(STATE_SENDERROR);
+			sendState(STATE_SEND_ERROR);
 		}
 	}
 
@@ -189,6 +190,10 @@ public abstract class RobotAlbertCommunicator extends Thread {
 	final Handler myHandler = new Handler() {
 		@Override
 		public void handleMessage(Message message) {
+			if (message == null || message.getData() == null) {
+				Log.e(TAG, "Received message or message data was null");
+				return;
+			}
 
 			byte[] commandMessage;
 			switch (message.what) {
@@ -207,7 +212,7 @@ public abstract class RobotAlbertCommunicator extends Thread {
 							commands.setSpeedOfRightMotor(speed);
 							break;
 						default:
-							Log.d("Albert", "Handler: ERROR: default-Motor !!!!!!!!!!!!!!!");
+							Log.e(TAG, "Handler: ERROR: default-Motor !!!!!!!!!!!!!!!");
 					}
 					commandMessage = commands.getCommandMessage();
 					sendCommandMessage(commandMessage);
@@ -234,7 +239,7 @@ public abstract class RobotAlbertCommunicator extends Thread {
 					sendCommandMessage(commandMessage);
 					break;
 				case RGB_EYE_COMMAND:
-					Log.d("Albert", "create command-message");
+					Log.d(TAG, "create command-message");
 					int eye = message.getData().getInt("eye");
 					int red = message.getData().getInt("red");
 					int green = message.getData().getInt("green");
@@ -251,14 +256,14 @@ public abstract class RobotAlbertCommunicator extends Thread {
 							commands.setRightEye(red, green, blue);
 							break;
 						default:
-							Log.d("Albert", "Handler: ERROR: default-Motor !!!!!!!!!!!!!!!");
+							Log.e(TAG, "Handler: ERROR: default-Motor !!!!!!!!!!!!!!!");
 					}
 					commandMessage = commands.getCommandMessage();
 					sendCommandMessage(commandMessage);
 					break;
 
 				default:
-					Log.d("RobotAlbertCommunicator", "handleMessage: Default !!!!!!!!!!!!!!!");
+					Log.e(TAG, "handleMessage: Default !!!!!!!!!!!!!!!");
 					break;
 			}
 		}
