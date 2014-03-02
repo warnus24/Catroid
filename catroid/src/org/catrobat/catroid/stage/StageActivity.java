@@ -76,7 +76,7 @@ public class StageActivity extends AndroidApplication {
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		Log.d(TAG, "processIntent");
-		NfcHandler.getInstance().processIntent(intent);
+		NfcHandler.processIntent(intent);
 	}
 
 	@Override

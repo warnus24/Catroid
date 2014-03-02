@@ -126,7 +126,14 @@ public class ScriptActivity extends BaseActivity {
 		updateHandleAddButtonClickListener();
 	}
 
-	public void updateHandleAddButtonClickListener() {
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        // needed for NFC
+        setIntent(intent);
+    }
+
+    public void updateHandleAddButtonClickListener() {
 		if (buttonAdd == null) {
 			buttonAdd = (ImageButton) findViewById(R.id.button_add);
 		}

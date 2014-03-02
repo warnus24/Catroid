@@ -36,82 +36,68 @@ import java.util.List;
 
 public class NfcHandler {
 	private static final String TAG = NfcHandler.class.getSimpleName();
-	private static NfcHandler INSTANCE = new NfcHandler();
-	private Double uid;
 
-	private NfcHandler() {
-		resetUid();
-	}
+    private NfcHandler(){
 
-	public static NfcHandler getInstance() {
-		return INSTANCE;
-	}
+    }
 
-	public void resetUid() {
-		uid = 0.0;
-	}
-
-	public void processIntent(Intent intent) {
+	public static void processIntent(Intent intent) {
 		if (intent == null) {
 			return;
 		}
 
-		if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())
-				|| NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())
-				|| NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
-			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-
-			byte[] byteId = tag.getId();
-
-			uid = convertByteArrayToDouble(byteId);
-
-			Log.d(TAG, "read successfull. uid = hex:" + byteArrayToHex(byteId) + " double:" + uid);
-
-			// uncomment for debugging ndef information			
-			//			Ndef ndefTag;
-			//			if (null != (ndefTag = Ndef.get(tag))) {
-			//				try {
-			//					ndefTag.connect();
-			//					NdefMessage ndefMessage = ndefTag.getNdefMessage();
-			//					for (NdefRecord record : ndefMessage.getRecords()) {
-			//						Log.d(TAG, "record, tnf: " + record.getTnf() + " " + new String(record.getPayload()));
-			//					}
-			//					ndefTag.close();
-			//				} catch (IOException e) {
-			//					e.printStackTrace();
-			//				} catch (FormatException e) {
-			//					e.printStackTrace();
-			//				}
-			//
-			//			}
-		}
+        String uid = getUid(intent);
 
 		List<Sprite> spriteList = ProjectManager.getInstance().getCurrentProject().getSpriteList();
 
         String nameForUid = NfcTagContainer.getNameForUid(uid);
-
+        Log.d(TAG, "namefor uid:" + nameForUid);
 
 		for (Sprite sprite : spriteList) {
 			sprite.createWhenNfcScriptAction(nameForUid);
 		}
 	}
 
-	public static double convertByteArrayToDouble(byte[] byteId) {
-		BigInteger n = new BigInteger(byteId);
-		return n.doubleValue();
-	}
+    public static String getUid(Intent intent){
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())
+                || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())
+                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
+            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+            String uid = byteArrayToHex(tag.getId());
+
+            Log.d(TAG, "read successfull. uid = hex:" + uid);
+
+            // uncomment for debugging ndef information
+            //			Ndef ndefTag;
+            //			if (null != (ndefTag = Ndef.get(tag))) {
+            //				try {
+            //					ndefTag.connect();
+            //					NdefMessage ndefMessage = ndefTag.getNdefMessage();
+            //					for (NdefRecord record : ndefMessage.getRecords()) {
+            //						Log.d(TAG, "record, tnf: " + record.getTnf() + " " + new String(record.getPayload()));
+            //					}
+            //					ndefTag.close();
+            //				} catch (IOException e) {
+            //					e.printStackTrace();
+            //				} catch (FormatException e) {
+            //					e.printStackTrace();
+            //				}
+            //
+            //			}
+            return uid;
+        }
+        return null;
+    }
 
 	public static String byteArrayToHex(byte[] a) {
+        if(a == null){
+            return null;
+        }
 		StringBuilder sb = new StringBuilder();
 		for (byte b : a) {
 			sb.append(String.format("%02x", b & 0xff));
 		}
 		return sb.toString();
-	}
-
-	public Double getAndResetUid() {
-		Double tmp = uid;
-		resetUid();
-		return tmp;
 	}
 }

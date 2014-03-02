@@ -40,7 +40,7 @@ import org.catrobat.catroid.common.NfcTagContainer;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.WhenNfcScript;
-import org.catrobat.catroid.ui.dialogs.BrickTextDialog;
+import org.catrobat.catroid.ui.dialogs.NewNfcTagDialog;
 
 public class WhenNfcBrick extends ScriptBrick {
 	protected WhenNfcScript whenNfcScript;
@@ -142,11 +142,11 @@ public class WhenNfcBrick extends ScriptBrick {
 
 	protected void showNewTagDialog(final Spinner nfcSpinner) {
 		final Context context = nfcSpinner.getContext();
-		BrickTextDialog textDialog = new BrickTextDialog() {
+		NewNfcTagDialog textDialog = new NewNfcTagDialog() {
 
 			@Override
 			protected void initialize() {
-				inputTitle.setText(R.string.dialog_new_nfc_tag_name);
+				inputTitle.setText(context.getString(R.string.dialog_new_nfc_tag_name));
 			}
 
 			@Override
