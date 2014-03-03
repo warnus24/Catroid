@@ -74,34 +74,50 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		assertEquals("Wrong Brick instance.", projectBrickList.get(0), adapter.getChild(groupCount - 1, 0));
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.brick_arduino_select_value)));
 
+	}
+
+	public void testArduinoSendBrickPinSpinner() {
 		String[] arduinoPins = getActivity().getResources().getStringArray(R.array.arduino_pin_chooser);
 		assertTrue("Spinner items list too short!", arduinoPins.length == 11);
 
-		int newSpinnerPosition = 0;
+		int newPinSpinnerPosition = 0;
+		Spinner currentPinSpinner = solo.getCurrentViews(Spinner.class).get(newPinSpinnerPosition);
+		//Pin Spinner
+		solo.pressSpinnerItem(newPinSpinnerPosition, 0);
+		assertEquals("Wrong item in spinner!", arduinoPins[0], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[1], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[2], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[3], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[4], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[5], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[6], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[7], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[8], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[9], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[10], currentPinSpinner.getSelectedItem());
+	}
 
-		Spinner currentSpinner = solo.getCurrentViews(Spinner.class).get(newSpinnerPosition);
-		solo.pressSpinnerItem(newSpinnerPosition, 11);
-		assertEquals("Wrong item in spinner!", arduinoPins[10], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(newSpinnerPosition, -1);
-		assertEquals("Wrong item in spinner!", arduinoPins[9], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(newSpinnerPosition, -1);
-		assertEquals("Wrong item in spinner!", arduinoPins[8], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(newSpinnerPosition, -1);
-		assertEquals("Wrong item in spinner!", arduinoPins[7], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(newSpinnerPosition, -1);
-		assertEquals("Wrong item in spinner!", arduinoPins[6], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(newSpinnerPosition, -1);
-		assertEquals("Wrong item in spinner!", arduinoPins[5], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(newSpinnerPosition, -1);
-		assertEquals("Wrong item in spinner!", arduinoPins[4], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(newSpinnerPosition, -1);
-		assertEquals("Wrong item in spinner!", arduinoPins[3], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(newSpinnerPosition, -1);
-		assertEquals("Wrong item in spinner!", arduinoPins[2], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(newSpinnerPosition, -1);
-		assertEquals("Wrong item in spinner!", arduinoPins[1], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(newSpinnerPosition, -1);
-		assertEquals("Wrong item in spinner!", arduinoPins[0], currentSpinner.getSelectedItem());
+	public void testArduinoSendBrickValueSpinner() {
+		String[] arduinoValues = getActivity().getResources().getStringArray(R.array.arduino_value_chooser);
+		assertTrue("Spinner items list too short!", arduinoValues.length == 2);
+
+		int newValueSpinnerPosition = 1;
+		Spinner currentValueSpinner = solo.getCurrentViews(Spinner.class).get(newValueSpinnerPosition);
+		//Value Spinner
+		solo.pressSpinnerItem(newValueSpinnerPosition, 0);
+		assertEquals("Wrong item in spinner!", arduinoValues[0], currentValueSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newValueSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoValues[1], currentValueSpinner.getSelectedItem());
 	}
 
 	private void createProject() {
