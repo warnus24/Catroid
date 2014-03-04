@@ -153,6 +153,19 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="org.catrobat.catroid.uitest.mockups.MockGalleryActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name="org.catrobat.catroid.uitest.mockups.MockPaintroidActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name="org.catrobat.catroid.uitest.mockups.MockSoundActivity"
+            android:exported="true" >
+        </activity>
+
         <service android:name=".transfers.ProjectUploadService" />
         <service android:name=".transfers.ProjectDownloadService" />
     </application>
