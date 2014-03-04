@@ -1,0 +1,20 @@
+<!--
+Declare additional Mock Activities here like you would in an AndroidManifest.xml
+THIS FILE IS PART OF A HACK!
+DO NOT ADD ANY MORE ACTIVITIES UNLESS REALLY REALLY NECESSARY
+-->
+<application>
+    <uses-library android:name="android.test.runner" />
+    <activity
+        android:name="org.catrobat.catroid.uitest.mockups.MockGalleryActivity"
+        android:exported="true" >
+    </activity>
+    <activity
+        android:name="org.catrobat.catroid.uitest.mockups.MockPaintroidActivity"
+        android:exported="true" >
+    </activity>
+    <activity
+        android:name="org.catrobat.catroid.uitest.mockups.MockSoundActivity"
+        android:exported="true" >
+    </activity>
+</application>

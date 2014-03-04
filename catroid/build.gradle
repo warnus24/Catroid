@@ -1,3 +1,4 @@
+import java.util.regex.Pattern
 
 buildscript {
     dependencies {
@@ -133,6 +134,23 @@ task featuresToBuildconfig() {
 }
 
 preBuild.dependsOn featuresToBuildconfig
+
+task testManifestHack() << {
+    def origManifest = file('src/instrumentTest/MockActivites.xml')
+    def generatedManifest = file("build/manifests/test/debug/AndroidManifest.xml")
+    def origContent = origManifest.getText()
+    def generatedContent = generatedManifest.getText()
+    def pattern = Pattern.compile("<application.*?>.*?</application>", Pattern.DOTALL)
+    def matcher = pattern.matcher(origContent)
+    matcher.find()
+    origContent = matcher.group()
+    generatedContent = pattern.matcher(generatedContent).replaceAll(origContent)
+    generatedManifest.write(generatedContent)
+}
+
+gradle.projectsEvaluated {
+    generateDebugTestBuildConfig.dependsOn testManifestHack
+}
 
 def signing_config_file = file(System.getProperty("user.home") + "/.catrobat/catroid_signing_config.gradle")
 if (signing_config_file.exists()) {
