@@ -25,13 +25,26 @@ ext.features_enabled = [
         "backpack": false
 ]
 
+configurations {
+    compile.exclude group: 'xpp3' //compile problem with xstream
+}
+
 dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:18.0.+'
-    compile fileTree(dir: 'catroid/libs', include: '*.jar')
+//    compile fileTree(dir: 'catroid/libs', include: '*.jar')
+    compile files('catroid/libs/gdx.jar')
+    compile files('catroid/libs/gdx-backend-android.jar')
+    compile 'com.github.kevinsawicki:http-request:5.5'
+    compile 'com.squareup.okhttp:okhttp:1.3.0'
+    compile 'com.thoughtworks.xstream:xstream:1.4.4'
+
     compile fileTree(dir: 'catroid/libs-natives', include: '*.jar')
 
-    instrumentTestCompile fileTree(dir: 'catroidTest/libs', include: '*.jar')
+//    instrumentTestCompile fileTree(dir: 'catroidTest/libs', include: '*.jar')
+    instrumentTestCompile 'junit:junit:4.8.2'
+    instrumentTestCompile 'com.jayway.android.robotium:robotium-solo:4.3'
+    instrumentTestCompile files('catroidTest/libs/the-missing-android-xml-junit-test-runner-release-1.3_2.jar')
 
 }
 
