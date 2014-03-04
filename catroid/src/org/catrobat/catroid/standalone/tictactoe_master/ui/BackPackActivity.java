@@ -198,6 +198,7 @@ public class BackPackActivity extends BaseActivity {
 				fragment = backPackSoundFragment;
 				break;
 		}
+
 		return fragment;
 	}
 
@@ -221,7 +222,6 @@ public class BackPackActivity extends BaseActivity {
 				currentFragment = backPackSoundFragment;
 				currentFragmentPosition = FRAGMENT_BACKPACK_SOUNDS;
 				currentFragmentTag = BackPackSoundFragment.TAG;
-
 				break;
 		}
 	}
