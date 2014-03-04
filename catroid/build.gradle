@@ -72,6 +72,17 @@ android {
         buildConfigField "String", "GIT_DESCRIBE", "\"${gitDescribe()}\""
     }
 
+    sourceSets {
+        instrumentTest {
+            if(file('testexclusions.txt').exists()){
+                java.exclude file('testexclusions.txt').readLines()
+            }
+            if(file('../testexclusions.txt').exists()){
+                java.exclude file('../testexclusions.txt').readLines()
+            }
+        }
+    }
+
 }
 
 // Doesn't work atm. Maybe if the pmd plugin gets updated.
