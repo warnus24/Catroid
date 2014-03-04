@@ -102,6 +102,12 @@ public class ArduinoSendAction extends Action {
 		ArduinoSendAction.bluetoothDevice = bluetoothDevice;
 	}
 
+	public static void tunOnBluetooth() {
+		if (!bluetoothAdapter.isEnabled()) {
+			bluetoothAdapter.enable();
+		}
+	}
+
 	public static void turnOffBluetooth() {
 		bluetoothAdapter.disable();
 	}
@@ -114,6 +120,7 @@ public class ArduinoSendAction extends Action {
 			bluetoothOutputStream.write(pinNumberLowerByte);
 			bluetoothOutputStream.write(pinNumberHigherByte);
 			bluetoothOutputStream.write(pinValue);
+			//			bluetoothOutputStream.flush();
 			outputBluetoothSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();

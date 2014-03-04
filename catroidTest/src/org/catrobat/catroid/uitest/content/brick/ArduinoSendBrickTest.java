@@ -22,6 +22,7 @@
  */
 package org.catrobat.catroid.uitest.content.brick;
 
+import android.bluetooth.BluetoothSocket;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -31,6 +32,8 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
+import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
+import org.catrobat.catroid.content.actions.ArduinoSendAction;
 import org.catrobat.catroid.content.bricks.ArduinoSendBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.ui.ScriptActivity;
@@ -118,6 +121,69 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		assertEquals("Wrong item in spinner!", arduinoValues[0], currentValueSpinner.getSelectedItem());
 		solo.pressSpinnerItem(newValueSpinnerPosition, +1);
 		assertEquals("Wrong item in spinner!", arduinoValues[1], currentValueSpinner.getSelectedItem());
+	}
+
+	public void testSetPinToHighReadIfHighAndSetToLow() {
+		//turn on BT
+		solo.sleep(500);
+		ArduinoSendAction.tunOnBluetooth();
+		solo.sleep(800);
+		//set LED Pin high
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'H', '1', '3');
+		//check if the Pin is high
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		boolean testValue = false;
+		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'R', '1', '3') == 'H') {
+			testValue = true;
+		}
+		assertEquals(true, testValue);
+		//set LED Pin low
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'L', '1', '3');
+		//check if the Pin is low
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'R', '1', '3') == 'L') {
+			testValue = false;
+		}
+		assertEquals(false, testValue);
+		//turn off BT
+		solo.sleep(500);
+		ArduinoSendAction.turnOffBluetooth();
+		solo.sleep(800);
+	}
+
+	public void testSetPinWithReturnValue() {
+		boolean testValue = false;
+		//turn on BT
+		solo.sleep(500);
+		ArduinoSendAction.tunOnBluetooth();
+		solo.sleep(800);
+		//send 03T for test case
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'T', '0', '3');
+		//read return value from Arduino
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'R', '0', '3') == 'H') {
+			testValue = true;
+		}
+		assertEquals(true, testValue);
+		//turn off BT
+		solo.sleep(500);
+		ArduinoSendAction.turnOffBluetooth();
+		solo.sleep(800);
 	}
 
 	private void createProject() {
