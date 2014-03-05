@@ -22,90 +22,73 @@
  */
 package org.catrobat.catroid.uitest.content.brick;
 
+import android.widget.TextView;
+
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
-import org.catrobat.catroid.content.bricks.SetSizeToBrick;
-import org.catrobat.catroid.formulaeditor.Formula;
-import org.catrobat.catroid.formulaeditor.FormulaElement;
-import org.catrobat.catroid.formulaeditor.Functions;
-import org.catrobat.catroid.formulaeditor.InternFormulaParser;
-import org.catrobat.catroid.formulaeditor.InternToken;
-import org.catrobat.catroid.formulaeditor.InternTokenType;
-import org.catrobat.catroid.ui.ScriptActivity;
+import org.catrobat.catroid.content.bricks.Brick;
+import org.catrobat.catroid.content.bricks.ChangeSizeByNBrick;
+import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
-import java.util.LinkedList;
-import java.util.List;
+public class ArduinoReceiveSensorsWithBrickTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
-public class ArduinoReceiveSensorsWithBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
-
-	private Project project;
-	private SetSizeToBrick setSizeToBrick;
+	private static final int CHANGE_SIZE_BY_EDIT_TEXT_RID = R.id.brick_change_size_by_edit_text;
 
 	public ArduinoReceiveSensorsWithBrickTest() {
-		super(ScriptActivity.class);
+		super(MainMenuActivity.class);
+
 	}
 
 	@Override
 	public void setUp() throws Exception {
-		// normally super.setUp should be called first
-		// but kept the test failing due to view is null
-		// when starting in ScriptActivity
-		createProject();
 		super.setUp();
+		createProject(UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
+		UiTestUtils.getIntoScriptActivityFromMainMenu(solo);
 	}
 
-	public void testArduinoReceiveAnalogSensor() {
-		Formula formula = new Formula(1);
-		assertTrue("Formula should be single number formula", formula.isSingleNumberFormula());
-
-		formula = new Formula(1.0d);
-		assertTrue("Formula should be single number formula", formula.isSingleNumberFormula());
-
-		formula = new Formula(1.0f);
-		assertTrue("Formula should be single number formula", formula.isSingleNumberFormula());
-
-		List<InternToken> internTokenList = new LinkedList<InternToken>();
-
-		//Should look like this: Arduino_analog_read(1)
-		internTokenList.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.ARDUINOANALOG.name()));
-		internTokenList.add(new InternToken(InternTokenType.FUNCTION_PARAMETERS_BRACKET_OPEN, "("));
-		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1")); //read Pin Number 1
-		internTokenList.add(new InternToken(InternTokenType.FUNCTION_PARAMETERS_BRACKET_CLOSE, ")"));
-
-		InternFormulaParser internParser = new InternFormulaParser(internTokenList);
-		FormulaElement parseTree = internParser.parseFormula();
-
-		internParser = new InternFormulaParser(internTokenList);
-		parseTree = internParser.parseFormula();
-
-		//assertNotNull("Formula is not parsed correctly: round(1.1111)", parseTree);
-		//assertEquals("Formula interpretation is not as expected", 1d, parseTree.interpretRecursive(null));	
-		internTokenList.clear();
-	}
-
-	//	public void testArduinoReceiveDigitalSensor() {
-	//
-	//	}
-
-	private void createProject() {
-
-		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
-		Sprite sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
-		setSizeToBrick = new SetSizeToBrick(sprite, 100);
-		script.addBrick(setSizeToBrick);
-
-		sprite.addScript(script);
-		project.addSprite(sprite);
+	private void createProject(String projectName) throws InterruptedException {
+		Project project = new Project(null, projectName);
+		Sprite firstSprite = new Sprite("Arduino Sensors");
+		Script startScript = new StartScript(firstSprite);
+		Brick changeBrick = new ChangeSizeByNBrick(firstSprite, 0);
+		firstSprite.addScript(startScript);
+		startScript.addBrick(changeBrick);
+		project.addSprite(firstSprite);
 
 		ProjectManager.getInstance().setProject(project);
-		ProjectManager.getInstance().setCurrentSprite(sprite);
-		ProjectManager.getInstance().setCurrentScript(script);
+		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 	}
 
+	public void testArduinoDigitalSensors() {
+		//happens in the ArduinoReceiveAction method initBluetooth()
+		//		//turn on BT
+		//		solo.sleep(500);
+		//		ArduinoSendAction.tunOnBluetooth();
+		//		solo.sleep(800);
+		//Formulaeditor Sensor Test
+		solo.clickOnView(solo.getView(CHANGE_SIZE_BY_EDIT_TEXT_RID));
+
+		solo.waitForView(solo.getView(R.id.formula_editor_edit_field));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_arduino_read_pin_value_digital));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_redo));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		TextView computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		//		//turn off BT
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOffBluetooth();
+		//		solo.sleep(800);
+	}
 }
