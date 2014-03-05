@@ -422,4 +422,12 @@ public class ProgramSteps extends AndroidTestCase {
 	public void I_should_see_no_printed_output() throws IOException {
 		I_should_see_printed_output("");
 	}
+
+	@Then("^I should see at least '(\\w+)'$")
+	public void I_should_see_at_least(String text) throws IOException {
+		String actual = outputStream.toString().replace("\r", "").replace("\n", "");
+		String expected = text.replace("\r", "").replace("\n", "");
+		assertTrue("The printed output is wrong: ¸'" + actual + "\'", actual.startsWith(expected));
+		outputStream.close();
+	}
 }

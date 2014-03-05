@@ -299,3 +299,20 @@ Feature: BroadcastAndWait Blocking Behavior (like in Scratch)
     When I start the program
     And I wait until the program has stopped
     Then I should see the printed output 'dcacb'
+
+  Scenario: BroadcastAndWait still behaves correctly when there are more than one Broadcast messages at the same time.
+
+    Given 'test object' has a Start script
+    And this script has a BroadcastAndWait 'a' brick
+    And this script has a Print brick with 'a'
+    Given 'test object' has a WhenBroadcastReceived 'a' script
+    And this script has a BroadcastAndWait 'b' brick
+    And this script has a Print brick with 'b'
+    Given 'test object' has a WhenBroadcastReceived 'b' script
+    And this script has a BroadcastAndWait 'c' brick
+    And this script has a Print brick with 'c'
+    Given 'test object' has a WhenBroadcastReceived 'c' script
+    And this script has a Print brick with 'd'
+    When I start the program
+    And I wait until the program has stopped
+    Then I should see the printed output 'dcba'
