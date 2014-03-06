@@ -65,7 +65,7 @@ public class ArduinoReceiveSensorsWithBrickTest extends BaseActivityInstrumentat
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 	}
 
-	public void testArduinoDigitalSensors() {
+	public void testArduinoDigitalSensor() {
 		//happens in the ArduinoReceiveAction method initBluetooth()
 		//		//turn on BT
 		//		solo.sleep(500);
@@ -77,6 +77,33 @@ public class ArduinoReceiveSensorsWithBrickTest extends BaseActivityInstrumentat
 		solo.waitForView(solo.getView(R.id.formula_editor_edit_field));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_arduino_read_pin_value_digital));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_redo));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		TextView computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		//		//turn off BT
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOffBluetooth();
+		//		solo.sleep(800);
+	}
+
+	public void testArduinoAnalogSensor() {
+		//happens in the ArduinoReceiveAction method initBluetooth()
+		//		//turn on BT
+		//		solo.sleep(500);
+		//		ArduinoSendAction.tunOnBluetooth();
+		//		solo.sleep(800);
+		//Formulaeditor Sensor Test
+		solo.clickOnView(solo.getView(CHANGE_SIZE_BY_EDIT_TEXT_RID));
+
+		solo.waitForView(solo.getView(R.id.formula_editor_edit_field));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_arduino_read_pin_value_analog));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_redo));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));

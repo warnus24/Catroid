@@ -188,19 +188,16 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (position == 1) {
 					pinValue = 'H';
-					//for testing only'll be replaced by refactored BT methods
-					ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-					BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
-					ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
-							pinNumberHigherByte);
 				} else {
 					pinValue = 'L';
-					//for testing only'll be replaced by refactored BT methods
-					ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-					BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
-					ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
-							pinNumberHigherByte);
 				}
+
+				//for testing only'll be replaced by refactored BT methods
+				ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+				BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+				ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
+						pinNumberHigherByte);
+
 				adapterView = parent;
 			}
 
@@ -208,6 +205,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		});
+
 		return view;
 	}
 

@@ -293,7 +293,7 @@ public class FormulaElement implements Serializable {
 					pinNumberLowerByteDigital = left.toString().charAt(left.toString().length() - 4);
 					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
 				}
-				char pinValueDigital = 'R'; //(R instead of D) D stands for digital [should be changed?]
+				char pinValueDigital = 'D'; //D stands for digital
 				//send request for the pin to Arduino
 				ArduinoReceiveAction.initBluetoothConnection();
 				BluetoothSocket tmpSocketDigital = ArduinoReceiveAction.getBluetoothSocket();

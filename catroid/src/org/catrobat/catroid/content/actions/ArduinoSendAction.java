@@ -120,7 +120,7 @@ public class ArduinoSendAction extends Action {
 			bluetoothOutputStream.write(pinNumberLowerByte);
 			bluetoothOutputStream.write(pinNumberHigherByte);
 			bluetoothOutputStream.write(pinValue);
-			//			bluetoothOutputStream.flush();
+			bluetoothOutputStream.flush();
 			outputBluetoothSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
