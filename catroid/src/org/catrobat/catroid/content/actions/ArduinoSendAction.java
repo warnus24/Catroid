@@ -36,17 +36,9 @@ public class ArduinoSendAction extends Action {
 
 	private char pinNumberHigherByte, pinNumberLowerByte;
 	private char pinValue;
-
-	//Needed to init BT at the first call
-	private static Boolean isBluetoothinitialized = false;
-
-	//TODO change this
-	//private static String MACaddr = "00:07:80:49:8B:61"; //MAC address of the Arduino BT-board
-	private static String MACaddr = "";
 	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-	//private static BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(MACaddr);
 	private static BluetoothDevice bluetoothDevice = null;
 	private static BluetoothSocket bluetoothSocket = null;
 	private static BluetoothSocket tmpSocket = null;
@@ -84,20 +76,12 @@ public class ArduinoSendAction extends Action {
 		}
 
 		bluetoothSocket = tmpSocket;
-		isBluetoothinitialized = true;
 	}
 
-	/**
-	 * @return the bluetoothDevice
-	 */
 	public static BluetoothDevice getBluetoothDevice() {
 		return bluetoothDevice;
 	}
 
-	/**
-	 * @param bluetoothDevice
-	 *            the bluetoothDevice to set
-	 */
 	public static void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
 		ArduinoSendAction.bluetoothDevice = bluetoothDevice;
 	}

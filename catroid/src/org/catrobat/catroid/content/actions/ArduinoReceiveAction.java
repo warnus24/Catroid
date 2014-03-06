@@ -86,19 +86,16 @@ public class ArduinoReceiveAction extends Action {
 			return ERROR_OK;
 		}
 
-		//check if the Arduino Board is on the bonded devices list
 		if (bluetoothDevice == null) {
 			ERROR_OK = -2;
 			return ERROR_OK;
 		}
 
-		//enable the Bluetooth adapter
 		bluetoothAdapter.enable();
 		if (!bluetoothAdapter.isEnabled()) {
 			ERROR_OK = -3;
 		}
 
-		//create an outgoing Bluetooth Socket
 		try {
 			tmpSocket = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
 			ERROR_OK = 1;
@@ -125,7 +122,6 @@ public class ArduinoReceiveAction extends Action {
 		try {
 			inputBluetoothSocket.connect();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -140,6 +136,7 @@ public class ArduinoReceiveAction extends Action {
 			bluetoothOutputStream.write(pinNumberLowerByte);
 			bluetoothOutputStream.write(pinNumberHigherByte);
 			bluetoothOutputStream.write(pinValue);
+			bluetoothOutputStream.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

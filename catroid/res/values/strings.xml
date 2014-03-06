@@ -504,7 +504,26 @@
     <string name="nxt_motor_a_and_c">A+C</string>
     <string name="nxt_motor_all">All</string>
     <!--  -->
-
+    
+    <!-- Arduino Bricks -->
+	<string name="brick_arduino_select_value">Set Arduino Pin</string>
+	<!--  -->
+	
+	<!-- Arduino Strings -->
+    <string name="digital_arduino_pin_1">1</string> <!-- serial Tx -->
+	<string name="digital_arduino_pin_3">3</string> <!-- PWM -->
+	<string name="digital_arduino_pin_4">4</string> <!-- digital I/O -->
+	<string name="digital_arduino_pin_5">5</string> <!-- PWM -->
+	<string name="digital_arduino_pin_6">6</string> <!-- PWM -->
+	<string name="digital_arduino_pin_8">8</string> <!-- digital I/O -->
+	<string name="digital_arduino_pin_9">9</string> <!-- PWM -->
+	<string name="digital_arduino_pin_10">10</string> <!-- PWM -->
+	<string name="digital_arduino_pin_11">11</string> <!-- PWM -->
+	<string name="digital_arduino_pin_12">12</string> <!-- digital I/O -->
+	<string name="digital_arduino_pin_13">13</string> <!-- built-in LED pin -->
+	<string name="arduino_pin_value_high">high</string>
+	<string name="arduino_pin_value_low">low</string>
+    <!--  -->
 
     <!-- Formula Editor Strings -->
     <string name="formula_editor_true">True</string>
@@ -592,27 +611,4 @@
         <item quantity="other">Variables selected!</item>
     </plurals>
     <!--  -->
-    
-    <!-- Arduino Strings -->
-    <!--  <string name="pin_0">0</string> -->
-    <string name="pin_1">1</string> <!-- serial Tx -->
-	<!--  <string name="pin_2">2</string> -->
-	<string name="pin_3">3</string> <!-- PWM -->
-	<string name="pin_4">4</string> <!-- digital I/O -->
-	<string name="pin_5">5</string> <!-- PWM -->
-	<string name="pin_6">6</string> <!-- PWM -->
-	<!--  <string name="pin_7">7</string> -->
-	<string name="pin_8">8</string> <!-- digital I/O -->
-	<string name="pin_9">9</string> <!-- PWM -->
-	<string name="pin_10">10</string> <!-- PWM -->
-	<string name="pin_11">11</string> <!-- PWM -->
-	<string name="pin_12">12</string> <!-- digital I/O -->
-	<string name="pin_13">13</string> <!-- built-in LED pin -->
-	<string name="high">1</string>
-	<string name="low">0</string>
-	
-    <string name="brick_arduino_select_value">Send value and pin to Arduino</string>
-    
-    <!--  -->
-
 </resources>

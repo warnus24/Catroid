@@ -45,7 +45,6 @@ import com.actionbarsherlock.view.Menu;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.formulaeditor.Formula;
 
 public class FormulaEditorListFragment extends SherlockListFragment implements Dialog.OnKeyListener {
 
@@ -58,8 +57,6 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 	public static final String FRAGMENT_TAG_BUNDLE_ARGUMENT = "fragmentTag";
 
 	public static final String[] TAGS = { OBJECT_TAG, MATH_TAG, LOGIC_TAG, SENSOR_TAG };
-
-	private Formula currentFormula;
 
 	private static final int[] OBJECT_ITEMS = { R.string.formula_editor_object_x, R.string.formula_editor_object_y,
 			R.string.formula_editor_object_ghosteffect, R.string.formula_editor_object_brightness,
