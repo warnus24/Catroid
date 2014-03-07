@@ -34,8 +34,8 @@ import java.util.UUID;
 
 public class ArduinoSendAction extends Action {
 
-	private char pinNumberHigherByte, pinNumberLowerByte;
-	private char pinValue;
+	private static char pinNumberHigherByte, pinNumberLowerByte;
+	private static char pinValue;
 	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -48,16 +48,28 @@ public class ArduinoSendAction extends Action {
 		return bluetoothSocket;
 	}
 
-	public void setPinNumberHigherByte(char pinNumberHigherByte) {
-		this.pinNumberHigherByte = pinNumberHigherByte;
+	public static char getPinNumberHigherByte() {
+		return pinNumberHigherByte;
 	}
 
-	public void setPinNumberLowerByte(char pinNumberLowerByte) {
-		this.pinNumberLowerByte = pinNumberLowerByte;
+	public static char getPinNumberLowerByte() {
+		return pinNumberLowerByte;
 	}
 
-	public void setPinValue(Character pinValue) {
-		this.pinValue = pinValue;
+	public static char getPinValue() {
+		return pinValue;
+	}
+
+	public static void setPinNumberHigherByte(char newpinNumberHigherByte) {
+		pinNumberHigherByte = newpinNumberHigherByte;
+	}
+
+	public static void setPinNumberLowerByte(char newpinNumberLowerByte) {
+		pinNumberLowerByte = newpinNumberLowerByte;
+	}
+
+	public static void setPinValue(Character newpinValue) {
+		pinValue = newpinValue;
 	}
 
 	@Override
@@ -110,4 +122,5 @@ public class ArduinoSendAction extends Action {
 			e.printStackTrace();
 		}
 	}
+
 }

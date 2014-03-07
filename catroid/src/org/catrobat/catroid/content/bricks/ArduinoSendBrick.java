@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.content.bricks;
 
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
@@ -187,17 +186,12 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (position == 1) {
-					pinValue = 'H';
+					//					pinValue = 'H';
+					ArduinoSendAction.setPinValue('H');
 				} else {
-					pinValue = 'L';
+					//					pinValue = 'L';
+					ArduinoSendAction.setPinValue('L');
 				}
-
-				//for testing only'll be replaced by refactored BT methods
-				ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-				BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
-				ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
-						pinNumberHigherByte);
-
 				adapterView = parent;
 			}
 
@@ -330,4 +324,5 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			return dropDownView;
 		}
 	}
+
 }

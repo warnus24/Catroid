@@ -65,7 +65,7 @@ public class ArduinoReceiveSensorsWithBrickTest extends BaseActivityInstrumentat
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 	}
 
-	public void testArduinoDigitalSensor() {
+	public void testIfAllArduinoDigitalPinsAreLowWithSensor() {
 		//happens in the ArduinoReceiveAction method initBluetooth()
 		//		//turn on BT
 		//		solo.sleep(500);
@@ -79,12 +79,116 @@ public class ArduinoReceiveSensorsWithBrickTest extends BaseActivityInstrumentat
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_arduino_read_pin_value_digital));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_redo));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
 		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
 		TextView computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
 		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_4));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_5));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_6));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_8));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_9));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_2));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
+
+		solo.goBack();
 
 		//		//turn off BT
 		//		solo.sleep(500);
@@ -92,13 +196,7 @@ public class ArduinoReceiveSensorsWithBrickTest extends BaseActivityInstrumentat
 		//		solo.sleep(800);
 	}
 
-	public void testArduinoAnalogSensor() {
-		//happens in the ArduinoReceiveAction method initBluetooth()
-		//		//turn on BT
-		//		solo.sleep(500);
-		//		ArduinoSendAction.tunOnBluetooth();
-		//		solo.sleep(800);
-		//Formulaeditor Sensor Test
+	public void testIfAllArduinoAnalogPinsAreLowWithSensor() {
 		solo.clickOnView(solo.getView(CHANGE_SIZE_BY_EDIT_TEXT_RID));
 
 		solo.waitForView(solo.getView(R.id.formula_editor_edit_field));
@@ -106,16 +204,53 @@ public class ArduinoReceiveSensorsWithBrickTest extends BaseActivityInstrumentat
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_arduino_read_pin_value_analog));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_redo));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_2));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
 		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
-		TextView computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
-		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
 
-		//		//turn off BT
-		//		solo.sleep(500);
-		//		ArduinoSendAction.turnOffBluetooth();
-		//		solo.sleep(800);
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_4));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_5));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+
+		solo.goBack();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_6));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.waitForView(solo.getView(R.id.formula_editor_compute_dialog_textview));
+
+		solo.goBack();
+		//		TextView computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		//		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
 	}
 }

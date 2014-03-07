@@ -336,16 +336,10 @@ public class FormulaElement implements Serializable {
 						pinValueAnalog, pinNumberLowerByteAnalog, pinNumberHigherByteAnalog);
 
 				//ugly quick fix
-				ArduinoSendAction.turnOffBluetooth();
+				//				ArduinoSendAction.turnOffBluetooth();
 				//ugly quick fix
 
-				if (pinValueFromArduinoAnalog == 72) {
-					return 1.0;
-				} else if (pinValueFromArduinoAnalog == 76) {
-					return 0.0;
-				} else {
-					return (double) pinValueFromArduinoAnalog;
-				}
+				return (double) pinValueFromArduinoAnalog;
 		}
 
 		return 0d;
