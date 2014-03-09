@@ -83,6 +83,7 @@ public class ArduinoSendAction extends Action {
 
 		try {
 			tmpSocket = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
+			//			tmpSocket.connect();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

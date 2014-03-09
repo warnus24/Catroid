@@ -253,4 +253,64 @@ public class ArduinoReceiveSensorsWithBrickTest extends BaseActivityInstrumentat
 		//		TextView computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
 		//		assertEquals("computeTextView did not contain the correct value", "0.0", computeTextView.getText().toString());
 	}
+
+	public void testEmptySensorInput() {
+		solo.clickOnView(solo.getView(CHANGE_SIZE_BY_EDIT_TEXT_RID));
+
+		solo.waitForView(solo.getView(R.id.formula_editor_edit_field));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_arduino_read_pin_value_analog));
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+
+		solo.goBack();
+
+	}
+
+	public void testNegativePinNumberSensorInput() {
+		solo.clickOnView(solo.getView(CHANGE_SIZE_BY_EDIT_TEXT_RID));
+
+		solo.waitForView(solo.getView(R.id.formula_editor_edit_field));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_arduino_read_pin_value_analog));
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_minus));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+
+		solo.goBack();
+
+	}
+
+	public void testNotAvailablePinSensorInput() {
+		solo.clickOnView(solo.getView(CHANGE_SIZE_BY_EDIT_TEXT_RID));
+
+		solo.waitForView(solo.getView(R.id.formula_editor_edit_field));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_arduino_read_pin_value_analog));
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_arduino_read_pin_value_analog));
+		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_7));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+
+		solo.goBack();
+	}
+
+	public void testInvalidePinSensorInput() {
+
+	}
 }

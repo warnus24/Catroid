@@ -54,7 +54,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	private static final long serialVersionUID = 1l;
 	private transient View prototypeView;
 	private transient AdapterView<?> adapterView;
-	private char pinValue = 'H';
+	private char pinValue = 'L';
 	private char pinNumberLowerByte = '0';
 	private char pinNumberHigherByte = '0';
 
@@ -170,10 +170,15 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 				if (tempSavingString.length() < 2) {
 					pinNumberLowerByte = '0';
 					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
+					ArduinoSendAction.setPinNumberLowerByte(pinNumberLowerByte);
+					ArduinoSendAction.setPinNumberHigherByte(pinNumberHigherByte);
 				} else {
 					pinNumberLowerByte = tempSavingString.charAt(tempSavingString.length() - 2);
 					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
+					ArduinoSendAction.setPinNumberLowerByte(pinNumberLowerByte);
+					ArduinoSendAction.setPinNumberHigherByte(pinNumberHigherByte);
 				}
+
 				adapterView = parent;
 			}
 
@@ -185,13 +190,21 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		arduinoValueSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				if (position == 1) {
-					//					pinValue = 'H';
-					ArduinoSendAction.setPinValue('H');
-				} else {
-					//					pinValue = 'L';
+				if (position == 0) {
 					ArduinoSendAction.setPinValue('L');
+				} else {
+					ArduinoSendAction.setPinValue('H');
 				}
+
+				//				ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+				//				BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+				//				char pinValue = ArduinoSendAction.getPinValue();
+				//				char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+				//				char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+				//
+				//				ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
+				//						pinNumberHigherByte);
+
 				adapterView = parent;
 			}
 

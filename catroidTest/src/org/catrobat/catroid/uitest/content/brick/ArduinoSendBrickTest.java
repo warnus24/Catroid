@@ -24,6 +24,7 @@ package org.catrobat.catroid.uitest.content.brick;
 
 import android.bluetooth.BluetoothSocket;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -31,6 +32,7 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
+import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
 import org.catrobat.catroid.content.actions.ArduinoSendAction;
 import org.catrobat.catroid.content.bricks.ArduinoSendBrick;
 import org.catrobat.catroid.content.bricks.Brick;
@@ -77,49 +79,64 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 
 	}
 
-	//	public void testArduinoSendBrickPinSpinner() {
-	//		String[] arduinoPins = getActivity().getResources().getStringArray(R.array.arduino_pin_chooser);
-	//		assertTrue("Spinner items list too short!", arduinoPins.length == 11);
-	//
-	//		int newPinSpinnerPosition = 0;
-	//		Spinner currentPinSpinner = solo.getCurrentViews(Spinner.class).get(newPinSpinnerPosition);
-	//		//Pin Spinner
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, 0);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[0], currentPinSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[1], currentPinSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[2], currentPinSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[3], currentPinSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[4], currentPinSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[5], currentPinSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[6], currentPinSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[7], currentPinSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[8], currentPinSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[9], currentPinSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoPins[10], currentPinSpinner.getSelectedItem());
-	//	}
-	//
-	//	public void testArduinoSendBrickValueSpinner() {
-	//		String[] arduinoValues = getActivity().getResources().getStringArray(R.array.arduino_value_chooser);
-	//		assertTrue("Spinner items list too short!", arduinoValues.length == 2);
-	//
-	//		int newValueSpinnerPosition = 1;
-	//		Spinner currentValueSpinner = solo.getCurrentViews(Spinner.class).get(newValueSpinnerPosition);
-	//		//Value Spinner
-	//		solo.pressSpinnerItem(newValueSpinnerPosition, 0);
-	//		assertEquals("Wrong item in spinner!", arduinoValues[0], currentValueSpinner.getSelectedItem());
-	//		solo.pressSpinnerItem(newValueSpinnerPosition, +1);
-	//		assertEquals("Wrong item in spinner!", arduinoValues[1], currentValueSpinner.getSelectedItem());
-	//	}
+	public void testArduinoSendBrickClickOnPinSpinner() {
+		String[] arduinoPins = getActivity().getResources().getStringArray(R.array.arduino_pin_chooser);
+		assertTrue("Spinner items list too short!", arduinoPins.length == 11);
+
+		int newPinSpinnerPosition = 0;
+		Spinner currentPinSpinner = solo.getCurrentViews(Spinner.class).get(newPinSpinnerPosition);
+		//Pin Spinner
+		solo.pressSpinnerItem(newPinSpinnerPosition, 0);
+		assertEquals("Wrong item in spinner!", arduinoPins[0], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[1], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[2], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[3], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[4], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[5], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[6], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[7], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[8], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[9], currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +1);
+		assertEquals("Wrong item in spinner!", arduinoPins[10], currentPinSpinner.getSelectedItem());
+	}
+
+	public void testArduinoSendBrickClickOnPinSpinnerNotAvailable() {
+		String[] arduinoPins = getActivity().getResources().getStringArray(R.array.arduino_pin_chooser);
+		assertTrue("Spinner items list too short!", arduinoPins.length == 11);
+
+		int newPinSpinnerPosition = 0;
+		Spinner currentPinSpinner = solo.getCurrentViews(Spinner.class).get(newPinSpinnerPosition);
+		//Pin Spinner
+		solo.pressSpinnerItem(newPinSpinnerPosition, 0);
+
+		solo.pressSpinnerItem(newPinSpinnerPosition, -1);
+		assertNull("Not available item in pin-spinner!", currentPinSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newPinSpinnerPosition, +11);
+		assertNull("Not available item in pin-spinner!", currentPinSpinner.getSelectedItem());
+	}
+
+	public void testArduinoSendBrickClickOnValueSpinnerNotAvailable() {
+		String[] arduinoValues = getActivity().getResources().getStringArray(R.array.arduino_value_chooser);
+		assertTrue("Spinner items list too short!", arduinoValues.length == 2);
+
+		int newValueSpinnerPosition = 1;
+		Spinner currentValueSpinner = solo.getCurrentViews(Spinner.class).get(newValueSpinnerPosition);
+		//Value Spinner
+		solo.pressSpinnerItem(newValueSpinnerPosition, -1);
+		assertNull("Not available item in value-spinner!", currentValueSpinner.getSelectedItem());
+		solo.pressSpinnerItem(newValueSpinnerPosition, +2);
+		assertNull("Not available item in value-spinner!", currentValueSpinner.getSelectedItem());
+	}
 
 	public void testSetPinToHighLowWithPinAndValueSpinner() {
 		//turn on BT
@@ -132,10 +149,10 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		String[] arduinoValues = getActivity().getResources().getStringArray(R.array.arduino_value_chooser);
 		assertTrue("Spinner items list too short!", arduinoValues.length == 2);
 
+		//select Value from Spinner (H)
+		solo.pressSpinnerItem(1, 1);
 		//Pin Spinner (Pin 13)
 		solo.pressSpinnerItem(0, 10);
-		//select Value from Spinner (H)
-		solo.pressSpinnerItem(1, 0);
 
 		//send data via BT
 		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
@@ -147,10 +164,10 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 
 		ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
 
+		//select Value form Spinner (L)
+		solo.pressSpinnerItem(1, -1);
 		//Pin Spinner (Pin 13)
 		solo.pressSpinnerItem(0, 10);
-		//select Value form Spinner (L)
-		solo.pressSpinnerItem(1, +1);
 
 		//send data via BT
 		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
@@ -168,94 +185,169 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		solo.sleep(800);
 	}
 
-	//	public void testSetPinToHighReadIfHighAndSetToLow() {
-	//		//turn on BT
-	//		solo.sleep(500);
-	//		ArduinoSendAction.tunOnBluetooth();
-	//		solo.sleep(800);
-	//		//set LED Pin high
-	//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-	//		solo.sleep(800);
-	//		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
-	//		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'H', '1', '3');
-	//		//check if the Pin is high
-	//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-	//		solo.sleep(800);
-	//		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
-	//		boolean testValue = false;
-	//		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'D', '1', '3') == 'H') {
-	//			testValue = true;
-	//		}
-	//		assertEquals(true, testValue);
-	//		//set LED Pin low
-	//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-	//		solo.sleep(800);
-	//		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
-	//		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'L', '1', '3');
-	//		//check if the Pin is low
-	//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-	//		solo.sleep(800);
-	//		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
-	//		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'D', '1', '3') == 'L') {
-	//			testValue = false;
-	//		}
-	//		assertEquals(false, testValue);
-	//		//turn off BT
-	//		solo.sleep(500);
-	//		ArduinoSendAction.turnOffBluetooth();
-	//		solo.sleep(800);
-	//	}
-	//
-	//	public void testSetPinWithReturnValue() {
-	//		boolean testValue = false;
-	//		//turn on BT
-	//		solo.sleep(500);
-	//		ArduinoSendAction.tunOnBluetooth();
-	//		solo.sleep(800);
-	//		//send 03T for test case
-	//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-	//		solo.sleep(800);
-	//		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
-	//		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'T', '0', '3');
-	//		//read return value from Arduino
-	//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-	//		solo.sleep(800);
-	//		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
-	//		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'D', '0', '3') == 'H') {
-	//			testValue = true;
-	//		}
-	//		assertEquals(true, testValue);
-	//		//turn off BT
-	//		solo.sleep(500);
-	//		ArduinoSendAction.turnOffBluetooth();
-	//		solo.sleep(800);
-	//	}
-	//
-	//	public void testGetAnalogPinValueAsReturnValue() {
-	//		boolean testValue = false;
-	//		//turn on BT
-	//		solo.sleep(500);
-	//		ArduinoSendAction.tunOnBluetooth();
-	//		solo.sleep(800);
-	//		//send 03T for test case
-	//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-	//		solo.sleep(800);
-	//		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
-	//		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'T', '0', '2');
-	//		//read return value from Arduino
-	//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-	//		solo.sleep(800);
-	//		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
-	//		//test if return value is between 0 - 255
-	//		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'A', '0', '2') < 255) {
-	//			testValue = true;
-	//		}
-	//		assertEquals(true, testValue);
-	//		//turn off BT
-	//		solo.sleep(500);
-	//		ArduinoSendAction.turnOffBluetooth();
-	//		solo.sleep(800);
-	//	}
+	public void testSetLedPinToHighWithSpinners() {
+		//turn on BT
+		solo.sleep(500);
+		ArduinoSendAction.tunOnBluetooth();
+		solo.sleep(800);
+
+		//Pin Spinner (Pin 13)
+		solo.pressSpinnerItem(0, 10);
+		//select Value from Spinner (H)
+		solo.pressSpinnerItem(1, 1);
+
+		char pinValue = ArduinoSendAction.getPinValue();
+		char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+		char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+
+		//send data via BT
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+		ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
+
+		//turn off BT
+		solo.sleep(500);
+		ArduinoSendAction.turnOffBluetooth();
+		solo.sleep(800);
+	}
+
+	public void testSetLedPinToLowWithSpinners() {
+		//turn on BT
+		solo.sleep(500);
+		ArduinoSendAction.tunOnBluetooth();
+		solo.sleep(800);
+
+		//Pin Spinner (Pin 13)
+		solo.pressSpinnerItem(0, 10);
+		//select Value from Spinner (L)
+		solo.pressSpinnerItem(1, 0);
+
+		char pinValue = ArduinoSendAction.getPinValue();
+		char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+		char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+
+		//send data via BT
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+		ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
+
+		//turn off BT
+		solo.sleep(500);
+		ArduinoSendAction.turnOffBluetooth();
+		solo.sleep(800);
+	}
+
+	public void testSetPinToHighAndSetToLowWithForLoop() {
+		//turn on BT
+		solo.sleep(500);
+		ArduinoSendAction.tunOnBluetooth();
+		solo.sleep(800);
+		//set LED Pin high
+		for (int i = 0; i < 10; i++) {
+			ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+			solo.sleep(800);
+			BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+			ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'H', '1', '3');
+			//set LED Pin low
+			ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+			solo.sleep(800);
+			sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+			ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'L', '1', '3');
+		}
+		//turn off BT
+		solo.sleep(500);
+		ArduinoSendAction.turnOffBluetooth();
+		solo.sleep(800);
+	}
+
+	public void testSetPinToHighReadIfHighAndSetToLow() {
+		//turn on BT
+		solo.sleep(500);
+		ArduinoSendAction.tunOnBluetooth();
+		solo.sleep(800);
+		//set LED Pin high
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'H', '1', '3');
+		//check if the Pin is high
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		boolean testValue = false;
+		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'D', '1', '3') == 'H') {
+			testValue = true;
+		}
+		assertEquals(true, testValue);
+		//set LED Pin low
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'L', '1', '3');
+		//check if the Pin is low
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'D', '1', '3') == 'L') {
+			testValue = false;
+		}
+		assertEquals(false, testValue);
+		//turn off BT
+		solo.sleep(500);
+		ArduinoSendAction.turnOffBluetooth();
+		solo.sleep(800);
+	}
+
+	public void testSetPinWithReturnValue() {
+		boolean testValue = false;
+		//turn on BT
+		solo.sleep(500);
+		ArduinoSendAction.tunOnBluetooth();
+		solo.sleep(800);
+		//send 03T for test case
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'T', '0', '3');
+		//read return value from Arduino
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'D', '0', '3') == 'H') {
+			testValue = true;
+		}
+		assertEquals(true, testValue);
+		//turn off BT
+		solo.sleep(500);
+		ArduinoSendAction.turnOffBluetooth();
+		solo.sleep(800);
+	}
+
+	public void testGetAnalogPinValueAsReturnValue() {
+		boolean testValue = false;
+		//turn on BT
+		solo.sleep(500);
+		ArduinoSendAction.tunOnBluetooth();
+		solo.sleep(800);
+		//send 03T for test case
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'T', '0', '2');
+		//read return value from Arduino
+		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+		solo.sleep(800);
+		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+		//test if return value is between 0 - 255
+		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'A', '0', '2') < 255) {
+			testValue = true;
+		}
+		assertEquals(true, testValue);
+		//turn off BT
+		solo.sleep(500);
+		ArduinoSendAction.turnOffBluetooth();
+		solo.sleep(800);
+	}
 
 	private void createProject() {
 
