@@ -118,6 +118,13 @@ import org.catrobat.catroid.content.bricks.conditional.TurnRightBrick;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 import org.catrobat.catroid.physic.content.bricks.CollisionReceiverBrick;
+import org.catrobat.catroid.physic.content.bricks.SetBounceBrick;
+import org.catrobat.catroid.physic.content.bricks.SetFrictionBrick;
+import org.catrobat.catroid.physic.content.bricks.SetGravityBrick;
+import org.catrobat.catroid.physic.content.bricks.SetMassBrick;
+import org.catrobat.catroid.physic.content.bricks.SetVelocityBrick;
+import org.catrobat.catroid.physic.content.bricks.TurnLeftSpeedBrick;
+import org.catrobat.catroid.physic.content.bricks.TurnRightSpeedBrick;
 import org.catrobat.catroid.utils.ImageEditing;
 import org.catrobat.catroid.utils.UtilFile;
 import org.catrobat.catroid.utils.Utils;
@@ -291,6 +298,18 @@ public final class StorageHandler {
 		xstream.alias("userBrickElement", UserScriptDefinitionBrickElement.class);
 		xstream.alias("userBrickParameter", UserBrickParameter.class);
 
+		// Physic Bricks
+		xstream.alias("brick", CollisionReceiverBrick.class);
+		xstream.alias("brick", SetBounceBrick.class);
+		xstream.alias("brick", SetFrictionBrick.class);
+		xstream.alias("brick", SetGravityBrick.class);
+		xstream.alias("brick", SetMassBrick.class);
+		//		xstream.alias("setPhysicsObjectTypeBrick", SetPhysicsObjectTypeBrick.class);
+		xstream.alias("brick", SetVelocityBrick.class);
+		xstream.alias("brick", TurnLeftSpeedBrick.class);
+		xstream.alias("brick", TurnRightSpeedBrick.class);
+
+
 		xstream.aliasField("formulaList", FormulaBrick.class, "formulaMap");
 		xstream.aliasField("object", BrickBaseType.class, "sprite");
 	}
@@ -386,6 +405,7 @@ public final class StorageHandler {
 			}
 
 			File projectDirectory = new File(buildProjectPath(project.getName()));
+			Log.d(TAG, "# # " + projectDirectory.getAbsolutePath());
 			createProjectDataStructure(projectDirectory);
 
 			writer = new BufferedWriter(new FileWriter(tmpCodeFile), Constants.BUFFER_8K);
