@@ -294,7 +294,8 @@ public class InternFormulaParser {
 		}
 		if (functionTree.getValue().equals(Functions.ARDUINODIGITAL.name())) {
 			if ((functionTree.getLeftChild().getValue().charAt(0) > '1')
-					|| (functionTree.getLeftChild().getValue().length() > '2')) {
+					|| (functionTree.getLeftChild().getValue().length() > 2)
+					|| (functionTree.getLeftChild().getValue().length() < 2)) {
 				throw new InternFormulaParserException("Parse Error");
 			}
 			if ((functionTree.getLeftChild().getValue().charAt(0) == '0')
@@ -316,7 +317,8 @@ public class InternFormulaParser {
 		}
 		if (functionTree.getValue().equals(Functions.ARDUINOANALOG.name())) {
 			if ((functionTree.getLeftChild().getValue().charAt(0) > '0')
-					|| (functionTree.getLeftChild().getValue().length() > 2)) {
+					|| (functionTree.getLeftChild().getValue().length() > 2)
+					|| (functionTree.getLeftChild().getValue().length() < 2)) {
 				throw new InternFormulaParserException("Parse Error");
 			}
 			if ((functionTree.getLeftChild().getValue().charAt(0) == '0')
