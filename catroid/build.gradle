@@ -2,7 +2,7 @@ import java.util.regex.Pattern
 
 buildscript {
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.+'
+        classpath 'com.android.tools.build:gradle:0.9.+'
     }
 }
 
@@ -33,9 +33,9 @@ dependencies {
     compile fileTree(dir: 'libs-natives', include: '*.jar')
 
 //    instrumentTestCompile fileTree(dir: 'catroidTest/libs', include: '*.jar')
-    instrumentTestCompile 'junit:junit:4.8.2'
-    instrumentTestCompile 'com.jayway.android.robotium:robotium-solo:4.3'
-    instrumentTestCompile files('libs/the-missing-android-xml-junit-test-runner-release-1.3_2.jar')
+    androidTestCompile 'junit:junit:4.8.2'
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:4.3'
+    androidTestCompile files('libs/the-missing-android-xml-junit-test-runner-release-1.3_2.jar')
 
 }
 
@@ -136,7 +136,7 @@ task featuresToBuildconfig() {
 preBuild.dependsOn featuresToBuildconfig
 
 task testManifestHack() << {
-    def origManifest = file('src/instrumentTest/MockActivites.xml')
+    def origManifest = file('src/androidTest/MockActivites.xml')
     def generatedManifest = file("build/manifests/test/debug/AndroidManifest.xml")
     def origContent = origManifest.getText()
     def generatedContent = generatedManifest.getText()
