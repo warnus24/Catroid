@@ -2,21 +2,21 @@
  *  Catroid: An on-device visual programming system for Android devices
  *  Copyright (C) 2010-2013 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
  *  published by the Free Software Foundation, either version 3 of the
  *  License, or (at your option) any later version.
- *  
+ *
  *  An additional term exception under section 7 of the GNU Affero
  *  General Public License, version 3, is available at
  *  http://developer.catrobat.org/license_additional_term
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU Affero General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -60,6 +60,8 @@ import java.util.Locale;
 public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 	private static final int RESOURCE_SOUND = org.catrobat.catroid.test.R.raw.longsound;
 	private static final int RESOURCE_SOUND2 = org.catrobat.catroid.test.R.raw.testsoundui;
+	private static final int RESOURCE_SHORT_SOUND = org.catrobat.catroid.test.R.raw.soundunderonesecond;
+
 	private static final int VISIBLE = View.VISIBLE;
 	private static final int GONE = View.GONE;
 
@@ -123,6 +125,7 @@ public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainM
 
 		soundInfoList.add(soundInfo);
 		soundInfoList.add(soundInfo2);
+
 		projectManager.getFileChecksumContainer().addChecksum(soundInfo.getChecksum(), soundInfo.getAbsolutePath());
 		projectManager.getFileChecksumContainer().addChecksum(soundInfo2.getChecksum(), soundInfo2.getAbsolutePath());
 
@@ -236,12 +239,20 @@ public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainM
 		assertTrue("Sound not renamed in actual view", solo.searchText(newSoundName));
 	}
 
+	public void testSoundTimeUnderOneSecond() {
+		String soundName = "shortSound";
+		addNewSound(soundName, "soundunderonesecond.m4p", RESOURCE_SHORT_SOUND);
+		solo.sleep(1000);
+		assertTrue("Sound has a length of 00:00", !solo.searchText("00:00"));
+
+	}
+
 	public void testEqualSoundNames() {
 		final String assertMessageText = "Sound not renamed correctly";
 
 		String defaultSoundName = "renamedSound";
 		String newSoundName = "newTestSound";
-		addNewSound(newSoundName);
+		addNewSound(newSoundName, "longsound.mp3", RESOURCE_SOUND);
 
 		renameSound(FIRST_TEST_SOUND_NAME, defaultSoundName);
 		renameSound(SECOND_TEST_SOUND_NAME, defaultSoundName);
@@ -251,7 +262,7 @@ public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainM
 		assertEquals(assertMessageText, expectedSoundName, getSoundTitle(1));
 
 		expectedSoundName = defaultSoundName + "2";
-        solo.sleep(TIME_TO_WAIT);
+		solo.sleep(TIME_TO_WAIT);
 		assertEquals(assertMessageText, expectedSoundName, getSoundTitle(2));
 
 		newSoundName = "x";
@@ -261,7 +272,7 @@ public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainM
 
 		assertNotSame("Sound not renamed", expectedSoundName, getSoundTitle(1));
 		renameSound(newSoundName, defaultSoundName);
-        solo.sleep(TIME_TO_WAIT);
+		solo.sleep(TIME_TO_WAIT);
 		assertEquals(assertMessageText, expectedSoundName, getSoundTitle(1));
 	}
 
@@ -374,7 +385,7 @@ public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainM
 		int expectedNumberOfSounds = getCurrentNumberOfSounds() + 1;
 
 		String newSoundName = "Added Sound";
-		addNewSound(newSoundName);
+		addNewSound(newSoundName, "longsound.mp3", RESOURCE_SOUND);
 
 		assertEquals("No sound was added", expectedNumberOfSounds, getCurrentNumberOfSounds());
 		assertTrue("Sound not added in actual view", solo.searchText(newSoundName));
@@ -709,7 +720,7 @@ public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainM
 		// If an already existing name was entered a counter should be appended
 		String expectedNewSoundName = newSoundName + "1";
 		soundInfoList = projectManager.getCurrentSprite().getSoundList();
-        solo.sleep(TIME_TO_WAIT);
+		solo.sleep(TIME_TO_WAIT);
 		assertEquals("Sound is not correctly renamed in SoundList (1 should be appended)", expectedNewSoundName,
 				soundInfoList.get(checkboxIndex).getTitle());
 		assertTrue("Sound not renamed in actual view", solo.searchText(expectedNewSoundName, true));
@@ -922,9 +933,9 @@ public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainM
 	public void testAddSoundAndDeleteActionMode() {
 		String testSoundName = "testSound";
 
-		addNewSound(testSoundName);
-		addNewSound(testSoundName);
-		addNewSound(testSoundName);
+		addNewSound(testSoundName, "longsound.mp3", RESOURCE_SOUND);
+		addNewSound(testSoundName, "longsound.mp3", RESOURCE_SOUND);
+		addNewSound(testSoundName, "longsound.mp3", RESOURCE_SOUND);
 
 		solo.sleep(500);
 
@@ -1120,9 +1131,9 @@ public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainM
 		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
 	}
 
-	private void addNewSound(String title) {
-		File soundFile = UiTestUtils.saveFileToProject(UiTestUtils.DEFAULT_TEST_PROJECT_NAME, "longsound.mp3",
-				RESOURCE_SOUND, getInstrumentation().getContext(), UiTestUtils.FileTypes.SOUND);
+	private void addNewSound(String title, String fileName, int resource) {
+		File soundFile = UiTestUtils.saveFileToProject(UiTestUtils.DEFAULT_TEST_PROJECT_NAME, fileName, resource,
+				getInstrumentation().getContext(), UiTestUtils.FileTypes.SOUND);
 		SoundInfo soundInfo = new SoundInfo();
 		soundInfo.setSoundFileName(soundFile.getName());
 		soundInfo.setTitle(title);
