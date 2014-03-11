@@ -1327,6 +1327,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 
 		solo.enterText(0, UiTestUtils.PROJECTNAME1);
 		solo.clickOnButton(buttonOkText);
+		solo.wait(1000);
 
 		String errorMessageProjectExists = solo.getString(R.string.error_project_exists);
 		assertTrue("No or wrong error message shown",
