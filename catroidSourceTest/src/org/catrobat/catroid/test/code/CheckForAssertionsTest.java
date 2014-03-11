@@ -37,7 +37,7 @@ public class CheckForAssertionsTest extends TestCase {
 	private StringBuffer errorMessages;
 	private boolean assertionNotFound;
 
-	private static final String[] DIRECTORIES = { "../catroid/src/instrumentTest", "../catroidCucumberTest", };
+	private static final String[] DIRECTORIES = { "../catroid/src/androidTest", "../catroidCucumberTest", };
 
 	private static final String[] IGNORED_FILES = { "MockGalleryActivity.java", "UiTestUtils.java",
 			"SimulatedSensorManager.java", "SimulatedSoundRecorder.java", "TestUtils.java",
