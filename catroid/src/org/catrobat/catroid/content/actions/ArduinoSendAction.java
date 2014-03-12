@@ -78,7 +78,7 @@ public class ArduinoSendAction extends Action {
 	}
 
 	public static void initBluetoothConnection(String MACadress) {
-
+		turnOnBluetooth();
 		setBluetoothDevice(bluetoothAdapter.getRemoteDevice(MACadress));
 
 		try {
@@ -99,7 +99,7 @@ public class ArduinoSendAction extends Action {
 		ArduinoSendAction.bluetoothDevice = bluetoothDevice;
 	}
 
-	public static void tunOnBluetooth() {
+	public static void turnOnBluetooth() {
 		if (!bluetoothAdapter.isEnabled()) {
 			bluetoothAdapter.enable();
 		}

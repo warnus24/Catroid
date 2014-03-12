@@ -22,6 +22,7 @@
  */
 package org.catrobat.catroid.content.bricks;
 
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
@@ -179,6 +180,15 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 					ArduinoSendAction.setPinNumberHigherByte(pinNumberHigherByte);
 				}
 
+				//				ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+				//				BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+				//				char pinValue = ArduinoSendAction.getPinValue();
+				//				char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+				//				char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+				//
+				//				ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
+				//						pinNumberHigherByte);
+
 				adapterView = parent;
 			}
 
@@ -196,14 +206,14 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 					ArduinoSendAction.setPinValue('H');
 				}
 
-				//				ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-				//				BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
-				//				char pinValue = ArduinoSendAction.getPinValue();
-				//				char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
-				//				char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
-				//
-				//				ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
-				//						pinNumberHigherByte);
+				ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
+				BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+				char pinValue = ArduinoSendAction.getPinValue();
+				char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+				char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+
+				ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte,
+						pinNumberHigherByte);
 
 				adapterView = parent;
 			}
