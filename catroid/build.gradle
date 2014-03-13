@@ -74,12 +74,14 @@ android {
     }
 
     sourceSets {
-        instrumentTest {
+        androidTest {
             if(file('testexclusions.txt').exists()){
                 java.exclude file('testexclusions.txt').readLines()
+                println "found testexclusions.txt"
             }
             if(file('../testexclusions.txt').exists()){
                 java.exclude file('../testexclusions.txt').readLines()
+                println "found ../testexclusions.txt"
             }
         }
     }
