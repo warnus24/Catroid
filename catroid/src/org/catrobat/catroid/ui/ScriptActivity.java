@@ -375,6 +375,18 @@ public class ScriptActivity extends BaseActivity {
 	public void handlePlayButton(View view) {
 		updateHandleAddButtonClickListener();
 
+		//		//ugly quick fix
+		//
+		//		ArduinoSendAction.initBluetoothConnection();
+		//		BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
+		//		char pinValue = ArduinoSendAction.getPinValue();
+		//		char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+		//		char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+		//
+		//		ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
+		//
+		//		//end ugly quick fix
+
 		Fragment formulaEditorFragment = fragmentManager
 				.findFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		if (formulaEditorFragment != null) {

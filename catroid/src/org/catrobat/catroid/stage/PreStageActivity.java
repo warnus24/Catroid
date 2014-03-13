@@ -42,7 +42,6 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BTDeviceActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.actions.ArduinoSendAction;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
@@ -221,7 +220,7 @@ public class PreStageActivity extends Activity {
 							case (Brick.BLUETOOTH_ARDUINO):
 								String arduinoMacAddress = data.getExtras().getString(
 										BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
-								ArduinoSendAction.initBluetoothConnection(arduinoMacAddress);
+								//								ArduinoSendAction.initBluetoothConnection(arduinoMacAddress);
 
 								connectingProgressDialog.dismiss();
 								resourceInitialized();

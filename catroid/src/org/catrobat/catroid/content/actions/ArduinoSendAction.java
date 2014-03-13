@@ -25,6 +25,7 @@ package org.catrobat.catroid.content.actions;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 
@@ -36,9 +37,10 @@ public class ArduinoSendAction extends Action {
 
 	private static char pinNumberHigherByte, pinNumberLowerByte;
 	private static char pinValue;
+	private static String MACadress = "00:07:80:49:8B:61";
 	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-	private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+	private static BluetoothAdapter bluetoothAdapter = null;
 	private static BluetoothDevice bluetoothDevice = null;
 	private static BluetoothSocket bluetoothSocket = null;
 	private static BluetoothSocket tmpSocket = null;
@@ -77,8 +79,8 @@ public class ArduinoSendAction extends Action {
 		return false;
 	}
 
-	public static void initBluetoothConnection(String MACadress) {
-		turnOnBluetooth();
+	public static void initBluetoothConnection() {
+		bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		setBluetoothDevice(bluetoothAdapter.getRemoteDevice(MACadress));
 
 		try {
@@ -118,6 +120,8 @@ public class ArduinoSendAction extends Action {
 			bluetoothOutputStream.write(pinNumberHigherByte);
 			bluetoothOutputStream.write(pinValue);
 			bluetoothOutputStream.flush();
+			Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
+					+ "---------------");
 			outputBluetoothSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
