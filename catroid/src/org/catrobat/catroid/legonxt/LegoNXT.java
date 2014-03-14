@@ -48,6 +48,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import org.catrobat.catroid.bluetooth.BTConnectable;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
@@ -58,6 +59,7 @@ public class LegoNXT implements BTConnectable {
 
 	private static final int REQUEST_CONNECT_DEVICE = 1000;
 	private static final int TONE_COMMAND = 101;
+	private static final String TAG = LegoNXT.class.getSimpleName();
 
 	private LegoNXTCommunicator myNXTCommunicator;
 
@@ -98,10 +100,8 @@ public class LegoNXT implements BTConnectable {
 			//sendBTCMotorMessage(LegoNXTBtCommunicator.NO_DELAY, LegoNXTBtCommunicator.DISCONNECT, 0, 0);
 			try {
 				myNXTCommunicator.destroyNXTconnection();
-			} catch (IOException e) { // TODO Auto-generated method stub
-
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (IOException ioException) { // TODO Auto-generated method stub
+				Log.e(TAG, Log.getStackTraceString(ioException));
 			}
 			myNXTCommunicator = null;
 		}

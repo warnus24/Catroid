@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content;
 
+import android.util.Log;
+
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
@@ -41,6 +43,8 @@ import java.util.List;
 
 public class Sprite implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
+	private static final String TAG = Sprite.class.getSimpleName();
+
 	private String name;
 	private List<Script> scriptList;
 	private ArrayList<LookData> lookList;
@@ -165,8 +169,8 @@ public class Sprite implements Serializable, Cloneable {
 		cloneSprite.look = this.look.copyLookForSprite(cloneSprite);
 		try {
 			cloneSprite.look.setLookData(cloneSprite.getLookDataList().get(0));
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
+		} catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+			Log.e(TAG, Log.getStackTraceString(indexOutOfBoundsException));
 		}
 
 		return cloneSprite;
