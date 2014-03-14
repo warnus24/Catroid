@@ -34,7 +34,7 @@ import java.util.List;
 
 public class SystemOutTest extends TestCase {
 
-	private StringBuffer errorMessages;
+	private String errorMessages;
 	private boolean errorFound;
 
 	private static final String[] SYSTEM_OUT_DIRECTORIES = { "../catroidTest", "../catroid", "../catroidCucumberTest" };
@@ -44,6 +44,7 @@ public class SystemOutTest extends TestCase {
 
 	private void checkFileForString(File file, String string) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
+		StringBuilder errorMessageBuilder = new StringBuilder();
 
 		int lineCount = 1;
 		String line;
@@ -51,11 +52,16 @@ public class SystemOutTest extends TestCase {
 		while ((line = reader.readLine()) != null) {
 			if (line.contains(string)) {
 				errorFound = true;
-				errorMessages.append(file.getName()).append(" in line ").append(lineCount).append('\n');
+				errorMessageBuilder
+						.append(file.getName())
+						.append(" in line ")
+						.append(lineCount)
+						.append('\n');
 			}
 			++lineCount;
 		}
 		reader.close();
+		errorMessages += errorMessageBuilder.toString();
 	}
 
 	private void checkForStringInFiles(String string, String[] directories) throws IOException {
@@ -72,19 +78,18 @@ public class SystemOutTest extends TestCase {
 	}
 
 	public void setUp() {
-		errorMessages = new StringBuffer();
-		errorFound = false;
-	}
+		errorMessages = "";
+		errorFound = false;	}
 
 	public void testForSystemOut() throws IOException {
 		checkForStringInFiles(SYSTEM_OUT, SYSTEM_OUT_DIRECTORIES);
 
-		assertFalse("Files with 'System.out' found! \nPlease use 'Log.d(..., message)' instead \n\n" + errorMessages.toString(), errorFound);
+		assertFalse("Files with 'System.out' found! \nPlease use 'Log.d(..., message)' instead \n\n" + errorMessages, errorFound);
 	}
 
 	public void testForPrintStackTrace() throws IOException {
 		checkForStringInFiles(PRINT_STACK_TRACE, STACK_TRACE_DIRECTORIES);
 
-		assertFalse("Files with '.printStackTrace()' found! \nPlease use 'Log.e(..., Log.getStackTraceString(exception)' instead \n\n" + errorMessages.toString(), errorFound);
+		assertFalse("Files with '.printStackTrace()' found! \nPlease use 'Log.e(..., Log.getStackTraceString(exception)' instead \n\n" + errorMessages, errorFound);
 	}
 }

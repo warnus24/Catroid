@@ -34,7 +34,7 @@ import java.util.List;
 
 public class BlockCharacterTest extends TestCase {
 
-	private StringBuffer errorMessages;
+	private String errorMessages;
 	private boolean errorFound;
 
 	private static final String[] DIRECTORIES = { "../catroidTest", "../catroid", "../catroidSourceTest",
@@ -42,22 +42,28 @@ public class BlockCharacterTest extends TestCase {
 
 	private void checkFileForBlockCharacters(File file) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
+		StringBuilder errorMessageBuilder = new StringBuilder();
 
 		int lineCount = 1;
-		String line = null;
+		String line;
 
 		while ((line = reader.readLine()) != null) {
 			if (line.contains("\uFFFD")) {
 				errorFound = true;
-				errorMessages.append(file.getName() + " in line " + lineCount + "\n");
+				errorMessageBuilder
+						.append(file.getName())
+						.append(" in line ")
+						.append(lineCount)
+						.append('\n');
 			}
 			++lineCount;
 		}
+		errorMessages = errorMessageBuilder.toString();
 		reader.close();
 	}
 
 	public void testForBlockCharacters() throws IOException {
-		errorMessages = new StringBuffer();
+		errorMessages = "";
 		errorFound = false;
 
 		for (String directoryName : DIRECTORIES) {
@@ -72,6 +78,6 @@ public class BlockCharacterTest extends TestCase {
 			}
 		}
 
-		assertFalse("Files with Block Characters found: \n" + errorMessages.toString(), errorFound);
+		assertFalse("Files with Block Characters found: \n" + errorMessages, errorFound);
 	}
 }

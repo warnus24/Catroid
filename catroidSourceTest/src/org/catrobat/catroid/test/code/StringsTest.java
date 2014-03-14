@@ -138,11 +138,15 @@ public class StringsTest extends TestCase {
 		Map<String, List<String>> languageStrings = getStringNamesPerLanguage();
 
 		for (String stringName : allStringNames) {
-			for (String lanugage : LANGUAGES) {
-				List<String> languageStringNames = languageStrings.get(lanugage);
+			for (String language : LANGUAGES) {
+				List<String> languageStringNames = languageStrings.get(language);
 				if (!languageStringNames.contains(stringName)) {
 					missingStrings = true;
-					errorMessage.append("\nString with name " + stringName + " is missing in " + lanugage);
+					errorMessage
+							.append("\nString with name ")
+							.append(stringName)
+							.append(" is missing in ")
+							.append(language);
 				}
 			}
 		}
@@ -163,9 +167,11 @@ public class StringsTest extends TestCase {
 		for (File file : filesToCheck) {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 
-			String currentLine = null;
+			String currentLine;
 			while ((currentLine = reader.readLine()) != null) {
-				javaSourceCodeBuilder.append(currentLine + "\n");
+				javaSourceCodeBuilder
+						.append(currentLine)
+						.append('\n');
 			}
 			reader.close();
 		}
@@ -182,9 +188,11 @@ public class StringsTest extends TestCase {
 			if (!file.getName().equals("strings.xml")) {
 				BufferedReader reader = new BufferedReader(new FileReader(file));
 
-				String currentLine = null;
+				String currentLine;
 				while ((currentLine = reader.readLine()) != null) {
-					xmlSourceCodeBuilder.append(currentLine + "\n");
+					xmlSourceCodeBuilder
+							.append(currentLine)
+							.append('\n');
 				}
 				reader.close();
 			}
@@ -202,11 +210,17 @@ public class StringsTest extends TestCase {
 					&& !xmlReferencePattern.matcher(xmlSourceCode).find()) {
 				unusedStringsFound = true;
 
-				errorMessage.append("\nString with name " + string + " is unused (found in ");
+				errorMessage
+						.append("\nString with name ")
+						.append(string)
+						.append(" is unused (found in ");
+
 				for (String language : LANGUAGES) {
 					List<String> languageStringNames = languageStrings.get(language);
 					if (languageStringNames.contains(string)) {
-						errorMessage.append(language + ", ");
+						errorMessage
+								.append(language)
+								.append(", ");
 					}
 				}
 				errorMessage.replace(errorMessage.length() - 2, errorMessage.length(), ").");
@@ -232,7 +246,7 @@ public class StringsTest extends TestCase {
 		BufferedReader reader = new BufferedReader(new FileReader(layoutFile));
 
 		List<String> usedStrings = new ArrayList<String>();
-		String currentLine = null;
+		String currentLine;
 		while ((currentLine = reader.readLine()) != null) {
 			String[] split = currentLine.split("\"");
 
@@ -272,9 +286,11 @@ public class StringsTest extends TestCase {
 		for (File defaultStringFile : defaultResDirectory.listFiles()) {
 			BufferedReader reader = new BufferedReader(new FileReader(defaultStringFile));
 
-			String currentLine = null;
+			String currentLine;
 			while ((currentLine = reader.readLine()) != null) {
-				stringXmlSourceCodeBuilder.append(currentLine + "\n");
+				stringXmlSourceCodeBuilder
+						.append(currentLine)
+						.append('\n');
 			}
 			reader.close();
 		}
@@ -293,7 +309,10 @@ public class StringsTest extends TestCase {
 			}
 		}
 		for (String missing : missingStrings) {
-			errorMessage.append("\nString with name " + missing + " is missing in the default resource folder.");
+			errorMessage
+					.append("\nString with name ")
+					.append(missing)
+					.append(" is missing in the default resource folder.");
 		}
 		assertFalse("Missing string resources were found:" + errorMessage.toString(), missingStringsFound);
 	}

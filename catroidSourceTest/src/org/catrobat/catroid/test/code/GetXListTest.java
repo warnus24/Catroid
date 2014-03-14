@@ -36,24 +36,30 @@ public class GetXListTest extends TestCase {
 	private static final String[] DIRECTORIES = { "../catroid", "../catroidTest", "../catroidCucumberTest" };
 	private static final String REGEX_PATTERN = "^.*get(Sprite|Script|Brick)List\\(\\)\\.add\\(.*$";
 
-	private StringBuffer errorMessages;
+	private String errorMessages;
 	private boolean errorFound;
 
 	private void checkFile(File file) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
+		StringBuilder errorMessageBuilder = new StringBuilder();
 
 		int lineCount = 1;
-		String line = null;
+		String line;
 
 		while ((line = reader.readLine()) != null) {
 			if (line.matches(REGEX_PATTERN)) {
 				errorFound = true;
-				errorMessages
-						.append("File " + file.getName() + ":" + lineCount + " contains 'getScriptList().add()'\n");
+				errorMessageBuilder
+						.append("File ")
+						.append(file.getName())
+						.append(':')
+						.append(lineCount)
+						.append(" contains 'getScriptList().add()'\n");
 			}
 			++lineCount;
 		}
 		reader.close();
+		errorMessages += errorMessageBuilder.toString();
 	}
 
 	public void testGetXListAddNotPresent() throws IOException {
@@ -66,7 +72,7 @@ public class GetXListTest extends TestCase {
 		assertFalse("Pattern matched! But shouldn't!", "getScriptList()add(MyVar)".matches(REGEX_PATTERN));
 		assertFalse("Pattern matched! But shouldn't!", "getBrickList.add(MyVar)".matches(REGEX_PATTERN));
 
-		errorMessages = new StringBuffer();
+		errorMessages = "";
 		errorFound = false;
 
 		for (String directoryName : DIRECTORIES) {
@@ -80,6 +86,6 @@ public class GetXListTest extends TestCase {
 			}
 		}
 
-		assertFalse("Files with Block Characters found: \n" + errorMessages.toString(), errorFound);
+		assertFalse("Files with Block Characters found: \n" + errorMessages, errorFound);
 	}
 }

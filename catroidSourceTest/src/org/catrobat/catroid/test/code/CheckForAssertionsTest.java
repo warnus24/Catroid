@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CheckForAssertionsTest extends TestCase {
-	private StringBuffer errorMessages;
+	//private String errorMessages;
 	private boolean assertionNotFound;
 
 	private static final String[] DIRECTORIES = { "../catroidTest", "../catroidCucumberTest", };
@@ -47,24 +47,22 @@ public class CheckForAssertionsTest extends TestCase {
 			"Util.java", "BeforeAfterSteps.java", "Cucumber.java", "CallbackAction.java", "ObjectSteps.java",
 			"CucumberAnnotation.java", "CatroidExampleSteps.java", "PrintBrick.java" };
 
-	private void checkFileForAssertions(File file) throws IOException {
+	private boolean fileHasAssertions(File file) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 
-		String line = null;
-
+		String line;
 		while ((line = reader.readLine()) != null) {
 			if (line.matches("[^(//)]*assert[A-Za-z]+\\(.*")) {
 				reader.close();
-				return;
+				return true;
 			}
 		}
-		errorMessages.append(file.getName() + " does not seem to contain assertions\n");
-		assertionNotFound = true;
 		reader.close();
+		return false;
 	}
 
 	public void testForAssertions() throws IOException {
-		errorMessages = new StringBuffer();
+		StringBuilder errorMessageBuilder = new StringBuilder();
 		assertionNotFound = false;
 
 		for (String directoryName : DIRECTORIES) {
@@ -75,11 +73,16 @@ public class CheckForAssertionsTest extends TestCase {
 			List<File> filesToCheck = Utils.getFilesFromDirectoryByExtension(directory, new String[] { ".java", });
 			for (File file : filesToCheck) {
 				if (!Arrays.asList(IGNORED_FILES).contains(file.getName())) {
-					checkFileForAssertions(file);
+					if(!fileHasAssertions(file)) {
+						errorMessageBuilder
+								.append(file.getName())
+								.append(" does not seem to contain assertions\n");
+						assertionNotFound = true;
+					}
 				}
 			}
 		}
 
-		assertFalse("Files potentially without assertion statements:\n" + errorMessages.toString(), assertionNotFound);
+		assertFalse("Files potentially without assertion statements:\n" + errorMessageBuilder.toString(), assertionNotFound);
 	}
 }
