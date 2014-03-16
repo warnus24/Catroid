@@ -256,8 +256,12 @@ public class StringsTest extends TestCase {
 			}
 			for (int i = 1; i < split.length; i += 2) {
 				if (split[i].startsWith(XML_STRING_PREFIX)) {
-					String stringToAdd = split[i].substring(XML_STRING_PREFIX.length());
-					usedStrings.add(stringToAdd + "|" + layoutFile.getName());
+					StringBuilder stringToAdd = new StringBuilder();
+					stringToAdd
+							.append(split[i].substring(XML_STRING_PREFIX.length()))
+							.append('|')
+							.append(layoutFile.getName());
+					usedStrings.add(stringToAdd.toString());
 				}
 			}
 		}
