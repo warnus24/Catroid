@@ -32,6 +32,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AssertionErrorMessageTest extends TestCase {
 	private static final String[] DIRECTORIES = { ".", "../catroid", "../catroidTest", "../catroidCucumberTest" };
@@ -71,6 +73,11 @@ public class AssertionErrorMessageTest extends TestCase {
 	}
 
 	private List<AssertMethod> assertMethods;
+
+	private Pattern regexAssertContainsErrorMessagePattern;
+	private Pattern regexAssertDoesntStartWithNumberPattern;
+	private Pattern regexIsCompleteCommandPattern;
+	private Pattern regexIsAssertMethodPattern;
 	private String regexIsAssertMethod;
 	private String regexAssertContainsErrorMessage;
 	private String regexAssertDoesntStartWithNumber;
@@ -219,18 +226,23 @@ public class AssertionErrorMessageTest extends TestCase {
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		StringBuilder errorMessageBuilder = new StringBuilder();
 
+		Matcher regexAssertContainsErrorMessageMatcher = regexAssertContainsErrorMessagePattern.matcher("");
+		Matcher regexAssertDoesntStartWithNumberMatcher = regexAssertDoesntStartWithNumberPattern.matcher("");
+		Matcher regexIsCompleteCommandMatcher = regexIsCompleteCommandPattern.matcher("");
+		Matcher regexIsAssertMethodMatcher = regexIsAssertMethodPattern.matcher("");
+
 		String currentLine;
 		int lineNumber = 0;
 		while ((currentLine = reader.readLine()) != null) {
 			lineNumber++;
-			if (currentLine.matches(regexIsAssertMethod)) {
-				while (!currentLine.matches(regexIsCompleteCommand)) {
+			if (regexIsAssertMethodMatcher.reset(currentLine).matches()) {
+				while (! regexIsCompleteCommandMatcher.reset(currentLine).matches()) {
 					currentLine += reader.readLine();
 					lineNumber++;
 				}
 
-				if (!currentLine.matches(regexAssertContainsErrorMessage)
-						|| !currentLine.matches(regexAssertDoesntStartWithNumber)) {
+				if (!regexAssertContainsErrorMessageMatcher.reset(currentLine).matches()
+						|| !regexAssertDoesntStartWithNumberMatcher.reset(currentLine).matches()) {
 					errorFound = true;
 					errorMessageBuilder
 							.append(file.getCanonicalPath())
@@ -248,6 +260,12 @@ public class AssertionErrorMessageTest extends TestCase {
 	public void testAssertionErrorMessagesPresent() throws IOException {
 		errorMessages = "";
 		errorFound = false;
+
+		regexAssertContainsErrorMessagePattern = Pattern.compile(regexAssertContainsErrorMessage);
+		regexAssertDoesntStartWithNumberPattern = Pattern.compile(regexAssertDoesntStartWithNumber);
+		regexIsCompleteCommandPattern = Pattern.compile(regexIsCompleteCommand);
+		regexIsAssertMethodPattern = Pattern.compile(regexIsAssertMethod);
+
 		for (String directoryName : DIRECTORIES) {
 			File directory = new File(directoryName);
 			assertTrue("Couldn't find directory: " + directoryName, directory.exists() && directory.isDirectory());
