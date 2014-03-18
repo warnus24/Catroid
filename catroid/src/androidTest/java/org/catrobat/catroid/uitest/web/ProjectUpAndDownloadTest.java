@@ -57,7 +57,8 @@ import java.util.ArrayList;
 public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 	private static final String TEST_FILE_DOWNLOAD_URL = ServerCalls.BASE_URL_TEST_HTTP + "catroid/download/";
 	private static final int LONG_TEST_SOUND = org.catrobat.catroid.test.R.raw.longsound;
-	private final String testProject = UiTestUtils.PROJECTNAME1;
+    private static final String TAG = ProjectUpAndDownloadTest.class.getSimpleName();
+    private final String testProject = UiTestUtils.PROJECTNAME1;
 	private final String newTestProject = UiTestUtils.PROJECTNAME2;
 	private final String testDescription = UiTestUtils.PROJECTDESCRIPTION1;
 	private final String newTestDescription = UiTestUtils.PROJECTDESCRIPTION2;
@@ -382,8 +383,8 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 			ProjectManager.getInstance().deleteCurrentProject();
 			standardProject = StandardProjectHandler.createAndSaveStandardProject(standardProjectName,
 					getInstrumentation().getTargetContext());
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException exception) {
+            Log.e(TAG, Log.getStackTraceString(exception));
 			fail("Standard project not created");
 		}
 		ProjectManager.getInstance().setProject(standardProject);
