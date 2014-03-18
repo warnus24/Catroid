@@ -51,6 +51,8 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	private char pinValue = 'L';
 	private char pinNumberLowerByte = '0';
 	private char pinNumberHigherByte = '0';
+	private int pinSpinnerPosition = 0;
+	private int valueSpinnerPosition = 0;
 
 	public ArduinoSendBrick() {
 	}
@@ -92,9 +94,9 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		valueSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		arduinoPinSpinner.setAdapter(pinSpinnerAdapter);
-		arduinoPinSpinner.setSelection(0);
+		arduinoPinSpinner.setSelection(pinSpinnerPosition);
 		arduinoValueSpinner.setAdapter(valueSpinnerAdapter);
-		arduinoValueSpinner.setSelection(0);
+		arduinoValueSpinner.setSelection(valueSpinnerPosition);
 
 		return prototypeView;
 
@@ -153,7 +155,9 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 		}
 
 		arduinoPinSpinner.setAdapter(arduinoPinAdapter);
+		arduinoPinSpinner.setSelection(pinSpinnerPosition);
 		arduinoValueSpinner.setAdapter(arduinoValueAdapter);
+		arduinoValueSpinner.setSelection(valueSpinnerPosition);
 
 		arduinoPinSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
@@ -171,7 +175,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 					ArduinoSendAction.setPinNumberLowerByte(pinNumberLowerByte);
 					ArduinoSendAction.setPinNumberHigherByte(pinNumberHigherByte);
 				}
-
+				pinSpinnerPosition = position;
 				adapterView = parent;
 			}
 
@@ -188,38 +192,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 				} else {
 					ArduinoSendAction.setPinValue('H');
 				}
-
-				//								Runnable runnable = new Runnable() {
-				//				
-				//									@Override
-				//									public void run() {
-				//										try {
-				//											wait(800);
-				//				
-				//											
-				//				
-				//										} catch (InterruptedException e) {
-				//											e.printStackTrace();
-				//										}
-				//				
-				//									}
-				//								};
-				//								Thread arduinoSendThread = new Thread(runnable);
-				//								arduinoSendThread.start();
-
-				//				ArduinoSendAction.initBluetoothConnection();
-
-				//				char pinValue = ArduinoSendAction.getPinValue();
-				//				char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
-				//				char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
-				//				BluetoothSocket outputBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
-				//
-				//				Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
-				//						+ "---------------");
-				//
-				//				ArduinoSendAction.sendDataViaBluetoothSocket(outputBluetoothSocket, pinValue, pinNumberLowerByte,
-				//						pinNumberHigherByte);
-
+				valueSpinnerPosition = position;
 				adapterView = parent;
 			}
 
@@ -250,12 +223,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.sendArduinoVar(sprite, pinNumberLowerByte, pinNumberHigherByte, pinValue));
-		return null;
-	}
-
-	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		adapterView = parent;
 	}
@@ -264,4 +231,9 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	public void onNothingSelected(AdapterView<?> arg0) {
 	}
 
+	@Override
+	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
+		sequence.addAction(ExtendedActions.sendArduinoVar(sprite, pinNumberLowerByte, pinNumberHigherByte, pinValue));
+		return null;
+	}
 }
