@@ -27,13 +27,13 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.UUID;
 
-public class ArduinoSendAction extends Action {
+public class ArduinoSendAction extends TemporalAction {
 
 	private static char pinNumberHigherByte, pinNumberLowerByte;
 	private static char pinValue;
@@ -48,6 +48,10 @@ public class ArduinoSendAction extends Action {
 
 	public static BluetoothSocket getBluetoothSocket() {
 		return bluetoothSocket;
+	}
+
+	public static void setBluetoothSocket(BluetoothSocket newbluetoothSocket) {
+		bluetoothSocket = newbluetoothSocket;
 	}
 
 	public static char getPinNumberHigherByte() {
@@ -114,7 +118,7 @@ public class ArduinoSendAction extends Action {
 	public static void sendDataViaBluetoothSocket(BluetoothSocket outputBluetoothSocket, char pinValue,
 			char pinNumberLowerByte, char pinNumberHigherByte) {
 		try {
-			outputBluetoothSocket.connect();
+			//			outputBluetoothSocket.connect();
 			bluetoothOutputStream = outputBluetoothSocket.getOutputStream();
 			bluetoothOutputStream.write(pinNumberLowerByte);
 			bluetoothOutputStream.write(pinNumberHigherByte);
@@ -122,10 +126,20 @@ public class ArduinoSendAction extends Action {
 			bluetoothOutputStream.flush();
 			Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
 					+ "---------------");
-			outputBluetoothSocket.close();
+			//			outputBluetoothSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	protected void update(float percent) {
+
+		Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
+				+ "---------------");
+
+		ArduinoSendAction
+				.sendDataViaBluetoothSocket(bluetoothSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
 	}
 
 }

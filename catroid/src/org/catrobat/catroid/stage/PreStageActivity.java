@@ -39,9 +39,12 @@ import android.widget.Toast;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.bluetooth.BTConnection;
+import org.catrobat.catroid.bluetooth.BTConnection.States;
 import org.catrobat.catroid.bluetooth.BTDeviceActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.actions.ArduinoSendAction;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
@@ -54,6 +57,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Queue;
+import java.util.UUID;
 
 @SuppressWarnings("deprecation")
 public class PreStageActivity extends Activity {
@@ -218,10 +222,16 @@ public class PreStageActivity extends Activity {
 								legoNXT.startBTCommunicator(address);
 								break;
 							case (Brick.BLUETOOTH_ARDUINO):
-								String arduinoMacAddress = data.getExtras().getString(
-										BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
+								//								String arduinoMacAddress = data.getExtras().getString(
+								//										BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
 								//								ArduinoSendAction.initBluetoothConnection(arduinoMacAddress);
-
+								BTConnection btConnection = new BTConnection("00:07:80:49:8B:61",
+										UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+								States returnState = btConnection.connect();
+								if (returnState != States.CONNECTED) {
+									resourceFailed();
+								}
+								ArduinoSendAction.setBluetoothSocket(btConnection.getBTSocket());
 								connectingProgressDialog.dismiss();
 								resourceInitialized();
 								break;

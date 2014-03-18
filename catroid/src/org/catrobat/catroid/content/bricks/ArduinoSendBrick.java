@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.content.bricks;
 
-import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -190,13 +189,36 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 					ArduinoSendAction.setPinValue('H');
 				}
 
-				ArduinoSendAction.initBluetoothConnection();
-				char pinValue = ArduinoSendAction.getPinValue();
-				char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
-				char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
-				BluetoothSocket outputBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
-				ArduinoSendAction.sendDataViaBluetoothSocket(outputBluetoothSocket, pinValue, pinNumberLowerByte,
-						pinNumberHigherByte);
+				//								Runnable runnable = new Runnable() {
+				//				
+				//									@Override
+				//									public void run() {
+				//										try {
+				//											wait(800);
+				//				
+				//											
+				//				
+				//										} catch (InterruptedException e) {
+				//											e.printStackTrace();
+				//										}
+				//				
+				//									}
+				//								};
+				//								Thread arduinoSendThread = new Thread(runnable);
+				//								arduinoSendThread.start();
+
+				//				ArduinoSendAction.initBluetoothConnection();
+
+				//				char pinValue = ArduinoSendAction.getPinValue();
+				//				char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+				//				char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+				//				BluetoothSocket outputBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
+				//
+				//				Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
+				//						+ "---------------");
+				//
+				//				ArduinoSendAction.sendDataViaBluetoothSocket(outputBluetoothSocket, pinValue, pinNumberLowerByte,
+				//						pinNumberHigherByte);
 
 				adapterView = parent;
 			}
