@@ -92,6 +92,11 @@ android {
             }
         }
 
+        lintOptions {
+            lintConfig file("catroid/lint.xml")
+            ignore 'ValidFragment', 'GradleDependency', 'GradleOverrides', 'ExtraTranslation', 'UnusedResources', 'IconDensities', 'ContentDescription'
+        }
+
     }
 }
 

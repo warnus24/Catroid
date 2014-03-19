@@ -57,7 +57,7 @@ public final class Utils {
 						return true;
 					}
 				}
-				return (pathname.isDirectory() && !pathname.getName().equals("gen") && !pathname.getName().equals(
+				return (pathname.isDirectory() && !pathname.getName().equals("gen") && !pathname.getName().equals("build") && !pathname.getName().equals(
 						"reports"));
 			}
 		});
