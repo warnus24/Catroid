@@ -112,9 +112,9 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 
 	public void testSetPinToHighLowWithPinAndValueSpinner() {
 		//turn on BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOnBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOnBluetooth();
+		//		solo.sleep(800);
 		//check if the Spinner list element length is correct
 		String[] arduinoPins = getActivity().getResources().getStringArray(R.array.arduino_pin_chooser);
 		assertTrue("Spinner items list too short!", arduinoPins.length == 11);
@@ -128,8 +128,6 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
-
 		char pinValue = ArduinoSendAction.getPinValue();
 		char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
 		char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
@@ -144,7 +142,6 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		pinValue = ArduinoSendAction.getPinValue();
 		pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
 		pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
@@ -153,16 +150,16 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 				pinNumberHigherByte);
 
 		//turn off BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOffBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOffBluetooth();
+		//		solo.sleep(800);
 	}
 
 	public void testSetLedPinToHighWithSpinners() {
 		//turn on BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOnBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOnBluetooth();
+		//		solo.sleep(800);
 
 		//Pin Spinner (Pin 13)
 		solo.pressSpinnerItem(0, 10);
@@ -175,21 +172,20 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
 		ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
 
 		//turn off BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOffBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOffBluetooth();
+		//		solo.sleep(800);
 	}
 
 	public void testSetLedPinToLowWithSpinners() {
 		//turn on BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOnBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOnBluetooth();
+		//		solo.sleep(800);
 
 		//Pin Spinner (Pin 13)
 		solo.pressSpinnerItem(0, 10);
@@ -202,55 +198,50 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		BluetoothSocket tmpSocket = ArduinoSendAction.getBluetoothSocket();
 		ArduinoSendAction.sendDataViaBluetoothSocket(tmpSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
 
 		//turn off BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOffBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOffBluetooth();
+		//		solo.sleep(800);
 	}
 
 	public void testSetPinToHighAndSetToLowWithForLoop() {
 		//turn on BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOnBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOnBluetooth();
+		//		solo.sleep(800);
 		//set LED Pin high
 		for (int i = 0; i < 10; i++) {
 			//			ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-			ArduinoSendAction.initBluetoothConnection();
 			solo.sleep(800);
 			BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 			ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'H', '1', '3');
 			//set LED Pin low
 			//			ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-			ArduinoSendAction.initBluetoothConnection();
 			solo.sleep(800);
 			sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 			ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'L', '1', '3');
 		}
 		//turn off BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOffBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOffBluetooth();
+		//		solo.sleep(800);
 	}
 
 	public void testSetPinToHighReadIfHighAndSetToLow() {
 		//turn on BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOnBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOnBluetooth();
+		//		solo.sleep(800);
 		//set LED Pin high
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		solo.sleep(800);
 		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'H', '1', '3');
 		//check if the Pin is high
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		solo.sleep(800);
 		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		boolean testValue = false;
@@ -260,13 +251,11 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		assertEquals(true, testValue);
 		//set LED Pin low
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		solo.sleep(800);
 		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'L', '1', '3');
 		//check if the Pin is low
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		solo.sleep(800);
 		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'D', '1', '3') == 'L') {
@@ -274,26 +263,24 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		}
 		assertEquals(false, testValue);
 		//turn off BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOffBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOffBluetooth();
+		//		solo.sleep(800);
 	}
 
 	public void testSetPinWithReturnValue() {
 		boolean testValue = false;
 		//turn on BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOnBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOnBluetooth();
+		//		solo.sleep(800);
 		//send 03T for test case
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		solo.sleep(800);
 		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'T', '0', '3');
 		//read return value from Arduino
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		solo.sleep(800);
 		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		if (ArduinoReceiveAction.receiveDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'D', '0', '3') == 'H') {
@@ -301,26 +288,24 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		}
 		assertEquals(true, testValue);
 		//turn off BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOffBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOffBluetooth();
+		//		solo.sleep(800);
 	}
 
 	public void testGetAnalogPinValueAsReturnValue() {
 		boolean testValue = false;
 		//turn on BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOnBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOnBluetooth();
+		//		solo.sleep(800);
 		//send 03T for test case
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		solo.sleep(800);
 		BluetoothSocket sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		ArduinoSendAction.sendDataViaBluetoothSocket(sendReceiveBluetoothSocket, 'T', '0', '2');
 		//read return value from Arduino
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		ArduinoSendAction.initBluetoothConnection();
 		solo.sleep(800);
 		sendReceiveBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		//test if return value is between 0 - 255
@@ -329,9 +314,9 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		}
 		assertEquals(true, testValue);
 		//turn off BT
-		solo.sleep(500);
-		ArduinoSendAction.turnOffBluetooth();
-		solo.sleep(800);
+		//		solo.sleep(500);
+		//		ArduinoSendAction.turnOffBluetooth();
+		//		solo.sleep(800);
 	}
 
 	private void createProject() {

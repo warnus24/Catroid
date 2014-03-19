@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.content.actions;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
@@ -31,19 +30,15 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.UUID;
 
 public class ArduinoSendAction extends TemporalAction {
 
 	private static char pinNumberHigherByte, pinNumberLowerByte;
 	private static char pinValue;
-	private static String MACadress = "00:07:80:49:8B:61";
-	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
-	private static BluetoothAdapter bluetoothAdapter = null;
+	//	private static String MACadress = "00:07:80:49:8B:61";
+	//	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private static BluetoothDevice bluetoothDevice = null;
 	private static BluetoothSocket bluetoothSocket = null;
-	private static BluetoothSocket tmpSocket = null;
 	private static OutputStream bluetoothOutputStream = null;
 
 	public static BluetoothSocket getBluetoothSocket() {
@@ -83,20 +78,6 @@ public class ArduinoSendAction extends TemporalAction {
 		return false;
 	}
 
-	public static void initBluetoothConnection() {
-		bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		setBluetoothDevice(bluetoothAdapter.getRemoteDevice(MACadress));
-
-		try {
-			tmpSocket = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
-			//			tmpSocket.connect();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		bluetoothSocket = tmpSocket;
-	}
-
 	public static BluetoothDevice getBluetoothDevice() {
 		return bluetoothDevice;
 	}
@@ -105,28 +86,14 @@ public class ArduinoSendAction extends TemporalAction {
 		ArduinoSendAction.bluetoothDevice = bluetoothDevice;
 	}
 
-	public static void turnOnBluetooth() {
-		if (!bluetoothAdapter.isEnabled()) {
-			bluetoothAdapter.enable();
-		}
-	}
-
-	public static void turnOffBluetooth() {
-		bluetoothAdapter.disable();
-	}
-
 	public static void sendDataViaBluetoothSocket(BluetoothSocket outputBluetoothSocket, char pinValue,
 			char pinNumberLowerByte, char pinNumberHigherByte) {
 		try {
-			//			outputBluetoothSocket.connect();
 			bluetoothOutputStream = outputBluetoothSocket.getOutputStream();
 			bluetoothOutputStream.write(pinNumberLowerByte);
 			bluetoothOutputStream.write(pinNumberHigherByte);
 			bluetoothOutputStream.write(pinValue);
 			bluetoothOutputStream.flush();
-			Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
-					+ "---------------");
-			//			outputBluetoothSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
