@@ -26,7 +26,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +37,7 @@ import java.util.UUID;
  * @author Adrian Schnedlitz
  * 
  */
-public class ArduinoReceiveAction extends Action {
+public class ArduinoReceiveAction extends TemporalAction {
 
 	private int pinNumber;
 	private Boolean pinValue;
@@ -62,22 +62,6 @@ public class ArduinoReceiveAction extends Action {
 
 	public boolean getPinValue() {
 		return pinValue;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.badlogic.gdx.scenes.scene2d.Action#act(float)
-	 */
-	@Override
-	public boolean act(float delta) {
-		// TODO Auto-generated method stub
-		if (!isBluetoothinitialized) {
-			this.initBluetoothConnection();
-		} else {
-			//TODO send stuff
-		}
-		return false;
 	}
 
 	public static int initBluetoothConnection() {
@@ -164,6 +148,16 @@ public class ArduinoReceiveAction extends Action {
 		}
 
 		return inputMessage;
+	}
+
+	@Override
+	protected void update(float percent) {
+
+		//		Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
+		//				+ "---------------");
+		//
+		//		ArduinoSendAction.receiveDataViaBluetoothSocket(bluetoothSocket, pinValue, pinNumberLowerByte,
+		//				pinNumberHigherByte);
 	}
 
 }

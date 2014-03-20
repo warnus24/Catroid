@@ -35,8 +35,6 @@ public class ArduinoSendAction extends TemporalAction {
 
 	private static char pinNumberHigherByte, pinNumberLowerByte;
 	private static char pinValue;
-	//	private static String MACadress = "00:07:80:49:8B:61";
-	//	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private static BluetoothDevice bluetoothDevice = null;
 	private static BluetoothSocket bluetoothSocket = null;
 	private static OutputStream bluetoothOutputStream = null;
@@ -105,8 +103,7 @@ public class ArduinoSendAction extends TemporalAction {
 		Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
 				+ "---------------");
 
-		ArduinoSendAction
-				.sendDataViaBluetoothSocket(bluetoothSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
+		sendDataViaBluetoothSocket(bluetoothSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
 	}
 
 }
