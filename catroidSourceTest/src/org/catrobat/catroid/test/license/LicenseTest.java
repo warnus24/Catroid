@@ -36,6 +36,7 @@ import java.util.List;
 public class LicenseTest extends TestCase {
 
 	private static final String[] DIRECTORIES = { ".", "../catroid", "../catroidTest", "../catroidCucumberTest" };
+	private static final String STRINGS_DOT_XML_STRING = "strings.xml";
 
 	private ArrayList<String> agplLicenseText;
 	private boolean allLicenseTextsPresentAndCorrect;
@@ -104,7 +105,9 @@ public class LicenseTest extends TestCase {
 			List<File> filesToCheck = Utils.getFilesFromDirectoryByExtension(directory, new String[] { ".java", ".xml",
 					".rb" });
 			for (File file : filesToCheck) {
-				checkFileForLicense(file, agplLicenseText);
+				if(!file.getName().equals(STRINGS_DOT_XML_STRING)) {
+					checkFileForLicense(file, agplLicenseText);
+				}
 			}
 		}
 		assertTrue("Correct license text was not found in all files:\n" + errorMessages.toString(),
