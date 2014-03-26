@@ -130,7 +130,7 @@ public class StageListener implements ApplicationListener {
 
 	private byte[] thumbnail;
 
-	StageListener() {
+	public StageListener() {
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public class StageListener implements ApplicationListener {
 
 	}
 
-	void menuResume() {
+	public void menuResume() {
 		if (reloadProject) {
 			return;
 		}
@@ -196,7 +196,7 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
-	void menuPause() {
+	public void menuPause() {
 		if (finished || reloadProject) {
 			return;
 		}
@@ -460,7 +460,7 @@ public class StageListener implements ApplicationListener {
 			Thread.yield();
 		}
 		byte[] copyOfTestPixels = new byte[testPixels.length];
-		System.arraycopy(testPixels,0,copyOfTestPixels,0,testPixels.length);
+		System.arraycopy(testPixels, 0, copyOfTestPixels, 0, testPixels.length);
 		return copyOfTestPixels;
 	}
 

@@ -92,6 +92,12 @@ public final class Constants {
 	public static final int DOWNLOAD_NOTIFICATION = 103;
 	public static final int COPY_NOTIFICATION = 104;
 
+	//Livewallpaper
+	public static final String PREF_SOUND_DISABLED = "Sound disabled";
+	public static final String POCKET_CODE_PACKAGE_NAME = "org.catrobat.catroid";
+	public static final String POCKET_CODE_INTENT_ACTIVITY_NAME = "org.catrobat.catroid.ui.MainMenuActivity";
+	public static final String POCKET_CODE_DOWNLOAD_LINK = "market://details?id=" + POCKET_CODE_PACKAGE_NAME;
+
 	// Suppress default constructor for noninstantiability
 	private Constants() {
 		throw new AssertionError();
