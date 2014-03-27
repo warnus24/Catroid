@@ -37,7 +37,7 @@ import org.catrobat.catroid.ui.dialogs.StageDialog;
 public class StageActivity extends AndroidApplication {
 	public static final String TAG = StageActivity.class.getSimpleName();
 
-	public static StageListener stageListener;
+	public StageListener stageListener;
 	private boolean resizePossible;
 	private StageDialog stageDialog;
 

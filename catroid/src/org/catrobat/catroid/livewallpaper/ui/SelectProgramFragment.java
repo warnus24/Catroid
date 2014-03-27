@@ -53,6 +53,7 @@ import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter;
+import org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectEditListener;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import org.catrobat.catroid.utils.UtilFile;
 import org.catrobat.catroid.utils.Utils;
@@ -66,7 +67,7 @@ import java.util.Locale;
 
 //import org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectClickedListener;
 
-public class SelectProgramFragment extends SherlockListFragment {
+public class SelectProgramFragment extends SherlockListFragment implements OnProjectEditListener {
 	private String selectedProject;
 	private SelectProgramFragment selectProgramFragment;
 
@@ -107,13 +108,12 @@ public class SelectProgramFragment extends SherlockListFragment {
 		adapter = new ProjectAdapter(getActivity(), R.layout.activity_my_projects_list_item,
 				R.id.my_projects_activity_project_title, projectList);
 		setListAdapter(adapter);
-		//initClickListener();
+		initClickListener();
 	}
 
-	//
-	//	private void initClickListener() {
-	//		adapter.setOnProjectEditListener(this);
-	//	}
+	private void initClickListener() {
+		adapter.setOnProjectEditListener(this);
+	}
 
 	public void startDeleteActionMode() {
 		if (actionMode == null) {
@@ -182,10 +182,6 @@ public class SelectProgramFragment extends SherlockListFragment {
 			super.onPostExecute(result);
 		}
 	}
-
-	//	@Override
-	//	public void onProjectChecked() {
-	//	}
 
 	public void onProjectClicked(int position) {
 		selectedProject = projectList.get(position).projectName;
@@ -425,7 +421,7 @@ public class SelectProgramFragment extends SherlockListFragment {
 		adapter = new ProjectAdapter(getActivity(), R.layout.activity_my_projects_list_item,
 				R.id.my_projects_activity_project_title, projectList);
 		setListAdapter(adapter);
-		//initClickListener();
+		initClickListener();
 	}
 
 	public void setSelectMode(int selectMode) {
@@ -435,5 +431,28 @@ public class SelectProgramFragment extends SherlockListFragment {
 
 	public List<ProjectData> getProjectList() {
 		return projectList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectClickedListener.OnProjectEditListener#onProjectEdit(int)
+	 */
+	@Override
+	public void onProjectEdit(int position) {
+		onProjectClicked(position);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectEditListener#onProjectChecked()
+	 */
+	@Override
+	public void onProjectChecked() {
+		// TODO Auto-generated method stub
+
 	}
 }

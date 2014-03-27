@@ -23,11 +23,8 @@
 package org.catrobat.catroid.livewallpaper;
 
 import android.annotation.SuppressLint;
-import android.app.WallpaperManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -41,7 +38,10 @@ import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
+import org.catrobat.catroid.io.SoundManager;
+import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.stage.StageListener;
+import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
 
 @SuppressLint("NewApi")
@@ -54,6 +54,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private LiveWallpaperEngine previewEngine;
 	private LiveWallpaperEngine homeEngine;
 	private StageListener LWPStageListener = null;
+	private StageActivity LWPStageActivity = null;
 
 	/**
 	 * @return the previewEngine
@@ -76,9 +77,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		super.onCreate();
 		//android.os.Debug.waitForDebugger();
 		INSTANCE = this;
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		//SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		//temporär entfernt 
-		//SoundManager.getInstance().soundDisabledByLwp = sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED,false);
+		SoundManager.getInstance().stopAllSounds();
+		Log.d("LWP", "sioped Sound!");
 		context = this;
 	}
 
@@ -96,7 +98,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	@Override
 	public ApplicationListener createListener(boolean isPreview) {
 		setScreenSize(isPreview);
-		LWPStageListener = new StageListener();
+		LWPStageActivity = new StageActivity();
+		LWPStageListener = LWPStageActivity.stageListener;
 		return LWPStageListener;
 	}
 
@@ -216,11 +219,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			if (!mVisible) {
 				return;
 			}
-
-			//temporär entfernt 
-			//			if (getLocalStageListener().isFinished()) {
-			//				return;
-			//			}
+			if (getLocalStageListener() == null) {
+				return;
+			}
 			Log.d("LWP", "Resuming  " + name + ": " + " SL-" + getLocalStageListener().hashCode());
 			SensorHandler.startSensorListener(getApplicationContext());
 			getLocalStageListener().menuResume();
@@ -284,9 +285,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			//				e.printStackTrace();
 			//			}
 
-			WallpaperManager.getInstance(getApplicationContext()).forgetLoadedWallpaper();
-
-			LWPStageListener.reloadProject(getApplicationContext(), null);
+			//WallpaperManager.getInstance(getApplicationContext()).forgetLoadedWallpaper();
+			StageDialog stdialog = new StageDialog(LWPStageActivity, LWPStageListener, 0);
+			LWPStageListener.reloadProject(getApplicationContext(), stdialog);
 			//homeEngine.activateTextToSpeechIfNeeded();
 		}
 

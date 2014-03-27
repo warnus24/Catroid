@@ -22,11 +22,8 @@
  */
 package org.catrobat.catroid.livewallpaper.ui;
 
-import android.app.AlertDialog;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -38,18 +35,18 @@ import org.catrobat.catroid.common.Constants;
 
 public class SelectProgramActivity extends BaseActivity {
 
-	public static final String ACTION_PROJECT_LIST_INIT = "org.catrobat.catroid.PROJECT_LIST_INIT";
+	public static final String ACTION_PROJECT_LIST_INIT = "org.catroba Fragment.PROJECT_LIST_INIT";
 
 	private SelectProgramFragment selectProgramFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_my_projects);
+		setContentView(R.layout.activity_my_projects_lwp);
 		setUpActionBar();
 
 		selectProgramFragment = (SelectProgramFragment) getSupportFragmentManager().findFragmentById(
-				R.id.fragment_projects_list);
+				R.id.fragment_projects_list_lwp);
 	}
 
 	@Override
@@ -79,7 +76,7 @@ public class SelectProgramActivity extends BaseActivity {
 				break;
 			}
 			case R.id.lwp_new: {
-				Intent pocketCodeIntent = new Intent("android.intent.action.MAIN");
+				Intent pocketCodeIntent = new Intent("android.intent.action");
 				pocketCodeIntent.setComponent(new ComponentName(Constants.POCKET_CODE_PACKAGE_NAME,
 						Constants.POCKET_CODE_INTENT_ACTIVITY_NAME));
 				//				//boolean isInstalled = Utils.checkIfPocketCodeInstalled(pocketCodeIntent, this);
@@ -109,26 +106,26 @@ public class SelectProgramActivity extends BaseActivity {
 		return selectProgramFragment;
 	}
 
-	private void displayDownloadPocketCodeDialog() {
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.pocket_code_not_installed).setCancelable(false)
-				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-
-						Intent downloadPocketPaintIntent = new Intent(Intent.ACTION_VIEW, Uri
-								.parse(Constants.POCKET_CODE_DOWNLOAD_LINK));
-						startActivity(downloadPocketPaintIntent);
-					}
-				}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
+	//	private void displayDownloadPocketCodeDialog() {
+	//
+	//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	//		builder.setMessage(R.string.pocket_code_not_installed).setCancelable(false)
+	//				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+	//					@Override
+	//					public void onClick(DialogInterface dialog, int id) {
+	//
+	//						Intent downloadPocketPaintIntent = new Intent(Intent.ACTION_VIEW, Uri
+	//								.parse(Constants.POCKET_CODE_DOWNLOAD_LINK));
+	//						startActivity(downloadPocketPaintIntent);
+	//					}
+	//				}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+	//					@Override
+	//					public void onClick(DialogInterface dialog, int id) {
+	//						dialog.cancel();
+	//					}
+	//				});
+	//		AlertDialog alert = builder.create();
+	//		alert.show();
+	//	}
 
 }
