@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content.actions;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
@@ -29,6 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.UUID;
 
 /**
  * @author Adrian Schnedlitz
@@ -39,7 +42,9 @@ public class ArduinoReceiveAction extends TemporalAction {
 	private int pinNumber;
 	private Boolean pinValue;
 	private static BluetoothSocket bluetoothSocket = null;
+	private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 	private static InputStream bluetoothInputStream = null;
+	private static String bluetoothMacAdress = "";
 
 	public int getPinNumber() {
 		return pinNumber;
@@ -53,8 +58,29 @@ public class ArduinoReceiveAction extends TemporalAction {
 		return bluetoothSocket;
 	}
 
+	public static void setBluetoothMacAdress(String newMacAdress) {
+		bluetoothMacAdress = newMacAdress;
+	}
+
+	public static String getBluetoothMacAdress() {
+		return bluetoothMacAdress;
+	}
+
 	public static void setBluetoothSocket(BluetoothSocket newBluetoothSocket) {
 		bluetoothSocket = newBluetoothSocket;
+	}
+
+	public static BluetoothSocket createBluetoothSocket(String deviceMacAdress) {
+		BluetoothDevice btDevice = bluetoothAdapter.getRemoteDevice(deviceMacAdress);
+
+		try {
+			bluetoothSocket = btDevice.createRfcommSocketToServiceRecord(UUID
+					.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return bluetoothSocket;
 	}
 
 	public static int receiveDataViaBluetoothSocket(BluetoothSocket inputBluetoothSocket, char pinValue,
@@ -108,6 +134,24 @@ public class ArduinoReceiveAction extends TemporalAction {
 
 		return inputMessage;
 	}
+
+	//	public static int initBluetoothConnection() {
+	//
+	//		bluetoothAdapter.enable();
+	//
+	//		try {
+	//			tmpSocket = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
+	//			ERROR_OK = 1;
+	//		} catch (IOException e) {
+	//			return -4;
+	//		}
+	//
+	//		bluetoothSocket = tmpSocket;
+	//		bluetoothAdapter.cancelDiscovery();
+	//
+	//		isBluetoothinitialized = true;
+	//		return ERROR_OK;
+	//	}
 
 	@Override
 	protected void update(float percent) {

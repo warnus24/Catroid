@@ -280,7 +280,12 @@ public class FormulaElement implements Serializable {
 
 			case ARDUINODIGITAL:
 
-				BluetoothSocket tmpSocketDigital = ArduinoReceiveAction.getBluetoothSocket();
+				if (ArduinoReceiveAction.getBluetoothMacAdress() == "") {
+					return 0.0;
+				}
+
+				BluetoothSocket tmpSocketDigital = ArduinoReceiveAction.createBluetoothSocket(ArduinoReceiveAction
+						.getBluetoothMacAdress());
 				if (tmpSocketDigital == null) {
 					return 0.0;
 				}
@@ -313,7 +318,12 @@ public class FormulaElement implements Serializable {
 
 			case ARDUINOANALOG:
 
-				BluetoothSocket tmpSocketAnalog = ArduinoReceiveAction.getBluetoothSocket();
+				if (ArduinoReceiveAction.getBluetoothMacAdress() == "") {
+					return 0.0;
+				}
+
+				BluetoothSocket tmpSocketAnalog = ArduinoReceiveAction.createBluetoothSocket(ArduinoReceiveAction
+						.getBluetoothMacAdress());
 				if (tmpSocketAnalog == null) {
 					return 0.0;
 				}
