@@ -69,6 +69,9 @@ public class SetXBrick extends BrickBaseType implements OnClickListener, Formula
 
 	@Override
 	public int getRequiredResources() {
+		if (xPosition.containsArduinoSensors()) {
+			return BLUETOOTH_ARDUINO;
+		}
 		return NO_RESOURCES;
 	}
 

@@ -89,6 +89,9 @@ public class PointInDirectionBrick extends BrickBaseType implements View.OnClick
 
 	@Override
 	public int getRequiredResources() {
+		if (degrees.containsArduinoSensors()) {
+			return BLUETOOTH_ARDUINO;
+		}
 		return NO_RESOURCES;
 	}
 

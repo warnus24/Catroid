@@ -60,6 +60,9 @@ public class RepeatBrick extends LoopBeginBrick implements OnClickListener, Form
 
 	@Override
 	public int getRequiredResources() {
+		if (timesToRepeat.containsArduinoSensors()) {
+			return BLUETOOTH_ARDUINO;
+		}
 		return NO_RESOURCES;
 	}
 

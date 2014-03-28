@@ -70,6 +70,9 @@ public class TurnLeftBrick extends BrickBaseType implements OnClickListener, For
 
 	@Override
 	public int getRequiredResources() {
+		if (degrees.containsArduinoSensors()) {
+			return BLUETOOTH_ARDUINO;
+		}
 		return NO_RESOURCES;
 	}
 

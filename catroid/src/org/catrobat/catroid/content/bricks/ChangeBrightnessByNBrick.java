@@ -64,6 +64,9 @@ public class ChangeBrightnessByNBrick extends BrickBaseType implements OnClickLi
 
 	@Override
 	public int getRequiredResources() {
+		if (changeBrightness.containsArduinoSensors()) {
+			return BLUETOOTH_ARDUINO;
+		}
 		return NO_RESOURCES;
 	}
 

@@ -69,6 +69,9 @@ public class SetBrightnessBrick extends BrickBaseType implements OnClickListener
 
 	@Override
 	public int getRequiredResources() {
+		if (brightness.containsArduinoSensors()) {
+			return BLUETOOTH_ARDUINO;
+		}
 		return NO_RESOURCES;
 	}
 
