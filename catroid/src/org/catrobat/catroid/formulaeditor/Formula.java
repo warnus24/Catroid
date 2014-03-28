@@ -30,7 +30,6 @@ import android.widget.TextView;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 
 import java.io.Serializable;
@@ -200,7 +199,7 @@ public class Formula implements Serializable {
 		for (InternToken internToken : internTokenList) {
 			if ((internToken.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINOANALOG.toString()) || internToken
 					.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString()))) {
-				ArduinoReceiveAction.initBluetoothConnection();
+				//				ArduinoReceiveAction.initBluetoothConnection();
 				return true;
 			}
 		}

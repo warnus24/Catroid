@@ -44,6 +44,7 @@ import org.catrobat.catroid.bluetooth.BTConnection.States;
 import org.catrobat.catroid.bluetooth.BTDeviceActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
 import org.catrobat.catroid.content.actions.ArduinoSendAction;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.legonxt.LegoNXT;
@@ -222,7 +223,8 @@ public class PreStageActivity extends Activity {
 								legoNXT.startBTCommunicator(address);
 								break;
 							case (Brick.BLUETOOTH_ARDUINO):
-								if (ArduinoSendAction.getBluetoothSocket() == null) {
+								if (ArduinoSendAction.getBluetoothSocket() == null
+										|| ArduinoReceiveAction.getBluetoothSocket() == null) {
 
 									String arduinoMacAddress = data.getExtras().getString(
 											BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
@@ -233,6 +235,7 @@ public class PreStageActivity extends Activity {
 										resourceFailed();
 									}
 									ArduinoSendAction.setBluetoothSocket(btConnection.getBTSocket());
+									ArduinoReceiveAction.setBluetoothSocket(btConnection.getBTSocket());
 								}
 								ArduinoSendAction.sendDataViaBluetoothSocket(ArduinoSendAction.getBluetoothSocket(),
 										ArduinoSendAction.getPinValue(), ArduinoSendAction.getPinNumberLowerByte(),

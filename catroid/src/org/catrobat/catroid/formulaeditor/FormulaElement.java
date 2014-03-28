@@ -279,6 +279,12 @@ public class FormulaElement implements Serializable {
 				return 0.0;
 
 			case ARDUINODIGITAL:
+
+				BluetoothSocket tmpSocketDigital = ArduinoReceiveAction.getBluetoothSocket();
+				if (tmpSocketDigital == null) {
+					return 0.0;
+				}
+
 				char pinNumberLowerByteDigital = '0';
 				char pinNumberHigherByteDigital = '0';
 				//split up the pin number
@@ -293,7 +299,7 @@ public class FormulaElement implements Serializable {
 					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
 				}
 				char pinValueDigital = 'D'; //D stands for digital
-				BluetoothSocket tmpSocketDigital = ArduinoReceiveAction.getBluetoothSocket();
+
 				int pinValueFromArduinoDigital = ArduinoReceiveAction.receiveDataViaBluetoothSocket(tmpSocketDigital,
 						pinValueDigital, pinNumberLowerByteDigital, pinNumberHigherByteDigital);
 
@@ -306,6 +312,12 @@ public class FormulaElement implements Serializable {
 				}
 
 			case ARDUINOANALOG:
+
+				BluetoothSocket tmpSocketAnalog = ArduinoReceiveAction.getBluetoothSocket();
+				if (tmpSocketAnalog == null) {
+					return 0.0;
+				}
+
 				char pinNumberLowerByteAnalog = '0';
 				char pinNumberHigherByteAnalog = '0';
 				//split up the pin number
@@ -320,7 +332,7 @@ public class FormulaElement implements Serializable {
 					pinNumberHigherByteAnalog = left.toString().charAt(left.toString().length() - 3);
 				}
 				char pinValueAnalog = 'A'; //A stands for analog
-				BluetoothSocket tmpSocketAnalog = ArduinoReceiveAction.getBluetoothSocket();
+
 				int pinValueFromArduinoAnalog = ArduinoReceiveAction.receiveDataViaBluetoothSocket(tmpSocketAnalog,
 						pinValueAnalog, pinNumberLowerByteAnalog, pinNumberHigherByteAnalog);
 

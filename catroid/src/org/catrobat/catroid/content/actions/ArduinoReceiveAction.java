@@ -22,8 +22,6 @@
  */
 package org.catrobat.catroid.content.actions;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
@@ -31,7 +29,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.UUID;
 
 /**
  * @author Adrian Schnedlitz
@@ -41,20 +38,8 @@ public class ArduinoReceiveAction extends TemporalAction {
 
 	private int pinNumber;
 	private Boolean pinValue;
-	public static int ERROR_OK = 0;
-
-	//TODO change this
-	private static String MACaddr = "00:07:80:49:8B:61"; //MAC address of the Arduino BT-board
-	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
-	private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-	private static BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(MACaddr);;
 	private static BluetoothSocket bluetoothSocket = null;
-	private static BluetoothSocket tmpSocket = null;
 	private static InputStream bluetoothInputStream = null;
-
-	//Needed to init BT at the first call
-	private static Boolean isBluetoothinitialized = false;
 
 	public int getPinNumber() {
 		return pinNumber;
@@ -64,38 +49,12 @@ public class ArduinoReceiveAction extends TemporalAction {
 		return pinValue;
 	}
 
-	public static int initBluetoothConnection() {
-		if (bluetoothAdapter == null) {
-			ERROR_OK = -1;
-			return ERROR_OK;
-		}
-
-		if (bluetoothDevice == null) {
-			ERROR_OK = -2;
-			return ERROR_OK;
-		}
-
-		bluetoothAdapter.enable();
-		if (!bluetoothAdapter.isEnabled()) {
-			ERROR_OK = -3;
-		}
-
-		try {
-			tmpSocket = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
-			ERROR_OK = 1;
-		} catch (IOException e) {
-			return -4;
-		}
-
-		bluetoothSocket = tmpSocket;
-		bluetoothAdapter.cancelDiscovery();
-
-		isBluetoothinitialized = true;
-		return ERROR_OK;
-	}
-
 	public static BluetoothSocket getBluetoothSocket() {
 		return bluetoothSocket;
+	}
+
+	public static void setBluetoothSocket(BluetoothSocket newBluetoothSocket) {
+		bluetoothSocket = newBluetoothSocket;
 	}
 
 	public static int receiveDataViaBluetoothSocket(BluetoothSocket inputBluetoothSocket, char pinValue,
