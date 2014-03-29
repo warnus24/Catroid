@@ -45,6 +45,7 @@ import com.actionbarsherlock.view.Menu;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
 
 public class FormulaEditorListFragment extends SherlockListFragment implements Dialog.OnKeyListener {
 
@@ -159,7 +160,7 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(true);
 			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
 
-			//			ArduinoReceiveAction.initBluetoothConnection();
+			ArduinoReceiveAction.initBluetoothConnection();
 
 		} else if ((sharedPreferences.getBoolean("setting_mindstorm_bricks", false))
 				|| (ProjectManager.getInstance().getCurrentProject().checkIfLegoProject())) {

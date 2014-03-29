@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.formulaeditor;
 
-import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
@@ -280,15 +279,15 @@ public class FormulaElement implements Serializable {
 
 			case ARDUINODIGITAL:
 
-				if (ArduinoReceiveAction.getBluetoothMacAdress() == "") {
-					return 0.0;
-				}
-
-				BluetoothSocket tmpSocketDigital = ArduinoReceiveAction.createBluetoothSocket(ArduinoReceiveAction
-						.getBluetoothMacAdress());
-				if (tmpSocketDigital == null) {
-					return 0.0;
-				}
+				//				if (ArduinoReceiveAction.getBluetoothMacAdress() == "") {
+				//					return 0.0;
+				//				}
+				//				BluetoothSocket tmpSocketDigital = null;
+				//				if (ArduinoReceiveAction.getBluetoothSocket() == null) {
+				//					tmpSocketDigital = ArduinoReceiveAction.createBluetoothSocket(ArduinoReceiveAction
+				//							.getBluetoothMacAdress());
+				//					ArduinoReceiveAction.setBluetoothSocket(tmpSocketDigital);
+				//				}
 
 				char pinNumberLowerByteDigital = '0';
 				char pinNumberHigherByteDigital = '0';
@@ -305,8 +304,9 @@ public class FormulaElement implements Serializable {
 				}
 				char pinValueDigital = 'D'; //D stands for digital
 
-				int pinValueFromArduinoDigital = ArduinoReceiveAction.receiveDataViaBluetoothSocket(tmpSocketDigital,
-						pinValueDigital, pinNumberLowerByteDigital, pinNumberHigherByteDigital);
+				int pinValueFromArduinoDigital = ArduinoReceiveAction.receiveDataViaBluetoothSocket(
+						ArduinoReceiveAction.getBluetoothSocket(), pinValueDigital, pinNumberLowerByteDigital,
+						pinNumberHigherByteDigital);
 
 				if (pinValueFromArduinoDigital == 72) {
 					return 1.0;
@@ -318,15 +318,15 @@ public class FormulaElement implements Serializable {
 
 			case ARDUINOANALOG:
 
-				if (ArduinoReceiveAction.getBluetoothMacAdress() == "") {
-					return 0.0;
-				}
-
-				BluetoothSocket tmpSocketAnalog = ArduinoReceiveAction.createBluetoothSocket(ArduinoReceiveAction
-						.getBluetoothMacAdress());
-				if (tmpSocketAnalog == null) {
-					return 0.0;
-				}
+				//				if (ArduinoReceiveAction.getBluetoothMacAdress() == "") {
+				//					return 0.0;
+				//				}
+				//				BluetoothSocket tmpSocketAnalog = null;
+				//				if (ArduinoReceiveAction.getBluetoothSocket() == null) {
+				//					tmpSocketAnalog = ArduinoReceiveAction.createBluetoothSocket(ArduinoReceiveAction
+				//							.getBluetoothMacAdress());
+				//					ArduinoReceiveAction.setBluetoothSocket(tmpSocketAnalog);
+				//				}
 
 				char pinNumberLowerByteAnalog = '0';
 				char pinNumberHigherByteAnalog = '0';
@@ -343,8 +343,9 @@ public class FormulaElement implements Serializable {
 				}
 				char pinValueAnalog = 'A'; //A stands for analog
 
-				int pinValueFromArduinoAnalog = ArduinoReceiveAction.receiveDataViaBluetoothSocket(tmpSocketAnalog,
-						pinValueAnalog, pinNumberLowerByteAnalog, pinNumberHigherByteAnalog);
+				int pinValueFromArduinoAnalog = ArduinoReceiveAction.receiveDataViaBluetoothSocket(
+						ArduinoReceiveAction.getBluetoothSocket(), pinValueAnalog, pinNumberLowerByteAnalog,
+						pinNumberHigherByteAnalog);
 
 				return (double) pinValueFromArduinoAnalog;
 		}

@@ -42,7 +42,13 @@ public class ArduinoReceiveAction extends TemporalAction {
 	private int pinNumber;
 	private Boolean pinValue;
 	private static BluetoothSocket bluetoothSocket = null;
+	private static BluetoothSocket tmpSocket = null;
+	private static String MACaddr = "00:07:80:49:8B:61"; //MAC address of the Arduino BT-board
+	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
 	private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+	private static BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(MACaddr);;
+
 	private static InputStream bluetoothInputStream = null;
 	private static String bluetoothMacAdress = "";
 
@@ -70,18 +76,18 @@ public class ArduinoReceiveAction extends TemporalAction {
 		bluetoothSocket = newBluetoothSocket;
 	}
 
-	public static BluetoothSocket createBluetoothSocket(String deviceMacAdress) {
-		BluetoothDevice btDevice = bluetoothAdapter.getRemoteDevice(deviceMacAdress);
-
-		try {
-			bluetoothSocket = btDevice.createRfcommSocketToServiceRecord(UUID
-					.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return bluetoothSocket;
-	}
+	//	public static BluetoothSocket createBluetoothSocket(String deviceMacAdress) {
+	//		BluetoothDevice btDevice = bluetoothAdapter.getRemoteDevice(deviceMacAdress);
+	//
+	//		try {
+	//			bluetoothSocket = btDevice.createRfcommSocketToServiceRecord(UUID
+	//					.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+	//		} catch (IOException e) {
+	//			e.printStackTrace();
+	//		}
+	//
+	//		return bluetoothSocket;
+	//	}
 
 	public static int receiveDataViaBluetoothSocket(BluetoothSocket inputBluetoothSocket, char pinValue,
 			char pinNumberLowerByte, char pinNumberHigherByte) {
@@ -135,23 +141,19 @@ public class ArduinoReceiveAction extends TemporalAction {
 		return inputMessage;
 	}
 
-	//	public static int initBluetoothConnection() {
-	//
-	//		bluetoothAdapter.enable();
-	//
-	//		try {
-	//			tmpSocket = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
-	//			ERROR_OK = 1;
-	//		} catch (IOException e) {
-	//			return -4;
-	//		}
-	//
-	//		bluetoothSocket = tmpSocket;
-	//		bluetoothAdapter.cancelDiscovery();
-	//
-	//		isBluetoothinitialized = true;
-	//		return ERROR_OK;
-	//	}
+	public static void initBluetoothConnection() {
+
+		bluetoothAdapter.enable();
+
+		try {
+			tmpSocket = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		bluetoothSocket = tmpSocket;
+		bluetoothAdapter.cancelDiscovery();
+	}
 
 	@Override
 	protected void update(float percent) {
