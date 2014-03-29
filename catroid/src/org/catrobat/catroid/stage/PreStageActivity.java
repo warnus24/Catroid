@@ -110,6 +110,14 @@ public class PreStageActivity extends Activity {
 			BTResourceQueue.add(bundle);
 		}
 
+		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
+			Bundle bundle = new Bundle();
+			bundle.putInt(BTDeviceActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_SENSORS_ARDUINO);
+			bundle.putString(BTDeviceActivity.RESOURCE_NAME_TEXT,
+					getResources().getString(R.string.select_device_arduino));
+			BTResourceQueue.add(bundle);
+		}
+
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}
@@ -236,13 +244,28 @@ public class PreStageActivity extends Activity {
 										resourceFailed();
 									}
 
-									//									ArduinoSendAction.setBluetoothSocket(btConnection.getBTSocket());
-									//									ArduinoReceiveAction.setBluetoothMacAdress(arduinoMacAddress);
-									ArduinoReceiveAction.setBluetoothSocket(btConnection.getBTSocket());
+									ArduinoSendAction.setBluetoothSocket(btConnection.getBTSocket());
 								}
-								//								ArduinoSendAction.sendDataViaBluetoothSocket(ArduinoSendAction.getBluetoothSocket(),
-								//										ArduinoSendAction.getPinValue(), ArduinoSendAction.getPinNumberLowerByte(),
-								//										ArduinoSendAction.getPinNumberHigherByte());
+								ArduinoSendAction.sendDataViaBluetoothSocket(ArduinoSendAction.getBluetoothSocket(),
+										ArduinoSendAction.getPinValue(), ArduinoSendAction.getPinNumberLowerByte(),
+										ArduinoSendAction.getPinNumberHigherByte());
+								connectingProgressDialog.dismiss();
+								resourceInitialized();
+								break;
+							case (Brick.BLUETOOTH_SENSORS_ARDUINO):
+
+								String arduinoMacAddress = data.getExtras().getString(
+										BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
+								//								BTConnection btConnection = new BTConnection(arduinoMacAddress,
+								//										UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+								//								States returnState = btConnection.connect();
+								//								if (returnState != States.CONNECTED) {
+								//									resourceFailed();
+								//								}
+
+								ArduinoReceiveAction.setBluetoothMacAdress(arduinoMacAddress);
+								//								ArduinoReceiveAction.setBluetoothSocket(btConnection.getBTSocket());
+								ArduinoReceiveAction.initBluetoothConnection(arduinoMacAddress);
 								connectingProgressDialog.dismiss();
 								resourceInitialized();
 								break;

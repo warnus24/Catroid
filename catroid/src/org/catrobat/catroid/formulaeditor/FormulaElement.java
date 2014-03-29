@@ -323,8 +323,8 @@ public class FormulaElement implements Serializable {
 				//				}
 				//				BluetoothSocket tmpSocketAnalog = null;
 				//				if (ArduinoReceiveAction.getBluetoothSocket() == null) {
-				//					tmpSocketAnalog = ArduinoReceiveAction.createBluetoothSocket(ArduinoReceiveAction
-				//							.getBluetoothMacAdress());
+				//					ArduinoReceiveAction.initBluetoothConnection(ArduinoReceiveAction.getBluetoothMacAdress());
+				//					tmpSocketAnalog = ArduinoReceiveAction.getBluetoothSocket();
 				//					ArduinoReceiveAction.setBluetoothSocket(tmpSocketAnalog);
 				//				}
 

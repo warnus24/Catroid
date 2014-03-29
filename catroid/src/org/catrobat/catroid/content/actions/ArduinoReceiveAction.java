@@ -43,11 +43,11 @@ public class ArduinoReceiveAction extends TemporalAction {
 	private Boolean pinValue;
 	private static BluetoothSocket bluetoothSocket = null;
 	private static BluetoothSocket tmpSocket = null;
-	private static String MACaddr = "00:07:80:49:8B:61"; //MAC address of the Arduino BT-board
+	//	private static String MACaddr = "00:07:80:49:8B:61"; //MAC address of the Arduino BT-board
 	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-	private static BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(MACaddr);;
+	private static BluetoothDevice bluetoothDevice = null;
 
 	private static InputStream bluetoothInputStream = null;
 	private static String bluetoothMacAdress = "";
@@ -75,19 +75,6 @@ public class ArduinoReceiveAction extends TemporalAction {
 	public static void setBluetoothSocket(BluetoothSocket newBluetoothSocket) {
 		bluetoothSocket = newBluetoothSocket;
 	}
-
-	//	public static BluetoothSocket createBluetoothSocket(String deviceMacAdress) {
-	//		BluetoothDevice btDevice = bluetoothAdapter.getRemoteDevice(deviceMacAdress);
-	//
-	//		try {
-	//			bluetoothSocket = btDevice.createRfcommSocketToServiceRecord(UUID
-	//					.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-	//		} catch (IOException e) {
-	//			e.printStackTrace();
-	//		}
-	//
-	//		return bluetoothSocket;
-	//	}
 
 	public static int receiveDataViaBluetoothSocket(BluetoothSocket inputBluetoothSocket, char pinValue,
 			char pinNumberLowerByte, char pinNumberHigherByte) {
@@ -132,18 +119,12 @@ public class ArduinoReceiveAction extends TemporalAction {
 			e.printStackTrace();
 		}
 
-		try {
-			inputBluetoothSocket.close();
-		} catch (IOException e1) {
-			return -5;
-		}
-
 		return inputMessage;
 	}
 
-	public static void initBluetoothConnection() {
+	public static void initBluetoothConnection(String MacAdress) {
 
-		bluetoothAdapter.enable();
+		bluetoothDevice = bluetoothAdapter.getRemoteDevice(MacAdress);
 
 		try {
 			tmpSocket = bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
