@@ -152,22 +152,31 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
-		if (sharedPreferences.getBoolean("setting_arduino_bricks", false)
-				|| ProjectManager.getInstance().getCurrentProject().checkIfArduinoProject()
-				|| ProjectManager.getInstance().getCurrentProject().containsArduinoBricks()) {
+		if ((sharedPreferences.getBoolean("setting_arduino_bricks", false)
+				|| ProjectManager.getInstance().getCurrentProject().checkIfArduinoProject() || ProjectManager
+				.getInstance().getCurrentProject().containsArduinoBricks())
+				&& tag == SENSOR_TAG) {
 			itemsIds = SENSOR_ITEMS_WITH_ARDUINO;
 			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(true);
 			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
 
 			//			ArduinoReceiveAction.initBluetoothConnection();
 
-		} else if ((sharedPreferences.getBoolean("setting_mindstorm_bricks", false))
-				|| (ProjectManager.getInstance().getCurrentProject().checkIfLegoProject())) {
+		} else if (((sharedPreferences.getBoolean("setting_mindstorm_bricks", false)) || (ProjectManager.getInstance()
+				.getCurrentProject().checkIfLegoProject())) && tag == SENSOR_TAG) {
 			itemsIds = SENSOR_ITEMS; //must be changed to Mindstorm Sensors
 			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(true);
 			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
 		} else {
-			itemsIds = SENSOR_ITEMS;
+			if (tag == OBJECT_TAG) {
+				itemsIds = OBJECT_ITEMS;
+			} else if (tag == MATH_TAG) {
+				itemsIds = MATH_ITEMS;
+			} else if (tag == LOGIC_TAG) {
+				itemsIds = LOGIC_ITEMS;
+			} else if (tag == SENSOR_TAG) {
+				itemsIds = SENSOR_ITEMS;
+			}
 			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
 			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
 		}
