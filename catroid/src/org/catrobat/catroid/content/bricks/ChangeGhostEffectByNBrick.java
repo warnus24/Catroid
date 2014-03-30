@@ -68,7 +68,7 @@ public class ChangeGhostEffectByNBrick extends BrickBaseType implements OnClickL
 	@Override
 	public int getRequiredResources() {
 		if (changeGhostEffect.containsArduinoSensors()) {
-			return BLUETOOTH_ARDUINO;
+			return BLUETOOTH_SENSORS_ARDUINO;
 		}
 		return NO_RESOURCES;
 	}

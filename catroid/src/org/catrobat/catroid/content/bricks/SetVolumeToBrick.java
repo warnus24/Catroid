@@ -69,7 +69,7 @@ public class SetVolumeToBrick extends BrickBaseType implements OnClickListener, 
 	@Override
 	public int getRequiredResources() {
 		if (volume.containsArduinoSensors()) {
-			return BLUETOOTH_ARDUINO;
+			return BLUETOOTH_SENSORS_ARDUINO;
 		}
 		return NO_RESOURCES;
 	}

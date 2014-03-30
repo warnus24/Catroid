@@ -71,7 +71,7 @@ public class WaitBrick extends BrickBaseType implements OnClickListener, Formula
 	@Override
 	public int getRequiredResources() {
 		if (timeToWaitInSeconds.containsArduinoSensors()) {
-			return BLUETOOTH_ARDUINO;
+			return BLUETOOTH_SENSORS_ARDUINO;
 		}
 		return NO_RESOURCES;
 	}

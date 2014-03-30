@@ -74,7 +74,7 @@ public class IfLogicBeginBrick extends NestingBrick implements OnClickListener, 
 	@Override
 	public int getRequiredResources() {
 		if (ifCondition.containsArduinoSensors()) {
-			return BLUETOOTH_ARDUINO;
+			return BLUETOOTH_SENSORS_ARDUINO;
 		}
 		return NO_RESOURCES;
 	}

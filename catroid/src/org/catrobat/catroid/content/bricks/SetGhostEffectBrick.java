@@ -70,7 +70,7 @@ public class SetGhostEffectBrick extends BrickBaseType implements OnClickListene
 	@Override
 	public int getRequiredResources() {
 		if (transparency.containsArduinoSensors()) {
-			return BLUETOOTH_ARDUINO;
+			return BLUETOOTH_SENSORS_ARDUINO;
 		}
 		return NO_RESOURCES;
 	}

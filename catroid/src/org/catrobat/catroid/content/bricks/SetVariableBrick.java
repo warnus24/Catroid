@@ -81,7 +81,7 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 	@Override
 	public int getRequiredResources() {
 		if (variableFormula.containsArduinoSensors()) {
-			return BLUETOOTH_ARDUINO;
+			return BLUETOOTH_SENSORS_ARDUINO;
 		}
 		return NO_RESOURCES;
 	}
