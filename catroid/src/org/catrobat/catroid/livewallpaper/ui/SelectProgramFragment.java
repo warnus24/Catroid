@@ -167,10 +167,8 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 		@Override
 		protected void onPostExecute(Void result) {
-			LiveWallpaper.getInstance().changeWallpaperProgram();
-			//			getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-			//			getFragmentManager().popBackStack();
 			if (progress.isShowing()) {
+				LiveWallpaper.getInstance().changeWallpaperProgram();
 				progress.dismiss();
 			}
 

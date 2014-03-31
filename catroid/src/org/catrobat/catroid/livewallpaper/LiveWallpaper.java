@@ -24,7 +24,9 @@ package org.catrobat.catroid.livewallpaper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -38,8 +40,6 @@ import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
-import org.catrobat.catroid.io.SoundManager;
-import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
@@ -48,13 +48,12 @@ import org.catrobat.catroid.utils.Utils;
 public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	private static LiveWallpaper INSTANCE;
+
 	private AndroidApplicationConfiguration cfg;
 	private LiveWallpaperEngine lastCreatedWallpaperEngine;
 	private Context context;
+
 	private LiveWallpaperEngine previewEngine;
-	private LiveWallpaperEngine homeEngine;
-	private StageListener LWPStageListener = null;
-	private StageActivity LWPStageActivity = null;
 
 	/**
 	 * @return the previewEngine
@@ -69,19 +68,32 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	 */
 	public void setPreviewEngine(LiveWallpaperEngine previewEngine) {
 		this.previewEngine = previewEngine;
-		this.previewEngine.name = "Preview";
 	}
+
+	private LiveWallpaperEngine homeEngine;
+
+	private StageListener previewStageListener = null;
+	private StageListener homeScreenStageListener = null;
+
+	public boolean TEST = false;
+
+	//private StageActivity previewActivity;
+
+	//private StageActivity homeActivity;
 
 	@Override
 	public void onCreate() {
-		super.onCreate();
 		//android.os.Debug.waitForDebugger();
 		INSTANCE = this;
-		//SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		//temporär entfernt 
-		SoundManager.getInstance().stopAllSounds();
-		Log.d("LWP", "sioped Sound!");
-		context = this;
+		if (!TEST) {
+			super.onCreate();
+			SharedPreferences sharedPreferences = PreferenceManager
+					.getDefaultSharedPreferences(getApplicationContext());
+			//SoundManager.getInstance().soundDisabledByLwp = sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED,
+			//		false);
+			context = this;
+		}
+
 	}
 
 	public static LiveWallpaper getInstance() {
@@ -91,21 +103,36 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		//temporär entfernt 
 		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
 	}
 
 	@Override
 	public ApplicationListener createListener(boolean isPreview) {
 		setScreenSize(isPreview);
-		LWPStageActivity = new StageActivity();
-		LWPStageListener = LWPStageActivity.stageListener;
-		return LWPStageListener;
+
+		if (isPreview) {
+
+			//previewActivity = new StageActivity();
+			previewStageListener = new StageListener();
+			previewEngine = lastCreatedWallpaperEngine;
+			previewEngine.name = "Preview";
+			Log.d("LWP", "Created " + "new prev Listener");
+			return previewStageListener;
+		} else {
+			if (previewEngine != null) {
+				previewEngine.onPause();
+			}
+			//homeActivity = new StageActivity();
+			homeScreenStageListener = new StageListener();
+			homeEngine = lastCreatedWallpaperEngine;
+			homeEngine.name = "Home";
+			Log.d("LWP", "Created " + "new home Listener");
+			return homeScreenStageListener;
+		}
 	}
 
 	public void changeWallpaperProgram() {
 		previewEngine.changeWallpaperProgram();
-
 		//homeEngine.changeWallpaperProgram();
 	}
 
@@ -121,7 +148,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	@Override
 	public Engine onCreateEngine() {
 		Utils.loadProjectIfNeeded(getApplicationContext());
+		//	lastCreatedStageListener = new StageListener(true);
 		lastCreatedWallpaperEngine = new LiveWallpaperEngine();
+		//lastCreatedWallpaperEngine = new LiveWallpaperEngine(this.lastCreatedStageListener);
 		return lastCreatedWallpaperEngine;
 	}
 
@@ -144,22 +173,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	}
 
-	/**
-	 * @return the homeEngine
-	 */
-	public LiveWallpaperEngine getHomeEngine() {
-		return homeEngine;
-	}
-
-	/**
-	 * @param homeEngine
-	 *            the homeEngine to set
-	 */
-	public void setHomeEngine(LiveWallpaperEngine homeEngine) {
-		this.homeEngine = homeEngine;
-		this.homeEngine.name = "Home";
-	}
-
 	public class LiveWallpaperEngine extends AndroidWallpaperEngine {
 
 		public String name = "";
@@ -170,11 +183,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			@Override
 			public void run() {
 				if (mVisible) {
-					//mHandler.post(mUpdateDisplay);
 					mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 				}
 			}
 		};
+		private StageDialog prev_stage_dialog;
+		private StageDialog home_stage_dialog;
 
 		public LiveWallpaperEngine() {
 			super();
@@ -183,28 +197,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 
 		private StageListener getLocalStageListener() {
-			//if (this.isPreview()) {
-			return LWPStageListener;
-			//} else {
-			//return homeScreenStageListener;
-			//}
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * com.badlogic.gdx.backends.android.AndroidLiveWallpaperService.AndroidWallpaperEngine#onCreate(android.view
-		 * .SurfaceHolder)
-		 */
-		@Override
-		public void onCreate(SurfaceHolder surfaceHolder) {
-			if (isPreview()) {
-				setPreviewEngine(this);
+			if (this.isPreview()) {
+				return previewStageListener;
 			} else {
-				setHomeEngine(this);
+				return homeScreenStageListener;
 			}
-			super.onCreate(surfaceHolder);
 		}
 
 		@Override
@@ -219,6 +216,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			if (!mVisible) {
 				return;
 			}
+
 			if (getLocalStageListener() == null) {
 				return;
 			}
@@ -232,10 +230,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		@Override
 		public void onPause() {
 			mHandler.removeCallbacks(mUpdateDisplay);
-			//temporär entfernt 
-			//			if (getLocalStageListener().isFinished()) {
-			//				return;
-			//			}
+
+			if (getLocalStageListener() == null) {
+				return;
+			}
 
 			SensorHandler.stopSensorListeners();
 			getLocalStageListener().menuPause();
@@ -278,21 +276,20 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 
 		public void changeWallpaperProgram() {
-			//			try {
-			//				WallpaperManager.getInstance(getApplicationContext()).clear();
-			//			} catch (IOException e) {
-			//				// TODO Auto-generated catch block
-			//				e.printStackTrace();
-			//			}
 
-			//WallpaperManager.getInstance(getApplicationContext()).forgetLoadedWallpaper();
-			StageDialog stdialog = new StageDialog(LWPStageActivity, LWPStageListener, 0);
-			LWPStageListener.reloadProject(getApplicationContext(), stdialog);
-			//homeEngine.activateTextToSpeechIfNeeded();
+			if (isPreview()) {
+				getLocalStageListener().reloadProject(null);
+			} else {
+				if (home_stage_dialog != null) {
+				}
+				getLocalStageListener().reloadProject(null);
+			}
+
+			//activateTextToSpeechIfNeeded();
+
 		}
 
 		private void activateTextToSpeechIfNeeded() {
-			//temporär entfernt 
 			//			if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
 			//				Intent installIntent = new Intent();
 			//				installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);

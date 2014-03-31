@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.stage;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.SystemClock;
@@ -207,7 +206,7 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
-	public void reloadProject(Context context, StageDialog stageDialog) {
+	public void reloadProject(StageDialog stageDialog) {
 		if (reloadProject) {
 			return;
 		}
@@ -282,8 +281,10 @@ public class StageListener implements ApplicationListener {
 			paused = true;
 			firstStart = true;
 			reloadProject = false;
-			synchronized (stageDialog) {
-				stageDialog.notify();
+			if (stageDialog != null) {
+				synchronized (stageDialog) {
+					stageDialog.notify();
+				}
 			}
 		}
 
