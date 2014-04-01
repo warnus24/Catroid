@@ -256,15 +256,7 @@ public class PreStageActivity extends Activity {
 
 								String arduinoMacAddress = data.getExtras().getString(
 										BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
-								//								BTConnection btConnection = new BTConnection(arduinoMacAddress,
-								//										UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-								//								States returnState = btConnection.connect();
-								//								if (returnState != States.CONNECTED) {
-								//									resourceFailed();
-								//								}
-
 								ArduinoReceiveAction.setBluetoothMacAdress(arduinoMacAddress);
-								//								ArduinoReceiveAction.setBluetoothSocket(btConnection.getBTSocket());
 								ArduinoReceiveAction.initBluetoothConnection(arduinoMacAddress);
 								connectingProgressDialog.dismiss();
 								resourceInitialized();
