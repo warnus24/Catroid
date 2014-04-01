@@ -71,11 +71,6 @@ public class ArduinoSendAction extends TemporalAction {
 		pinValue = newpinValue;
 	}
 
-	@Override
-	public boolean act(float delta) {
-		return false;
-	}
-
 	public static BluetoothDevice getBluetoothDevice() {
 		return bluetoothDevice;
 	}
@@ -102,8 +97,14 @@ public class ArduinoSendAction extends TemporalAction {
 
 		Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
 				+ "---------------");
-
-		sendDataViaBluetoothSocket(bluetoothSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
+		//		sendDataViaBluetoothSocket(bluetoothSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
 	}
 
+	@Override
+	public boolean act(float delta) {
+		ArduinoSendAction.sendDataViaBluetoothSocket(ArduinoSendAction.getBluetoothSocket(),
+				ArduinoSendAction.getPinValue(), ArduinoSendAction.getPinNumberLowerByte(),
+				ArduinoSendAction.getPinNumberHigherByte());
+		return true;
+	}
 }

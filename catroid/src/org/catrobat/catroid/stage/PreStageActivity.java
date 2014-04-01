@@ -246,9 +246,9 @@ public class PreStageActivity extends Activity {
 
 									ArduinoSendAction.setBluetoothSocket(btConnection.getBTSocket());
 								}
-								ArduinoSendAction.sendDataViaBluetoothSocket(ArduinoSendAction.getBluetoothSocket(),
-										ArduinoSendAction.getPinValue(), ArduinoSendAction.getPinNumberLowerByte(),
-										ArduinoSendAction.getPinNumberHigherByte());
+								//								ArduinoSendAction.sendDataViaBluetoothSocket(ArduinoSendAction.getBluetoothSocket(),
+								//										ArduinoSendAction.getPinValue(), ArduinoSendAction.getPinNumberLowerByte(),
+								//										ArduinoSendAction.getPinNumberHigherByte());
 								connectingProgressDialog.dismiss();
 								resourceInitialized();
 								break;
