@@ -68,8 +68,10 @@
 
     <!-- Settings activity -->
     <string name="preference_title">Settings</string>
-    <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorms bricks</string>
-    <string name="preference_description_mindstorm_bricks">Allow to control Lego Mindstorms robots</string>
+    <string name="preference_title_enable_mindstorms_nxt">Lego Mindstorms NXT</string>
+    <string name="preference_title_enable_mindstorms_motors">Lego Mindstorms motors</string>
+    <string name="preference_title_enable_mindstorms_sensors">Lego Mindstorms sensors</string>
+    <string name="preference_description_mindstorms_bricks">Allow to control Lego Mindstorms robots</string>
     <!--  -->
 
 
@@ -507,8 +509,12 @@
     <string name="nxt_motor_a">A</string>
     <string name="nxt_motor_b">B</string>
     <string name="nxt_motor_c">C</string>
-    <string name="nxt_motor_a_and_c">A+C</string>
+    <string name="nxt_motor_b_and_c">B+C</string>
     <string name="nxt_motor_all">All</string>
+    <string name="nxt_sensor_touch">touch</string>
+    <string name="nxt_sensor_sound">sound</string>
+    <string name="nxt_sensor_light">light</string>
+    <string name="nxt_sensor_ultrasonic">ultrasonic</string>
     <!--  -->
 
 

@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrickClickOnEditTextTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
-	private static final String KEY_SETTINGS_MINDSTORM_BRICKS = "setting_mindstorm_bricks";
+	private static final String KEY_SETTINGS_MINDSTORM_BRICKS = "setting_mindstorms_nxt";
 
 	public BrickClickOnEditTextTest() {
 		super(MainMenuActivity.class);
