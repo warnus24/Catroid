@@ -36,7 +36,7 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		addPreferencesFromResource(R.xml.preferences);
+		addPreferencesFromResource(R.layout.preferences);
 
 		ActionBar actionBar = getSupportActionBar();
 
