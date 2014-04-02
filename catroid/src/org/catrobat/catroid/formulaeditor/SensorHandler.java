@@ -43,6 +43,7 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 	private float linearAcceleartionZ = 0f;
 
 	private float loudness = 0f;
+	private boolean touch = false;
 
 	private SensorHandler(Context context) {
 		sensorManager = new SensorManager(
@@ -63,6 +64,8 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		instance.sensorManager.registerListener(instance, instance.rotationVectorSensor,
 				android.hardware.SensorManager.SENSOR_DELAY_NORMAL);
 		instance.sensorManager.registerListener(instance, Sensors.LOUDNESS);
+
+		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_TOUCH);
 	}
 
 	public static void registerListener(SensorEventListener listener) {
@@ -147,6 +150,9 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 
 			case LOUDNESS:
 				return Double.valueOf(instance.loudness);
+
+			case LEGO_NXT_TOUCH:
+				return instance.touch ? 1.0 : 0.0;
 		}
 		return 0d;
 	}
@@ -178,6 +184,9 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		switch (event.sensor) {
 			case LOUDNESS:
 				instance.loudness = event.values[0];
+				break;
+			case LEGO_NXT_TOUCH:
+				instance.touch = event.value;
 				break;
 			default:
 				Log.v(TAG, "Unhandled sensor: " + event.sensor);
