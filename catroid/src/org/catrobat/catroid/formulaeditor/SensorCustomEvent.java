@@ -24,13 +24,25 @@ package org.catrobat.catroid.formulaeditor;
 
 public class SensorCustomEvent {
 	public final float[] values;
+	public final boolean value;
 	public Sensors sensor;
 	public long timestamp;
 
-	public SensorCustomEvent(Sensors sourceSensor, float[] values) {
+	private void initSensorCustomEvent(Sensors sourceSensor) {
 		sensor = sourceSensor;
-		this.values = new float[values.length];
-		System.arraycopy(values, 0, this.values, 0, values.length);
 		timestamp = System.currentTimeMillis();
+	}
+
+	public SensorCustomEvent(Sensors sourceSensor, float[] values) {
+		this.values = new float[values.length];
+		value = false;
+		System.arraycopy(values, 0, this.values, 0, values.length);
+		initSensorCustomEvent(sourceSensor);
+	}
+
+	public SensorCustomEvent(Sensors sourceSensor, boolean value) {
+		this.value = value;
+		values = null;
+		initSensorCustomEvent(sourceSensor);
 	}
 }

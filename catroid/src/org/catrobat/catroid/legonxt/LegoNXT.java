@@ -105,6 +105,16 @@ public class LegoNXT implements BTConnectable {
 		}
 	}
 
+	public static synchronized void sendSensorMessage(byte[] message) {
+		Bundle myBundle = new Bundle();
+		myBundle.putByteArray("message", message);
+		Message msg = btcHandler.obtainMessage();
+		msg.setData(myBundle);
+		msg.what = LegoNXTCommunicator.SENSOR_COMMAND;
+
+		btcHandler.sendMessage(msg);
+	}
+
 	public static Handler getBTCHandler() {
 		return btcHandler;
 	}
