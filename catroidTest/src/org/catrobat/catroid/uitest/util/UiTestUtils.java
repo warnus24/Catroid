@@ -155,6 +155,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -362,7 +363,7 @@ public final class UiTestUtils {
 	 * @param value The value you want to put into the EditText
 	 */
 	public static void insertDoubleIntoEditText(Solo solo, double value) {
-		insertValue(solo, value + "");
+		insertValue(solo, new BigDecimal(value).toPlainString());
 	}
 
 	public static void insertStringIntoEditText(Solo solo, String newValue) {
@@ -430,10 +431,12 @@ public final class UiTestUtils {
 				newValue,
 				Double.parseDouble(((EditText) solo.getView(R.id.formula_editor_edit_field)).getText().toString()
 						.replace(',', '.')));
+
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 		solo.sleep(200);
 
 		Formula formula = theBrick.getFormulaWithBrickField(brickField);
+
 		try{
 			assertEquals("Wrong text in field", newValue, formula.interpretDouble(sprite), 0.01f);
 		}catch (InterpretationException interpretationException) {
@@ -441,7 +444,8 @@ public final class UiTestUtils {
 		}
 
 		assertEquals("Text not updated in the brick list", newValue,
-				Double.parseDouble(((TextView) solo.getView(editTextId)).getText().toString().replace(',', '.')), 0.01f);
+				Double.parseDouble(((TextView) solo.getView(editTextId)).getText().toString().replace(",", ".")
+						.replace(" ", "")), 0.01f);
 
 	}
 
@@ -1438,6 +1442,7 @@ public final class UiTestUtils {
 	 *
 	 * @param solo                 Use Robotium functionality
 	 * @param overflowMenuItemName Name of the overflow menu item
+	 * @param menuItemId           ID of an action item (icon)
 	 */
 	public static void openActionMode(Solo solo, String overflowMenuItemName, int menuItemId, Activity activity) {
 
