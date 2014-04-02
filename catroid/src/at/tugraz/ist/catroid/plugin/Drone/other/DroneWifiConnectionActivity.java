@@ -43,14 +43,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import at.tugraz.ist.catroid.R;
-import at.tugraz.ist.catroid.plugin.PluginManager;
 import at.tugraz.ist.catroid.plugin.Drone.DroneConsts;
 import at.tugraz.ist.catroid.plugin.Drone.DroneHandler;
 
@@ -87,40 +84,43 @@ public class DroneWifiConnectionActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_drone_wificonnection);
+		DroneHandler.getInstance().getDrone().connect();
 
-		tvWifiStatus = (TextView) findViewById(R.id.tv_status_wifi);
-		tvWifiScanStatus = (TextView) findViewById(R.id.tv_status_wifi_scan_for_drone);
-		tvDroneConnectStatus = (TextView) findViewById(R.id.tv_status_connect_drone);
-		tvGetNavdataStatus = (TextView) findViewById(R.id.tv_status_get_navdata);
-		tvCheckFirmwareStatus = (TextView) findViewById(R.id.tv_status_check_firmware);
-		tvCheckConfigStatus = (TextView) findViewById(R.id.tv_status_check_config);
-		tvWifiConnectionError = (TextView) findViewById(R.id.tv_wifi_connection_error);
-
-		ivWifiStatus = (ImageView) findViewById(R.id.iv_status_wifi);
-		ivWifiScanStatus = (ImageView) findViewById(R.id.iv_status_wifi_scan_for_drone);
-		ivDroneConnectStatus = (ImageView) findViewById(R.id.iv_status_connect_drone);
-		ivGetNavdataStatus = (ImageView) findViewById(R.id.iv_status_get_navdata);
-		ivCheckFirmwareStatus = (ImageView) findViewById(R.id.iv_status_check_firmware);
-		ivCheckConfigStatus = (ImageView) findViewById(R.id.iv_status_check_config);
-
-		pbConnectionStatus = (ProgressBar) findViewById(R.id.pb_connection_status);
-
-		startButton = (Button) findViewById(R.id.buttonStart);
-		startButton.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View view) {
-				startButton.setClickable(false);
-				startButton.setEnabled(false);
-				startButton.setText(R.string.drone_processing);
-
-				if (!PluginManager.getInstance().areDroneTermsOfUseAccepted()) {
-					showDialog(DroneConsts.DIALOG_TERMS_OF_USE);
-				} else {
-					changeStatus(DroneConsts.START);
-				}
-			}
-		});
-
+		//		tvWifiStatus = (TextView) findViewById(R.id.tv_status_wifi);
+		//		tvWifiScanStatus = (TextView) findViewById(R.id.tv_status_wifi_scan_for_drone);
+		//		tvDroneConnectStatus = (TextView) findViewById(R.id.tv_status_connect_drone);
+		//		tvGetNavdataStatus = (TextView) findViewById(R.id.tv_status_get_navdata);
+		//		tvCheckFirmwareStatus = (TextView) findViewById(R.id.tv_status_check_firmware);
+		//		tvCheckConfigStatus = (TextView) findViewById(R.id.tv_status_check_config);
+		//		tvWifiConnectionError = (TextView) findViewById(R.id.tv_wifi_connection_error);
+		//
+		//		ivWifiStatus = (ImageView) findViewById(R.id.iv_status_wifi);
+		//		ivWifiScanStatus = (ImageView) findViewById(R.id.iv_status_wifi_scan_for_drone);
+		//		ivDroneConnectStatus = (ImageView) findViewById(R.id.iv_status_connect_drone);
+		//		ivGetNavdataStatus = (ImageView) findViewById(R.id.iv_status_get_navdata);
+		//		ivCheckFirmwareStatus = (ImageView) findViewById(R.id.iv_status_check_firmware);
+		//		ivCheckConfigStatus = (ImageView) findViewById(R.id.iv_status_check_config);
+		//
+		//		pbConnectionStatus = (ProgressBar) findViewById(R.id.pb_connection_status);
+		//
+		//		startButton = (Button) findViewById(R.id.buttonStart);
+		//		startButton.setOnClickListener(new OnClickListener() {
+		//
+		//			public void onClick(View view) {
+		//				startButton.setClickable(false);
+		//				startButton.setEnabled(false);
+		//				startButton.setText(R.string.drone_processing);
+		//
+		//				if (!PluginManager.getInstance().areDroneTermsOfUseAccepted()) {
+		//					showDialog(DroneConsts.DIALOG_TERMS_OF_USE);
+		//				} else {
+		//					changeStatus(DroneConsts.START);
+		//				}
+		//			}
+		//		});
+		//
+		setResult(RESULT_OK);
+		finish();
 	}
 
 	@Override
