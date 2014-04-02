@@ -88,6 +88,11 @@ public class InternToExternGenerator {
 				R.string.formula_editor_object_rotation);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.OBJECT_LAYER.name(), R.string.formula_editor_object_layer);
 
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.LEGO_NXT_LIGHT.name(), R.string.formula_editor_sensor_lego_nxt_light);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.LEGO_NXT_SOUND.name(), R.string.formula_editor_sensor_lego_nxt_sound);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.LEGO_NXT_TOUCH.name(), R.string.formula_editor_sensor_lego_nxt_touch);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.LEGO_NXT_ULTRASONIC.name(), R.string.formula_editor_sensor_lego_nxt_ultrasonic);
+
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Operators.LOGICAL_NOT.name(), R.string.formula_editor_logic_not);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Operators.NOT_EQUAL.name(), R.string.formula_editor_logic_notequal);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Operators.EQUAL.name(), R.string.formula_editor_logic_equal);
