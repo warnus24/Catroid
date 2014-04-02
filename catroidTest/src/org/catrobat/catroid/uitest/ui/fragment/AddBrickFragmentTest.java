@@ -35,7 +35,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 public class AddBrickFragmentTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
-	private static final String KEY_SETTINGS_MINDSTORM_BRICKS = "setting_mindstorm_bricks";
+	private static final String KEY_SETTINGS_MINDSTORM_BRICKS = "setting_mindstorms_nxt_bool";
 
 	public AddBrickFragmentTest() {
 		super(MainMenuActivity.class);
