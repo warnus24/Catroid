@@ -26,6 +26,8 @@ package org.catrobat.catroid.formulaeditor;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 
+import org.catrobat.catroid.legonxt.NXTTouchSensor;
+
 public class SensorManager implements SensorManagerInterface {
 	private final android.hardware.SensorManager sensorManager;
 
@@ -52,6 +54,7 @@ public class SensorManager implements SensorManagerInterface {
 	@Override
 	public void unregisterListener(SensorCustomEventListener listener) {
 		SensorLoudness.getSensorLoudness().unregisterListener(listener);
+		NXTTouchSensor.getInstance().unregisterListener(listener);
 	}
 
 	@Override
@@ -59,6 +62,8 @@ public class SensorManager implements SensorManagerInterface {
 		switch (sensor) {
 			case LOUDNESS:
 				return SensorLoudness.getSensorLoudness().registerListener(listener);
+			case LEGO_NXT_TOUCH:
+				return NXTTouchSensor.getInstance().registerListener(listener);
 			default:
 				return false;
 		}

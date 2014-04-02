@@ -80,7 +80,11 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 	private static final int[] SENSOR_ITEMS = { R.string.formula_editor_sensor_x_acceleration,
 			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
 			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
-			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness };
+			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
+			R.string.formula_editor_sensor_lego_nxt_light,
+			R.string.formula_editor_sensor_lego_nxt_touch,
+			R.string.formula_editor_sensor_lego_nxt_sound,
+			R.string.formula_editor_sensor_lego_nxt_ultrasonic};
 
 	private String tag;
 	private String[] items;
