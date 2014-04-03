@@ -18,6 +18,8 @@ public abstract class NXTSensor {
 	protected static final byte SWITCH = 0x01;
 	protected static final byte LIGHT_ACTIVE = 0x05;
 	protected static final byte LIGHT_INACTIVE = 0x06;
+    protected static final byte SOUND_DB = 0x07;
+    protected static final byte SOUND_DBA = 0x08;
 
 
 	// Sensor Modes
@@ -33,6 +35,9 @@ public abstract class NXTSensor {
 			case NXTSensor.SWITCH:
 				NXTTouchSensor.getInstance().receivedMessage(message);
 				break;
+            case NXTSensor.SOUND_DBA:
+                NXTSoundSensor.getInstance().receivedMessage(message);
+                break;
 			default:
 				Log.d("NXTSensor", String.format("Unknown Message Type: %d", message[1]));
 				break;

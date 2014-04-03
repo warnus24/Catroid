@@ -28,6 +28,7 @@ import android.hardware.SensorEventListener;
 
 import org.catrobat.catroid.legonxt.NXTLightSensor;
 import org.catrobat.catroid.legonxt.NXTTouchSensor;
+import org.catrobat.catroid.legonxt.NXTSoundSensor;
 
 public class SensorManager implements SensorManagerInterface {
 	private final android.hardware.SensorManager sensorManager;
@@ -57,6 +58,7 @@ public class SensorManager implements SensorManagerInterface {
 		SensorLoudness.getSensorLoudness().unregisterListener(listener);
 		NXTTouchSensor.getInstance().unregisterListener(listener);
 		NXTLightSensor.getInstance().unregisterListener(listener);
+        NXTSoundSensor.getInstance().unregisterListener(listener);
 	}
 
 	@Override
@@ -68,6 +70,8 @@ public class SensorManager implements SensorManagerInterface {
 				return NXTTouchSensor.getInstance().registerListener(listener);
 			case LEGO_NXT_LIGHT:
 				return NXTLightSensor.getInstance().registerListener(listener);
+            case LEGO_NXT_SOUND:
+                return NXTSoundSensor.getInstance().registerListener(listener);
 			default:
 				return false;
 		}
