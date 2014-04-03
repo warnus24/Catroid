@@ -2,21 +2,21 @@
  *  Catroid: An on-device visual programming system for Android devices
  *  Copyright (C) 2010-2013 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
  *  published by the Free Software Foundation, either version 3 of the
  *  License, or (at your option) any later version.
- *  
+ *
  *  An additional term exception under section 7 of the GNU Affero
  *  General Public License, version 3, is available at
  *  http://developer.catrobat.org/license_additional_term
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU Affero General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,24 +49,19 @@ import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.io.LoadProjectTask;
 import org.catrobat.catroid.io.LoadProjectTask.OnLoadProjectCompleteListener;
 import org.catrobat.catroid.stage.PreStageActivity;
-import org.catrobat.catroid.transfers.CheckTokenTask;
-import org.catrobat.catroid.transfers.CheckTokenTask.OnCheckTokenCompleteListener;
 import org.catrobat.catroid.ui.controller.BackPackListManager;
 import org.catrobat.catroid.ui.dialogs.AboutDialogFragment;
-import org.catrobat.catroid.ui.dialogs.LoginRegisterDialog;
 import org.catrobat.catroid.ui.dialogs.NewProjectDialog;
-import org.catrobat.catroid.ui.dialogs.UploadProjectDialog;
+import org.catrobat.catroid.ui.dialogs.TermsOfUseDialogFragment;
 import org.catrobat.catroid.utils.DownloadUtil;
 import org.catrobat.catroid.utils.StatusBarNotificationManager;
 import org.catrobat.catroid.utils.UtilFile;
 import org.catrobat.catroid.utils.UtilZip;
 import org.catrobat.catroid.utils.Utils;
-import org.catrobat.catroid.web.ServerCalls;
 
 import java.util.concurrent.locks.Lock;
 
-public class MainMenuActivity extends BaseActivity implements OnCheckTokenCompleteListener,
-		OnLoadProjectCompleteListener {
+public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompleteListener {
 
 	public static final String SHARED_PREFERENCES_SHOW_BROWSER_WARNING = "shared_preferences_browser_warning";
 
@@ -112,6 +107,8 @@ public class MainMenuActivity extends BaseActivity implements OnCheckTokenComple
 			return;
 		}
 
+		findViewById(R.id.progress_circle).setVisibility(View.GONE);
+
 		UtilFile.createStandardProjectIfRootDirectoryIsEmpty(this);
 		PreStageActivity.shutdownPersistentResources();
 		setMainMenuButtonContinueText();
@@ -149,11 +146,15 @@ public class MainMenuActivity extends BaseActivity implements OnCheckTokenComple
 			case R.id.menu_rate_app:
 				launchMarket();
 				return true;
-			case R.id.menu_about: {
+			case R.id.menu_terms_of_use:
+				TermsOfUseDialogFragment termsOfUseDialog = new TermsOfUseDialogFragment();
+				termsOfUseDialog.show(getSupportFragmentManager(), TermsOfUseDialogFragment.DIALOG_FRAGMENT_TAG);
+				return true;
+			case R.id.menu_about:
 				AboutDialogFragment aboutDialog = new AboutDialogFragment();
 				aboutDialog.show(getSupportFragmentManager(), AboutDialogFragment.DIALOG_FRAGMENT_TAG);
 				return true;
-			}
+
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -175,7 +176,9 @@ public class MainMenuActivity extends BaseActivity implements OnCheckTokenComple
 	}
 
 	public void handleContinueButton() {
-		loadProjectInBackground(Utils.getCurrentProjectName(this));
+		Intent intent = new Intent(this, ProjectActivity.class);
+		intent.putExtra(Constants.PROJECTNAME_TO_LOAD, Utils.getCurrentProjectName(this));
+		startActivity(intent);
 	}
 
 	private void loadProjectInBackground(String projectName) {
@@ -204,6 +207,7 @@ public class MainMenuActivity extends BaseActivity implements OnCheckTokenComple
 	}
 
 	public void handleProgramsButton(View view) {
+		findViewById(R.id.progress_circle).setVisibility(View.VISIBLE);
 		if (!viewSwitchLock.tryLock()) {
 			return;
 		}
@@ -215,8 +219,8 @@ public class MainMenuActivity extends BaseActivity implements OnCheckTokenComple
 		if (!viewSwitchLock.tryLock()) {
 			return;
 		}
-		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.CATROBAT_HELP_URL));
-		startActivity(browserIntent);
+
+		startWebViewActivity(Constants.CATROBAT_HELP_URL);
 	}
 
 	public void handleWebButton(View view) {
@@ -224,6 +228,11 @@ public class MainMenuActivity extends BaseActivity implements OnCheckTokenComple
 			return;
 		}
 
+		startWebViewActivity(Constants.BASE_URL_HTTPS);
+
+	}
+
+	private void startWebViewActivity(String url) {
 		// TODO just a quick fix for not properly working webview on old devices
 		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
 			final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -236,8 +245,10 @@ public class MainMenuActivity extends BaseActivity implements OnCheckTokenComple
 			}
 		} else {
 			Intent intent = new Intent(MainMenuActivity.this, WebViewActivity.class);
+			intent.putExtra(WebViewActivity.INTENT_PARAMETER_URL, url);
 			startActivity(intent);
 		}
+
 	}
 
 	private void showWebWarningDialog() {
@@ -277,39 +288,7 @@ public class MainMenuActivity extends BaseActivity implements OnCheckTokenComple
 		if (!viewSwitchLock.tryLock()) {
 			return;
 		}
-		if (ProjectManager.getInstance().getCurrentProject() == null) {
-			LoadProjectTask loadProjectTask = new LoadProjectTask(this, Utils.getCurrentProjectName(this), false, false);
-			loadProjectTask.setOnLoadProjectCompleteListener(this);
-			loadProjectTask.execute();
-		}
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		String token = preferences.getString(Constants.TOKEN, Constants.NO_TOKEN);
-		String username = preferences.getString(Constants.USERNAME, Constants.NO_USERNAME);
-
-		if (token.equals(Constants.NO_TOKEN) || token.length() != ServerCalls.TOKEN_LENGTH
-				|| token.equals(ServerCalls.TOKEN_CODE_INVALID)) {
-			showLoginRegisterDialog();
-		} else {
-			CheckTokenTask checkTokenTask = new CheckTokenTask(this, token, username);
-			checkTokenTask.setOnCheckTokenCompleteListener(this);
-			checkTokenTask.execute();
-		}
-	}
-
-	@Override
-	public void onTokenNotValid() {
-		showLoginRegisterDialog();
-	}
-
-	@Override
-	public void onCheckTokenSuccess() {
-		UploadProjectDialog uploadProjectDialog = new UploadProjectDialog();
-		uploadProjectDialog.show(getSupportFragmentManager(), UploadProjectDialog.DIALOG_FRAGMENT_TAG);
-	}
-
-	private void showLoginRegisterDialog() {
-		LoginRegisterDialog loginRegisterDialog = new LoginRegisterDialog();
-		loginRegisterDialog.show(getSupportFragmentManager(), LoginRegisterDialog.DIALOG_FRAGMENT_TAG);
+		ProjectManager.getInstance().uploadProject(Utils.getCurrentProjectName(this), this);
 	}
 
 	private void loadProgramFromExternalSource(Uri loadExternalProjectUri) {
@@ -343,5 +322,10 @@ public class MainMenuActivity extends BaseActivity implements OnCheckTokenComple
 				spannableStringBuilder.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
 		mainMenuButtonContinue.setText(spannableStringBuilder);
+	}
+
+	@Override
+	public void onLoadProjectFailure() {
+
 	}
 }

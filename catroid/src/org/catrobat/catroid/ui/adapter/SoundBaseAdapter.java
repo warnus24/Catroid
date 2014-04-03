@@ -23,7 +23,6 @@
 package org.catrobat.catroid.ui.adapter;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -51,7 +50,7 @@ public class SoundBaseAdapter extends ArrayAdapter<SoundInfo> implements ScriptA
 
 	private int currentPlayingPosition = Constants.NO_POSITION;
 
-	public SoundBaseAdapter(final Context context, AttributeSet attributeSet, int currentPlayingposition) {
+	public SoundBaseAdapter(final Context context, int currentPlayingposition) {
 		super(context, currentPlayingposition);
 	}
 
@@ -162,11 +161,11 @@ public class SoundBaseAdapter extends ArrayAdapter<SoundInfo> implements ScriptA
 
 	public interface OnSoundEditListener {
 
-		public void onSoundPlay(View view);
+		void onSoundPlay(View view);
 
-		public void onSoundPause(View view);
+		void onSoundPause(View view);
 
-		public void onSoundChecked();
+		void onSoundChecked();
 	}
 
 }

@@ -23,6 +23,7 @@
 package org.catrobat.catroid.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
@@ -34,14 +35,24 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class UtilFile {
-	public static final int TYPE_IMAGE_FILE = 0;
-	public static final int TYPE_SOUND_FILE = 1;
+public final class UtilFile {
+	public enum FileType {
+		TYPE_IMAGE_FILE, TYPE_SOUND_FILE
+	}
+
+	private static final String TAG = UtilFile.class.getSimpleName();
+
+	// Suppress default constructor for noninstantiability
+	private UtilFile() {
+		throw new AssertionError();
+	}
 
 	private static long getSizeOfFileOrDirectoryInByte(File fileOrDirectory) {
 		if (!fileOrDirectory.exists()) {
@@ -108,7 +119,7 @@ public class UtilFile {
 		return (path.delete());
 	}
 
-	public static File saveFileToProject(String project, String name, int fileID, Context context, int type) {
+	public static File saveFileToProject(String project, String name, int fileID, Context context, FileType type) {
 
 		String filePath;
 		if (project == null || project.equalsIgnoreCase("")) {
@@ -146,8 +157,8 @@ public class UtilFile {
 			out.close();
 
 			return file;
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ioException) {
+			Log.e(TAG, Log.getStackTraceString(ioException));
 			return null;
 		}
 	}
@@ -165,15 +176,17 @@ public class UtilFile {
 	public static List<String> getProjectNames(File directory) {
 		List<String> projectList = new ArrayList<String>();
 		File[] fileList = directory.listFiles();
-		FilenameFilter filenameFilter = new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String filename) {
-				return filename.contentEquals(Constants.PROJECTCODE_NAME);
-			}
-		};
-		for (File file : fileList) {
-			if (file.isDirectory() && file.list(filenameFilter).length != 0) {
-				projectList.add(file.getName());
+		if (fileList != null) {
+			FilenameFilter filenameFilter = new FilenameFilter() {
+				@Override
+				public boolean accept(File dir, String filename) {
+					return filename.contentEquals(Constants.PROJECTCODE_NAME);
+				}
+			};
+			for (File file : fileList) {
+				if (file.isDirectory() && file.list(filenameFilter).length != 0) {
+					projectList.add(file.getName());
+				}
 			}
 		}
 		return projectList;
@@ -207,6 +220,74 @@ public class UtilFile {
 				outputStream.close();
 			}
 		}
+	}
+
+	public static File copyFromResourceIntoProject(String projectName, String directoryInProject,
+			String outputFilename, int resourceId, Context context, boolean prependMd5ToFilename) throws IOException {
+		String directoryPath = Utils.buildPath(Utils.buildProjectPath(projectName), directoryInProject);
+		File copiedFile = new File(directoryPath, outputFilename);
+		if (!copiedFile.exists()) {
+			copiedFile.createNewFile();
+		} else {
+			throw new IllegalArgumentException("file " + copiedFile.getAbsolutePath() + " already exists!");
+		}
+		InputStream in = context.getResources().openRawResource(resourceId);
+		OutputStream out = new BufferedOutputStream(new FileOutputStream(copiedFile), Constants.BUFFER_8K);
+		byte[] buffer = new byte[Constants.BUFFER_8K];
+		int length = 0;
+		while ((length = in.read(buffer)) > 0) {
+			out.write(buffer, 0, length);
+		}
+
+		in.close();
+		out.flush();
+		out.close();
+
+		if (!prependMd5ToFilename) {
+			return copiedFile;
+		}
+
+		return prependMd5ToFilename(copiedFile);
+	}
+
+	public static File copySoundFromResourceIntoProject(String projectName, String outputFilename, int resourceId,
+			Context context, boolean prependMd5ToFilename) throws IOException {
+		if (!outputFilename.toLowerCase(Locale.US).endsWith(Constants.RECORDING_EXTENSION)) {
+			outputFilename = outputFilename + Constants.RECORDING_EXTENSION;
+		}
+		return copyFromResourceIntoProject(projectName, Constants.SOUND_DIRECTORY, outputFilename, resourceId, context,
+				prependMd5ToFilename);
+	}
+
+	public static File copyImageFromResourceIntoProject(String projectName, String outputFilename, int resourceId,
+			Context context, boolean prependMd5ToFilename, double scaleFactor) throws IOException {
+		if (scaleFactor <= 0) {
+			throw new IllegalArgumentException("scale factor is smaller or equal zero");
+		}
+		outputFilename = Utils.deleteSpecialCharactersInString(outputFilename);
+		if (!outputFilename.toLowerCase(Locale.US).endsWith(Constants.IMAGE_STANDARD_EXTENTION)) {
+			outputFilename = outputFilename + Constants.IMAGE_STANDARD_EXTENTION;
+		}
+		File copiedFile = copyFromResourceIntoProject(projectName, Constants.IMAGE_DIRECTORY, outputFilename,
+				resourceId, context, false);
+
+		ImageEditing.scaleImageFile(copiedFile, scaleFactor);
+
+		if (!prependMd5ToFilename) {
+			return copiedFile;
+		}
+
+		return prependMd5ToFilename(copiedFile);
+	}
+
+	private static File prependMd5ToFilename(File file) throws IOException {
+		File fileWithMd5 = new File(file.getParent(), Utils.md5Checksum(file) + Constants.FILENAME_SEPARATOR
+				+ file.getName());
+		if (!file.renameTo(fileWithMd5)) {
+			throw new IOException("renaming file " + file.getAbsoluteFile() + " to " + fileWithMd5.getAbsoluteFile()
+					+ " failed");
+		}
+		return fileWithMd5;
 	}
 
 }

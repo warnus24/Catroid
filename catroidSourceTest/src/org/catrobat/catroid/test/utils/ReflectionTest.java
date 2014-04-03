@@ -32,8 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReflectionTest extends TestCase {
-	private static final String[] FILES = { "../catroidTest/src/org/catrobat/catroid/test/utils/Reflection.java",
-			"../catroidUiTest/src/org/catrobat/catroid/uitest/util/Reflection.java" };
+	private static final String[] FILES = { "../catroidTest/src/org/catrobat/catroid/test/utils/Reflection.java" };
 
 	private class SmartFileContent {
 		private String context;
@@ -43,7 +42,9 @@ public class ReflectionTest extends TestCase {
 			File file = new File(fileString);
 
 			reader = new BufferedReader(new FileReader(file));
-			while (!reader.readLine().contains("class Reflection")) {
+			boolean readUntilClassReflection = true;
+			while (readUntilClassReflection) {
+				readUntilClassReflection = !reader.readLine().contains("class Reflection");
 			}
 
 			StringBuilder builder = new StringBuilder();
@@ -64,6 +65,18 @@ public class ReflectionTest extends TestCase {
 			SmartFileContent smartFileContent = (SmartFileContent) object;
 			return context.compareTo(smartFileContent.context) == 0;
 		}
+
+		@Override
+		public int hashCode()
+		{
+			int result = 37;
+			int prime = 41;
+			if (context != null) {
+				result = prime * result + context.hashCode();
+			}
+			return result;
+		}
+
 	}
 
 	public void testIdenticalReflectionClassInTestProjects() throws IOException {

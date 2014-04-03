@@ -22,6 +22,7 @@
  */
 package org.catrobat.catroid.ui.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -35,6 +36,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -113,6 +115,7 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 	private SoundsListInitReceiver soundsListInitReceiver;
 
 	private ActionMode actionMode;
+	private View selectAllActionModeButton;
 
 	private boolean isRenameActionMode;
 	private boolean isResultHandled = false;
@@ -394,11 +397,16 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 
 	@Override
 	public void onSoundChecked() {
-
 		if (isRenameActionMode || actionMode == null) {
 			return;
 		}
 
+		updateActionModeTitle();
+		Utils.setSelectAllActionModeButtonVisibility(selectAllActionModeButton,
+				adapter.getCount() > 0 && adapter.getAmountOfCheckedItems() != adapter.getCount());
+	}
+
+	private void updateActionModeTitle() {
 		int numberOfSelectedItems = adapter.getAmountOfCheckedItems();
 
 		if (numberOfSelectedItems == 0) {
@@ -409,6 +417,7 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 			if (numberOfSelectedItems == 1) {
 				appendix = singleItemAppendixDeleteActionMode;
 			}
+
 
 			String numberOfItems = Integer.toString(numberOfSelectedItems);
 			String completeTitle = actionModeTitle + " " + numberOfItems + " " + appendix;
@@ -523,16 +532,15 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 		if (soundInfoListChangedAfterNewListener != null) {
 			soundInfoListChangedAfterNewListener.onSoundInfoListChangedAfterNew(newSoundInfo);
 		}
+
 		//scroll down the list to the new item:
-		{
-			final ListView listView = getListView();
-			listView.post(new Runnable() {
-				@Override
-				public void run() {
-					listView.setSelection(listView.getCount() - 1);
-				}
-			});
-		}
+		final ListView listView = getListView();
+		listView.post(new Runnable() {
+			@Override
+			public void run() {
+				listView.setSelection(listView.getCount() - 1);
+			}
+		});
 
 		if (isResultHandled) {
 			isResultHandled = false;
@@ -579,10 +587,17 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 	public void handleAddButton() {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 		intent.setType("audio/*");
-
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)	{
+			disableGoogleDrive(intent);
+		}
 		startActivityForResult(Intent.createChooser(intent, getString(R.string.sound_select_source)),
 				SoundController.REQUEST_SELECT_MUSIC);
 	}
+
+    @TargetApi(19)
+    private void disableGoogleDrive(Intent intent) {
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+    }
 
 	@Override
 	public void showRenameDialog() {
@@ -632,20 +647,19 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 	}
 
 	private void addSelectAllActionModeButton(ActionMode mode, Menu menu) {
-		Utils.addSelectAllActionModeButton(getLayoutInflater(null), mode, menu).setOnClickListener(
-				new OnClickListener() {
+		selectAllActionModeButton = Utils.addSelectAllActionModeButton(getLayoutInflater(null), mode, menu);
+		selectAllActionModeButton.setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View view) {
-						for (int position = 0; position < soundInfoList.size(); position++) {
-							adapter.addCheckedItem(position);
-						}
-						adapter.notifyDataSetChanged();
-						view.setVisibility(View.GONE);
-						onSoundChecked();
-					}
+			@Override
+			public void onClick(View view) {
+				for (int position = 0; position < soundInfoList.size(); position++) {
+					adapter.addCheckedItem(position);
+				}
+				adapter.notifyDataSetChanged();
+				onSoundChecked();
+			}
 
-				});
+		});
 	}
 
 	private ActionMode.Callback renameModeCallBack = new ActionMode.Callback() {
@@ -731,6 +745,7 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 			multipleItemAppendixDeleteActionMode = getString(R.string.sounds);
 
 			mode.setTitle(actionModeTitle);
+			addSelectAllActionModeButton(mode, menu);
 
 			return true;
 		}
@@ -761,12 +776,11 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 			setSelectMode(ListView.CHOICE_MODE_MULTIPLE);
 			setActionModeActive(true);
 
-			mode.setTitle(R.string.delete);
-
 			actionModeTitle = getString(R.string.delete);
 			singleItemAppendixDeleteActionMode = getString(R.string.category_sound);
 			multipleItemAppendixDeleteActionMode = getString(R.string.sounds);
 
+			mode.setTitle(R.string.delete);
 			addSelectAllActionModeButton(mode, menu);
 
 			return true;
@@ -871,8 +885,6 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 			holder.titleTextView = (TextView) convertView.findViewById(R.id.fragment_sound_item_title_text_view);
 			holder.timeSeparatorTextView = (TextView) convertView
 					.findViewById(R.id.fragment_sound_item_time_seperator_text_view);
-			holder.timeDurationTextView = (TextView) convertView
-					.findViewById(R.id.fragment_sound_item_duration_text_view);
 			holder.soundFileSizePrefixTextView = (TextView) convertView
 					.findViewById(R.id.fragment_sound_item_size_prefix_text_view);
 			holder.soundFileSizeTextView = (TextView) convertView.findViewById(R.id.fragment_sound_item_size_text_view);
@@ -892,7 +904,7 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 
 	public interface OnSoundInfoListChangedAfterNewListener {
 
-		public void onSoundInfoListChangedAfterNew(SoundInfo soundInfo);
+		void onSoundInfoListChangedAfterNew(SoundInfo soundInfo);
 
 	}
 
@@ -954,16 +966,15 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 				if (soundInfoListChangedAfterNewListener != null) {
 					soundInfoListChangedAfterNewListener.onSoundInfoListChangedAfterNew(newSoundInfo);
 				}
+
 				//scroll down the list to the new item:
-				{
-					final ListView listView = getListView();
-					listView.post(new Runnable() {
-						@Override
-						public void run() {
-							listView.setSelection(listView.getCount() - 1);
-						}
-					});
-				}
+				final ListView listView = getListView();
+				listView.post(new Runnable() {
+					@Override
+					public void run() {
+						listView.setSelection(listView.getCount() - 1);
+					}
+				});
 
 				if (isResultHandled) {
 					isResultHandled = false;

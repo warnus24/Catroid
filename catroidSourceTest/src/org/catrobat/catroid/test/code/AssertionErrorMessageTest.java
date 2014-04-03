@@ -34,8 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AssertionErrorMessageTest extends TestCase {
-	private static final String[] DIRECTORIES = { ".", "../catroid", "../catroidTest", "../catroidUiTest",
-			"../catroidCucumberTest", };
+	private static final String[] DIRECTORIES = { ".", "../catroid", "../catroidTest", "../catroidCucumberTest" };
 
 	private static final String OPENING_BRACKET = "\\(";
 	private static final String CLOSING_BRACKET = "\\)";
@@ -76,7 +75,7 @@ public class AssertionErrorMessageTest extends TestCase {
 	private String regexAssertContainsErrorMessage;
 	private String regexAssertDoesntStartWithNumber;
 	private String regexIsCompleteCommand;
-	private StringBuffer errorMessages;
+	private String errorMessages;
 	private boolean errorFound;
 
 	public AssertionErrorMessageTest() {
@@ -219,7 +218,7 @@ public class AssertionErrorMessageTest extends TestCase {
 				if (!currentLine.matches(regexAssertContainsErrorMessage)
 						|| !currentLine.matches(regexAssertDoesntStartWithNumber)) {
 					errorFound = true;
-					errorMessages.append(file.getCanonicalPath() + " in line " + lineNumber + "\n");
+					errorMessages += (file.getCanonicalPath() + " in line " + lineNumber + "\n");
 				}
 			}
 		}
@@ -228,7 +227,7 @@ public class AssertionErrorMessageTest extends TestCase {
 	}
 
 	public void testAssertionErrorMessagesPresent() throws IOException {
-		errorMessages = new StringBuffer();
+		errorMessages = "";
 		errorFound = false;
 		for (String directoryName : DIRECTORIES) {
 			File directory = new File(directoryName);
@@ -241,6 +240,6 @@ public class AssertionErrorMessageTest extends TestCase {
 			}
 		}
 		assertFalse("Assert statements without error messages have been found in the following files: \n"
-				+ errorMessages.toString(), errorFound);
+				+ errorMessages, errorFound);
 	}
 }
