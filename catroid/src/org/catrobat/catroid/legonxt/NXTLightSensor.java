@@ -1,41 +1,50 @@
 package org.catrobat.catroid.legonxt;
 
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 
 import org.catrobat.catroid.formulaeditor.SensorCustomEvent;
 import org.catrobat.catroid.formulaeditor.SensorCustomEventListener;
 import org.catrobat.catroid.formulaeditor.Sensors;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class NXTTouchSensor extends NXTSensor {
+public class NXTLightSensor extends NXTSensor {
 
 	private static final int UPDATE_INTERVAL = 50;
-	private static final String TAG = NXTTouchSensor.class.getSimpleName();
-	private static NXTTouchSensor instance = null;
+	private static final String TAG = NXTLightSensor.class.getSimpleName();
+	private static NXTLightSensor instance = null;
 	private ArrayList<SensorCustomEventListener> listenerList = new ArrayList<SensorCustomEventListener>();
 
 	private Handler handler;
 	private float lastSensorValue = 0.0f;
 
-	private NXTTouchSensor() {
+	private static final int PORT = 0x00;
+
+	private NXTLightSensor() {
 		handler = new Handler();
+	}
+
+	private static class LightMessage {
+
+		private byte[] lightMessage;
+		private LightMessage() {
+			lightMessage = new byte[3];
+			lightMessage[0] = REQUEST_MESSAGE;
+			lightMessage[1] = CMD_GET_INPUT_VALUES;
+			lightMessage[2] = PORT;
+		}
+
+		private byte[] getRawMessage() {
+			return lightMessage;
+		}
 	}
 
 	private Runnable statusChecker = new Runnable() {
 		@Override
 		//poll vor new sensor inputs values
 		public void run() {
-			byte[] message = new byte[3];
-			message[0] = 0x00;
-			message[1] = CMD_GET_INPUT_VALUES;
-			message[2] = 0x01; // Port
-
-			LegoNXT.sendSensorMessage(message);
+			LightMessage message = new LightMessage();
+			LegoNXT.sendSensorMessage(message.getRawMessage());
 
 			handler.postDelayed(statusChecker, UPDATE_INTERVAL);
 		}
@@ -49,15 +58,15 @@ public class NXTTouchSensor extends NXTSensor {
 
 		lastSensorValue = currentSensorValue;
 
-		SensorCustomEvent event = new SensorCustomEvent(Sensors.LEGO_NXT_TOUCH, new float[] {currentSensorValue});
+		SensorCustomEvent event = new SensorCustomEvent(Sensors.LEGO_NXT_LIGHT, new float[] {currentSensorValue});
 		for (SensorCustomEventListener listener : listenerList) {
 			listener.onCustomSensorChanged(event);
 		}
 	}
 
-	public static NXTTouchSensor getInstance() {
+	public static NXTLightSensor getInstance() {
 		if (instance == null) {
-			instance = new NXTTouchSensor();
+			instance = new NXTLightSensor();
 		}
 		return instance;
 	}
@@ -66,15 +75,14 @@ public class NXTTouchSensor extends NXTSensor {
 
 		if (listenerList.contains(listener)) {
 			return true;
-		}
-		else {
+		} else {
 			byte[] message = new byte[5];
 
-			message[0] = 0x00;
+			message[0] = REQUEST_MESSAGE;
 			message[1] = CMD_SET_INPUT_MODE;
-			message[2] = 0x01; // Port
-			message[3] = NXTSensor.SWITCH; //Sensor Type
-			message[4] = NXTSensor.BOOLEAN_MODE; // Sensor Mode
+			message[2] = PORT;
+			message[3] = NXTSensor.LIGHT_INACTIVE; //Sensor Type
+			message[4] = NXTSensor.PCT_FULL_SCALE_MODE; // Sensor Mode
 			LegoNXT.sendSensorMessage(message);
 
 			statusChecker.run();
