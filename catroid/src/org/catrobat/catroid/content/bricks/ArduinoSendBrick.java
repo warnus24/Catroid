@@ -48,7 +48,6 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	private static final long serialVersionUID = 1l;
 	private transient View prototypeView;
 	private transient AdapterView<?> adapterView;
-	private char pinValue = 'L';
 	private char pinNumberLowerByte = '0';
 	private char pinNumberHigherByte = '0';
 	private int pinSpinnerPosition = 0;

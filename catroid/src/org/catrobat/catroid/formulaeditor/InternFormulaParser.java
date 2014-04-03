@@ -322,10 +322,6 @@ public class InternFormulaParser {
 				throw new InternFormulaParserException("Parse Error");
 			}
 			if ((functionTree.getLeftChild().getValue().charAt(0) == '0')
-					&& (functionTree.getLeftChild().getValue().charAt(1) == '0')) {
-				throw new InternFormulaParserException("Parse Error");
-			}
-			if ((functionTree.getLeftChild().getValue().charAt(0) == '0')
 					&& (functionTree.getLeftChild().getValue().charAt(1) > '5')) {
 				throw new InternFormulaParserException("Parse Error");
 			}

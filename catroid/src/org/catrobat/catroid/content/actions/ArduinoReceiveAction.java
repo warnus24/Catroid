@@ -43,7 +43,6 @@ public class ArduinoReceiveAction extends TemporalAction {
 	private Boolean pinValue;
 	private static BluetoothSocket bluetoothSocket = null;
 	private static BluetoothSocket tmpSocket = null;
-	//	private static String MACaddr = "00:07:80:49:8B:61"; //MAC address of the Arduino BT-board
 	public static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -113,7 +112,7 @@ public class ArduinoReceiveAction extends TemporalAction {
 
 		int inputMessage = 0;
 		try {
-			inputMessage = bluetoothInputStream.read();
+			inputMessage = bluetoothInputStream.read(); //we must read more then 1 byte
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -145,5 +144,4 @@ public class ArduinoReceiveAction extends TemporalAction {
 		//		ArduinoSendAction.receiveDataViaBluetoothSocket(bluetoothSocket, pinValue, pinNumberLowerByte,
 		//				pinNumberHigherByte);
 	}
-
 }
