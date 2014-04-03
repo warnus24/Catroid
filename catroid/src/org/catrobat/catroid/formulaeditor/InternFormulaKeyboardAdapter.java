@@ -125,6 +125,14 @@ public class InternFormulaKeyboardAdapter {
 				return buildSensor(Sensors.FACE_X_POSITION);
 			case R.string.formula_editor_sensor_face_y_position:
 				return buildSensor(Sensors.FACE_Y_POSITION);
+			case R.string.formula_editor_sensor_lego_nxt_sound:
+				return buildSensor(Sensors.LEGO_NXT_SOUND);
+			case R.string.formula_editor_sensor_lego_nxt_touch:
+				return buildSensor(Sensors.LEGO_NXT_TOUCH);
+			case R.string.formula_editor_sensor_lego_nxt_light:
+				return buildSensor(Sensors.LEGO_NXT_LIGHT);
+			case R.string.formula_editor_sensor_lego_nxt_ultrasonic:
+				return buildSensor(Sensors.LEGO_NXT_ULTRASONIC);
 
 				//PERIOD
 			case R.id.formula_editor_keyboard_decimal_mark:

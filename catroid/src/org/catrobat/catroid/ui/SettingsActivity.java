@@ -39,7 +39,7 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		addPreferencesFromResource(R.xml.preferences);
+		addPreferencesFromResource(R.layout.preferences);
 
 		ListPreference listPreference = (ListPreference) findPreference(getResources().getString(
 				R.string.preference_key_select_camera));
