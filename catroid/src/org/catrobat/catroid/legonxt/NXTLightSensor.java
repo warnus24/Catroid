@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class NXTLightSensor extends NXTSensor {
 
-	private static final int UPDATE_INTERVAL = 50;
+	private static final int UPDATE_INTERVAL = 250;
 	private static final String TAG = NXTLightSensor.class.getSimpleName();
 	private static NXTLightSensor instance = null;
 	private ArrayList<SensorCustomEventListener> listenerList = new ArrayList<SensorCustomEventListener>();

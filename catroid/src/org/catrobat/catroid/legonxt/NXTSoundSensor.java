@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class NXTSoundSensor extends NXTSensor {
 
-	private static final int UPDATE_INTERVAL = 50;
+	private static final int UPDATE_INTERVAL = 250;
 	private static final String TAG = NXTSoundSensor.class.getSimpleName();
 	private static NXTSoundSensor instance = null;
 	private ArrayList<SensorCustomEventListener> listenerList = new ArrayList<SensorCustomEventListener>();
