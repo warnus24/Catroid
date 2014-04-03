@@ -262,6 +262,8 @@ public abstract class LegoNXTCommunicator extends Thread {
 			case NXTSensor.CMD_SET_INPUT_MODE:
 				Log.d("Communicator", "CMD_SET_INPUT_MODE OK");
 				break;
+			case 0x10:
+				NXTUltraSonicSensor.getInstance().receivedMessage(message);
 			default:
 				Log.i("bt", "Unknown Message received by LegoNXTCommunicator over bluetooth " + message.length);
 				receivedMessages.add(message);
