@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 public class NXTUltraSonicSensor extends NXTSensor {
 
-	private static final int UPDATE_INTERVAL = 300;
+	private static final int UPDATE_INTERVAL = 250;
+	private static final int INITIAL_WAIT = 1000;
 	private static final String TAG = NXTUltraSonicSensor.class.getSimpleName();
 	private static NXTUltraSonicSensor instance = null;
 	private ArrayList<SensorCustomEventListener> listenerList = new ArrayList<SensorCustomEventListener>();
@@ -38,21 +39,21 @@ public class NXTUltraSonicSensor extends NXTSensor {
 					sendLSRead.run();
 				}
 				else {
-					Log.e(TAG, String.format("GET_STATUS reply is byte-count: %d", message[3]));
+					//Log.e(TAG, String.format("GET_STATUS reply is byte-count: %d", message[3]));
 					handler.postDelayed(sendLSGetStatus, UPDATE_INTERVAL);
 				}
 				break;
 
 			case NXTSensor.LS_READ:
 
-				float currentSensorValue = message[4];
+				float currentSensorValue = (message[4] & 0xFF); // make sure that we get a positive value
 
-				if (lastSensorValue == currentSensorValue || currentSensorValue == -1) {
+				if (lastSensorValue == currentSensorValue) {
 					handler.postDelayed(sendLSWrite, UPDATE_INTERVAL);
 					return;
 				}
 
-				Log.d(TAG, String.format("Distance: %f", currentSensorValue));
+				//Log.d(TAG, String.format("Distance: %f", currentSensorValue));
 
 				lastSensorValue = currentSensorValue;
 
@@ -92,8 +93,7 @@ public class NXTUltraSonicSensor extends NXTSensor {
 
 		listenerList.add(listener);
 
-
-		handler.postDelayed(sendLSWrite, 500);
+		handler.postDelayed(sendLSWrite, INITIAL_WAIT);
 
 		return true;
 	}
