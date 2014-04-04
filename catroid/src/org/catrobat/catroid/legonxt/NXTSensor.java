@@ -12,10 +12,9 @@ public abstract class NXTSensor {
 	public static final byte CMD_GET_INPUT_VALUES = 0x07;
 
 	// for ultrasonic sensor
-	public static final byte LS_STATUS = 0x0E;
 	public static final byte LS_WRITE = 0x0F;
-	public static final byte LS_READ = 0x10;
 	public static final byte LS_GET_STATUS = 0x0E;
+	public static final byte LS_READ = 0x10;
 
 	// Sensor Types
 	protected static final byte SWITCH = 0x01;
@@ -24,6 +23,7 @@ public abstract class NXTSensor {
 	protected static final byte SOUND_DB = 0x07;
 	protected static final byte SOUND_DBA = 0x08;
 
+	protected static final byte LOWSPEED = 0x0A;
 	protected static final byte LOWSPEED_9V = 0x0B;
 
 

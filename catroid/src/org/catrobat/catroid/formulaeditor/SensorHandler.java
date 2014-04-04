@@ -69,9 +69,9 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		instance.sensorManager.registerListener(instance, Sensors.LOUDNESS);
 
 		// NXT Sensors
-		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_TOUCH);
-		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_LIGHT);
-        instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_SOUND);
+//		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_TOUCH);
+//		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_LIGHT);
+//        instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_SOUND);
 		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_ULTRASONIC);
 
 	}
