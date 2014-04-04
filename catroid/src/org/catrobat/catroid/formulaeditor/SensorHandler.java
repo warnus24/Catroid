@@ -53,6 +53,7 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 	private float nxt_touch = 0f;
 	private float nxt_light = 50f;
     private float nxt_sound = 0f;
+	private float nxt_ultrasonic = 0f;
 
 	private SensorHandler(Context context) {
 		sensorManager = new SensorManager(
@@ -80,6 +81,7 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_TOUCH);
 		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_LIGHT);
         instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_SOUND);
+		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_ULTRASONIC);
 
 	}
 
@@ -182,6 +184,8 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 				return Double.valueOf(instance.nxt_light);
             case LEGO_NXT_SOUND:
                 return Double.valueOf(instance.nxt_sound);
+			case LEGO_NXT_ULTRASONIC:
+				return Double.valueOf(instance.nxt_ultrasonic);
 		}
 		return 0d;
 	}
@@ -235,6 +239,10 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
             case LEGO_NXT_SOUND:
                 instance.nxt_sound = event.values[0];
                 break;
+			case LEGO_NXT_ULTRASONIC:
+				instance.nxt_ultrasonic = event.values[0];
+				break;
+
 			default:
 				Log.v(TAG, "Unhandled sensor: " + event.sensor);
 		}
