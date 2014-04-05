@@ -51,6 +51,7 @@ import android.util.Log;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BTConnectable;
+import org.catrobat.catroid.formulaeditor.SensorHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -102,6 +103,9 @@ public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 		} catch (IOException ioException) {
 			Log.e(TAG, Log.getStackTraceString(ioException));
 		}
+
+		if (connected)
+			SensorHandler.setNXTSensorsNeeded(true);
 
 		while (connected) {
 			try {
@@ -226,6 +230,7 @@ public class LegoNXTBtCommunicator extends LegoNXTCommunicator {
 				sendToast(resources.getString(R.string.problem_at_closing));
 			}
 		}
+		SensorHandler.setNXTSensorsNeeded(false);
 	}
 
 	@Override
