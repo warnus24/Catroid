@@ -62,6 +62,16 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 	}
 
+	private static boolean nxtSensorsNeeded;
+
+	public static void setNXTSensorsNeeded(boolean b) {
+		nxtSensorsNeeded = b;
+	}
+
+	public static boolean getNXTSensorsNeeded() {
+		return nxtSensorsNeeded;
+	}
+
 	public static void startSensorListener(Context context) {
 
 		if (instance == null) {
@@ -78,11 +88,12 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		FaceDetectionHandler.registerOnFaceDetectionStatusListener(instance);
 
 		// NXT Sensors
-		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_TOUCH);
-		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_LIGHT);
-        instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_SOUND);
-		instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_ULTRASONIC);
-
+		if (getNXTSensorsNeeded()) {
+			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_TOUCH);
+			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_LIGHT);
+			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_SOUND);
+			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_ULTRASONIC);
+		}
 	}
 
 	public static void registerListener(SensorEventListener listener) {
