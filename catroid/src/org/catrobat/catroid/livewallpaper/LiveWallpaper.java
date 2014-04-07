@@ -111,7 +111,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		setScreenSize(isPreview);
 
 		if (isPreview) {
-
 			//previewActivity = new StageActivity();
 			previewStageListener = new StageListener();
 			previewEngine = lastCreatedWallpaperEngine;
@@ -132,8 +131,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	}
 
 	public void changeWallpaperProgram() {
-		previewEngine.changeWallpaperProgram();
-		//homeEngine.changeWallpaperProgram();
+		if (previewEngine != null) {
+			previewEngine.changeWallpaperProgram();
+		}
+		if (homeEngine != null) {
+			homeEngine.changeWallpaperProgram();
+		}
 	}
 
 	@Override
@@ -276,7 +279,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 
 		public void changeWallpaperProgram() {
-
 			if (isPreview()) {
 				getLocalStageListener().reloadProject(null);
 			} else {
@@ -296,5 +298,15 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			//				startActivity(installIntent);
 			//			}
 		}
+	}
+
+	/**
+	 * 
+	 */
+	public void presetSprites() {
+		if (homeScreenStageListener != null) {
+			homeScreenStageListener.resetSprites();
+		}
+		previewStageListener.resetSprites();
 	}
 }

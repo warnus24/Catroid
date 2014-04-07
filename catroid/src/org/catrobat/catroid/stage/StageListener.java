@@ -129,9 +129,6 @@ public class StageListener implements ApplicationListener {
 
 	private byte[] thumbnail;
 
-	public StageListener() {
-	}
-
 	@Override
 	public void create() {
 		font = new BitmapFont();
@@ -250,6 +247,18 @@ public class StageListener implements ApplicationListener {
 		SoundManager.getInstance().clear();
 		if (thumbnail != null && !makeAutomaticScreenshot) {
 			saveScreenshot(thumbnail, SCREENSHOT_AUTOMATIC_FILE_NAME);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void resetSprites() {
+		for (Sprite sprite : sprites) {
+			sprite.resetSprite();
+			sprite.look.createBrightnessContrastShader();
+			stage.addActor(sprite.look);
+			sprite.pause();
 		}
 	}
 
