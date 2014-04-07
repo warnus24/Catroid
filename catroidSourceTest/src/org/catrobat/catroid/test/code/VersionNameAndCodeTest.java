@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 
 public class VersionNameAndCodeTest extends TestCase {
 
-	private static final String[] DIRECTORIES = { "../catroid", "../catroidTest", "../catroidCucumberTest" };
+	private static final String[] MANIFEST_DIRECTORIES = { "../catroid/src/main", "../catroidCucumberTest" };
 	private static final String VERSION_CODE_REGEX = ".*android:versionCode=\"(\\d+)\".*";
 	private static final String VERSION_NAME_REGEX = ".*android:versionName=\"(\\d+\\.\\d+\\.\\d+[a-z]*)\".*";
 
@@ -46,7 +46,7 @@ public class VersionNameAndCodeTest extends TestCase {
 		HashSet<String> testSet = new HashSet<String>();
 		HashMap<String, String> versionInfos = new HashMap<String, String>();
 
-		for (String directoryName : DIRECTORIES) {
+		for (String directoryName : MANIFEST_DIRECTORIES) {
 			File directory = new File(directoryName);
 			assertTrue("Couldn't find directory: " + directoryName, directory.exists() && directory.isDirectory());
 			assertTrue("Couldn't read directory: " + directoryName, directory.canRead());

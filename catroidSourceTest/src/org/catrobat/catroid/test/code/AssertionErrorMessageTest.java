@@ -36,7 +36,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AssertionErrorMessageTest extends TestCase {
-	private static final String[] DIRECTORIES = { ".", "../catroid", "../catroidTest", "../catroidCucumberTest" };
+	private static final String[] DIRECTORIES = { ".", "../catroid", "../catroidCucumberTest" };
 
 	private static final String OPENING_BRACKET = "\\(";
 	private static final String CLOSING_BRACKET = "\\)";
