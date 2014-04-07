@@ -136,26 +136,23 @@ public class StringsTest extends TestCase {
 		Map<String, List<String>> languageStrings = getStringNamesPerLanguage();
 
 		for (String stringName : allStringNames) {
-			for (String language : LANGUAGES) {
-				List<String> languageStringNames = languageStrings.get(language);
+			for (String lanugage : LANGUAGES) {
+				List<String> languageStringNames = languageStrings.get(lanugage);
 				if (!languageStringNames.contains(stringName)) {
 					missingStrings = true;
-					errorMessage
-							.append("\nString with name ")
-							.append(stringName)
-							.append(" is missing in ")
-							.append(language);
+					errorMessage.append("\nString with name " + stringName + " is missing in " + lanugage);
 				}
 			}
 		}
 
-		assertFalse("There are untranslated Strings:" + errorMessage, missingStrings);
+		assertFalse("There are untranslated Strings:" + errorMessage.toString(), missingStrings);
 	}
 
 	public void testUnusedStrings() throws SAXException, IOException, ParserConfigurationException {
+		String errorMessage = "";
 		boolean unusedStringsFound = false;
 
-		StringBuilder javaSourceCodeBuilder = new StringBuilder();
+		String javaSourceCodeBuilder = "";
 		File directory = new File(SOURCE_DIRECTORY);
 		assertTrue("Couldn't find directory: " + SOURCE_DIRECTORY, directory.exists() && directory.isDirectory());
 		assertTrue("Couldn't read directory: " + SOURCE_DIRECTORY, directory.canRead());
@@ -164,17 +161,15 @@ public class StringsTest extends TestCase {
 		for (File file : filesToCheck) {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 
-			String currentLine;
+			String currentLine = null;
 			while ((currentLine = reader.readLine()) != null) {
-				javaSourceCodeBuilder
-						.append(currentLine)
-						.append('\n');
+				javaSourceCodeBuilder += currentLine + "\n";
 			}
 			reader.close();
 		}
-		String javaSourceCode = javaSourceCodeBuilder.toString();
+		String javaSourceCode = javaSourceCodeBuilder;
 
-		StringBuilder xmlSourceCodeBuilder = new StringBuilder();
+		String xmlSourceCodeBuilder = "";
 		directory = new File(RESOURCES_DIRECTORY);
 		assertTrue("Couldn't find directory: " + RESOURCES_DIRECTORY, directory.exists() && directory.isDirectory());
 		assertTrue("Couldn't read directory: " + RESOURCES_DIRECTORY, directory.canRead());
@@ -185,21 +180,18 @@ public class StringsTest extends TestCase {
 			if (!file.getName().equals("strings.xml")) {
 				BufferedReader reader = new BufferedReader(new FileReader(file));
 
-				String currentLine;
+				String currentLine = null;
 				while ((currentLine = reader.readLine()) != null) {
-					xmlSourceCodeBuilder
-							.append(currentLine)
-							.append('\n');
+					xmlSourceCodeBuilder +=  currentLine + "\n";
 				}
 				reader.close();
 			}
 		}
-		String xmlSourceCode = xmlSourceCodeBuilder.toString();
+		String xmlSourceCode = xmlSourceCodeBuilder;
 
 		List<String> allStringNames = getAllStringNames(); // Using a List instead of a set to preserve order
 		Map<String, List<String>> languageStrings = getStringNamesPerLanguage();
 
-		StringBuilder errorMessage = new StringBuilder();
 		for (String string : allStringNames) {
 			Pattern javaReferencePattern = Pattern.compile("R\\.string\\." + string + "[^\\w]");
 			Pattern xmlReferencePattern = Pattern.compile("@string/" + string + "[^\\w]");
@@ -208,20 +200,16 @@ public class StringsTest extends TestCase {
 					&& !xmlReferencePattern.matcher(xmlSourceCode).find()) {
 				unusedStringsFound = true;
 
-				errorMessage
-						.append("\nString with name ")
-						.append(string)
-						.append(" is unused (found in ");
-
+				errorMessage += "\nString with name " + string + " is unused (found in ";
 				for (String language : LANGUAGES) {
 					List<String> languageStringNames = languageStrings.get(language);
 					if (languageStringNames.contains(string)) {
-						errorMessage
-								.append(language)
-								.append(", ");
+						errorMessage += language + ", ";
 					}
 				}
-				errorMessage.replace(errorMessage.length() - 2, errorMessage.length(), ").");
+				StringBuffer buffer = new StringBuffer(errorMessage);
+				errorMessage = buffer.replace(errorMessage.length() - 2, errorMessage.length(), ").").toString();
+
 			}
 		}
 
@@ -244,7 +232,7 @@ public class StringsTest extends TestCase {
 		BufferedReader reader = new BufferedReader(new FileReader(layoutFile));
 
 		List<String> usedStrings = new ArrayList<String>();
-		String currentLine;
+		String currentLine = null;
 		while ((currentLine = reader.readLine()) != null) {
 			String[] split = currentLine.split("\"");
 
@@ -254,7 +242,8 @@ public class StringsTest extends TestCase {
 			}
 			for (int i = 1; i < split.length; i += 2) {
 				if (split[i].startsWith(XML_STRING_PREFIX)) {
-					usedStrings.add(split[i].substring(XML_STRING_PREFIX.length()) + '|' + layoutFile.getName());
+					String stringToAdd = split[i].substring(XML_STRING_PREFIX.length());
+					usedStrings.add(stringToAdd + "|" + layoutFile.getName());
 				}
 			}
 		}
@@ -275,6 +264,7 @@ public class StringsTest extends TestCase {
 	}
 
 	public void testMissingStrings() throws SAXException, IOException, ParserConfigurationException {
+		String errorMessage = "";
 		boolean missingStringsFound = false;
 
 		String stringXmlSourceCodeBuilder = "";
@@ -282,14 +272,15 @@ public class StringsTest extends TestCase {
 		
 		for (File defaultStringFile : defaultResDirectory.listFiles()) {
 			BufferedReader reader = new BufferedReader(new FileReader(defaultStringFile));
-			String currentLine;
+
+			String currentLine = null;
 			while ((currentLine = reader.readLine()) != null) {
-				stringXmlSourceCodeBuilder.append(currentLine);
+				stringXmlSourceCodeBuilder += currentLine + "\n";
 			}
 			reader.close();
 		}
 
-		String stringXmlSourceCode = stringXmlSourceCodeBuilder.toString();
+		String stringXmlSourceCode = stringXmlSourceCodeBuilder;
 		List<String> allStringsUsedInLayoutFiles = getAllStringsUsedInLayoutXMLs();
 
 		Set<String> missingStrings = new HashSet<String>();
@@ -302,13 +293,9 @@ public class StringsTest extends TestCase {
 				missingStrings.add(stringUsedInXml + " used in the file: " + layoutFileName);
 			}
 		}
-		StringBuilder errorMessageBuilder = new StringBuilder(62);
 		for (String missing : missingStrings) {
-			errorMessageBuilder
-					.append("\nString with name ")
-					.append(missing)
-					.append(" is missing in the default resource folder.");
+			errorMessage += "\nString with name " + missing + " is missing in the default resource folder.";
 		}
-		assertFalse("Missing string resources were found:" + errorMessageBuilder, missingStringsFound);
+		assertFalse("Missing string resources were found:" + errorMessage, missingStringsFound);
 	}
 }
