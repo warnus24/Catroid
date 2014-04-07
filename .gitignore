@@ -8,10 +8,6 @@
 #IntelliJ IDEA
 .idea/*
 !.idea/codeStyleSettings.xml
-!.idea/copyright
-.idea/copyright/*
-!.idea/copyright/Catroid_Copyright.xml
-!.idea/copyright/profiles_settings.xml
 *.iml
 *.ipr
 *.iws
