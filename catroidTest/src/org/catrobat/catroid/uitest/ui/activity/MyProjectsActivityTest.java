@@ -210,9 +210,8 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.sleep(200);
 
 		assertEquals(MyProjectsActivity.class.getSimpleName()
-						+ " not set to be in portrait mode in AndroidManifest.xml!", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
-				activityInfo.screenOrientation
-		);
+				+ " not set to be in portrait mode in AndroidManifest.xml!", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+				activityInfo.screenOrientation);
 	}
 
 	public void testOverFlowMenuSettings() {
@@ -297,8 +296,8 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 
 		corruptProjectXML(UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		solo.sleep(200);
-		solo.waitForActivity(MainMenuActivity.class.getSimpleName(), 1000);
-		solo.clickOnButton(myProjectsText);
+		//solo.waitForActivity(MainMenuActivity.class.getSimpleName(), 1000);
+		//solo.clickOnButton(myProjectsText);
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
 		solo.waitForFragmentById(R.id.fragment_projects_list);
 		solo.clickOnText(UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
@@ -306,6 +305,8 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		assertTrue("No error message was shown", solo.searchText(solo.getString(R.string.error_load_project)));
 
 		solo.clickOnButton(0);
+		solo.goBack();
+		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
 		solo.clickOnText(solo.getString(R.string.main_menu_continue));
 		List<Sprite> spriteList = ProjectManager.getInstance().getCurrentProject().getSpriteList();
 		assertTrue("Default Project should not be overwritten", spriteList.size() == 6);
@@ -332,13 +333,13 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		assertTrue("click on project '" + standardProjectName + "' in list not successful",
 				UiTestUtils.clickOnTextInList(solo, standardProjectName));
 		solo.waitForActivity(ProjectActivity.class.getSimpleName());
-		solo.waitForFragmentById(R.id.fragment_sprites_list);
+		assertTrue(solo.waitForFragmentById(R.id.fragment_sprites_list));
 		UiTestUtils.addNewSprite(solo, "testSprite", lookFile);
 		solo.goBack();
 
 		solo.sleep(200);
-		solo.waitForActivity(MainMenuActivity.class.getSimpleName(), 1000);
-		solo.clickOnButton(myProjectsText);
+		solo.waitForActivity(MyProjectsActivity.class.getSimpleName(), 1000);
+		//solo.clickOnButton(myProjectsText);
 
 		solo.waitForText(UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		assertTrue("longclick on project '" + UiTestUtils.DEFAULT_TEST_PROJECT_NAME + "' in list not successful",
@@ -404,13 +405,13 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 				int testPixelX = viewBitmap.getWidth() / 2;
 				int testPixelY = viewBitmap.getHeight() / 2;
 
-				byte[] whitePixel = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
-				byte[] blackPixel = {0, 0, 0, (byte) 255};
+				byte[] whitePixel = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
+				byte[] blackPixel = { 0, 0, 0, (byte) 255 };
 				switch (counter) {
 					case 1:
 						pixelColor = viewBitmap.getPixel(testPixelX, testPixelY);
-						byte[] screenPixel = {(byte) Color.red(pixelColor), (byte) Color.green(pixelColor),
-								(byte) Color.blue(pixelColor), (byte) Color.alpha(pixelColor)};
+						byte[] screenPixel = { (byte) Color.red(pixelColor), (byte) Color.green(pixelColor),
+								(byte) Color.blue(pixelColor), (byte) Color.alpha(pixelColor) };
 						assertTrue("Image color should be white",
 								UiTestUtils.comparePixelRgbaArrays(whitePixel, screenPixel));
 
@@ -419,8 +420,8 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 						break;
 					case 2:
 						pixelColor = viewBitmap.getPixel(testPixelX, testPixelY);
-						byte[] screenPixel2 = {(byte) Color.red(pixelColor), (byte) Color.green(pixelColor),
-								(byte) Color.blue(pixelColor), (byte) Color.alpha(pixelColor)};
+						byte[] screenPixel2 = { (byte) Color.red(pixelColor), (byte) Color.green(pixelColor),
+								(byte) Color.blue(pixelColor), (byte) Color.alpha(pixelColor) };
 						assertTrue("Image color should be black",
 								UiTestUtils.comparePixelRgbaArrays(blackPixel, screenPixel2));
 
@@ -1186,8 +1187,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.clickOnText(solo.getString(R.string.ok));
 		solo.waitForDialogToClose(500);
 		String errorMessageProjectExists = solo.getString(R.string.error_project_exists);
-		assertTrue("No or wrong error message shown",
-				solo.searchText((errorMessageProjectExists)));
+		assertTrue("No or wrong error message shown", solo.searchText((errorMessageProjectExists)));
 		solo.clickOnButton(solo.getString(R.string.close));
 	}
 
@@ -1207,8 +1207,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.sendKey(Solo.ENTER);
 		solo.waitForDialogToClose(500);
 		String errorMessageProjectExists = solo.getString(R.string.error_project_exists);
-		assertTrue("No or wrong error message shown",
-				solo.searchText((errorMessageProjectExists)));
+		assertTrue("No or wrong error message shown", solo.searchText((errorMessageProjectExists)));
 		solo.goBack();
 	}
 
@@ -1328,8 +1327,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.clickOnButton(buttonOkText);
 
 		String errorMessageProjectExists = solo.getString(R.string.error_project_exists);
-		assertTrue("No or wrong error message shown",
-				solo.searchText(errorMessageProjectExists));
+		assertTrue("No or wrong error message shown", solo.searchText(errorMessageProjectExists));
 		solo.clickOnButton(buttonCloseText);
 
 		solo.clearEditText(0);
@@ -1341,8 +1339,13 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 				.getCurrentProject().getName());
 		UiTestUtils.waitForText(solo, UiTestUtils.PROJECTNAME2);
 		solo.goBack();
+		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
+		solo.assertCurrentActivity("not in MyProjectsActivity after goBack from ProjectActivity",
+				MyProjectsActivity.class);
+		solo.goBack();
 		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
-		solo.assertCurrentActivity("not in MainMenuActivity after goBack from ProjectActivity", MainMenuActivity.class);
+		solo.assertCurrentActivity("not in MainMenuActivity after goBack from MyProjectsActivity",
+				MainMenuActivity.class);
 		solo.clickOnButton(buttonMyProjectsText);
 		assertTrue("project " + UiTestUtils.PROJECTNAME2 + " was not added",
 				solo.searchText(UiTestUtils.PROJECTNAME2, 1, true));
@@ -1445,8 +1448,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.clickOnText(actionSetDescriptionText);
 
 		assertTrue("dialog not loaded in 5 seconds", solo.waitForText(actionSetDescriptionText, 0, 5000));
-		assertTrue("description is not shown in edittext",
-				solo.searchText((lorem)));
+		assertTrue("description is not shown in edittext", solo.searchText((lorem)));
 
 		ProjectManager.getInstance().loadProject(UiTestUtils.PROJECTNAME1, getActivity(), true);
 
@@ -1470,6 +1472,8 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 
 		UiTestUtils.addNewSprite(solo, "testSprite", lookFile);
 
+		solo.goBack();
+		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
 		solo.goBack();
 		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
 		solo.clickOnButton(solo.getString(R.string.main_menu_programs));
@@ -1578,8 +1582,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.sendKey(Solo.ENTER);
 		solo.sleep(200);
 		String errorMessageProjectExists = solo.getString(R.string.error_project_exists);
-		assertTrue("No or wrong error message shown",
-				solo.searchText((errorMessageProjectExists)));
+		assertTrue("No or wrong error message shown", solo.searchText((errorMessageProjectExists)));
 		solo.clickOnButton(solo.getString(R.string.close));
 	}
 
@@ -1620,8 +1623,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.clickOnText(solo.getString(R.string.ok));
 		solo.sleep(200);
 		String errorMessageProjectExists = solo.getString(R.string.error_project_exists);
-		assertTrue("No or wrong error message shown",
-				solo.searchText((errorMessageProjectExists)));
+		assertTrue("No or wrong error message shown", solo.searchText((errorMessageProjectExists)));
 		solo.clickOnButton(solo.getString(R.string.close));
 	}
 
@@ -1656,8 +1658,11 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.enterText(0, longProjectName);
 		solo.clickOnButton(solo.getString(R.string.ok));
 		solo.waitForText(solo.getString(R.string.sprites));
-		solo.goBack();
 
+		solo.goBack();
+		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
+
+		solo.goBack();
 		solo.waitForText(solo.getString(R.string.main_menu_programs));
 		solo.clickOnButton(solo.getString(R.string.main_menu_programs));
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
@@ -1689,8 +1694,8 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		byte[] greenPixel1 = createScreenshotBitmap();
 
 		//The color values below are those we get on our emulated test device
-		byte[] greenPixel = {0, (byte) 255, 0, (byte) 255};
-		byte[] redPixel = {(byte) 255, 0, 0, (byte) 255};
+		byte[] greenPixel = { 0, (byte) 255, 0, (byte) 255 };
+		byte[] redPixel = { (byte) 255, 0, 0, (byte) 255 };
 
 		assertTrue("The extracted pixel was not green", UiTestUtils.comparePixelRgbaArrays(greenPixel, greenPixel1));
 		UiTestUtils.clickOnTextInList(solo, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
@@ -1845,8 +1850,8 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 					viewBitmap = viewToTest.getDrawingCache();
 					int pixelValue = viewBitmap.getPixel(viewBitmap.getWidth() / 2, viewBitmap.getHeight() / 2);
 					viewToTest.destroyDrawingCache();
-					pixel = new byte[]{(byte) Color.red(pixelValue), (byte) Color.green(pixelValue),
-							(byte) Color.blue(pixelValue), (byte) Color.alpha(pixelValue)};
+					pixel = new byte[] { (byte) Color.red(pixelValue), (byte) Color.green(pixelValue),
+							(byte) Color.blue(pixelValue), (byte) Color.alpha(pixelValue) };
 				}
 			}
 		}
