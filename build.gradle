@@ -7,15 +7,15 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.9.+'
+        repositories {
+            mavenLocal()
+            mavenCentral()
+        }
+
+        apply plugin: 'android'
     }
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
-apply plugin: 'android'
 //apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
 //apply plugin: 'pmd'
