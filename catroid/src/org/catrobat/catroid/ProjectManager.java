@@ -68,6 +68,14 @@ import org.catrobat.catroid.utils.Utils;
 import org.catrobat.catroid.web.ServerCalls;
 
 
+import org.catrobat.catroid.io.LoadProjectTask;
+import org.catrobat.catroid.io.StorageHandler;
+import org.catrobat.catroid.transfers.CheckTokenTask;
+import org.catrobat.catroid.ui.dialogs.LoginRegisterDialog;
+import org.catrobat.catroid.ui.dialogs.UploadProjectDialog;
+import org.catrobat.catroid.utils.Utils;
+import org.catrobat.catroid.web.ServerCalls;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -83,6 +91,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public final class ProjectManager implements OnLoadProjectCompleteListener, OnCheckTokenCompleteListener {
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+
+public final class ProjectManager implements LoadProjectTask.OnLoadProjectCompleteListener,
+        CheckTokenTask.OnCheckTokenCompleteListener {
 	private static final ProjectManager INSTANCE = new ProjectManager();
 	private static final String TAG = ProjectManager.class.getSimpleName();
 
@@ -380,7 +394,9 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		this.fileChecksumContainer = fileChecksumContainer;
 	}
 
-	private class SaveProjectAsynchronousTask extends AsyncTask<Void, Void, Void> {
+
+	private class SaveProjectAsynchronousTask extends
+            AsyncTask<Void, Void, Void> {
 
 		@Override
 		protected Void doInBackground(Void... params) {

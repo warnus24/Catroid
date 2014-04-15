@@ -90,7 +90,6 @@ public final class Constants {
 	public static final int UPLOAD_NOTIFICATION = 102;
 	public static final int DOWNLOAD_NOTIFICATION = 103;
 	public static final int COPY_NOTIFICATION = 104;
-
 	// Suppress default constructor for noninstantiability
 	private Constants() {
 		throw new AssertionError();
@@ -104,4 +103,10 @@ public final class Constants {
 	public static final String VGP_IMAGE_BUTTON_TOUCH = "vgp_image_button_touch";
 	public static final String VGP_IMAGE_BUTTON_HOLD = "vgp_image_button_hold";
 	public static final String VGP_IMAGE_BUTTON_SWIPE = "vgp_image_button_swipe";
+
+    //=======
+	// Suppress default constructor for noninstantiability
+	private Constants() {
+		throw new AssertionError();
+	}
 }

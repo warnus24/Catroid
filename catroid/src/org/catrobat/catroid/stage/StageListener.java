@@ -99,7 +99,7 @@ public class StageListener implements ApplicationListener {
 	public static final String SCREENSHOT_MANUAL_FILE_NAME = "manual_screenshot" + Constants.IMAGE_STANDARD_EXTENTION;
 	private FPSLogger fpsLogger;
 
-	private Stage stage;
+	private VirtualGamepadStage stage;
 	private boolean paused = false;
 	private boolean finished = false;
 	private boolean firstStart = true;
@@ -180,6 +180,7 @@ public class StageListener implements ApplicationListener {
 
 		stage = new Stage(virtualWidth, virtualHeight, true);
 		screenMode = ScreenModes.STRETCH;
+		//screenMode = ScreenModes.STRETCH;
 
 
 		//stage = new Stage(virtualWidth, virtualHeight, true);
@@ -485,14 +486,15 @@ public class StageListener implements ApplicationListener {
 		if (virtualGamepadSelected) {
 			stage = new VirtualGamepadStage(virtualWidth, virtualHeight, true);
 		} else {
-			stage = new Stage(virtualWidth, virtualHeight, true);
+			stage = new VirtualGamepadStage(virtualWidth, virtualHeight, true);
 		}
-
+		stage = new VirtualGamepadStage(virtualWidth, virtualHeight, true);
 		batch = stage.getSpriteBatch();
 
 		camera = (OrthographicCamera) stage.getCamera();
 		camera.position.set(0, 0, 0);
 
+		sprites = project.getSpriteList();
 		for (Sprite sprite : sprites) {
 			sprite.resetSprite();
 			stage.addActor(sprite.look);
