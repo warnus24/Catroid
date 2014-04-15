@@ -41,6 +41,7 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.stage.StageListener;
+import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
 
 @SuppressLint("NewApi")
@@ -110,7 +111,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		setScreenSize(isPreview);
 
 		if (isPreview) {
-
 			//previewActivity = new StageActivity();
 			previewStageListener = new StageListener();
 			previewEngine = lastCreatedWallpaperEngine;
@@ -131,7 +131,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	}
 
 	public void changeWallpaperProgram() {
-		previewEngine.changeWallpaperProgram();
+		if (previewEngine != null) {
+			previewEngine.changeWallpaperProgram();
+		}
+
 		if (homeEngine != null) {
 			homeEngine.changeWallpaperProgram();
 		}
@@ -192,6 +195,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		};
 
 		private boolean change = false;
+		private StageDialog home_stage_dialog;
 
 		public LiveWallpaperEngine() {
 			super();
@@ -291,8 +295,13 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 
 		public void changeWallpaperProgram() {
-
-			change = true;
+			if (isPreview()) {
+				getLocalStageListener().reloadProject(null);
+			} else {
+				if (home_stage_dialog != null) {
+				}
+				getLocalStageListener().reloadProject(null);
+			}
 
 			//activateTextToSpeechIfNeeded();
 
@@ -305,5 +314,15 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			//				startActivity(installIntent);
 			//			}
 		}
+	}
+
+	/**
+	 * 
+	 */
+	public void presetSprites() {
+		if (homeScreenStageListener != null) {
+			homeScreenStageListener.resetSprites();
+		}
+		previewStageListener.resetSprites();
 	}
 }

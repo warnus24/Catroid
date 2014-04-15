@@ -142,6 +142,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 		@Override
 		protected void onPreExecute() {
+			LiveWallpaper.getInstance().presetSprites();
 			progress.show();
 			super.onPreExecute();
 		}
@@ -171,12 +172,6 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 				LiveWallpaper.getInstance().changeWallpaperProgram();
 				progress.dismiss();
 			}
-
-			//			Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
-			//			intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT, new ComponentName(LiveWallpaper
-			//					.getInstance().getLWPContext(), LiveWallpaper.class));
-			//			startActivity(intent);
-
 			super.onPostExecute(result);
 		}
 	}
