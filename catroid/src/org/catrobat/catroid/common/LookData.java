@@ -35,6 +35,7 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.utils.ImageEditing;
 import org.catrobat.catroid.utils.Utils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 
@@ -136,7 +137,8 @@ public class LookData implements Serializable, Cloneable {
 		if (fileName == null) {
 			return null;
 		}
-		return fileName.substring(0, 32);
+		String filePath = this.getAbsolutePath();
+		return Utils.md5Checksum(new File(filePath));
 	}
 
 	private String getPathToImageDirectory() {
