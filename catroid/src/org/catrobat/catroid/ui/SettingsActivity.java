@@ -43,5 +43,4 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 		actionBar.setTitle(R.string.preference_title);
 		actionBar.setHomeButtonEnabled(true);
 	}
-
 }

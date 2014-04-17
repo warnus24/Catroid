@@ -221,7 +221,6 @@ public class PreStageActivity extends Activity {
 	}
 
 	private void startBluetoothCommunication(boolean autoConnect) {
-		Log.d("hiiii", "hiiii");
 		connectingProgressDialog = ProgressDialog.show(this, "",
 				getResources().getString(R.string.connecting_please_wait), true);
 		Intent serverIntent = new Intent(this, DeviceListActivity.class);
