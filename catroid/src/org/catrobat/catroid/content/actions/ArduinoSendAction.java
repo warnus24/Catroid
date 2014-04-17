@@ -28,13 +28,15 @@ import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
+import org.catrobat.catroid.arduino.Arduino;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
 public class ArduinoSendAction extends TemporalAction {
 
-	private static char pinNumberHigherByte, pinNumberLowerByte;
-	private static char pinValue;
+	private static int pinNumberHigherByte, pinNumberLowerByte;
+	private static int pinValue;
 	private static BluetoothDevice bluetoothDevice = null;
 	private static BluetoothSocket bluetoothSocket = null;
 	private static OutputStream bluetoothOutputStream = null;
@@ -47,27 +49,27 @@ public class ArduinoSendAction extends TemporalAction {
 		bluetoothSocket = newbluetoothSocket;
 	}
 
-	public static char getPinNumberHigherByte() {
+	public static int getPinNumberHigherByte() {
 		return pinNumberHigherByte;
 	}
 
-	public static char getPinNumberLowerByte() {
+	public static int getPinNumberLowerByte() {
 		return pinNumberLowerByte;
 	}
 
-	public static char getPinValue() {
+	public static int getPinValue() {
 		return pinValue;
 	}
 
-	public static void setPinNumberHigherByte(char newpinNumberHigherByte) {
+	public static void setPinNumberHigherByte(int newpinNumberHigherByte) {
 		pinNumberHigherByte = newpinNumberHigherByte;
 	}
 
-	public static void setPinNumberLowerByte(char newpinNumberLowerByte) {
+	public static void setPinNumberLowerByte(int newpinNumberLowerByte) {
 		pinNumberLowerByte = newpinNumberLowerByte;
 	}
 
-	public static void setPinValue(Character newpinValue) {
+	public static void setPinValue(int newpinValue) {
 		pinValue = newpinValue;
 	}
 
@@ -79,8 +81,8 @@ public class ArduinoSendAction extends TemporalAction {
 		ArduinoSendAction.bluetoothDevice = bluetoothDevice;
 	}
 
-	public static void sendDataViaBluetoothSocket(BluetoothSocket outputBluetoothSocket, char pinValue,
-			char pinNumberLowerByte, char pinNumberHigherByte) {
+	public static void sendDataViaBluetoothSocket(BluetoothSocket outputBluetoothSocket, int pinValue,
+			int pinNumberLowerByte, int pinNumberHigherByte) {
 		try {
 			bluetoothOutputStream = outputBluetoothSocket.getOutputStream();
 			bluetoothOutputStream.write(pinNumberLowerByte);
@@ -97,14 +99,19 @@ public class ArduinoSendAction extends TemporalAction {
 
 		Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
 				+ "---------------");
-		//		sendDataViaBluetoothSocket(bluetoothSocket, pinValue, pinNumberLowerByte, pinNumberHigherByte);
+
+		//		Arduino.sendArduinoDigitalPinMessage(ArduinoSendAction.getPinNumberLowerByte(),
+		//				ArduinoSendAction.getPinNumberHigherByte(), ArduinoSendAction.getPinValue());
 	}
 
 	@Override
 	public boolean act(float delta) {
-		ArduinoSendAction.sendDataViaBluetoothSocket(ArduinoSendAction.getBluetoothSocket(),
-				ArduinoSendAction.getPinValue(), ArduinoSendAction.getPinNumberLowerByte(),
-				ArduinoSendAction.getPinNumberHigherByte());
+		//		ArduinoSendAction.sendDataViaBluetoothSocket(ArduinoSendAction.getBluetoothSocket(),
+		//				ArduinoSendAction.getPinValue(), ArduinoSendAction.getPinNumberLowerByte(),
+		//				ArduinoSendAction.getPinNumberHigherByte());
+
+		Arduino.sendArduinoDigitalPinMessage(ArduinoSendAction.getPinNumberLowerByte(),
+				ArduinoSendAction.getPinNumberHigherByte(), ArduinoSendAction.getPinValue());
 		return true;
 	}
 }

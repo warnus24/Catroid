@@ -27,6 +27,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -44,6 +45,9 @@ public abstract class ArduinoCommunicator extends Thread {
 	public static final int STATE_RECEIVEERROR = 6;
 	public static final int STATE_SENDERROR = 7;
 	public static final int RECEIVED_MESSAGE = 8;
+
+	public static final int SET_DIGITAL_PIN_VALUE_COMMAND = 100;
+	public static final int GET_DIGITAL_PIN_VALUE_COMMAND = 101;
 
 	protected boolean connected = false;
 	protected Handler uiHandler;
@@ -137,8 +141,7 @@ public abstract class ArduinoCommunicator extends Thread {
 	}
 
 	protected synchronized void resetArduinoBoard() {
-		commands.resetArduino();
-		sendCommandMessage(commands.getCommandMessage());
+		sendCommandMessage(commands.resetArduino());
 	}
 
 	protected synchronized void sendCommandMessage(byte[] commandMessage) {
@@ -152,81 +155,37 @@ public abstract class ArduinoCommunicator extends Thread {
 	// receive messages from the UI
 	@SuppressLint("HandlerLeak")
 	final Handler myHandler = new Handler() {
-		//		@Override
-		//		public void handleMessage(Message message) {
-		//
-		//			byte[] commandMessage;
-		//			switch (message.what) {
-		//				case MOTOR_COMMAND:
-		//					int motor = message.getData().getInt("motor");
-		//					int speed = message.getData().getInt("speed");
-		//					switch (motor) {
-		//						case MOTOR_LEFT:
-		//							commands.setSpeedOfLeftMotor(speed);
-		//							break;
-		//						case MOTOR_RIGHT:
-		//							commands.setSpeedOfRightMotor(speed);
-		//							break;
-		//						case MOTOR_BOTH:
-		//							commands.setSpeedOfLeftMotor(speed);
-		//							commands.setSpeedOfRightMotor(speed);
-		//							break;
-		//						default:
-		//							Log.d("Albert", "Handler: ERROR: default-Motor !!!!!!!!!!!!!!!");
-		//					}
-		//					commandMessage = commands.getCommandMessage();
-		//					sendCommandMessage(commandMessage);
-		//					break;
-		//				case MOTOR_RESET_COMMAND:
-		//					commands.setSpeedOfLeftMotor(0);
-		//					commands.setSpeedOfRightMotor(0);
-		//					commands.setBuzzer(0);
-		//					commands.setLeftEye(255, 255, 255);
-		//					commands.setRightEye(255, 255, 255);
-		//					commandMessage = commands.getCommandMessage();
-		//					sendCommandMessage(commandMessage);
-		//					break;
-		//				case BUZZER_COMMAND:
-		//					int buzzer = message.getData().getInt("buzzer");
-		//					commands.setBuzzer(buzzer);
-		//					commandMessage = commands.getCommandMessage();
-		//					sendCommandMessage(commandMessage);
-		//					break;
-		//				case FRONT_LED_COMMAND:
-		//					int status = message.getData().getInt("frontLED");
-		//					commands.setFrontLed(status);
-		//					commandMessage = commands.getCommandMessage();
-		//					sendCommandMessage(commandMessage);
-		//					break;
-		//				case RGB_EYE_COMMAND:
-		//					Log.d("Albert", "create command-message");
-		//					int eye = message.getData().getInt("eye");
-		//					int red = message.getData().getInt("red");
-		//					int green = message.getData().getInt("green");
-		//					int blue = message.getData().getInt("blue");
-		//					switch (eye) {
-		//						case EYE_LEFT:
-		//							commands.setLeftEye(red, green, blue);
-		//							break;
-		//						case EYE_RIGHT:
-		//							commands.setRightEye(red, green, blue);
-		//							break;
-		//						case EYE_BOTH:
-		//							commands.setLeftEye(red, green, blue);
-		//							commands.setRightEye(red, green, blue);
-		//							break;
-		//						default:
-		//							Log.d("Albert", "Handler: ERROR: default-Motor !!!!!!!!!!!!!!!");
-		//					}
-		//					commandMessage = commands.getCommandMessage();
-		//					sendCommandMessage(commandMessage);
-		//					break;
-		//
-		//				default:
-		//					Log.d("RobotAlbertCommunicator", "handleMessage: Default !!!!!!!!!!!!!!!");
-		//					break;
-		//			}
-		//		}
+		@Override
+		public void handleMessage(Message message) {
+			byte[] commandMessage;
+
+			int pinLowerByte = message.getData().getInt("pinLowerByte");
+			int pinHigherByte = message.getData().getInt("pinHigherByte");
+			int value = message.getData().getInt("value");
+
+			switch (message.what) {
+				case SET_DIGITAL_PIN_VALUE_COMMAND:
+					//set pin number + value
+					commands.setPinNumberLowerByte(pinLowerByte);
+					commands.setPinNumberHigherByte(pinHigherByte);
+					commands.setPinValue(value);
+					//get the buffer in the correct form, rdy to send
+					commandMessage = commands.getCommandMessage();
+					sendCommandMessage(commandMessage);
+					break;
+				//				case GET_DIGITAL_PIN_VALUE_COMMAND:
+				//					//set pin number + value
+				//					commands.setPinNumberLowerByte(pinLowerByte);
+				//					commands.setPinNumberHigherByte(pinHigherByte);
+				//					commands.setPinValue(value);
+				//					commandMessage = commands.getCommandMessage();
+				//					sendCommandMessage(commandMessage);
+				//					break;
+				default:
+					Log.d("RobotAlbertCommunicator", "handleMessage: Default !!!!!!!!!!!!!!!");
+					break;
+			}
+		}
 
 	};
 }

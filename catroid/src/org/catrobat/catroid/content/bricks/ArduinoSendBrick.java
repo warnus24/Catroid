@@ -48,8 +48,8 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	private static final long serialVersionUID = 1l;
 	private transient View prototypeView;
 	private transient AdapterView<?> adapterView;
-	private char pinNumberLowerByte = '0';
-	private char pinNumberHigherByte = '0';
+	private int pinNumberLowerByte = 0;
+	private int pinNumberHigherByte = 0;
 	private int pinSpinnerPosition = 0;
 	private int valueSpinnerPosition = 0;
 
@@ -187,9 +187,9 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (position == 0) {
-					ArduinoSendAction.setPinValue('L');
+					ArduinoSendAction.setPinValue('L'); //L
 				} else {
-					ArduinoSendAction.setPinValue('H');
+					ArduinoSendAction.setPinValue('H'); //H
 				}
 				valueSpinnerPosition = position;
 				adapterView = parent;

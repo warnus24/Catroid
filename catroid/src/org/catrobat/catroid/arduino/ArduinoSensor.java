@@ -44,7 +44,7 @@ public final class ArduinoSensor {
 	private ArrayList<SensorCustomEventListener> listenerList = new ArrayList<SensorCustomEventListener>();
 
 	private Handler handler;
-	private float[] incomingSensorValue = new float[1]; //refactor, must be done in a more efficient way
+	private float[] incomingSensorValue = new float[2];
 	private static boolean debugOutput = false;
 
 	public static final String KEY_SETTINGS_ARDUINO_BRICKS = "setting_arduino_bricks";

@@ -31,6 +31,7 @@ import android.util.Log;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BTConnectable;
+import org.catrobat.catroid.content.actions.ArduinoSendAction;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -117,7 +118,13 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 				}
 			}
 
-			btSocketTemporary = btDevice.createRfcommSocketToServiceRecord(SERIAL_PORT_SERVICE_CLASS_UUID);
+			if (ArduinoSendAction.getBluetoothSocket() != null) {
+				btSocketTemporary = ArduinoSendAction.getBluetoothSocket();
+			} else {
+				btSocketTemporary = btDevice.createRfcommSocketToServiceRecord(SERIAL_PORT_SERVICE_CLASS_UUID);
+				ArduinoSendAction.setBluetoothSocket(btSocketTemporary);
+			}
+
 			try {
 				btSocketTemporary.connect();
 
@@ -226,7 +233,7 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
 		@SuppressWarnings("unused")
 		int read = 0;
-		byte[] buf = new byte[1];
+		byte[] buf = new byte[10];
 
 		do {
 

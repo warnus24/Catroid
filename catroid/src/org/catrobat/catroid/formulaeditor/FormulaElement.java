@@ -25,6 +25,7 @@ package org.catrobat.catroid.formulaeditor;
 import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.arduino.Arduino;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
 
@@ -299,11 +300,13 @@ public class FormulaElement implements Serializable {
 					pinNumberLowerByteDigital = left.toString().charAt(left.toString().length() - 4);
 					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
 				}
-				char pinValueDigital = 'D'; //D stands for digital
+				//				char pinValueDigital = 'D'; //D stands for digital
 
-				int pinValueFromArduinoDigital = ArduinoReceiveAction.receiveDataViaBluetoothSocket(
-						ArduinoReceiveAction.getBluetoothSocket(), pinValueDigital, pinNumberLowerByteDigital,
-						pinNumberHigherByteDigital);
+				//				int pinValueFromArduinoDigital = ArduinoReceiveAction.receiveDataViaBluetoothSocket(
+				//						ArduinoReceiveAction.getBluetoothSocket(), pinValueDigital, pinNumberLowerByteDigital,
+				//						pinNumberHigherByteDigital);
+
+				int pinValueFromArduinoDigital = Arduino.getArduinoDigitalSensorMessage();
 
 				if (pinValueFromArduinoDigital == 72) {
 					return 1.0;

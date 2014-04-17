@@ -28,17 +28,37 @@ package org.catrobat.catroid.arduino;
  */
 public class ArduinoControlCommands {
 
-	private byte[] buffer = new byte[10];
-	private byte sendFrameNumber = 0;
+	private byte[] buffer = new byte[3];
+	//	private byte sendFrameNumber = 0;
 
-	public byte[] getCommandMessage() {
-		buffer[1] = (byte) (sendFrameNumber + 1);
+	private int pinNumberLowerByte;
+	private int pinNumberHigherByte;
+	private int pinValue;
+
+	public void setPinNumberLowerByte(int newPinNumberLowerByte) {
+		pinNumberLowerByte = newPinNumberLowerByte;
+	}
+
+	public void setPinNumberHigherByte(int newPinNumberHigherByte) {
+		pinNumberHigherByte = newPinNumberHigherByte;
+	}
+
+	public void setPinValue(int newPinValue) {
+		pinValue = newPinValue;
+	}
+
+	public byte[] resetArduino() {
+		buffer[0] = 48; //0
+		buffer[1] = 50; //2
+		buffer[2] = 72; //H
 		return buffer;
 	}
 
-	public void resetArduino() {
-		buffer[0] = '1';
-		buffer[1] = '3';
-		buffer[3] = 'L';
+	public byte[] getCommandMessage() {
+		buffer[0] = (byte) pinNumberLowerByte;
+		buffer[1] = (byte) pinNumberHigherByte;
+		buffer[2] = (byte) pinValue;
+		return buffer;
 	}
+
 }

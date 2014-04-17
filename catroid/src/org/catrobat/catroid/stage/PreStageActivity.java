@@ -39,13 +39,11 @@ import android.widget.Toast;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.bluetooth.BTConnection;
-import org.catrobat.catroid.bluetooth.BTConnection.States;
+import org.catrobat.catroid.arduino.Arduino;
 import org.catrobat.catroid.bluetooth.BTDeviceActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
-import org.catrobat.catroid.content.actions.ArduinoSendAction;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
@@ -58,7 +56,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Queue;
-import java.util.UUID;
 
 @SuppressWarnings("deprecation")
 public class PreStageActivity extends Activity {
@@ -74,6 +71,8 @@ public class PreStageActivity extends Activity {
 	private static TextToSpeech textToSpeech;
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
 	private Queue<Bundle> BTResourceQueue;
+
+	private static Arduino arduino;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -233,28 +232,28 @@ public class PreStageActivity extends Activity {
 							case (Brick.BLUETOOTH_ARDUINO):
 								//								if (ArduinoSendAction.getBluetoothSocket() == null
 								//										|| ArduinoReceiveAction.getBluetoothSocket() == null) {
-								if (ArduinoSendAction.getBluetoothSocket() == null) {
+								//								if (ArduinoSendAction.getBluetoothSocket() == null) {
 
-									String arduinoMacAddress = data.getExtras().getString(
-											BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
-									BTConnection btConnection = new BTConnection(arduinoMacAddress,
-											UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-									States returnState = btConnection.connect();
-									if (returnState != States.CONNECTED) {
-										resourceFailed();
-									}
-
-									ArduinoSendAction.setBluetoothSocket(btConnection.getBTSocket());
-								}
+								String arduinoMacAddress = data.getExtras().getString(
+										BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
+								//									BTConnection btConnection = new BTConnection(arduinoMacAddress,
+								//											UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
+								//									States returnState = btConnection.connect();
+								//									if (returnState != States.CONNECTED) {
+								//										resourceFailed();
+								//									}
+								arduino = new Arduino(this, recieveHandler);
+								arduino.startBTCommunicator(arduinoMacAddress);
+								//									ArduinoSendAction.setBluetoothSocket(btConnection.getBTSocket());
+								//								}
 								connectingProgressDialog.dismiss();
 								resourceInitialized();
 								break;
 							case (Brick.BLUETOOTH_SENSORS_ARDUINO):
 
-								String arduinoMacAddress = data.getExtras().getString(
-										BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
-								ArduinoReceiveAction.setBluetoothMacAdress(arduinoMacAddress);
-								ArduinoReceiveAction.initBluetoothConnection(arduinoMacAddress);
+								String MacAddress = data.getExtras().getString(BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
+								ArduinoReceiveAction.setBluetoothMacAdress(MacAddress);
+								ArduinoReceiveAction.initBluetoothConnection(MacAddress);
 								connectingProgressDialog.dismiss();
 								resourceInitialized();
 								break;

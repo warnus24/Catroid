@@ -128,9 +128,9 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		char pinValue = ArduinoSendAction.getPinValue();
-		char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
-		char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+		int pinValue = ArduinoSendAction.getPinValue();
+		int pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+		int pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
 		BluetoothSocket outputBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		ArduinoSendAction.sendDataViaBluetoothSocket(outputBluetoothSocket, pinValue, pinNumberLowerByte,
 				pinNumberHigherByte);
@@ -166,9 +166,9 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		//select Value from Spinner (H)
 		solo.pressSpinnerItem(1, 1);
 
-		char pinValue = ArduinoSendAction.getPinValue();
-		char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
-		char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+		int pinValue = ArduinoSendAction.getPinValue();
+		int pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+		int pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
@@ -192,9 +192,9 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		//select Value from Spinner (L)
 		solo.pressSpinnerItem(1, 0);
 
-		char pinValue = ArduinoSendAction.getPinValue();
-		char pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
-		char pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+		int pinValue = ArduinoSendAction.getPinValue();
+		int pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+		int pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
