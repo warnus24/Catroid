@@ -510,14 +510,14 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 
 		createUserVariableFromVariableFragment("global", true);
 		createUserVariableFromVariableFragment("local", false);
-		solo.sleep(1000);
+
 		String selectAll = solo.getString(R.string.select_all).toUpperCase(Locale.getDefault());
 
-		solo.sleep(1000);
+		solo.sleep(400);
+
 		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, getActivity());
-		solo.sleep(1000);
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
-		solo.sleep(1000);
+
 		solo.clickOnText(selectAll);
 		solo.sleep(100);
 		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
@@ -528,10 +528,16 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		UiTestUtils.clickOnCheckBox(solo, 1);
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
 
+<<<<<<< HEAD
 		UiTestUtils.clickOnCheckBox(solo, 0);
 		solo.sleep(100);
 		UiTestUtils.clickOnCheckBox(solo, 1);		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
 		solo.sleep(200);
+=======
+		solo.clickOnCheckBox(0);
+		solo.clickOnCheckBox(1);
+		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
+>>>>>>> reverted many files that did not need to change
 	}
 
 	private void createProject(String projectName) throws InterruptedException {

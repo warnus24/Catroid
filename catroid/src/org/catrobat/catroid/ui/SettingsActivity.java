@@ -96,7 +96,6 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 		}
 	}
 
-
 	public static void setTermsOfServiceAgreedPermanently(Context context, boolean agreed) {
 		setBooleanSharedPreference(agreed, SETTINGS_PARROT_AR_DRONE_CATROBAT_TERMS_OF_SERVICE_ACCEPTED_PERMANENTLY,
 				context);
