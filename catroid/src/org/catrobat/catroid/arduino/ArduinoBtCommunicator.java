@@ -31,7 +31,6 @@ import android.util.Log;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BTConnectable;
-import org.catrobat.catroid.content.actions.ArduinoSendAction;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,13 +46,11 @@ import java.util.UUID;
 public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
 	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fc");
-	//	private static final byte PACKET_HEADER_1 = (byte) 0xAA;
-	private static final byte END_OF_FILE = 0x45; //Ascii table "E"
-	//	private static final byte PACKET_TAIL_1 = 0x0D;
-	//	private static final byte PACKET_TAIL_2 = 0x0A;
-	//
-	private static final byte COMMAND_SENSOR = 0x06;
-	//	private static final byte COMMAND_EXTERNAL = 0x20;
+	//	private static final byte START_OF_FILE = (byte) 83; //Ascii table "S"
+	//	private static final byte END_OF_FILE = (byte) 88; //Ascii table "X"
+
+	private static final byte BOF = (byte) 126; //Ascii table "~"
+
 	private BluetoothAdapter btAdapter;
 	private BluetoothSocket btSocket = null;
 	private OutputStream outputStream = null;
@@ -118,12 +115,7 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 				}
 			}
 
-			if (ArduinoSendAction.getBluetoothSocket() != null) {
-				btSocketTemporary = ArduinoSendAction.getBluetoothSocket();
-			} else {
-				btSocketTemporary = btDevice.createRfcommSocketToServiceRecord(SERIAL_PORT_SERVICE_CLASS_UUID);
-				ArduinoSendAction.setBluetoothSocket(btSocketTemporary);
-			}
+			btSocketTemporary = btDevice.createRfcommSocketToServiceRecord(SERIAL_PORT_SERVICE_CLASS_UUID);
 
 			try {
 				btSocketTemporary.connect();
@@ -233,13 +225,12 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
 		@SuppressWarnings("unused")
 		int read = 0;
-		byte[] buf = new byte[10];
+		byte[] buf = new byte[1];
 
 		do {
-
 			checkIfDataIsAvailable(1);
 			read = inputStream.read(buf);
-		} while (buf[0] != END_OF_FILE);
+		} while (buf[0] != BOF);
 
 		byte[] length = new byte[1];
 		//checkIfDataIsAvailable(1);
@@ -250,20 +241,21 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 		read = inputStream.read(buffer);
 
 		switch (buffer[0]) {
-			case COMMAND_SENSOR:
-
-				int analaogSensorValue = buffer[0];
-				int digitalSensorValue = buffer[1];
-
-				sensors.setArduinoAnalogSensor(analaogSensorValue);
-				sensors.setArduinoDigitalSensor(digitalSensorValue);
+			case 'D':
+				sensors.setArduinoDigitalSensor(buffer[3]);
 
 				if (debugOutput == true) {
 					Log.d("ArduinoBtComm", "sensor packet found");
-					Log.d("ArduinoBtComm", "receiveMessage: AnalogValue=" + analaogSensorValue);
-					Log.d("ArduinoBtComm", "receiveMessage: rightDistance=" + digitalSensorValue);
+					Log.d("ArduinoBtComm", "receiveMessage: Value=" + buffer[3]);
 				}
+				break;
+			case 'A':
+				sensors.setArduinoAnalogSensor(buffer[3]);
 
+				if (debugOutput == true) {
+					Log.d("ArduinoBtComm", "sensor packet found");
+					Log.d("ArduinoBtComm", "receiveMessage: Value=" + buffer[3]);
+				}
 				break;
 			default:
 				Log.d("ArduinoBtComm", "Unknown Command! id = " + buffer[0]);

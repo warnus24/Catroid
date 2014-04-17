@@ -27,7 +27,6 @@ import android.util.Log;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.arduino.Arduino;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -280,13 +279,6 @@ public class FormulaElement implements Serializable {
 
 			case ARDUINODIGITAL:
 
-				if (ArduinoReceiveAction.getBluetoothMacAdress() == "") {
-					return 0.0;
-				}
-				if (ArduinoReceiveAction.getBluetoothSocket() == null) {
-					return -1.0;
-				}
-
 				char pinNumberLowerByteDigital = '0';
 				char pinNumberHigherByteDigital = '0';
 				//split up the pin number
@@ -300,12 +292,8 @@ public class FormulaElement implements Serializable {
 					pinNumberLowerByteDigital = left.toString().charAt(left.toString().length() - 4);
 					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
 				}
-				//				char pinValueDigital = 'D'; //D stands for digital
 
-				//				int pinValueFromArduinoDigital = ArduinoReceiveAction.receiveDataViaBluetoothSocket(
-				//						ArduinoReceiveAction.getBluetoothSocket(), pinValueDigital, pinNumberLowerByteDigital,
-				//						pinNumberHigherByteDigital);
-
+				Arduino.getArduinoValueFromPin(pinNumberLowerByteDigital, pinNumberHigherByteDigital, 'D');
 				int pinValueFromArduinoDigital = Arduino.getArduinoDigitalSensorMessage();
 
 				if (pinValueFromArduinoDigital == 72) {
@@ -317,13 +305,6 @@ public class FormulaElement implements Serializable {
 				}
 
 			case ARDUINOANALOG:
-
-				if (ArduinoReceiveAction.getBluetoothMacAdress() == "") {
-					return 0.0;
-				}
-				if (ArduinoReceiveAction.getBluetoothSocket() == null) {
-					return -1.0;
-				}
 
 				char pinNumberLowerByteAnalog = '0';
 				char pinNumberHigherByteAnalog = '0';
@@ -338,11 +319,9 @@ public class FormulaElement implements Serializable {
 					pinNumberLowerByteAnalog = left.toString().charAt(left.toString().length() - 4);
 					pinNumberHigherByteAnalog = left.toString().charAt(left.toString().length() - 3);
 				}
-				char pinValueAnalog = 'A'; //A stands for analog
 
-				int pinValueFromArduinoAnalog = ArduinoReceiveAction.receiveDataViaBluetoothSocket(
-						ArduinoReceiveAction.getBluetoothSocket(), pinValueAnalog, pinNumberLowerByteAnalog,
-						pinNumberHigherByteAnalog);
+				Arduino.getArduinoValueFromPin(pinNumberLowerByteAnalog, pinNumberHigherByteAnalog, 'A');
+				int pinValueFromArduinoAnalog = Arduino.getArduinoAnalogSensorMessage();
 
 				return (double) pinValueFromArduinoAnalog;
 		}

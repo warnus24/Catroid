@@ -20,43 +20,43 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.arduino;
+package org.catrobat.catroid.content.actions;
+
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
+
+import org.catrobat.catroid.arduino.Arduino;
+import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.formulaeditor.UserVariable;
 
 /**
- * Adrian Schnedlitz *
+ * @author Adrian Schnedlitz
+ * 
  */
-public final class ArduinoSensorData {
+public class ArduinoAnalogPinSensorAction extends TemporalAction {
 
-	private static ArduinoSensorData instance = null;
+	@SuppressWarnings("unused")
+	private Sprite sprite;
+	private UserVariable userVariable;
 
-	//Sensor variables
-	private int arduinoDigitalSensor = 0; //0 or 1 (Low or High)
-	private int arduinoAnalogSensor = 0; //0 - 1023
-
-	private ArduinoSensorData() {
-
-	}
-
-	public static ArduinoSensorData getInstance() {
-		if (instance == null) {
-			instance = new ArduinoSensorData();
+	@Override
+	protected void update(float percent) {
+		if (userVariable == null) {
+			return;
 		}
-		return instance;
+		int value = Arduino.getArduinoAnalogSensorMessage();
+		userVariable.setValue(value);
+
 	}
 
-	public int getArduinoDigitalSensor() {
-		return arduinoDigitalSensor;
+	public void setUserVariable(UserVariable userVariable) {
+		this.userVariable = userVariable;
 	}
 
-	public void setArduinoDigitalSensor(int value) {
-		arduinoDigitalSensor = value;
+	public void setVariable(UserVariable userVariable) {
+		this.userVariable = userVariable;
 	}
 
-	public int getArduinoAnalogSensor() {
-		return arduinoAnalogSensor;
-	}
-
-	public void setArduinoAnalogSensor(int value) {
-		arduinoAnalogSensor = value;
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
 	}
 }

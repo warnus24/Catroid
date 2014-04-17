@@ -46,8 +46,7 @@ public class Arduino implements BTConnectable {
 	private Activity activity;
 
 	private static final int SET_DIGITAL_PIN_VALUE_COMMAND = 100;
-
-	//	private static final int GET_DIGITAL_PIN_VALUE_COMMAND = 101;
+	private static final int GET_DIGITAL_PIN_VALUE_COMMAND = 101;
 
 	public Arduino(Activity activity, Handler recieverHandler) {
 		this.activity = activity;
@@ -94,16 +93,16 @@ public class Arduino implements BTConnectable {
 		btcHandler.sendMessage(myMessage);
 	}
 
-	//	public static synchronized void getArduinoDigitalPinMessage(int pinLowerByte, int pinHigherByte, int value) {
-	//		Bundle myBundle = new Bundle();
-	//		myBundle.putInt("pinLowerByte", pinLowerByte);
-	//		myBundle.putInt("pinHigherByte", pinHigherByte);
-	//		myBundle.putInt("value", value);
-	//		Message myMessage = btcHandler.obtainMessage();
-	//		myMessage.setData(myBundle);
-	//		myMessage.what = GET_DIGITAL_PIN_VALUE_COMMAND;
-	//		btcHandler.sendMessage(myMessage);
-	//	}
+	public static synchronized void getArduinoValueFromPin(int pinLowerByte, int pinHigherByte, int pinType) {
+		Bundle myBundle = new Bundle();
+		myBundle.putInt("pinLowerByte", pinLowerByte);
+		myBundle.putInt("pinHigherByte", pinHigherByte);
+		myBundle.putInt("pinType", pinType);
+		Message myMessage = btcHandler.obtainMessage();
+		myMessage.setData(myBundle);
+		myMessage.what = GET_DIGITAL_PIN_VALUE_COMMAND;
+		btcHandler.sendMessage(myMessage);
+	}
 
 	public static int getArduinoDigitalSensorMessage() {
 		int value = myCommunicator.sensors.getArduinoDigitalSensor();

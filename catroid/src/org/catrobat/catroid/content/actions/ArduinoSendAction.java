@@ -22,32 +22,16 @@
  */
 package org.catrobat.catroid.content.actions;
 
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import org.catrobat.catroid.arduino.Arduino;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 public class ArduinoSendAction extends TemporalAction {
 
 	private static int pinNumberHigherByte, pinNumberLowerByte;
 	private static int pinValue;
-	private static BluetoothDevice bluetoothDevice = null;
-	private static BluetoothSocket bluetoothSocket = null;
-	private static OutputStream bluetoothOutputStream = null;
-
-	public static BluetoothSocket getBluetoothSocket() {
-		return bluetoothSocket;
-	}
-
-	public static void setBluetoothSocket(BluetoothSocket newbluetoothSocket) {
-		bluetoothSocket = newbluetoothSocket;
-	}
 
 	public static int getPinNumberHigherByte() {
 		return pinNumberHigherByte;
@@ -73,42 +57,16 @@ public class ArduinoSendAction extends TemporalAction {
 		pinValue = newpinValue;
 	}
 
-	public static BluetoothDevice getBluetoothDevice() {
-		return bluetoothDevice;
-	}
-
-	public static void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
-		ArduinoSendAction.bluetoothDevice = bluetoothDevice;
-	}
-
-	public static void sendDataViaBluetoothSocket(BluetoothSocket outputBluetoothSocket, int pinValue,
-			int pinNumberLowerByte, int pinNumberHigherByte) {
-		try {
-			bluetoothOutputStream = outputBluetoothSocket.getOutputStream();
-			bluetoothOutputStream.write(pinNumberLowerByte);
-			bluetoothOutputStream.write(pinNumberHigherByte);
-			bluetoothOutputStream.write(pinValue);
-			bluetoothOutputStream.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	@Override
 	protected void update(float percent) {
 
 		Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
 				+ "---------------");
 
-		//		Arduino.sendArduinoDigitalPinMessage(ArduinoSendAction.getPinNumberLowerByte(),
-		//				ArduinoSendAction.getPinNumberHigherByte(), ArduinoSendAction.getPinValue());
 	}
 
 	@Override
 	public boolean act(float delta) {
-		//		ArduinoSendAction.sendDataViaBluetoothSocket(ArduinoSendAction.getBluetoothSocket(),
-		//				ArduinoSendAction.getPinValue(), ArduinoSendAction.getPinNumberLowerByte(),
-		//				ArduinoSendAction.getPinNumberHigherByte());
 
 		Arduino.sendArduinoDigitalPinMessage(ArduinoSendAction.getPinNumberLowerByte(),
 				ArduinoSendAction.getPinNumberHigherByte(), ArduinoSendAction.getPinValue());

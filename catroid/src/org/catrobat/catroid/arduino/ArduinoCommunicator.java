@@ -173,14 +173,14 @@ public abstract class ArduinoCommunicator extends Thread {
 					commandMessage = commands.getCommandMessage();
 					sendCommandMessage(commandMessage);
 					break;
-				//				case GET_DIGITAL_PIN_VALUE_COMMAND:
-				//					//set pin number + value
-				//					commands.setPinNumberLowerByte(pinLowerByte);
-				//					commands.setPinNumberHigherByte(pinHigherByte);
-				//					commands.setPinValue(value);
-				//					commandMessage = commands.getCommandMessage();
-				//					sendCommandMessage(commandMessage);
-				//					break;
+				case GET_DIGITAL_PIN_VALUE_COMMAND:
+					//set pin number + value
+					commands.setPinNumberLowerByte(pinLowerByte);
+					commands.setPinNumberHigherByte(pinHigherByte);
+					commands.setPinValue(value);
+					commandMessage = commands.getCommandMessage();
+					sendCommandMessage(commandMessage);
+					break;
 				default:
 					Log.d("RobotAlbertCommunicator", "handleMessage: Default !!!!!!!!!!!!!!!");
 					break;

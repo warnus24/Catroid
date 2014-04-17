@@ -364,10 +364,19 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static ArduinoReceiveAction receiveArduinoVar(Sprite sprite) {
-		ArduinoReceiveAction action = action(ArduinoReceiveAction.class);
-		action.getPinNumber();
-		action.getPinValue();
+	public static ArduinoAnalogPinSensorAction arduinoAnalogPinSensorAction(Sprite sprite, Formula variableFormula,
+			UserVariable userVariable) {
+		ArduinoAnalogPinSensorAction action = action(ArduinoAnalogPinSensorAction.class);
+		action.setSprite(sprite);
+		action.setUserVariable(userVariable);
+		return action;
+	}
+
+	public static ArduinoDigitalPinSensorAction arduinoDigitalPinSensorAction(Sprite sprite, Formula variableFormula,
+			UserVariable userVariable) {
+		ArduinoDigitalPinSensorAction action = action(ArduinoDigitalPinSensorAction.class);
+		action.setSprite(sprite);
+		action.setUserVariable(userVariable);
 		return action;
 	}
 }

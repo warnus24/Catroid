@@ -43,7 +43,6 @@ import org.catrobat.catroid.arduino.Arduino;
 import org.catrobat.catroid.bluetooth.BTDeviceActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.actions.ArduinoReceiveAction;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
@@ -230,30 +229,19 @@ public class PreStageActivity extends Activity {
 								legoNXT.startBTCommunicator(address);
 								break;
 							case (Brick.BLUETOOTH_ARDUINO):
-								//								if (ArduinoSendAction.getBluetoothSocket() == null
-								//										|| ArduinoReceiveAction.getBluetoothSocket() == null) {
-								//								if (ArduinoSendAction.getBluetoothSocket() == null) {
 
 								String arduinoMacAddress = data.getExtras().getString(
 										BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
-								//									BTConnection btConnection = new BTConnection(arduinoMacAddress,
-								//											UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-								//									States returnState = btConnection.connect();
-								//									if (returnState != States.CONNECTED) {
-								//										resourceFailed();
-								//									}
 								arduino = new Arduino(this, recieveHandler);
 								arduino.startBTCommunicator(arduinoMacAddress);
-								//									ArduinoSendAction.setBluetoothSocket(btConnection.getBTSocket());
-								//								}
 								connectingProgressDialog.dismiss();
 								resourceInitialized();
 								break;
 							case (Brick.BLUETOOTH_SENSORS_ARDUINO):
 
 								String MacAddress = data.getExtras().getString(BTDeviceActivity.EXTRA_DEVICE_ADDRESS);
-								ArduinoReceiveAction.setBluetoothMacAdress(MacAddress);
-								ArduinoReceiveAction.initBluetoothConnection(MacAddress);
+								arduino = new Arduino(this, recieveHandler);
+								arduino.startBTCommunicator(MacAddress);
 								connectingProgressDialog.dismiss();
 								resourceInitialized();
 								break;
