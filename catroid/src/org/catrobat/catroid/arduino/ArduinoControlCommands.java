@@ -54,6 +54,13 @@ public class ArduinoControlCommands {
 		return buffer;
 	}
 
+	public byte[] pauseArduino() {
+		buffer[0] = 00; //0
+		buffer[1] = 00; //0
+		buffer[2] = 00; //0
+		return buffer;
+	}
+
 	public byte[] getCommandMessage() {
 		buffer[0] = (byte) pinNumberLowerByte;
 		buffer[1] = (byte) pinNumberHigherByte;

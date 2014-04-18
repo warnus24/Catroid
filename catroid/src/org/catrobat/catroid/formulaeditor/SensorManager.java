@@ -26,6 +26,8 @@ package org.catrobat.catroid.formulaeditor;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 
+import org.catrobat.catroid.arduino.ArduinoSensor;
+
 public class SensorManager implements SensorManagerInterface {
 	private final android.hardware.SensorManager sensorManager;
 
@@ -52,6 +54,7 @@ public class SensorManager implements SensorManagerInterface {
 	@Override
 	public void unregisterListener(SensorCustomEventListener listener) {
 		SensorLoudness.getSensorLoudness().unregisterListener(listener);
+		ArduinoSensor.getArduinoSensorInstance().unregisterListener(listener);
 	}
 
 	@Override
@@ -59,6 +62,10 @@ public class SensorManager implements SensorManagerInterface {
 		switch (sensor) {
 			case LOUDNESS:
 				return SensorLoudness.getSensorLoudness().registerListener(listener);
+			case ARDUINOANALOG:
+				return ArduinoSensor.getArduinoSensorInstance().registerListener(listener);
+			case ARDUINODIGITAL:
+				return ArduinoSensor.getArduinoSensorInstance().registerListener(listener);
 			default:
 				return false;
 		}

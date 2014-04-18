@@ -45,6 +45,7 @@ public abstract class ArduinoCommunicator extends Thread {
 	public static final int STATE_RECEIVEERROR = 6;
 	public static final int STATE_SENDERROR = 7;
 	public static final int RECEIVED_MESSAGE = 8;
+	public static final int PAUSED_MESSAGE = 9;
 
 	public static final int SET_DIGITAL_PIN_VALUE_COMMAND = 100;
 	public static final int GET_DIGITAL_PIN_VALUE_COMMAND = 101;
@@ -65,6 +66,8 @@ public abstract class ArduinoCommunicator extends Thread {
 	public Handler getHandler() {
 		return myHandler;
 	}
+
+	public abstract void stopSensors();
 
 	/**
 	 * @return The current status of the connection
@@ -142,6 +145,10 @@ public abstract class ArduinoCommunicator extends Thread {
 
 	protected synchronized void resetArduinoBoard() {
 		sendCommandMessage(commands.resetArduino());
+	}
+
+	protected synchronized void pauseArduinoBoard() {
+		sendCommandMessage(commands.pauseArduino());
 	}
 
 	protected synchronized void sendCommandMessage(byte[] commandMessage) {

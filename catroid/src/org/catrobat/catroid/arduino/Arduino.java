@@ -82,6 +82,10 @@ public class Arduino implements BTConnectable {
 		}
 	}
 
+	public void pauseCommunicator() {
+		myCommunicator.stopSensors();
+	}
+
 	public static synchronized void sendArduinoDigitalPinMessage(int pinLowerByte, int pinHigherByte, int value) {
 		Bundle myBundle = new Bundle();
 		myBundle.putInt("pinLowerByte", pinLowerByte);

@@ -40,6 +40,7 @@ import android.widget.Toast;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.arduino.Arduino;
+import org.catrobat.catroid.arduino.ArduinoSensor;
 import org.catrobat.catroid.bluetooth.BTDeviceActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
@@ -109,11 +110,19 @@ public class PreStageActivity extends Activity {
 		}
 
 		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
+			//set flag to start thread to update sensor values in formula editor
+			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
+			sensor.setBooleanArduinoBricks(true);
+
 			Bundle bundle = new Bundle();
 			bundle.putInt(BTDeviceActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_SENSORS_ARDUINO);
 			bundle.putString(BTDeviceActivity.RESOURCE_NAME_TEXT,
 					getResources().getString(R.string.select_device_arduino));
 			BTResourceQueue.add(bundle);
+		} else {
+			//disable flag to start thread to update sensor values in formula editor
+			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
+			sensor.setBooleanArduinoBricks(false);
 		}
 
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
@@ -149,6 +158,9 @@ public class PreStageActivity extends Activity {
 		if (legoNXT != null) {
 			legoNXT.pauseCommunicator();
 		}
+		if (arduino != null) {
+			arduino.pauseCommunicator();
+		}
 	}
 
 	//all resources that should not have to be reinitialized every stage start
@@ -156,6 +168,10 @@ public class PreStageActivity extends Activity {
 		if (legoNXT != null) {
 			legoNXT.destroyCommunicator();
 			legoNXT = null;
+		}
+		if (arduino != null) {
+			arduino.destroyCommunicator();
+			arduino = null;
 		}
 		deleteSpeechFiles();
 	}
@@ -220,7 +236,6 @@ public class PreStageActivity extends Activity {
 			case REQUEST_ENABLE_BLUETOOTH:
 				switch (resultCode) {
 					case Activity.RESULT_OK:
-
 						Bundle bundle = data.getExtras();
 						switch (bundle.getInt(BTDeviceActivity.RESOURCE_CONSTANT)) {
 							case (Brick.BLUETOOTH_LEGO_NXT):

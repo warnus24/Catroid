@@ -191,6 +191,11 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 		}
 	}
 
+	@Override
+	public void stopSensors() {
+		pauseArduinoBoard();
+	}
+
 	/**
 	 * Sends a message on the opened OutputStream
 	 * 

@@ -87,6 +87,19 @@ public class Formula implements Serializable {
 		}
 	}
 
+	//this is needed if there is a sensor that should be selected by default
+	public Formula(String value) {
+		if (value.equalsIgnoreCase(Sensors.ARDUINOANALOG.toString())) {
+			formulaTree = new FormulaElement(ElementType.SENSOR, Sensors.ARDUINOANALOG.toString(), null);
+		} else if (value.equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString())) {
+			formulaTree = new FormulaElement(ElementType.SENSOR, Sensors.ARDUINODIGITAL.toString(), null);
+		} else {
+			formulaTree = new FormulaElement(ElementType.NUMBER, value.toString(), null);
+		}
+
+		internFormula = new InternFormula(formulaTree.getInternTokenList());
+	}
+
 	public void setDisplayText(String text) {
 		displayText = text;
 	}
@@ -199,7 +212,6 @@ public class Formula implements Serializable {
 		for (InternToken internToken : internTokenList) {
 			if ((internToken.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINOANALOG.toString()) || internToken
 					.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString()))) {
-				//				ArduinoReceiveAction.initBluetoothConnection();
 				return true;
 			}
 		}
