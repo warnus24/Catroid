@@ -1,0 +1,872 @@
+/**
+ *  Catroid: An on-device visual programming system for Android devices
+ *  Copyright (C) 2010-2013 The Catrobat Team
+ *  (<http://developer.catrobat.org/credits>)
+ *  
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *  
+ *  An additional term exception under section 7 of the GNU Affero
+ *  General Public License, version 3, is available at
+ *  http://developer.catrobat.org/license_additional_term
+ *  
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU Affero General Public License for more details.
+ *  
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.catrobat.catroid.ui.fragment;
+
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.nfc.NfcAdapter;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+
+import org.catrobat.catroid.BuildConfig;
+import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.common.NfcTagData;
+import org.catrobat.catroid.io.StorageHandler;
+import org.catrobat.catroid.nfc.NfcHandler;
+import org.catrobat.catroid.ui.BackPackActivity;
+import org.catrobat.catroid.ui.BottomBar;
+import org.catrobat.catroid.ui.NfcTagViewHolder;
+import org.catrobat.catroid.ui.ScriptActivity;
+import org.catrobat.catroid.ui.adapter.NfcTagAdapter;
+import org.catrobat.catroid.ui.adapter.NfcTagBaseAdapter;
+import org.catrobat.catroid.ui.controller.NfcTagController;
+import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
+import org.catrobat.catroid.ui.dialogs.RenameSoundDialog;
+import org.catrobat.catroid.utils.Utils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBaseAdapter.OnNfcTagEditListener, Dialog.OnKeyListener {
+
+	public static final String TAG = NfcTagFragment.class.getSimpleName();
+
+	private static int selectedNfcTagPosition = Constants.NO_POSITION;
+
+	private static String actionModeTitle;
+
+	private static String singleItemAppendixDeleteActionMode;
+	private static String multipleItemAppendixDeleteActionMode;
+
+	private ListView listView;
+
+	private NfcTagDeletedReceiver nfcTagDeletedReceiver;
+	private NfcTagRenamedReceiver nfcTagRenamedReceiver;
+	private NfcTagCopiedReceiver nfcTagCopiedReceiver;
+
+	private NfcTagsListInitReceiver nfcTagsListInitReceiver;
+
+	private ActionMode actionMode;
+	private View selectAllActionModeButton;
+
+    private NfcTagBaseAdapter adapter;
+    private ArrayList<NfcTagData> nfcTagDataList;
+    private NfcTagData selectedNfcTag;
+
+	private boolean isRenameActionMode;
+	private boolean isResultHandled = false;
+
+	private ImageButton addButton;
+
+    NfcAdapter nfcAdapter;
+    PendingIntent pendingIntent;
+
+	private void setHandleAddbutton() {
+		addButton = (ImageButton) getSherlockActivity().findViewById(R.id.button_add);
+		addButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				handleAddButton();
+			}
+		});
+
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+        nfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
+        pendingIntent = PendingIntent.getActivity(getActivity(), 0,
+                new Intent(getActivity(), getActivity().getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+		View rootView = inflater.inflate(R.layout.fragment_nfctags, null);
+		return rootView;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		listView = getListView();
+		registerForContextMenu(listView);
+
+        if (savedInstanceState != null) {
+            selectedNfcTag = (NfcTagData) savedInstanceState
+                    .getSerializable(NfcTagController.BUNDLE_ARGUMENTS_SELECTED_NFCTAG);
+        }
+        nfcTagDataList = ProjectManager.getInstance().getCurrentSprite().getNfcTagList();
+
+        adapter = new NfcTagAdapter(getActivity(), R.layout.fragment_nfctag_nfctaglist_item,
+                R.id.fragment_nfctag_item_title_text_view, nfcTagDataList, false);
+
+        adapter.setOnNfcTagEditListener(this);
+        setListAdapter(adapter);
+        ((NfcTagAdapter) adapter).setNfcTagFragment(this);
+
+		Utils.loadProjectIfNeeded(getActivity());
+		setHandleAddbutton();
+    }
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.copy).setVisible(true);
+
+		boolean visibility = false;
+		if (BuildConfig.DEBUG) {
+			visibility = true;
+		}
+		menu.findItem(R.id.backpack).setVisible(visibility);
+		menu.findItem(R.id.cut).setVisible(false);
+
+
+		super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putSerializable(NfcTagController.BUNDLE_ARGUMENTS_SELECTED_NFCTAG, selectedNfcTag);
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		initClickListener();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		setHandleAddbutton();
+
+		if (!Utils.checkForExternalStorageAvailableAndDisplayErrorIfNot(getActivity())) {
+			return;
+		}
+
+		if (nfcTagRenamedReceiver == null) {
+            nfcTagRenamedReceiver = new NfcTagRenamedReceiver();
+		}
+
+		if (nfcTagDeletedReceiver == null) {
+            nfcTagDeletedReceiver = new NfcTagDeletedReceiver();
+		}
+
+		if (nfcTagCopiedReceiver == null) {
+            nfcTagCopiedReceiver = new NfcTagCopiedReceiver();
+		}
+
+		if (nfcTagsListInitReceiver == null) {
+            nfcTagsListInitReceiver = new NfcTagsListInitReceiver();
+		}
+
+		IntentFilter intentFilterRenameNfcTag = new IntentFilter(ScriptActivity.ACTION_NFCTAG_RENAMED);
+		getActivity().registerReceiver(nfcTagRenamedReceiver, intentFilterRenameNfcTag);
+
+		IntentFilter intentFilterDeleteNfcTag = new IntentFilter(ScriptActivity.ACTION_NFCTAG_DELETED);
+		getActivity().registerReceiver(nfcTagDeletedReceiver, intentFilterDeleteNfcTag);
+
+		IntentFilter intentFilterCopyNfcTag = new IntentFilter(ScriptActivity.ACTION_NFCTAG_COPIED);
+		getActivity().registerReceiver(nfcTagCopiedReceiver, intentFilterCopyNfcTag);
+
+		IntentFilter intentFilterNfcTagsListInit = new IntentFilter(ScriptActivity.ACTION_NFCTAGS_LIST_INIT);
+		getActivity().registerReceiver(nfcTagsListInitReceiver, intentFilterNfcTagsListInit);
+
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity()
+				.getApplicationContext());
+
+		setShowDetails(settings.getBoolean(NfcTagController.SHARED_PREFERENCE_NAME, false));
+
+		NfcTagController.getInstance().handleAddButtonFromNew(this);
+
+        if (nfcAdapter != null) {
+            Log.d(TAG, "onResume()enableForegroundDispatch()");
+            nfcAdapter.enableForegroundDispatch(getActivity(), pendingIntent, null, null);
+            onNewIntent(getActivity().getIntent());
+        }else{
+            // TODO: inform nfc not possible
+        }
+	}
+
+    public void onNewIntent(Intent intent) {
+        Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
+        Log.d(TAG, "activity:" + getActivity().getClass().getSimpleName());
+        Log.d(TAG, "got intent:" + getActivity().getIntent().getAction());
+        String uid = NfcHandler.getUid(intent);
+        if(uid != null){
+            //NfcTagContainer.addTagName(uid, input.getText().toString().trim());
+            // TODO: inform user that read nfc was successfull
+            NfcTagData newNfcTagData = new NfcTagData();
+            String newTagName = Utils.getUniqueNfcTagName("test");
+            newNfcTagData.setNfcTagName(newTagName);
+            newNfcTagData.setNfcTagUid(uid);
+            Log.d(TAG, "new nfc tag: " + uid);
+            adapter.add(newNfcTagData);
+            adapter.notifyDataSetChanged();
+        }else
+        {
+            Log.d(TAG, "no nfc tag found");
+        }
+    }
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden) {
+			NfcTagController.getInstance().handleAddButtonFromNew(this);
+		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+        if (nfcAdapter != null) {
+            Log.d(TAG, "onPause()disableForegroundDispatch()");
+            nfcAdapter.disableForegroundDispatch(getActivity());
+        } else{
+            // TODO: inform nfc not possible
+        }
+
+		ProjectManager projectManager = ProjectManager.getInstance();
+		if (projectManager.getCurrentProject() != null) {
+			projectManager.saveProject();
+		}
+		//NfcTagController.getInstance().stopSound(mediaPlayer, soundInfoList);
+		adapter.notifyDataSetChanged();
+
+		if (nfcTagRenamedReceiver != null) {
+			getActivity().unregisterReceiver(nfcTagRenamedReceiver);
+		}
+
+		if (nfcTagDeletedReceiver != null) {
+			getActivity().unregisterReceiver(nfcTagDeletedReceiver);
+		}
+
+		if (nfcTagCopiedReceiver != null) {
+			getActivity().unregisterReceiver(nfcTagCopiedReceiver);
+		}
+
+		if (nfcTagsListInitReceiver != null) {
+			getActivity().unregisterReceiver(nfcTagsListInitReceiver);
+		}
+
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity()
+				.getApplicationContext());
+		SharedPreferences.Editor editor = settings.edit();
+
+		editor.putBoolean(NfcTagController.SHARED_PREFERENCE_NAME, getShowDetails());
+		editor.commit();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+	}
+
+    @Override
+    public boolean getShowDetails() {
+        return false;
+    }
+
+    @Override
+    public void setShowDetails(boolean showDetails) {
+
+    }
+
+    @Override
+    public void setSelectMode(int selectMode) {
+
+    }
+
+    @Override
+    public int getSelectMode() {
+        return 0;
+    }
+
+    @Override
+	public void startCopyActionMode() {
+		if (actionMode == null) {
+			//SoundController.getInstance().stopSoundAndUpdateList(mediaPlayer, soundInfoList, adapter);
+			actionMode = getSherlockActivity().startActionMode(copyModeCallBack);
+			unregisterForContextMenu(listView);
+			BottomBar.hideBottomBar(getActivity());
+			isRenameActionMode = false;
+		}
+
+	}
+
+	@Override
+	public void startBackPackActionMode() {
+		Log.d("TAG", "startBackPackActionMode");
+		if (actionMode == null) {
+			//SoundController.getInstance().stopSoundAndUpdateList(mediaPlayer, soundInfoList, adapter);
+			actionMode = getSherlockActivity().startActionMode(backPackModeCallBack);
+			unregisterForContextMenu(listView);
+			BottomBar.hideBottomBar(getActivity());
+			isRenameActionMode = false;
+		}
+
+	}
+
+	@Override
+	public void startRenameActionMode() {
+		if (actionMode == null) {
+			//SoundController.getInstance().stopSoundAndUpdateList(mediaPlayer, soundInfoList, adapter);
+			actionMode = getSherlockActivity().startActionMode(renameModeCallBack);
+			unregisterForContextMenu(listView);
+			BottomBar.hideBottomBar(getActivity());
+			isRenameActionMode = true;
+		}
+	}
+
+	@Override
+	public void startDeleteActionMode() {
+		if (actionMode == null) {
+			//SoundController.getInstance().stopSoundAndUpdateList(mediaPlayer, soundInfoList, adapter);
+			actionMode = getSherlockActivity().startActionMode(deleteModeCallBack);
+			unregisterForContextMenu(listView);
+			BottomBar.hideBottomBar(getActivity());
+			isRenameActionMode = false;
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+	}
+
+    @Override
+    public void onNfcTagEdit(View view) {
+
+    }
+
+    public void onNfcTagChecked() {
+		if (isRenameActionMode || actionMode == null) {
+			return;
+		}
+
+		updateActionModeTitle();
+		Utils.setSelectAllActionModeButtonVisibility(selectAllActionModeButton,
+				adapter.getCount() > 0 && adapter.getAmountOfCheckedItems() != adapter.getCount());
+	}
+
+	private void updateActionModeTitle() {
+		int numberOfSelectedItems = adapter.getAmountOfCheckedItems();
+
+		if (numberOfSelectedItems == 0) {
+			actionMode.setTitle(actionModeTitle);
+		} else {
+			String appendix = multipleItemAppendixDeleteActionMode;
+
+			if (numberOfSelectedItems == 1) {
+				appendix = singleItemAppendixDeleteActionMode;
+			}
+
+
+			String numberOfItems = Integer.toString(numberOfSelectedItems);
+			String completeTitle = actionModeTitle + " " + numberOfItems + " " + appendix;
+
+			int titleLength = actionModeTitle.length();
+
+			Spannable completeSpannedTitle = new SpannableString(completeTitle);
+			completeSpannedTitle.setSpan(
+					new ForegroundColorSpan(getResources().getColor(R.color.actionbar_title_color)), titleLength + 1,
+					titleLength + (1 + numberOfItems.length()), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+			actionMode.setTitle(completeSpannedTitle);
+		}
+	}
+
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, view, menuInfo);
+
+		getSherlockActivity().getMenuInflater().inflate(R.menu.context_menu_default, menu);
+		menu.findItem(R.id.context_menu_copy).setVisible(true);
+		menu.findItem(R.id.context_menu_unpacking).setVisible(false);
+		//TODO: remove this when inserting of sound items from backpack is possible
+		if (!BuildConfig.DEBUG) {
+			menu.findItem(R.id.context_menu_backpack).setVisible(false);
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+
+			case R.id.context_menu_backpack:
+				Intent intent = new Intent(getActivity(), BackPackActivity.class);
+				intent.putExtra(BackPackActivity.EXTRA_FRAGMENT_POSITION, 2);
+				intent.putExtra(BackPackActivity.BACKPACK_ITEM, true);
+				startActivity(intent);
+				break;
+
+			case R.id.context_menu_copy:
+
+				break;
+
+			case R.id.context_menu_cut:
+				break;
+
+			case R.id.context_menu_insert_below:
+				break;
+
+			case R.id.context_menu_move:
+				break;
+
+			case R.id.context_menu_rename:
+				showRenameDialog();
+				break;
+
+			case R.id.context_menu_delete:
+				showConfirmDeleteDialog();
+				break;
+		}
+		return super.onContextItemSelected(item);
+	}
+
+	@Override
+	public void handleAddButton() {
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+
+	}
+
+    @TargetApi(19)
+    private void disableGoogleDrive(Intent intent) {
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+    }
+
+	@Override
+	public void showRenameDialog() {
+
+	}
+
+	@Override
+	protected void showDeleteDialog() {
+
+	}
+
+	private class NfcTagRenamedReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(ScriptActivity.ACTION_NFCTAG_RENAMED)) {
+                //create RenameNfcTagDialog
+				String newTagName = intent.getExtras().getString(RenameSoundDialog.EXTRA_NEW_SOUND_TITLE);
+
+				if (newTagName != null && !newTagName.equalsIgnoreCase("")) {
+                    selectedNfcTag.setNfcTagName(newTagName);
+					adapter.notifyDataSetChanged();
+				}
+			}
+		}
+	}
+
+	private class NfcTagDeletedReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(ScriptActivity.ACTION_NFCTAG_DELETED)) {
+				adapter.notifyDataSetChanged();
+				getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_BRICK_LIST_CHANGED));
+			}
+		}
+	}
+
+	private class NfcTagCopiedReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+
+			if (intent.getAction().equals(ScriptActivity.ACTION_NFCTAG_COPIED)) {
+				adapter.notifyDataSetChanged();
+				getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_BRICK_LIST_CHANGED));
+			}
+		}
+	}
+
+	private void addSelectAllActionModeButton(ActionMode mode, Menu menu) {
+
+	}
+
+	private ActionMode.Callback renameModeCallBack = new ActionMode.Callback() {
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			setSelectMode(ListView.CHOICE_MODE_SINGLE);
+			mode.setTitle(R.string.rename);
+
+			setActionModeActive(true);
+
+			return true;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, com.actionbarsherlock.view.MenuItem item) {
+			return false;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			//((NfcTagAdapter) adapter).onDestroyActionModeRename(mode, listView);
+		}
+	};
+
+	private ActionMode.Callback copyModeCallBack = new ActionMode.Callback() {
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
+			setSelectMode(ListView.CHOICE_MODE_MULTIPLE);
+			setActionModeActive(true);
+
+			actionModeTitle = getString(R.string.copy);
+			singleItemAppendixDeleteActionMode = getString(R.string.category_sound);
+			multipleItemAppendixDeleteActionMode = getString(R.string.sounds);
+
+			mode.setTitle(actionModeTitle);
+			addSelectAllActionModeButton(mode, menu);
+
+			return true;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, com.actionbarsherlock.view.MenuItem item) {
+			return false;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+
+			//((SoundAdapter) adapter).onDestroyActionModeCopy(mode);
+
+		}
+
+	};
+
+	private ActionMode.Callback backPackModeCallBack = new ActionMode.Callback() {
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
+			setSelectMode(ListView.CHOICE_MODE_MULTIPLE);
+			setActionModeActive(true);
+
+			actionModeTitle = getString(R.string.backpack);
+			singleItemAppendixDeleteActionMode = getString(R.string.category_sound);
+			multipleItemAppendixDeleteActionMode = getString(R.string.sounds);
+
+			mode.setTitle(actionModeTitle);
+			addSelectAllActionModeButton(mode, menu);
+
+			return true;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, com.actionbarsherlock.view.MenuItem item) {
+			return false;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+
+			//((SoundAdapter) adapter).onDestroyActionModeBackPack(mode);
+
+		}
+
+	};
+
+	private ActionMode.Callback deleteModeCallBack = new ActionMode.Callback() {
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			setSelectMode(ListView.CHOICE_MODE_MULTIPLE);
+			setActionModeActive(true);
+
+			actionModeTitle = getString(R.string.delete);
+			singleItemAppendixDeleteActionMode = getString(R.string.category_sound);
+			multipleItemAppendixDeleteActionMode = getString(R.string.sounds);
+
+			mode.setTitle(R.string.delete);
+			addSelectAllActionModeButton(mode, menu);
+
+			return true;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, com.actionbarsherlock.view.MenuItem item) {
+			return false;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			if (adapter.getAmountOfCheckedItems() == 0) {
+				clearCheckedSoundsAndEnableButtons();
+			} else {
+				showConfirmDeleteDialog();
+			}
+		}
+	};
+
+	private void initClickListener() {
+		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				selectedNfcTagPosition = position;
+				return false;
+			}
+		});
+	}
+
+	private void showConfirmDeleteDialog() {
+		int titleId = R.string.dialog_confirm_delete_sound_title;
+		if (adapter.getAmountOfCheckedItems() == 1) {
+			titleId = R.string.dialog_confirm_delete_sound_title;
+		} else {
+			titleId = R.string.dialog_confirm_delete_multiple_sounds_title;
+		}
+
+		AlertDialog.Builder builder = new CustomAlertDialogBuilder(getActivity());
+		builder.setTitle(titleId);
+		builder.setMessage(R.string.dialog_confirm_delete_sound_message);
+		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				//NfcTagController.getInstance().deleteCheckedNfcTags(getActivity(), adapter, soundInfoList, mediaPlayer);
+				clearCheckedSoundsAndEnableButtons();
+			}
+		});
+		builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+				clearCheckedSoundsAndEnableButtons();
+			}
+		});
+
+		AlertDialog alertDialog = builder.create();
+		alertDialog.show();
+	}
+
+	public void clearCheckedSoundsAndEnableButtons() {
+		setSelectMode(ListView.CHOICE_MODE_NONE);
+		adapter.clearCheckedItems();
+
+		actionMode = null;
+		setActionModeActive(false);
+
+		registerForContextMenu(listView);
+		BottomBar.showBottomBar(getActivity());
+	}
+
+	@Override
+	public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+		switch (keyCode) {
+			case KeyEvent.KEYCODE_BACK:
+				ScriptActivity scriptActivity = (ScriptActivity) getActivity();
+				if (scriptActivity.getIsNfcTagFragmentFromWhenNfcBrickNew()) {
+					NfcTagController.getInstance().switchToScriptFragment(this);
+
+					return true;
+				}
+			default:
+				break;
+		}
+		return false;
+	}
+
+	public View getView(int position, View convertView) {
+        NfcTagViewHolder holder;
+
+        if (convertView == null) {
+            convertView = View.inflate(getActivity(), R.layout.fragment_nfctag_nfctaglist_item, null);
+
+            holder = new NfcTagViewHolder();
+
+            holder.scanNewTagButton = (ImageButton) convertView.findViewById(R.id.fragment_nfctag_item_image_button);
+            holder.scanNewTagButton.setImageResource(R.drawable.ic_media_play);
+            holder.scanNewTagButton.setContentDescription(getString(R.string.nfctag_scan));
+            holder.nfcTagFragmentButtonLayout = (LinearLayout) convertView
+                    .findViewById(R.id.fragment_nfctag_item_main_linear_layout);
+            holder.checkbox = (CheckBox) convertView.findViewById(R.id.fragment_nfctag_item_checkbox);
+            holder.titleTextView = (TextView) convertView.findViewById(R.id.fragment_nfctag_item_title_text_view);
+
+            holder.uidSeparatorTextView = (TextView) convertView
+                    .findViewById(R.id.fragment_nfctag_item_uid_seperator_text_view);
+            holder.nfcTagUidPrefixTextView = (TextView) convertView
+                    .findViewById(R.id.fragment_nfctag_item_uid_prefix_text_view);
+            holder.nfcTagUidTextView = (TextView) convertView.findViewById(R.id.fragment_nfctag_item_uid_text_view);
+            convertView.setTag(holder);
+        } else {
+            holder = (NfcTagViewHolder) convertView.getTag();
+        }
+
+        NfcTagController controller = NfcTagController.getInstance();
+        controller.updateNfcTagLogic(getActivity(), position, holder, adapter);
+        return convertView;
+	}
+
+	public NfcTagDeletedReceiver getNfcTagDeletedReceiver() {
+		return nfcTagDeletedReceiver;
+	}
+
+	public void setNfcTagDeletedReceiver(NfcTagDeletedReceiver nfcTagDeletedReceiver) {
+		this.nfcTagDeletedReceiver = nfcTagDeletedReceiver;
+	}
+
+	public NfcTagRenamedReceiver getNfcTagRenamedReceiver() {
+		return nfcTagRenamedReceiver;
+	}
+
+	public void setNfcTagRenamedReceiver(NfcTagRenamedReceiver nfcTagRenamedReceiver) {
+		this.nfcTagRenamedReceiver = nfcTagRenamedReceiver;
+	}
+
+	public NfcTagCopiedReceiver getNfcTagCopiedReceiver() {
+		return nfcTagCopiedReceiver;
+	}
+
+	public void setNfcTagCopiedReceiver(NfcTagCopiedReceiver nfcTagCopiedReceiver) {
+		this.nfcTagCopiedReceiver = nfcTagCopiedReceiver;
+	}
+
+	public class CopyAudioFilesTask extends AsyncTask<String, Void, File> {
+		private ProgressDialog progressDialog = new ProgressDialog(getActivity());
+
+		@Override
+		protected void onPreExecute() {
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressDialog.setTitle(R.string.loading);
+			progressDialog.show();
+		}
+
+		@Override
+		protected File doInBackground(String... path) {
+			File file = null;
+			try {
+				file = StorageHandler.getInstance().copySoundFile(path[0]);
+			} catch (IOException e) {
+				Log.e("CATROID", "Cannot load sound.", e);
+			}
+			return file;
+		}
+
+		@Override
+		protected void onPostExecute(File file) {
+			progressDialog.dismiss();
+
+			if (file != null) {
+				//scroll down the list to the new item:
+				final ListView listView = getListView();
+				listView.post(new Runnable() {
+					@Override
+					public void run() {
+						listView.setSelection(listView.getCount() - 1);
+					}
+				});
+
+				if (isResultHandled) {
+					isResultHandled = false;
+
+					ScriptActivity scriptActivity = (ScriptActivity) getActivity();
+					if (scriptActivity.getIsSoundFragmentFromPlaySoundBrickNew()
+							&& scriptActivity.getIsSoundFragmentHandleAddButtonHandled()) {
+						NfcTagController.getInstance().switchToScriptFragment(NfcTagFragment.this);
+					}
+				}
+			} else {
+				Utils.showErrorDialog(getActivity(), R.string.error_load_sound);
+			}
+		}
+
+	}
+
+	private class NfcTagsListInitReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(ScriptActivity.ACTION_NFCTAGS_LIST_INIT)) {
+				adapter.notifyDataSetChanged();
+			}
+		}
+	}
+}

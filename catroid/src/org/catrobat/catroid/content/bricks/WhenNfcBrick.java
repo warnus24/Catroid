@@ -140,6 +140,7 @@ public class WhenNfcBrick extends ScriptBrick {
 		spinner.setSelection(position, true);
 	}
 
+    //TODO: Move to Background - Object list
 	protected void showNewTagDialog(final Spinner nfcSpinner) {
 		final Context context = nfcSpinner.getContext();
 		NewNfcTagDialog textDialog = new NewNfcTagDialog() {
@@ -156,6 +157,8 @@ public class WhenNfcBrick extends ScriptBrick {
 					dismiss();
 					return false;
 				}
+
+                //TODO: handle "all" correctly: no new tag, just set MatchAll
 				whenNfcScript.setTagName(newTag);
 				whenNfcScript.setMatchAll(newTag.equals(context.getString(R.string.brick_when_nfc_default_all)));
 				setSpinnerSelection(nfcSpinner);

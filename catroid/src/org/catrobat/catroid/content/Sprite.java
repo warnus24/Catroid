@@ -22,15 +22,13 @@
  */
 package org.catrobat.catroid.content;
 
-import android.content.res.Resources;
-
-import org.catrobat.catroid.R;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.FileChecksumContainer;
 import org.catrobat.catroid.common.LookData;
+import org.catrobat.catroid.common.NfcTagData;
 import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.content.bricks.Brick;
@@ -47,6 +45,7 @@ public class Sprite implements Serializable, Cloneable {
 	private List<Script> scriptList;
 	private ArrayList<LookData> lookList;
 	private ArrayList<SoundInfo> soundList;
+    private ArrayList<NfcTagData> nfcTagList;
 	public transient Look look;
 
 	public transient boolean isPaused;
@@ -81,6 +80,9 @@ public class Sprite implements Serializable, Cloneable {
 		if (scriptList == null) {
 			scriptList = new ArrayList<Script>();
 		}
+        if (nfcTagList == null) {
+            nfcTagList = new ArrayList<NfcTagData>();
+        }
 	}
 
 	public void resetSprite() {
@@ -95,6 +97,7 @@ public class Sprite implements Serializable, Cloneable {
 		scriptList = new ArrayList<Script>();
 		lookList = new ArrayList<LookData>();
 		soundList = new ArrayList<SoundInfo>();
+        nfcTagList = new ArrayList<NfcTagData>();
 		init();
 	}
 
@@ -142,6 +145,12 @@ public class Sprite implements Serializable, Cloneable {
 			cloneSoundList.add(element.copySoundInfoForSprite(cloneSprite));
 		}
 		cloneSprite.soundList = cloneSoundList;
+
+        ArrayList<NfcTagData> cloneNfcTagList = new ArrayList<NfcTagData>();
+        for (NfcTagData element : this.nfcTagList) {
+            cloneNfcTagList.add(element.clone());
+        }
+        cloneSprite.nfcTagList = cloneNfcTagList;
 
 		//The scripts have to be the last copied items
 		List<Script> cloneScriptList = new ArrayList<Script>();
@@ -305,6 +314,14 @@ public class Sprite implements Serializable, Cloneable {
 		}
 		return ressources;
 	}
+
+    public ArrayList<NfcTagData> getNfcTagList() {
+        return nfcTagList;
+    }
+
+    public void setNfcTagList(ArrayList<NfcTagData> list) {
+        nfcTagList = list;
+    }
 
 	@Override
 	public String toString() {

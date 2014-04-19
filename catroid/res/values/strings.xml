@@ -185,6 +185,22 @@
     <string name="sound_name">sound name:</string>
     <!--  -->
 
+
+    <!-- NfcTags fragment -->
+    <string name="fragment_nfctag_text_description">Click \"+\" to add nfctags</string>
+    <string name="rename_nfctag_dialog">Rename nfctag</string>
+    <string name="nfctagname_invalid">This nfctag\'s name is invalid</string>
+    <string name="nfctag_scan">scan</string>
+    <string name="nfctag_select_source">Select a nfctag</string>
+    <string name="nfctag_uid_seperator">/</string>
+    <string name="delete_nfctag_dialog">Delete nfctag?</string>
+    <string name="dialog_confirm_delete_nfctag_title">Delete this nfctag?</string>
+    <string name="dialog_confirm_delete_multiple_nfctags_title">Delete these nfctags?</string>
+    <string name="dialog_confirm_delete_nfctag_message">This can not be undone!</string>
+    <string name="nfctag_name">nfctag name:</string>
+    <string name="nfctags">NFC Tags</string>
+    <!--  -->
+
     <plurals name="unpacking_items_plural">
         <item quantity="one">was unpacked!</item>
         <item quantity="other">were unpacked!</item>

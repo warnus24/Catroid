@@ -123,6 +123,13 @@ public class ProgramMenuActivity extends BaseActivity {
 		startScriptActivity(ScriptActivity.FRAGMENT_SOUNDS);
 	}
 
+    public void handleNfcTagsButton(View view) {
+        if (!viewSwitchLock.tryLock()) {
+            return;
+        }
+        startScriptActivity(ScriptActivity.FRAGMENT_NFCTAGS);
+    }
+
 	public void handlePlayButton(View view) {
 		if (!viewSwitchLock.tryLock()) {
 			return;

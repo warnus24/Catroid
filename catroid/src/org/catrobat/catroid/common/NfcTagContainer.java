@@ -44,9 +44,11 @@ public class NfcTagContainer {
         throw new AssertionError();
     }
 
+    //TODO: rename to getNfcAdapter/getTagAdapter
     public static ArrayAdapter<String> getMessageAdapter(Context context) {
         if (tagNameAdapter == null) {
             tagNameAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, tagNameList);
+            //TODO: use .add() instead of .insert()
             tagNameAdapter.insert(context.getString(R.string.new_nfc_tag),0);
             tagNameAdapter.insert(context.getString(R.string.brick_when_nfc_default_all),1);
 
@@ -67,6 +69,7 @@ public class NfcTagContainer {
         mapUidToTagName.put(uid, tagName);
     }
 
+    //TODO: Rename
     public static int getPositionOfMessageInAdapter(Context context, String tagName) {
         if (tagNameAdapter == null) {
             getMessageAdapter(context);
@@ -91,4 +94,6 @@ public class NfcTagContainer {
             tagNameList.add(tagName);
         }
     }
+
+    //TODO: add removeUnmappedTags - see MessageContainer.java - removeUnusedMessages()
 }

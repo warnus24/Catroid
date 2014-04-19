@@ -31,7 +31,6 @@ import android.util.Log;
 
 import org.catrobat.catroid.common.NfcTagContainer;
 import org.catrobat.catroid.nfc.NfcHandler;
-import org.catrobat.catroid.ui.ScriptActivity;
 
 public abstract class NewNfcTagDialog  extends TextDialog {
     public static final String TAG = NewNfcTagDialog.class.getSimpleName();
