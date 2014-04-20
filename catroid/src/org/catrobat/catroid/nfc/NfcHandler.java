@@ -28,10 +28,8 @@ import android.nfc.Tag;
 import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
-import org.catrobat.catroid.common.NfcTagContainer;
 import org.catrobat.catroid.content.Sprite;
 
-import java.math.BigInteger;
 import java.util.List;
 
 public class NfcHandler {
@@ -50,11 +48,11 @@ public class NfcHandler {
 
 		List<Sprite> spriteList = ProjectManager.getInstance().getCurrentProject().getSpriteList();
 
-        String nameForUid = NfcTagContainer.getNameForUid(uid);
-        Log.d(TAG, "namefor uid:" + nameForUid);
+        //String nameForUid = spriteList.//NfcTagContainer.getNameForUid(uid);
+        //Log.d(TAG, "namefor uid:" + nameForUid);
 
 		for (Sprite sprite : spriteList) {
-			sprite.createWhenNfcScriptAction(nameForUid);
+			sprite.createWhenNfcScriptAction(uid);
 		}
 	}
 

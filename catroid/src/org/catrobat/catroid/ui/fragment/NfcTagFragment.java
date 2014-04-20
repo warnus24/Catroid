@@ -870,7 +870,6 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
     public interface OnNfcTagDataListChangedAfterNewListener {
 
         void onNfcTagDataListChangedAfterNew(NfcTagData nfcTagData);
-
     }
 
 	public NfcTagDeletedReceiver getNfcTagDeletedReceiver() {
