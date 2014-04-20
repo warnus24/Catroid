@@ -210,8 +210,9 @@ public class Formula implements Serializable {
 	public boolean containsArduinoSensors() {
 		List<InternToken> internTokenList = formulaTree.getInternTokenList();
 		for (InternToken internToken : internTokenList) {
-			if ((internToken.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINOANALOG.toString()) || internToken
-					.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString()))) {
+			if ((internToken.isSensor() == true)
+					&& (internToken.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINOANALOG.toString()) || internToken
+							.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString()))) {
 				return true;
 			}
 		}

@@ -27,33 +27,39 @@ import android.util.Log;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import org.catrobat.catroid.arduino.Arduino;
+import org.catrobat.catroid.content.Sprite;
 
 public class ArduinoSendAction extends TemporalAction {
 
-	private static int pinNumberHigherByte, pinNumberLowerByte;
-	private static int pinValue;
+	private int pinNumberHigherByte, pinNumberLowerByte;
+	private int pinValue;
+	private Sprite sprite;
 
-	public static int getPinNumberHigherByte() {
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
+	}
+
+	public int getPinNumberHigherByte() {
 		return pinNumberHigherByte;
 	}
 
-	public static int getPinNumberLowerByte() {
+	public int getPinNumberLowerByte() {
 		return pinNumberLowerByte;
 	}
 
-	public static int getPinValue() {
+	public int getPinValue() {
 		return pinValue;
 	}
 
-	public static void setPinNumberHigherByte(int newpinNumberHigherByte) {
+	public void setPinNumberHigherByte(int newpinNumberHigherByte) {
 		pinNumberHigherByte = newpinNumberHigherByte;
 	}
 
-	public static void setPinNumberLowerByte(int newpinNumberLowerByte) {
+	public void setPinNumberLowerByte(int newpinNumberLowerByte) {
 		pinNumberLowerByte = newpinNumberLowerByte;
 	}
 
-	public static void setPinValue(int newpinValue) {
+	public void setPinValue(int newpinValue) {
 		pinValue = newpinValue;
 	}
 
@@ -63,13 +69,6 @@ public class ArduinoSendAction extends TemporalAction {
 		Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
 				+ "---------------");
 
-	}
-
-	@Override
-	public boolean act(float delta) {
-
-		Arduino.sendArduinoDigitalPinMessage(ArduinoSendAction.getPinNumberLowerByte(),
-				ArduinoSendAction.getPinNumberHigherByte(), ArduinoSendAction.getPinValue());
-		return true;
+		Arduino.sendArduinoDigitalPinMessage(pinNumberLowerByte, pinNumberHigherByte, pinValue);
 	}
 }

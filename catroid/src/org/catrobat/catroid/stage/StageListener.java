@@ -25,10 +25,7 @@ package org.catrobat.catroid.stage;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -48,9 +45,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import org.catrobat.catroid.ProjectManager;
-import org.catrobat.catroid.arduino.Arduino;
-import org.catrobat.catroid.arduino.ArduinoCommunicator;
-import org.catrobat.catroid.arduino.ArduinoSensor;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenModes;
@@ -242,20 +236,20 @@ public class StageListener implements ApplicationListener {
 	@Override
 	public void pause() {
 
-		try {
-			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
-			boolean arduinoUsed = sensor.getBooleanArduinoBricksUsed();
-			if (arduinoUsed) {
-				Handler btcHandler = Arduino.getBTCHandler();
-				Log.d("StageListener Pause", "sendRobotAlbertMotorResetMessage()");
-				Message myMessage = btcHandler.obtainMessage();
-				myMessage.what = ArduinoCommunicator.PAUSED_MESSAGE;
-				btcHandler.sendMessage(myMessage);
-				Log.d("StageListener Pause", "Paused State not implemented yet!");
-			}
-
-		} catch (Exception e) {
-		}
+		//		try {
+		//			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
+		//			boolean arduinoUsed = sensor.getBooleanArduinoBricksUsed();
+		//			if (arduinoUsed) {
+		//				Handler btcHandler = Arduino.getBTCHandler();
+		//				Log.d("StageListener Pause", "sendArduinoPauseMessage()");
+		//				Message myMessage = btcHandler.obtainMessage();
+		//				myMessage.what = ArduinoCommunicator.PAUSED_MESSAGE;
+		//				btcHandler.sendMessage(myMessage);
+		//				Log.d("StageListener Pause", "Paused State not implemented yet!");
+		//			}
+		//
+		//		} catch (Exception e) {
+		//		}
 
 		if (finished) {
 			return;

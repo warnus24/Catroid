@@ -45,7 +45,6 @@ public class ArduinoDigitalPinSensorAction extends TemporalAction {
 		}
 		int value = Arduino.getArduinoDigitalSensorMessage();
 		userVariable.setValue(value);
-
 	}
 
 	public void setUserVariable(UserVariable userVariable) {

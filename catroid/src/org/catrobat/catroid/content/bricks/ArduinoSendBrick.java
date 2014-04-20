@@ -38,7 +38,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.actions.ArduinoSendAction;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 
 import java.util.List;
@@ -48,8 +47,10 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	private static final long serialVersionUID = 1l;
 	private transient View prototypeView;
 	private transient AdapterView<?> adapterView;
+
 	private int pinNumberLowerByte = 0;
 	private int pinNumberHigherByte = 0;
+	private int pinValue = 0;
 	private int pinSpinnerPosition = 0;
 	private int valueSpinnerPosition = 0;
 
@@ -166,13 +167,9 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 				if (tempSavingString.length() < 2) {
 					pinNumberLowerByte = '0';
 					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
-					ArduinoSendAction.setPinNumberLowerByte(pinNumberLowerByte);
-					ArduinoSendAction.setPinNumberHigherByte(pinNumberHigherByte);
 				} else {
 					pinNumberLowerByte = tempSavingString.charAt(tempSavingString.length() - 2);
 					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
-					ArduinoSendAction.setPinNumberLowerByte(pinNumberLowerByte);
-					ArduinoSendAction.setPinNumberHigherByte(pinNumberHigherByte);
 				}
 				pinSpinnerPosition = position;
 				adapterView = parent;
@@ -187,9 +184,9 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (position == 0) {
-					ArduinoSendAction.setPinValue('L'); //L
+					pinValue = 'L';
 				} else {
-					ArduinoSendAction.setPinValue('H'); //H
+					pinValue = 'H';
 				}
 				valueSpinnerPosition = position;
 				adapterView = parent;
@@ -197,6 +194,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
+
 			}
 		});
 
@@ -232,8 +230,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		//		sequence.addAction(ExtendedActions.sendArduinoVar(sprite, pinNumberLowerByte, pinNumberHigherByte, pinValue));
-		sequence.addAction(ExtendedActions.sendArduinoVar(sprite));
+		sequence.addAction(ExtendedActions.sendArduinoValues(sprite, pinNumberLowerByte, pinNumberHigherByte, pinValue));
 		return null;
 	}
 }

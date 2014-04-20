@@ -45,7 +45,8 @@ import java.util.UUID;
 
 public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
-	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fc");
+	//private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fc");
+	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	//	private static final byte START_OF_FILE = (byte) 83; //Ascii table "S"
 	//	private static final byte END_OF_FILE = (byte) 88; //Ascii table "X"
 

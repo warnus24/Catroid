@@ -31,7 +31,6 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
-import org.catrobat.catroid.content.actions.ArduinoSendAction;
 import org.catrobat.catroid.content.bricks.ArduinoSendBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.ui.ScriptActivity;
@@ -126,9 +125,9 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		int pinValue = ArduinoSendAction.getPinValue();
-		int pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
-		int pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+		//		int pinValue = ArduinoSendAction.getPinValue();
+		//		int pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+		//		int pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
 		//		BluetoothSocket outputBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		//		ArduinoSendAction.sendDataViaBluetoothSocket(outputBluetoothSocket, pinValue, pinNumberLowerByte,
 		//				pinNumberHigherByte);
@@ -140,9 +139,9 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
-		pinValue = ArduinoSendAction.getPinValue();
-		pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
-		pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+		//		pinValue = ArduinoSendAction.getPinValue();
+		//		pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+		//		pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
 		//		outputBluetoothSocket = ArduinoSendAction.getBluetoothSocket();
 		//		ArduinoSendAction.sendDataViaBluetoothSocket(outputBluetoothSocket, pinValue, pinNumberLowerByte,
 		//				pinNumberHigherByte);
@@ -164,9 +163,9 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		//select Value from Spinner (H)
 		solo.pressSpinnerItem(1, 1);
 
-		int pinValue = ArduinoSendAction.getPinValue();
-		int pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
-		int pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+		//		int pinValue = ArduinoSendAction.getPinValue();
+		//		int pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+		//		int pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
@@ -190,9 +189,9 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		//select Value from Spinner (L)
 		solo.pressSpinnerItem(1, 0);
 
-		int pinValue = ArduinoSendAction.getPinValue();
-		int pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
-		int pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
+		//		int pinValue = ArduinoSendAction.getPinValue();
+		//		int pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();
+		//		int pinNumberHigherByte = ArduinoSendAction.getPinNumberHigherByte();
 
 		//send data via BT
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
