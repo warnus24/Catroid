@@ -43,7 +43,7 @@ public class NfcTagBaseAdapter extends ArrayAdapter<NfcTagData> implements Scrip
 
 	private int selectMode;
 	private boolean showDetails;
-	private SortedSet<Integer> checkedNfcTags = new TreeSet<Integer>();
+	protected SortedSet<Integer> checkedNfcTags = new TreeSet<Integer>();
 
 	public NfcTagBaseAdapter(final Context context, AttributeSet attributeSet, int currentPlayingposition) {
 		super(context, currentPlayingposition);

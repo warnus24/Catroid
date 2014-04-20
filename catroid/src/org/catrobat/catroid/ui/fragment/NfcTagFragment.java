@@ -26,7 +26,6 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,7 +33,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
@@ -65,7 +63,6 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.NfcTagData;
-import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.nfc.NfcHandler;
 import org.catrobat.catroid.ui.BackPackActivity;
 import org.catrobat.catroid.ui.BottomBar;
@@ -75,11 +72,10 @@ import org.catrobat.catroid.ui.adapter.NfcTagAdapter;
 import org.catrobat.catroid.ui.adapter.NfcTagBaseAdapter;
 import org.catrobat.catroid.ui.controller.NfcTagController;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
-import org.catrobat.catroid.ui.dialogs.RenameSoundDialog;
+import org.catrobat.catroid.ui.dialogs.DeleteNfcTagDialog;
+import org.catrobat.catroid.ui.dialogs.RenameNfcTagDialog;
 import org.catrobat.catroid.utils.Utils;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBaseAdapter.OnNfcTagEditListener, Dialog.OnKeyListener {
@@ -115,6 +111,12 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
+
+    private OnNfcTagDataListChangedAfterNewListener nfcTagDataListChangedAfterNewListener;
+
+    public void setOnNfcTagDataListChangedAfterNewListener(OnNfcTagDataListChangedAfterNewListener listener) {
+        nfcTagDataListChangedAfterNewListener = listener;
+    }
 
 	private void setHandleAddbutton() {
 		addButton = (ImageButton) getSherlockActivity().findViewById(R.id.button_add);
@@ -166,6 +168,11 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
 		Utils.loadProjectIfNeeded(getActivity());
 		setHandleAddbutton();
+
+        //TODO: adapt for nfc
+        // set adapter and soundInfoList for ev. unpacking
+        //BackPackListManager.getInstance().setCurrentSoundInfoList(soundInfoList);
+        //BackPackListManager.getInstance().setCurrentSoundAdapter(adapter);
     }
 
 	@Override
@@ -179,12 +186,22 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		menu.findItem(R.id.backpack).setVisible(visibility);
 		menu.findItem(R.id.cut).setVisible(false);
 
+        //TODO: adapt for nfc
+        /*
+        if (BackPackListManager.getInstance().getSoundInfoArrayList().size() > 0) {
+            menu.findItem(R.id.unpacking).setVisible(true);
+        } else {
+            menu.findItem(R.id.unpacking).setVisible(false);
 
+            StorageHandler.getInstance().clearBackPackSoundDirectory();
+        }
+        */
 		super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
+        //TODO: check for nfc
 		outState.putSerializable(NfcTagController.BUNDLE_ARGUMENTS_SELECTED_NFCTAG, selectedNfcTag);
 		super.onSaveInstanceState(outState);
 	}
@@ -292,6 +309,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		if (projectManager.getCurrentProject() != null) {
 			projectManager.saveProject();
 		}
+        //TODO: adapt for nfc
 		//NfcTagController.getInstance().stopSound(mediaPlayer, soundInfoList);
 		adapter.notifyDataSetChanged();
 
@@ -326,27 +344,38 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
     @Override
     public boolean getShowDetails() {
-        return false;
+        // TODO CHANGE THIS!!! (was just a quick fix)
+        if (adapter != null) {
+            return adapter.getShowDetails();
+        } else {
+            return false;
+        }
     }
 
     @Override
     public void setShowDetails(boolean showDetails) {
-
+        // TODO CHANGE THIS!!! (was just a quick fix)
+        if (adapter != null) {
+            adapter.setShowDetails(showDetails);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
     public void setSelectMode(int selectMode) {
-
+        adapter.setSelectMode(selectMode);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public int getSelectMode() {
-        return 0;
+        return adapter.getSelectMode();
     }
 
     @Override
 	public void startCopyActionMode() {
 		if (actionMode == null) {
+            //TODO: adapt for nfc
 			//SoundController.getInstance().stopSoundAndUpdateList(mediaPlayer, soundInfoList, adapter);
 			actionMode = getSherlockActivity().startActionMode(copyModeCallBack);
 			unregisterForContextMenu(listView);
@@ -360,6 +389,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 	public void startBackPackActionMode() {
 		Log.d("TAG", "startBackPackActionMode");
 		if (actionMode == null) {
+            //TODO: adapt for nfc
 			//SoundController.getInstance().stopSoundAndUpdateList(mediaPlayer, soundInfoList, adapter);
 			actionMode = getSherlockActivity().startActionMode(backPackModeCallBack);
 			unregisterForContextMenu(listView);
@@ -372,6 +402,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 	@Override
 	public void startRenameActionMode() {
 		if (actionMode == null) {
+            //TODO: adapt for nfc
 			//SoundController.getInstance().stopSoundAndUpdateList(mediaPlayer, soundInfoList, adapter);
 			actionMode = getSherlockActivity().startActionMode(renameModeCallBack);
 			unregisterForContextMenu(listView);
@@ -383,6 +414,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 	@Override
 	public void startDeleteActionMode() {
 		if (actionMode == null) {
+            //TODO: adapt for nfc
 			//SoundController.getInstance().stopSoundAndUpdateList(mediaPlayer, soundInfoList, adapter);
 			actionMode = getSherlockActivity().startActionMode(deleteModeCallBack);
 			unregisterForContextMenu(listView);
@@ -394,7 +426,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
+        //TODO: adapt for nfc - enable/disable dispatching
 	}
 
     @Override
@@ -444,13 +476,17 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, view, menuInfo);
 
-		getSherlockActivity().getMenuInflater().inflate(R.menu.context_menu_default, menu);
-		menu.findItem(R.id.context_menu_copy).setVisible(true);
-		menu.findItem(R.id.context_menu_unpacking).setVisible(false);
-		//TODO: remove this when inserting of sound items from backpack is possible
-		if (!BuildConfig.DEBUG) {
-			menu.findItem(R.id.context_menu_backpack).setVisible(false);
-		}
+        selectedNfcTag = adapter.getItem(selectedNfcTagPosition);
+        menu.setHeaderTitle(selectedNfcTag.getNfcTagName());
+        adapter.addCheckedItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position);
+
+        getSherlockActivity().getMenuInflater().inflate(R.menu.context_menu_default, menu);
+        menu.findItem(R.id.context_menu_copy).setVisible(true);
+        menu.findItem(R.id.context_menu_unpacking).setVisible(false);
+        //TODO: remove this when inserting of sound items from backpack is possible
+        if (!BuildConfig.DEBUG) {
+            menu.findItem(R.id.context_menu_backpack).setVisible(false);
+        }
 	}
 
 	@Override
@@ -461,11 +497,16 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 				Intent intent = new Intent(getActivity(), BackPackActivity.class);
 				intent.putExtra(BackPackActivity.EXTRA_FRAGMENT_POSITION, 2);
 				intent.putExtra(BackPackActivity.BACKPACK_ITEM, true);
+                //TODO: adapt for nfc
+                //BackPackListManager.setCurrentSoundInfo(selectedSoundInfo);
+                //BackPackListManager.getInstance().addSoundToActionBarSoundInfoArrayList(selectedSoundInfo);
 				startActivity(intent);
 				break;
 
 			case R.id.context_menu_copy:
-
+                NfcTagData newNfcTagData = NfcTagController.getInstance().copyNfcTag(selectedNfcTag, nfcTagDataList,
+                        adapter);
+                updateNfcTagAdapter(newNfcTagData);
 				break;
 
 			case R.id.context_menu_cut:
@@ -488,10 +529,36 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		return super.onContextItemSelected(item);
 	}
 
+    private void updateNfcTagAdapter(NfcTagData newNfcTagData) {
+
+        if (nfcTagDataListChangedAfterNewListener != null) {
+            nfcTagDataListChangedAfterNewListener.onNfcTagDataListChangedAfterNew(newNfcTagData);
+        }
+
+        //scroll down the list to the new item:
+        final ListView listView = getListView();
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                listView.setSelection(listView.getCount() - 1);
+            }
+        });
+
+        if (isResultHandled) {
+            isResultHandled = false;
+
+            ScriptActivity scriptActivity = (ScriptActivity) getActivity();
+            if (scriptActivity.getIsNfcTagFragmentFromWhenNfcBrickNew()
+                    && scriptActivity.getIsNfcTagFragmentHandleAddButtonHandled()) {
+                NfcTagController.getInstance().switchToScriptFragment(this);
+            }
+        }
+    }
+
 	@Override
 	public void handleAddButton() {
-		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-
+		//Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        //TODO: adapt for nfc, if necessary
 	}
 
     @TargetApi(19)
@@ -501,20 +568,21 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
 	@Override
 	public void showRenameDialog() {
-
+        RenameNfcTagDialog renameNfcTagDialog = RenameNfcTagDialog.newInstance(selectedNfcTag.getNfcTagName());
+        renameNfcTagDialog.show(getFragmentManager(), RenameNfcTagDialog.DIALOG_FRAGMENT_TAG);
 	}
 
 	@Override
 	protected void showDeleteDialog() {
-
+        DeleteNfcTagDialog deleteNfcTagDialog = DeleteNfcTagDialog.newInstance(selectedNfcTagPosition);
+        deleteNfcTagDialog.show(getFragmentManager(), DeleteNfcTagDialog.DIALOG_FRAGMENT_TAG);
 	}
 
 	private class NfcTagRenamedReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(ScriptActivity.ACTION_NFCTAG_RENAMED)) {
-                //create RenameNfcTagDialog
-				String newTagName = intent.getExtras().getString(RenameSoundDialog.EXTRA_NEW_SOUND_TITLE);
+				String newTagName = intent.getExtras().getString(RenameNfcTagDialog.EXTRA_NEW_NFCTAG_TITLE);
 
 				if (newTagName != null && !newTagName.equalsIgnoreCase("")) {
                     selectedNfcTag.setNfcTagName(newTagName);
@@ -546,7 +614,19 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 	}
 
 	private void addSelectAllActionModeButton(ActionMode mode, Menu menu) {
+        selectAllActionModeButton = Utils.addSelectAllActionModeButton(getLayoutInflater(null), mode, menu);
+        selectAllActionModeButton.setOnClickListener(new OnClickListener() {
 
+            @Override
+            public void onClick(View view) {
+                for (int position = 0; position < nfcTagDataList.size(); position++) {
+                    adapter.addCheckedItem(position);
+                }
+                adapter.notifyDataSetChanged();
+                onNfcTagChecked();
+            }
+
+        });
 	}
 
 	private ActionMode.Callback renameModeCallBack = new ActionMode.Callback() {
@@ -573,7 +653,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-			//((NfcTagAdapter) adapter).onDestroyActionModeRename(mode, listView);
+			((NfcTagAdapter) adapter).onDestroyActionModeRename(mode, listView);
 		}
 	};
 
@@ -591,8 +671,8 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 			setActionModeActive(true);
 
 			actionModeTitle = getString(R.string.copy);
-			singleItemAppendixDeleteActionMode = getString(R.string.category_sound);
-			multipleItemAppendixDeleteActionMode = getString(R.string.sounds);
+			singleItemAppendixDeleteActionMode = getString(R.string.category_nfc);
+			multipleItemAppendixDeleteActionMode = getString(R.string.nfctags);
 
 			mode.setTitle(actionModeTitle);
 			addSelectAllActionModeButton(mode, menu);
@@ -607,9 +687,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-
-			//((SoundAdapter) adapter).onDestroyActionModeCopy(mode);
-
+			((NfcTagAdapter) adapter).onDestroyActionModeCopy(mode);
 		}
 
 	};
@@ -628,8 +706,8 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 			setActionModeActive(true);
 
 			actionModeTitle = getString(R.string.backpack);
-			singleItemAppendixDeleteActionMode = getString(R.string.category_sound);
-			multipleItemAppendixDeleteActionMode = getString(R.string.sounds);
+			singleItemAppendixDeleteActionMode = getString(R.string.category_nfc);
+			multipleItemAppendixDeleteActionMode = getString(R.string.nfctags);
 
 			mode.setTitle(actionModeTitle);
 			addSelectAllActionModeButton(mode, menu);
@@ -644,8 +722,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-
-			//((SoundAdapter) adapter).onDestroyActionModeBackPack(mode);
+			((NfcTagAdapter) adapter).onDestroyActionModeBackPack(mode);
 
 		}
 
@@ -664,8 +741,8 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 			setActionModeActive(true);
 
 			actionModeTitle = getString(R.string.delete);
-			singleItemAppendixDeleteActionMode = getString(R.string.category_sound);
-			multipleItemAppendixDeleteActionMode = getString(R.string.sounds);
+			singleItemAppendixDeleteActionMode = getString(R.string.category_nfc);
+			multipleItemAppendixDeleteActionMode = getString(R.string.nfctags);
 
 			mode.setTitle(R.string.delete);
 			addSelectAllActionModeButton(mode, menu);
@@ -681,7 +758,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
 			if (adapter.getAmountOfCheckedItems() == 0) {
-				clearCheckedSoundsAndEnableButtons();
+				clearCheckedNfcTagsAndEnableButtons();
 			} else {
 				showConfirmDeleteDialog();
 			}
@@ -699,28 +776,28 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 	}
 
 	private void showConfirmDeleteDialog() {
-		int titleId = R.string.dialog_confirm_delete_sound_title;
+		int titleId = R.string.dialog_confirm_delete_nfctag_title;
 		if (adapter.getAmountOfCheckedItems() == 1) {
-			titleId = R.string.dialog_confirm_delete_sound_title;
+			titleId = R.string.dialog_confirm_delete_nfctag_title;
 		} else {
-			titleId = R.string.dialog_confirm_delete_multiple_sounds_title;
+			titleId = R.string.dialog_confirm_delete_multiple_nfctags_title;
 		}
 
 		AlertDialog.Builder builder = new CustomAlertDialogBuilder(getActivity());
 		builder.setTitle(titleId);
-		builder.setMessage(R.string.dialog_confirm_delete_sound_message);
+		builder.setMessage(R.string.dialog_confirm_delete_nfctag_message);
 		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
-				//NfcTagController.getInstance().deleteCheckedNfcTags(getActivity(), adapter, soundInfoList, mediaPlayer);
-				clearCheckedSoundsAndEnableButtons();
+				NfcTagController.getInstance().deleteCheckedNfcTags(getActivity(), adapter, nfcTagDataList);
+				clearCheckedNfcTagsAndEnableButtons();
 			}
 		});
 		builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
-				clearCheckedSoundsAndEnableButtons();
+				clearCheckedNfcTagsAndEnableButtons();
 			}
 		});
 
@@ -728,7 +805,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		alertDialog.show();
 	}
 
-	public void clearCheckedSoundsAndEnableButtons() {
+	public void clearCheckedNfcTagsAndEnableButtons() {
 		setSelectMode(ListView.CHOICE_MODE_NONE);
 		adapter.clearCheckedItems();
 
@@ -762,10 +839,10 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
             convertView = View.inflate(getActivity(), R.layout.fragment_nfctag_nfctaglist_item, null);
 
             holder = new NfcTagViewHolder();
-
             holder.scanNewTagButton = (ImageButton) convertView.findViewById(R.id.fragment_nfctag_item_image_button);
             holder.scanNewTagButton.setImageResource(R.drawable.ic_media_play);
             holder.scanNewTagButton.setContentDescription(getString(R.string.nfctag_scan));
+
             holder.nfcTagFragmentButtonLayout = (LinearLayout) convertView
                     .findViewById(R.id.fragment_nfctag_item_main_linear_layout);
             holder.checkbox = (CheckBox) convertView.findViewById(R.id.fragment_nfctag_item_checkbox);
@@ -776,6 +853,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
             holder.nfcTagUidPrefixTextView = (TextView) convertView
                     .findViewById(R.id.fragment_nfctag_item_uid_prefix_text_view);
             holder.nfcTagUidTextView = (TextView) convertView.findViewById(R.id.fragment_nfctag_item_uid_text_view);
+
             convertView.setTag(holder);
         } else {
             holder = (NfcTagViewHolder) convertView.getTag();
@@ -785,6 +863,12 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
         controller.updateNfcTagLogic(getActivity(), position, holder, adapter);
         return convertView;
 	}
+
+    public interface OnNfcTagDataListChangedAfterNewListener {
+
+        void onNfcTagDataListChangedAfterNew(NfcTagData nfcTagData);
+
+    }
 
 	public NfcTagDeletedReceiver getNfcTagDeletedReceiver() {
 		return nfcTagDeletedReceiver;
@@ -810,56 +894,13 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		this.nfcTagCopiedReceiver = nfcTagCopiedReceiver;
 	}
 
-	public class CopyAudioFilesTask extends AsyncTask<String, Void, File> {
-		private ProgressDialog progressDialog = new ProgressDialog(getActivity());
+    public void setSelectedNfcTagData(NfcTagData selectedNfcTagData) {
+        this.selectedNfcTag = selectedNfcTagData;
+    }
 
-		@Override
-		protected void onPreExecute() {
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setTitle(R.string.loading);
-			progressDialog.show();
-		}
-
-		@Override
-		protected File doInBackground(String... path) {
-			File file = null;
-			try {
-				file = StorageHandler.getInstance().copySoundFile(path[0]);
-			} catch (IOException e) {
-				Log.e("CATROID", "Cannot load sound.", e);
-			}
-			return file;
-		}
-
-		@Override
-		protected void onPostExecute(File file) {
-			progressDialog.dismiss();
-
-			if (file != null) {
-				//scroll down the list to the new item:
-				final ListView listView = getListView();
-				listView.post(new Runnable() {
-					@Override
-					public void run() {
-						listView.setSelection(listView.getCount() - 1);
-					}
-				});
-
-				if (isResultHandled) {
-					isResultHandled = false;
-
-					ScriptActivity scriptActivity = (ScriptActivity) getActivity();
-					if (scriptActivity.getIsSoundFragmentFromPlaySoundBrickNew()
-							&& scriptActivity.getIsSoundFragmentHandleAddButtonHandled()) {
-						NfcTagController.getInstance().switchToScriptFragment(NfcTagFragment.this);
-					}
-				}
-			} else {
-				Utils.showErrorDialog(getActivity(), R.string.error_load_sound);
-			}
-		}
-
-	}
+    public ArrayList<NfcTagData> getNfcTagDataList() {
+        return nfcTagDataList;
+    }
 
 	private class NfcTagsListInitReceiver extends BroadcastReceiver {
 		@Override

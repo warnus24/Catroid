@@ -326,6 +326,7 @@
     <string name="category_control">Control</string>
     <string name="category_variables">Variables</string>
     <string name="category_lego_nxt">Lego NXT</string>
+    <string name="category_nfc">NFC Tag</string>
     <!--  -->
 
 

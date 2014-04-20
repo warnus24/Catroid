@@ -254,21 +254,16 @@ public final class NfcTagController {
                 adapter);
     }
 
-    public void copySound(int position, ArrayList<SoundInfo> soundInfoList, SoundBaseAdapter adapter) {
-        SoundInfo soundInfo = soundInfoList.get(position);
-        try {
-            StorageHandler.getInstance().copySoundFile(soundInfo.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        SoundController.getInstance().updateSoundAdapter(soundInfo.getTitle(), soundInfo.getSoundFileName(),
-                soundInfoList, adapter);
+    public void copyNfcTag(int position, ArrayList<NfcTagData> nfcTagDataList, NfcTagBaseAdapter adapter) {
+        NfcTagData nfcTagData = nfcTagDataList.get(position);
+        NfcTagController.getInstance().updateNfcTagAdapter(nfcTagData.getNfcTagName(), nfcTagData.getNfcTagUid(),
+                nfcTagDataList, adapter);
     }
 
     private void deleteNfcTag(int position, ArrayList<NfcTagData> nfcTagDataList, Activity activity) {
         nfcTagDataList.remove(position);
         ProjectManager.getInstance().getCurrentSprite().setNfcTagList(nfcTagDataList);
-        activity.sendBroadcast(new Intent(ScriptActivity.ACTION_SOUND_DELETED));
+        activity.sendBroadcast(new Intent(ScriptActivity.ACTION_NFCTAG_DELETED));
     }
 
     public void deleteCheckedNfcTags(Activity activity, NfcTagBaseAdapter adapter, ArrayList<NfcTagData> nfcTagDataList) {

@@ -23,13 +23,20 @@
 package org.catrobat.catroid.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.actionbarsherlock.view.ActionMode;
 
 import org.catrobat.catroid.common.NfcTagData;
+import org.catrobat.catroid.ui.BackPackActivity;
+import org.catrobat.catroid.ui.controller.NfcTagController;
 import org.catrobat.catroid.ui.fragment.NfcTagFragment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class NfcTagAdapter extends NfcTagBaseAdapter implements ScriptActivityAdapterInterface {
 
@@ -49,7 +56,51 @@ public class NfcTagAdapter extends NfcTagBaseAdapter implements ScriptActivityAd
 		return nfcTagFragment.getView(position, convertView);
 	}
 
+    public void onDestroyActionModeRename(ActionMode mode, ListView listView) {
+        Iterator<Integer> iterator = checkedNfcTags.iterator();
+
+        if (iterator.hasNext()) {
+            int position = iterator.next();
+            nfcTagFragment.setSelectedNfcTagData((NfcTagData) listView.getItemAtPosition(position));
+            nfcTagFragment.showRenameDialog();
+        }
+        nfcTagFragment.clearCheckedNfcTagsAndEnableButtons();
+    }
+
+    public void onDestroyActionModeCopy(ActionMode mode) {
+        Iterator<Integer> iterator = checkedNfcTags.iterator();
+
+        while (iterator.hasNext()) {
+            int position = iterator.next();
+            NfcTagController.getInstance().copyNfcTag(position, nfcTagFragment.getNfcTagDataList(), this);
+        }
+        nfcTagFragment.clearCheckedNfcTagsAndEnableButtons();
+    }
+
+    public void onDestroyActionModeBackPack(ActionMode mode) {
+        Iterator<Integer> iterator = checkedNfcTags.iterator();
+        while (iterator.hasNext()) {
+            int position = iterator.next();
+            //TODO: adapt for nfc
+            //BackPackListManager.getInstance().addSoundToActionBarSoundInfoArrayList(nfcTagDataItems.get(position));
+        }
+
+        if (!checkedNfcTags.isEmpty()) {
+            Intent intent = new Intent(nfcTagFragment.getActivity(), BackPackActivity.class);
+            intent.putExtra(BackPackActivity.EXTRA_FRAGMENT_POSITION, 2);
+            intent.putExtra(BackPackActivity.BACKPACK_ITEM, true);
+            nfcTagFragment.getActivity().startActivity(intent);
+        }
+
+        nfcTagFragment.clearCheckedNfcTagsAndEnableButtons();
+    }
+
 	public void setNfcTagFragment(NfcTagFragment nfcTagFragment) {
 		this.nfcTagFragment = nfcTagFragment;
 	}
+
+    @Override
+    public ArrayList<NfcTagData> getNfcTagDataItems() {
+        return nfcTagDataItems;
+    }
 }
