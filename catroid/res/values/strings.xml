@@ -187,7 +187,7 @@
 
 
     <!-- NfcTags fragment -->
-    <string name="fragment_nfctag_text_description">Click \"+\" to add nfctags</string>
+    <string name="fragment_nfctag_text_description">Scan tags to add</string>
     <string name="rename_nfctag_dialog">Rename nfctag</string>
     <string name="nfctagname_invalid">This nfctag\'s name is invalid</string>
     <string name="nfctag_scan">scan</string>
@@ -199,6 +199,7 @@
     <string name="dialog_confirm_delete_nfctag_message">This can not be undone!</string>
     <string name="nfctag_name">nfctag name:</string>
     <string name="nfctags">NFC Tags</string>
+    <string name="uid">ID</string>
     <!--  -->
 
     <plurals name="unpacking_items_plural">

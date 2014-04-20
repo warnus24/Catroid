@@ -85,7 +85,7 @@
                         style="@style/nfctag_fragment_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/length" />
+                        android:text="@string/uid" />
 
                     <TextView
                         android:id="@+id/fragment_nfctag_item_size_prefix_text_view"

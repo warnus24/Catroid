@@ -134,6 +134,9 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+
+        BottomBar.hideAddButton(getActivity());
+
         nfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
         pendingIntent = PendingIntent.getActivity(getActivity(), 0,
                 new Intent(getActivity(), getActivity().getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -275,7 +278,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
             //NfcTagContainer.addTagName(uid, input.getText().toString().trim());
             // TODO: inform user that read nfc was successfull
             NfcTagData newNfcTagData = new NfcTagData();
-            String newTagName = Utils.getUniqueNfcTagName("test");
+            String newTagName = Utils.getUniqueNfcTagName("nfc_tag");
             newNfcTagData.setNfcTagName(newTagName);
             newNfcTagData.setNfcTagUid(uid);
             Log.d(TAG, "new nfc tag: " + uid);
@@ -483,7 +486,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
         getSherlockActivity().getMenuInflater().inflate(R.menu.context_menu_default, menu);
         menu.findItem(R.id.context_menu_copy).setVisible(true);
         menu.findItem(R.id.context_menu_unpacking).setVisible(false);
-        //TODO: remove this when inserting of sound items from backpack is possible
+        //TODO: remove this when inserting of nfc tags from backpack is possible
         if (!BuildConfig.DEBUG) {
             menu.findItem(R.id.context_menu_backpack).setVisible(false);
         }

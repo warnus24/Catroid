@@ -115,7 +115,7 @@ public class WhenNfcBrick extends ScriptBrick {
 
 				if (selectedTag.equals(context.getString(R.string.new_nfc_tag))) {
 					showNewTagDialog(nfcSpinner);
-				} else {
+                } else {
 					adapterView = parent;
 					whenNfcScript.setTagName(selectedTag);
 					whenNfcScript.setMatchAll(selectedTag.equals(context.getString(R.string.brick_when_nfc_default_all)));
