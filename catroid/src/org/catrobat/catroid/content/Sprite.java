@@ -203,7 +203,7 @@ public class Sprite implements Serializable, Cloneable {
 		for (Script s : scriptList) {
 			if (s instanceof WhenNfcScript) {
                 WhenNfcScript whenNfcScript = (WhenNfcScript)s;
-
+                //TODO: fix null pointer
                 if(whenNfcScript.isMatchAll()
                     || (uid != null) && whenNfcScript.getNfcTag().getNfcTagUid().equals(uid))
                 {

@@ -158,10 +158,14 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
                 }
                 else if(selectedTag.equals(context.getString(R.string.brick_when_nfc_default_all))){
                     whenNfcScript.setMatchAll(true);
+                    //TODO: rework all
                     nfcTag = (NfcTagData)parent.getItemAtPosition(position);
                     oldSelectedNfcTag = nfcTag;
                     adapterView = parent;
                 } else {
+                    if(whenNfcScript.getNfcTag() == null)
+                        whenNfcScript.setNfcTag(new NfcTagData());
+
 					whenNfcScript.getNfcTag().setNfcTagName(selectedTag);
 					whenNfcScript.setMatchAll(false);
                     nfcTag = (NfcTagData)parent.getItemAtPosition(position);
@@ -189,17 +193,21 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
 		spinner.setSelection(position, true);
         */
         if (sprite.getNfcTagList().contains(nfcTag)) {
+            Log.d("setSpinnerSelection", "nfcTag found");
             oldSelectedNfcTag = nfcTag;
-            spinner.setSelection(sprite.getNfcTagList().indexOf(nfcTag) + 1, true);
+            spinner.setSelection(sprite.getNfcTagList().indexOf(nfcTag) + 2, true);
         } else {
             if (spinner.getAdapter() != null && spinner.getAdapter().getCount() > 1) {
                 if (sprite.getNfcTagList().indexOf(oldSelectedNfcTag) >= 0) {
-                    spinner.setSelection(sprite.getNfcTagList().indexOf(oldSelectedNfcTag) + 1, true);
+                    spinner.setSelection(sprite.getNfcTagList().indexOf(oldSelectedNfcTag) + 2, true);
+                    Log.d("setSpinnerSelection", "oldSelectedNfcTag found");
                 } else {
                     spinner.setSelection(1, true);
+                    Log.d("setSpinnerSelection", "setSelection(1, true)");
                 }
             } else {
                 spinner.setSelection(0, true);
+                Log.d("setSpinnerSelection", "setSelection(0, true)");
             }
         }
 	}

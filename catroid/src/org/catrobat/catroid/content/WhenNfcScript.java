@@ -46,6 +46,8 @@ public class WhenNfcScript extends Script {
 
 	public WhenNfcScript(Sprite sprite, NfcTagData nfcTag) {
 		super(sprite);
+        if(nfcTag == null)
+            nfcTag = new NfcTagData();
 		this.nfcTag = nfcTag;
 	}
 
