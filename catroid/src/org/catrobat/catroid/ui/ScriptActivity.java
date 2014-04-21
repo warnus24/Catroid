@@ -620,7 +620,7 @@ public class ScriptActivity extends BaseActivity {
                 } else {
                     fragmentTransaction.show(nfcTagFragment);
                 }
-                setCurrentFragment(FRAGMENT_SOUNDS);
+                setCurrentFragment(FRAGMENT_NFCTAGS);
                 break;
 		}
 

@@ -291,13 +291,13 @@ public final class NfcTagController {
         return newSoundInfo;
     }
 
-    public NfcTagData updateNfcTagAdapter(String title, String uid, ArrayList<NfcTagData> nfcTagDataList,
+    public NfcTagData updateNfcTagAdapter(String name, String uid, ArrayList<NfcTagData> nfcTagDataList,
                                         NfcTagBaseAdapter adapter) {
 
-        //title = Utils.getUniqueSoundName(title);
+        name = Utils.getUniqueNfcTagName(name);
 
         NfcTagData newNfcTagData= new NfcTagData();
-        newNfcTagData.setNfcTagName(title);
+        newNfcTagData.setNfcTagName(name);
         newNfcTagData.setNfcTagUid(uid);
         nfcTagDataList.add(newNfcTagData);
 
