@@ -66,8 +66,8 @@ public class RenameNfcTagDialog extends TextDialog {
 			dismiss();
 		}
 
-		if (newNfcTagName != null && !newNfcTagName.equalsIgnoreCase("")) {
-            newNfcTagName = Utils.getUniqueSoundName(newNfcTagName);
+		if (newNfcTagName != null && !newNfcTagName.equalsIgnoreCase("") && !newNfcTagName.equals(getString(R.string.brick_when_nfc_default_all))) {
+            newNfcTagName = Utils.getUniqueNfcTagName(newNfcTagName);
 		} else {
 			Utils.showErrorDialog(getActivity(), R.string.nfctagname_invalid);
 		}
