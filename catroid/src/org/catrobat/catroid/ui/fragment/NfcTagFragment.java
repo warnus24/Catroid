@@ -64,7 +64,6 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.NfcTagData;
 import org.catrobat.catroid.nfc.NfcHandler;
-import org.catrobat.catroid.ui.BackPackActivity;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.NfcTagViewHolder;
 import org.catrobat.catroid.ui.ScriptActivity;
@@ -486,10 +485,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
         getSherlockActivity().getMenuInflater().inflate(R.menu.context_menu_default, menu);
         menu.findItem(R.id.context_menu_copy).setVisible(true);
         menu.findItem(R.id.context_menu_unpacking).setVisible(false);
-        //TODO: remove this when inserting of nfc tags from backpack is possible
-        if (!BuildConfig.DEBUG) {
-            menu.findItem(R.id.context_menu_backpack).setVisible(false);
-        }
+        menu.findItem(R.id.context_menu_backpack).setVisible(false);
 	}
 
 	@Override
@@ -497,13 +493,6 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		switch (item.getItemId()) {
 
 			case R.id.context_menu_backpack:
-				Intent intent = new Intent(getActivity(), BackPackActivity.class);
-				intent.putExtra(BackPackActivity.EXTRA_FRAGMENT_POSITION, 2);
-				intent.putExtra(BackPackActivity.BACKPACK_ITEM, true);
-                //TODO: adapt for nfc
-                //BackPackListManager.setCurrentSoundInfo(selectedSoundInfo);
-                //BackPackListManager.getInstance().addSoundToActionBarSoundInfoArrayList(selectedSoundInfo);
-				startActivity(intent);
 				break;
 
 			case R.id.context_menu_copy:
@@ -561,7 +550,6 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 	@Override
 	public void handleAddButton() {
 		//Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        //TODO: adapt for nfc, if necessary
 	}
 
     @TargetApi(19)
