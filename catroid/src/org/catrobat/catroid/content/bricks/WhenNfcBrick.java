@@ -62,6 +62,7 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
         //TODO: nfcTag needs to be initialized (?)
         this.nfcTag = null;
         this.whenNfcScript = new WhenNfcScript(sprite);
+        this.whenNfcScript.setMatchAll(true);
 	}
 
 	public WhenNfcBrick(Sprite sprite, String tagName, String tagUid) {
@@ -71,6 +72,7 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
         this.nfcTag.setNfcTagName(tagName);
         this.nfcTag.setNfcTagUid(tagUid);
 		this.whenNfcScript = new WhenNfcScript(sprite, nfcTag);
+        this.whenNfcScript.setMatchAll(false);
 	}
 
 	public WhenNfcBrick(Sprite sprite, WhenNfcScript script) {
@@ -95,14 +97,16 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
 	@Override
 	public Script initScript(Sprite sprite) {
 		if (whenNfcScript == null) {
-			setWhenNfcScript(new WhenNfcScript(sprite));
+            //setWhenNfcScript(new WhenNfcScript(sprite));
+			setWhenNfcScript(new WhenNfcScript(sprite, nfcTag));
 		}
 		return whenNfcScript;
 	}
 
 	@Override
 	public Brick clone() {
-		return new WhenNfcBrick(sprite, new WhenNfcScript(sprite));
+        //return new WhenNfcBrick(sprite, new WhenNfcScript(sprite));
+		return new WhenNfcBrick(sprite, new WhenNfcScript(sprite, nfcTag));
 	}
 
 	@Override
@@ -110,9 +114,13 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
 		if (animationState) {
 			return view;
 		}
-		/*if (view == null) {
+		if (view == null) {
 			alphaValue = 255;
-		}*/
+		}
+        if(whenNfcScript == null)
+        {
+            whenNfcScript = new WhenNfcScript(sprite, nfcTag);
+        }
         final Brick brickInstance = this;
         view = View.inflate(context, R.layout.brick_when_nfc, null);
         view = getViewWithAlpha(alphaValue);
@@ -158,17 +166,24 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
                 }
                 else if(selectedTag.equals(context.getString(R.string.brick_when_nfc_default_all))){
                     whenNfcScript.setMatchAll(true);
+                    whenNfcScript.setNfcTag(null);
                     //TODO: rework all
-                    nfcTag = (NfcTagData)parent.getItemAtPosition(position);
+                    nfcTag = null;//(NfcTagData)parent.getItemAtPosition(position);
                     oldSelectedNfcTag = nfcTag;
                     adapterView = parent;
                 } else {
                     if(whenNfcScript.getNfcTag() == null)
                         whenNfcScript.setNfcTag(new NfcTagData());
-
-					whenNfcScript.getNfcTag().setNfcTagName(selectedTag);
+                    for(NfcTagData selTag : sprite.getNfcTagList())
+                    {
+                        if(selTag.getNfcTagName().equals(selectedTag)) {
+                            whenNfcScript.setNfcTag(selTag);
+                            nfcTag = selTag;//(NfcTagData)parent.getItemAtPosition(position);
+                            break;
+                        }
+                    }
+					//whenNfcScript.getNfcTag().setNfcTagName(selectedTag);
 					whenNfcScript.setMatchAll(false);
-                    nfcTag = (NfcTagData)parent.getItemAtPosition(position);
                     oldSelectedNfcTag = nfcTag;
                     adapterView = parent;
 				}
@@ -193,7 +208,7 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
 		spinner.setSelection(position, true);
         */
         if (sprite.getNfcTagList().contains(nfcTag)) {
-            Log.d("setSpinnerSelection", "nfcTag found");
+            Log.d("setSpinnerSelection", "nfcTag found: " + nfcTag.getNfcTagName());
             oldSelectedNfcTag = nfcTag;
             spinner.setSelection(sprite.getNfcTagList().indexOf(nfcTag) + 2, true);
         } else {
@@ -242,6 +257,7 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
         NfcTagData dummyNfcTagData = new NfcTagData();
         dummyNfcTagData.setNfcTagName(context.getString(R.string.new_broadcast_message));
         arrayAdapter.add(dummyNfcTagData);
+        //TODO: rework all
         dummyNfcTagData = new NfcTagData();
         dummyNfcTagData.setNfcTagName(context.getString(R.string.brick_when_nfc_default_all));
         arrayAdapter.add(dummyNfcTagData);

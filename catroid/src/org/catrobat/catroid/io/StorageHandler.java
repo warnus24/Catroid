@@ -22,17 +22,6 @@
  */
 package org.catrobat.catroid.io;
 
-import static org.catrobat.catroid.common.Constants.BACKPACK_DIRECTORY;
-import static org.catrobat.catroid.common.Constants.BACKPACK_IMAGE_DIRECTORY;
-import static org.catrobat.catroid.common.Constants.BACKPACK_SOUND_DIRECTORY;
-import static org.catrobat.catroid.common.Constants.DEFAULT_ROOT;
-import static org.catrobat.catroid.common.Constants.IMAGE_DIRECTORY;
-import static org.catrobat.catroid.common.Constants.NO_MEDIA_FILE;
-import static org.catrobat.catroid.common.Constants.PROJECTCODE_NAME;
-import static org.catrobat.catroid.common.Constants.SOUND_DIRECTORY;
-import static org.catrobat.catroid.utils.Utils.buildPath;
-import static org.catrobat.catroid.utils.Utils.buildProjectPath;
-
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
@@ -45,6 +34,7 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.FileChecksumContainer;
 import org.catrobat.catroid.common.LookData;
+import org.catrobat.catroid.common.NfcTagData;
 import org.catrobat.catroid.common.ProjectData;
 import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.content.BroadcastScript;
@@ -106,6 +96,7 @@ import org.catrobat.catroid.content.bricks.TurnLeftBrick;
 import org.catrobat.catroid.content.bricks.TurnRightBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.content.bricks.WhenBrick;
+import org.catrobat.catroid.content.bricks.WhenNfcBrick;
 import org.catrobat.catroid.content.bricks.WhenStartedBrick;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
@@ -124,6 +115,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import static org.catrobat.catroid.common.Constants.BACKPACK_DIRECTORY;
+import static org.catrobat.catroid.common.Constants.BACKPACK_IMAGE_DIRECTORY;
+import static org.catrobat.catroid.common.Constants.BACKPACK_SOUND_DIRECTORY;
+import static org.catrobat.catroid.common.Constants.DEFAULT_ROOT;
+import static org.catrobat.catroid.common.Constants.IMAGE_DIRECTORY;
+import static org.catrobat.catroid.common.Constants.NO_MEDIA_FILE;
+import static org.catrobat.catroid.common.Constants.PROJECTCODE_NAME;
+import static org.catrobat.catroid.common.Constants.SOUND_DIRECTORY;
+import static org.catrobat.catroid.utils.Utils.buildPath;
+import static org.catrobat.catroid.utils.Utils.buildProjectPath;
 
 public final class StorageHandler {
 	private static final StorageHandler INSTANCE;
@@ -164,6 +166,7 @@ public final class StorageHandler {
 	private void setXstreamAliases() {
 		xstream.alias("look", LookData.class);
 		xstream.alias("sound", SoundInfo.class);
+        xstream.alias("nfcTag", NfcTagData.class);
 		xstream.alias("userVariable", UserVariable.class);
 
 		xstream.alias("broadcastScript", BroadcastScript.class);
@@ -171,6 +174,7 @@ public final class StorageHandler {
 		xstream.alias("object", Sprite.class);
 		xstream.alias("startScript", StartScript.class);
 		xstream.alias("whenScript", WhenScript.class);
+        xstream.alias("whenNfcScript", WhenNfcScript.class);
 
 		xstream.aliasField("object", BrickBaseType.class, "sprite");
 
@@ -226,7 +230,7 @@ public final class StorageHandler {
 		xstream.alias("whenBrick", WhenBrick.class);
 		xstream.alias("whenStartedBrick", WhenStartedBrick.class);
 
-		xstream.alias("whenNfcScript", WhenNfcScript.class);
+		xstream.alias("whenNfcBrick", WhenNfcBrick.class);
 	}
 
 	private void createCatroidRoot() {

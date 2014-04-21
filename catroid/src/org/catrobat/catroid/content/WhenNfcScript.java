@@ -41,19 +41,19 @@ public class WhenNfcScript extends Script {
 
 	public WhenNfcScript(Sprite sprite) {
 		super(sprite);
-        nfcTag = new NfcTagData();
+        nfcTag = null;
 	}
 
 	public WhenNfcScript(Sprite sprite, NfcTagData nfcTag) {
 		super(sprite);
-        if(nfcTag == null)
-            nfcTag = new NfcTagData();
+        /*if(nfcTag == null)
+            nfcTag = new NfcTagData();*/
 		this.nfcTag = nfcTag;
 	}
 
 	@Override
 	public Script copyScriptForSprite(Sprite copySprite) {
-		WhenNfcScript cloneScript = new WhenNfcScript(copySprite);
+		WhenNfcScript cloneScript = new WhenNfcScript(copySprite, nfcTag);
 		ArrayList<Brick> cloneBrickList = cloneScript.getBrickList();
 
 		for (Brick brick : getBrickList()) {
