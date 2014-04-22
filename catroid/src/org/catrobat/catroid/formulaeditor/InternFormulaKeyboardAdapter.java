@@ -104,6 +104,10 @@ public class InternFormulaKeyboardAdapter {
 				return buildFunctionWithoutParametersAndBrackets(Functions.TRUE);
 			case R.string.formula_editor_function_false:
 				return buildFunctionWithoutParametersAndBrackets(Functions.FALSE);
+			case R.string.formula_editor_sensor_arduino_read_pin_value_digital:
+				return buildSingleParameterFunction(Functions.ARDUINODIGITAL, "0");
+			case R.string.formula_editor_sensor_arduino_read_pin_value_analog:
+				return buildSingleParameterFunction(Functions.ARDUINOANALOG, "0");
 
 				//SENSOR
 
@@ -121,10 +125,12 @@ public class InternFormulaKeyboardAdapter {
 				return buildSensor(Sensors.Y_INCLINATION);
 			case R.string.formula_editor_sensor_loudness:
 				return buildSensor(Sensors.LOUDNESS);
-			case R.string.formula_editor_sensor_arduino_read_pin_value_digital:
-				return buildSensor(Sensors.ARDUINODIGITAL);
-			case R.string.formula_editor_sensor_arduino_read_pin_value_analog:
-				return buildSensor(Sensors.ARDUINOANALOG);
+				//			case R.string.formula_editor_sensor_arduino_read_pin_value:
+				//				return buildSensor(Sensors.A)
+				//			case R.string.formula_editor_sensor_arduino_read_pin_value_digital:
+				//				return buildSensor(Sensors.ARDUINODIGITAL);
+				//			case R.string.formula_editor_sensor_arduino_read_pin_value_analog:
+				//				return buildSensor(Sensors.ARDUINOANALOG);
 
 				//PERIOD
 			case R.id.formula_editor_keyboard_decimal_mark:

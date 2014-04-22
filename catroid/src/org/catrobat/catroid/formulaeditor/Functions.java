@@ -24,14 +24,13 @@ package org.catrobat.catroid.formulaeditor;
 
 public enum Functions {
 
-	SIN, COS, TAN, LN, LOG, SQRT, RAND, ROUND, ABS, PI, MOD, ARCSIN, ARCCOS, ARCTAN, EXP, MAX, MIN, TRUE, FALSE;
+	SIN, COS, TAN, LN, LOG, SQRT, RAND, ROUND, ABS, PI, MOD, ARCSIN, ARCCOS, ARCTAN, EXP, MAX, MIN, TRUE, FALSE, ARDUINOANALOG, ARDUINODIGITAL;
 
 	public static boolean isFunction(String value) {
 		if (getFunctionByValue(value) == null) {
 			return false;
 		}
 		return true;
-		//ARDUINOANALOG, ARDUINODIGITAL, 
 	}
 
 	public static Functions getFunctionByValue(String value) {

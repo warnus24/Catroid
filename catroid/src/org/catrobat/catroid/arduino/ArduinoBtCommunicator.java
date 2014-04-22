@@ -242,7 +242,7 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 		//checkIfDataIsAvailable(1);
 		read = inputStream.read(length);
 
-		byte[] buffer = new byte[length[0] - 1];
+		byte[] buffer = new byte[length[0] - 48]; //48 decimal = 0
 		//checkIfDataIsAvailable(length[0] - 1);
 		read = inputStream.read(buffer);
 
@@ -256,7 +256,17 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 				}
 				break;
 			case 'A':
-				sensors.setArduinoAnalogSensor(buffer[3]);
+				int SensorValue = 0;
+				if (((buffer[6] - 48) > 0) && ((buffer[5] - 48) > 0)) {
+					SensorValue = (buffer[3] - 48) * 1000 + (buffer[4] - 48) * 100 + (buffer[5] - 48) * 10
+							+ (buffer[6] - 48) * 1;
+				} else {
+					SensorValue = (buffer[3] - 48) * 10 + (buffer[4] - 48) * 1;
+				}
+				if (SensorValue < 0) {
+					SensorValue = 0;
+				}
+				sensors.setArduinoAnalogSensor(SensorValue);
 
 				if (debugOutput == true) {
 					Log.d("ArduinoBtComm", "sensor packet found");

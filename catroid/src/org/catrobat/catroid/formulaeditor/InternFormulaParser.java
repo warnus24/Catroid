@@ -266,6 +266,7 @@ public class InternFormulaParser {
 
 		FormulaElement sensorTree = new FormulaElement(FormulaElement.ElementType.SENSOR,
 				currentToken.getTokenStringValue(), null);
+
 		getNextToken();
 		return sensorTree;
 	}
@@ -326,7 +327,6 @@ public class InternFormulaParser {
 				throw new InternFormulaParserException("Parse Error");
 			}
 		}
-
 		return functionTree;
 	}
 

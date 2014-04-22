@@ -25,6 +25,7 @@ package org.catrobat.catroid.formulaeditor;
 import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.arduino.Arduino;
 import org.catrobat.catroid.content.Sprite;
 
 import java.io.Serializable;
@@ -276,53 +277,53 @@ public class FormulaElement implements Serializable {
 			case FALSE:
 				return 0.0;
 
-				//			case ARDUINODIGITAL:
-				//
-				//				char pinNumberLowerByteDigital = '0';
-				//				char pinNumberHigherByteDigital = '0';
-				//				//split up the pin number
-				//				if (left.toString().length() > 4) {
-				//					return -1.0;
-				//				}
-				//
-				//				if (left.toString().length() < 4) {
-				//					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
-				//				} else {
-				//					pinNumberLowerByteDigital = left.toString().charAt(left.toString().length() - 4);
-				//					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
-				//				}
-				//
-				//				Arduino.getArduinoValueFromPin(pinNumberLowerByteDigital, pinNumberHigherByteDigital, 'D');//problem here
-				//				int pinValueFromArduinoDigital = Arduino.getArduinoDigitalSensorMessage(); //kann ich so nicht machen... empfängt immer 0
-				//
-				//				if (pinValueFromArduinoDigital == 72) {
-				//					return 1.0;
-				//				} else if (pinValueFromArduinoDigital == 76) {
-				//					return 0.0;
-				//				} else {
-				//					return (double) pinValueFromArduinoDigital;
-				//				}
-				//
-				//			case ARDUINOANALOG:
-				//
-				//				char pinNumberLowerByteAnalog = '0';
-				//				char pinNumberHigherByteAnalog = '0';
-				//				//split up the pin number
-				//				if (left.toString().length() > 4) {
-				//					return -1.0;
-				//				}
-				//
-				//				if (left.toString().length() < 4) {
-				//					pinNumberHigherByteAnalog = left.toString().charAt(left.toString().length() - 3);
-				//				} else {
-				//					pinNumberLowerByteAnalog = left.toString().charAt(left.toString().length() - 4);
-				//					pinNumberHigherByteAnalog = left.toString().charAt(left.toString().length() - 3);
-				//				}
-				//
-				//				//				Arduino.getArduinoValueFromPin(pinNumberLowerByteAnalog, pinNumberHigherByteAnalog, 'A');
-				//				//				int pinValueFromArduinoAnalog = Arduino.getArduinoAnalogSensorMessage();
-				//				//
-				//				//				return (double) pinValueFromArduinoAnalog;
+			case ARDUINODIGITAL:
+
+				char pinNumberLowerByteDigital = '0';
+				char pinNumberHigherByteDigital = '0';
+				//split up the pin number
+				if (left.toString().length() > 4) {
+					return -1.0;
+				}
+
+				if (left.toString().length() < 4) {
+					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
+				} else {
+					pinNumberLowerByteDigital = left.toString().charAt(left.toString().length() - 4);
+					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
+				}
+
+				Arduino.sendArduinoDigitalPinMessage(pinNumberLowerByteDigital, pinNumberHigherByteDigital, 'D');//problem here
+				int pinValueFromArduinoDigital = Arduino.getArduinoDigitalSensorMessage();
+
+				if (pinValueFromArduinoDigital == 72) {
+					return 1.0;
+				} else if (pinValueFromArduinoDigital == 76) {
+					return 0.0;
+				} else {
+					return (double) pinValueFromArduinoDigital;
+				}
+
+			case ARDUINOANALOG:
+
+				char pinNumberLowerByteAnalog = '0';
+				char pinNumberHigherByteAnalog = '0';
+				//split up the pin number
+				if (left.toString().length() > 4) {
+					return -1.0;
+				}
+
+				if (left.toString().length() < 4) {
+					pinNumberHigherByteAnalog = left.toString().charAt(left.toString().length() - 3);
+				} else {
+					pinNumberLowerByteAnalog = left.toString().charAt(left.toString().length() - 4);
+					pinNumberHigherByteAnalog = left.toString().charAt(left.toString().length() - 3);
+				}
+
+				Arduino.sendArduinoDigitalPinMessage(pinNumberLowerByteAnalog, pinNumberHigherByteAnalog, 'A');
+				int pinValueFromArduinoAnalog = Arduino.getArduinoAnalogSensorMessage();
+
+				return (double) pinValueFromArduinoAnalog;
 		}
 
 		return 0d;
