@@ -429,7 +429,7 @@ public final class LookController {
 		fragmentTransaction.show(scriptActivity.getSupportFragmentManager().findFragmentByTag(ScriptFragment.TAG));
 		fragmentTransaction.commit();
 
-		scriptActivity.setIsLookFragmentFromSetLookBrickNewFalse();
+		scriptActivity.setIsLookFragmentFromSetLookBrickNew(false);
 		scriptActivity.setIsLookFragmentHandleAddButtonHandled(false);
 	}
 }

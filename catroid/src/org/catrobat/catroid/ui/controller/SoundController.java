@@ -569,7 +569,7 @@ public final class SoundController {
 		fragmentTransaction.show(scriptActivity.getSupportFragmentManager().findFragmentByTag(ScriptFragment.TAG));
 		fragmentTransaction.commit();
 
-		scriptActivity.setIsSoundFragmentFromPlaySoundBrickNewFalse();
+		scriptActivity.setIsSoundFragmentFromPlaySoundBrickNew(false);
 		scriptActivity.setIsSoundFragmentHandleAddButtonHandled(false);
 	}
 

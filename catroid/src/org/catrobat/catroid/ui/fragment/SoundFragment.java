@@ -176,7 +176,7 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 		((SoundAdapter) adapter).setSoundFragment(this);
 
 		Utils.loadProjectIfNeeded(getActivity());
-		setHandleAddbutton();
+		//setHandleAddbutton();
 
 		// set adapter and soundInfoList for ev. unpacking
 		BackPackListManager.getInstance().setCurrentSoundInfoList(soundInfoList);
