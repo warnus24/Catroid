@@ -197,22 +197,21 @@ public class Sprite implements Serializable, Cloneable {
 		return sequence;
 	}
 
-    //TODO: fix for new nfc tag management
 	public void createWhenNfcScriptAction(String uid) {
 		ParallelAction whenParallelAction = ExtendedActions.parallel();
 		for (Script s : scriptList) {
 			if (s instanceof WhenNfcScript) {
                 WhenNfcScript whenNfcScript = (WhenNfcScript)s;
-                //TODO: fix null pointer
                 if(whenNfcScript.isMatchAll()
-                    || (uid != null) && whenNfcScript.getNfcTag().getNfcTagUid().equals(uid))
+                    || (uid != null && whenNfcScript.getNfcTag().getNfcTagUid().equals(uid)))
                 {
 				    SequenceAction sequence = createActionSequence(s);
 				    whenParallelAction.addAction(sequence);
                 }
 			}
 		}
-		look.setWhenParallelAction(whenParallelAction);
+        //TODO: quick fix for faulty behaviour - nfc action triggers again after touchevents
+		//look.setWhenParallelAction(whenParallelAction);
 		look.addAction(whenParallelAction);
 	}
 

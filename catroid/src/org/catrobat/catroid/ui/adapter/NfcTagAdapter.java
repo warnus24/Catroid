@@ -81,7 +81,6 @@ public class NfcTagAdapter extends NfcTagBaseAdapter implements ScriptActivityAd
         Iterator<Integer> iterator = checkedNfcTags.iterator();
         while (iterator.hasNext()) {
             int position = iterator.next();
-            //TODO: adapt for nfc
             //BackPackListManager.getInstance().addSoundToActionBarSoundInfoArrayList(nfcTagDataItems.get(position));
         }
 
