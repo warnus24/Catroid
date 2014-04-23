@@ -96,6 +96,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	}
 
+	public Context getContext() {
+		return context;
+	}
+
 	public static LiveWallpaper getInstance() {
 		return INSTANCE;
 	}
@@ -133,6 +137,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public void changeWallpaperProgram() {
 		if (previewEngine != null) {
 			previewEngine.changeWallpaperProgram();
+			//previewEngine = new LiveWallpaperEngine();
 		}
 
 		if (homeEngine != null) {
@@ -241,6 +246,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 					change = false;
 				}
 			}
+
+			if (isPreview()) {
+				previewStageListener.menuResume();
+				Log.d("LWP", "Resuming  " + name + ": " + " SL-" + getLocalStageListener().hashCode());
+			} else {
+				homeScreenStageListener.menuResume();
+				Log.d("LWP", "Resuming  " + name + ": " + " SL-" + getLocalStageListener().hashCode());
+			}
 			SensorHandler.startSensorListener(getApplicationContext());
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 
@@ -297,6 +310,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		public void changeWallpaperProgram() {
 			if (isPreview()) {
 				getLocalStageListener().reloadProject(null);
+
 			} else {
 				if (home_stage_dialog != null) {
 				}

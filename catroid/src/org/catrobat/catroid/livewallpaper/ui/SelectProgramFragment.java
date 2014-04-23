@@ -39,6 +39,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.ActionMode;
@@ -81,6 +82,10 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	private ProjectManager projectManager = ProjectManager.getInstance();
 
 	private View selectAllActionModeButton;
+
+	private final String IS_LOADABLE = "IS_LOADABLE";
+	private final String IS_ALREADY_LOADED = "IS_ALREADY_LOADED";
+	private final String IS_NOT_LOADABLE = "IS_NOT_LOADABLE";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -130,7 +135,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		}
 	}
 
-	private class LoadProject extends AsyncTask<Void, Void, Void> {
+	private class LoadProject extends AsyncTask<String, String, String> {
 		private ProgressDialog progress;
 
 		public LoadProject() {
@@ -148,26 +153,64 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		}
 
 		@Override
-		protected Void doInBackground(Void... params) {
-			Project project = StorageHandler.getInstance().loadProject(selectedProject);
-			if (project != null) {
-				if (projectManager.getCurrentProject() != null
-						&& projectManager.getCurrentProject().getName().equals(selectedProject)) {
-					getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-					getFragmentManager().popBackStack();
-					return null;
-				}
-				projectManager.setProject(project);
-				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-				Editor editor = sharedPreferences.edit();
-				editor.putString(Constants.PREF_PROJECTNAME_KEY, selectedProject);
-				editor.commit();
+		protected String doInBackground(String... params) {
+			//Project project = StorageHandler.getInstance().loadProject(selectedProject);
+			//if (project != null) {
+			//	if (projectManager.getCurrentProject() != null
+			//			&& projectManager.getCurrentProject().getName().equals(selectedProject)) {
+			//		getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
+			//		getFragmentManager().popBackStack();
+			//		return null;
+			//	}
+			//	projectManager.setProject(project);
+			//	SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			//	Editor editor = sharedPreferences.edit();
+			//	editor.putString(Constants.PREF_PROJECTNAME_KEY, selectedProject);
+			//	editor.commit();
+			//}
+
+			String str_loadable = IS_ALREADY_LOADED;
+
+			if (projectManager.getCurrentProject() != null
+					&& projectManager.getCurrentProject().getName().equals(selectedProject)) {
+				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
+				getFragmentManager().popBackStack();
+				return str_loadable;
 			}
-			return null;
+
+			boolean loadable = projectManager.loadProject(selectedProject, LiveWallpaper.getInstance().getContext(),
+					true);
+
+			if (!loadable) {
+				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
+				getFragmentManager().popBackStack();
+				str_loadable = IS_NOT_LOADABLE;
+				return str_loadable;
+			}
+
+			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			Editor editor = sharedPreferences.edit();
+			editor.putString(Constants.PREF_PROJECTNAME_KEY, selectedProject);
+			editor.commit();
+			str_loadable = IS_LOADABLE;
+
+			return str_loadable;
 		}
 
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(String result) {
+			if (result.equals(IS_NOT_LOADABLE) || result.equals(IS_ALREADY_LOADED)) {
+				if (progress.isShowing()) {
+					progress.dismiss();
+				}
+				Toast toast = Toast.makeText(LiveWallpaper.getInstance().getContext(), result, 1000);
+				toast.show();
+
+				return;
+			}
+
+			Toast toast = Toast.makeText(LiveWallpaper.getInstance().getContext(), result, 1000);
+			toast.show();
 			if (progress.isShowing()) {
 				LiveWallpaper.getInstance().changeWallpaperProgram();
 				progress.dismiss();
