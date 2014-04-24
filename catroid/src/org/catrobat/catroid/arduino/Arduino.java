@@ -33,7 +33,7 @@ import org.catrobat.catroid.bluetooth.BTConnectable;
 import java.io.IOException;
 
 /**
- * @author Admin
+ * @author Adrian Schnedlitz
  * 
  */
 public class Arduino implements BTConnectable {

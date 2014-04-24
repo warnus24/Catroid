@@ -257,14 +257,12 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 				break;
 			case 'A':
 				int SensorValue = 0;
-				if (((buffer[6] - 48) > 0) && ((buffer[5] - 48) > 0)) {
-					SensorValue = (buffer[3] - 48) * 1000 + (buffer[4] - 48) * 100 + (buffer[5] - 48) * 10
-							+ (buffer[6] - 48) * 1;
-				} else {
-					SensorValue = (buffer[3] - 48) * 10 + (buffer[4] - 48) * 1;
-				}
-				if (SensorValue < 0) {
-					SensorValue = 0;
+				int position = 1;
+				for (int i = 6; i > 2; i--) {
+					if ((buffer[i] - 48) >= 0) {
+						SensorValue += (buffer[i] - 48) * position;
+						position = position * 10;
+					}
 				}
 				sensors.setArduinoAnalogSensor(SensorValue);
 

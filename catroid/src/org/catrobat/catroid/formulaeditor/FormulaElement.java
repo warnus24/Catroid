@@ -293,7 +293,7 @@ public class FormulaElement implements Serializable {
 					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
 				}
 
-				Arduino.sendArduinoDigitalPinMessage(pinNumberLowerByteDigital, pinNumberHigherByteDigital, 'D');//problem here
+				Arduino.sendArduinoDigitalPinMessage(pinNumberLowerByteDigital, pinNumberHigherByteDigital, 'D');
 				int pinValueFromArduinoDigital = Arduino.getArduinoDigitalSensorMessage();
 
 				if (pinValueFromArduinoDigital == 72) {
