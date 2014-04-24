@@ -41,7 +41,6 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.stage.StageListener;
-import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
 
 @SuppressLint("NewApi")
@@ -63,11 +62,26 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	}
 
 	/**
+	 * @return the homeEngine
+	 */
+	public LiveWallpaperEngine getHomeEngine() {
+		return homeEngine;
+	}
+
+	/**
 	 * @param previewEngine
 	 *            the previewEngine to set
 	 */
 	public void setPreviewEngine(LiveWallpaperEngine previewEngine) {
 		this.previewEngine = previewEngine;
+	}
+
+	/**
+	 * @param homeEngine
+	 *            the homeEngine to set
+	 */
+	public void setHomeEngine(LiveWallpaperEngine homeEngine) {
+		this.homeEngine = homeEngine;
 	}
 
 	private LiveWallpaperEngine homeEngine;
@@ -122,14 +136,19 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			Log.d("LWP", "Created " + "new prev Listener");
 			return previewStageListener;
 		} else {
+
+			//homeActivity = new StageActivity();
 			if (previewEngine != null) {
 				previewEngine.onPause();
 			}
-			//homeActivity = new StageActivity();
+			//if (previewStageListener != null) {
+			//	previewStageListener.finish();
+			//}
 			homeScreenStageListener = new StageListener();
 			homeEngine = lastCreatedWallpaperEngine;
 			homeEngine.name = "Home";
 			Log.d("LWP", "Created " + "new home Listener");
+
 			return homeScreenStageListener;
 		}
 	}
@@ -156,8 +175,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public Engine onCreateEngine() {
-		Utils.loadProjectIfNeeded(getApplicationContext());
+
 		//	lastCreatedStageListener = new StageListener(true);
+		Utils.loadProjectIfNeeded(getApplicationContext());
 		if (previewStageListener == null && homeScreenStageListener == null) {
 			lastCreatedWallpaperEngine = new LiveWallpaperEngine();
 		}
@@ -199,8 +219,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 		};
 
-		private boolean change = false;
-		private StageDialog home_stage_dialog;
+		//private boolean change = false;
+
+		//private StageDialog home_stage_dialog;
 
 		public LiveWallpaperEngine() {
 			super();
@@ -233,19 +254,19 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				return;
 			}
 
-			if (change) {
-				if (isPreview()) {
-					previewStageListener.reloadProject(null);
-					previewStageListener.menuResume();
-					Log.d("LWP", "Resuming  " + name + ": " + " SL-" + getLocalStageListener().hashCode());
-					change = false;
-				} else {
-					homeScreenStageListener.reloadProject(null);
-					homeScreenStageListener.menuResume();
-					Log.d("LWP", "Resuming  " + name + ": " + " SL-" + getLocalStageListener().hashCode());
-					change = false;
-				}
-			}
+			//if (change) {
+			//	if (isPreview()) {
+			//	previewStageListener.reloadProject(null);
+			//	previewStageListener.menuResume();
+			//	Log.d("LWP", "Resuming  " + name + ": " + " SL-" + getLocalStageListener().hashCode());
+			//	change = false;
+			//} else {
+			//	homeScreenStageListener.reloadProject(null);
+			//	homeScreenStageListener.menuResume();
+			//	Log.d("LWP", "Resuming  " + name + ": " + " SL-" + getLocalStageListener().hashCode());
+			//	change = false;
+			//}
+			//}
 
 			if (isPreview()) {
 				previewStageListener.menuResume();
@@ -312,8 +333,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				getLocalStageListener().reloadProject(null);
 
 			} else {
-				if (home_stage_dialog != null) {
-				}
+				//if (home_stage_dialog != null) {
+				//}
 				getLocalStageListener().reloadProject(null);
 			}
 
