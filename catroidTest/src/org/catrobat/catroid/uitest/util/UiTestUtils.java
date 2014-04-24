@@ -434,14 +434,14 @@ public final class UiTestUtils {
 		}
 
 		solo.sleep(600);
-		boolean succeeded = clickOnBrickInAddBrickFragment(solo, brickName, true);
+		boolean succeeded = clickOnBrickInAddBrickFragment(solo, brickName);
 		if (!succeeded) {
 			fail(brickName + " should appear. Failed to scroll to find it.");
 		}
 		solo.sleep(600);
 	}
 
-	private static boolean clickOnBrickInAddBrickFragment(Solo solo, String brickName, boolean addToScript) {
+	private static boolean clickOnBrickInAddBrickFragment(Solo solo, String brickName) {
 		boolean success = false;
 		int lowestIdTimeBeforeLast = -2;
 		int lowestIdLastTime = -1;
@@ -1321,6 +1321,7 @@ public final class UiTestUtils {
 						MotionEvent.ACTION_UP, xTo, yTo, 0);
 				activity.dispatchTouchEvent(upEvent);
 				upEvent.recycle();
+				Log.d("Robotium - waitForLogMessage", "longClickAndDrag finished: " + (int) yTo);
 			}
 		});
 

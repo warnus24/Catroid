@@ -23,9 +23,11 @@
 package org.catrobat.catroid.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.soundrecorder.SoundRecorder;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -45,6 +47,8 @@ public final class UtilFile {
 	public enum FileType {
 		TYPE_IMAGE_FILE, TYPE_SOUND_FILE
 	}
+
+	private static final String TAG = UtilFile.class.getSimpleName();
 
 	// Suppress default constructor for noninstantiability
 	private UtilFile() {
@@ -154,8 +158,8 @@ public final class UtilFile {
 			out.close();
 
 			return file;
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ioException) {
+			Log.e(TAG, Log.getStackTraceString(ioException));
 			return null;
 		}
 	}
@@ -248,9 +252,9 @@ public final class UtilFile {
 	}
 
 	public static File copySoundFromResourceIntoProject(String projectName, String outputFilename, int resourceId,
-			Context context, boolean prependMd5ToFilename) throws IOException {
-		if (!outputFilename.toLowerCase(Locale.US).endsWith(Constants.RECORDING_EXTENSION)) {
-			outputFilename = outputFilename + Constants.RECORDING_EXTENSION;
+			Context context, boolean prependMd5ToFilename) throws IllegalArgumentException, IOException {
+		if (!outputFilename.toLowerCase(Locale.US).endsWith(SoundRecorder.RECORDING_EXTENSION)) {
+			throw new IllegalArgumentException("Only Files with extension " + SoundRecorder.RECORDING_EXTENSION + " allowed");
 		}
 		return copyFromResourceIntoProject(projectName, Constants.SOUND_DIRECTORY, outputFilename, resourceId, context,
 				prependMd5ToFilename);
