@@ -333,13 +333,12 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		assertTrue("click on project '" + standardProjectName + "' in list not successful",
 				UiTestUtils.clickOnTextInList(solo, standardProjectName));
 		solo.waitForActivity(ProjectActivity.class.getSimpleName());
-		assertTrue(solo.waitForFragmentById(R.id.fragment_sprites_list));
+		solo.waitForFragmentById(R.id.fragment_sprites_list);
 		UiTestUtils.addNewSprite(solo, "testSprite", lookFile);
 		solo.goBack();
 
 		solo.sleep(200);
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName(), 1000);
-		//solo.clickOnButton(myProjectsText);
 
 		solo.waitForText(UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		assertTrue("longclick on project '" + UiTestUtils.DEFAULT_TEST_PROJECT_NAME + "' in list not successful",
