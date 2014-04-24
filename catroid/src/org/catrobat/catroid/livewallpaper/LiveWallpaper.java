@@ -49,7 +49,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private static LiveWallpaper INSTANCE;
 
 	private AndroidApplicationConfiguration cfg;
-	private LiveWallpaperEngine lastCreatedWallpaperEngine;
+	private LiveWallpaperEngine lastCreatedHomeEngine;
+	private LiveWallpaperEngine lastCreatedPreviewEngine;
 	private Context context;
 
 	private LiveWallpaperEngine previewEngine;
@@ -130,22 +131,22 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		if (isPreview) {
 			//previewActivity = new StageActivity();
+			//if (homeEngine != null) {
+			//	homeEngine.onPause();
+			//}
 			previewStageListener = new StageListener();
-			previewEngine = lastCreatedWallpaperEngine;
+			previewEngine = lastCreatedPreviewEngine;
 			previewEngine.name = "Preview";
 			Log.d("LWP", "Created " + "new prev Listener");
 			return previewStageListener;
 		} else {
 
 			//homeActivity = new StageActivity();
-			if (previewEngine != null) {
-				previewEngine.onPause();
-			}
-			//if (previewStageListener != null) {
-			//	previewStageListener.finish();
+			//if (previewEngine != null) {
+			//	previewEngine.onPause();
 			//}
 			homeScreenStageListener = new StageListener();
-			homeEngine = lastCreatedWallpaperEngine;
+			homeEngine = lastCreatedHomeEngine;
 			homeEngine.name = "Home";
 			Log.d("LWP", "Created " + "new home Listener");
 
@@ -178,11 +179,30 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		//	lastCreatedStageListener = new StageListener(true);
 		Utils.loadProjectIfNeeded(getApplicationContext());
-		if (previewStageListener == null && homeScreenStageListener == null) {
-			lastCreatedWallpaperEngine = new LiveWallpaperEngine();
+		//if (previewStageListener == null && homeScreenStageListener == null) {
+		//	lastCreatedWallpaperEngine = new LiveWallpaperEngine();
+		//}
+		if (previewStageListener == null) {
+			lastCreatedPreviewEngine = new LiveWallpaperEngine();
+			return lastCreatedPreviewEngine;
+		}
+		if (homeScreenStageListener == null) {
+			lastCreatedHomeEngine = new LiveWallpaperEngine();
+			return lastCreatedHomeEngine;
 		}
 		//lastCreatedWallpaperEngine = new LiveWallpaperEngine(this.lastCreatedStageListener);
-		return lastCreatedWallpaperEngine;
+
+		if (lastCreatedHomeEngine != null && lastCreatedPreviewEngine == null) {
+			lastCreatedPreviewEngine = new LiveWallpaperEngine();
+			return lastCreatedPreviewEngine;
+		}
+
+		if (lastCreatedPreviewEngine != null && lastCreatedHomeEngine == null) {
+			lastCreatedHomeEngine = new LiveWallpaperEngine();
+			return lastCreatedHomeEngine;
+		}
+
+		return new LiveWallpaperEngine();
 	}
 
 	private void setScreenSize(boolean isPreview) {
@@ -227,6 +247,16 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			super();
 			//activateTextToSpeechIfNeeded();
 			SensorHandler.startSensorListener(getApplicationContext());
+		}
+
+		@Override
+		public void onCreate(SurfaceHolder surfaceHolder) {
+			if (isPreview()) {
+				setPreviewEngine(this);
+			} else {
+				setHomeEngine(this);
+			}
+			super.onCreate(surfaceHolder);
 		}
 
 		private StageListener getLocalStageListener() {
