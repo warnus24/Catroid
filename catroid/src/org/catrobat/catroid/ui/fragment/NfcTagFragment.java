@@ -169,11 +169,6 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
 		Utils.loadProjectIfNeeded(getActivity());
 		setHandleAddbutton();
-
-        //TODO: adapt for nfc
-        // set adapter and soundInfoList for ev. unpacking
-        //BackPackListManager.getInstance().setCurrentSoundInfoList(soundInfoList);
-        //BackPackListManager.getInstance().setCurrentSoundAdapter(adapter);
     }
 
 	@Override
@@ -182,22 +177,11 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		menu.findItem(R.id.backpack).setVisible(false);
 		menu.findItem(R.id.cut).setVisible(false);
 
-        //TODO: adapt for nfc
-        /*
-        if (BackPackListManager.getInstance().getSoundInfoArrayList().size() > 0) {
-            menu.findItem(R.id.unpacking).setVisible(true);
-        } else {
-            menu.findItem(R.id.unpacking).setVisible(false);
-
-            StorageHandler.getInstance().clearBackPackSoundDirectory();
-        }
-        */
 		super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-        //TODO: check for nfc
 		outState.putSerializable(NfcTagController.BUNDLE_ARGUMENTS_SELECTED_NFCTAG, selectedNfcTag);
 		super.onSaveInstanceState(outState);
 	}

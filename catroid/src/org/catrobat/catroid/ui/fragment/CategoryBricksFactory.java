@@ -23,6 +23,8 @@
 package org.catrobat.catroid.ui.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -122,8 +124,11 @@ public class CategoryBricksFactory {
 		controlBrickList.add(new IfLogicBeginBrick(sprite, 0));
 		controlBrickList.add(new RepeatBrick(sprite, BrickValues.REPEAT));
 
-		//final String tagName = NfcTagContainer.getFirst(context);
-		controlBrickList.add(new WhenNfcBrick(sprite));
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (sharedPreferences.getBoolean("setting_nfc_bricks", false)) {
+            //final String tagName = NfcTagContainer.getFirst(context);
+            controlBrickList.add(new WhenNfcBrick(sprite));
+        }
 
 		return controlBrickList;
 	}

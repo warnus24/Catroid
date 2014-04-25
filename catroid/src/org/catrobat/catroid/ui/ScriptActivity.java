@@ -321,12 +321,8 @@ public class ScriptActivity extends BaseActivity {
 			return true;
 		}
 
-        if (nfcTagFragment != null) {
-            if (nfcTagFragment.isVisible()) {
-                if (nfcTagFragment.onKey(null, keyCode, event)) {
-                    return true;
-                }
-            }
+        if (nfcTagFragment != null && nfcTagFragment.isVisible() && nfcTagFragment.onKey(null, keyCode, event)) {
+            return true;
         }
 
 		int backStackEntryCount = fragmentManager.getBackStackEntryCount();

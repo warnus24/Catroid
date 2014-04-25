@@ -71,6 +71,8 @@
     <string name="preference_title">Settings</string>
     <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorms bricks</string>
     <string name="preference_description_mindstorm_bricks">Allow to control Lego Mindstorms robots</string>
+    <string name="preference_title_enable_nfc_bricks">Near Field Communication</string>
+    <string name="preference_description_nfc_bricks">Allow to use NFC tags in programs</string>
     <!--  -->
 
 
