@@ -77,23 +77,6 @@ public class NfcTagAdapter extends NfcTagBaseAdapter implements ScriptActivityAd
         nfcTagFragment.clearCheckedNfcTagsAndEnableButtons();
     }
 
-    public void onDestroyActionModeBackPack(ActionMode mode) {
-        Iterator<Integer> iterator = checkedNfcTags.iterator();
-        while (iterator.hasNext()) {
-            int position = iterator.next();
-            //BackPackListManager.getInstance().addSoundToActionBarSoundInfoArrayList(nfcTagDataItems.get(position));
-        }
-
-        if (!checkedNfcTags.isEmpty()) {
-            Intent intent = new Intent(nfcTagFragment.getActivity(), BackPackActivity.class);
-            intent.putExtra(BackPackActivity.EXTRA_FRAGMENT_POSITION, 2);
-            intent.putExtra(BackPackActivity.BACKPACK_ITEM, true);
-            nfcTagFragment.getActivity().startActivity(intent);
-        }
-
-        nfcTagFragment.clearCheckedNfcTagsAndEnableButtons();
-    }
-
 	public void setNfcTagFragment(NfcTagFragment nfcTagFragment) {
 		this.nfcTagFragment = nfcTagFragment;
 	}

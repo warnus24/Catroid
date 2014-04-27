@@ -365,19 +365,6 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
 	}
 
-	@Override
-	public void startBackPackActionMode() {
-		Log.d("TAG", "startBackPackActionMode");
-		if (actionMode == null) {
-            //TODO: adapt for nfc
-			//SoundController.getInstance().stopSoundAndUpdateList(mediaPlayer, soundInfoList, adapter);
-			actionMode = getSherlockActivity().startActionMode(backPackModeCallBack);
-			unregisterForContextMenu(listView);
-			BottomBar.hideBottomBar(getActivity());
-			isRenameActionMode = false;
-		}
-
-	}
 
 	@Override
 	public void startRenameActionMode() {
@@ -403,7 +390,12 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		}
 	}
 
-	@Override
+    @Override
+    public void startBackPackActionMode() {
+
+    }
+
+    @Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
         //TODO: adapt for nfc - enable/disable dispatching
@@ -657,42 +649,6 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
 			((NfcTagAdapter) adapter).onDestroyActionModeCopy(mode);
-		}
-
-	};
-
-	private ActionMode.Callback backPackModeCallBack = new ActionMode.Callback() {
-
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return false;
-		}
-
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-
-			setSelectMode(ListView.CHOICE_MODE_MULTIPLE);
-			setActionModeActive(true);
-
-			actionModeTitle = getString(R.string.backpack);
-			singleItemAppendixDeleteActionMode = getString(R.string.category_nfc);
-			multipleItemAppendixDeleteActionMode = getString(R.string.nfctags);
-
-			mode.setTitle(actionModeTitle);
-			addSelectAllActionModeButton(mode, menu);
-
-			return true;
-		}
-
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, com.actionbarsherlock.view.MenuItem item) {
-			return false;
-		}
-
-		@Override
-		public void onDestroyActionMode(ActionMode mode) {
-			((NfcTagAdapter) adapter).onDestroyActionModeBackPack(mode);
-
 		}
 
 	};
