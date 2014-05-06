@@ -508,17 +508,23 @@
     <string name="nxt_tone_frequency">Frequency</string>
     <string name="nxt_tone_hundred_hz">x100Hz</string>
     <string name="seconds">seconds</string>
+
     <string name="nxt_motor_a">NXT motor A</string>
     <string name="nxt_motor_b">NXT motor B</string>
     <string name="nxt_motor_c">NXT motor C</string>
     <string name="nxt_motor_b_and_c">NXT motors B+C</string>
     <string name="nxt_motor_all">NXT motors All</string>
-    <string name="nxt_choose_sensor">choose connected sensor </string>
+
+    <string name="nxt_choose_sensor_1">Sensor connected on port 1</string>
+    <string name="nxt_choose_sensor_2">Sensor connected on port 2</string>
+    <string name="nxt_choose_sensor_3">Sensor connected on port 3</string>
+    <string name="nxt_choose_sensor_4">Sensor connected on port 4</string>
+
     <string name="nxt_no_sensor">none</string>
-    <string name="nxt_sensor_touch">NXT sensor touch</string>
-    <string name="nxt_sensor_sound">NXT sensor sound</string>
-    <string name="nxt_sensor_light">NXT sensor light</string>
-    <string name="nxt_sensor_ultrasonic">NXT sensor ultrasonic</string>
+    <string name="nxt_sensor_touch">NXT touch sensor</string>
+    <string name="nxt_sensor_sound">NXT sound sensor</string>
+    <string name="nxt_sensor_light">NXT light sensor</string>
+    <string name="nxt_sensor_ultrasonic">NXT ultrasonic sensor</string>
     <!--  -->
 
 

@@ -25,7 +25,8 @@ package org.catrobat.catroid.content.actions;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick.Motor;
-import org.catrobat.catroid.legonxt.LegoNXT;
+import org.catrobat.catroid.lego.mindstorm.MindstormServiceProvider;
+import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 
 public class LegoNxtMotorStopAction extends TemporalAction {
 
@@ -34,16 +35,36 @@ public class LegoNxtMotorStopAction extends TemporalAction {
 
 	@Override
 	protected void update(float percent) {
-		if (motorEnum.equals(Motor.ALL_MOTORS)) {
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), 0, 0);
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_B.ordinal(), 0, 0);
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), 0, 0);
-		} else if (motorEnum.equals(Motor.MOTOR_A_C)) {
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), 0, 0);
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), 0, 0);
-		} else {
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, motorEnum.ordinal(), 0, 0);
+		LegoNXT legoNXT = MindstormServiceProvider.resolve(LegoNXT.class);
+
+		switch (motorEnum) {
+			case ALL_MOTORS:
+				legoNXT.stopAllMovements();
+				break;
+			case MOTOR_A:
+				legoNXT.getMotorA().stop();
+				break;
+			case MOTOR_B:
+				legoNXT.getMotorB().stop();
+				break;
+			case MOTOR_C:
+				legoNXT.getMotorC().stop();
+				break;
+			default:
+				legoNXT.stopAllMovements();
+				break;
 		}
+
+//		if (motorEnum.equals(Motor.ALL_MOTORS)) {
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), 0, 0);
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_B.ordinal(), 0, 0);
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), 0, 0);
+//		} else if (motorEnum.equals(Motor.MOTOR_A_C)) {
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), 0, 0);
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), 0, 0);
+//		} else {
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, motorEnum.ordinal(), 0, 0);
+//		}
 	}
 
 	public void setMotorEnum(Motor motorEnum) {

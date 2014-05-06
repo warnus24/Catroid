@@ -27,7 +27,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorTurnAngleBrick.Motor;
 import org.catrobat.catroid.formulaeditor.Formula;
-import org.catrobat.catroid.legonxt.LegoNXT;
+import org.catrobat.catroid.lego.mindstorm.MindstormServiceProvider;
+import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 
 public class LegoNxtMotorTurnAngleAction extends TemporalAction {
 
@@ -48,12 +49,17 @@ public class LegoNxtMotorTurnAngleAction extends TemporalAction {
 			tmpAngle = degreesValue + (-2 * degreesValue);
 		}
 
-		if (motorEnum.equals(Motor.MOTOR_A_C)) {
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), -1 * direction * 30, tmpAngle);
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), direction * 30, tmpAngle);
-		} else {
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, motorEnum.ordinal(), direction * 30, tmpAngle);
-		}
+		LegoNXT legoNxt = MindstormServiceProvider.resolve(org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT.class);
+
+		legoNxt.getMotorA().move(-1 * direction * 30, tmpAngle);
+		legoNxt.getMotorC().move(direction * 30, tmpAngle);
+
+//		if (motorEnum.equals(Motor.MOTOR_A_C)) {
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), -1 * direction * 30, tmpAngle);
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), direction * 30, tmpAngle);
+//		} else {
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, motorEnum.ordinal(), direction * 30, tmpAngle);
+//		}
 
 		/*
 		 * if (inverse == false) {

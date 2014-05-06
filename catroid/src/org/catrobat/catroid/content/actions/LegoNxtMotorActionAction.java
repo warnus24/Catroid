@@ -27,7 +27,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick.Motor;
 import org.catrobat.catroid.formulaeditor.Formula;
-import org.catrobat.catroid.legonxt.LegoNXT;
+import org.catrobat.catroid.lego.mindstorm.MindstormServiceProvider;
+import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 
 public class LegoNxtMotorActionAction extends TemporalAction {
 	private static final int MIN_SPEED = -100;
@@ -47,13 +48,32 @@ public class LegoNxtMotorActionAction extends TemporalAction {
 			speedValue = MAX_SPEED;
 		}
 
-		if (motorEnum.equals(Motor.MOTOR_A_C)) {
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), speedValue, 0);
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), speedValue, 0);
-		} else {
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, motorEnum.ordinal(), speedValue, 0);
+		LegoNXT legoNxt = MindstormServiceProvider.resolve(LegoNXT.class);
+
+		switch (motorEnum) {
+			case MOTOR_A:
+				legoNxt.getMotorA().move(speedValue, 0);
+				break;
+			case MOTOR_B:
+				legoNxt.getMotorB().move(speedValue, 0);
+				break;
+			case MOTOR_C:
+				legoNxt.getMotorC().move(speedValue, 0);
+				break;
+			default:
+				legoNxt.getMotorA().move(speedValue, 0);
+				legoNxt.getMotorC().move(speedValue, 0);
+				break;
 		}
-		//LegoNXT.sendBTCMotorMessage((int) (duration * 1000), motor, 0, 0);
+//		if (motorEnum.equals(Motor.MOTOR_A_C)) {
+//
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), speedValue, 0);
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), speedValue, 0);
+//		} else {
+//			legoNxt.getMotorA().move(speedValue, 0);
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, motorEnum.ordinal(), speedValue, 0);
+//		}
+//		LegoNXT.sendBTCMotorMessage((int) (duration * 1000), motor, 0, 0);
 
 	}
 

@@ -28,6 +28,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
+import org.catrobat.catroid.lego.mindstorm.MindstormServiceProvider;
+import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
+import org.catrobat.catroid.lego.mindstorm.nxt.NXTSensorService;
+
 public final class SensorHandler implements SensorEventListener, SensorCustomEventListener {
 	private static final String TAG = SensorHandler.class.getSimpleName();
 	private static SensorHandler instance = null;
@@ -78,13 +82,18 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 				android.hardware.SensorManager.SENSOR_DELAY_NORMAL);
 		instance.sensorManager.registerListener(instance, Sensors.LOUDNESS);
 
-		// NXT Sensors
-		if (getNXTSensorsNeeded()) {
-			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_TOUCH);
-			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_LIGHT);
-			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_SOUND);
-			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_ULTRASONIC);
+		NXTSensorService sensorService = MindstormServiceProvider.resolve(NXTSensorService.class);
+		if (sensorService != null) {
+			sensorService.listenToSensors(true);
 		}
+
+//		// NXT Sensors
+//		if (getNXTSensorsNeeded()) {
+//			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_TOUCH);
+//			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_LIGHT);
+//			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_SOUND);
+//			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_ULTRASONIC);
+//		}
 	}
 
 	public static void registerListener(SensorEventListener listener) {
@@ -110,6 +119,11 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		}
 		instance.sensorManager.unregisterListener((SensorEventListener) instance);
 		instance.sensorManager.unregisterListener((SensorCustomEventListener) instance);
+
+		NXTSensorService sensorService = MindstormServiceProvider.resolve(NXTSensorService.class);
+		if (sensorService != null) {
+			sensorService.listenToSensors(false);
+		}
 	}
 
 	public static Double getSensorValue(Sensors sensor) {
@@ -117,6 +131,10 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 			return 0d;
 		}
 		Double sensorValue = 0.0;
+		NXTSensorService sensorService = MindstormServiceProvider.resolve(NXTSensorService.class);
+		int value = 0;
+		long start = 0;
+
 		switch (sensor) {
 
 			case X_ACCELERATION:
@@ -171,13 +189,51 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 				return Double.valueOf(instance.loudness);
 
 			case LEGO_NXT_TOUCH:
-				return Double.valueOf(instance.nxt_touch);
 			case LEGO_NXT_LIGHT:
-				return Double.valueOf(instance.nxt_light);
-            case LEGO_NXT_SOUND:
-                return Double.valueOf(instance.nxt_sound);
+			case LEGO_NXT_SOUND:
 			case LEGO_NXT_ULTRASONIC:
-				return Double.valueOf(instance.nxt_ultrasonic);
+				if (sensorService != null) {
+					return Double.valueOf(sensorService.getValue(sensor));
+				}
+
+//				start = System.currentTimeMillis();
+//				if (legoNXT == null || legoNXT.getSensor2() == null)  {
+//					return 0d;
+//				}
+//				value = legoNXT.getSensor2().getValue();
+//				Log.d(TAG, "Time for TOUCH sensor: " + (System.currentTimeMillis() - start) + "ms | value: " + value);
+//				return Double.valueOf(value);
+//
+//
+//				//return Double.valueOf(instance.nxt_touch);
+//			case LEGO_NXT_LIGHT:
+//				start = System.currentTimeMillis();
+//				legoNXT = MindstormServiceProvider.resolve(LegoNXT.class);
+//				if (legoNXT == null || legoNXT.getSensor1() == null)  {
+//					return 0d;
+//				}
+//				value = legoNXT.getSensor1().getValue();
+//				Log.d(TAG, "Time for LIGHT sensor: " + (System.currentTimeMillis() - start) + "ms | value: " + value + "%");
+//				return Double.valueOf(value);
+//				//return Double.valueOf(instance.nxt_light);
+//            case LEGO_NXT_SOUND:
+//				start = System.currentTimeMillis();
+//				if (legoNXT == null || legoNXT.getSensor3() == null)  {
+//					return 0d;
+//				}
+//				value = legoNXT.getSensor3().getValue();
+//				Log.d(TAG, "Time for SOUND	 sensor: " + (System.currentTimeMillis() - start) + "ms | value: " + value + "%");
+//				return Double.valueOf(value);
+//                //return Double.valueOf(instance.nxt_sound);
+//			case LEGO_NXT_ULTRASONIC:
+//				start = System.currentTimeMillis();
+//				if (legoNXT == null || legoNXT.getSensor4() == null)  {
+//					return 0d;
+//				}
+//				value = legoNXT.getSensor4().getValue();
+//				Log.d(TAG, "Time for ULTRASONIC	 sensor: " + (System.currentTimeMillis() - start) + "ms | value: " + value + "cm");
+//				return Double.valueOf(value);
+//				//return Double.valueOf(instance.nxt_ultrasonic);
 		}
 		return 0d;
 	}
@@ -210,18 +266,18 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 			case LOUDNESS:
 				instance.loudness = event.values[0];
 				break;
-			case LEGO_NXT_TOUCH:
-				instance.nxt_touch = event.values[0];
-				break;
-			case LEGO_NXT_LIGHT:
-				instance.nxt_light = event.values[0];
-                break;
-            case LEGO_NXT_SOUND:
-                instance.nxt_sound = event.values[0];
-                break;
-			case LEGO_NXT_ULTRASONIC:
-				instance.nxt_ultrasonic = event.values[0];
-				break;
+//			case LEGO_NXT_TOUCH:
+//				instance.nxt_touch = event.values[0];
+//				break;
+//			case LEGO_NXT_LIGHT:
+//				instance.nxt_light = event.values[0];
+//                break;
+//            case LEGO_NXT_SOUND:
+//                instance.nxt_sound = event.values[0];
+//                break;
+//			case LEGO_NXT_ULTRASONIC:
+//				instance.nxt_ultrasonic = event.values[0];
+//				break;
 
 			default:
 				Log.v(TAG, "Unhandled sensor: " + event.sensor);

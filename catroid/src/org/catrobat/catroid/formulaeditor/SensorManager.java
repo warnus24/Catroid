@@ -57,10 +57,10 @@ public class SensorManager implements SensorManagerInterface {
 	@Override
 	public void unregisterListener(SensorCustomEventListener listener) {
 		SensorLoudness.getSensorLoudness().unregisterListener(listener);
-		NXTTouchSensor.getInstance().unregisterListener(listener);
-		NXTLightSensor.getInstance().unregisterListener(listener);
-        NXTSoundSensor.getInstance().unregisterListener(listener);
-		NXTUltraSonicSensor.getInstance().unregisterListener(listener);
+//		NXTTouchSensor.getInstance().unregisterListener(listener);
+//		NXTLightSensor.getInstance().unregisterListener(listener);
+//        NXTSoundSensor.getInstance().unregisterListener(listener);
+//		NXTUltraSonicSensor.getInstance().unregisterListener(listener);
 	}
 
 	@Override
@@ -68,14 +68,14 @@ public class SensorManager implements SensorManagerInterface {
 		switch (sensor) {
 			case LOUDNESS:
 				return SensorLoudness.getSensorLoudness().registerListener(listener);
-			case LEGO_NXT_TOUCH:
-				return NXTTouchSensor.getInstance().registerListener(listener);
-			case LEGO_NXT_LIGHT:
-				return NXTLightSensor.getInstance().registerListener(listener);
-            case LEGO_NXT_SOUND:
-                return NXTSoundSensor.getInstance().registerListener(listener);
-			case LEGO_NXT_ULTRASONIC:
-				return NXTUltraSonicSensor.getInstance().registerListener(listener);
+//			case LEGO_NXT_TOUCH:
+//				return NXTTouchSensor.getInstance().registerListener(listener);
+//			case LEGO_NXT_LIGHT:
+//				return NXTLightSensor.getInstance().registerListener(listener);
+//            case LEGO_NXT_SOUND:
+//                return NXTSoundSensor.getInstance().registerListener(listener);
+//			case LEGO_NXT_ULTRASONIC:
+//				return NXTUltraSonicSensor.getInstance().registerListener(listener);
 			default:
 				return false;
 		}
