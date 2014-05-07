@@ -207,10 +207,10 @@ public class StageListener implements ApplicationListener {
 		if (reloadProject) {
 			return;
 		}
-		this.stageDialog = stageDialog;
+		//		this.stageDialog = stageDialog;
 
+		create();
 		project.getUserVariables().resetAllUserVariables();
-
 		reloadProject = true;
 	}
 

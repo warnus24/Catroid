@@ -39,3 +39,6 @@ Thumbs.db
 # Gradle
 .gradle/
 build/
+
+# Project files
+*.project
