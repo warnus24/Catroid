@@ -142,7 +142,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 		@Override
 		protected void onPreExecute() {
-			LiveWallpaper.getInstance().presetSprites();
+			//LiveWallpaper.getInstance().presetSprites();
 			progress.show();
 			super.onPreExecute();
 		}
