@@ -137,7 +137,7 @@ public class ProjectActivity extends BaseActivity {
 		if (requestCode == PreStageActivity.REQUEST_RESOURCES_INIT && resultCode == RESULT_OK) {
 			Intent intent = new Intent(ProjectActivity.this, StageActivity.class);
 			DroneInitializer.addDroneSupportExtraToNewIntentIfPresentInOldIntent(data, intent);
-			startActivity(intent);
+		startActivity(intent);
 		}
 	}
 

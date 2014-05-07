@@ -50,7 +50,6 @@ public class StageActivity extends AndroidApplication {
 
 	private StageAudioFocus stageAudioFocus;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -105,6 +104,7 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onResume() {
+		Log.d(TAG, "StageActivity::onResume()");
 		SensorHandler.startSensorListener(this);
 		stageAudioFocus.requestAudioFocus();
 		super.onResume();

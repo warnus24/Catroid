@@ -471,6 +471,7 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		createTestProject(testProject);
 		createTestProject(testProject2);
 
+
 		solo.clickOnButton(solo.getString(R.string.main_menu_programs));
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
 		solo.clickOnText(testProject, 1, true);
@@ -492,7 +493,6 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 				.getText().toString().endsWith(testProject2));
 
 	}
-
 	public void testProjectNameWithNormalAndSpecialCharsVisible() {
 		createTestProject(projectNameJustSpecialChars);
 		createTestProject(projectNameWithNormalAndSpecialChars2);
@@ -517,6 +517,7 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		assertTrue(
 				"The name of the current projectNameWithNormalAndSpecialChars2 is not displayed on the continue button",
 				solo.getButton(0).getText().toString().endsWith(projectNameWithNormalAndSpecialChars2));
+
 	}
 
 	public void testProjectNameWithDotsVisible() {
@@ -531,7 +532,7 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		solo.goBack();
 		solo.sleep(600);
 		assertTrue("The name of the current projectNameJustOneDot is not displayed on the continue button", solo
-				.getButton(0).getText().toString().endsWith(projectNameJustOneDot));
+
 
 		solo.clickOnButton(solo.getString(R.string.main_menu_programs));
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
@@ -542,5 +543,6 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		solo.sleep(600);
 		assertTrue("The name of the current projectNameJustTwoDots is not displayed on the continue button", solo
 				.getButton(0).getText().toString().endsWith(projectNameJustTwoDots));
+
 	}
 }

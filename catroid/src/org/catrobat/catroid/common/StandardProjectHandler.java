@@ -382,17 +382,21 @@ public final class StandardProjectHandler {
 				R.drawable.default_project_background, context);
 
 		File backgroundFile = UtilFile.copyImageFromResourceIntoProject(projectName, backgroundName
-				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_background, context, true,
-				backgroundImageScaleFactor);
+						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_background, context, true,
+				backgroundImageScaleFactor
+		);
 		File movingMoleFile = UtilFile.copyImageFromResourceIntoProject(projectName, movingMoleLookName
-				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_moving, context, true,
-				backgroundImageScaleFactor);
+						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_moving, context, true,
+				backgroundImageScaleFactor
+		);
 		File diggedOutMoleFile = UtilFile.copyImageFromResourceIntoProject(projectName, moleLookName
-				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_digged_out, context, true,
-				backgroundImageScaleFactor);
+						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_digged_out, context, true,
+				backgroundImageScaleFactor
+		);
 		File whackedMoleFile = UtilFile.copyImageFromResourceIntoProject(projectName, whackedMoleLookName
-				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_whacked, context, true,
-				backgroundImageScaleFactor);
+						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_whacked, context, true,
+				backgroundImageScaleFactor
+		);
 		try {
 			File soundFile1 = UtilFile.copySoundFromResourceIntoProject(projectName, soundName + "1"
 					+ SoundRecorder.RECORDING_EXTENSION, R.raw.default_project_sound_mole_1, context, true);

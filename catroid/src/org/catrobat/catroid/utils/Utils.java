@@ -305,6 +305,7 @@ public final class Utils {
 				ProjectManager.getInstance().loadProject(projectName, context);
 			} catch (ProjectException projectException) {
 				Log.e(TAG, "Project cannot load", projectException);
+
 				ProjectManager.getInstance().initializeDefaultProject(context);
 			}
 

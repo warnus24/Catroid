@@ -210,8 +210,9 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.sleep(200);
 
 		assertEquals(MyProjectsActivity.class.getSimpleName()
-				+ " not set to be in portrait mode in AndroidManifest.xml!", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
-				activityInfo.screenOrientation);
+						+ " not set to be in portrait mode in AndroidManifest.xml!", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+				activityInfo.screenOrientation
+		);
 	}
 
 	public void testOverFlowMenuSettings() {
@@ -403,13 +404,13 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 				int testPixelX = viewBitmap.getWidth() / 2;
 				int testPixelY = viewBitmap.getHeight() / 2;
 
-				byte[] whitePixel = { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
-				byte[] blackPixel = { 0, 0, 0, (byte) 255 };
+				byte[] whitePixel = {(byte) 255, (byte) 255, (byte) 255, (byte) 255};
+				byte[] blackPixel = {0, 0, 0, (byte) 255};
 				switch (counter) {
 					case 1:
 						pixelColor = viewBitmap.getPixel(testPixelX, testPixelY);
-						byte[] screenPixel = { (byte) Color.red(pixelColor), (byte) Color.green(pixelColor),
-								(byte) Color.blue(pixelColor), (byte) Color.alpha(pixelColor) };
+						byte[] screenPixel = {(byte) Color.red(pixelColor), (byte) Color.green(pixelColor),
+								(byte) Color.blue(pixelColor), (byte) Color.alpha(pixelColor)};
 						assertTrue("Image color should be white",
 								UiTestUtils.comparePixelRgbaArrays(whitePixel, screenPixel));
 
@@ -418,8 +419,8 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 						break;
 					case 2:
 						pixelColor = viewBitmap.getPixel(testPixelX, testPixelY);
-						byte[] screenPixel2 = { (byte) Color.red(pixelColor), (byte) Color.green(pixelColor),
-								(byte) Color.blue(pixelColor), (byte) Color.alpha(pixelColor) };
+						byte[] screenPixel2 = {(byte) Color.red(pixelColor), (byte) Color.green(pixelColor),
+								(byte) Color.blue(pixelColor), (byte) Color.alpha(pixelColor)};
 						assertTrue("Image color should be black",
 								UiTestUtils.comparePixelRgbaArrays(blackPixel, screenPixel2));
 
@@ -1227,7 +1228,10 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.enterText(0, UiTestUtils.JUST_SPECIAL_CHAR_PROJECT_NAME);
 		solo.clickOnText(solo.getString(R.string.ok));
 		solo.waitForDialogToClose(500);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7229ce9... commit for merge with master
 		renameDirectory = new File(Utils.buildProjectPath(UiTestUtils.JUST_SPECIAL_CHAR_PROJECT_NAME));
 		assertTrue("Rename with just special characters was not successful", renameDirectory.isDirectory());
 		UtilFile.deleteDirectory(new File(Utils.buildProjectPath(UiTestUtils.JUST_SPECIAL_CHAR_PROJECT_NAME)));
@@ -1287,6 +1291,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.clickOnText(solo.getString(R.string.ok));
 		solo.waitForDialogToClose(500);
 		assertFalse("project exists error shown.", solo.searchText(solo.getString(R.string.error_project_exists)));
+
 		renameDirectory = new File(Utils.buildProjectPath(UiTestUtils.JUST_TWO_DOTS_PROJECT_NAME));
 		assertTrue("Rename with just two dots was not successful", renameDirectory.isDirectory());
 		UtilFile.deleteDirectory(new File(Utils.buildProjectPath(UiTestUtils.JUST_TWO_DOTS_PROJECT_NAME)));
@@ -1721,7 +1726,6 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.enterText(0, UiTestUtils.JUST_SPECIAL_CHAR_PROJECT_NAME);
 		solo.clickOnText(solo.getString(R.string.ok));
 		solo.sleep(200);
-
 		assertTrue("Did not copy the selected project to just special chars",
 				UiTestUtils.searchExactText(solo, UiTestUtils.JUST_SPECIAL_CHAR_PROJECT_NAME, true));
 		UtilFile.deleteDirectory(new File(Utils.buildProjectPath(UiTestUtils.JUST_SPECIAL_CHAR_PROJECT_NAME)));
@@ -1744,7 +1748,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.sleep(200);
 		assertTrue("Did not copy the selected project to just special chars two",
 				UiTestUtils.searchExactText(solo, UiTestUtils.JUST_SPECIAL_CHAR_PROJECT_NAME2, true));
-		UtilFile.deleteDirectory(new File(Utils.buildProjectPath(UiTestUtils.JUST_SPECIAL_CHAR_PROJECT_NAME2)));
+ildProjectPath(UiTestUtils.JUST_SPECIAL_CHAR_PROJECT_NAME2)));
 	}
 
 	public void testCopyProjectWithNormalAndSpecialCharacters() {
@@ -1891,8 +1895,8 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		byte[] greenPixel1 = createScreenshotBitmap();
 
 		//The color values below are those we get on our emulated test device
-		byte[] greenPixel = { 0, (byte) 255, 0, (byte) 255 };
-		byte[] redPixel = { (byte) 255, 0, 0, (byte) 255 };
+		byte[] greenPixel = {0, (byte) 255, 0, (byte) 255};
+		byte[] redPixel = {(byte) 255, 0, 0, (byte) 255};
 
 		assertTrue("The extracted pixel was not green", UiTestUtils.comparePixelRgbaArrays(greenPixel, greenPixel1));
 		UiTestUtils.clickOnTextInList(solo, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
@@ -2047,8 +2051,8 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 					viewBitmap = viewToTest.getDrawingCache();
 					int pixelValue = viewBitmap.getPixel(viewBitmap.getWidth() / 2, viewBitmap.getHeight() / 2);
 					viewToTest.destroyDrawingCache();
-					pixel = new byte[] { (byte) Color.red(pixelValue), (byte) Color.green(pixelValue),
-							(byte) Color.blue(pixelValue), (byte) Color.alpha(pixelValue) };
+					pixel = new byte[]{(byte) Color.red(pixelValue), (byte) Color.green(pixelValue),
+							(byte) Color.blue(pixelValue), (byte) Color.alpha(pixelValue)};
 				}
 			}
 		}

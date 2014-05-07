@@ -44,6 +44,7 @@ public final class Utils {
 			"../catroidCucumberTest/src", "../catroidLegoNXTBTTest/src" };
 	public static final String[] VERSION_NAME_AND_CODE_TEST_DIRECTORIES = { "../catroid", "../catroidTest",
 			"../catroidCucumberTest" };
+
 	public static final String[] SLEEP_TEST_DIRECTORIES = { "../catroidCucumberTest/src" };
 
 	private Utils() {

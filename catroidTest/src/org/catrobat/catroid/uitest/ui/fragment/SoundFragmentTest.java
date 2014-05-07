@@ -1167,7 +1167,6 @@ public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainM
 		assertTrue("checkboxes or other delete elements are still visible",viewAmountBeforeDeleteMode==viewAmountAfterDeleteMode);
 
 	}
-	
 	private void renameSound(String soundToRename, String newSoundName) {
 		clickOnContextMenuItem(soundToRename, solo.getString(R.string.rename));
 		assertTrue("Wrong title of dialog", solo.searchText(renameDialogTitle));

@@ -59,14 +59,14 @@ public class CheckForVerifiesOrAssertionsTest extends TestCase {
 
 	public void testForVerifiesOrAssertions() throws IOException {
 		StringBuilder errorMessageBuilder = new StringBuilder(2);
-		boolean assertionNotFound = false;
+	boolean assertionNotFound = false;
 
 		for (String directoryName : DIRECTORIES) {
 			File directory = new File(directoryName);
 			assertTrue("Couldn't find directory: " + directoryName, directory.exists() && directory.isDirectory());
 			assertTrue("Couldn't read directory: " + directoryName, directory.canRead());
 
-			List<File> filesToCheck = Utils.getFilesFromDirectoryByExtension(directory, new String[] { ".java", });
+			List<File> filesToCheck = Utils.getFilesFromDirectoryByExtension(directory, new String[]{".java",});
 			for (File file : filesToCheck) {
 				if (!Arrays.asList(IGNORED_FILES).contains(file.getName()) && !fileHasVerifiesOrAssertions(file)) {
 					errorMessageBuilder.append(file.getPath()).append('\n');

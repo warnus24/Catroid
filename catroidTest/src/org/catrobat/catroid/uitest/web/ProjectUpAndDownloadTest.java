@@ -478,7 +478,6 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 	}
 
 	private void deleteOldAndCreateAndSaveCleanStandardProject() {
-		String standardProjectName = getActivity().getString(R.string.default_project_name);
 		try {
 			if (StorageHandler.getInstance().projectExists(standardProjectName)) {
 				ProjectManager.getInstance().loadProject(standardProjectName, getActivity());

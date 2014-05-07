@@ -142,7 +142,9 @@ public class StringsTest extends TestCase {
 				List<String> languageStringNames = languageStrings.get(language);
 				if (!languageStringNames.contains(stringName)) {
 					missingStrings = true;
+
 					errorMessage.append("\nString with name ").append(stringName).append(" is missing in ")
+
 							.append(language);
 				}
 			}
@@ -166,6 +168,7 @@ public class StringsTest extends TestCase {
 			String currentLine;
 			while ((currentLine = reader.readLine()) != null) {
 				javaSourceCodeBuilder.append(currentLine).append('\n');
+
 			}
 			reader.close();
 		}
@@ -185,6 +188,7 @@ public class StringsTest extends TestCase {
 				String currentLine;
 				while ((currentLine = reader.readLine()) != null) {
 					xmlSourceCodeBuilder.append(currentLine).append('\n');
+
 				}
 				reader.close();
 			}
@@ -205,10 +209,12 @@ public class StringsTest extends TestCase {
 
 				errorMessage.append("\nString with name ").append(string).append(" is unused (found in ");
 
+
 				for (String language : LANGUAGES) {
 					List<String> languageStringNames = languageStrings.get(language);
 					if (languageStringNames.contains(string)) {
 						errorMessage.append(language).append(", ");
+
 					}
 				}
 				errorMessage.replace(errorMessage.length() - 2, errorMessage.length(), ").");
@@ -300,6 +306,7 @@ public class StringsTest extends TestCase {
 		StringBuilder errorMessageBuilder = new StringBuilder(62);
 		for (String missing : missingStrings) {
 			errorMessageBuilder.append("\nString with name ").append(missing)
+
 					.append(" is missing in the default resource folder.");
 		}
 		assertFalse("Missing string resources were found:" + errorMessageBuilder, missingStringsFound);
