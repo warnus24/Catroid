@@ -51,6 +51,8 @@ import org.catrobat.catroid.content.bricks.conditional.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.conditional.PointInDirectionBrick.Direction;
 import org.catrobat.catroid.content.bricks.conditional.SetLookBrick;
 import org.catrobat.catroid.content.bricks.conditional.SetSizeToBrick;
+import org.catrobat.catroid.content.bricks.conditional.SetXBrick;
+import org.catrobat.catroid.content.bricks.conditional.SetYBrick;
 import org.catrobat.catroid.content.bricks.conditional.ShowBrick;
 import org.catrobat.catroid.content.bricks.conditional.TurnLeftBrick;
 import org.catrobat.catroid.drone.DroneBrickFactory;
@@ -552,6 +554,34 @@ public final class StandardProjectHandler {
 		PhysicsWorld physicsWorld = defaultProject.getPhysicWorld();
 
 		Sprite background = defaultProject.getSpriteList().get(0);
+		// Background
+		createElement(background, "background_480_800", R.drawable.background_480_800, new Vector2(), Float.NaN);
+
+		// Square
+
+		Sprite square = new Sprite("square");
+		StartScript startScriptSquare = new StartScript();
+
+		Script squareStartScript = createElement(square, "square", R.drawable.square, new Vector2(0.0f, 400.0f),
+				Float.NaN);
+		squareStartScript.addBrick(new SetXBrick( 100));
+		squareStartScript.addBrick(new SetYBrick( -200));
+		squareStartScript.addBrick(new PointInDirectionBrick( 135.0));
+
+		defaultProject.addSprite(square);
+
+		// Physics Square
+		Sprite squareP = new Sprite("square");
+		StartScript startScriptSquareP = new StartScript();
+		startScriptSquareP.addBrick(new SetGravityBrick( new Vector2(0.0f, -1.0f)));
+		squareP.addScript(startScriptSquareP);
+
+		Script squareStartScriptP = createElement(squareP, "square", R.drawable.square, new Vector2(0.0f, 400.0f),
+				Float.NaN);
+		squareStartScriptP.addBrick(new PointInDirectionBrick( 225.0));
+		setPhysicProperties(squareP, squareStartScriptP, PhysicsObject.Type.DYNAMIC, 60.0f, 40.0f);
+
+		defaultProject.addSprite(squareP);
 
 		Sprite ball = new Sprite("Ball");
 		Sprite ball2 = new Sprite("Ball2");
@@ -591,6 +621,8 @@ public final class StandardProjectHandler {
 		StartScript startScript = new StartScript();
 		startScript.addBrick(new SetGravityBrick( new Vector2(0.0f, -8.0f)));
 
+
+		// Ball
 		ball.addScript(startScript);
 
 		Script ballStartScript = createElement(ball, "pinball", R.drawable.pinball, new Vector2(0.0f, 250.0f),
