@@ -39,7 +39,7 @@ import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
-import org.catrobat.catroid.physic.content.ActionFactory;
+import org.catrobat.catroid.physics.content.ActionFactory;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.utils.Utils;
 
@@ -80,7 +80,7 @@ public class RepeatBrick extends FormulaBrick implements LoopBeginBrick, OnClick
 	}
 
 	@Override
-	public Brick clone()  {
+	public Brick clone() {
 		return new RepeatBrick(getFormulaWithBrickField(BrickField.TIMES_TO_REPEAT).clone());
 	}
 
@@ -117,15 +117,15 @@ public class RepeatBrick extends FormulaBrick implements LoopBeginBrick, OnClick
 		TextView times = (TextView) view.findViewById(R.id.brick_repeat_time_text_view);
 
 		if (getFormulaWithBrickField(BrickField.TIMES_TO_REPEAT).isSingleNumberFormula()) {
-            try{
+			try {
 				times.setText(view.getResources().getQuantityString(
 						R.plurals.time_plural,
 						Utils.convertDoubleToPluralInteger(getFormulaWithBrickField(BrickField.TIMES_TO_REPEAT)
 								.interpretDouble(ProjectManager.getInstance().getCurrentSprite()))
 				));
-            }catch(InterpretationException interpretationException){
-                Log.d(getClass().getSimpleName(), "Couldn't interpret Formula", interpretationException);
-            }
+			} catch (InterpretationException interpretationException) {
+				Log.d(getClass().getSimpleName(), "Couldn't interpret Formula", interpretationException);
+			}
 		} else {
 
 			// Random Number to get into the "other" keyword for values like 0.99 or 2.001 seconds or degrees
@@ -146,9 +146,9 @@ public class RepeatBrick extends FormulaBrick implements LoopBeginBrick, OnClick
 		prototypeView = View.inflate(context, R.layout.brick_repeat, null);
 		TextView textRepeat = (TextView) prototypeView.findViewById(R.id.brick_repeat_prototype_text_view);
 		TextView times = (TextView) prototypeView.findViewById(R.id.brick_repeat_time_text_view);
-        textRepeat.setText(String.valueOf(BrickValues.REPEAT));
-        times.setText(context.getResources().getQuantityString(R.plurals.time_plural,
-                    Utils.convertDoubleToPluralInteger(BrickValues.REPEAT)));
+		textRepeat.setText(String.valueOf(BrickValues.REPEAT));
+		times.setText(context.getResources().getQuantityString(R.plurals.time_plural,
+				Utils.convertDoubleToPluralInteger(BrickValues.REPEAT)));
 		return prototypeView;
 	}
 
@@ -186,7 +186,7 @@ public class RepeatBrick extends FormulaBrick implements LoopBeginBrick, OnClick
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-		SequenceAction repeatSequence = ActionFactory.sequence(); // TODO[physic]
+		SequenceAction repeatSequence = ActionFactory.sequence(); // TODO[physics]
 		//Action action = ExtendedActions.repeat(sprite, timesToRepeat, repeatSequence);
 		Action action = sprite.getActionFactory().createRepeatAction(sprite,
 				getFormulaWithBrickField(BrickField.TIMES_TO_REPEAT), repeatSequence);

@@ -45,7 +45,7 @@
  		<item >@string/add_line_break</item >
  		<item >@string/close</item >
  	</string-array >
-    
+
     <!-- Physicobjecttype -->
     <string-array name="physics_object_types">
         <item>Dynamic</item>
