@@ -32,6 +32,7 @@ public abstract class NXTSensor implements MindstormSensor {
 	protected int port;
 	protected NXTSensorType sensorType;
 	protected NXTSensorMode sensorMode;
+    protected final int updateInterval = 250;
 
 	protected MindstormConnection connection;
 
@@ -54,8 +55,8 @@ public abstract class NXTSensor implements MindstormSensor {
 		command.append((byte) port);
 		command.append(NXTSensorType.getByte());
 		command.append(NXTSensorMode.getByte());
-		connection.send(command);
-		NXTReply reply = new NXTReply(connection.receive());
+
+		NXTReply reply = new NXTReply(connection.sendAndReceive(command));
 		NXTError.checkForError(reply, 3);
 	}
 
@@ -83,8 +84,7 @@ public abstract class NXTSensor implements MindstormSensor {
 		SensorReadings sensorReadings = new SensorReadings();
 		Command command = new Command(CommandType.DIRECT_COMMAND, CommandByte.GET_INPUT_VALUES, true);
 		command.append((byte) port);
-		connection.send(command);
-		NXTReply reply = new NXTReply(connection.receive());
+        NXTReply reply = new NXTReply(connection.sendAndReceive(command));
 		NXTError.checkForError(reply, 16);
 
 		sensorReadings.Raw = reply.getShort(8);
@@ -123,4 +123,9 @@ public abstract class NXTSensor implements MindstormSensor {
 		public int Normalized;
 		public int Scaled;
 	}
+
+    @Override
+    public int getUpdateInterval() {
+        return updateInterval;
+    }
 }

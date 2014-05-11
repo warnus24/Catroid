@@ -148,11 +148,16 @@ public class NXTI2CUltraSonicSensor extends NXTI2CSensor {
 
 		} catch (MindstormException e) {
 			Log.e(TAG, e.getMessage());
+            try {
+                reset();
+            } catch (MindstormException e2) {
+                Log.e(TAG, e2.getMessage());
+            }
 			return getValue(lastValidReading);
 		}
 	}
 
-	private int getValue(int value) {
+    private int getValue(int value) {
 		if (distanceUnit == DistanceUnit.INCH) {
 			return (value * 39370) / 1000;
 		}

@@ -78,7 +78,7 @@ public class StageActivity extends AndroidApplication {
 		super.onResume();
 	}
 
-	public void sepause() {
+	public void pause() {
 		SensorHandler.stopSensorListeners();
 		stageListener.menuPause();
 	}

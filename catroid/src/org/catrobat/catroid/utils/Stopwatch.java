@@ -20,9 +20,17 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.lego.mindstorm;
+package org.catrobat.catroid.utils;
 
-public interface MindstormSensor {
-	public int getValue();
-    public int getUpdateInterval();
+public class Stopwatch {
+
+    private long start;
+
+    public void start() {
+        start = System.currentTimeMillis();
+    }
+
+    public long getElapsedMilliseconds() {
+        return (System.currentTimeMillis() - start);
+    }
 }

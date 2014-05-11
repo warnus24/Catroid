@@ -102,7 +102,7 @@ public class MindstormConnection {
 		return receive();
 	}
 
-	synchronized public void send(MindstormCommand command) {
+	public void send(MindstormCommand command) {
 		try {
 			int messageLength = command.getLength();
 			byte[] message = command.getRawCommand();
@@ -112,26 +112,30 @@ public class MindstormConnection {
 
 			System.arraycopy(message, 0, data, 2, messageLength);
 
-			nxtOutputStream.write(data, 0, messageLength + 2);
-			nxtOutputStream.flush();
+            synchronized (nxtOutputStream) {
+                nxtOutputStream.write(data, 0, messageLength + 2);
+                nxtOutputStream.flush();
+            }
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	synchronized public byte[] receive() {
+	private byte[] receive() {
 		byte[] data = new byte[2];
 		byte[] payload;
 		int expectedLength = 0;
 		int replyLength = 0;
 		try{
 			expectedLength = 2;
-			replyLength = nxtInputStream.read(data, 0, 2);
-			expectedLength = ( (data[0] & 0xFF) | (data[1] & 0xFF) << 8 );
-			payload = new byte[expectedLength];
-			replyLength = 0;
-			replyLength = nxtInputStream.read(payload, 0, expectedLength);
+            synchronized (nxtInputStream) {
+                replyLength = nxtInputStream.read(data, 0, 2);
+                expectedLength = ((data[0] & 0xFF) | (data[1] & 0xFF) << 8);
+                payload = new byte[expectedLength];
+                replyLength = 0;
+                replyLength = nxtInputStream.read(payload, 0, expectedLength);
+            }
 		}
 		catch (IOException e){
 			if( replyLength == 0){

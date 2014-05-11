@@ -40,7 +40,7 @@ public class MotorNXT implements MindstormMotor {
 
 		OutputState state = new OutputState();
 		state.speed = 0;
-		state.mode = MotorMode.BREAK | MotorMode.REGULATED;
+		state.mode = MotorMode.BREAK | MotorMode.ON | MotorMode.REGULATED;
 		state.regulation = MotorRegulation.SPEED;
 		state.turnRatio = 100;
 		state.runState = MotorRunState.RUNNING;

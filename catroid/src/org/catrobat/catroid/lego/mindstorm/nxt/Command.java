@@ -59,7 +59,10 @@ public class Command implements MindstormCommand {
 	}
 
 	public void append(int data) {
-		commandData.write(data);
+        append((byte)data);
+		append((byte)(data >> 8));
+		append((byte)(data >> 16));
+		append((byte)(data >> 24));
 	}
 
 	@Override

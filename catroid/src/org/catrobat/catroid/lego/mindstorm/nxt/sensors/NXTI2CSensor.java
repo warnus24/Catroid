@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.lego.mindstorm.nxt.sensors;
 
+import android.util.Log;
+
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 import org.catrobat.catroid.lego.mindstorm.nxt.Command;
 import org.catrobat.catroid.lego.mindstorm.nxt.CommandByte;
@@ -29,19 +31,22 @@ import org.catrobat.catroid.lego.mindstorm.nxt.CommandType;
 import org.catrobat.catroid.lego.mindstorm.nxt.NXTError;
 import org.catrobat.catroid.lego.mindstorm.nxt.NXTException;
 import org.catrobat.catroid.lego.mindstorm.nxt.NXTReply;
+import org.catrobat.catroid.utils.Stopwatch;
 
 public abstract class NXTI2CSensor extends NXTSensor {
 
 	private byte address;
-	private int pollTime;
+	private int pendingCommunicationErrorWaitTime;
 	private final int I2CTimeOut = 500; //in MS
 
 	private static final byte BYTES_READ_BYTE = 3;
 
+    private static final String TAG = NXTI2CSensor.class.getSimpleName();
+
 	public NXTI2CSensor(byte sensorAddress, NXTSensorType sensorType, MindstormConnection connection) {
 		super(3, sensorType, NXTSensorMode.RAW, connection);
 		address = sensorAddress;
-		pollTime = 25;
+		pendingCommunicationErrorWaitTime = 30;
 	}
 
 	public byte getI2CAddress()
@@ -79,14 +84,27 @@ public abstract class NXTI2CSensor extends NXTSensor {
 		byte bytesRead = 0;
 		stopWatch.start();
 		do {
-			wait(pollTime);
-			bytesRead = getNumberOfBytesAreReadyToRead();
+            bytesRead = tryGetNumberOfBytesAreReadyToRead();
 		} while (bytesRead != numberOfBytes && stopWatch.getElapsedMilliseconds() < I2CTimeOut);
 
 		if (stopWatch.getElapsedMilliseconds() > I2CTimeOut) {
 			throw new NXTException("I2CTimeOut wail waiting on bytes Ready, waited " + stopWatch.getElapsedMilliseconds() + "ms");
 		}
 	}
+
+    private byte tryGetNumberOfBytesAreReadyToRead() {
+        try {
+            return getNumberOfBytesAreReadyToRead();
+        } catch (NXTException e) {
+            if (e.getError() == NXTError.ErrorCode.PendingCommunication) {
+                Log.e(TAG, "Pending Coummunication Error occured, wait for " + pendingCommunicationErrorWaitTime + "ms and try again.");
+                wait(pendingCommunicationErrorWaitTime);
+                return 0;
+            }
+
+            throw e;
+        }
+    }
 
 	protected byte[] writeAndRead(byte[] data, byte rxLength)
 	{
@@ -102,11 +120,14 @@ public abstract class NXTI2CSensor extends NXTSensor {
 		command.append((byte) txData.length);
 		command.append(rxLength);
 		command.append(txData);
-		connection.send(command);
+
 		if(reply){
-			NXTReply brickReply = new NXTReply(connection.receive());
+			NXTReply brickReply = new NXTReply(connection.sendAndReceive(command));
 			NXTError.checkForError(brickReply, 5);
 		}
+        else {
+            connection.send(command);
+        }
 	}
 
 	private byte[] read()
@@ -133,19 +154,6 @@ public abstract class NXTI2CSensor extends NXTSensor {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
 			// can not be interrupted
-		}
-	}
-
-	private static class Stopwatch {
-
-		private long start;
-
-		public void start() {
-			start = System.currentTimeMillis();
-		}
-
-		public long getElapsedMilliseconds() {
-			return (System.currentTimeMillis() - start);
 		}
 	}
 }
