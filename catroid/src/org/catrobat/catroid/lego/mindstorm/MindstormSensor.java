@@ -24,5 +24,12 @@ package org.catrobat.catroid.lego.mindstorm;
 
 public interface MindstormSensor {
 	public int getValue();
+
     public int getUpdateInterval();
+    public void updateLastSensorValue();
+    public int getLastSensorValue();
+
+    public String getName();
+
+    public int getConnectedPort();
 }

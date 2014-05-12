@@ -31,6 +31,9 @@ public class NXTI2CUltraSonicSensor extends NXTI2CSensor {
 	private static final byte ULTRASONIC_ADDRESS = 0x02;
 	private DistanceUnit distanceUnit;
 
+    private static final int DEFAULT_VALUE = 255;
+    private static final String TAG = NXTI2CUltraSonicSensor.class.getSimpleName();
+
 	private enum DistanceUnit {
 		DUMMY, CENTIMETER, INCH;
 	}
@@ -70,11 +73,13 @@ public class NXTI2CUltraSonicSensor extends NXTI2CSensor {
 	public NXTI2CUltraSonicSensor(MindstormConnection connection) {
 		super(ULTRASONIC_ADDRESS, NXTSensorType.LOW_SPEED_9V, connection);
 		distanceUnit = DistanceUnit.CENTIMETER;
+        lastValidValue = DEFAULT_VALUE;
 	}
 
 	public NXTI2CUltraSonicSensor(DistanceUnit distanceUnit, MindstormConnection connection) {
 		super(ULTRASONIC_ADDRESS, NXTSensorType.LOW_SPEED_9V, connection);
 		this.distanceUnit = distanceUnit;
+        lastValidValue = DEFAULT_VALUE;
 	}
 
 	@Override
@@ -136,31 +141,21 @@ public class NXTI2CUltraSonicSensor extends NXTI2CSensor {
 		super.wait(60);
 	}
 
-	private static final String TAG = NXTI2CUltraSonicSensor.class.getSimpleName();
-	private static final int DEFAULT_VALUE = 255;
-	private int lastValidReading = DEFAULT_VALUE;
-
 	@Override
 	public int getValue() {
-		try {
-			lastValidReading = readRegister(SensorRegister.Result1.getByte(), 1)[0] & 0xFF;
-			return getValue(lastValidReading);
-
-		} catch (MindstormException e) {
-			Log.e(TAG, e.getMessage());
-            try {
-                reset();
-            } catch (MindstormException e2) {
-                Log.e(TAG, e2.getMessage());
-            }
-			return getValue(lastValidReading);
-		}
+        int sensorValue = readRegister(SensorRegister.Result1.getByte(), 1)[0] & 0xFF;
+        return getValueInDefinedUnitSystem(sensorValue);
 	}
 
-    private int getValue(int value) {
+    private int getValueInDefinedUnitSystem(int value) {
 		if (distanceUnit == DistanceUnit.INCH) {
 			return (value * 39370) / 1000;
 		}
 		return value;
 	}
+
+    @Override
+    public String getName() {
+        return String.format("%s_%s_%d", TAG, "ULTRASONIC", port);
+    }
 }

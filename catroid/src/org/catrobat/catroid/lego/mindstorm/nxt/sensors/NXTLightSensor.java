@@ -22,10 +22,7 @@
  */
 package org.catrobat.catroid.lego.mindstorm.nxt.sensors;
 
-import android.util.Log;
-
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
-import org.catrobat.catroid.lego.mindstorm.MindstormException;
 
 public class NXTLightSensor extends NXTSensor {
 
@@ -34,15 +31,11 @@ public class NXTLightSensor extends NXTSensor {
 
 	public NXTLightSensor(int port, MindstormConnection connection) {
 		super(port, NXTSensorType.LIGHT_INACTIVE, NXTSensorMode.Percent, connection);
+        lastValidValue = DEFAULT_VALUE;
 	}
 
 	@Override
 	public int getValue() {
-		try {
-			return getScaledValue();
-		} catch (MindstormException e) {
-			Log.e(TAG, e.getMessage());
-			return DEFAULT_VALUE;
-		}
+		return getScaledValue();
 	}
 }

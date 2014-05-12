@@ -70,17 +70,9 @@ public class MotorNXT implements MindstormMotor {
 		command.append(state.turnRatio);
 		command.append(state.runState.getByte());
 		command.append(state.tachoLimit);
-//		command.append((byte)state.tachoLimit);
-//		command.append((byte)(state.tachoLimit >> 8));
-//		command.append((byte)(state.tachoLimit >> 16));
-//		command.append((byte)(state.tachoLimit >> 24));
 		command.append((byte)0x00);
 
 		connection.send(command);
-//		if(reply){
-//			byte[] brickReply = connection.receive();
-//			//Error.CheckForError(brickReply,3);
-//		}
 	}
 
 	@Override

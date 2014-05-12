@@ -24,6 +24,7 @@ package org.catrobat.catroid.lego.mindstorm.nxt;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -39,8 +40,10 @@ import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTTouchSensor;
 import org.catrobat.catroid.ui.SettingsActivity;
 import org.catrobat.catroid.utils.Stopwatch;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +51,8 @@ import java.util.concurrent.TimeUnit;
 public class NXTSensorService implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private static final String TAG = NXTSensorService.class.getSimpleName();
+
+    private SensorRegistry sensorRegistry;
 
 	SharedPreferences preferences;
 	MindstormConnection connection;
@@ -61,26 +66,24 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
 		this.connection = connection;
 		this.context = context;
 
+        sensorRegistry = new SensorRegistry();
+
         sensorScheduler = new ScheduledThreadPoolExecutor(2);
 	}
 
-    private static class GetSensorValueRunner implements Runnable {
+    private class GetSensorValueRunner implements Runnable {
         private NXTSensor sensor;
-        private NXTSensorService service;
-        private int type;
 
-        public GetSensorValueRunner(NXTSensorService service, NXTSensor sensor, int type) {
+        public GetSensorValueRunner(NXTSensor sensor) {
             this.sensor = sensor;
-            this.service = service;
-            this.type = type;
         }
 
         @Override
         public void run() {
-            synchronized (service) {
-                if (!service.isRunning()) {
+            synchronized (NXTSensorService.this) {
+                if (!NXTSensorService.this.isRunning()) {
                     try {
-                        service.wait();
+                        NXTSensorService.this.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         return;
@@ -89,31 +92,98 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
             }
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.start();
-            service.values[type] = sensor.getValue();
-            Log.d(TAG, String.format("Time for %s sensor: %d | Value: %d", service.getStringType(type),
-                    stopwatch.getElapsedMilliseconds(), service.values[type]));
+            sensor.updateLastSensorValue();
+            Log.d(TAG, String.format("Time for %s sensor: %d | Value: %d", sensor.getName(),
+                    stopwatch.getElapsedMilliseconds(), sensor.getLastSensorValue()));
         }
     }
 
-    // [0] light
-    // [1] sound
-    // [2] touch
-    // [3] ultrasonic
-    int[] values = new int[4];
+    private class SensorRegistry {
 
-    ScheduledFuture[] scheduledFuture = new ScheduledFuture[4];
+        private class SensorTuple {
+
+            public ScheduledFuture scheduledFuture;
+            public NXTSensor sensor;
+
+            public SensorTuple(ScheduledFuture scheduledFuture, NXTSensor sensor) {
+                this.scheduledFuture = scheduledFuture;
+                this.sensor = sensor;
+            }
+        }
+
+        private Map<Integer, SensorTuple> registeredSensors = new HashMap<Integer, SensorTuple>();
+
+        public void add(NXTSensor sensor) {
+            remove(sensor.getConnectedPort());
+            ScheduledFuture scheduledFuture = sensorScheduler.scheduleAtFixedRate(new GetSensorValueRunner(sensor),
+                    500, sensor.getUpdateInterval(), TimeUnit.MILLISECONDS);
+
+            registeredSensors.put(sensor.getConnectedPort(), new SensorTuple(scheduledFuture, sensor));
+        }
+
+        public void remove(NXTSensor sensor) {
+            int port = sensor.getConnectedPort();
+            synchronized (registeredSensors) {
+                SensorTuple tuple = registeredSensors.get(port);
+                if (tuple != null) {
+                    tuple.scheduledFuture.cancel(false);
+                    remove(port);
+                }
+            }
+        }
+
+        public void remove(int sensorOnPort) {
+            synchronized (registeredSensors) {
+                registeredSensors.remove(sensorOnPort);
+            }
+        }
+
+        public NXTSensor getSensor(int port) {
+            synchronized (registeredSensors) {
+                return registeredSensors.get(port).sensor;
+            }
+        }
+
+        public NXTSensor getSensor(String name) {
+            synchronized (registeredSensors) {
+                for (SensorTuple t : registeredSensors.values()) {
+                    if (t.sensor.getName().equals(name)) {
+                        return t.sensor;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        // TODO only for testing
+        @Deprecated
+        public int getSensorValue(String name) {
+            synchronized (registeredSensors) {
+                for (SensorTuple t : registeredSensors.values()) {
+                    if (t.sensor.getName().toLowerCase().contains(name)) {
+                        return t.sensor.getLastSensorValue();
+                    }
+                }
+            }
+
+            return 0;
+
+        }
+    }
+
     boolean runHandler = false;
 
 	public int getValue(Sensors sensors) {
         switch (sensors) {
             case LEGO_NXT_LIGHT:
-                return values[0];
+                return sensorRegistry.getSensorValue("light");
             case LEGO_NXT_SOUND:
-                return values[1];
+                return sensorRegistry.getSensorValue("sound");
             case LEGO_NXT_TOUCH:
-                return values[2];
+                return sensorRegistry.getSensorValue("touch");
             case LEGO_NXT_ULTRASONIC:
-                return values[3];
+                return sensorRegistry.getSensorValue("ultrasonic");
         }
 
         return -1;
@@ -160,13 +230,7 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
 	private NXTSensor createSensor(String sensorTypeName, int port) {
 
 		if (equals(sensorTypeName, R.string.nxt_no_sensor)) {
-            synchronized (scheduledFuture) {
-                if (scheduledFuture[port] != null) {
-                    scheduledFuture[port].cancel(false);
-                    scheduledFuture[port] = null;
-                }
-            }
-			return null;
+            sensorRegistry.remove(port);
 		}
 
         NXTSensor sensor = null;
@@ -191,16 +255,7 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
             throw new MindstormException("No valid sensor found!"); // Should never occur
         }
 
-        synchronized (scheduledFuture) {
-
-            if (scheduledFuture[port] != null) {
-                scheduledFuture[port].cancel(false);
-                scheduledFuture[port] = null;
-            }
-
-            scheduledFuture[port] = sensorScheduler.scheduleAtFixedRate(new GetSensorValueRunner(this, sensor, getIntType(sensorTypeName)),
-                    500, sensor.getUpdateInterval(), TimeUnit.MILLISECONDS);
-        }
+        sensorRegistry.add(sensor);
 
         return sensor;
 	}
@@ -234,49 +289,4 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
 	public interface OnSensorChangedListener {
 		public void onSensorChanged();
 	}
-
-
-    // [0] light
-    // [1] sound
-    // [2] touch
-    // [3] ultrasonic
-    public int getIntType(String sensorTypeName) {
-        if (equals(sensorTypeName, R.string.nxt_sensor_light)) {
-            return 0;
-        }
-
-        if (equals(sensorTypeName, R.string.nxt_sensor_sound)) {
-            return 1;
-        }
-
-        if (equals(sensorTypeName, R.string.nxt_sensor_touch)) {
-            return 2;
-        }
-
-        if (equals(sensorTypeName, R.string.nxt_sensor_ultrasonic)) {
-            return 3;
-        }
-
-        throw new MindstormException("NO VALID SENSOR"); // cannot happen
-    }
-
-    public String getStringType(int sensorType) {
-        if (sensorType == 0) {
-            return "LIGHT";
-        }
-
-        if (sensorType == 1) {
-            return "SOUND";
-        }
-
-        if (sensorType == 2) {
-            return "TOUCH";
-        }
-
-        if (sensorType == 3) {
-            return "SONAR";
-        }
-
-        throw new MindstormException("NO VALID SENSOR"); // cannot happen
-    }
 }

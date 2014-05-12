@@ -23,20 +23,28 @@
 package org.catrobat.catroid.lego.mindstorm.nxt.sensors;
 
 
+import android.util.Log;
+
+import org.catrobat.catroid.lego.mindstorm.Mindstorm;
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
+import org.catrobat.catroid.lego.mindstorm.MindstormException;
 import org.catrobat.catroid.lego.mindstorm.MindstormSensor;
 import org.catrobat.catroid.lego.mindstorm.nxt.*;
 
 public abstract class NXTSensor implements MindstormSensor {
 
-	protected int port;
-	protected NXTSensorType sensorType;
-	protected NXTSensorMode sensorMode;
+	protected final int port;
+	protected final NXTSensorType sensorType;
+	protected final NXTSensorMode sensorMode;
     protected final int updateInterval = 250;
 
-	protected MindstormConnection connection;
+	protected final MindstormConnection connection;
 
 	protected boolean hasInit;
+
+    protected int lastValidValue = 0;
+
+    public static final String TAG = NXTSensor.class.getSimpleName();
 
 	public NXTSensor(int port, NXTSensorType sensorType, NXTSensorMode sensorMode, MindstormConnection connection) {
 		this.port = port;
@@ -46,15 +54,15 @@ public abstract class NXTSensor implements MindstormSensor {
 		this.connection = connection;
 	}
 
-	protected void updateTypeAndMode(NXTSensorType NXTSensorType, NXTSensorMode NXTSensorMode){
+	protected void updateTypeAndMode() {//(NXTSensorType NXTSensorType, NXTSensorMode NXTSensorMode){
 
-		this.sensorType = NXTSensorType;
-		this.sensorMode = NXTSensorMode;
+//		this.sensorType = NXTSensorType;
+//		this.sensorMode = NXTSensorMode;
 
 		Command command = new Command(CommandType.DIRECT_COMMAND, CommandByte.SET_INPUT_MODE, true);
 		command.append((byte) port);
-		command.append(NXTSensorType.getByte());
-		command.append(NXTSensorMode.getByte());
+		command.append(sensorType.getByte());
+		command.append(sensorMode.getByte());
 
 		NXTReply reply = new NXTReply(connection.sendAndReceive(command));
 		NXTError.checkForError(reply, 3);
@@ -96,12 +104,12 @@ public abstract class NXTSensor implements MindstormSensor {
 	protected void initialize()
 	{
 		if (connection != null && connection.isConnected()) {
-			updateTypeAndMode(sensorType, sensorMode);
+			updateTypeAndMode();
 			try {
 				Thread.sleep(100);
 				resetScaledValue();
 				Thread.sleep(100);
-				updateTypeAndMode(sensorType, sensorMode);
+				updateTypeAndMode();
 				hasInit = true;
 			} catch (InterruptedException e) {
 				hasInit = false;
@@ -127,5 +135,30 @@ public abstract class NXTSensor implements MindstormSensor {
     @Override
     public int getUpdateInterval() {
         return updateInterval;
+    }
+
+    @Override
+    public void updateLastSensorValue() {
+        try {
+            lastValidValue = getValue();
+        }
+        catch (MindstormException e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    @Override
+    public int getLastSensorValue() {
+        return lastValidValue;
+    }
+
+    @Override
+    public String getName() {
+        return String.format("%s_%s_%d", TAG, sensorType.name(), port);
+    }
+
+    @Override
+    public int getConnectedPort() {
+        return port;
     }
 }
