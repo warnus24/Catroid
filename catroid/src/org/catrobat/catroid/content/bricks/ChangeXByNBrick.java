@@ -72,9 +72,9 @@ public class ChangeXByNBrick extends BrickBaseType implements OnClickListener, F
 	@Override
 	public int getRequiredResources() {
 		if (xMovement.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT | xMovement.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | xMovement.getRequiredResources();
 		}
 	}
 

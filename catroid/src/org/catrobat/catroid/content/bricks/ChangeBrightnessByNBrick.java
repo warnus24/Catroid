@@ -65,9 +65,11 @@ public class ChangeBrightnessByNBrick extends BrickBaseType implements OnClickLi
 	@Override
 	public int getRequiredResources() {
 		if (changeBrightness.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+	
+			return BLUETOOTH_ROBOT_ALBERT | changeBrightness.getRequiredResources();
+			
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | changeBrightness.getRequiredResources(); 
 		}
 	}
 

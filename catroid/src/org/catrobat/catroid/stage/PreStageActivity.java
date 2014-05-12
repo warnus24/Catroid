@@ -44,6 +44,7 @@ import org.catrobat.catroid.bluetooth.DeviceListActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
+import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
 import org.catrobat.catroid.robot.albert.RobotAlbert;
@@ -150,6 +151,16 @@ public class PreStageActivity extends Activity {
 			SensorRobotAlbert sensor = SensorRobotAlbert.getSensorRobotAlbertInstance();
 			sensor.setBooleanAlbertBricks(false);
 		}
+		FaceDetectionHandler.resetFaceDedection();
+		if ((requiredResources & Brick.FACE_DETECTION) > 0) {
+			boolean success = FaceDetectionHandler.startFaceDetection(this);
+			if (success) {
+				resourceInitialized();
+			} else {
+				resourceFailed();
+			}
+		}
+
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}
@@ -175,6 +186,8 @@ public class PreStageActivity extends Activity {
 		if (robotAlbert != null) {
 			robotAlbert.pauseCommunicator();
 		}
+		FaceDetectionHandler.stopFaceDetection();
+
 	}
 
 	//all resources that should not have to be reinitialized every stage start

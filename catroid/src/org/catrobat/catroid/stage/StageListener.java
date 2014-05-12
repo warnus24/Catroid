@@ -54,6 +54,7 @@ import org.catrobat.catroid.common.ScreenModes;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.robot.albert.RobotAlbert;
 import org.catrobat.catroid.robot.albert.RobotAlbertCommunicator;
@@ -191,11 +192,23 @@ public class StageListener implements ApplicationListener {
 
 	}
 
+	void activityResume() {
+		if (!paused) {
+			FaceDetectionHandler.resumeFaceDetection();
+		}
+
+	}
+
+	void activityPause() {
+		FaceDetectionHandler.pauseFaceDetection();
+	}
+
 	void menuResume() {
 		if (reloadProject) {
 			return;
 		}
 		paused = false;
+		FaceDetectionHandler.resumeFaceDetection();
 		SoundManager.getInstance().resume();
 		for (Sprite sprite : sprites) {
 			sprite.resume();
@@ -207,6 +220,7 @@ public class StageListener implements ApplicationListener {
 			return;
 		}
 		paused = true;
+		FaceDetectionHandler.pauseFaceDetection();
 		SoundManager.getInstance().pause();
 		for (Sprite sprite : sprites) {
 			sprite.pause();
@@ -227,6 +241,7 @@ public class StageListener implements ApplicationListener {
 	@Override
 	public void resume() {
 		if (!paused) {
+			FaceDetectionHandler.resumeFaceDetection();
 			SoundManager.getInstance().resume();
 			for (Sprite sprite : sprites) {
 				sprite.resume();
@@ -261,6 +276,7 @@ public class StageListener implements ApplicationListener {
 			return;
 		}
 		if (!paused) {
+			FaceDetectionHandler.pauseFaceDetection();
 			SoundManager.getInstance().pause();
 			for (Sprite sprite : sprites) {
 				sprite.pause();
@@ -546,8 +562,7 @@ public class StageListener implements ApplicationListener {
 			int dataSize = data.size();
 			for (int j = 0; j < dataSize; j++) {
 				LookData lookData = data.get(j);
-				lookData.getPixmap().dispose();
-				lookData.getTextureRegion().getTexture().dispose();
+				lookData.dispose();
 			}
 		}
 	}

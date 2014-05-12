@@ -68,9 +68,9 @@ public class ChangeGhostEffectByNBrick extends BrickBaseType implements OnClickL
 	@Override
 	public int getRequiredResources() {
 		if (changeGhostEffect.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT| changeGhostEffect.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | changeGhostEffect.getRequiredResources();
 		}
 	}
 

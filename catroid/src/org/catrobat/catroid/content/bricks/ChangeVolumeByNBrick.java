@@ -74,9 +74,9 @@ public class ChangeVolumeByNBrick extends BrickBaseType implements OnClickListen
 	@Override
 	public int getRequiredResources() {
 		if (volume.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT  | volume.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | volume.getRequiredResources();
 		}
 	}
 

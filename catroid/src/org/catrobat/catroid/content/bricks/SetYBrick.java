@@ -70,9 +70,9 @@ public class SetYBrick extends BrickBaseType implements OnClickListener, Formula
 	@Override
 	public int getRequiredResources() {
 		if (yPosition.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT | yPosition.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | yPosition.getRequiredResources();
 		}
 	}
 

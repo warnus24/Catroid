@@ -74,9 +74,9 @@ public class IfLogicBeginBrick extends NestingBrick implements OnClickListener, 
 	@Override
 	public int getRequiredResources() {
 		if (ifCondition.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT | ifCondition.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | ifCondition.getRequiredResources();
 		}
 	}
 

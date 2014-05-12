@@ -72,9 +72,9 @@ public class ChangeYByNBrick extends BrickBaseType implements OnClickListener, F
 	@Override
 	public int getRequiredResources() {
 		if (yMovement.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT  | yMovement.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | yMovement.getRequiredResources();
 		}
 	}
 

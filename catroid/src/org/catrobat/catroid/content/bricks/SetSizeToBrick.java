@@ -70,9 +70,9 @@ public class SetSizeToBrick extends BrickBaseType implements OnClickListener, Fo
 	@Override
 	public int getRequiredResources() {
 		if (size.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT | size.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | size.getRequiredResources();
 		}
 	}
 

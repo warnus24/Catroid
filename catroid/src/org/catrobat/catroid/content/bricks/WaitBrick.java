@@ -71,9 +71,9 @@ public class WaitBrick extends BrickBaseType implements OnClickListener, Formula
 	@Override
 	public int getRequiredResources() {
 		if (timeToWaitInSeconds.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT | timeToWaitInSeconds.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | timeToWaitInSeconds.getRequiredResources();
 		}
 	}
 

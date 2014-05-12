@@ -121,6 +121,14 @@ public class InternFormulaKeyboardAdapter {
 				return buildSensor(Sensors.ALBERT_ROBOT_DISTANCE_LEFT);
 			case R.string.formula_editor_sensor_albert_robot_distance_right:
 				return buildSensor(Sensors.ALBERT_ROBOT_DISTANCE_RIGHT);
+			case R.string.formula_editor_sensor_face_detected:
+				return buildSensor(Sensors.FACE_DETECTED);
+			case R.string.formula_editor_sensor_face_size:
+				return buildSensor(Sensors.FACE_SIZE);
+			case R.string.formula_editor_sensor_face_x_position:
+				return buildSensor(Sensors.FACE_X_POSITION);
+			case R.string.formula_editor_sensor_face_y_position:
+				return buildSensor(Sensors.FACE_Y_POSITION);
 
 				//PERIOD
 			case R.id.formula_editor_keyboard_decimal_mark:

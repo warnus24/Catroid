@@ -70,9 +70,9 @@ public class SetGhostEffectBrick extends BrickBaseType implements OnClickListene
 	@Override
 	public int getRequiredResources() {
 		if (transparency.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT | transparency.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | transparency.getRequiredResources();
 		}
 	}
 

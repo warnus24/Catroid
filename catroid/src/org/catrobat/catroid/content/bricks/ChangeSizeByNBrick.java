@@ -67,9 +67,9 @@ public class ChangeSizeByNBrick extends BrickBaseType implements OnClickListener
 	@Override
 	public int getRequiredResources() {
 		if (size.containsRobotAlbertSensors() == true) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT | size.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES| size.getRequiredResources();
 		}
 	}
 
@@ -134,8 +134,10 @@ public class ChangeSizeByNBrick extends BrickBaseType implements OnClickListener
 			background.setAlpha(alphaValue);
 
 			TextView changeSizeBy = (TextView) view.findViewById(R.id.brick_change_size_by_label);
+			TextView textPercent = (TextView) view.findViewById(R.id.brick_change_size_by_percent);
 			TextView editChangeSize = (TextView) view.findViewById(R.id.brick_change_size_by_edit_text);
 			changeSizeBy.setTextColor(changeSizeBy.getTextColors().withAlpha(alphaValue));
+			textPercent.setTextColor(textPercent.getTextColors().withAlpha(alphaValue));
 			editChangeSize.setTextColor(editChangeSize.getTextColors().withAlpha(alphaValue));
 			editChangeSize.getBackground().setAlpha(alphaValue);
 

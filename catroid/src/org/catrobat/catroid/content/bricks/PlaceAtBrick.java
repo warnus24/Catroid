@@ -83,9 +83,9 @@ public class PlaceAtBrick extends BrickBaseType implements OnClickListener, Form
 	@Override
 	public int getRequiredResources() {
 		if ((xPosition.containsRobotAlbertSensors() == true) || (yPosition.containsRobotAlbertSensors() == true)) {
-			return BLUETOOTH_ROBOT_ALBERT;
+			return BLUETOOTH_ROBOT_ALBERT | yPosition.getRequiredResources()|xPosition.getRequiredResources();
 		} else {
-			return NO_RESOURCES;
+			return NO_RESOURCES | yPosition.getRequiredResources()|xPosition.getRequiredResources();
 		}
 	}
 

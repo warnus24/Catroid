@@ -37,6 +37,7 @@ import com.actionbarsherlock.view.MenuItem;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageActivity;
@@ -71,7 +72,8 @@ public class ProjectActivity extends BaseActivity {
 		}
 
 		final ActionBar actionBar = getSupportActionBar();
-		actionBar.setTitle(programName);
+		String title = ProjectManager.getInstance().getCurrentProject().getName();
+		actionBar.setTitle(title);
 		actionBar.setHomeButtonEnabled(true);
 
 		spritesListFragment = (SpritesListFragment) getSupportFragmentManager().findFragmentById(
@@ -97,34 +99,42 @@ public class ProjectActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.show_details:
+			case R.id.show_details: {
 				handleShowDetails(!spritesListFragment.getShowDetails(), item);
 				break;
+			}
 
-			case R.id.copy:
+			case R.id.copy: {
 				spritesListFragment.startCopyActionMode();
 				break;
+			}
 
-			case R.id.cut:
+			case R.id.cut: {
 				break;
+			}
 
-			case R.id.insert_below:
+			case R.id.insert_below: {
 				break;
+			}
 
-			case R.id.move:
+			case R.id.move: {
 				break;
+			}
 
-			case R.id.rename:
+			case R.id.rename: {
 				spritesListFragment.startRenameActionMode();
 				break;
+			}
 
-			case R.id.delete:
+			case R.id.delete: {
 				spritesListFragment.startDeleteActionMode();
 				break;
+			}
 
-			case R.id.upload:
+			case R.id.upload: {
 				ProjectManager.getInstance().uploadProject(Utils.getCurrentProjectName(this), this);
 				break;
+			}
 
 		}
 		return super.onOptionsItemSelected(item);
@@ -141,6 +151,7 @@ public class ProjectActivity extends BaseActivity {
 		}
 		if (requestCode == StageActivity.STAGE_ACTIVITY_FINISH) {
 			SensorHandler.stopSensorListeners();
+			FaceDetectionHandler.stopFaceDetection();
 		}
 	}
 
@@ -160,14 +171,18 @@ public class ProjectActivity extends BaseActivity {
 		if (!viewSwitchLock.tryLock()) {
 			return;
 		}
-		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-		Fragment previousFragment = getSupportFragmentManager().findFragmentByTag(NewSpriteDialog.DIALOG_FRAGMENT_TAG);
-		if (previousFragment != null) {
-			fragmentTransaction.remove(previousFragment);
-		}
+		
+		NewSpriteDialog dialog = new NewSpriteDialog();
+		dialog.show(getSupportFragmentManager(), NewSpriteDialog.DIALOG_FRAGMENT_TAG);
 
-		DialogFragment newFragment = new NewSpriteDialog();
-		newFragment.show(fragmentTransaction, NewSpriteDialog.DIALOG_FRAGMENT_TAG);
+	//	FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+	//	Fragment previousFragment = getSupportFragmentManager().findFragmentByTag(NewSpriteDialog.DIALOG_FRAGMENT_TAG);
+	//	if (previousFragment != null) {
+	//		fragmentTransaction.remove(previousFragment);
+	//	}
+//
+//		DialogFragment newFragment = new NewSpriteDialog();
+//		newFragment.show(fragmentTransaction, NewSpriteDialog.DIALOG_FRAGMENT_TAG);
 	}
 
 	public void handlePlayButton(View view) {
