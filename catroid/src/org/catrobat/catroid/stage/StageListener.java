@@ -207,11 +207,13 @@ public class StageListener implements ApplicationListener {
 		if (reloadProject) {
 			return;
 		}
-		//		this.stageDialog = stageDialog;
+		this.stageDialog = stageDialog;
 
-		create();
 		project.getUserVariables().resetAllUserVariables();
+		create();
+
 		reloadProject = true;
+		//this.firstStart = true;
 	}
 
 	@Override

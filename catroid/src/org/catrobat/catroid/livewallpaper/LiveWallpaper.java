@@ -42,6 +42,7 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.stage.StageListener;
+import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
 
 @SuppressLint("NewApi")
@@ -88,11 +89,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	}
 
 	private LiveWallpaperEngine homeEngine;
-	
+
 	private StageActivity previweActivity;
 	private StageActivity homeActivity;
 
-	private StageListener previewStageListener = =null;
+	private StageListener previewStageListener = null;
 	private StageListener homeScreenStageListener = null;
 
 	public boolean TEST = false;
@@ -181,25 +182,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public Engine onCreateEngine() {
-
-		//	lastCreatedStageListener = new StageListener(true);
-<<<<<<< HEAD
-		if (previewStageListener == null || homeScreenStageListener == null) {
-			lastCreatedWallpaperEngine = new LiveWallpaperEngine();
-=======
 		Utils.loadProjectIfNeeded(getApplicationContext());
-		//if (previewStageListener == null && homeScreenStageListener == null) {
-		//	lastCreatedWallpaperEngine = new LiveWallpaperEngine();
-		//}
-		if (previewStageListener == null) {
-			lastCreatedPreviewEngine = new LiveWallpaperEngine();
-			return lastCreatedPreviewEngine;
-		}
-		if (homeScreenStageListener == null) {
-			lastCreatedHomeEngine = new LiveWallpaperEngine();
-			return lastCreatedHomeEngine;
->>>>>>> a275e5c5afd49eae72c16ac6d36ac604c3c57b9a
-		}
+		//	lastCreatedStageListener = new StageListener(true);
 		//lastCreatedWallpaperEngine = new LiveWallpaperEngine(this.lastCreatedStageListener);
 
 		if (lastCreatedHomeEngine != null && lastCreatedPreviewEngine == null) {
@@ -207,7 +191,17 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			return lastCreatedPreviewEngine;
 		}
 
+		if (lastCreatedPreviewEngine == null) {
+			lastCreatedPreviewEngine = new LiveWallpaperEngine();
+			return lastCreatedPreviewEngine;
+		}
+
 		if (lastCreatedPreviewEngine != null && lastCreatedHomeEngine == null) {
+			lastCreatedHomeEngine = new LiveWallpaperEngine();
+			return lastCreatedHomeEngine;
+		}
+
+		if (lastCreatedHomeEngine == null) {
 			lastCreatedHomeEngine = new LiveWallpaperEngine();
 			return lastCreatedHomeEngine;
 		}
@@ -251,7 +245,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		private boolean change = false;
 		private StageDialog home_stage_dialog;
-		
+
 		public LiveWallpaperEngine() {
 			super();
 			//activateTextToSpeechIfNeeded();
@@ -276,6 +270,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 		}
 
+		private StageListener getLocalStageListenerInverted() {
+			if (this.isPreview()) {
+				return homeScreenStageListener;
+			} else {
+				return previewStageListener;
+			}
+		}
+
 		@Override
 		public void onVisibilityChanged(boolean visible) {
 			Log.d("LWP", "Engine: " + name + " the engine is visible: " + visible);
@@ -292,16 +294,15 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			if (getLocalStageListener() == null) {
 				return;
 			}
-
-<<<<<<< HEAD
-				if (isPreview()) {
-					previewStageListener.menuResume();
-					Log.d("LWP", "Resuming  " + name + ": " + " SL-" + getLocalStageListener().hashCode());
-				} else {
+			if (isPreview()) {
+				previewStageListener.menuResume();
+				Log.d("LWP", "Resuming  " + name + ": " + " SL-" + getLocalStageListener().hashCode());
+			} else {
+				if (homeScreenStageListener != null) {
 					homeScreenStageListener.menuResume();
 					Log.d("LWP", "Resuming  " + name + ": " + " SL-" + getLocalStageListener().hashCode());
 				}
-				
+			}
 
 			SensorHandler.startSensorListener(getApplicationContext());
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
@@ -358,14 +359,13 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		public void changeWallpaperProgram() {
 			if (isPreview()) {
-
-				getLocalStageListener();
-			} else {
-				getLocalStageListener().pause();
-				getLocalStageListener().create();
-				getLocalStageListener().reloadProject(stageDialog);
-
+				getLocalStageListener().menuResume();
 				getLocalStageListener().reloadProject(null);
+			} else {
+				getLocalStageListener().menuResume();
+				getLocalStageListener().reloadProject(home_stage_dialog);
+
+				//getLocalStageListener().reloadProject(null);
 			}
 
 			//activateTextToSpeechIfNeeded();

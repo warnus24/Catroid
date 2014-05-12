@@ -63,7 +63,7 @@ public class SoundRecorder {
 
 	public void stop() throws IOException {
 
-		recorder.stop();
+		//recorder.stop();
 		recorder.reset();
 		recorder.release();
 		isRecording = false;
