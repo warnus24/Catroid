@@ -51,6 +51,7 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.SoundManager;
+import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
 
@@ -91,6 +92,7 @@ public class StageListener implements ApplicationListener {
 	private int screenshotX;
 	private int screenshotY;
 	private byte[] screenshot = null;
+	private LiveWallpaperEngine lwpEngine = null;
 	// in first frame, framebuffer could be empty and screenshot
 	// would be white
 	private boolean skipFirstFrameForAutomaticScreenshot;
@@ -203,14 +205,13 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
-	public void reloadProject(StageDialog stageDialog) {
+	public void reloadProject(LiveWallpaperEngine engine) {
 		if (reloadProject) {
 			return;
 		}
-		this.stageDialog = stageDialog;
+		this.lwpEngine = engine;
 
 		project.getUserVariables().resetAllUserVariables();
-		create();
 
 		reloadProject = true;
 		//this.firstStart = true;
@@ -295,6 +296,13 @@ public class StageListener implements ApplicationListener {
 			if (stageDialog != null) {
 				synchronized (stageDialog) {
 					stageDialog.notify();
+				}
+			}
+
+			if (lwpEngine != null) {
+				synchronized (lwpEngine) {
+					lwpEngine.onResume();
+					lwpEngine.notify();
 				}
 			}
 		}

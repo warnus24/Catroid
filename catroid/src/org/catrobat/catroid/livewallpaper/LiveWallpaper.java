@@ -90,8 +90,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	private LiveWallpaperEngine homeEngine;
 
-	private StageActivity previweActivity;
-	private StageActivity homeActivity;
+	private StageActivity stageActivity;
+	private StageDialog stageDialog;
 
 	private StageListener previewStageListener = null;
 	private StageListener homeScreenStageListener = null;
@@ -136,7 +136,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		setScreenSize(isPreview);
 
 		if (isPreview) {
-			//previewActivity = new StageActivity();
 			//if (homeEngine != null) {
 			//	homeEngine.onPause();
 			//}
@@ -144,10 +143,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			previewEngine = lastCreatedPreviewEngine;
 			previewEngine.name = "Preview";
 			Log.d("LWP", "Created " + "new prev Listener");
+
 			return previewStageListener;
 		} else {
-
-			//homeActivity = new StageActivity();
 			//if (previewEngine != null) {
 			//	previewEngine.onPause();
 			//}
@@ -191,22 +189,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			return lastCreatedPreviewEngine;
 		}
 
-		if (lastCreatedPreviewEngine == null) {
-			lastCreatedPreviewEngine = new LiveWallpaperEngine();
-			return lastCreatedPreviewEngine;
-		}
-
 		if (lastCreatedPreviewEngine != null && lastCreatedHomeEngine == null) {
 			lastCreatedHomeEngine = new LiveWallpaperEngine();
 			return lastCreatedHomeEngine;
 		}
 
-		if (lastCreatedHomeEngine == null) {
-			lastCreatedHomeEngine = new LiveWallpaperEngine();
-			return lastCreatedHomeEngine;
-		}
+		lastCreatedPreviewEngine = new LiveWallpaperEngine();
 
-		return new LiveWallpaperEngine();
+		return lastCreatedPreviewEngine;
 	}
 
 	private void setScreenSize(boolean isPreview) {
@@ -244,7 +234,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		};
 
 		private boolean change = false;
-		private StageDialog home_stage_dialog;
 
 		public LiveWallpaperEngine() {
 			super();
@@ -359,13 +348,32 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		public void changeWallpaperProgram() {
 			if (isPreview()) {
-				getLocalStageListener().menuResume();
-				getLocalStageListener().reloadProject(null);
-			} else {
-				getLocalStageListener().menuResume();
-				getLocalStageListener().reloadProject(home_stage_dialog);
+				//getLocalStageListener().menuPause();
+				//getLocalStageListenerInverted().menuPause();
+				this.onPause();
+				getLocalStageListener().create();
+				getLocalStageListener().reloadProject(this);
+				synchronized (this) {
+					try {
+						this.wait();
+					} catch (InterruptedException e) {
+						Log.e("CATROID", "Thread activated too early!", e);
+					}
+				}
 
-				//getLocalStageListener().reloadProject(null);
+			} else {
+				//getLocalStageListener().menuPause();
+				//getLocalStageListenerInverted().menuPause();
+				this.onPause();
+				getLocalStageListener().create();
+				getLocalStageListener().reloadProject(this);
+				synchronized (this) {
+					try {
+						this.wait();
+					} catch (InterruptedException e) {
+						Log.e("CATROID", "Thread activated too early!", e);
+					}
+				}
 			}
 
 			//activateTextToSpeechIfNeeded();
