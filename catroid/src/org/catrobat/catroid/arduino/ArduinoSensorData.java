@@ -29,9 +29,16 @@ public final class ArduinoSensorData {
 
 	private static ArduinoSensorData instance = null;
 
+	//	private static Semaphore receiveSyncSemaphore = new Semaphore(1);
+
 	//Sensor variables
 	private int arduinoDigitalSensor = 0; //0 or 1 (Low or High)
 	private int arduinoAnalogSensor = 0; //0 - 1023
+
+	private int arduinoDigitalSensorLowerByte = 0;
+	private int arduinoDigitalSensorHigherByte = 0;
+	private int arduinoAnalogSensorLowerByte = 0;
+	private int arduinoAnalogSensorHigherByte = 0;
 
 	private ArduinoSensorData() {
 
@@ -58,5 +65,37 @@ public final class ArduinoSensorData {
 
 	public void setArduinoAnalogSensor(int value) {
 		arduinoAnalogSensor = value;
+	}
+
+	public int getArduinoDigitalSensorLowerByte() {
+		return arduinoDigitalSensorLowerByte;
+	}
+
+	public void setArduinoDigitalSensorLowerByte(int arduinoDigitalSensorLowerByte) {
+		this.arduinoDigitalSensorLowerByte = arduinoDigitalSensorLowerByte;
+	}
+
+	public int getArduinoDigitalSensorHigherByte() {
+		return arduinoDigitalSensorHigherByte;
+	}
+
+	public void setArduinoDigitalSensorHigherByte(int arduinoDigitalSensorHigherByte) {
+		this.arduinoDigitalSensorHigherByte = arduinoDigitalSensorHigherByte;
+	}
+
+	public int getArduinoAnalogSensorLowerByte() {
+		return arduinoAnalogSensorLowerByte;
+	}
+
+	public void setArduinoAnalogSensorLowerByte(int arduinoAnalogSensorLowerByte) {
+		this.arduinoAnalogSensorLowerByte = arduinoAnalogSensorLowerByte;
+	}
+
+	public int getArduinoAnalogSensorHigherByte() {
+		return arduinoAnalogSensorHigherByte;
+	}
+
+	public void setArduinoAnalogSensorHigherByte(int arduinoAnalogSensorHigherByte) {
+		this.arduinoAnalogSensorHigherByte = arduinoAnalogSensorHigherByte;
 	}
 }

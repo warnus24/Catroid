@@ -108,10 +108,7 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 	}
 
 	public void testSetPinToHighLowWithPinAndValueSpinner() {
-		//turn on BT
-		//		solo.sleep(500);
-		//		ArduinoSendAction.turnOnBluetooth();
-		//		solo.sleep(800);
+
 		//check if the Spinner list element length is correct
 		String[] arduinoPins = getActivity().getResources().getStringArray(R.array.arduino_pin_chooser);
 		assertTrue("Spinner items list too short!", arduinoPins.length == 11);
@@ -124,6 +121,7 @@ public class ArduinoSendBrickTest extends BaseActivityInstrumentationTestCase<Sc
 		solo.pressSpinnerItem(0, 10);
 
 		//send data via BT
+
 		//		ArduinoSendAction.initBluetoothConnection("00:07:80:49:8B:61");
 		//		int pinValue = ArduinoSendAction.getPinValue();
 		//		int pinNumberLowerByte = ArduinoSendAction.getPinNumberLowerByte();

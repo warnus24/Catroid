@@ -294,7 +294,10 @@ public class FormulaElement implements Serializable {
 				}
 
 				Arduino.sendArduinoDigitalPinMessage(pinNumberLowerByteDigital, pinNumberHigherByteDigital, 'D');
-				int pinValueFromArduinoDigital = Arduino.getArduinoDigitalSensorMessage();
+				int pinValueFromArduinoDigital = 2000;
+				while (pinValueFromArduinoDigital == 2000) {
+					pinValueFromArduinoDigital = Arduino.getArduinoDigitalSensorMessage();
+				}
 
 				if (pinValueFromArduinoDigital == 72) {
 					return 1.0;
@@ -321,7 +324,10 @@ public class FormulaElement implements Serializable {
 				}
 
 				Arduino.sendArduinoDigitalPinMessage(pinNumberLowerByteAnalog, pinNumberHigherByteAnalog, 'A');
-				int pinValueFromArduinoAnalog = Arduino.getArduinoAnalogSensorMessage();
+				int pinValueFromArduinoAnalog = 2000;
+				while (pinValueFromArduinoAnalog == 2000) {
+					pinValueFromArduinoAnalog = Arduino.getArduinoAnalogSensorMessage();
+				}
 
 				return (double) pinValueFromArduinoAnalog;
 		}

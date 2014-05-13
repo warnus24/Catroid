@@ -45,10 +45,8 @@ import java.util.UUID;
 
 public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
-	//private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fc");
-	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	//	private static final byte START_OF_FILE = (byte) 83; //Ascii table "S"
-	//	private static final byte END_OF_FILE = (byte) 88; //Ascii table "X"
+	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fc");
+	//	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private static final byte BOF = (byte) 126; //Ascii table "~"
 
@@ -83,6 +81,7 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
 		while (connected) {
 			try {
+				Log.d("ArduinoBtComm", "<<< receiveMessage() was called >>> ");
 				receiveMessage();
 			} catch (IOException e) {
 				Log.d("ArduinoBtComm", "IOException in run:receiveMessage occured: " + e.toString());
@@ -205,11 +204,13 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 	 */
 	@Override
 	public void sendMessage(byte[] message) throws IOException {
-
+		Log.d("ArduinoBtComm", "<<< sendMessage() was called >>> ");
 		try {
 			if (outputStream == null) {
 				throw new IOException();
 			}
+			Log.d("ArduinoBtComm", "message[] to write to the outputstream: " + +message[0] + message[1] + message[2]
+					+ " length: " + message.length);
 			outputStream.write(message, 0, message.length);
 			outputStream.flush();
 		} catch (Exception e) {
@@ -245,14 +246,13 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 		byte[] buffer = new byte[length[0] - 48]; //48 decimal = 0
 		//checkIfDataIsAvailable(length[0] - 1);
 		read = inputStream.read(buffer);
-
 		switch (buffer[0]) {
 			case 'D':
 				sensors.setArduinoDigitalSensor(buffer[3]);
 
 				if (debugOutput == true) {
 					Log.d("ArduinoBtComm", "sensor packet found");
-					Log.d("ArduinoBtComm", "receiveMessage: Value=" + buffer[3]);
+					Log.d("ArduinoBtComm", "receiveMessage: Value=" + buffer[1] + buffer[2] + buffer[3]);
 				}
 				break;
 			case 'A':
@@ -268,7 +268,7 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
 				if (debugOutput == true) {
 					Log.d("ArduinoBtComm", "sensor packet found");
-					Log.d("ArduinoBtComm", "receiveMessage: Value=" + buffer[3]);
+					Log.d("ArduinoBtComm", "receiveMessage: Value=" + buffer[1] + buffer[2] + buffer[3]);
 				}
 				break;
 			default:
