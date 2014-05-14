@@ -24,6 +24,7 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,10 +36,12 @@ import android.widget.TextView;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.utils.Utils;
 
@@ -111,8 +114,12 @@ public class MoveNStepsBrick extends BrickBaseType implements OnClickListener, F
 		TextView times = (TextView) view.findViewById(R.id.brick_move_n_steps_step_text_view);
 
 		if (steps.isSingleNumberFormula()) {
-			times.setText(view.getResources().getQuantityString(R.plurals.brick_move_n_step_plural,
-					Utils.convertDoubleToPluralInteger(steps.interpretDouble(sprite))));
+            try{
+                times.setText(view.getResources().getQuantityString(R.plurals.brick_move_n_step_plural,
+                        Utils.convertDoubleToPluralInteger(steps.interpretDouble(sprite))));
+            }catch(InterpretationException interpretationException){
+                Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+            }
 		} else {
 
 			// Random Number to get into the "other" keyword for values like 0.99 or 2.001 seconds or degrees
@@ -132,10 +139,10 @@ public class MoveNStepsBrick extends BrickBaseType implements OnClickListener, F
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		prototypeView = inflater.inflate(R.layout.brick_move_n_steps, null);
 		TextView textSteps = (TextView) prototypeView.findViewById(R.id.brick_move_n_steps_prototype_text_view);
-		textSteps.setText(String.valueOf(steps.interpretDouble(sprite)));
+		textSteps.setText(String.valueOf(BrickValues.MOVE_STEPS));
 		TextView times = (TextView) prototypeView.findViewById(R.id.brick_move_n_steps_step_text_view);
-		times.setText(context.getResources().getQuantityString(R.plurals.brick_move_n_step_plural,
-				Utils.convertDoubleToPluralInteger(steps.interpretDouble(sprite))));
+        times.setText(context.getResources().getQuantityString(R.plurals.brick_move_n_step_plural,
+                Utils.convertDoubleToPluralInteger(BrickValues.MOVE_STEPS)));
 		return prototypeView;
 	}
 

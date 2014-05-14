@@ -37,9 +37,9 @@ import java.util.List;
 
 public class GoNStepsBackActionTest extends AndroidTestCase {
 
-	private static final float VALUE = 1f;
+	private static final int STEPS = 13;
 	private static final String NOT_NUMERICAL_STRING = "NOT_NUMERICAL_STRING";
-	private final Formula steps = new Formula(17);
+	private final Formula steps = new Formula(STEPS);
 
 	public void testSteps() {
 		Project project = new Project(getContext(), "testProject");
@@ -59,20 +59,16 @@ public class GoNStepsBackActionTest extends AndroidTestCase {
 
 		int oldPosition = sprite.look.getZIndex();
 
-		GoNStepsBackAction action = ExtendedActions.goNStepsBack(sprite, steps);
-		sprite.look.addAction(action);
-		action.act(1.0f);
+		ExtendedActions.goNStepsBack(sprite, steps).act(1.0f);
 		assertEquals("Incorrect sprite Z position after GoNStepsBackBrick executed",
-				(oldPosition - steps.interpretInteger(sprite)), sprite.look.getZIndex());
+				(oldPosition - STEPS), sprite.look.getZIndex());
 
 		checkIfEveryZIndexUsedOnlyOnceFromZeroToNMinus1(project.getSpriteList());
 		oldPosition = sprite.look.getZIndex();
 
-		action = ExtendedActions.goNStepsBack(sprite, new Formula(-steps.interpretInteger(sprite)));
-		sprite.look.addAction(action);
-		action.act(1.0f);
+		ExtendedActions.goNStepsBack(sprite, new Formula(-STEPS)).act(1.0f);
 		assertEquals("Incorrect sprite Z position after GoNStepsBackBrick executed",
-				(oldPosition + steps.interpretInteger(sprite)), sprite.look.getZIndex());
+				(oldPosition + STEPS), sprite.look.getZIndex());
 		checkIfEveryZIndexUsedOnlyOnceFromZeroToNMinus1(project.getSpriteList());
 	}
 
@@ -95,8 +91,6 @@ public class GoNStepsBackActionTest extends AndroidTestCase {
 			}
 			assertTrue("z-indexing not correct. z-index have to be from 0 to n-1 each value only once", zIndexFound);
 		}
-
-
 	}
 
 
@@ -154,7 +148,7 @@ public class GoNStepsBackActionTest extends AndroidTestCase {
 		Sprite sprite2 = new Sprite("testSprite2");
 		parentGroup.addActor(sprite2.look);
 
-		GoNStepsBackAction action = ExtendedActions.goNStepsBack(sprite2, new Formula(String.valueOf(VALUE)));
+		GoNStepsBackAction action = ExtendedActions.goNStepsBack(sprite2, new Formula(String.valueOf(STEPS)));
 		action.act(1.0f);
 		assertEquals("Unexpected initial sprite Z position", 0, background.look.getZIndex());
 		assertEquals("Unexpected sprite Z position", 1, sprite2.look.getZIndex());

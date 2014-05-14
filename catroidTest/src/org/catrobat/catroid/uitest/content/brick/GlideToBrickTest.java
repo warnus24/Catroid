@@ -34,6 +34,7 @@ import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.GlideToBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.Reflection;
@@ -89,16 +90,29 @@ public class GlideToBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 		GlideToBrick glideToBrick = (GlideToBrick) brickList.get(0);
 
 		Formula formula = (Formula) Reflection.getPrivateField(glideToBrick, "durationInSeconds");
-		float temp = formula.interpretFloat(sprite);
+        try{
+            float temp = formula.interpretFloat(sprite);
+            assertEquals("Wrong duration input in Glide to brick", Math.round(duration * 1000), Math.round(temp * 1000));
+        }catch (InterpretationException interpretationException){
+            fail("Wrong duration input in Glide to brick");
+        }
 
-		assertEquals("Wrong duration input in Glide to brick", Math.round(duration * 1000), Math.round(temp * 1000));
 		formula = (Formula) Reflection.getPrivateField(glideToBrick, "xDestination");
-		int temp2 = formula.interpretInteger(sprite);
-		assertEquals("Wrong x input in Glide to brick", xPosition, temp2);
+        try{
+            int temp2 = formula.interpretInteger(sprite);
+            assertEquals("Wrong x input in Glide to brick", xPosition, temp2);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong xDestination input in Glide to brick");
+        }
 
-		formula = (Formula) Reflection.getPrivateField(glideToBrick, "yDestination");
-		temp2 = formula.interpretInteger(sprite);
-		assertEquals("Wrong y input in Glide to brick", yPosition, temp2);
+        formula = (Formula) Reflection.getPrivateField(glideToBrick, "yDestination");
+        try{
+            int temp2 = formula.interpretInteger(sprite);
+            assertEquals("Wrong y input in Glide to brick", yPosition, temp2);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong yDestination input in Glide to brick");
+        }
+
 
 		UiTestUtils.insertValueViaFormulaEditor(solo, R.id.brick_glide_to_edit_text_duration, 1);
 		TextView secondsTextView = (TextView) solo.getView(R.id.brick_glide_to_seconds_text_view);

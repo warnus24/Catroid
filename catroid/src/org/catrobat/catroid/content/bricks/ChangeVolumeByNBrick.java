@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
@@ -119,7 +120,7 @@ public class ChangeVolumeByNBrick extends BrickBaseType implements OnClickListen
 		prototypeView = View.inflate(context, R.layout.brick_change_volume_by, null);
 		TextView textSetVolumenTo = (TextView) prototypeView
 				.findViewById(R.id.brick_change_volume_by_prototype_text_view);
-		textSetVolumenTo.setText(String.valueOf(volume.interpretDouble(sprite)));
+        textSetVolumenTo.setText(String.valueOf(BrickValues.CHANGE_VOLUME_BY));
 		return prototypeView;
 	}
 

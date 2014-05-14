@@ -33,6 +33,7 @@ import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.NoteBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
@@ -77,12 +78,20 @@ public class NoteBrickTest extends BaseActivityInstrumentationTestCase<ScriptAct
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.brick_note)));
 
 		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.brick_note_edit_text, TEST_STRING, "note", noteBrick);
-		String note = ((Formula) Reflection.getPrivateField(noteBrick, "note")).interpretString(sprite);
-		assertEquals("Wrong text in field.", TEST_STRING, note);
+        try{
+            String note = ((Formula) Reflection.getPrivateField(noteBrick, "note")).interpretString(sprite);
+            assertEquals("Wrong text in field.", TEST_STRING, note);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong text in field.");
+        }
 
 		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.brick_note_edit_text, "", "note", noteBrick);
-		note = ((Formula) Reflection.getPrivateField(noteBrick, "note")).interpretString(sprite);
-		assertEquals("Wrong text in field.", "", note);
+        try{
+            String note = ((Formula) Reflection.getPrivateField(noteBrick, "note")).interpretString(sprite);
+            assertEquals("Wrong text in field.", "", note);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong text in field.");
+        }
 	}
 
 	private void createProject() {
