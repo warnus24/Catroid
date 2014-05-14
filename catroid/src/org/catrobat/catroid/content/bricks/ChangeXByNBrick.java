@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
@@ -115,7 +116,7 @@ public class ChangeXByNBrick extends BrickBaseType implements OnClickListener, F
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_change_x, null);
 		TextView textXMovement = (TextView) prototypeView.findViewById(R.id.brick_change_x_prototype_text_view);
-		textXMovement.setText(String.valueOf(xMovement.interpretInteger(sprite)));
+        textXMovement.setText(String.valueOf(BrickValues.CHANGE_X_BY));
 		return prototypeView;
 	}
 

@@ -42,6 +42,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
@@ -185,7 +186,7 @@ public class ChangeVariableBrick extends BrickBaseType implements OnClickListene
 		setSpinnerSelection(variableSpinner, null);
 
 		TextView textChangeVariable = (TextView) prototypeView.findViewById(R.id.brick_change_variable_prototype_view);
-		textChangeVariable.setText(String.valueOf(variableFormula.interpretDouble(sprite)));
+        textChangeVariable.setText(String.valueOf(BrickValues.CHANGE_VARIABLE));
 		return prototypeView;
 	}
 

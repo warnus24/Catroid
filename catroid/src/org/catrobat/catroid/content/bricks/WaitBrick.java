@@ -24,6 +24,7 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
@@ -34,10 +35,12 @@ import android.widget.TextView;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.utils.Utils;
 
@@ -116,8 +119,12 @@ public class WaitBrick extends BrickBaseType implements OnClickListener, Formula
 		TextView times = (TextView) view.findViewById(R.id.brick_wait_second_text_view);
 
 		if (timeToWaitInSeconds.isSingleNumberFormula()) {
-			times.setText(view.getResources().getQuantityString(R.plurals.second_plural,
-					Utils.convertDoubleToPluralInteger(timeToWaitInSeconds.interpretDouble(sprite))));
+            try{
+                times.setText(view.getResources().getQuantityString(R.plurals.second_plural,
+                        Utils.convertDoubleToPluralInteger(timeToWaitInSeconds.interpretDouble(sprite))));
+            }catch(InterpretationException interpretationException){
+                Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+            }
 		} else {
 
 			// Random Number to get into the "other" keyword for values like 0.99 or 2.001 seconds or degrees
@@ -136,10 +143,10 @@ public class WaitBrick extends BrickBaseType implements OnClickListener, Formula
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_wait, null);
 		TextView textWait = (TextView) prototypeView.findViewById(R.id.brick_wait_prototype_text_view);
-		textWait.setText(String.valueOf(timeToWaitInSeconds.interpretInteger(sprite)));
+		textWait.setText(String.valueOf(BrickValues.WAIT/1000));
 		TextView times = (TextView) prototypeView.findViewById(R.id.brick_wait_second_text_view);
-		times.setText(context.getResources().getQuantityString(R.plurals.second_plural,
-				Utils.convertDoubleToPluralInteger(timeToWaitInSeconds.interpretDouble(sprite))));
+        times.setText(context.getResources().getQuantityString(R.plurals.second_plural,
+                Utils.convertDoubleToPluralInteger(BrickValues.WAIT/1000)));
 		return prototypeView;
 	}
 

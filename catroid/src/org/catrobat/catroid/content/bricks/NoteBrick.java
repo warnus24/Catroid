@@ -98,7 +98,6 @@ public class NoteBrick extends BrickBaseType implements OnClickListener, Formula
 
 		TextView textHolder = (TextView) view.findViewById(R.id.brick_note_prototype_text_view);
 		TextView textField = (TextView) view.findViewById(R.id.brick_note_edit_text);
-		textField.setText(note.interpretString(sprite));
 		note.setTextFieldId(R.id.brick_note_edit_text);
 		note.refreshTextField(view);
 
@@ -135,7 +134,7 @@ public class NoteBrick extends BrickBaseType implements OnClickListener, Formula
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_note, null);
 		TextView textSpeak = (TextView) prototypeView.findViewById(R.id.brick_note_prototype_text_view);
-		textSpeak.setText(note.interpretString(sprite));
+		textSpeak.setText(context.getString(R.string.brick_note_default_value));
 		return prototypeView;
 	}
 

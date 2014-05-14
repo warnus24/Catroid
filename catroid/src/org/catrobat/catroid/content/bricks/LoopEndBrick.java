@@ -44,7 +44,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class LoopEndBrick extends NestingBrick implements AllowedAfterDeadEndBrick {
-	static final int FOREVER = -1;
 	private static final long serialVersionUID = 1L;
 	private static final String TAG = LoopEndBrick.class.getSimpleName();
 	private LoopBeginBrick loopBeginBrick;

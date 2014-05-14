@@ -24,6 +24,7 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
@@ -33,9 +34,11 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.utils.Utils;
 
@@ -110,8 +113,12 @@ public class RepeatBrick extends LoopBeginBrick implements OnClickListener, Form
 		TextView times = (TextView) view.findViewById(R.id.brick_repeat_time_text_view);
 
 		if (timesToRepeat.isSingleNumberFormula()) {
-			times.setText(view.getResources().getQuantityString(R.plurals.time_plural,
-					Utils.convertDoubleToPluralInteger(timesToRepeat.interpretDouble(sprite))));
+            try{
+                times.setText(view.getResources().getQuantityString(R.plurals.time_plural,
+                        Utils.convertDoubleToPluralInteger(timesToRepeat.interpretDouble(sprite))));
+            }catch(InterpretationException interpretationException){
+                Log.d(getClass().getSimpleName(), "Couldn't interpret Formula", interpretationException);
+            }
 		} else {
 
 			// Random Number to get into the "other" keyword for values like 0.99 or 2.001 seconds or degrees
@@ -131,10 +138,10 @@ public class RepeatBrick extends LoopBeginBrick implements OnClickListener, Form
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_repeat, null);
 		TextView textRepeat = (TextView) prototypeView.findViewById(R.id.brick_repeat_prototype_text_view);
-		textRepeat.setText(String.valueOf(timesToRepeat.interpretInteger(sprite)));
 		TextView times = (TextView) prototypeView.findViewById(R.id.brick_repeat_time_text_view);
-		times.setText(context.getResources().getQuantityString(R.plurals.time_plural,
-				Utils.convertDoubleToPluralInteger(timesToRepeat.interpretDouble(sprite))));
+        textRepeat.setText(String.valueOf(BrickValues.REPEAT));
+        times.setText(context.getResources().getQuantityString(R.plurals.time_plural,
+                    Utils.convertDoubleToPluralInteger(BrickValues.REPEAT)));
 		return prototypeView;
 	}
 

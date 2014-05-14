@@ -127,6 +127,7 @@ import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.InternToken;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.stage.StageListener;
@@ -309,8 +310,11 @@ public final class UiTestUtils {
 		solo.sleep(200);
 
 		Formula formula = (Formula) Reflection.getPrivateField(theBrick, fieldName);
-
-		assertEquals("Wrong text in field", newValue, formula.interpretDouble(theBrick.getSprite()), 0.01f);
+        try{
+            assertEquals("Wrong text in field", newValue, formula.interpretDouble(theBrick.getSprite()), 0.01f);
+        }catch (InterpretationException interpretationException) {
+            fail("Wrong text in field.");
+        }
 		assertEquals("Text not updated in the brick list", newValue,
 				Double.parseDouble(((TextView) solo.getView(editTextId)).getText().toString().replace(',', '.')), 0.01f);
 
@@ -330,7 +334,11 @@ public final class UiTestUtils {
 
 		Formula formula = (Formula) Reflection.getPrivateField(theBrick, fieldName);
 		formulaEditorString = ((TextView) solo.getView(editTextId)).getText().toString();
-		assertEquals("Wrong text in field", newValue, formula.interpretString(theBrick.getSprite()));
+        try{
+            assertEquals("Wrong text in field", newValue, formula.interpretString(theBrick.getSprite()));
+        }catch (InterpretationException interpretationException) {
+            fail("Wrong text in field.");
+        }
 		assertEquals("Text not updated in the brick list", "\'" + newValue + "\'",
 				formulaEditorString.substring(0, formulaEditorString.length() - 1));
 	}
