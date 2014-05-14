@@ -494,11 +494,9 @@
   <string name="formula_editor_object_layer">layer</string>
   <string name="formula_editor_compute">Calcola</string>
   <string name="formula_editor_object">Oggetto</string>
-  <string name="formula_editor_function">Funzioni</string>
   <string name="formula_editor_logic">Logica</string>
   <string name="formula_editor_sensors">Sensori</string>
   <string name="formula_editor_variables">Variabili</string>
-  <string name="formula_editor_string">Abc</string>
   <string name="formula_editor_logic_notequal">≠</string>
   <string name="formula_editor_logic_lesserthan">&lt;</string>
   <string name="formula_editor_logic_greaterthan">&gt;</string>
