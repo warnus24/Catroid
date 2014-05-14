@@ -136,8 +136,6 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
         BottomBar.hideAddButton(getActivity());
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
-        pendingIntent = PendingIntent.getActivity(getActivity(), 0,
-                new Intent(getActivity(), getActivity().getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 	}
 
 	@Override
@@ -238,9 +236,12 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		NfcTagController.getInstance().handleAddButtonFromNew(this);
 
         if (nfcAdapter != null) {
+            pendingIntent = PendingIntent.getActivity(getActivity(), 0,
+                    new Intent(getActivity(), getActivity().getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
             Log.d(TAG, "onResume()enableForegroundDispatch()");
             nfcAdapter.enableForegroundDispatch(getActivity(), pendingIntent, null, null);
             onNewIntent(getActivity().getIntent());
+            getActivity().setIntent(new Intent());
         }else{
             // TODO: inform nfc not possible
         }
