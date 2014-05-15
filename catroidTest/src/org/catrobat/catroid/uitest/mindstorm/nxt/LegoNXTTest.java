@@ -20,10 +20,11 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.uitest.stage;
+package org.catrobat.catroid.uitest.mindstorm.nxt;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.os.Handler;
 import android.widget.ListView;
 
 import org.catrobat.catroid.R;
@@ -42,8 +43,8 @@ import org.catrobat.catroid.content.bricks.LegoNxtPlayToneBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.io.StorageHandler;
-import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
-import org.catrobat.catroid.legonxt.LegoNXTCommunicator;
+import org.catrobat.catroid.lego.mindstorm.nxt.CLegoNXT;
+import org.catrobat.catroid.lego.mindstorm.nxt.NXTReply;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProgramMenuActivity;
@@ -68,14 +69,17 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 	// needed for testdevices
 	// Bluetooth server is running with a name that starts with 'kitty'
 	// e.g. kittyroid-0, kittyslave-0
-	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kitty";
+	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "NXT-00:16:53:13:C7:73";
 
 	// needed for testdevices
 	// unavailable device is paired with a name that starts with 'SWEET'
 	// e.g. SWEETHEART
 
 	private static final String PAIRED_UNAVAILABLE_DEVICE_NAME = "SWEET";
-	private static final String PAIRED_UNAVAILABLE_DEVICE_MAC = "00:23:4D:F5:A6:18";
+	private static final String PAIRED_UNAVAILABLE_DEVICE_MAC = "00:16:53:13:C7:73"; //"00:23:4D:F5:A6:18";
+
+    // 00:16:53:12:23:5A
+    // 00:16:53:13:C7:73
 
 	private final String projectName = UiTestUtils.PROJECTNAME1;
 	private final String spriteName = "testSprite";
@@ -97,7 +101,9 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 	public void testNXTFunctionality() {
 		createTestproject(projectName);
 
-		LegoNXTBtCommunicator.enableRequestConfirmFromDevice(true);
+		//LegoNXTBtCommunicator.enableRequestConfirmFromDevice(true);
+        MindstormTestConnection testConnection = new MindstormTestConnection(null);
+//        CLegoNXT.setTestConnection(testConnection);
 		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		assertTrue("Bluetooth not supported on device", bluetoothAdapter != null);
 		if (!bluetoothAdapter.isEnabled()) {
@@ -132,7 +138,9 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 		solo.clickOnScreen(ScreenValues.SCREEN_WIDTH / 2, ScreenValues.SCREEN_HEIGHT / 2);
 		solo.sleep(10000);
 
-		ArrayList<byte[]> executedCommands = LegoNXTCommunicator.getReceivedMessageList();
+		//ArrayList<byte[]> executedCommands = LegoNXTCommunicator.getReceivedMessageList();
+        ArrayList<NXTReply> executedCommands = testConnection.getReceivedMessages();
+
 		assertEquals("Commands seem to have not been executed! Connected to correct device??", commands.size(),
 				executedCommands.size());
 
@@ -140,20 +148,20 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 		for (int[] item : commands) {
 			switch (item[0]) {
 				case MOTOR_ACTION:
-					assertEquals("Wrong motor was used!", item[1], executedCommands.get(i)[3]);
-					assertEquals("Wrong speed was used!", item[2], executedCommands.get(i)[4]);
+					assertEquals("Wrong motor was used!", item[1], executedCommands.get(i).getData()[3]);
+					assertEquals("Wrong speed was used!", item[2], executedCommands.get(i).getData()[4]);
 					break;
 				case MOTOR_STOP:
-					assertEquals("Wrong motor was used!", item[1], executedCommands.get(i)[3]);
-					assertEquals("Motor didnt actually stop!", 0, executedCommands.get(i)[4]);
+					assertEquals("Wrong motor was used!", item[1], executedCommands.get(i).getData()[3]);
+					assertEquals("Motor didnt actually stop!", 0, executedCommands.get(i).getData()[4]);
 					break;
 				case MOTOR_TURN:
-					assertEquals("Wrong motor was used!", item[1], executedCommands.get(i)[3]);
+					assertEquals("Wrong motor was used!", item[1], executedCommands.get(i).getData()[3]);
 					int turnValue = 0;
-					turnValue = (0x000000FF & executedCommands.get(i)[9]); //unsigned types would be too smart for java, sorry no chance mate!
-					turnValue += ((0x000000FF & executedCommands.get(i)[10]) << 8);
-					turnValue += ((0x000000FF & executedCommands.get(i)[11]) << 16);
-					turnValue += ((0x000000FF & executedCommands.get(i)[12]) << 24);
+					turnValue = (0x000000FF & executedCommands.get(i).getData()[9]); //unsigned types would be too smart for java, sorry no chance mate!
+					turnValue += ((0x000000FF & executedCommands.get(i).getData()[10]) << 8);
+					turnValue += ((0x000000FF & executedCommands.get(i).getData()[11]) << 16);
+					turnValue += ((0x000000FF & executedCommands.get(i).getData()[12]) << 24);
 
 					int turnSpeed = 30; //fixed value in Brick, however LegoBot needs negative speed instead of negative angles 
 					if (item[2] < 0) {
@@ -162,12 +170,12 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 					}
 
 					assertEquals("Motor turned wrong angle", item[2], turnValue);
-					assertEquals("Motor didnt turn with fixed value 30!", turnSpeed, executedCommands.get(i)[4]);
+					assertEquals("Motor didnt turn with fixed value 30!", turnSpeed, executedCommands.get(i).getData()[4]);
 					break;
 			}
 			i++;
 		}
-		LegoNXTBtCommunicator.enableRequestConfirmFromDevice(false);
+		//LegoNXTBtCommunicator.enableRequestConfirmFromDevice(false);
 	}
 
 	// This test requires the NXTBTTestServer to be running or a LegoNXT Robot to run! Check connect string to see if you connect to the right device!
@@ -175,7 +183,7 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 	public void testNXTPersistentConnection() {
 		createTestproject(projectName);
 
-		LegoNXTBtCommunicator.enableRequestConfirmFromDevice(false);
+		//LegoNXTBtCommunicator.enableRequestConfirmFromDevice(false);
 		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		assertTrue("Bluetooth not supported on device", bluetoothAdapter != null);
 		if (!bluetoothAdapter.isEnabled()) {

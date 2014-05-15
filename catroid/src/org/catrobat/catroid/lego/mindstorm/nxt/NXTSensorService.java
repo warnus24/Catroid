@@ -231,6 +231,7 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
 
 		if (equals(sensorTypeName, R.string.nxt_no_sensor)) {
             sensorRegistry.remove(port);
+            return null;
 		}
 
         NXTSensor sensor = null;

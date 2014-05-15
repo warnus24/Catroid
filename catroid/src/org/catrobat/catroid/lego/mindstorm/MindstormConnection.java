@@ -59,7 +59,7 @@ public class MindstormConnection {
 			case ERROR_STILL_BONDING:
 				sendToast("No paired NXT found");
 			default:
-				sendState(BluetoothConnection.State.NOT_CONNECTED);
+				sendState(BluetoothConnection.State.ERROR_CLOSING);
 				throw new IOException("Bluetooth connecting error " + state.name());
 		}
 
@@ -108,7 +108,7 @@ public class MindstormConnection {
 			byte[] message = command.getRawCommand();
 			byte[] data = new byte[command.getLength() + 2];
 			data[0] = (byte)(messageLength & 0x00FF);
-			data[1] = (byte)((messageLength & 0xFF00) >> 8);
+			data[1] = (byte)((messageLength & 0xFF00) >> 8) ;
 
 			System.arraycopy(message, 0, data, 2, messageLength);
 
@@ -122,7 +122,7 @@ public class MindstormConnection {
 		}
 	}
 
-	private byte[] receive() {
+	protected byte[] receive() {
 		byte[] data = new byte[2];
 		byte[] payload;
 		int expectedLength = 0;

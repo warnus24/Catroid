@@ -20,32 +20,35 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.lego.mindstorm;
+package org.catrobat.catroid.uitest.mindstorm.nxt;
 
-import java.util.HashMap;
+import android.os.Handler;
 
-public class MindstormServiceProvider {
+import org.catrobat.catroid.lego.mindstorm.Mindstorm;
+import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
+import org.catrobat.catroid.lego.mindstorm.nxt.NXTReply;
 
-	private MindstormServiceProvider() {}
+import java.util.ArrayList;
+import java.util.Collection;
 
-	private static HashMap<Class<?>, Object> services = new HashMap<Class<?>, Object>();
+public class MindstormTestConnection extends MindstormConnection {
 
-	public static <T> void register(T service, Class<?> type) {
-		services.put(type, service);
-	}
+    ArrayList<NXTReply> receivedMessages;
 
-	public static <T> void register(T service) {
-		services.put(service.getClass(), service);
-	}
+    public MindstormTestConnection(Handler receiveHandler) {
+        super(receiveHandler);
 
-    public static void unregister (Class<?> serviceType) {
-        services.remove(serviceType);
+        receivedMessages = new ArrayList<NXTReply>();
     }
 
-	public static <T> T resolve(Class<T> type) {
-		Object service = services.get(type);
-		if (service != null)
-			return (T)service;
-		return null;
-	}
+    @Override
+    protected byte[] receive() {
+        byte[] receivedBytes = super.receive();
+        receivedMessages.add(new NXTReply(receivedBytes));
+        return receivedBytes;
+    }
+
+    public ArrayList<NXTReply> getReceivedMessages() {
+        return receivedMessages;
+    }
 }

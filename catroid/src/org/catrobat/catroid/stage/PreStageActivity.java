@@ -65,7 +65,7 @@ public class PreStageActivity extends Activity {
 	public static final int REQUEST_TEXT_TO_SPEECH = 10;
 
 	private int requiredResourceCounter;
-	private static LegoNXT legoNXT;
+
 	private ProgressDialog connectingProgressDialog;
 	private static TextToSpeech textToSpeech;
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
@@ -95,7 +95,7 @@ public class PreStageActivity extends Activity {
 				Toast.makeText(PreStageActivity.this, R.string.notification_blueth_err, Toast.LENGTH_LONG).show();
 				resourceFailed();
 			} else if (bluetoothState == BluetoothManager.BLUETOOTH_ALREADY_ON) {
-				if (legoNXT == null) {
+				if (MindstormServiceProvider.resolve(LegoNXT.class) == null) {
 					startBluetoothCommunication(true);
 				} else {
 					resourceInitialized();
@@ -122,6 +122,7 @@ public class PreStageActivity extends Activity {
 			textToSpeech.stop();
 			textToSpeech.shutdown();
 		}
+        LegoNXT legoNXT = MindstormServiceProvider.resolve(LegoNXT.class);
 		if (legoNXT != null) {
 			legoNXT.stopAllMovements();
 		}
@@ -129,6 +130,7 @@ public class PreStageActivity extends Activity {
 
 	//all resources that should not have to be reinitialized every stage start
 	public static void shutdownPersistentResources() {
+        LegoNXT legoNXT = MindstormServiceProvider.resolve(LegoNXT.class);
 		if (legoNXT != null) {
 			legoNXT.disconnect();
 			legoNXT = null;
@@ -205,12 +207,11 @@ public class PreStageActivity extends Activity {
 				switch (resultCode) {
 					case Activity.RESULT_OK:
 						//legoNXT = new LegoNXT(this, recieveHandler);
-						legoNXT = new CLegoNXT(recieveHandler, this);
+						LegoNXT legoNXT = new CLegoNXT(recieveHandler, this);
 						String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
 						autoConnect = data.getExtras().getBoolean(DeviceListActivity.AUTO_CONNECT);
 						//legoNXT.startBTCommunicator(address);
 						legoNXT.connect(address);
-						MindstormServiceProvider.register(legoNXT, LegoNXT.class);
 						break;
 
 					case Activity.RESULT_CANCELED:
@@ -304,8 +305,10 @@ public class PreStageActivity extends Activity {
 				case ERROR_CLOSING:
 					Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_SHORT).show();
 					connectingProgressDialog.dismiss();
-					legoNXT.disconnect();
-					legoNXT = null;
+                    LegoNXT legoNXT = MindstormServiceProvider.resolve(LegoNXT.class);
+                    if (legoNXT != null) {
+                        legoNXT.disconnect();
+                    }
 					if (autoConnect) {
 						startBluetoothCommunication(false);
 					} else {

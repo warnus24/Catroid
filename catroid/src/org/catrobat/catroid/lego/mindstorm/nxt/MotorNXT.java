@@ -72,11 +72,21 @@ public class MotorNXT implements MindstormMotor {
 		command.append(state.tachoLimit);
 		command.append((byte)0x00);
 
-		connection.send(command);
+        if (reply) {
+            connection.sendAndReceive(command);
+        }
+        else {
+            connection.send(command);
+        }
 	}
 
+    @Override
+    public void move(int speed, int degrees) {
+        move(speed, degrees, false);
+    }
+
 	@Override
-	public void move(int speed, int degrees) {
+	public void move(int speed, int degrees, boolean reply) {
 		OutputState state = new OutputState();
 		state.speed = (byte)speed;
 		state.mode = MotorMode.BREAK | MotorMode.ON | MotorMode.REGULATED;
@@ -84,7 +94,7 @@ public class MotorNXT implements MindstormMotor {
 		state.turnRatio = 100;
 		state.runState = MotorRunState.RUNNING;
 		state.tachoLimit = degrees;
-		setOutputState(state, false);
+		setOutputState(state, reply);
 	}
 
 	private static class OutputState {
