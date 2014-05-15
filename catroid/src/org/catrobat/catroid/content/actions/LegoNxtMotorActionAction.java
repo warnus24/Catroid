@@ -61,13 +61,13 @@ public class LegoNxtMotorActionAction extends TemporalAction {
 				legoNxt.getMotorC().move(speedValue, 0);
 				break;
 			default:
-				legoNxt.getMotorA().move(speedValue, 0);
+				legoNxt.getMotorB().move(speedValue, 0);
 				legoNxt.getMotorC().move(speedValue, 0);
 				break;
 		}
-//		if (motorEnum.equals(Motor.MOTOR_A_C)) {
+//		if (motorEnum.equals(Motor.MOTOR_B_C)) {
 //
-//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), speedValue, 0);
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_B.ordinal(), speedValue, 0);
 //			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), speedValue, 0);
 //		} else {
 //			legoNxt.getMotorA().move(speedValue, 0);

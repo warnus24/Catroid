@@ -289,14 +289,14 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 		SetLookBrick setLookBrick = new SetLookBrick(firstSprite);
 
 		LegoNxtMotorActionBrick legoMotorActionBrick = new LegoNxtMotorActionBrick(firstSprite,
-				LegoNxtMotorActionBrick.Motor.MOTOR_A_C, 100);
-		commands.add(new int[] { MOTOR_ACTION, 0, 100 }); //motor = 3 means brick will move motors A and C.
+				LegoNxtMotorActionBrick.Motor.MOTOR_B_C, 100);
+		commands.add(new int[] { MOTOR_ACTION, 1, 100 }); //motor = 3 means brick will move motors A and C.
 		commands.add(new int[] { MOTOR_ACTION, 2, 100 });
 		WaitBrick firstWaitBrick = new WaitBrick(firstSprite, 500);
 
 		LegoNxtMotorStopBrick legoMotorStopBrick = new LegoNxtMotorStopBrick(firstSprite,
-				LegoNxtMotorStopBrick.Motor.MOTOR_A_C);
-		commands.add(new int[] { MOTOR_STOP, 0 });
+				LegoNxtMotorStopBrick.Motor.MOTOR_B_C);
+		commands.add(new int[] { MOTOR_STOP, 1 });
 		commands.add(new int[] { MOTOR_STOP, 2 });
 		WaitBrick secondWaitBrick = new WaitBrick(firstSprite, 500);
 

@@ -51,11 +51,11 @@ public class LegoNxtMotorTurnAngleAction extends TemporalAction {
 
 		LegoNXT legoNxt = MindstormServiceProvider.resolve(org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT.class);
 
-		legoNxt.getMotorA().move(-1 * direction * 30, tmpAngle);
+		legoNxt.getMotorB().move(-1 * direction * 30, tmpAngle);
 		legoNxt.getMotorC().move(direction * 30, tmpAngle);
 
-//		if (motorEnum.equals(Motor.MOTOR_A_C)) {
-//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), -1 * direction * 30, tmpAngle);
+//		if (motorEnum.equals(Motor.MOTOR_B_C)) {
+//			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_B.ordinal(), -1 * direction * 30, tmpAngle);
 //			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), direction * 30, tmpAngle);
 //		} else {
 //			LegoNXT.sendBTCMotorMessage(NO_DELAY, motorEnum.ordinal(), direction * 30, tmpAngle);

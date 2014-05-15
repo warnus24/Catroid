@@ -53,7 +53,7 @@ public class LegoNxtMotorTurnAngleBrick extends BrickBaseType implements OnClick
 	private transient View prototypeView;
 
 	public static enum Motor {
-		MOTOR_A, MOTOR_B, MOTOR_C, MOTOR_A_C
+		MOTOR_A, MOTOR_B, MOTOR_C, MOTOR_B_C
 	}
 
 	private String motor;
