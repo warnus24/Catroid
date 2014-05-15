@@ -248,7 +248,11 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 		read = inputStream.read(buffer);
 		switch (buffer[0]) {
 			case 'D':
-				sensors.setArduinoDigitalSensor(buffer[3]);
+				if ((buffer[1] > 0) && (buffer[2] > 0) && (buffer[3] > 0)) {
+					sensors.setArduinoDigitalSensor(buffer[3]);
+				} else {
+					Log.d("ArduinoBtComm", "receiveMessage error: received message NOT saved ");
+				}
 
 				if (debugOutput == true) {
 					Log.d("ArduinoBtComm", "sensor packet found");
@@ -264,6 +268,7 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 						position = position * 10;
 					}
 				}
+				Log.d("ArduinoBtComm", "computed Analog-Sensor-Value: " + SensorValue);
 				sensors.setArduinoAnalogSensor(SensorValue);
 
 				if (debugOutput == true) {
