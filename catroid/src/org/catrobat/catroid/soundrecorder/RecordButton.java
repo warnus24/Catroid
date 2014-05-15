@@ -20,17 +20,38 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.formulaeditor;
+package org.catrobat.catroid.soundrecorder;
 
-public class SensorCustomEvent {
-	public final float[] values;
-	public Sensors sensor;
-	public long timestamp;
 
-	public SensorCustomEvent(Sensors sourceSensor, float[] values) {
-		sensor = sourceSensor;
-		this.values = new float[values.length];
-		System.arraycopy(values, 0, this.values, 0, values.length);
-		timestamp = System.currentTimeMillis();
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.ImageButton;
+
+public class RecordButton extends ImageButton {
+	private RecordState state = RecordState.STOP;
+
+	public RecordButton(Context context) {
+		super(context);
+	}
+
+
+	public RecordButton(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
+
+	public RecordButton(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
+
+	public RecordState getState() {
+		return state;
+	}
+
+	public void setState(RecordState state) {
+		this.state = state;
+	}
+
+	public enum RecordState {
+		RECORD, STOP;
 	}
 }

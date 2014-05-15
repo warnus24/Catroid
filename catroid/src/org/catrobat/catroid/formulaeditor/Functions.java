@@ -22,9 +22,13 @@
  */
 package org.catrobat.catroid.formulaeditor;
 
+import android.util.Log;
+
 public enum Functions {
 
 	SIN, COS, TAN, LN, LOG, SQRT, RAND, ROUND, ABS, PI, MOD, ARCSIN, ARCCOS, ARCTAN, EXP, MAX, MIN, TRUE, FALSE, ARDUINOANALOG, ARDUINODIGITAL;
+
+	private static final String TAG = Functions.class.getSimpleName();
 
 	public static boolean isFunction(String value) {
 		if (getFunctionByValue(value) == null) {
@@ -36,8 +40,8 @@ public enum Functions {
 	public static Functions getFunctionByValue(String value) {
 		try {
 			return valueOf(value);
-		} catch (IllegalArgumentException exception) {
-
+		} catch (IllegalArgumentException illegalArgumentException) {
+			Log.e(TAG, Log.getStackTraceString(illegalArgumentException));
 		}
 		return null;
 	}

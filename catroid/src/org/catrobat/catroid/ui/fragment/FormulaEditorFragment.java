@@ -470,8 +470,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		if (formulaEditorEditText.hasChanges()) {
 			if (saveFormulaIfPossible()) {
 				onUserDismiss();
-			} else {
-
 			}
 		} else {
 			onUserDismiss();

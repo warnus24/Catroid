@@ -27,6 +27,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import org.catrobat.catroid.bluetooth.BTConnectable;
 
@@ -37,6 +38,8 @@ import java.io.IOException;
  * 
  */
 public class Arduino implements BTConnectable {
+
+	private static final String TAG = BTConnectable.class.getSimpleName();
 
 	private static ArduinoCommunicator myCommunicator;
 
@@ -74,8 +77,8 @@ public class Arduino implements BTConnectable {
 		if (myCommunicator != null) {
 			try {
 				myCommunicator.destroyConnection();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ioException) {
+				Log.e(TAG, Log.getStackTraceString(ioException));
 			}
 			myCommunicator = null;
 		}

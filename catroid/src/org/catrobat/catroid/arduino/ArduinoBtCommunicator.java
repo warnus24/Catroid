@@ -50,6 +50,8 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
 	private static final byte BOF = (byte) 126; //Ascii table "~"
 
+	private static final String TAG = ArduinoBtCommunicator.class.getSimpleName();
+
 	private BluetoothAdapter btAdapter;
 	private BluetoothSocket btSocket = null;
 	private OutputStream outputStream = null;
@@ -298,8 +300,8 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 			}
 			try {
 				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			} catch (InterruptedException interruptedException) {
+				Log.e(TAG, Log.getStackTraceString(interruptedException));
 			}
 			// here you can optionally check elapsed time, and time out
 			timePast = System.currentTimeMillis();

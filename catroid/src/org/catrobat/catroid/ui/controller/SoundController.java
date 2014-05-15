@@ -265,8 +265,8 @@ public final class SoundController {
 			SoundBaseAdapter adapter) {
 		try {
 			StorageHandler.getInstance().copySoundFileBackPack(selectedSoundInfo);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ioException) {
+			Log.e(TAG, Log.getStackTraceString(ioException));
 		}
 		updateBackPackActivity(selectedSoundInfo.getTitle(), selectedSoundInfo.getSoundFileName(), soundInfoList,
 				adapter);
@@ -275,8 +275,8 @@ public final class SoundController {
 	public SoundInfo copySound(SoundInfo selectedSoundInfo, ArrayList<SoundInfo> soundInfoList, SoundBaseAdapter adapter) {
 		try {
 			StorageHandler.getInstance().copySoundFile(selectedSoundInfo.getAbsolutePath());
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ioException) {
+			Log.e(TAG, Log.getStackTraceString(ioException));
 		}
 		return updateSoundAdapter(selectedSoundInfo.getTitle(), selectedSoundInfo.getSoundFileName(), soundInfoList,
 				adapter);
@@ -286,8 +286,8 @@ public final class SoundController {
 		SoundInfo soundInfo = soundInfoList.get(position);
 		try {
 			StorageHandler.getInstance().copySoundFile(soundInfo.getAbsolutePath());
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ioException) {
+			Log.e(TAG, Log.getStackTraceString(ioException));
 		}
 		SoundController.getInstance().updateSoundAdapter(soundInfo.getTitle(), soundInfo.getSoundFileName(),
 				soundInfoList, adapter);
