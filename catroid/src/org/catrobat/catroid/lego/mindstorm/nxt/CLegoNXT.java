@@ -26,12 +26,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
+import org.catrobat.catroid.lego.mindstorm.Mindstorm;
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 import org.catrobat.catroid.lego.mindstorm.MindstormSensor;
 import org.catrobat.catroid.lego.mindstorm.MindstormServiceProvider;
-import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTI2CUltraSonicSensor;
 import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTSensor;
-import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTSoundSensor;
 
 import java.io.IOException;
 
@@ -68,9 +67,11 @@ public class CLegoNXT implements LegoNXT, NXTSensorService.OnSensorChangedListen
 			}
 		}
 
-		connection = new MindstormConnection(receiveHandler);
+        setConnection();
+
 		try {
 			connection.connect(macAddress);
+            MindstormServiceProvider.register(this, LegoNXT.class);
 
 			motorA = new MotorNXT(0, connection);
 			motorB = new MotorNXT(1, connection);
@@ -82,6 +83,10 @@ public class CLegoNXT implements LegoNXT, NXTSensorService.OnSensorChangedListen
 			Log.e(TAG, Log.getStackTraceString(ioException));
 		}
 	}
+
+    private void setConnection() {
+        connection = new MindstormConnection(receiveHandler);
+    }
 
 	private void assignSensorsToPorts() {
 		NXTSensorService sensorService = getSensorService();
@@ -117,6 +122,7 @@ public class CLegoNXT implements LegoNXT, NXTSensorService.OnSensorChangedListen
 //			sendToast(resources.getString(R.string.problem_at_closing));
 //			Log.e(TAG, Log.getStackTraceString(ioException));
 		}
+        MindstormServiceProvider.unregister(LegoNXT.class);
 	}
 
 	@Override
