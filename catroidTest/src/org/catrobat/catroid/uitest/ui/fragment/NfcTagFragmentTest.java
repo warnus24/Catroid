@@ -208,17 +208,17 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
 		NfcTagAdapter adapter = getNfcTagAdapter();
 		assertNotNull("Could not get Adapter", adapter);
 
-		int oldCount = adapter.getCount() - 1;
+		int oldCount = adapter.getCount();
 
 		clickOnContextMenuItem(testTagName, solo.getString(R.string.delete));
 		solo.waitForText(deleteDialogTitle);
 		solo.clickOnButton(solo.getString(R.string.yes));
 		solo.sleep(50);
 
-		int newCount = adapter.getCount() - 1;
+		int newCount = adapter.getCount();
 
-		assertEquals("Old count was not correct", 2, oldCount);
-		assertEquals("New count is not correct - one tag should be deleted", 1, newCount);
+		assertEquals("Old count was not correct", 3, oldCount);
+		assertEquals("New count is not correct - one tag should be deleted", 2, newCount);
 		assertEquals("Count of the tagDataList is not correct", newCount, tagDataList.size());
 	}
 
@@ -244,7 +244,7 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
 		// Test if showDetails is remembered after pressing back
 		solo.goBack();
 		solo.waitForActivity(ProgramMenuActivity.class.getSimpleName());
-		solo.clickOnText(solo.getString(R.string.backgrounds));
+		solo.clickOnText(solo.getString(R.string.nfctags));
 		solo.waitForActivity(ScriptActivity.class.getSimpleName());
 		solo.sleep(timeToWait);
 		checkVisibilityOfViews(VISIBLE, VISIBLE, VISIBLE, GONE);
@@ -259,21 +259,25 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
 
 		String defaultTagName = solo.getString(R.string.default_tag_name);
 		String newTagName = defaultTagName;
-		String copyAdditionString = solo.getString(R.string.copy_addition);
+		String copyAdditionString = "1";
 
 		clickOnContextMenuItem(FIRST_TEST_TAG_NAME, copy);
 
 		renameTag(FIRST_TEST_TAG_NAME, defaultTagName);
 		renameTag(SECOND_TEST_TAG_NAME, defaultTagName);
 
-		String expectedTagName = defaultTagName + "1";
+        solo.sleep(50);
+
+		String expectedTagName = defaultTagName + copyAdditionString;
 		assertEquals(assertMessageText, expectedTagName, getTagName(1));
 
 		String copiedTagName = FIRST_TEST_TAG_NAME + "1";
 		renameTag(copiedTagName, defaultTagName);
 
+        solo.sleep(50);
+
 		expectedTagName = defaultTagName + "2";
-		assertEquals(assertMessageText, expectedTagName, getTagName(2));
+		assertEquals(assertMessageText, expectedTagName, getTagName(3));
 
 		expectedTagName = defaultTagName + "1";
 		newTagName = "x";
@@ -285,13 +289,12 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
         copiedTagName = newTagName + "1";
 		renameTag(copiedTagName, defaultTagName);
 
-		assertEquals(assertMessageText, expectedTagName, getTagName(3));
+        solo.sleep(50);
 
-		expectedTagName = defaultTagName + "3";
-		assertEquals(assertMessageText, expectedTagName, getTagName(4));
+        assertEquals(assertMessageText, expectedTagName, getTagName(4));
 
-		expectedTagName = defaultTagName + "4";
-		assertEquals(assertMessageText, expectedTagName, getTagName(5));
+		expectedTagName = THIRD_TEST_TAG_NAME;
+		assertEquals(assertMessageText, expectedTagName, getTagName(2));
 	}
 
 	public void testBottomBarAndContextMenuOnActionModes() {
@@ -618,7 +621,7 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
 		tagDataList = projectManager.getCurrentSprite().getNfcTagList();
 
 		int currentNumberOfTags = tagDataList.size();
-		assertEquals("Wrong number of tags", 5, currentNumberOfTags);
+		assertEquals("Wrong number of tags", 6, currentNumberOfTags);
 
 		UiTestUtils.openActionMode(solo, delete, R.id.delete, getActivity());
 
@@ -777,7 +780,7 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
 		checkIfNumberOfTagsIsEqual(currentNumberOfTags * 2);
 	}
 
-	public void testBottomBarElementsVisibilty() {
+	public void testBottomBarElementsVisibility() {
 		assertTrue("BottomBar is not visible", solo.getView(R.id.button_play).getVisibility() == View.VISIBLE);
 		assertFalse("Add button is visible", solo.getView(R.id.button_add).getVisibility() == View.VISIBLE);
 		assertTrue("Play button is not visible", solo.getView(R.id.button_play).getVisibility() == View.VISIBLE);
