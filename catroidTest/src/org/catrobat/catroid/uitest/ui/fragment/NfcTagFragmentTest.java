@@ -187,9 +187,9 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
 
 		int newCount = adapter.getCount();
 
-		if (solo.searchText(testTagName + "_" + solo.getString(R.string.copy_addition), 1, true)) {
-			assertEquals("Old count was not correct", 2, oldCount);
-			assertEquals("New count is not correct - copy should be added", 3, newCount);
+		if (solo.searchText(testTagName + "1", 1, true)) {
+			assertEquals("Old count was not correct", 3, oldCount);
+			assertEquals("New count is not correct - copy should be added", 4, newCount);
 			assertEquals("Count of the tagDataList is not correct", newCount, tagDataList.size());
 		} else {
 			fail("Copy tag didn't work");
@@ -208,14 +208,14 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
 		NfcTagAdapter adapter = getNfcTagAdapter();
 		assertNotNull("Could not get Adapter", adapter);
 
-		int oldCount = adapter.getCount();
+		int oldCount = adapter.getCount() - 1;
 
 		clickOnContextMenuItem(testTagName, solo.getString(R.string.delete));
 		solo.waitForText(deleteDialogTitle);
 		solo.clickOnButton(solo.getString(R.string.yes));
 		solo.sleep(50);
 
-		int newCount = adapter.getCount();
+		int newCount = adapter.getCount() - 1;
 
 		assertEquals("Old count was not correct", 2, oldCount);
 		assertEquals("New count is not correct - one tag should be deleted", 1, newCount);

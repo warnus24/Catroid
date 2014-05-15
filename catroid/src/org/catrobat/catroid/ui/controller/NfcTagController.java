@@ -97,11 +97,9 @@ public final class NfcTagController {
     private void handleDetails(NfcTagBaseAdapter nfcTagAdapter, NfcTagViewHolder holder, NfcTagData nfcTagData) {
         if (nfcTagAdapter.getShowDetails()) {
             holder.nfcTagUidTextView.setText(nfcTagData.getNfcTagUid());
-            holder.nfcTagUidTextView.setVisibility(TextView.VISIBLE);
-            holder.nfcTagUidPrefixTextView.setVisibility(TextView.VISIBLE);
+            holder.nfcTagDetailsLinearLayout.setVisibility(TextView.VISIBLE);
         } else {
-            holder.nfcTagUidTextView.setVisibility(TextView.GONE);
-            holder.nfcTagUidPrefixTextView.setVisibility(TextView.GONE);
+            holder.nfcTagDetailsLinearLayout.setVisibility(TextView.GONE);
         }
     }
 

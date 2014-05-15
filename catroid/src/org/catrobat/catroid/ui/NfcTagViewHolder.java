@@ -32,7 +32,7 @@ public class NfcTagViewHolder {
     public LinearLayout nfcTagFragmentButtonLayout;
     public CheckBox checkbox;
     public TextView titleTextView;
-    public TextView uidSeparatorTextView;
+    public LinearLayout nfcTagDetailsLinearLayout;
     public TextView nfcTagUidPrefixTextView;
     public TextView nfcTagUidTextView;
 }

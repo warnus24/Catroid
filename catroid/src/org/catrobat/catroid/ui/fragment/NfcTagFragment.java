@@ -777,6 +777,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
             holder.nfcTagUidPrefixTextView = (TextView) convertView
                     .findViewById(R.id.fragment_nfctag_item_uid_prefix_text_view);
             holder.nfcTagUidTextView = (TextView) convertView.findViewById(R.id.fragment_nfctag_item_uid_text_view);
+            holder.nfcTagDetailsLinearLayout = (LinearLayout) convertView.findViewById(R.id.fragment_nfctag_item_detail_linear_layout);
 
             convertView.setTag(holder);
         } else {
