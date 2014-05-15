@@ -110,6 +110,12 @@ public class CLegoNXT implements LegoNXT, NXTSensorService.OnSensorChangedListen
 
 	@Override
 	public void disconnect() {
+
+        NXTSensorService sensorService = MindstormServiceProvider.resolve(NXTSensorService.class);
+        if (sensorService != null) {
+            sensorService.destory();
+        }
+
 		if (connection.isConnected()) {
 			this.stopAllMovements();
 		}

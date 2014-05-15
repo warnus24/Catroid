@@ -32,6 +32,7 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.formulaeditor.Sensors;
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 import org.catrobat.catroid.lego.mindstorm.MindstormException;
+import org.catrobat.catroid.lego.mindstorm.MindstormServiceProvider;
 import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTI2CUltraSonicSensor;
 import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTLightSensor;
 import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTSensor;
@@ -98,6 +99,11 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
         }
     }
 
+    public void destory() {
+        sensorScheduler.shutdown();
+        MindstormServiceProvider.unregister(NXTSensorService.class);
+    }
+
     private class SensorRegistry {
 
         private class SensorTuple {
@@ -123,18 +129,18 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
 
         public void remove(NXTSensor sensor) {
             int port = sensor.getConnectedPort();
+            remove(port);
+        }
+
+        public void remove(int port) {
+
             synchronized (registeredSensors) {
                 SensorTuple tuple = registeredSensors.get(port);
                 if (tuple != null) {
                     tuple.scheduledFuture.cancel(false);
-                    remove(port);
-                }
-            }
-        }
 
-        public void remove(int sensorOnPort) {
-            synchronized (registeredSensors) {
-                registeredSensors.remove(sensorOnPort);
+                }
+                registeredSensors.remove(port);
             }
         }
 
