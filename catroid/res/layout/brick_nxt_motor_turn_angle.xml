@@ -41,7 +41,6 @@
         style="@style/BrickContainer.Lego.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:orientation="horizontal"
         app:horizontalSpacing="@dimen/brick_flow_layout_horizontal_spacing"
         app:verticalSpacing="@dimen/brick_flow_layout_vertical_spacing" >
@@ -49,51 +48,34 @@
         <TextView
             android:id="@+id/brick_nxt_motor_turn_label"
             style="@style/BrickText.SingleLine"
-            android:text="@string/brick_motor_turn_angle" >
-        </TextView>
+            android:text="@string/brick_motor_turn_angle" />
 
         <Spinner
             android:id="@+id/lego_motor_turn_angle_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
-            android:focusable="false" >
-        </Spinner>
+            android:focusable="false" />
 
         <TextView
             android:id="@+id/brick_nxt_motor_turn_angle"
             style="@style/BrickText.SingleLine"
-            android:text="@string/motor_angle" >
-        </TextView>
+            android:text="@string/motor_angle" />
 
         <TextView
             android:id="@+id/motor_turn_angle_text_view"
-            style="@style/BrickText.SingleLine" />
+            style="@style/BrickPrototypeTextView" />
 
         <TextView
             android:id="@+id/motor_turn_angle_edit_text"
             style="@style/BrickEditText"
             app:layout_inputType="number"
-            app:layout_textField="true"
-            android:clickable="false"
-            android:visibility="gone" >
-        </TextView>
+            app:layout_textField="true" />
 
         <TextView
             android:id="@+id/brick_nxt_motor_turn_degree"
             style="@style/BrickText"
-            android:text="@string/degree_symbol" >
-        </TextView>
-
-        <!--
-                     <Button
-                    android:id="@+id/directions_btn"
-                    android:layout_width="50dip"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:clickable="false"
-                    android:focusable="false" />
-        -->
+            android:text="@string/degree_symbol" />
     </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

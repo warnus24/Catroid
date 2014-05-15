@@ -38,10 +38,9 @@
 
     <org.catrobat.catroid.ui.BrickLayout
         android:id="@+id/brick_nxt_play_tone_layout"
-        style="@style/BrickContainer.Lego.Big"
+        style="@style/BrickContainer.Lego.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:orientation="horizontal"
         app:horizontalSpacing="@dimen/brick_flow_layout_horizontal_spacing"
         app:verticalSpacing="@dimen/brick_flow_layout_vertical_spacing" >
@@ -49,66 +48,49 @@
         <TextView
             android:id="@+id/brick_nxt_play_tone_label"
             style="@style/BrickText.SingleLine"
-            android:text="@string/nxt_play_tone" >
-        </TextView>
+            android:text="@string/nxt_play_tone" />
 
         <TextView
             android:id="@+id/brick_nxt_play_tone_duration"
             style="@style/BrickText.SingleLine"
             app:layout_newLine="true"
-            android:text="@string/tone_duration" >
-        </TextView>
+            android:text="@string/tone_duration" />
 
         <TextView
             android:id="@+id/nxt_tone_duration_text_view"
-            style="@style/BrickText.SingleLine" >
-        </TextView>
+            style="@style/BrickPrototypeTextView" />
 
         <TextView
             android:id="@+id/nxt_tone_duration_edit_text"
             style="@style/BrickEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             app:layout_inputType="number"
-            app:layout_textField="true"
-            android:clickable="false"
-            android:maxEms="5" >
-        </TextView>
+            app:layout_textField="true" />
 
         <TextView
             android:id="@+id/brick_nxt_play_tone_seconds"
             style="@style/BrickText.SingleLine"
-            android:text="@string/seconds" >
-        </TextView>
+            android:text="@string/seconds" />
 
         <TextView
             android:id="@+id/brick_nxt_play_tone_frequency"
             style="@style/BrickText.SingleLine"
             app:layout_newLine="true"
-            android:text="@string/nxt_tone_frequency" >
-        </TextView>
+            android:text="@string/nxt_tone_frequency" />
 
         <TextView
             android:id="@+id/nxt_tone_freq_text_view"
-            style="@style/BrickText.SingleLine" >
-        </TextView>
+            style="@style/BrickPrototypeTextView" />
 
         <TextView
             android:id="@+id/nxt_tone_freq_edit_text"
             style="@style/BrickEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             app:layout_inputType="number"
-            app:layout_textField="true"
-            android:clickable="false"
-            android:maxEms="5" >
-        </TextView>
+            app:layout_textField="true" />
 
         <TextView
             android:id="@+id/brick_nxt_play_tone_hundred_hz"
             style="@style/BrickText.SingleLine"
-            android:text="@string/nxt_tone_hundred_hz" >
-        </TextView>
+            android:text="@string/nxt_tone_hundred_hz" />
     </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

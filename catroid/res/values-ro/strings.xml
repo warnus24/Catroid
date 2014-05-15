@@ -326,7 +326,7 @@
     <string name="nxt_play_tone">Tonul de redare NXT</string>
     <string name="tone_duration">Durația</string>
     <string name="nxt_tone_frequency">Frecvența</string>
-    <string name="nxt_tone_hundred_hz">x100Hz</string>
+    <string name="nxt_tone_hundred_hz">x 100Hz</string>
     <!-- <string name="nxt_turn_degrees">grade</string> -->
     <string name="minus_symbol">-</string>
     <string name="plus_symbol">+</string>

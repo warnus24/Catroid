@@ -287,7 +287,7 @@
     <string name="nxt_play_tone">"NXT 톤 재생"</string>
     <string name="tone_duration">"동안:"</string>
     <string name="nxt_tone_frequency">"주파수"</string>
-    <string name="nxt_tone_hundred_hz">"x100Hz"</string>
+    <string name="nxt_tone_hundred_hz">"x 100Hz"</string>
     <string name="number_to_small">"값이 너무 작습니다!"</string>
     <string name="number_to_big">"값이 너무 큽니다!"</string>
     <string name="nxt_motor_a">A</string>
