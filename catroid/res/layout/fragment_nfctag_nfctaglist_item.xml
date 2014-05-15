@@ -71,7 +71,8 @@
                 android:paddingRight="8dp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/fragment_nfctag_item_detail_linear_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
@@ -86,14 +87,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/uid" />
-
-                    <TextView
-                        android:id="@+id/fragment_nfctag_item_size_prefix_text_view"
-                        style="@style/nfctag_fragment_detail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/size"
-                        android:visibility="gone" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -102,43 +95,11 @@
                     android:orientation="vertical"
                     android:paddingLeft="24dp" >
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
-
-                        <Chronometer
-                            android:id="@+id/fragment_nfctag_item_time_played_chronometer"
-                            style="@style/nfctag_fragment_detail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right|center_vertical"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/fragment_nfctag_item_uid_seperator_text_view"
-                            style="@style/nfctag_fragment_detail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
-                            android:text="@string/nfctag_uid_seperator"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/fragment_nfctag_item_uid_text_view"
-                            style="@style/nfctag_fragment_detail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
                     <TextView
-                        android:id="@+id/fragment_nfctag_item_size_text_view"
+                        android:id="@+id/fragment_nfctag_item_uid_text_view"
                         style="@style/nfctag_fragment_detail"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

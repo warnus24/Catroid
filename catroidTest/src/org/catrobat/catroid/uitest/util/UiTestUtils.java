@@ -1441,6 +1441,27 @@ public final class UiTestUtils {
 		solo.sleep(200);
 	}
 
+    public static void getIntoNfcTagsFromMainMenu(Solo solo) {
+        getIntoNfcTagsFromMainMenu(solo, 0, false);
+    }
+
+    public static void getIntoNfcTagsFromMainMenu(Solo solo, boolean isBackground) {
+        getIntoNfcTagsFromMainMenu(solo, 0, isBackground);
+    }
+
+    public static void getIntoNfcTagsFromMainMenu(Solo solo, int spriteIndex, boolean isBackground) {
+        getIntoProgramMenuFromMainMenu(solo, spriteIndex);
+
+        String textToClickOn = "";
+
+        textToClickOn = solo.getString(R.string.nfctags);
+
+        solo.clickOnText(textToClickOn);
+        solo.waitForActivity(ScriptActivity.class.getSimpleName());
+        solo.waitForView(ListView.class);
+        solo.sleep(200);
+    }
+
 	public static void getIntoScriptActivityFromMainMenu(Solo solo) {
 		getIntoScriptActivityFromMainMenu(solo, 0);
 	}

@@ -256,7 +256,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
             //NfcTagContainer.addTagName(uid, input.getText().toString().trim());
             // TODO: inform user that read nfc was successfull
             NfcTagData newNfcTagData = new NfcTagData();
-            String newTagName = Utils.getUniqueNfcTagName("nfc_tag");
+            String newTagName = Utils.getUniqueNfcTagName(getString(R.string.default_tag_name));
             newNfcTagData.setNfcTagName(newTagName);
             newNfcTagData.setNfcTagUid(uid);
             Log.d(TAG, "new nfc tag: " + uid);
@@ -774,8 +774,6 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
             holder.checkbox = (CheckBox) convertView.findViewById(R.id.fragment_nfctag_item_checkbox);
             holder.titleTextView = (TextView) convertView.findViewById(R.id.fragment_nfctag_item_title_text_view);
 
-            holder.uidSeparatorTextView = (TextView) convertView
-                    .findViewById(R.id.fragment_nfctag_item_uid_seperator_text_view);
             holder.nfcTagUidPrefixTextView = (TextView) convertView
                     .findViewById(R.id.fragment_nfctag_item_uid_prefix_text_view);
             holder.nfcTagUidTextView = (TextView) convertView.findViewById(R.id.fragment_nfctag_item_uid_text_view);

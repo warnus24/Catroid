@@ -214,8 +214,11 @@
     <string name="dialog_confirm_delete_multiple_nfctags_title">Delete these nfctags?</string>
     <string name="dialog_confirm_delete_nfctag_message">This can not be undone!</string>
     <string name="nfctag_name">nfctag name:</string>
+    <string name="nfctag">NFC Tag</string>
     <string name="nfctags">NFC Tags</string>
     <string name="uid">ID</string>
+    <string name="new_nfctag_dialog_title">Add NFC Tag</string>
+    <string name="default_tag_name">nfc_tag</string>
     <!--  -->
 
     <plurals name="unpacking_items_plural">
