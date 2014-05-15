@@ -134,6 +134,8 @@ public class ProjectsListFragment extends SherlockListFragment implements OnProj
 			projectListInitReceiver = new ProjectListInitReceiver();
 		}
 
+		initAdapter();
+
 		IntentFilter intentFilterSpriteListInit = new IntentFilter(MyProjectsActivity.ACTION_PROJECT_LIST_INIT);
 		getActivity().registerReceiver(projectListInitReceiver, intentFilterSpriteListInit);
 
