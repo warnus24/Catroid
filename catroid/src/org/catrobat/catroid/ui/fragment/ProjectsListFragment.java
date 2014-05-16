@@ -55,6 +55,7 @@ import org.catrobat.catroid.common.ProjectData;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.ui.BottomBar;
+import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.MyProjectsActivity;
 import org.catrobat.catroid.ui.ProjectActivity;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter;
@@ -271,7 +272,8 @@ public class ProjectsListFragment extends SherlockListFragment implements OnProj
 				break;
 
 			case R.id.context_menu_upload:
-				ProjectManager.getInstance().uploadProject(projectToEdit.projectName, this.getActivity());
+				//ProjectManager.getInstance().uploadProject(projectToEdit.projectName, this.getActivity());
+				MainMenuActivity.viewUploadNotSupportedToast(getActivity());
 				break;
 
 		}

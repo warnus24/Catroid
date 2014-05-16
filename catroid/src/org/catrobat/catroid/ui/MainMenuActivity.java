@@ -24,6 +24,7 @@ package org.catrobat.catroid.ui;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -296,7 +297,12 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		if (!viewSwitchLock.tryLock()) {
 			return;
 		}
-		ProjectManager.getInstance().uploadProject(Utils.getCurrentProjectName(this), this);
+		//ProjectManager.getInstance().uploadProject(Utils.getCurrentProjectName(this), this);
+		viewUploadNotSupportedToast(getApplicationContext());
+	}
+
+	public static void viewUploadNotSupportedToast(Context context) {
+		Toast.makeText(context, R.string.toast_upload_not_supported, Toast.LENGTH_LONG).show();
 	}
 
 	private void loadProgramFromExternalSource(Uri loadExternalProjectUri) {

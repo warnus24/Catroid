@@ -43,7 +43,6 @@ import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.adapter.SpriteAdapter;
 import org.catrobat.catroid.ui.dialogs.NewSpriteDialog;
 import org.catrobat.catroid.ui.fragment.SpritesListFragment;
-import org.catrobat.catroid.utils.Utils;
 
 import java.util.concurrent.locks.Lock;
 
@@ -123,7 +122,8 @@ public class ProjectActivity extends BaseActivity {
 				break;
 
 			case R.id.upload:
-				ProjectManager.getInstance().uploadProject(Utils.getCurrentProjectName(this), this);
+				//ProjectManager.getInstance().uploadProject(Utils.getCurrentProjectName(this), this);
+				MainMenuActivity.viewUploadNotSupportedToast(getApplicationContext());
 				break;
 
 		}

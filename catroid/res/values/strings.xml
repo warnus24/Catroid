@@ -62,6 +62,7 @@
     <string name="main_menu_web_dialog_title">Caution!</string>
     <string name="main_menu_web_dialog_message">Currently alternative browsers like Firefox or Dolphin are not supported</string>
     <string name="main_menu_web_dialog_dont_show">Don\'t show again</string>
+    <string name="toast_upload_not_supported">Uploading projects is not supported.</string>
     <!--  -->
 
 

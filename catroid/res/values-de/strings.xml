@@ -62,6 +62,7 @@
     <string name="main_menu_web_dialog_title">Achtung!</string>
     <string name="main_menu_web_dialog_message">Derzeit werden keine alternativen Browser wie Firefox oder Dolphin unterstützt</string>
     <string name="main_menu_web_dialog_dont_show">Nicht mehr anzeigen</string>
+    <string name="toast_upload_not_supported">Projekte hochzuladen ist leider nicht möglich.</string>
     <!--  -->
 
 
