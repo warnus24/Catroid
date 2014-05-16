@@ -193,6 +193,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				projectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
 			}
 
+			Log.d("LWP", "Project " + projectName + " wurde für die Home Engine geladen!!!!");
 			loadable = ProjectManagerLWP.getInstance().loadProject(projectName, context, true);
 		}
 
@@ -216,6 +217,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			Editor editor = sharedPreferences.edit();
 			editor.putString(Constants.PREF_PROJECTNAME_KEY, projectName);
 			editor.commit();
+
+			editor = sharedPreferences.edit();
+			editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, "");
+			editor.commit();
 		} else {
 			Editor editor = sharedPreferences.edit();
 			editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, projectName);
@@ -238,13 +243,15 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		if (lastCreatedPreviewEngine != null && lastCreatedHomeEngine == null) {
 			loadProject(false);
+			Log.d("LWP", "Created home engine!!!!!!!!");
 			lastCreatedHomeEngine = new LiveWallpaperEngine();
-			Log.d("LWP", "Create home engine!!!!!!!!");
+
 			return lastCreatedHomeEngine;
 		}
 
 		loadProject(true);
 		lastCreatedPreviewEngine = new LiveWallpaperEngine();
+		Log.d("LWP", "Created preview engine!!!!!!!!");
 
 		return lastCreatedPreviewEngine;
 	}
