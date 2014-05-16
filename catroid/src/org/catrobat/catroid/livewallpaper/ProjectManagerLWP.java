@@ -20,7 +20,7 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid;
+package org.catrobat.catroid.livewallpaper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,6 +29,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.FileChecksumContainer;
 import org.catrobat.catroid.common.MessageContainer;
@@ -57,9 +59,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public final class ProjectManager implements OnLoadProjectCompleteListener, OnCheckTokenCompleteListener {
-	private static final ProjectManager INSTANCE = new ProjectManager();
-	private static final String TAG = ProjectManager.class.getSimpleName();
+public final class ProjectManagerLWP implements OnLoadProjectCompleteListener, OnCheckTokenCompleteListener {
+	private static final ProjectManagerLWP INSTANCE = new ProjectManagerLWP();
+	private static final String TAG = ProjectManagerLWP.class.getSimpleName();
 
 	private Project project;
 	private Script currentScript;
@@ -68,10 +70,10 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 
 	private FileChecksumContainer fileChecksumContainer = new FileChecksumContainer();
 
-	private ProjectManager() {
+	private ProjectManagerLWP() {
 	}
 
-	public static ProjectManager getInstance() {
+	public static ProjectManagerLWP getInstance() {
 		return INSTANCE;
 	}
 
@@ -170,7 +172,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		MessageContainer.clearBackup();
 		currentSprite = null;
 		currentScript = null;
-		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
+		Utils.saveToPreferences(context, Constants.PREF_LWP_PROJECTNAME_KEY, project.getName());
 	}
 
 	public boolean cancelLoadProject() {

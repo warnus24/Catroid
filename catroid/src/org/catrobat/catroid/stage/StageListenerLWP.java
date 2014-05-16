@@ -52,6 +52,7 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
+import org.catrobat.catroid.livewallpaper.ProjectManagerLWP;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
 
@@ -60,7 +61,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-public class StageListener implements ApplicationListener {
+public class StageListenerLWP implements ApplicationListener {
 
 	private static final int AXIS_WIDTH = 4;
 	private static final float DELTA_ACTIONS_DIVIDER_MAXIMUM = 50f;
@@ -131,13 +132,24 @@ public class StageListener implements ApplicationListener {
 
 	private byte[] thumbnail;
 
+	private boolean isPreview = false;
+
+	public StageListenerLWP(boolean isPreview) {
+		this.isPreview = isPreview;
+	}
+
 	@Override
 	public void create() {
 		font = new BitmapFont();
 		font.setColor(1f, 0f, 0.05f, 1f);
 		font.setScale(1.2f);
 
-		project = ProjectManager.getInstance().getCurrentProject();
+		if (isPreview) {
+			project = ProjectManager.getInstance().getCurrentProject();
+		} else {
+			project = ProjectManagerLWP.getInstance().getCurrentProject();
+		}
+
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";
 
 		virtualWidth = project.getXmlHeader().virtualScreenWidth;
@@ -205,11 +217,11 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
-	public void reloadProject(StageDialog stageDialog) {
+	public void reloadProject(LiveWallpaperEngine engine) {
 		if (reloadProject) {
 			return;
 		}
-		this.stageDialog = stageDialog;
+		this.lwpEngine = engine;
 
 		project.getUserVariables().resetAllUserVariables();
 
@@ -294,11 +306,6 @@ public class StageListener implements ApplicationListener {
 			paused = true;
 			firstStart = true;
 			reloadProject = false;
-			if (stageDialog != null) {
-				synchronized (stageDialog) {
-					stageDialog.notify();
-				}
-			}
 
 			if (lwpEngine != null) {
 				synchronized (lwpEngine) {
