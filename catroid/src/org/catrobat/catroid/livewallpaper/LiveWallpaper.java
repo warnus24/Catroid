@@ -243,6 +243,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			return lastCreatedHomeEngine;
 		}
 
+		loadProject(true);
 		lastCreatedPreviewEngine = new LiveWallpaperEngine();
 
 		return lastCreatedPreviewEngine;
