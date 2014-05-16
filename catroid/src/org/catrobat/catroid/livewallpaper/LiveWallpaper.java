@@ -276,15 +276,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		@Override
 		public void onCreate(SurfaceHolder surfaceHolder) {
+			super.onCreate(surfaceHolder);
 			if (isPreview()) {
 				setPreviewEngine(this);
 			} else {
 				setHomeEngine(this);
-			}
-			super.onCreate(surfaceHolder);
-
-			if (!isPreview()) {
-				//changeWallpaperProgram();
 			}
 		}
 
