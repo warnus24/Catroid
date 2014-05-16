@@ -138,6 +138,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public ApplicationListener createListener(boolean isPreview) {
 		setScreenSize(isPreview);
 
+		Log.d("ApplicationListener", "homeEngine = " + (homeEngine != null));
 		if (isPreview) {
 			//if (homeEngine != null) {
 			//	homeEngine.onPause();
@@ -153,8 +154,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			//	previewEngine.onPause();
 			//}
 			homeScreenStageListener = new StageListener();
-			homeEngine = lastCreatedHomeEngine;
-			homeEngine.name = "Home";
+			if (lastCreatedHomeEngine != null) {
+				homeEngine = lastCreatedHomeEngine;
+				homeEngine.name = "Home";
+			}
 			Log.d("LWP", "Created " + "new home Listener");
 
 			return homeScreenStageListener;
