@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
@@ -37,10 +38,13 @@ import org.catrobat.catroid.R;
 
 public class SettingsActivity extends SherlockPreferenceActivity {
 
+	private static final String TAG = SettingsActivity.class.getSimpleName();
+
 	CheckBoxPreference dronePreference = null;
 
 	public static final String SETTINGS_QUADCOPTER_BRICKS = "setting_quadcopter_bricks";
 	public static final String SETTINGS_QUADCOPTER_CATROBAT_TERMS_OF_SERVICE_ACCEPTED_PERMANENTLY = "setting_quadcopter_catrobat_terms_of_service_accpted_permanently";
+	public static final String SETTINGS_FIRST_STARTUP_PERFORMED = "settings_first_startup_performed";
 
 	PreferenceScreen screen = null;
 
@@ -61,6 +65,27 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 			dronePreference.setEnabled(true);
 			screen.addPreference(dronePreference);
 		}
+	}
+
+	public static void setDroneBricksEnabled(Context context) {
+		setBooleanSharedPreference(true, SETTINGS_QUADCOPTER_BRICKS, context);
+	}
+
+	public static boolean isFirstStartup(Context context) {
+		boolean firstStartupPerformed = wasFirstStartupPerformed(context);
+		if (!firstStartupPerformed) {
+			setFirstStartupPerformed(context);
+		}
+		Log.d(TAG, "This is first startup = \"" + !firstStartupPerformed + "\"");
+		return !firstStartupPerformed;
+	}
+
+	private static boolean wasFirstStartupPerformed(Context context) {
+		return getBooleanSharedPrefernece(false, SETTINGS_FIRST_STARTUP_PERFORMED, context);
+	}
+
+	private static void setFirstStartupPerformed(Context context) {
+		setBooleanSharedPreference(true, SETTINGS_FIRST_STARTUP_PERFORMED, context);
 	}
 
 	public static void setTermsOfSerivceAgreedPermanently(Context context, boolean agreed) {
