@@ -47,16 +47,24 @@ public class StageActivity extends AndroidApplication {
 
 	private PendingIntent pendingIntent;
 	private NfcAdapter nfcAdapter;
+	private DroneConnection droneStageListener = null;
+
+	public static final int STAGE_ACTIVITY_FINISH = 7777;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+		droneStageListener = new DroneConnection(this, getIntent());
 		stageListener = new StageListener();
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		calculateScreenSizes();
+
 		initialize(stageListener, true);
+        droneStageListener.initialise();
+
 		pendingIntent = PendingIntent.getActivity(this, 0,
 				new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
@@ -92,21 +100,26 @@ public class StageActivity extends AndroidApplication {
 	public void onPause() {
 		SensorHandler.stopSensorListeners();
 		super.onPause();
+
 		if (nfcAdapter != null) {
 			Log.d(TAG, "onPause()disableForegroundDispatch()");
 			nfcAdapter.disableForegroundDispatch(this);
 		}
+
+		droneStageListener.pause();
 	}
 
 	@Override
 	public void onResume() {
-		Log.d(TAG, "StageActivity::onResume()");
 		SensorHandler.startSensorListener(this);
 		super.onResume();
+
 		if (nfcAdapter != null) {
 			Log.d(TAG, "onResume()enableForegroundDispatch()");
 			nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
 		}
+
+		droneStageListener.start();
 	}
 
 	public void pause() {
@@ -172,6 +185,13 @@ public class StageActivity extends AndroidApplication {
 			ScreenValues.SCREEN_HEIGHT = ScreenValues.SCREEN_WIDTH;
 			ScreenValues.SCREEN_WIDTH = tmp;
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		droneStageListener.destroy();
+		Log.d(TAG, "Destroy");
+		super.onDestroy();
 	}
 
 }
