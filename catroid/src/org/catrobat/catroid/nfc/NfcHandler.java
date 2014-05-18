@@ -60,11 +60,14 @@ public class NfcHandler {
         if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())
                 || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())
                 || NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            byte[] tagId = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+            String uid = byteArrayToHex(tagId);
 
-            String uid = byteArrayToHex(tag.getId());
+            //if whole tag is needed
+            //Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            //String uid = byteArrayToHex(tag.getId());
 
-            Log.d(TAG, "read successfull. uid = hex:" + uid);
+            Log.d(TAG, "read successful. uid = hex:" + uid);
 
             // uncomment for debugging ndef information
             //			Ndef ndefTag;

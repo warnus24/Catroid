@@ -146,20 +146,25 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
         solo.sleep(1000);
         try {
             final Intent intent = new Intent(NfcAdapter.ACTION_TAG_DISCOVERED);
-            intent.putExtra(NfcAdapter.EXTRA_NDEF_MESSAGES, "Custom Messages");
-            solo.getCurrentActivity().startActivity(intent);
+            intent.putExtra(NfcAdapter.EXTRA_ID, "1234567890".getBytes());
+            //solo.getCurrentActivity().startActivity(intent);
+            getNfcTagFragment().onNewIntent(intent); //CalledFromWrongThreadException
         }
         catch (Exception e) {
             Log.d("testScanTag", e.toString());
         }
 
-        solo.sleep(1000);
+        solo.goBack();
+        solo.goBack();
+        solo.goBack();
+        UiTestUtils.getIntoNfcTagsFromMainMenu(solo);
 
         int newCount = adapter.getCount();
 
         assertEquals("Tag not added!", oldCount + 1, newCount);
+        assertEquals("Tag added but not visible!", solo.searchText(solo.getString(R.string.default_tag_name), 1), true);
     }
-/*
+
 	public void testInitialLayout() {
 		assertFalse("Initially showing details", getNfcTagAdapter().getShowDetails());
 		checkVisibilityOfViews(VISIBLE, VISIBLE, GONE, GONE);
@@ -850,7 +855,7 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
 		solo.clickOnCheckBox(1);
 		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
 	}
-*/
+
     private String getDisplayedTagId() {
         TextView idTextView = (TextView) solo.getView(R.id.fragment_nfctag_item_uid_text_view);
         String idString = idTextView.getText().toString();

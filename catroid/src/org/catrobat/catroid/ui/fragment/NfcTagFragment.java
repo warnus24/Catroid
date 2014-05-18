@@ -248,19 +248,16 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
     public void onNewIntent(Intent intent) {
         Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
         Log.d(TAG, "activity:" + getActivity().getClass().getSimpleName());
-        Log.d(TAG, "got intent:" + getActivity().getIntent().getAction());
+        Log.d(TAG, "got intent:" + intent.getAction());
         String uid = NfcHandler.getUid(intent);
         if(uid != null){
-            //NfcTagContainer.addTagName(uid, input.getText().toString().trim());
-            // TODO: inform user that read nfc was successfull
             NfcTagData newNfcTagData = new NfcTagData();
             String newTagName = Utils.getUniqueNfcTagName(getString(R.string.default_tag_name));
             newNfcTagData.setNfcTagName(newTagName);
             newNfcTagData.setNfcTagUid(uid);
-            Log.d(TAG, "new nfc tag: " + uid);
             adapter.add(newNfcTagData);
             adapter.notifyDataSetChanged();
-            getActivity().setIntent(new Intent());
+            //getActivity().setIntent(new Intent());
         }else
         {
             Log.d(TAG, "no nfc tag found");
