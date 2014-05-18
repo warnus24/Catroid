@@ -109,6 +109,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
+    IntentFilter[] readTagFilters;
 
     private OnNfcTagDataListChangedAfterNewListener nfcTagDataListChangedAfterNewListener;
 
@@ -136,6 +137,10 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
         BottomBar.hideAddButton(getActivity());
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
+        pendingIntent = PendingIntent.getActivity(getActivity(), 0,
+                new Intent(getActivity(), getActivity().getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        readTagFilters = new IntentFilter[] { tagDetected };
 	}
 
 	@Override
@@ -236,12 +241,8 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		NfcTagController.getInstance().handleAddButtonFromNew(this);
 
         if (nfcAdapter != null) {
-            pendingIntent = PendingIntent.getActivity(getActivity(), 0,
-                    new Intent(getActivity(), getActivity().getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
             Log.d(TAG, "onResume()enableForegroundDispatch()");
-            nfcAdapter.enableForegroundDispatch(getActivity(), pendingIntent, null, null);
-            onNewIntent(getActivity().getIntent());
-            getActivity().setIntent(new Intent());
+            nfcAdapter.enableForegroundDispatch(getActivity(), pendingIntent, readTagFilters, null);
         }else{
             // TODO: inform nfc not possible
         }
@@ -262,6 +263,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
             Log.d(TAG, "new nfc tag: " + uid);
             adapter.add(newNfcTagData);
             adapter.notifyDataSetChanged();
+            getActivity().setIntent(new Intent());
         }else
         {
             Log.d(TAG, "no nfc tag found");
