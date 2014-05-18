@@ -141,7 +141,7 @@ public class ScriptActivity extends BaseActivity {
         // needed for NFC
         Log.d("ScriptActivity", "onNewIntent");
         //setIntent(intent);
-        if(nfcTagFragment != null)
+        if(nfcTagFragment != null && currentFragment == nfcTagFragment)
             nfcTagFragment.onNewIntent(intent);
     }
 
@@ -337,7 +337,9 @@ public class ScriptActivity extends BaseActivity {
 		for (int i = backStackEntryCount; i > 0; --i) {
 			String backStackEntryName = fragmentManager.getBackStackEntryAt(i - 1).getName();
 			if (backStackEntryName != null
-					&& (backStackEntryName.equals(LookFragment.TAG) || backStackEntryName.equals(SoundFragment.TAG))) {
+					&& (backStackEntryName.equals(LookFragment.TAG)
+                        || backStackEntryName.equals(SoundFragment.TAG)
+                        || backStackEntryName.equals(NfcTagFragment.TAG))) {
 				fragmentManager.popBackStack();
 			} else {
 				break;

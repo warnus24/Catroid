@@ -178,7 +178,7 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
                     {
                         if(selTag.getNfcTagName().equals(selectedTag)) {
                             whenNfcScript.setNfcTag(selTag);
-                            nfcTag = selTag;//(NfcTagData)parent.getItemAtPosition(position);
+                            nfcTag = (NfcTagData)parent.getItemAtPosition(position); //selTag
                             break;
                         }
                     }

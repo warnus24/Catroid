@@ -109,7 +109,6 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
     NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
-    IntentFilter[] readTagFilters;
 
     private OnNfcTagDataListChangedAfterNewListener nfcTagDataListChangedAfterNewListener;
 
@@ -139,8 +138,6 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
         nfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
         pendingIntent = PendingIntent.getActivity(getActivity(), 0,
                 new Intent(getActivity(), getActivity().getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        readTagFilters = new IntentFilter[] { tagDetected };
 	}
 
 	@Override
@@ -242,7 +239,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
         if (nfcAdapter != null) {
             Log.d(TAG, "onResume()enableForegroundDispatch()");
-            nfcAdapter.enableForegroundDispatch(getActivity(), pendingIntent, readTagFilters, null);
+            nfcAdapter.enableForegroundDispatch(getActivity(), pendingIntent, null, null);
         }else{
             // TODO: inform nfc not possible
         }
