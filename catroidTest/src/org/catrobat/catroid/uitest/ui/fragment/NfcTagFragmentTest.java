@@ -143,7 +143,6 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
 
         int oldCount = adapter.getCount();
 
-        solo.sleep(1000);
         try {
             final Intent intent = new Intent(NfcAdapter.ACTION_TAG_DISCOVERED);
             intent.putExtra(NfcAdapter.EXTRA_ID, "1234567890".getBytes());
@@ -154,9 +153,9 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
             Log.d("testScanTag", e.toString());
         }
 
-        solo.goBack();
-        solo.goBack();
-        solo.goBack();
+        solo.sleep(1000);
+
+        UiTestUtils.goToHomeActivity(getActivity());
         UiTestUtils.getIntoNfcTagsFromMainMenu(solo);
 
         int newCount = adapter.getCount();
