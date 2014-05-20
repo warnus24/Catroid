@@ -53,6 +53,8 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
+import org.catrobat.catroid.livewallpaper.ProjectLoadableEnum;
+import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectEditListener;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
@@ -79,13 +81,10 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	private static String deleteActionModeTitle;
 	private ProjectData projectToEdit;
 
-	private ProjectManager projectManager = ProjectManager.getInstance();
+	private ProjectManager projectManagerPreview = ProjectManager.getInstance(ProjectManagerState.PREVIEW);
+	private ProjectManager projectManagerHome = ProjectManager.getInstance(ProjectManagerState.HOME);
 
 	private View selectAllActionModeButton;
-
-	private final String IS_LOADABLE = "IS_LOADABLE";
-	private final String IS_ALREADY_LOADED = "IS_ALREADY_LOADED";
-	private final String IS_NOT_LOADABLE = "IS_NOT_LOADABLE";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -169,37 +168,42 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			//	editor.commit();
 			//}
 
-			String str_loadable = IS_ALREADY_LOADED;
+			String str_loadable = ProjectLoadableEnum.IS_ALREADY_LOADED.toString();
 
-			if (projectManager.getCurrentProject() != null
-					&& projectManager.getCurrentProject().getName().equals(selectedProject)) {
+			if (projectManagerPreview.getCurrentProject() != null
+					&& projectManagerPreview.getCurrentProject().getName().equals(selectedProject)) {
 				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
 				getFragmentManager().popBackStack();
 				return str_loadable;
 			}
 
-			boolean loadable = projectManager.loadProject(selectedProject, LiveWallpaper.getInstance().getContext(),
-					true);
+			boolean loadable = projectManagerPreview.loadProject(selectedProject, LiveWallpaper.getInstance()
+					.getContext(), true);
+
+			loadable = projectManagerHome.loadProject(selectedProject, LiveWallpaper.getInstance().getContext(), true);
 
 			if (!loadable) {
 				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
 				getFragmentManager().popBackStack();
-				str_loadable = IS_NOT_LOADABLE;
+				str_loadable = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
 				return str_loadable;
 			}
 
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 			Editor editor = sharedPreferences.edit();
-			editor.putString(Constants.PREF_PROJECTNAME_KEY, selectedProject);
+			editor.putString(Constants.PREF_LWP_PREVIEW_PROJECTNAME_KEY, selectedProject);
 			editor.commit();
-			str_loadable = IS_LOADABLE;
+			editor.putString(Constants.PREF_LWP_HOME_PROJECTNAME_KEY, selectedProject);
+			editor.commit();
+			str_loadable = ProjectLoadableEnum.IS_LOADABLE.toString();
 
 			return str_loadable;
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
-			if (result.equals(IS_NOT_LOADABLE) || result.equals(IS_ALREADY_LOADED)) {
+			if (result.equals(ProjectLoadableEnum.IS_NOT_LOADABLE.toString())
+					|| result.equals(ProjectLoadableEnum.IS_ALREADY_LOADED.toString())) {
 				if (progress.isShowing()) {
 					progress.dismiss();
 				}
@@ -341,7 +345,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	private void checkIfCurrentProgramSelectedForDeletion() {
 
 		boolean currentProgramSelected = false;
-		Project currentProject = projectManager.getCurrentProject();
+		Project currentProject = projectManagerPreview.getCurrentProject();
 		for (int position : adapter.getCheckedProjects()) {
 			ProjectData tempProjectData = (ProjectData) getListView().getItemAtPosition(position);
 			if (currentProject.getName().equalsIgnoreCase(tempProjectData.projectName)) {
@@ -422,7 +426,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		int numDeleted = 0;
 		for (int position : adapter.getCheckedProjects()) {
 			projectToEdit = (ProjectData) getListView().getItemAtPosition(position - numDeleted);
-			if (projectToEdit.projectName.equalsIgnoreCase(projectManager.getCurrentProject().getName())) {
+			if (projectToEdit.projectName.equalsIgnoreCase(projectManagerPreview.getCurrentProject().getName())) {
 				continue;
 			}
 			deleteProject();
@@ -430,8 +434,8 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		}
 
 		if (projectList.isEmpty()) {
-			projectManager.initializeDefaultProject(getActivity());
-		} else if (projectManager.getCurrentProject() == null) {
+			projectManagerPreview.initializeDefaultProject(getActivity());
+		} else if (projectManagerPreview.getCurrentProject() == null) {
 			Utils.saveToPreferences(getActivity().getApplicationContext(), Constants.PREF_PROJECTNAME_KEY,
 					projectList.get(0).projectName);
 		}

@@ -52,7 +52,7 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
-import org.catrobat.catroid.livewallpaper.ProjectManagerLWP;
+import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
 
@@ -145,9 +145,9 @@ public class StageListenerLWP implements ApplicationListener {
 		font.setScale(1.2f);
 
 		if (isPreview) {
-			project = ProjectManager.getInstance().getCurrentProject();
+			project = ProjectManager.getInstance(ProjectManagerState.PREVIEW).getCurrentProject();
 		} else {
-			project = ProjectManagerLWP.getInstance().getCurrentProject();
+			project = ProjectManager.getInstance(ProjectManagerState.HOME).getCurrentProject();
 		}
 
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";

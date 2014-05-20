@@ -46,6 +46,7 @@ import org.catrobat.catroid.content.bricks.LoopEndBrick;
 import org.catrobat.catroid.io.LoadProjectTask;
 import org.catrobat.catroid.io.LoadProjectTask.OnLoadProjectCompleteListener;
 import org.catrobat.catroid.io.StorageHandler;
+import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.transfers.CheckTokenTask;
 import org.catrobat.catroid.transfers.CheckTokenTask.OnCheckTokenCompleteListener;
 import org.catrobat.catroid.ui.dialogs.LoginRegisterDialog;
@@ -59,6 +60,8 @@ import java.util.ArrayList;
 
 public final class ProjectManager implements OnLoadProjectCompleteListener, OnCheckTokenCompleteListener {
 	private static final ProjectManager INSTANCE = new ProjectManager();
+	private static final ProjectManager INSTANCE_LWP_PREVIEW = new ProjectManager();
+	private static final ProjectManager INSTANCE_LWP_HOME = new ProjectManager();
 	private static final String TAG = ProjectManager.class.getSimpleName();
 
 	private Project project;
@@ -66,13 +69,37 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	private Sprite currentSprite;
 	private boolean asynchronTask = true;
 
+	public static ProjectManagerState currentProjectManagerState = ProjectManagerState.NORMAL;
+
 	private FileChecksumContainer fileChecksumContainer = new FileChecksumContainer();
 
 	private ProjectManager() {
 	}
 
 	public static ProjectManager getInstance() {
-		return INSTANCE;
+		switch (currentProjectManagerState) {
+			case PREVIEW:
+				return INSTANCE_LWP_PREVIEW;
+			case HOME:
+				return INSTANCE_LWP_HOME;
+			case NORMAL:
+				return INSTANCE;
+			default:
+				return INSTANCE;
+		}
+	}
+
+	public static ProjectManager getInstance(ProjectManagerState projectManagerType) {
+		switch (projectManagerType) {
+			case PREVIEW:
+				return INSTANCE_LWP_PREVIEW;
+			case HOME:
+				return INSTANCE_LWP_HOME;
+			case NORMAL:
+				return INSTANCE;
+		}
+
+		return null;
 	}
 
 	public void uploadProject(String projectName, FragmentActivity fragmentActivity) {
@@ -380,7 +407,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	}
 
 	public void checkNestingBrickReferences() {
-		Project currentProject = ProjectManager.getInstance().getCurrentProject();
+		Project currentProject = getCurrentProject();
 		if (currentProject != null) {
 			for (Sprite currentSprite : currentProject.getSpriteList()) {
 				int numberOfScripts = currentSprite.getNumberOfScripts();

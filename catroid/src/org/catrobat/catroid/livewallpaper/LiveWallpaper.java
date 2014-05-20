@@ -57,6 +57,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private LiveWallpaperEngine lastCreatedHomeEngine;
 	private LiveWallpaperEngine lastCreatedPreviewEngine;
 	private Context context;
+	private boolean previewEnginePaused;
+	private boolean homeEnginePaused;
 
 	private LiveWallpaperEngine previewEngine;
 
@@ -116,7 +118,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			//		false);
 			context = this;
 		}
-
 	}
 
 	public Context getContext() {
@@ -124,12 +125,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	}
 
 	public static LiveWallpaper getInstance() {
+
 		return INSTANCE;
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		ProjectManager.currentProjectManagerState = ProjectManagerState.NORMAL;
 		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
 	}
 
@@ -184,46 +187,59 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String projectName = "";
 		boolean loadable = false;
+		ProjectManager projectManagerPreview = ProjectManager.getInstance(ProjectManagerState.PREVIEW);
+		ProjectManager projectManagerHome = ProjectManager.getInstance(ProjectManagerState.HOME);
+		//ProjectManager projectManager = ProjectManager.getInstance();
+
 		if (isPreview) {
-			projectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
-			loadable = ProjectManager.getInstance().loadProject(projectName, context, true);
-		} else {
-			projectName = sharedPreferences.getString(Constants.PREF_LWP_PROJECTNAME_KEY, null);
-			if (projectName.equals("")) {
+			projectName = sharedPreferences.getString(Constants.PREF_LWP_PREVIEW_PROJECTNAME_KEY, null);
+			if (projectName == null) {
 				projectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
 			}
+			if (projectManagerPreview.getCurrentProject() != null
+					&& projectManagerPreview.getCurrentProject().getName().equals(projectName)) {
+				return;
+			}
+			loadable = projectManagerPreview.loadProject(projectName, context, true);
+			//projectManager.loadProject(projectName, context, true);
 
+		} else {
+			projectName = sharedPreferences.getString(Constants.PREF_LWP_HOME_PROJECTNAME_KEY, null);
+			if (projectManagerHome.getCurrentProject() != null
+					&& projectManagerHome.getCurrentProject().getName().equals(projectName)) {
+				return;
+			}
 			Log.d("LWP", "Project " + projectName + " wurde für die Home Engine geladen!!!!");
-			loadable = ProjectManagerLWP.getInstance().loadProject(projectName, context, true);
+			loadable = projectManagerHome.loadProject(projectName, context, true);
 		}
 
 		String result = "";
 
 		if (!loadable) {
-			result = "Project is not loadable";
-			Toast toast = Toast.makeText(context, result, 1000);
+			result = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
+			Toast toast = Toast.makeText(context, result, 10000);
 			toast.show();
 			Log.d("LWP", "Project is not loadable");
 			return;
 		}
 
-		result = "Project is loadable";
-		Toast toast = Toast.makeText(context, result, 1000);
+		result = ProjectLoadableEnum.IS_LOADABLE.toString();
+		Toast toast = Toast.makeText(context, result, 10000);
 		toast.show();
 		Log.d("LWP", "Project is loadable");
 
 		//SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		if (isPreview) {
 			Editor editor = sharedPreferences.edit();
-			editor.putString(Constants.PREF_PROJECTNAME_KEY, projectName);
+			editor.putString(Constants.PREF_LWP_PREVIEW_PROJECTNAME_KEY, projectName);
 			editor.commit();
 
 			editor = sharedPreferences.edit();
-			editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, "");
+			editor.putString(Constants.PREF_LWP_HOME_PROJECTNAME_KEY, "");
 			editor.commit();
 		} else {
 			Editor editor = sharedPreferences.edit();
-			editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, projectName);
+			editor.putString(Constants.PREF_LWP_HOME_PROJECTNAME_KEY, projectName);
 			editor.commit();
 		}
 
@@ -236,20 +252,20 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		//lastCreatedWallpaperEngine = new LiveWallpaperEngine(this.lastCreatedStageListener);
 
 		if (lastCreatedHomeEngine != null && lastCreatedPreviewEngine == null) {
-			loadProject(true);
+			ProjectManager.currentProjectManagerState = ProjectManagerState.PREVIEW;
 			lastCreatedPreviewEngine = new LiveWallpaperEngine();
 			return lastCreatedPreviewEngine;
 		}
 
 		if (lastCreatedPreviewEngine != null && lastCreatedHomeEngine == null) {
-			loadProject(false);
 			Log.d("LWP", "Created home engine!!!!!!!!");
+			ProjectManager.currentProjectManagerState = ProjectManagerState.HOME;
 			lastCreatedHomeEngine = new LiveWallpaperEngine();
-
 			return lastCreatedHomeEngine;
 		}
 
 		loadProject(true);
+		ProjectManager.currentProjectManagerState = ProjectManagerState.PREVIEW;
 		lastCreatedPreviewEngine = new LiveWallpaperEngine();
 		Log.d("LWP", "Created preview engine!!!!!!!!");
 
@@ -327,10 +343,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		@Override
 		public void onVisibilityChanged(boolean visible) {
 			Log.d("LWP", "Engine: " + name + " the engine is visible: " + visible);
-
-			if (!isPreview() && visible) {
-				//	changeWallpaperProgram();
-			}
 
 			mVisible = visible;
 			super.onVisibilityChanged(visible);
