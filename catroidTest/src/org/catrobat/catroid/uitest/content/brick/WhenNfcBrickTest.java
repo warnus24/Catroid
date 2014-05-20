@@ -181,24 +181,14 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 
         solo.clickOnText(all);
         solo.clickOnText(newText);
+        solo.sleep(500);
 
-        ScriptActivity currentActivity = (ScriptActivity) solo.getCurrentActivity();
-        solo.sleep(200);
-        NfcTagFragment nfcTagFragment = (NfcTagFragment) currentActivity.getFragment(ScriptActivity.FRAGMENT_NFCTAGS);
-        try {
-            final Intent intent = new Intent(NfcAdapter.ACTION_TAG_DISCOVERED);
-            intent.putExtra(NfcAdapter.EXTRA_ID, "1234567890".getBytes());
-            //solo.getCurrentActivity().startActivity(intent);
-            nfcTagFragment.onNewIntent(intent); //CalledFromWrongThreadException
-        }
-        catch (Exception e) {
-            Log.d("testScanTag", e.toString());
-        }
+        UiTestUtils.fakeNfcTag(solo, "123", null, null);
 
-        solo.sleep(200);
+        solo.sleep(500);
         solo.waitForActivity(ScriptActivity.class.getSimpleName());
         solo.goBack();
-        solo.clickOnText(newText);
+        solo.clickOnText(all);
         solo.clickOnText(solo.getString(R.string.default_tag_name));
         assertTrue("Testtag not added", solo.searchText(solo.getString(R.string.default_tag_name)));
 
@@ -230,8 +220,8 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
         Sprite firstSprite = new Sprite("cat");
         Script testScript = new WhenNfcScript(firstSprite);
 
-        WhenNfcBrick whenNfcBrick = new WhenNfcBrick(firstSprite);
-        testScript.addBrick(whenNfcBrick);
+        //WhenNfcBrick whenNfcBrick = new WhenNfcBrick(firstSprite);
+        //testScript.addBrick(whenNfcBrick);
 
         firstSprite.addScript(testScript);
         project.addSprite(firstSprite);

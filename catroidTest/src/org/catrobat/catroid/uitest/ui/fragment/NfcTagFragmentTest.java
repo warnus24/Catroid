@@ -22,8 +22,14 @@
  */
 package org.catrobat.catroid.uitest.ui.fragment;
 
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -143,20 +149,9 @@ public class NfcTagFragmentTest extends BaseActivityInstrumentationTestCase<Main
 
         int oldCount = adapter.getCount();
 
-        try {
-            final Intent intent = new Intent(NfcAdapter.ACTION_TAG_DISCOVERED);
-            intent.putExtra(NfcAdapter.EXTRA_ID, "1234567890".getBytes());
-            //solo.getCurrentActivity().startActivity(intent);
-            getNfcTagFragment().onNewIntent(intent); //CalledFromWrongThreadException
-        }
-        catch (Exception e) {
-            Log.d("testScanTag", e.toString());
-        }
+        UiTestUtils.fakeNfcTag(solo, "123", null, null);
 
-        solo.sleep(1000);
-
-        UiTestUtils.goToHomeActivity(getActivity());
-        UiTestUtils.getIntoNfcTagsFromMainMenu(solo);
+        solo.sleep(500);
 
         int newCount = adapter.getCount();
 
