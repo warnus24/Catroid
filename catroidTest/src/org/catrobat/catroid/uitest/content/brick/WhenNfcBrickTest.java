@@ -80,6 +80,9 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 
     public void testSelectTagAndPlay() {
         assertTrue(all + " is not selected in Spinner", solo.isSpinnerTextSelected(all));
+        solo.clickOnText(all);
+        solo.clickOnText(FIRST_TEST_TAG_NAME);
+        assertTrue(FIRST_TEST_TAG_NAME + " is not selected in Spinner", solo.isSpinnerTextSelected(FIRST_TEST_TAG_NAME));
 
         UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 
@@ -156,6 +159,9 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 
     public void testAdapterUpdateInScriptActivity() {
         assertTrue(all + " is not selected in Spinner", solo.isSpinnerTextSelected(all));
+        solo.clickOnText(all);
+        solo.clickOnText(FIRST_TEST_TAG_NAME);
+        assertTrue(FIRST_TEST_TAG_NAME + " is not selected in Spinner", solo.isSpinnerTextSelected(FIRST_TEST_TAG_NAME));
 
         UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
         solo.waitForActivity(StageActivity.class.getSimpleName());
@@ -167,8 +173,8 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
         solo.goBack();
 
         for (int i = 0; i < 5; ++i) {
-            selectTag(FIRST_TEST_TAG_NAME, all);
             selectTag(SECOND_TEST_TAG_NAME, FIRST_TEST_TAG_NAME);
+            selectTag(FIRST_TEST_TAG_NAME, SECOND_TEST_TAG_NAME);
         }
     }
 
@@ -219,9 +225,6 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
         Project project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
         Sprite firstSprite = new Sprite("cat");
         Script testScript = new WhenNfcScript(firstSprite);
-
-        //WhenNfcBrick whenNfcBrick = new WhenNfcBrick(firstSprite);
-        //testScript.addBrick(whenNfcBrick);
 
         firstSprite.addScript(testScript);
         project.addSprite(firstSprite);
