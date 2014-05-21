@@ -22,8 +22,6 @@
  */
 package org.catrobat.catroid.content;
 
-import android.widget.ArrayAdapter;
-
 import org.catrobat.catroid.common.NfcTagData;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.IfLogicEndBrick;
@@ -36,8 +34,7 @@ import java.util.ArrayList;
 public class WhenNfcScript extends Script {
 
 	private static final long serialVersionUID = 1L;
-	//private String nfcTagName;
-    //private String nfcTagUid;
+
     private NfcTagData nfcTag;
 	private boolean matchAll = true;
 
@@ -48,8 +45,6 @@ public class WhenNfcScript extends Script {
 
 	public WhenNfcScript(Sprite sprite, NfcTagData nfcTag) {
 		super(sprite);
-        /*if(nfcTag == null)
-            nfcTag = new NfcTagData();*/
 		this.nfcTag = nfcTag;
 	}
 
