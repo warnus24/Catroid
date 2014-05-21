@@ -893,9 +893,9 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 					notifyDataSetChanged();
 				} else if (clickedItemText.equals(context.getText(R.string.brick_context_dialog_formula_edit_brick))
 						&& brickList.get(itemPosition) instanceof FormulaBrick) {
-						FormulaEditorFragment.showFragment(view, brickList.get(itemPosition),
-						   ((FormulaBrick) brickList.get(itemPosition)).getFormula());
-					}
+					FormulaEditorFragment.showFragment(view, brickList.get(itemPosition),
+							((FormulaBrick) brickList.get(itemPosition)).getFormula());
+				}
 
 			}
 		});
@@ -908,11 +908,14 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 
 	protected void copyBrickListAndProject(int itemPosition) {
 		Brick origin = (Brick) (dragAndDropListView.getItemAtPosition(itemPosition));
-		Brick copy = origin.clone();
-
-		addNewBrick(itemPosition, copy, true);
-
-		notifyDataSetChanged();
+		Brick copy;
+		try {
+			copy = origin.clone();
+			addNewBrick(itemPosition, copy, true);
+			notifyDataSetChanged();
+		} catch (CloneNotSupportedException exception) {
+			Log.e(TAG, Log.getStackTraceString(exception));
+		}
 	}
 
 	private void showConfirmDeleteDialog(int itemPosition) {
