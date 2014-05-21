@@ -47,7 +47,7 @@ public class StageActivity extends AndroidApplication {
 
 	private PendingIntent pendingIntent;
 	private NfcAdapter nfcAdapter;
-	private DroneConnection droneStageListener = null;
+	private DroneConnection droneConnection = null;
 
 	public static final int STAGE_ACTIVITY_FINISH = 7777;
 
@@ -57,13 +57,14 @@ public class StageActivity extends AndroidApplication {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		droneStageListener = new DroneConnection(this, getIntent());
+		droneConnection = new DroneConnection(this, getIntent());
 		stageListener = new StageListener();
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		calculateScreenSizes();
 
 		initialize(stageListener, true);
-        droneStageListener.initialise();
+
+        droneConnection.initialise();
 
 		pendingIntent = PendingIntent.getActivity(this, 0,
 				new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -105,8 +106,7 @@ public class StageActivity extends AndroidApplication {
 			Log.d(TAG, "onPause()disableForegroundDispatch()");
 			nfcAdapter.disableForegroundDispatch(this);
 		}
-
-		droneStageListener.pause();
+		droneConnection.pause();
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class StageActivity extends AndroidApplication {
 			nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
 		}
 
-		droneStageListener.start();
+		droneConnection.start();
 	}
 
 	public void pause() {
@@ -189,7 +189,7 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	protected void onDestroy() {
-		droneStageListener.destroy();
+		droneConnection.destroy();
 		Log.d(TAG, "Destroy");
 		super.onDestroy();
 	}
