@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content;
 
+import android.widget.ArrayAdapter;
+
 import org.catrobat.catroid.common.NfcTagData;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.IfLogicEndBrick;
@@ -90,5 +92,15 @@ public class WhenNfcScript extends Script {
 
     public void setNfcTag(NfcTagData nfcTag) {
         this.nfcTag = nfcTag;
+    }
+
+    public int getRequiredResources() {
+        int resources = Brick.NO_RESOURCES;
+        resources |= Brick.NFC_ADAPTER;
+        ArrayList<Brick> brickList = getBrickList();
+        for (Brick brick : brickList) {
+            resources |= brick.getRequiredResources();
+        }
+        return resources;
     }
 }

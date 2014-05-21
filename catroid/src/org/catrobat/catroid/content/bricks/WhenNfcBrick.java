@@ -386,6 +386,11 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
     }
 
     @Override
+    public int getRequiredResources() {
+        return NFC_ADAPTER;
+    }
+
+    @Override
     public void onNfcTagDataListChangedAfterNew(NfcTagData nfcTagData) {
         oldSelectedNfcTag = nfcTagData;
         setNfcTag(nfcTagData);

@@ -35,6 +35,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.nfc.NfcAdapter;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Build;
@@ -42,6 +43,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
@@ -91,6 +93,7 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 	private static final int REQUEST_CONNECT_DEVICE = 1000;
 	public static final int REQUEST_RESOURCES_INIT = 101;
 	public static final int REQUEST_TEXT_TO_SPEECH = 10;
+    public static final int REQUEST_NFC_ADAPTER = 10000;
 
 	public static final String INIT_DRONE_STRING_EXTRA = "STRING_EXTRA_INIT_DRONE";
 	private static final int DRONE_BATTERY_TRESHOLD = 5;
@@ -162,6 +165,24 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 				termsOfUseDialog.show(getSupportFragmentManager(), TermsOfUseDialogFragment.DIALOG_FRAGMENT_TAG);
 			}
 		}
+
+        if ((requiredResources & Brick.NFC_ADAPTER) > 0) {
+            Log.d(TAG, "requiredResourceCounter == Brick.NFC_ADAPTER");
+            NfcAdapter adapter = NfcAdapter.getDefaultAdapter(getApplicationContext());
+            if (!adapter.isEnabled())
+            {
+                Log.d(TAG, "!adapter.isEnabled()");
+                Toast.makeText(getApplicationContext(), "Please activate NFC and press Back to return to the application!", Toast.LENGTH_LONG).show();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    Intent intent = new Intent(Settings.ACTION_NFC_SETTINGS);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                    startActivity(intent);
+                }
+            }
+            startStage();
+        }
 
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
