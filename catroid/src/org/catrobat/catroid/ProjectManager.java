@@ -68,8 +68,11 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	private Script currentScript;
 	private Sprite currentSprite;
 	private boolean asynchronTask = true;
+	private static ProjectManagerState currentProjectManagerState = ProjectManagerState.NORMAL;
 
-	public static ProjectManagerState currentProjectManagerState = ProjectManagerState.NORMAL;
+	public static void changeState(ProjectManagerState state) {
+		currentProjectManagerState = state;
+	}
 
 	private FileChecksumContainer fileChecksumContainer = new FileChecksumContainer();
 
@@ -99,7 +102,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 				return INSTANCE;
 		}
 
-		return null;
+		return INSTANCE;
 	}
 
 	public void uploadProject(String projectName, FragmentActivity fragmentActivity) {
@@ -197,7 +200,25 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		MessageContainer.clearBackup();
 		currentSprite = null;
 		currentScript = null;
-		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
+
+		saveProjectNameToPreferences(context);
+	}
+
+	private void saveProjectNameToPreferences(Context context) {
+		switch (currentProjectManagerState) {
+			case PREVIEW:
+				Utils.saveToPreferences(context, Constants.PREF_LWP_PREVIEW_PROJECTNAME_KEY, project.getName());
+				break;
+			case HOME:
+				Utils.saveToPreferences(context, Constants.PREF_LWP_HOME_PROJECTNAME_KEY, project.getName());
+				break;
+			case NORMAL:
+				Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
+				break;
+			default:
+				Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
+				break;
+		}
 	}
 
 	public boolean cancelLoadProject() {

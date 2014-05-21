@@ -131,8 +131,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public void onDestroy() {
+		ProjectManager.changeState(ProjectManagerState.NORMAL);
 		super.onDestroy();
-		ProjectManager.currentProjectManagerState = ProjectManagerState.NORMAL;
 		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
 	}
 
@@ -252,20 +252,20 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		//lastCreatedWallpaperEngine = new LiveWallpaperEngine(this.lastCreatedStageListener);
 
 		if (lastCreatedHomeEngine != null && lastCreatedPreviewEngine == null) {
-			ProjectManager.currentProjectManagerState = ProjectManagerState.PREVIEW;
+			ProjectManager.changeState(ProjectManagerState.PREVIEW);
 			lastCreatedPreviewEngine = new LiveWallpaperEngine();
 			return lastCreatedPreviewEngine;
 		}
 
 		if (lastCreatedPreviewEngine != null && lastCreatedHomeEngine == null) {
 			Log.d("LWP", "Created home engine!!!!!!!!");
-			ProjectManager.currentProjectManagerState = ProjectManagerState.HOME;
+			ProjectManager.changeState(ProjectManagerState.NORMAL);
 			lastCreatedHomeEngine = new LiveWallpaperEngine();
 			return lastCreatedHomeEngine;
 		}
 
 		loadProject(true);
-		ProjectManager.currentProjectManagerState = ProjectManagerState.PREVIEW;
+		ProjectManager.changeState(ProjectManagerState.PREVIEW);
 		lastCreatedPreviewEngine = new LiveWallpaperEngine();
 		Log.d("LWP", "Created preview engine!!!!!!!!");
 

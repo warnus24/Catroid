@@ -83,6 +83,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 	private ProjectManager projectManagerPreview = ProjectManager.getInstance(ProjectManagerState.PREVIEW);
 	private ProjectManager projectManagerHome = ProjectManager.getInstance(ProjectManagerState.HOME);
+	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.NORMAL);
 
 	private View selectAllActionModeButton;
 
@@ -167,7 +168,6 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			//	editor.putString(Constants.PREF_PROJECTNAME_KEY, selectedProject);
 			//	editor.commit();
 			//}
-
 			String str_loadable = ProjectLoadableEnum.IS_ALREADY_LOADED.toString();
 
 			if (projectManagerPreview.getCurrentProject() != null
@@ -177,12 +177,13 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 				return str_loadable;
 			}
 
-			boolean loadable = projectManagerPreview.loadProject(selectedProject, LiveWallpaper.getInstance()
+			boolean preview_loadable = projectManagerPreview.loadProject(selectedProject, LiveWallpaper.getInstance()
 					.getContext(), true);
 
-			loadable = projectManagerHome.loadProject(selectedProject, LiveWallpaper.getInstance().getContext(), true);
+			boolean home_loadable = projectManagerHome.loadProject(selectedProject, LiveWallpaper.getInstance()
+					.getContext(), true);
 
-			if (!loadable) {
+			if (!preview_loadable || !home_loadable) {
 				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
 				getFragmentManager().popBackStack();
 				str_loadable = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
