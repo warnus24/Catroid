@@ -38,6 +38,8 @@ dependencies {
 //    instrumentTestCompile fileTree(dir: 'catroidTest/libs', include: '*.jar')
     androidTestCompile 'junit:junit:4.8.2'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.1'
+    androidTestCompile 'net.erdfelt.android:apk-parser:1.1'
+    androidTestCompile 'org.eclipse.jetty.toolchain:jetty-test-helper:2.7'
     androidTestCompile files('libs/the-missing-android-xml-junit-test-runner-release-1.3_2.jar')
 
 }
@@ -168,3 +170,11 @@ if (signing_config_file.exists()) {
 }
 
 //apply from: '../gradle/idea.gradle'
+
+task assembleAndCopyAPK() << {
+    println "starting...."
+    println "assembleDebug"
+    tasks.assembleDebug.execute()
+
+    //TODO copy paste apk from project.build/apk/ to test resource
+}
