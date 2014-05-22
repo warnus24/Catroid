@@ -226,7 +226,7 @@ public class StageListenerLWP implements ApplicationListener {
 		project.getUserVariables().resetAllUserVariables();
 
 		reloadProject = true;
-		//this.firstStart = true;
+		this.firstStart = true;
 	}
 
 	@Override
