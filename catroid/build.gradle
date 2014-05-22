@@ -171,10 +171,14 @@ if (signing_config_file.exists()) {
 
 //apply from: '../gradle/idea.gradle'
 
-task assembleAndCopyAPK() << {
-    println "starting...."
-    println "assembleDebug"
-    tasks.assembleDebug.execute()
+task copyAPK(type: Copy) << {
+    from '$buildDir/apk'
+    into 'src/androidTest/res/apks'
+}
 
-    //TODO copy paste apk from project.build/apk/ to test resource
+task copyMethod(dependsOn: [assemble]) << {
+    copy {
+        from 'build/apk/catroid-release-unsigned.apk'
+        into 'src/androidTest/res/apks'
+    }
 }
