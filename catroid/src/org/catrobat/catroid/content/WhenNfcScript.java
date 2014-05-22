@@ -73,6 +73,17 @@ public class WhenNfcScript extends Script {
 		return brick;
 	}
 
+    @Override
+    public int getRequiredResources() {
+        int resources = Brick.NO_RESOURCES;
+        resources |= getScriptBrick().getRequiredResources();
+        ArrayList<Brick> brickList = getBrickList();
+        for (Brick brick : brickList) {
+            resources |= brick.getRequiredResources();
+        }
+        return resources;
+    }
+
 	public void setMatchAll(boolean matchAll) {
 		this.matchAll = matchAll;
 	}
@@ -87,15 +98,5 @@ public class WhenNfcScript extends Script {
 
     public void setNfcTag(NfcTagData nfcTag) {
         this.nfcTag = nfcTag;
-    }
-
-    public int getRequiredResources() {
-        int resources = Brick.NO_RESOURCES;
-        resources |= Brick.NFC_ADAPTER;
-        ArrayList<Brick> brickList = getBrickList();
-        for (Brick brick : brickList) {
-            resources |= brick.getRequiredResources();
-        }
-        return resources;
     }
 }

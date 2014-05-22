@@ -167,11 +167,9 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 		}
 
         if ((requiredResources & Brick.NFC_ADAPTER) > 0) {
-            Log.d(TAG, "requiredResourceCounter == Brick.NFC_ADAPTER");
             NfcAdapter adapter = NfcAdapter.getDefaultAdapter(getApplicationContext());
             if (adapter != null && !adapter.isEnabled())
             {
-                Log.d(TAG, "!adapter.isEnabled()");
                 Toast.makeText(getApplicationContext(), "Please activate NFC and press Back to return to the application!", Toast.LENGTH_LONG).show();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     Intent intent = new Intent(Settings.ACTION_NFC_SETTINGS);
@@ -181,7 +179,7 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
                     startActivity(intent);
                 }
             }
-            startStage();
+            resourceInitialized();
         }
 
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
