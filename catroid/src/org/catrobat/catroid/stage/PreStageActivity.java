@@ -132,7 +132,7 @@ public class PreStageActivity extends Activity {
 	}
 
 	public static void textToSpeech(String text, File speechFile, OnUtteranceCompletedListener listener,
-									HashMap<String, String> speakParameter) {
+			HashMap<String, String> speakParameter) {
 		if (text == null) {
 			text = "";
 		}
@@ -169,17 +169,18 @@ public class PreStageActivity extends Activity {
 			}
 			Bundle bundle = new Bundle();
 			bundle.putInt(DeviceListActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_LEGO_NXT);
-			bundle.putString(DeviceListActivity.RESOURCE_NAME_TEXT, getResources().getString(R.string.select_device_nxt));
+			bundle.putString(DeviceListActivity.RESOURCE_NAME_TEXT, getResources()
+					.getString(R.string.select_device_nxt));
 			BTResourceQueue.add(bundle);
 			//startBluetoothCommunication();
 		}
-		if ((requiredResources & Brick.BLUETOOTH_ARDUINO) > 0) {
-			Bundle bundle = new Bundle();
-			bundle.putInt(DeviceListActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_ARDUINO);
-			bundle.putString(DeviceListActivity.RESOURCE_NAME_TEXT,
-					getResources().getString(R.string.select_device_arduino));
-			BTResourceQueue.add(bundle);
-		}
+		//		if ((requiredResources & Brick.BLUETOOTH_ARDUINO) > 0) {
+		//			Bundle bundle = new Bundle();
+		//			bundle.putInt(DeviceListActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_ARDUINO);
+		//			bundle.putString(DeviceListActivity.RESOURCE_NAME_TEXT,
+		//					getResources().getString(R.string.select_device_arduino));
+		//			BTResourceQueue.add(bundle);
+		//		}
 
 		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
 			//set flag to start thread to update sensor values in formula editor
@@ -279,15 +280,15 @@ public class PreStageActivity extends Activity {
 								String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
 								legoNXT.startBTCommunicator(address);
 								break;
-							case (Brick.BLUETOOTH_ARDUINO):
-
-								String arduinoMacAddress = data.getExtras().getString(
-										DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-								arduino = new Arduino(this, recieveHandler);
-								arduino.startBTCommunicator(arduinoMacAddress);
-								connectingProgressDialog.dismiss();
-								resourceInitialized();
-								break;
+							//							case (Brick.BLUETOOTH_ARDUINO):
+							//
+							//								String arduinoMacAddress = data.getExtras().getString(
+							//										DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+							//								arduino = new Arduino(this, recieveHandler);
+							//								arduino.startBTCommunicator(arduinoMacAddress);
+							//								connectingProgressDialog.dismiss();
+							//								resourceInitialized();
+							//								break;
 							case (Brick.BLUETOOTH_SENSORS_ARDUINO):
 
 								String MacAddress = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
@@ -346,12 +347,12 @@ public class PreStageActivity extends Activity {
 									resourceFailed();
 								}
 							}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							dialog.cancel();
-							resourceFailed();
-						}
-					});
+								@Override
+								public void onClick(DialogInterface dialog, int id) {
+									dialog.cancel();
+									resourceFailed();
+								}
+							});
 					AlertDialog alert = builder.create();
 					alert.show();
 				}

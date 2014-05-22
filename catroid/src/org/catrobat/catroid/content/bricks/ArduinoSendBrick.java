@@ -63,7 +63,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_ARDUINO;
+		return BLUETOOTH_SENSORS_ARDUINO;
 	}
 
 	@Override
