@@ -35,6 +35,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
@@ -87,6 +89,48 @@ public class BTDummyClient {
 					// TODO Auto-generated catch block
 					Log.d("TestRobotAlbert", "error: testing 2nd variant");
 					Log.d("BTDummyClient.EEEEEERRRRRRROOOOORRRRR", e.getMessage());
+
+					try {
+
+					} catch (Exception e2) {
+						Log.d("TestRobotAlbert", "error: testing 3nd variant");
+						Method m;
+						try {
+							m = dummyServer.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
+						} catch (NoSuchMethodException e1) {
+							// TODO Auto-generated catch block
+							Log.d("TestRobotAlbert", "error: testing 3nd variant: NoSuchMethodException");
+							e1.printStackTrace();
+						}
+						try {
+							btSocket = (BluetoothSocket) m.invoke(dummyServer, 1);
+						} catch (IllegalArgumentException e1) {
+							Log.d("TestRobotAlbert", "error: testing 3nd variant: IllegalArgumentException");
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IllegalAccessException e1) {
+							Log.d("TestRobotAlbert", "error: testing 3nd variant: IllegalAccessException");
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (InvocationTargetException e1) {
+							Log.d("TestRobotAlbert", "error: testing 3nd variant: InvocationTargetException");
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+
+						try {
+							btSocket.connect();
+							Log.d("TestRobotAlbert", "after btSocket.connect();");
+							connected = true;
+							this.outputStream = btSocket.getOutputStream();
+							outputStream.write(option.getBytes(), 0, option.length());
+							outputStream.flush();
+						} catch (Exception e3) {
+							// TODO Auto-generated catch block
+							Log.d("TestRobotAlbert", "error: testing 3nd variant: some other error");
+							e3.printStackTrace();
+						}
+					}
 				}
 
 				Log.d("TestRobotAlbert", "connection established");
