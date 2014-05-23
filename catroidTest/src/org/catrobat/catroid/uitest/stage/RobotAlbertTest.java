@@ -161,13 +161,14 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 				"lenRec=" + lenRec + "\nlenSent1=" + lenSent1 + "\nlenWithSensor=" + receivedBufferOld.length());
 		assertTrue("messages reveived and sent are not equal", ok == true);
 
+		Log.d("TestRobotAlbert", "till now everthing is fine. Check for Sensordata...");
 		//BluetoothServer always sends a distance of 50.0
 		//if for whatever reason the previous attempt to read the current distance value 
 		//failed, check again but this time read it directly from SensorData-class
 		if (distanceLeft != 50.0) {
 			distanceLeft = SensorData.getInstance().getValueOfLeftDistanceSensor();
 		}
-
+		Log.d("TestRobotAlbert", "Sensordata is OK (distanceLeft = " + distanceLeft + ")");
 		assertEquals("Variable has the wrong value after stage", 50.0, distanceLeft);
 
 		solo.sleep(500);
