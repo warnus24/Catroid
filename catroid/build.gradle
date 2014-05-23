@@ -176,9 +176,10 @@ task copyAPK(type: Copy) << {
     into 'src/androidTest/res/apks'
 }
 
-task copyMethod(dependsOn: [assemble]) << {
+//task copyMethod(dependsOn: [assemble]) << {
+task copyMethod() << {
     copy {
         from 'build/apk/catroid-release-unsigned.apk'
-        into 'src/androidTest/res/apks'
+        into 'src/androidTest/assets'
     }
 }
