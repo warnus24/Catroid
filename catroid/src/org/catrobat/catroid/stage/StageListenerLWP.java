@@ -37,9 +37,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -101,7 +101,7 @@ public class StageListenerLWP implements ApplicationListener {
 	private Project project;
 
 	private OrthographicCamera camera;
-	private SpriteBatch batch;
+	private Batch batch;
 	private BitmapFont font;
 	private Passepartout passepartout;
 
@@ -158,7 +158,8 @@ public class StageListenerLWP implements ApplicationListener {
 		virtualWidthHalf = virtualWidth / 2;
 		virtualHeightHalf = virtualHeight / 2;
 
-		stage = new Stage(virtualWidth, virtualHeight, true);
+		stage = new Stage();
+		stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 		batch = stage.getSpriteBatch();
 
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
@@ -513,7 +514,7 @@ public class StageListenerLWP implements ApplicationListener {
 	private void initScreenMode() {
 		switch (project.getScreenMode()) {
 			case STRETCH:
-				stage.setViewport(virtualWidth, virtualHeight, false);
+				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = ScreenValues.SCREEN_WIDTH;
 				screenshotHeight = ScreenValues.SCREEN_HEIGHT;
 				screenshotX = 0;
@@ -521,7 +522,7 @@ public class StageListenerLWP implements ApplicationListener {
 				break;
 
 			case MAXIMIZE:
-				stage.setViewport(virtualWidth, virtualHeight, true);
+				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
 				screenshotX = maximizeViewPortX;
