@@ -29,6 +29,7 @@ import android.os.SystemClock;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.backends.android.AndroidWallpaperListener;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -37,9 +38,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -60,7 +61,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-public class StageListener implements ApplicationListener {
+public class StageListener implements ApplicationListener, AndroidWallpaperListener {
 
 	private static final int AXIS_WIDTH = 4;
 	private static final float DELTA_ACTIONS_DIVIDER_MAXIMUM = 50f;
@@ -100,7 +101,7 @@ public class StageListener implements ApplicationListener {
 	private Project project;
 
 	private OrthographicCamera camera;
-	private SpriteBatch batch;
+	private Batch batch;
 	private BitmapFont font;
 	private Passepartout passepartout;
 
@@ -146,7 +147,8 @@ public class StageListener implements ApplicationListener {
 		virtualWidthHalf = virtualWidth / 2;
 		virtualHeightHalf = virtualHeight / 2;
 
-		stage = new Stage(virtualWidth, virtualHeight, true);
+		stage = new Stage();
+		stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 		batch = stage.getSpriteBatch();
 
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
@@ -506,7 +508,7 @@ public class StageListener implements ApplicationListener {
 	private void initScreenMode() {
 		switch (project.getScreenMode()) {
 			case STRETCH:
-				stage.setViewport(virtualWidth, virtualHeight, false);
+				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = ScreenValues.SCREEN_WIDTH;
 				screenshotHeight = ScreenValues.SCREEN_HEIGHT;
 				screenshotX = 0;
@@ -514,7 +516,7 @@ public class StageListener implements ApplicationListener {
 				break;
 
 			case MAXIMIZE:
-				stage.setViewport(virtualWidth, virtualHeight, true);
+				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
 				screenshotX = maximizeViewPortX;
@@ -552,5 +554,29 @@ public class StageListener implements ApplicationListener {
 				lookData.getTextureRegion().getTexture().dispose();
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.badlogic.gdx.backends.android.AndroidWallpaperListener#offsetChange(float, float, float, float, int,
+	 * int)
+	 */
+	@Override
+	public void offsetChange(float xOffset, float yOffset, float xOffsetStep, float yOffsetStep, int xPixelOffset,
+			int yPixelOffset) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.badlogic.gdx.backends.android.AndroidWallpaperListener#previewStateChange(boolean)
+	 */
+	@Override
+	public void previewStateChange(boolean isPreview) {
+		// TODO Auto-generated method stub
+
 	}
 }

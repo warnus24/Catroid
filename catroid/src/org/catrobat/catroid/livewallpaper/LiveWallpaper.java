@@ -138,7 +138,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	}
 
 	@Override
-	public ApplicationListener createListener(boolean isPreview) {
+	public ApplicationListener createListener() {
 		setScreenSize(isPreview);
 
 		if (isPreview) {
