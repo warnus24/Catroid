@@ -25,10 +25,12 @@ package org.catrobat.catroid.stage;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.backends.android.AndroidWallpaperListener;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -61,7 +63,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-public class StageListenerLWP implements ApplicationListener {
+public class StageListenerLWP implements ApplicationListener, AndroidWallpaperListener {
 
 	private static final int AXIS_WIDTH = 4;
 	private static final float DELTA_ACTIONS_DIVIDER_MAXIMUM = 50f;
@@ -132,11 +134,7 @@ public class StageListenerLWP implements ApplicationListener {
 
 	private byte[] thumbnail;
 
-	private boolean isPreview = false;
-
-	public StageListenerLWP(boolean isPreview) {
-		this.isPreview = isPreview;
-	}
+	private boolean isPreview = true;
 
 	@Override
 	public void create() {
@@ -205,6 +203,8 @@ public class StageListenerLWP implements ApplicationListener {
 		for (Sprite sprite : sprites) {
 			sprite.resume();
 		}
+
+		Log.d("LWP", "StageListener menuResume()!!!!!");
 	}
 
 	public void menuPause() {
@@ -216,6 +216,8 @@ public class StageListenerLWP implements ApplicationListener {
 		for (Sprite sprite : sprites) {
 			sprite.pause();
 		}
+
+		Log.d("LWP", "StageListener menuPause()!!!!!");
 	}
 
 	public void reloadProject(LiveWallpaperEngine engine) {
@@ -227,7 +229,7 @@ public class StageListenerLWP implements ApplicationListener {
 		project.getUserVariables().resetAllUserVariables();
 
 		reloadProject = true;
-		this.firstStart = true;
+		//this.firstStart = true;
 	}
 
 	@Override
@@ -243,6 +245,8 @@ public class StageListenerLWP implements ApplicationListener {
 			sprite.look.refreshTextures();
 		}
 
+		Log.d("LWP", "StageListener resume()!!!!!");
+
 	}
 
 	@Override
@@ -256,6 +260,8 @@ public class StageListenerLWP implements ApplicationListener {
 				sprite.pause();
 			}
 		}
+
+		Log.d("LWP", "StageListener pause()!!!!!");
 	}
 
 	public void finish() {
@@ -560,5 +566,28 @@ public class StageListenerLWP implements ApplicationListener {
 				lookData.getTextureRegion().getTexture().dispose();
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.badlogic.gdx.backends.android.AndroidWallpaperListener#offsetChange(float, float, float, float, int,
+	 * int)
+	 */
+	@Override
+	public void offsetChange(float xOffset, float yOffset, float xOffsetStep, float yOffsetStep, int xPixelOffset,
+			int yPixelOffset) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.badlogic.gdx.backends.android.AndroidWallpaperListener#previewStateChange(boolean)
+	 */
+	@Override
+	public void previewStateChange(boolean isPreview) {
+		this.isPreview = isPreview;
 	}
 }
