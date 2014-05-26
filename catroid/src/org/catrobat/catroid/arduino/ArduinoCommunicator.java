@@ -56,7 +56,7 @@ public abstract class ArduinoCommunicator extends Thread {
 	protected Resources resources;
 
 	protected ArduinoControlCommands commands = new ArduinoControlCommands();
-	protected ArduinoSensorData sensors = ArduinoSensorData.getInstance();
+	protected ArduinoIncomingPinData sensors = ArduinoIncomingPinData.getInstance();
 
 	public ArduinoCommunicator(Handler uiHandler, Resources resources) {
 		this.uiHandler = uiHandler;

@@ -23,14 +23,10 @@
 package org.catrobat.catroid.formulaeditor;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.preference.PreferenceManager;
 import android.util.Log;
-
-import org.catrobat.catroid.arduino.ArduinoSensor;
 
 public final class SensorHandler implements SensorEventListener, SensorCustomEventListener {
 	private static final String TAG = SensorHandler.class.getSimpleName();
@@ -47,9 +43,6 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 	private float linearAcceleartionZ = 0f;
 
 	private float loudness = 0f;
-
-	private float arduinoPinValueDigital = 0f;
-	private float arduinoPinValueAnalog = 0f;
 
 	private SensorHandler(Context context) {
 		sensorManager = new SensorManager(
@@ -70,17 +63,6 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		instance.sensorManager.registerListener(instance, instance.rotationVectorSensor,
 				android.hardware.SensorManager.SENSOR_DELAY_NORMAL);
 		instance.sensorManager.registerListener(instance, Sensors.LOUDNESS);
-
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
-		if ((sharedPreferences.getBoolean(ArduinoSensor.KEY_SETTINGS_ARDUINO_BRICKS, false))) {
-			instance.sensorManager.registerListener(instance, Sensors.ARDUINODIGITAL);
-			instance.sensorManager.registerListener(instance, Sensors.ARDUINOANALOG);
-		} else if (sensor.getBooleanArduinoBricksUsed()) {
-			instance.sensorManager.registerListener(instance, Sensors.ARDUINODIGITAL);
-			instance.sensorManager.registerListener(instance, Sensors.ARDUINOANALOG);
-		}
-
 	}
 
 	public static void registerListener(SensorEventListener listener) {
@@ -165,12 +147,6 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 
 			case LOUDNESS:
 				return Double.valueOf(instance.loudness);
-
-			case ARDUINODIGITAL:
-				return Double.valueOf(instance.arduinoPinValueDigital);
-
-			case ARDUINOANALOG:
-				return Double.valueOf(instance.arduinoPinValueAnalog);
 		}
 		return 0d;
 	}
@@ -202,12 +178,6 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		switch (event.sensor) {
 			case LOUDNESS:
 				instance.loudness = event.values[0];
-				break;
-			case ARDUINOANALOG:
-				instance.arduinoPinValueAnalog = event.values[0];
-				break;
-			case ARDUINODIGITAL:
-				instance.arduinoPinValueDigital = event.values[0];
 				break;
 			default:
 				Log.v(TAG, "Unhandled sensor: " + event.sensor);

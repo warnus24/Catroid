@@ -66,9 +66,7 @@ public class ArduinoSendAction extends TemporalAction {
 	@Override
 	protected void update(float percent) {
 
-		Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue
-				+ "---------------");
-
+		Log.d("Arduino", "BT Message " + pinNumberLowerByte + "" + pinNumberHigherByte + "" + pinValue);
 		Arduino.sendArduinoDigitalPinMessage(pinNumberLowerByte, pinNumberHigherByte, pinValue);
 	}
 }

@@ -40,7 +40,7 @@ import android.widget.Toast;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.arduino.Arduino;
-import org.catrobat.catroid.arduino.ArduinoSensor;
+import org.catrobat.catroid.arduino.ArduinoReadPinData;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
@@ -184,7 +184,7 @@ public class PreStageActivity extends Activity {
 
 		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
 			//set flag to start thread to update sensor values in formula editor
-			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
+			ArduinoReadPinData sensor = ArduinoReadPinData.getArduinoSensorInstance();
 			sensor.setBooleanArduinoBricks(true);
 
 			Bundle bundle = new Bundle();
@@ -194,7 +194,7 @@ public class PreStageActivity extends Activity {
 			BTResourceQueue.add(bundle);
 		} else {
 			//disable flag to start thread to update sensor values in formula editor
-			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
+			ArduinoReadPinData sensor = ArduinoReadPinData.getArduinoSensorInstance();
 			sensor.setBooleanArduinoBricks(false);
 		}
 

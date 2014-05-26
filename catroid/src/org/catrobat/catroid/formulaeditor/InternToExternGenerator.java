@@ -77,9 +77,9 @@ public class InternToExternGenerator {
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.Y_INCLINATION.name(),
 				R.string.formula_editor_sensor_y_inclination);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.LOUDNESS.name(), R.string.formula_editor_sensor_loudness);
-		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.ARDUINODIGITAL.name(),
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Functions.ARDUINODIGITAL.name(),
 				R.string.formula_editor_sensor_arduino_read_pin_value_digital);
-		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.ARDUINOANALOG.name(),
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Functions.ARDUINOANALOG.name(),
 				R.string.formula_editor_sensor_arduino_read_pin_value_analog);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.OBJECT_X.name(), R.string.formula_editor_object_x);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.OBJECT_Y.name(), R.string.formula_editor_object_y);

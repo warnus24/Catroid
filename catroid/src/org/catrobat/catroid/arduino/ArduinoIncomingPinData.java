@@ -25,9 +25,9 @@ package org.catrobat.catroid.arduino;
 /**
  * Adrian Schnedlitz *
  */
-public final class ArduinoSensorData {
+public final class ArduinoIncomingPinData {
 
-	private static ArduinoSensorData instance = null;
+	private static ArduinoIncomingPinData instance = null;
 
 	//	private static Semaphore receiveSyncSemaphore = new Semaphore(1);
 
@@ -40,13 +40,13 @@ public final class ArduinoSensorData {
 	private int arduinoAnalogSensorLowerByte = 0;
 	private int arduinoAnalogSensorHigherByte = 0;
 
-	private ArduinoSensorData() {
+	private ArduinoIncomingPinData() {
 
 	}
 
-	public static ArduinoSensorData getInstance() {
+	public static ArduinoIncomingPinData getInstance() {
 		if (instance == null) {
-			instance = new ArduinoSensorData();
+			instance = new ArduinoIncomingPinData();
 		}
 		return instance;
 	}

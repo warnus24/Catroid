@@ -89,10 +89,10 @@ public class Formula implements Serializable {
 
 	//this is needed if there is a sensor that should be selected by default
 	public Formula(String value) {
-		if (value.equalsIgnoreCase(Sensors.ARDUINOANALOG.toString())) {
-			formulaTree = new FormulaElement(ElementType.SENSOR, Sensors.ARDUINOANALOG.toString(), null);
-		} else if (value.equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString())) {
-			formulaTree = new FormulaElement(ElementType.SENSOR, Sensors.ARDUINODIGITAL.toString(), null);
+		if (value.equalsIgnoreCase(Functions.ARDUINOANALOG.toString())) {
+			formulaTree = new FormulaElement(ElementType.SENSOR, Functions.ARDUINOANALOG.toString(), null);
+		} else if (value.equalsIgnoreCase(Functions.ARDUINODIGITAL.toString())) {
+			formulaTree = new FormulaElement(ElementType.SENSOR, Functions.ARDUINODIGITAL.toString(), null);
 		} else {
 			formulaTree = new FormulaElement(ElementType.NUMBER, value.toString(), null);
 		}
@@ -211,8 +211,8 @@ public class Formula implements Serializable {
 	public boolean containsArduinoSensors() {
 		List<InternToken> internTokenList = formulaTree.getInternTokenList();
 		for (InternToken internToken : internTokenList) {
-			if ((internToken.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINOANALOG.toString()) || internToken
-					.getTokenStringValue().equalsIgnoreCase(Sensors.ARDUINODIGITAL.toString()))) {
+			if ((internToken.getTokenStringValue().equalsIgnoreCase(Functions.ARDUINOANALOG.toString()) || internToken
+					.getTokenStringValue().equalsIgnoreCase(Functions.ARDUINODIGITAL.toString()))) {
 				return true;
 			}
 		}
