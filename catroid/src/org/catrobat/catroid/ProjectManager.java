@@ -60,8 +60,7 @@ import java.util.ArrayList;
 
 public final class ProjectManager implements OnLoadProjectCompleteListener, OnCheckTokenCompleteListener {
 	private static final ProjectManager INSTANCE = new ProjectManager();
-	private static final ProjectManager INSTANCE_LWP_PREVIEW = new ProjectManager();
-	private static final ProjectManager INSTANCE_LWP_HOME = new ProjectManager();
+	private static final ProjectManager INSTANCE_LWP = new ProjectManager();
 	private static final String TAG = ProjectManager.class.getSimpleName();
 
 	private Project project;
@@ -81,12 +80,8 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 
 	public static ProjectManager getInstance() {
 		switch (currentProjectManagerState) {
-			case PREVIEW:
-				return INSTANCE_LWP_PREVIEW;
-			case HOME:
-				return INSTANCE_LWP_HOME;
-			case NORMAL:
-				return INSTANCE;
+			case LWP:
+				return INSTANCE_LWP;
 			default:
 				return INSTANCE;
 		}
@@ -94,10 +89,8 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 
 	public static ProjectManager getInstance(ProjectManagerState projectManagerType) {
 		switch (projectManagerType) {
-			case PREVIEW:
-				return INSTANCE_LWP_PREVIEW;
-			case HOME:
-				return INSTANCE_LWP_HOME;
+			case LWP:
+				return INSTANCE_LWP;
 			case NORMAL:
 				return INSTANCE;
 		}
@@ -206,11 +199,8 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 
 	private void saveProjectNameToPreferences(Context context) {
 		switch (currentProjectManagerState) {
-			case PREVIEW:
-				Utils.saveToPreferences(context, Constants.PREF_LWP_PREVIEW_PROJECTNAME_KEY, project.getName());
-				break;
-			case HOME:
-				Utils.saveToPreferences(context, Constants.PREF_LWP_HOME_PROJECTNAME_KEY, project.getName());
+			case LWP:
+				Utils.saveToPreferences(context, Constants.PREF_LWP_PROJECTNAME_KEY, project.getName());
 				break;
 			case NORMAL:
 				Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());

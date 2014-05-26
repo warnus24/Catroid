@@ -81,8 +81,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	private static String deleteActionModeTitle;
 	private ProjectData projectToEdit;
 
-	private ProjectManager projectManagerPreview = ProjectManager.getInstance(ProjectManagerState.PREVIEW);
-	private ProjectManager projectManagerHome = ProjectManager.getInstance(ProjectManagerState.HOME);
+	private ProjectManager projectManagerLWP = ProjectManager.getInstance(ProjectManagerState.LWP);
 	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.NORMAL);
 
 	private View selectAllActionModeButton;
@@ -170,20 +169,17 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			//}
 			String str_loadable = ProjectLoadableEnum.IS_ALREADY_LOADED.toString();
 
-			if (projectManagerPreview.getCurrentProject() != null
-					&& projectManagerPreview.getCurrentProject().getName().equals(selectedProject)) {
+			if (projectManagerLWP.getCurrentProject() != null
+					&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
 				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
 				getFragmentManager().popBackStack();
 				return str_loadable;
 			}
 
-			boolean preview_loadable = projectManagerPreview.loadProject(selectedProject, LiveWallpaper.getInstance()
+			boolean preview_loadable = projectManagerLWP.loadProject(selectedProject, LiveWallpaper.getInstance()
 					.getContext(), true);
 
-			boolean home_loadable = projectManagerHome.loadProject(selectedProject, LiveWallpaper.getInstance()
-					.getContext(), true);
-
-			if (!preview_loadable || !home_loadable) {
+			if (!preview_loadable) {
 				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
 				getFragmentManager().popBackStack();
 				str_loadable = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
@@ -192,9 +188,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 			Editor editor = sharedPreferences.edit();
-			editor.putString(Constants.PREF_LWP_PREVIEW_PROJECTNAME_KEY, selectedProject);
-			editor.commit();
-			editor.putString(Constants.PREF_LWP_HOME_PROJECTNAME_KEY, selectedProject);
+			editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, selectedProject);
 			editor.commit();
 			str_loadable = ProjectLoadableEnum.IS_LOADABLE.toString();
 
@@ -346,7 +340,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	private void checkIfCurrentProgramSelectedForDeletion() {
 
 		boolean currentProgramSelected = false;
-		Project currentProject = projectManagerPreview.getCurrentProject();
+		Project currentProject = projectManagerLWP.getCurrentProject();
 		for (int position : adapter.getCheckedProjects()) {
 			ProjectData tempProjectData = (ProjectData) getListView().getItemAtPosition(position);
 			if (currentProject.getName().equalsIgnoreCase(tempProjectData.projectName)) {
@@ -427,7 +421,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		int numDeleted = 0;
 		for (int position : adapter.getCheckedProjects()) {
 			projectToEdit = (ProjectData) getListView().getItemAtPosition(position - numDeleted);
-			if (projectToEdit.projectName.equalsIgnoreCase(projectManagerPreview.getCurrentProject().getName())) {
+			if (projectToEdit.projectName.equalsIgnoreCase(projectManagerLWP.getCurrentProject().getName())) {
 				continue;
 			}
 			deleteProject();
@@ -435,8 +429,8 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		}
 
 		if (projectList.isEmpty()) {
-			projectManagerPreview.initializeDefaultProject(getActivity());
-		} else if (projectManagerPreview.getCurrentProject() == null) {
+			projectManagerLWP.initializeDefaultProject(getActivity());
+		} else if (projectManagerLWP.getCurrentProject() == null) {
 			Utils.saveToPreferences(getActivity().getApplicationContext(), Constants.PREF_PROJECTNAME_KEY,
 					projectList.get(0).projectName);
 		}

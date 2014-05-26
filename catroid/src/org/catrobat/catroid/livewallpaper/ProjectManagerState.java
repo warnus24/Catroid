@@ -27,5 +27,24 @@ package org.catrobat.catroid.livewallpaper;
  * 
  */
 public enum ProjectManagerState {
-	NORMAL, PREVIEW, HOME
+	NORMAL("NORMAL"), LWP("LWP");
+
+	/**
+	 * @param text
+	 */
+	private ProjectManagerState(final String text) {
+		this.text = text;
+	}
+
+	private final String text;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
+		return text;
+	}
 }

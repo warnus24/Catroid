@@ -82,8 +82,7 @@ public final class Constants {
 	public static final int BUFFER_8K = 8 * 1024;
 	public static final String POCKET_PAINT_DOWNLOAD_LINK = "market://details?id=" + POCKET_PAINT_PACKAGE_NAME;
 	public static final String PREF_PROJECTNAME_KEY = "projectName";
-	public static final String PREF_LWP_PREVIEW_PROJECTNAME_KEY = "lwpPreviewProjectName";
-	public static final String PREF_LWP_HOME_PROJECTNAME_KEY = "lwpHomeProjectName";
+	public static final String PREF_LWP_PROJECTNAME_KEY = "lwpProjectName";
 	public static final String PROJECTNAME_TO_LOAD = "projectNameToLoad";
 
 	//Services + Notifications

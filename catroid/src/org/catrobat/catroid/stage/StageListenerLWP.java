@@ -142,11 +142,7 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 		font.setColor(1f, 0f, 0.05f, 1f);
 		font.setScale(1.2f);
 
-		if (isPreview) {
-			project = ProjectManager.getInstance(ProjectManagerState.PREVIEW).getCurrentProject();
-		} else {
-			project = ProjectManager.getInstance(ProjectManagerState.HOME).getCurrentProject();
-		}
+		project = ProjectManager.getInstance(ProjectManagerState.LWP).getCurrentProject();
 
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";
 
@@ -157,7 +153,7 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 		virtualHeightHalf = virtualHeight / 2;
 
 		stage = new Stage();
-		stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
+		stage.getViewport().setWorldSize(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 		batch = stage.getSpriteBatch();
 
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
@@ -191,20 +187,25 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 		if (checkIfAutomaticScreenshotShouldBeTaken) {
 			makeAutomaticScreenshot = project.manualScreenshotExists(SCREENSHOT_MANUAL_FILE_NAME);
 		}
-
+		Log.d("LWP", "StageListener created!!!!!");
 	}
 
 	public void menuResume() {
+		Log.d("LWP", "StageListener menuResume() ANFANG");
 		if (reloadProject) {
 			return;
 		}
+		Log.d("LWP", "StageListener menuResume() 2");
 		paused = false;
+		Log.d("LWP", "StageListener menuResume() 3");
 		SoundManager.getInstance().resume();
+		Log.d("LWP", "StageListener menuResume() 4");
 		for (Sprite sprite : sprites) {
 			sprite.resume();
 		}
+		Log.d("LWP", "StageListener menuResume() 5");
 
-		Log.d("LWP", "StageListener menuResume()!!!!!");
+		Log.d("LWP", "StageListener menuResume() ENDE");
 	}
 
 	public void menuPause() {
@@ -221,15 +222,16 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 	}
 
 	public void reloadProject(LiveWallpaperEngine engine) {
+		this.lwpEngine = engine;
 		if (reloadProject) {
 			return;
 		}
-		this.lwpEngine = engine;
 
 		project.getUserVariables().resetAllUserVariables();
 
 		reloadProject = true;
 		//this.firstStart = true;
+		Log.d("LWP", "StageListener reloadProject!!!!!");
 	}
 
 	@Override
@@ -239,6 +241,8 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 			for (Sprite sprite : sprites) {
 				sprite.resume();
 			}
+
+			Log.d("LWP", "StageListener WIRKLICH resume()!!!!!");
 		}
 
 		for (Sprite sprite : sprites) {
@@ -251,6 +255,7 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 
 	@Override
 	public void pause() {
+		Log.d("LWP", "StageListener pause() anfang Methode!!!!!");
 		if (finished) {
 			return;
 		}
@@ -261,7 +266,7 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 			}
 		}
 
-		Log.d("LWP", "StageListener pause()!!!!!");
+		Log.d("LWP", "StageListener pause() ende Methode!!!!!");
 	}
 
 	public void finish() {
@@ -270,6 +275,8 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 		if (thumbnail != null && !makeAutomaticScreenshot) {
 			saveScreenshot(thumbnail, SCREENSHOT_AUTOMATIC_FILE_NAME);
 		}
+
+		Log.d("LWP", "StageListener finish()!!!!!");
 	}
 
 	/**
@@ -282,25 +289,29 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 			stage.addActor(sprite.look);
 			sprite.pause();
 		}
+
+		Log.d("LWP", "StageListener resetSprites()!!!!!");
 	}
 
 	@Override
 	public void render() {
-
+		//Log.d("LWP", "StageListener render!!!!!");
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		if (reloadProject) {
+			Log.d("LWP", "StageListener render  reloadProject 1!!!!!");
 			int spriteSize = sprites.size();
 			for (int i = 0; i < spriteSize; i++) {
 				sprites.get(i).pause();
 			}
 			stage.clear();
 			SoundManager.getInstance().clear();
-
+			Log.d("LWP", "StageListener render  reloadProject 2!!!!!");
 			Sprite sprite;
 			if (spriteSize > 0) {
 				sprites.get(0).look.setLookData(createWhiteBackgroundLookData());
 			}
+			Log.d("LWP", "StageListener render  reloadProject 3!!!!!");
 			for (int i = 0; i < spriteSize; i++) {
 				sprite = sprites.get(i);
 				sprite.resetSprite();
@@ -308,6 +319,7 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 				stage.addActor(sprite.look);
 				sprite.pause();
 			}
+			Log.d("LWP", "StageListener render  reloadProject 4!!!!!");
 			stage.addActor(passepartout);
 
 			paused = true;
@@ -316,14 +328,18 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 
 			if (lwpEngine != null) {
 				synchronized (lwpEngine) {
-					lwpEngine.onResume();
-					lwpEngine.notify();
+					Log.d("LWP", "StageListener render vor notify()!!!!!");
+					Log.d("LWP", "StageListener Listener isPreview (" + isPreview + ")");
+					Log.d("LWP", "StageListener, render Engine: " + lwpEngine.name);
+					lwpEngine.notifyAll();
+					Log.d("LWP", "StageListener render nach notify()!!!!!");
 				}
 			}
 		}
 
+		//Log.d("LWP", "StageListener render 1");
 		batch.setProjectionMatrix(camera.combined);
-
+		//Log.d("LWP", "StageListener render 2");
 		if (firstStart) {
 			int spriteSize = sprites.size();
 			if (spriteSize > 0) {
@@ -331,6 +347,7 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 			}
 			Sprite sprite;
 			for (int i = 0; i < spriteSize; i++) {
+				//Log.d("LWP", "StageListener render 3 Sprite-Size: " + spriteSize);
 				sprite = sprites.get(i);
 				sprite.createStartScriptActionSequence();
 				if (!sprite.getLookDataList().isEmpty()) {
@@ -338,6 +355,7 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 				}
 			}
 			firstStart = false;
+			//Log.d("LWP", "StageListener render 3.1");
 		}
 		if (!paused) {
 			float deltaTime = Gdx.graphics.getDeltaTime();
@@ -352,15 +370,20 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 			 * future EMMA - update will fix the bugs.
 			 */
 			if (DYNAMIC_SAMPLING_RATE_FOR_ACTIONS == false) {
+				//Log.d("LWP", "StageListener render 3.5");
 				stage.act(deltaTime);
 			} else {
 				float optimizedDeltaTime = deltaTime / deltaActionTimeDivisor;
 				long timeBeforeActionsUpdate = SystemClock.uptimeMillis();
 				while (deltaTime > 0f) {
+					//Log.d("LWP", "StageListener render 4");
 					stage.act(optimizedDeltaTime);
 					deltaTime -= optimizedDeltaTime;
+					//Log.d("LWP", "StageListener render 5");
 				}
+				//Log.d("LWP", "StageListener render 6");
 				long executionTimeOfActionsUpdate = SystemClock.uptimeMillis() - timeBeforeActionsUpdate;
+				//Log.d("LWP", "StageListener render 7");
 				if (executionTimeOfActionsUpdate <= ACTIONS_COMPUTATION_TIME_MAXIMUM) {
 					deltaActionTimeDivisor += 1f;
 					deltaActionTimeDivisor = Math.min(DELTA_ACTIONS_DIVIDER_MAXIMUM, deltaActionTimeDivisor);
@@ -372,36 +395,48 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 		}
 
 		if (!finished) {
+			//Log.d("LWP", "StageListener render 8");
 			stage.draw();
+			//Log.d("LWP", "StageListener render 9");
 		}
 
 		if (makeAutomaticScreenshot) {
 			if (skipFirstFrameForAutomaticScreenshot) {
 				skipFirstFrameForAutomaticScreenshot = false;
 			} else {
+				//Log.d("LWP", "StageListener render 10");
 				thumbnail = ScreenUtils.getFrameBufferPixels(screenshotX, screenshotY, screenshotWidth,
 						screenshotHeight, true);
+				//Log.d("LWP", "StageListener render 11");
 				makeAutomaticScreenshot = false;
 			}
 		}
 
 		if (makeScreenshot) {
+			//Log.d("LWP", "StageListener render 12");
 			screenshot = ScreenUtils.getFrameBufferPixels(screenshotX, screenshotY, screenshotWidth, screenshotHeight,
 					true);
+			//Log.d("LWP", "StageListener render 13");
 			makeScreenshot = false;
 		}
 
 		if (axesOn && !finished) {
+			//Log.d("LWP", "StageListener render 14");
 			drawAxes();
+			//Log.d("LWP", "StageListener render 15");
 		}
 
 		if (DEBUG) {
+			//Log.d("LWP", "StageListener render 16");
 			fpsLogger.log();
+			//Log.d("LWP", "StageListener render 17");
 		}
 
 		if (makeTestPixels) {
+			//Log.d("LWP", "StageListener render 18");
 			testPixels = ScreenUtils.getFrameBufferPixels(testX, testY, testWidth, testHeight, false);
 			makeTestPixels = false;
+			//Log.d("LWP", "StageListener render 19");
 		}
 
 	}
@@ -435,6 +470,8 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 		font.dispose();
 		axes.dispose();
 		disposeTextures();
+
+		Log.d("LWP", "StageListener disposed!!!!!");
 	}
 
 	public boolean makeManualScreenshot() {
@@ -589,5 +626,7 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 	@Override
 	public void previewStateChange(boolean isPreview) {
 		this.isPreview = isPreview;
+
+		Log.d("LWP", "StageListener previewState changed(" + isPreview + ")");
 	}
 }

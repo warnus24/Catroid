@@ -508,17 +508,17 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private void initScreenMode() {
 		switch (project.getScreenMode()) {
 			case STRETCH:
-				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = ScreenValues.SCREEN_WIDTH;
 				screenshotHeight = ScreenValues.SCREEN_HEIGHT;
+				stage.getViewport().setWorldSize(screenshotWidth, screenshotHeight);
 				screenshotX = 0;
 				screenshotY = 0;
 				break;
 
 			case MAXIMIZE:
-				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
+				stage.getViewport().setWorldSize(screenshotWidth, screenshotHeight);
 				screenshotX = maximizeViewPortX;
 				screenshotY = maximizeViewPortY;
 				break;
