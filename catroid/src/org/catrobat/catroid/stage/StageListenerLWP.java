@@ -44,6 +44,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
@@ -152,9 +153,10 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 		virtualWidthHalf = virtualWidth / 2;
 		virtualHeightHalf = virtualHeight / 2;
 
-		stage = new Stage();
+		stage = new Stage(new StretchViewport(virtualWidth, virtualHeight));
+
 		stage.getViewport().setWorldSize(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
-		batch = stage.getSpriteBatch();
+		batch = stage.getBatch();
 
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 		initScreenMode();
