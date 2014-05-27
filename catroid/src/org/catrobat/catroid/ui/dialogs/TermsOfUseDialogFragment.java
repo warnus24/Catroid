@@ -54,9 +54,9 @@ public class TermsOfUseDialogFragment extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle bundle) {
 		Bundle fragmentDialogArguments = getArguments();
-		boolean acceptTermsOfUse = false;
+		boolean isOnPreStageActivity = false;
 		if (fragmentDialogArguments != null) {
-			acceptTermsOfUse = fragmentDialogArguments.getBoolean(DIALOG_ARGUMENT_TERMS_OF_USE_ACCEPT, false);
+			isOnPreStageActivity = fragmentDialogArguments.getBoolean(DIALOG_ARGUMENT_TERMS_OF_USE_ACCEPT, false);
 		}
 
 		View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_terms_of_use, null);
@@ -72,45 +72,33 @@ public class TermsOfUseDialogFragment extends DialogFragment {
 		AlertDialog.Builder termsOfUseDialogBuilder = new AlertDialog.Builder(getActivity()).setView(view).setTitle(
 				R.string.dialog_terms_of_use_title);
 
-		if (!acceptTermsOfUse) {
-			termsOfUseDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
+		termsOfUseDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				if (checkboxTermsOfUseAccptedPermanently != null && checkboxTermsOfUseAccptedPermanently.isChecked()) {
+					SettingsActivity.setTermsOfSerivceAgreedPermanently(getActivity(), true);
 				}
-			});
-		} else {
-			termsOfUseDialogBuilder.setNegativeButton(R.string.dialog_terms_of_use_do_not_agree,
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							getActivity().finish();
-							dialog.dismiss();
-						}
-					});
-			termsOfUseDialogBuilder.setPositiveButton(R.string.dialog_terms_of_use_agree,
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int id) {
-							if (checkboxTermsOfUseAccptedPermanently.isChecked()) {
-								SettingsActivity.setTermsOfSerivceAgreedPermanently(getActivity(), true);
-							}
-							dialog.dismiss();
-							DroneInitialiser droneInitialiser = ((PreStageActivity) getActivity())
-									.getDroneInitialiser();
-							if (droneInitialiser != null) {
-								droneInitialiser.initialiseDrone();
-							}
-						}
-					});
-			termsOfUseDialogBuilder.setOnKeyListener(new OnKeyListener() {
-				@Override
-				public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-					Log.d(TAG, "prevent canceling the dialog with back button");
-					return true;
-				}
-			});
 
+				if (getActivity() instanceof PreStageActivity) {
+					DroneInitialiser droneInitialiser = ((PreStageActivity) getActivity()).getDroneInitialiser();
+					if (droneInitialiser != null) {
+						droneInitialiser.initialiseDrone();
+					}
+				}
+
+				dialog.dismiss();
+			}
+		});
+
+		termsOfUseDialogBuilder.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+				Log.d(TAG, "prevent canceling the dialog with back button");
+				return true;
+			}
+		});
+
+		if (isOnPreStageActivity) {
 			checkboxTermsOfUseAccptedPermanently = (CheckBox) view
 					.findViewById(R.id.dialog_terms_of_use_check_box_agree_permanently);
 			checkboxTermsOfUseAccptedPermanently.setVisibility(CheckBox.VISIBLE);
@@ -119,7 +107,7 @@ public class TermsOfUseDialogFragment extends DialogFragment {
 		}
 
 		AlertDialog termsOfUseDialog = termsOfUseDialogBuilder.create();
-		if (!acceptTermsOfUse) {
+		if (!isOnPreStageActivity) {
 			termsOfUseDialog.setCanceledOnTouchOutside(true);
 		} else {
 			termsOfUseDialog.setCancelable(false);

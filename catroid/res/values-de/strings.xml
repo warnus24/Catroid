@@ -56,9 +56,7 @@
     <string name="main_menu_web">Erkunden</string>
     <string name="main_menu_upload">Hochladen</string>
     <string name="main_menu_about_pocketcode">Über Pocket Code</string>
-    
     <string name="main_menu_terms_of_use">Nutzungsbedingungen</string>
- 
     <string name="main_menu_rate_app">Bewerte uns!</string>
     <string name="main_menu_play_store_not_installed">Play Store App nicht gefunden</string>
     <string name="main_menu_web_dialog_title">Achtung!</string>
@@ -97,8 +95,6 @@
     dem folgenden "Terms of Use" Link zur Verfügung.\n</string>
     <string name="dialog_terms_of_use_link_text">Terms of Use</string>
     <string name="dialog_terms_of_use_agree_permanet">Ich stimme immer zu --- frage mich nicht noch einmal. Ich übernehme auch die Verantworung, wenn jemand anderer mein Gerät verwendet.</string>
-    <string name="dialog_terms_of_use_agree">Ich stimme zu</string>
-    <string name="dialog_terms_of_use_do_not_agree">Ich stimme nicht zu</string>
     <!--  -->
 
 
@@ -438,10 +434,11 @@
     <string name="default_project_var_random_to">zufällig bis</string>
     <!--  -->
 
+
     <!-- defaultdroneValues -->
-    <string name="default_drone_project_name">Mein erstes Drohnen-Programm</string>  
+    <string name="default_drone_project_name">Mein erstes Drohnen-Programm</string>
     <string name="default_drone_project_sprites_takeoff">Abheben</string>
-    
+
     <!-- <string name="default_drone_project_sprites_blink_led">LED blinken</string> -->
     <string name="default_drone_project_srpites_land">Landen</string>
     <string name="default_drone_project_srpites_rotate">Flip</string>
@@ -454,7 +451,7 @@
     <string name="default_drone_project_sprites_turn_left">Drehe links</string>
     <string name="default_drone_project_sprites_turn_right">Drehe rechts</string>
     <!--  -->
-    
+
 
     <!-- Notifications -->
     <string name="notification_invalid_text_entered">Bitte einen Wert eingeben</string>
@@ -498,7 +495,7 @@
     <string name="error_copy_project">Beim kopieren des Programms ist ein Fehler aufgetreten.</string>
     <string name="error_upload_project_with_default_name">Das Programm mit dem Namen \'Mein erstes Programm\' kann nicht hochgeladen werden. Bitte das Programm umbenennen.</string>
     <string name="error_upload_default_project">Das Programm entspricht dem Programm \'Mein erstes Programm\'. Bitte ändere es und versuche es noch einmal.</string>
-    <string name="error_no_drone_connected_title">Finde keine ARDrone</string>    
+    <string name="error_no_drone_connected_title">Finde keine ARDrone</string>
     <string name="error_no_drone_connected">Verbinde dich mit dem WLan der Drone und probier es nochmal.</string>
     <string name="error_drone_low_battery_title">Dronen Batterie fast leer: %d%%</string>
     <string name="error_drone_low_battery">Lege einen geladenen Akku ein und probier es noch einmal.</string>
@@ -507,6 +504,7 @@
     <string name="error_drone_not_available_in_release_build_title">ARDrone Projekt nicht verfügbar</string>
     <string name="error_drone_not_available_in_release_build">Leider können wir derzeit noch keine Projekte mit ARDronen Bausteinen ausführen.</string>
     <!--  -->
+
 
     <!-- Bluetooth Connection Strings -->
     <string name="notification_blueth_err">Bluetooth konnte nicht aktiviert werden, schließe Bühne</string>
@@ -523,6 +521,7 @@
     <string name="none_found">Keine nicht verbundenen Geräte gefunden</string>
     <string name="none_paired">Keine verbundenen Geräte gefunden</string>
     <!--  -->
+
 
     <!-- Lego Mindstorms Strings -->
     <string name="brick_motor_action">NXT bewege Motor</string>
@@ -541,7 +540,8 @@
     <string name="nxt_motor_a_and_c">A+C</string>
     <string name="nxt_motor_all">Alle</string>
     <!--  -->
-    
+
+
     <!-- Drone Bricks -->
     <string name="brick_drone_takeoff">Hebe ab</string>
     <string name="brick_drone_play_led_animation">Spiele LED-Animation</string>
@@ -560,6 +560,7 @@
     <string name="brick_drone_turn_right_magneto">Drehe nach rechts</string>
     <string name="brick_drone_angle">Winkel</string>
     <!--  -->
+
 
     <!-- Formula Editor Strings -->
     <string name="formula_editor_true">Wahr</string>
