@@ -171,8 +171,8 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 			if (projectManagerLWP.getCurrentProject() != null
 					&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
-				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-				getFragmentManager().popBackStack();
+				//getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
+				//getFragmentManager().popBackStack();
 				return str_loadable;
 			}
 
