@@ -63,9 +63,12 @@ public class DroneConnection implements StageResourceInterface, DroneReadyReceiv
 
 	@Override
 	public void initialise() {
-		//TODO Drone: process reuturn value
-		if (prepareDroneRessources()) {
-			Log.d(TAG, "Failure during drone service startup");
+		droneIsRequired = stageStartIntent.getBooleanExtra(DroneInitialiser.INIT_DRONE_STRING_EXTRA, false);
+		if (BuildConfig.DEBUG && droneIsRequired) {
+			droneReadyReceiver = new DroneReadyReceiver(this);
+			droneConnectionChangeReceiver = new DroneConnectionChangedReceiver(this);
+			stageActivityContext.bindService(new Intent(stageActivityContext, DroneControlService.class),
+					this.droneServiceConnection, Context.BIND_AUTO_CREATE);
 		}
 	}
 
@@ -73,15 +76,14 @@ public class DroneConnection implements StageResourceInterface, DroneReadyReceiv
 	public void start() {
 		if (BuildConfig.DEBUG) {
 			if (droneControlService != null) {
-				Log.d(TAG, "droneControlService .. onResume");
 				droneControlService.resume();
 				DroneServiceWrapper.getInstance().setDroneService(droneControlService);
 			}
+
 			LocalBroadcastManager manager = LocalBroadcastManager.getInstance(stageActivityContext);
 			manager.registerReceiver(droneReadyReceiver, new IntentFilter(DroneControlService.DRONE_STATE_READY_ACTION));
 			manager.registerReceiver(droneConnectionChangeReceiver, new IntentFilter(
 					DroneControlService.DRONE_CONNECTION_CHANGED_ACTION));
-
 		}
 	}
 
@@ -100,22 +102,11 @@ public class DroneConnection implements StageResourceInterface, DroneReadyReceiv
 
 	@Override
 	public void destroy() {
-		helpUnbindDroneService();
-	}
-
-	private boolean prepareDroneRessources() {
-		if (BuildConfig.DEBUG) {
-			droneIsRequired = stageStartIntent.getBooleanExtra(DroneInitialiser.INIT_DRONE_STRING_EXTRA, false);
-			Log.d(TAG, "prepareRessources() initDrone=" + droneIsRequired.toString());
-			if (droneIsRequired) {
-				droneReadyReceiver = new DroneReadyReceiver(this);
-				droneConnectionChangeReceiver = new DroneConnectionChangedReceiver(this);
-
-				helpBindDroneService();
-			}
-			return true;
+		if (droneControlService != null) {
+			stageActivityContext.unbindService(droneServiceConnection);
+			droneServiceConnection = null;
+			droneControlService = null;
 		}
-		return false;
 	}
 
 	private void onDroneServiceConnected(IBinder service) {
@@ -145,26 +136,6 @@ public class DroneConnection implements StageResourceInterface, DroneReadyReceiv
 
 	};
 
-	private void helpUnbindDroneService() {
-		if (droneControlService != null) {
-			stageActivityContext.unbindService(droneServiceConnection);
-			droneServiceConnection = null;
-			droneControlService = null;
-		}
-	}
-
-	private boolean helpBindDroneService() {
-		boolean droneServiceWasCreated = false;
-		if (droneControlService == null) {
-			droneServiceWasCreated = stageActivityContext.bindService(new Intent(stageActivityContext,
-					DroneControlService.class), this.droneServiceConnection, Context.BIND_AUTO_CREATE);
-			if (!droneServiceWasCreated) {
-				Log.d(TAG, "Connection to the drone not successful");
-			}
-		}
-		return droneServiceWasCreated;
-	}
-
 	@Override
 	public void onDroneReady() {
 		Log.d(TAG, "onDroneReady");
@@ -179,6 +150,5 @@ public class DroneConnection implements StageResourceInterface, DroneReadyReceiv
 	@Override
 	public void onDroneDisconnected() {
 		Log.d(TAG, "onDroneDisconnected");
-		//Nothing to do here
 	}
 }

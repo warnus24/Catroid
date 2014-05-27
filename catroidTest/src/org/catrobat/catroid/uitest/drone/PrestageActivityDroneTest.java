@@ -103,6 +103,7 @@ public class PrestageActivityDroneTest extends BaseActivityInstrumentationTestCa
 		assertTrue("Terms of use title must be present in dialog head",
 				solo.searchText(solo.getString(R.string.dialog_terms_of_use_title)));
 
+		//solo.clickOnButton(2);
 		solo.clickOnText(solo.getString(R.string.dialog_terms_of_use_agree), 2);
 		solo.waitForDialogToOpen();
 		solo.clickOnText(solo.getString(R.string.close));
@@ -111,6 +112,7 @@ public class PrestageActivityDroneTest extends BaseActivityInstrumentationTestCa
 		assertNotNull("Check box must me present", checkbox);
 		solo.clickOnText(solo.getString(R.string.dialog_terms_of_use_agree_permanet));
 		assertTrue("checkbox must be checked", checkbox.isChecked());
+		//solo.clickOnButton(2);
 		solo.clickOnText(solo.getString(R.string.dialog_terms_of_use_agree), 2);
 		solo.waitForDialogToOpen();
 		solo.waitForText(solo.getString(R.string.error_no_drone_connected_title));

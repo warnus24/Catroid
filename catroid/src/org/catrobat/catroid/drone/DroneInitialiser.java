@@ -84,47 +84,42 @@ public class DroneInitialiser implements DroneReadyReceiverDelegate, DroneConnec
 		this.returnToActivityIntent = returnToActivityIntent;
 	}
 
-	public void initialise() {
+	private void showTermsOfUseDialog() {
+		Bundle args = new Bundle();
+		args.putBoolean(TermsOfUseDialogFragment.DIALOG_ARGUMENT_TERMS_OF_USE_ACCEPT, true);
+		TermsOfUseDialogFragment termsOfUseDialog = new TermsOfUseDialogFragment();
+		termsOfUseDialog.setArguments(args);
+		termsOfUseDialog.show(prestageStageActivity.getSupportFragmentManager(),
+				TermsOfUseDialogFragment.DIALOG_FRAGMENT_TAG);
+	}
+
+	public void init() {
 		if (SettingsActivity.areTermsOfSericeAgreedPermanently(prestageStageActivity.getApplicationContext())) {
-			initialiseDrone();
+			returnToActivityIntent.putExtra(INIT_DRONE_STRING_EXTRA, true);
+			if (checkRequirements()) {
+				checkDroneConnectivity();
+			}
 		} else {
-			Bundle args = new Bundle();
-			args.putBoolean(TermsOfUseDialogFragment.DIALOG_ARGUMENT_TERMS_OF_USE_ACCEPT, true);
-			TermsOfUseDialogFragment termsOfUseDialog = new TermsOfUseDialogFragment();
-			termsOfUseDialog.setArguments(args);
-			termsOfUseDialog.show(prestageStageActivity.getSupportFragmentManager(),
-					TermsOfUseDialogFragment.DIALOG_FRAGMENT_TAG);
+			showTermsOfUseDialog();
 		}
 	}
 
-	public void initialiseDrone() {
-		if (!BuildConfig.DEBUG) {
-			Log.d(TAG, "drone is not available in release build");
-			showUncancelableErrorDialog(prestageStageActivity,
-					prestageStageActivity.getString(R.string.error_drone_not_available_in_release_build_title),
-					prestageStageActivity.getString(R.string.error_drone_not_available_in_release_build));
-			return;
-		}
-
+	public boolean checkRequirements() {
 		if (!CatroidApplication.OS_ARCH.startsWith("arm")) {
-			Log.d(TAG, "problem, we are on arm");
 			showUncancelableErrorDialog(prestageStageActivity,
 					prestageStageActivity.getString(R.string.error_drone_wrong_platform_title),
 					prestageStageActivity.getString(R.string.error_drone_wrong_platform));
-			return;
+			return false;
 		}
 
 		if (!CatroidApplication.parrotNativeLibsAlreadyLoadedOrLoadingWasSucessful()) {
 			showUncancelableErrorDialog(prestageStageActivity,
 					prestageStageActivity.getString(R.string.error_drone_wrong_platform_title),
 					prestageStageActivity.getString(R.string.error_drone_wrong_platform));
-			return;
+			return false;
 		}
 
-		Log.d(TAG, "Adding drone support!");
-		returnToActivityIntent.putExtra(INIT_DRONE_STRING_EXTRA, true);
-
-		checkDroneConnectivity();
+		return true;
 	}
 
 	public static void showUncancelableErrorDialog(final PreStageActivity context, String title, String message) {
@@ -136,7 +131,6 @@ public class DroneInitialiser implements DroneReadyReceiverDelegate, DroneConnec
 		builder.setNeutralButton(R.string.close, new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				//TODO Drone: shut down nicely all resources and go back to the activity we came from
 				context.resourceFailed();
 			}
 		});
@@ -146,7 +140,6 @@ public class DroneInitialiser implements DroneReadyReceiverDelegate, DroneConnec
 	private void onDroneServiceConnected(IBinder service) {
 		Log.d(TAG, "onDroneServiceConnected");
 		droneControlService = ((DroneControlService.LocalBinder) service).getService();
-
 		droneControlService.resume();
 		droneControlService.requestDroneStatus();
 	}
@@ -160,7 +153,7 @@ public class DroneInitialiser implements DroneReadyReceiverDelegate, DroneConnec
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
-			droneControlService = null; //nothing else to do here
+			droneControlService = null;
 		}
 	};
 
@@ -170,7 +163,6 @@ public class DroneInitialiser implements DroneReadyReceiverDelegate, DroneConnec
 		}
 
 		Boolean isDroneRequired = oldIntent.getBooleanExtra(INIT_DRONE_STRING_EXTRA, false);
-		Log.d(TAG, "Extra STRING_EXTRA_INIT_DRONE=" + isDroneRequired.toString());
 		newIntent.putExtra(INIT_DRONE_STRING_EXTRA, isDroneRequired);
 	}
 
@@ -189,31 +181,22 @@ public class DroneInitialiser implements DroneReadyReceiverDelegate, DroneConnec
 
 	@Override
 	public void onDroneConnected() {
-		// We still waiting for onDroneReady event
-		Log.d(TAG, "onDroneConnected, requesting Config update and wait for drone ready.");
 		droneControlService.requestConfigUpdate();
 	}
 
 	@Override
 	public void onDroneDisconnected() {
-		//nothing to do
 	}
 
 	@Override
 	public void onDroneAvailabilityChanged(boolean isDroneOnNetwork) {
 		// Here we know that the drone is on the network
-		Log.d(TAG, "Drone availability  = " + isDroneOnNetwork);
 		if (isDroneOnNetwork) {
 			Intent startService = new Intent(prestageStageActivity, DroneControlService.class);
+			prestageStageActivity.startService(startService);
 
-			Object obj = prestageStageActivity.startService(startService);
-
-			boolean isSuccessful = prestageStageActivity.bindService(new Intent(prestageStageActivity,
-					DroneControlService.class), this.droneServiceConnection, Context.BIND_AUTO_CREATE);
-			// TODO Drone: Condition has no effect, even drone is not connected a connection will be "established"
-			if (obj == null || !isSuccessful) {
-				prestageStageActivity.resourceFailed();
-			}
+			prestageStageActivity.bindService(new Intent(prestageStageActivity, DroneControlService.class),
+					this.droneServiceConnection, Context.BIND_AUTO_CREATE);
 		} else {
 			showUncancelableErrorDialog(prestageStageActivity,
 					prestageStageActivity.getString(R.string.error_no_drone_connected_title),
@@ -252,7 +235,7 @@ public class DroneInitialiser implements DroneReadyReceiverDelegate, DroneConnec
 	}
 
 	@SuppressLint("NewApi")
-	private void checkDroneConnectivity() {
+	public void checkDroneConnectivity() {
 		if (checkDroneConnectionTask != null && checkDroneConnectionTask.getStatus() != Status.FINISHED) {
 			checkDroneConnectionTask.cancel(true);
 		}

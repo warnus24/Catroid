@@ -37,6 +37,7 @@ import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BluetoothManager;
@@ -113,10 +114,9 @@ public class PreStageActivity extends BaseActivity {
 				}
 			}
 		}
-
-		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
+		if (BuildConfig.DEBUG && (requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
 			droneInitialiser = getDroneInitialiser();
-			droneInitialiser.initialise();
+			droneInitialiser.init();
 		}
 
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
