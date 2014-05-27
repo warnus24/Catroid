@@ -47,7 +47,6 @@ public class ProgramMenuActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null && bundle.containsKey(FORWARD_TO_SCRIPT_ACTIVITY)) {
 			Intent intent = new Intent(this, ScriptActivity.class);

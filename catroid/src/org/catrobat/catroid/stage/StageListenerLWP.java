@@ -323,7 +323,7 @@ public class StageListenerLWP implements ApplicationListener, AndroidWallpaperLi
 			}
 			Log.d("LWP", "StageListener render  reloadProject 4!!!!!");
 			stage.addActor(passepartout);
-
+			Log.d("LWP", "StageListener render  reloadProject 5!!!!!");
 			paused = true;
 			firstStart = true;
 			reloadProject = false;

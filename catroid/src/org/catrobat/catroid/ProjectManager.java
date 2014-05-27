@@ -82,6 +82,8 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		switch (currentProjectManagerState) {
 			case LWP:
 				return INSTANCE_LWP;
+			case NORMAL:
+				return INSTANCE;
 			default:
 				return INSTANCE;
 		}
@@ -93,9 +95,9 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 				return INSTANCE_LWP;
 			case NORMAL:
 				return INSTANCE;
+			default:
+				return INSTANCE;
 		}
-
-		return INSTANCE;
 	}
 
 	public void uploadProject(String projectName, FragmentActivity fragmentActivity) {

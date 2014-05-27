@@ -44,6 +44,7 @@ import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.stage.StageListenerLWP;
+import org.catrobat.catroid.utils.Utils;
 
 @SuppressLint("NewApi")
 //eventuell unnötig 10 intern 15 vorraussetzen Fehlerfall abfangen API Level vorraussetzen  prüfen mit 10
@@ -53,6 +54,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private Context context;
 	private boolean previewEnginePaused;
 	private boolean homeEnginePaused;
+	private String oldProjectName;
 
 	private LiveWallpaperEngine previewEngine;
 	private LiveWallpaperEngine homeEngine;
@@ -66,6 +68,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	public static LiveWallpaper getInstance() {
 		return INSTANCE;
+	}
+
+	public void saveOldProjectName(String name) {
+		this.oldProjectName = name;
 	}
 
 	/**
@@ -115,6 +121,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			//		false);
 			context = this;
 		}
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		oldProjectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
 
 		Log.d("LWP", "Neuer Service wurde geladen");
 	}
@@ -141,6 +149,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public void onDestroy() {
 		Log.d("LWP", "Service wird zerstört");
 		ProjectManager.changeState(ProjectManagerState.NORMAL);
+		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, oldProjectName);
 		INSTANCE = null;
 		super.onDestroy();
 		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
