@@ -41,8 +41,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.common.NfcTagData;
-import org.catrobat.catroid.nfc.NfcHandler;
+import org.catrobat.catroid.drone.DroneInitialiser;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
@@ -56,7 +55,6 @@ import org.catrobat.catroid.ui.fragment.NfcTagFragment;
 import org.catrobat.catroid.ui.fragment.ScriptActivityFragment;
 import org.catrobat.catroid.ui.fragment.ScriptFragment;
 import org.catrobat.catroid.ui.fragment.SoundFragment;
-import org.catrobat.catroid.utils.Utils;
 
 import java.util.concurrent.locks.Lock;
 
@@ -289,7 +287,7 @@ public class ScriptActivity extends BaseActivity {
 
 		if (requestCode == PreStageActivity.REQUEST_RESOURCES_INIT && resultCode == RESULT_OK) {
 			Intent intent = new Intent(ScriptActivity.this, StageActivity.class);
-			PreStageActivity.addDroneSupportExtraToNewIntentIfPresentInOldIntent(data, intent);
+			DroneInitialiser.addDroneSupportExtraToNewIntentIfPresentInOldIntent(data, intent);
 			startActivity(intent);
 		}
 	}
