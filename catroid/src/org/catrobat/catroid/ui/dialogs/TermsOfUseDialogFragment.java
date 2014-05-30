@@ -98,10 +98,8 @@ public class TermsOfUseDialogFragment extends DialogFragment {
 							dialog.dismiss();
 							DroneInitialiser droneInitialiser = ((PreStageActivity) getActivity())
 									.getDroneInitialiser();
-							if (droneInitialiser != null) {
-								if (droneInitialiser.checkRequirements()) {
-									droneInitialiser.checkDroneConnectivity();
-								}
+							if (droneInitialiser != null && droneInitialiser.checkRequirements()) {
+								droneInitialiser.checkDroneConnectivity();
 							}
 						}
 					});
