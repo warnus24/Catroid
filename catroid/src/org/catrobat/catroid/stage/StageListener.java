@@ -24,6 +24,7 @@ package org.catrobat.catroid.stage;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.Color;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -32,7 +33,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.backends.android.AndroidWallpaperListener;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -137,6 +137,8 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	private boolean isPreview = true;
 	private boolean isLWP = false;
+	private boolean isTinting = false;
+	private com.badlogic.gdx.graphics.Color tintingColor = null;
 
 	public StageListener(boolean isLWP) {
 		super();
@@ -146,6 +148,31 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	public StageListener() {
 		super();
 		isLWP = false;
+	}
+
+	public void setTintingColor(int c) {
+		float a = Color.alpha(c);
+		float r = Color.red(c);
+		float g = Color.green(c);
+		float b = Color.blue(c);
+		Log.d("LWP", "Color(" + r + ", " + g + ", " + b + ", " + a + ")");
+		tintingColor = new com.badlogic.gdx.graphics.Color(r / 255, g / 255, b / 255, a / 255);
+	}
+
+	public void tinting() {
+		if (isTinting) {
+			for (Sprite sprite : sprites) {
+				sprite.look.setColor(tintingColor);
+			}
+		} else {
+			for (Sprite sprite : sprites) {
+				sprite.look.setColor(1, 1, 1, 1);
+			}
+		}
+	}
+
+	public void setTinting(boolean isTinting) {
+		this.isTinting = isTinting;
 	}
 
 	@Override
@@ -395,6 +422,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 
 		if (!finished) {
+			tinting();
 			stage.draw();
 		}
 

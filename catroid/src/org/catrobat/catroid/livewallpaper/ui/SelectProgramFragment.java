@@ -98,6 +98,10 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		initListeners();
 	}
 
+	public void disableTinting() {
+		LiveWallpaper.getInstance().disableTinting();
+	}
+
 	private void initListeners() {
 		File rootDirectory = new File(Constants.DEFAULT_ROOT);
 		File projectCodeFile;
@@ -489,5 +493,12 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	public void onProjectChecked() {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @param tintingColor2
+	 */
+	public void tinting(int tintingColor) {
+		LiveWallpaper.getInstance().tinting(tintingColor);
 	}
 }

@@ -618,9 +618,11 @@
  	
  	<string name="pocket_code_not_installed">Pocket Code is not installed. Do you want to install it?</string>
  	
- 	<string name="delete">Delete</string>
+ 	<string name="lwp_delete">Delete</string>
  	<string name="lwp_new">New</string>
+ 	<string name="lwp_tinting">Tinting</string>
  	<string name="lwp_about">About</string>
  	<string name="lwp_enable_sound">Enable sounds</string>
+ 	<string name="lwp_disable_tinting">Disable tinting</string>
 	<!--  -->
 </resources>

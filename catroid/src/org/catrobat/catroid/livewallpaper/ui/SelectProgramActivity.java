@@ -24,6 +24,7 @@ package org.catrobat.catroid.livewallpaper.ui;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -32,12 +33,14 @@ import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
 
-public class SelectProgramActivity extends BaseActivity {
+public class SelectProgramActivity extends BaseActivity implements ColorPickerDialog.OnColorChangedListener {
 
 	public static final String ACTION_PROJECT_LIST_INIT = "org.catroba Fragment.PROJECT_LIST_INIT";
 
 	private SelectProgramFragment selectProgramFragment;
+	private int tintingColor = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,8 +94,27 @@ public class SelectProgramActivity extends BaseActivity {
 
 				break;
 			}
+			case R.id.lwp_tinting: {
+				tinting();
+				break;
+			}
+			case R.id.lwp_disable_tinting: {
+				disableTinting();
+				break;
+			}
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void disableTinting() {
+		selectProgramFragment.disableTinting();
+	}
+
+	public void tinting() {
+		Paint mPaint = new Paint();
+		ColorPickerDialog dialog = new ColorPickerDialog(SelectProgramActivity.this, SelectProgramActivity.this,
+				mPaint.getColor());
+		dialog.show();
 	}
 
 	private void setUpActionBar() {
@@ -104,6 +126,16 @@ public class SelectProgramActivity extends BaseActivity {
 
 	public SelectProgramFragment getSelectProgramFragment() {
 		return selectProgramFragment;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.catrobat.catroid.livewallpaper.ColorPickerDialog.OnColorChangedListener#colorChanged(int)
+	 */
+	@Override
+	public void colorChanged(int color) {
+		selectProgramFragment.tinting(color);
 	}
 
 	//	private void displayDownloadPocketCodeDialog() {

@@ -27,7 +27,7 @@
         android:id="@+id/delete"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_menu_delete"
-        android:title="@string/delete"/>
+        android:title="@string/lwp_delete"/>
     
     <item
         android:id="@+id/about"
@@ -39,5 +39,15 @@
         android:showAsAction="never"
         android:title="@string/lwp_new"/>
     
- 
+    <item
+        android:id="@+id/lwp_tinting"
+        android:showAsAction="never"
+        android:title="@string/lwp_tinting"/>
+    
+    <item
+        android:id="@+id/lwp_disable_tinting"
+        android:showAsAction="never"
+        android:title="@string/lwp_disable_tinting"/>
+    
+
 </menu>

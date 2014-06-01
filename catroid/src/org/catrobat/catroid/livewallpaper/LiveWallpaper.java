@@ -217,6 +217,24 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		ScreenValues.SCREEN_HEIGHT = displayMetrics.heightPixels;
 	}
 
+	public void tinting(int c) {
+		if (previewEngine != null) {
+			previewEngine.tinting(c);
+		}
+		if (homeEngine != null) {
+			homeEngine.tinting(c);
+		}
+	}
+
+	public void disableTinting() {
+		if (previewEngine != null) {
+			previewEngine.setTinting(false);
+		}
+		if (homeEngine != null) {
+			homeEngine.setTinting(false);
+		}
+	}
+
 	public class LiveWallpaperEngine extends AndroidWallpaperEngine {
 		public String name = "";
 		private final int REFRESH_RATE = 300;
@@ -380,6 +398,15 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				}
 			}
 			getLocalStageListener().menuResume();
+		}
+
+		public void tinting(int c) {
+			setTinting(true);
+			getLocalStageListener().setTintingColor(c);
+		}
+
+		public void setTinting(boolean isTinting) {
+			getLocalStageListener().setTinting(isTinting);
 		}
 
 		private void activateTextToSpeechIfNeeded() {
