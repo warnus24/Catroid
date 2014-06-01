@@ -43,7 +43,7 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
-import org.catrobat.catroid.stage.StageListenerLWP;
+import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
 
 @SuppressLint("NewApi")
@@ -58,6 +58,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	private LiveWallpaperEngine previewEngine;
 	private LiveWallpaperEngine homeEngine;
+
+	private ApplicationListener stageListener = null;
 
 	public LiveWallpaper() {
 		super();
@@ -106,8 +108,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		this.homeEngine.name = "HOME";
 	}
 
-	private ApplicationListener stageListener = null;
-
 	public boolean TEST = false;
 
 	@Override
@@ -136,7 +136,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		setScreenSize(false);
 		loadProject();
 		ProjectManager.changeState(ProjectManagerState.LWP);
-		stageListener = new StageListenerLWP();
+		stageListener = new StageListener(true);
 		initialize(stageListener, config);
 		Log.d("LWP", "Preview was initialized");
 	}
@@ -260,8 +260,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			super.onSurfaceCreated(holder);
 		}
 
-		private StageListenerLWP getLocalStageListener() {
-			return (StageListenerLWP) stageListener;
+		private StageListener getLocalStageListener() {
+			return (StageListener) stageListener;
 		}
 
 		@Override
@@ -371,7 +371,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			synchronized (engine) {
 				try {
 					Log.d("LWP", "StageListener, changeWallpaper wait... ANFANG");
-					getLocalStageListener().reloadProject(engine);
+					getLocalStageListener().reloadProjectLWP(engine);
 					onResume();
 					engine.wait();
 					Log.d("LWP", "StageListener, changeWallpaper wait... ENDE");

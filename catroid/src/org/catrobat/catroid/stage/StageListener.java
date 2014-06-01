@@ -25,6 +25,7 @@ package org.catrobat.catroid.stage;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -43,6 +44,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
@@ -53,6 +55,7 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
+import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.Utils;
 
@@ -132,13 +135,32 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	private byte[] thumbnail;
 
+	private boolean isPreview = true;
+	private boolean isLWP = false;
+
+	public StageListener(boolean isLWP) {
+		super();
+		this.isLWP = isLWP;
+	}
+
+	public StageListener() {
+		super();
+		isLWP = false;
+	}
+
 	@Override
 	public void create() {
 		font = new BitmapFont();
 		font.setColor(1f, 0f, 0.05f, 1f);
 		font.setScale(1.2f);
 
-		project = ProjectManager.getInstance().getCurrentProject();
+		project = null;
+		if (isLWP) {
+			project = ProjectManager.getInstance(ProjectManagerState.LWP).getCurrentProject();
+		} else {
+			project = ProjectManager.getInstance(ProjectManagerState.NORMAL).getCurrentProject();
+		}
+
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";
 
 		virtualWidth = project.getXmlHeader().virtualScreenWidth;
@@ -147,9 +169,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		virtualWidthHalf = virtualWidth / 2;
 		virtualHeightHalf = virtualHeight / 2;
 
-		stage = new Stage();
-		stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
-		batch = stage.getSpriteBatch();
+		stage = new Stage(new StretchViewport(virtualWidth, virtualHeight));
+
+		stage.getViewport().setWorldSize(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
+		batch = stage.getBatch();
 
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 		initScreenMode();
@@ -182,7 +205,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		if (checkIfAutomaticScreenshotShouldBeTaken) {
 			makeAutomaticScreenshot = project.manualScreenshotExists(SCREENSHOT_MANUAL_FILE_NAME);
 		}
-
+		Log.d("LWP", "StageListener created!!!!!");
 	}
 
 	public void menuResume() {
@@ -217,6 +240,19 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 		reloadProject = true;
 		//this.firstStart = true;
+	}
+
+	public void reloadProjectLWP(LiveWallpaperEngine engine) {
+		this.lwpEngine = engine;
+		if (reloadProject) {
+			return;
+		}
+
+		project.getUserVariables().resetAllUserVariables();
+
+		reloadProject = true;
+		//this.firstStart = true;
+		Log.d("LWP", "StageListener reloadProject!!!!!");
 	}
 
 	@Override
@@ -304,8 +340,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 			if (lwpEngine != null) {
 				synchronized (lwpEngine) {
-					lwpEngine.onResume();
-					lwpEngine.notify();
+					lwpEngine.notifyAll();
 				}
 			}
 		}
@@ -508,17 +543,17 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private void initScreenMode() {
 		switch (project.getScreenMode()) {
 			case STRETCH:
+				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = ScreenValues.SCREEN_WIDTH;
 				screenshotHeight = ScreenValues.SCREEN_HEIGHT;
-				stage.getViewport().setWorldSize(screenshotWidth, screenshotHeight);
 				screenshotX = 0;
 				screenshotY = 0;
 				break;
 
 			case MAXIMIZE:
+				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
-				stage.getViewport().setWorldSize(screenshotWidth, screenshotHeight);
 				screenshotX = maximizeViewPortX;
 				screenshotY = maximizeViewPortY;
 				break;
@@ -576,7 +611,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	 */
 	@Override
 	public void previewStateChange(boolean isPreview) {
-		// TODO Auto-generated method stub
-
+		this.isPreview = isPreview;
+		Log.d("LWP", "StageListener previewState changed(" + isPreview + ")");
 	}
 }
