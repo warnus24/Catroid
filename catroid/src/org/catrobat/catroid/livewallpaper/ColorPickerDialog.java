@@ -35,6 +35,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.catrobat.catroid.common.ScreenValues;
+
 /**
  * @author White
  * 
@@ -91,6 +93,7 @@ public class ColorPickerDialog extends Dialog {
 				} else {
 					mCenterPaint.setAlpha(0x80);
 				}
+				int screenWidth = ScreenValues.SCREEN_WIDTH;
 				canvas.drawCircle(0, 0, CENTER_RADIUS + mCenterPaint.getStrokeWidth(), mCenterPaint);
 
 				mCenterPaint.setStyle(Paint.Style.FILL);
@@ -103,9 +106,9 @@ public class ColorPickerDialog extends Dialog {
 			setMeasuredDimension(CENTER_X * 2, CENTER_Y * 2);
 		}
 
-		private static final int CENTER_X = 100;
-		private static final int CENTER_Y = 100;
-		private static final int CENTER_RADIUS = 32;
+		private static final int CENTER_X = 250;
+		private static final int CENTER_Y = 250;
+		private static final int CENTER_RADIUS = 80;
 
 		private int floatToByte(float x) {
 			int n = java.lang.Math.round(x);
