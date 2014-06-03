@@ -280,15 +280,6 @@ public class PreStageActivity extends Activity {
 								String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
 								legoNXT.startBTCommunicator(address);
 								break;
-							//							case (Brick.BLUETOOTH_ARDUINO):
-							//
-							//								String arduinoMacAddress = data.getExtras().getString(
-							//										DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-							//								arduino = new Arduino(this, recieveHandler);
-							//								arduino.startBTCommunicator(arduinoMacAddress);
-							//								connectingProgressDialog.dismiss();
-							//								resourceInitialized();
-							//								break;
 							case (Brick.BLUETOOTH_SENSORS_ARDUINO):
 
 								String MacAddress = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);

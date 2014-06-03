@@ -235,22 +235,6 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void pause() {
-
-		//		try {
-		//			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
-		//			boolean arduinoUsed = sensor.getBooleanArduinoBricksUsed();
-		//			if (arduinoUsed) {
-		//				Handler btcHandler = Arduino.getBTCHandler();
-		//				Log.d("StageListener Pause", "sendArduinoPauseMessage()");
-		//				Message myMessage = btcHandler.obtainMessage();
-		//				myMessage.what = ArduinoCommunicator.PAUSED_MESSAGE;
-		//				btcHandler.sendMessage(myMessage);
-		//				Log.d("StageListener Pause", "Paused State not implemented yet!");
-		//			}
-		//
-		//		} catch (Exception e) {
-		//		}
-
 		if (finished) {
 			return;
 		}
@@ -476,7 +460,7 @@ public class StageListener implements ApplicationListener {
 			Thread.yield();
 		}
 		byte[] copyOfTestPixels = new byte[testPixels.length];
-		System.arraycopy(testPixels,0,copyOfTestPixels,0,testPixels.length);
+		System.arraycopy(testPixels, 0, copyOfTestPixels, 0, testPixels.length);
 		return copyOfTestPixels;
 	}
 

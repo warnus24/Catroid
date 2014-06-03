@@ -108,10 +108,8 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 		if (currentFormula.containsArduinoSensors()) {
 			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(true);
-			//			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
 		} else {
 			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
-			//			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
 		}
 	}
 
