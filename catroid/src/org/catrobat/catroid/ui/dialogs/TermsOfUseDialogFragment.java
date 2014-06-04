@@ -61,13 +61,12 @@ public class TermsOfUseDialogFragment extends DialogFragment {
 
 		View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_terms_of_use, null);
 
+		TextView termsOfUseTextView = (TextView) view.findViewById(R.id.dialog_terms_of_use_text_view_info);
 		TextView termsOfUseUrlTextView = (TextView) view.findViewById(R.id.dialog_terms_of_use_text_view_url);
+
 		termsOfUseUrlTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-		String termsOfUseUrl = getString(R.string.terms_of_use_link_template, Constants.CATROBAT_TERMS_OF_USE_URL,
-				getString(R.string.dialog_terms_of_use_link_text));
-
-		termsOfUseUrlTextView.setText(Html.fromHtml(termsOfUseUrl));
+		String termsOfUseUrlStringText = null;
 
 		AlertDialog.Builder termsOfUseDialogBuilder = new AlertDialog.Builder(getActivity()).setView(view).setTitle(
 				R.string.dialog_terms_of_use_title);
@@ -75,11 +74,11 @@ public class TermsOfUseDialogFragment extends DialogFragment {
 		termsOfUseDialogBuilder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
-				if (checkboxTermsOfUseAccptedPermanently != null && checkboxTermsOfUseAccptedPermanently.isChecked()) {
-					SettingsActivity.setTermsOfSerivceAgreedPermanently(getActivity(), true);
-				}
-
 				if (getActivity() instanceof PreStageActivity) {
+					if (checkboxTermsOfUseAccptedPermanently != null
+							&& checkboxTermsOfUseAccptedPermanently.isChecked()) {
+						SettingsActivity.setTermsOfSerivceAgreedPermanently(getActivity(), true);
+					}
 					DroneInitialiser droneInitialiser = ((PreStageActivity) getActivity()).getDroneInitialiser();
 					if (droneInitialiser != null) {
 						droneInitialiser.initialiseDrone();
@@ -102,9 +101,20 @@ public class TermsOfUseDialogFragment extends DialogFragment {
 			checkboxTermsOfUseAccptedPermanently = (CheckBox) view
 					.findViewById(R.id.dialog_terms_of_use_check_box_agree_permanently);
 			checkboxTermsOfUseAccptedPermanently.setVisibility(CheckBox.VISIBLE);
-			checkboxTermsOfUseAccptedPermanently.setText(R.string.dialog_terms_of_use_agree_permanet);
+			checkboxTermsOfUseAccptedPermanently.setText(R.string.dialog_terms_of_use_parrot_reminder_do_not_remind_again);
 			termsOfUseDialogBuilder.setCancelable(false);
+			termsOfUseTextView.setText(R.string.dialog_terms_of_use_parrot_reminder_text);
+			termsOfUseUrlStringText = getString(R.string.dialog_terms_of_use_link_text_parrot_reminder);
+
+		} else {
+			termsOfUseTextView.setText(R.string.dialog_terms_of_use_info);
+			termsOfUseUrlStringText = getString(R.string.dialog_terms_of_use_link_text);
 		}
+
+		String termsOfUseUrl = getString(R.string.terms_of_use_link_template, Constants.CATROBAT_TERMS_OF_USE_URL,
+				termsOfUseUrlStringText);
+
+		termsOfUseUrlTextView.setText(Html.fromHtml(termsOfUseUrl));
 
 		AlertDialog termsOfUseDialog = termsOfUseDialogBuilder.create();
 		if (!isOnPreStageActivity) {

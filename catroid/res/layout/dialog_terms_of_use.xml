@@ -41,7 +41,6 @@
             android:layout_marginTop="@dimen/dialog_item_margin"
             android:gravity="center|bottom"
             android:paddingBottom="0dp"
-            android:text="@string/dialog_terms_of_use_info"
             android:textColor="@color/spritelist_details_text_color" />
 
         <TextView
@@ -57,7 +56,7 @@
             android:id="@+id/dialog_terms_of_use_check_box_agree_permanently"
             style="@style/DefaultDialog.Item"
             android:layout_below="@+id/dialog_terms_of_use_text_view_url"
-            android:gravity="center"
+            android:gravity="center|left"
             android:minHeight="0dp"
             android:textColor="@color/spritelist_details_text_color"
             android:visibility="gone" />
