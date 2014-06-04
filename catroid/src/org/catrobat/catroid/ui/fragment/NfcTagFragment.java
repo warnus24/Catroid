@@ -762,7 +762,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 
             holder = new NfcTagViewHolder();
             holder.scanNewTagButton = (ImageButton) convertView.findViewById(R.id.fragment_nfctag_item_image_button);
-            holder.scanNewTagButton.setImageResource(R.drawable.ic_media_play);
+            holder.scanNewTagButton.setImageResource(R.drawable.ic_program_menu_nfc);
             holder.scanNewTagButton.setContentDescription(getString(R.string.nfctag_scan));
 
             holder.nfcTagFragmentButtonLayout = (LinearLayout) convertView
