@@ -29,12 +29,14 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
+import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.nfc.NfcHandler;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
@@ -57,14 +59,14 @@ public class StageActivity extends AndroidApplication {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		droneConnection = new DroneConnection(this, getIntent());
+		if (getIntent().getBooleanExtra(DroneInitializer.INIT_DRONE_STRING_EXTRA, false)) {
+			droneConnection = new DroneConnection(this);
+		}
 		stageListener = new StageListener();
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		calculateScreenSizes();
 
 		initialize(stageListener, true);
-
-        droneConnection.initialise();
 
 		pendingIntent = PendingIntent.getActivity(this, 0,
 				new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
@@ -74,6 +76,16 @@ public class StageActivity extends AndroidApplication {
 
 		if (nfcAdapter == null) {
 			Log.d(TAG, "could not get nfc adapter :(");
+		}
+
+		if (droneConnection != null) {
+			try {
+				droneConnection.initialise();
+			} catch (RuntimeException runtimeException) {
+				Log.e(TAG, "Failure during drone service startup", runtimeException);
+				Toast.makeText(this, R.string.error_no_drone_connected, Toast.LENGTH_LONG).show();
+				this.finish();
+			}
 		}
 	}
 
@@ -106,7 +118,10 @@ public class StageActivity extends AndroidApplication {
 			Log.d(TAG, "onPause()disableForegroundDispatch()");
 			nfcAdapter.disableForegroundDispatch(this);
 		}
-		droneConnection.pause();
+
+		if (droneConnection != null) {
+			droneConnection.pause();
+		}
 	}
 
 	@Override
@@ -119,7 +134,9 @@ public class StageActivity extends AndroidApplication {
 			nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
 		}
 
-		droneConnection.start();
+		if (droneConnection != null) {
+			droneConnection.start();
+		}
 	}
 
 	public void pause() {
@@ -189,7 +206,9 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	protected void onDestroy() {
-		droneConnection.destroy();
+		if (droneConnection != null) {
+			droneConnection.destroy();
+		}
 		Log.d(TAG, "Destroy");
 		super.onDestroy();
 	}

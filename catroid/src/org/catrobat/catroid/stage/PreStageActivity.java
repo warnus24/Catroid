@@ -47,7 +47,7 @@ import org.catrobat.catroid.bluetooth.DeviceListActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.drone.DroneInitialiser;
+import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
 import org.catrobat.catroid.ui.BaseActivity;
@@ -77,7 +77,7 @@ public class PreStageActivity extends BaseActivity {
 	private static TextToSpeech textToSpeech;
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
 
-	private DroneInitialiser droneInitialiser = null;
+	private DroneInitializer droneInitializer = null;
 
 	private Intent returnToActivityIntent = null;
 
@@ -119,8 +119,8 @@ public class PreStageActivity extends BaseActivity {
 		}
 
 		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
-			droneInitialiser = getDroneInitialiser();
-			droneInitialiser.initialise();
+			droneInitializer = getDroneInitializer();
+			droneInitializer.initialise();
 		}
 
         if ((requiredResources & Brick.NFC_ADAPTER) > 0) {
@@ -144,17 +144,17 @@ public class PreStageActivity extends BaseActivity {
 		}
 	}
 
-	public DroneInitialiser getDroneInitialiser() {
-		if (droneInitialiser == null) {
-			droneInitialiser = new DroneInitialiser(this, returnToActivityIntent);
+	public DroneInitializer getDroneInitializer() {
+		if (droneInitializer == null) {
+			droneInitializer = new DroneInitializer(this, returnToActivityIntent);
 		}
-		return droneInitialiser;
+		return droneInitializer;
 	}
 
 	@Override
 	public void onResume() {
-		if (droneInitialiser != null) {
-			droneInitialiser.onPrestageActivityResume();
+		if (droneInitializer != null) {
+			droneInitializer.onPrestageActivityResume();
 		}
 
 		super.onResume();
@@ -165,8 +165,8 @@ public class PreStageActivity extends BaseActivity {
 
 	@Override
 	protected void onPause() {
-		if (droneInitialiser != null) {
-			droneInitialiser.onPrestageActivityPause();
+		if (droneInitializer != null) {
+			droneInitializer.onPrestageActivityPause();
 		}
 
 		super.onPause();
@@ -174,8 +174,8 @@ public class PreStageActivity extends BaseActivity {
 
 	@Override
 	protected void onDestroy() {
-		if (droneInitialiser != null) {
-			droneInitialiser.onPrestageActivityDestroy();
+		if (droneInitializer != null) {
+			droneInitializer.onPrestageActivityDestroy();
 		}
 
 		super.onDestroy();
