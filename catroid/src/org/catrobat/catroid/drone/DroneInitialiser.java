@@ -191,6 +191,7 @@ public class DroneInitialiser implements DroneReadyReceiverDelegate, DroneConnec
 	public void onDroneConnected() {
 		// We still waiting for onDroneReady event
 		Log.d(TAG, "onDroneConnected, requesting Config update and wait for drone ready.");
+		droneControlService.resetConfigToDefaults();
 		droneControlService.requestConfigUpdate();
 	}
 
