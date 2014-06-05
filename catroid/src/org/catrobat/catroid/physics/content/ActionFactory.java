@@ -61,6 +61,7 @@ import org.catrobat.catroid.content.actions.GlideToAction;
 import org.catrobat.catroid.content.actions.GoNStepsBackAction;
 import org.catrobat.catroid.content.actions.HideAction;
 import org.catrobat.catroid.content.actions.IfLogicAction;
+import org.catrobat.catroid.content.actions.LedAction;
 import org.catrobat.catroid.content.actions.LegoNxtMotorActionAction;
 import org.catrobat.catroid.content.actions.LegoNxtMotorStopAction;
 import org.catrobat.catroid.content.actions.LegoNxtMotorTurnAngleAction;
@@ -84,6 +85,8 @@ import org.catrobat.catroid.content.actions.SpeakAction;
 import org.catrobat.catroid.content.actions.StopAllSoundsAction;
 import org.catrobat.catroid.content.actions.TurnLeftAction;
 import org.catrobat.catroid.content.actions.TurnRightAction;
+import org.catrobat.catroid.content.actions.UserBrickAction;
+import org.catrobat.catroid.content.actions.VibrateAction;
 import org.catrobat.catroid.content.actions.WaitAction;
 import org.catrobat.catroid.content.actions.conditional.IfOnEdgeBounceAction;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick.Motor;
@@ -130,7 +133,7 @@ public class ActionFactory extends Actions {
 		return action;
 	}
 
-	public Action createBroadcastNotifyAction(BroadcastEvent event) {
+	public static Action createBroadcastNotifyAction(BroadcastEvent event) {
 		BroadcastNotifyAction action = Actions.action(BroadcastNotifyAction.class);
 		action.setEvent(event);
 		return action;
@@ -194,15 +197,6 @@ public class ActionFactory extends Actions {
 		GlideToAction action = Actions.action(GlideToAction.class);
 		action.setPosition(x, y);
 		action.setDuration(duration);
-		action.setSprite(sprite);
-		return action;
-	}
-
-	public Action createGlideToAction(Sprite sprite, Formula x, Formula y, Formula duration, Interpolation interpolation) {
-		GlideToAction action = Actions.action(GlideToAction.class);
-		action.setPosition(x, y);
-		action.setDuration(duration);
-		action.setInterpolation(interpolation);
 		action.setSprite(sprite);
 		return action;
 	}
@@ -559,4 +553,56 @@ public class ActionFactory extends Actions {
 		return action(DroneFlipAction.class);
 	}
 
+
+	public static LedAction lights(boolean ledValue) {
+		LedAction action = action(LedAction.class);
+		action.setLedValue(ledValue);
+		return action;
+	}
+
+	public static VibrateAction vibrate(Sprite sprite, Formula duration) {
+		VibrateAction action = action(VibrateAction.class);
+		action.setSprite(sprite);
+		action.setDuration(duration);
+		return action;
+	}
+
+
+	public static PointInDirectionAction pointInDirection(Sprite sprite, Formula degrees) {
+		PointInDirectionAction action = action(PointInDirectionAction.class);
+		action.setSprite(sprite);
+		action.setDegreesInUserInterfaceDimensionUnit(degrees);
+		return action;
+	}
+
+	public static Action changeVariable(Sprite sprite, Formula variableFormula, UserVariable userVariable) {
+		ChangeVariableAction action = action(ChangeVariableAction.class);
+		action.setSprite(sprite);
+		action.setChangeVariable(variableFormula);
+		action.setUserVariable(userVariable);
+		return action;
+	}
+
+	public static Action setVariable(Sprite sprite, Formula variableFormula, UserVariable userVariable) {
+		SetVariableAction action = action(SetVariableAction.class);
+		action.setSprite(sprite);
+		action.setChangeVariable(variableFormula);
+		action.setUserVariable(userVariable);
+		return action;
+	}
+
+	public static IfLogicAction ifLogic(Sprite sprite, Formula condition, Action ifAction, Action elseAction) {
+		IfLogicAction action = action(IfLogicAction.class);
+		action.setIfAction(ifAction);
+		action.setIfCondition(condition);
+		action.setElseAction(elseAction);
+		action.setSprite(sprite);
+		return action;
+	}
+
+	public static UserBrickAction userBrick(Action userBrickAction) {
+		UserBrickAction action = action(UserBrickAction.class);
+		action.setAction(userBrickAction);
+		return action;
+	}
 }
