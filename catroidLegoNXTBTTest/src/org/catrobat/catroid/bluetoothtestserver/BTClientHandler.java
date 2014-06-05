@@ -22,7 +22,7 @@
  */
 package org.catrobat.catroid.bluetoothtestserver;
 
-import android.util.Log;
+//import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +37,7 @@ import javax.microedition.io.StreamConnection;
 
 public class BTClientHandler extends Thread
 {
-	private static final String TAG = BTClientHandler.class;
+//	private static final String TAG = BTClientHandler.class;
 
 	public static final byte DIRECT_COMMAND_REPLY = 0;
 	public static final byte SYSTEM_COMMAND_REPLY = 1;
@@ -105,7 +105,7 @@ public class BTClientHandler extends Thread
 			this.connection.close();
 		}
 		catch (IOException ioException) {
-			Log.e(TAG, "IOException!", ioException);
+//			Log.e(TAG, "IOException!", ioException);
 		}
 		BTServer.writeMessage("Client " + client + " disconnected!\n");
 	}

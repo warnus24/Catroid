@@ -172,15 +172,7 @@ public class PreStageActivity extends Activity {
 			bundle.putString(DeviceListActivity.RESOURCE_NAME_TEXT, getResources()
 					.getString(R.string.select_device_nxt));
 			BTResourceQueue.add(bundle);
-			//startBluetoothCommunication();
 		}
-		//		if ((requiredResources & Brick.BLUETOOTH_ARDUINO) > 0) {
-		//			Bundle bundle = new Bundle();
-		//			bundle.putInt(DeviceListActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_ARDUINO);
-		//			bundle.putString(DeviceListActivity.RESOURCE_NAME_TEXT,
-		//					getResources().getString(R.string.select_device_arduino));
-		//			BTResourceQueue.add(bundle);
-		//		}
 
 		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
 			//set flag to start thread to update sensor values in formula editor

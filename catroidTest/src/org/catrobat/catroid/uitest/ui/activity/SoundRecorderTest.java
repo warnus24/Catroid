@@ -83,13 +83,11 @@ public class SoundRecorderTest extends BaseActivityInstrumentationTestCase<MainM
 		solo.sleep(200);
 
 		assertEquals(SoundRecorderActivity.class.getSimpleName()
-						+ " not set to be in portrait mode in AndroidManifest.xml!", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
-				activityInfo.screenOrientation
-		);
+				+ " not set to be in portrait mode in AndroidManifest.xml!", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+				activityInfo.screenOrientation);
 	}
 
 	public void testRecordMultipleSounds() throws InterruptedException {
-
 
 		prepareRecording();
 
@@ -157,13 +155,15 @@ public class SoundRecorderTest extends BaseActivityInstrumentationTestCase<MainM
 		// String soundRecorderText = solo.getString(R.string.soundrecorder_name);
 		String soundRecorderText = "Pocket Code Recorder";
 
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+		//		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
 			solo.waitForText(soundRecorderText);
 			assertTrue("Catroid Sound Recorder is not present", solo.searchText(soundRecorderText));
 			solo.clickOnText(soundRecorderText);
 		} else {
 			//TODO: implement test for clicking into new Storage Access Framework
-			throw new UnsupportedOperationException("Missing support for API > 19. Click into Storage Access Framework not yet implemented!");
+			throw new UnsupportedOperationException(
+					"Missing support for API > 19. Click into Storage Access Framework not yet implemented!");
 		}
 
 	}

@@ -36,11 +36,11 @@ import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
-public class ArduinoReceiveSensorsWithBrickTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
+public class ArduinoReceiveWithFormulaEditorTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
 	private static final int CHANGE_SIZE_BY_EDIT_TEXT_RID = R.id.brick_change_size_by_edit_text;
 
-	public ArduinoReceiveSensorsWithBrickTest() {
+	public ArduinoReceiveWithFormulaEditorTest() {
 		super(MainMenuActivity.class);
 
 	}
