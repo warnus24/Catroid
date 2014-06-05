@@ -46,7 +46,8 @@ public abstract class NXTI2CSensor extends NXTSensor {
 	public NXTI2CSensor(byte sensorAddress, NXTSensorType sensorType, MindstormConnection connection) {
 		super(3, sensorType, NXTSensorMode.RAW, connection);
 		address = sensorAddress;
-		pendingCommunicationErrorWaitTime = 30;
+		pendingCommunicationErrorWaitTime = 60;
+        updateInterval = 300;
 	}
 
 	public byte getI2CAddress()
@@ -82,6 +83,7 @@ public abstract class NXTI2CSensor extends NXTSensor {
 	{
 		Stopwatch stopWatch = new Stopwatch();
 		byte bytesRead = 0;
+        wait(pendingCommunicationErrorWaitTime);
 		stopWatch.start();
 		do {
             bytesRead = tryGetNumberOfBytesAreReadyToRead();

@@ -48,7 +48,7 @@ public class MotorNXT implements MindstormMotor {
 		setOutputState(state, false);
 	}
 
-	private void setOutputState(OutputState state, boolean reply) {
+	private void setOutputState(OutputState state, boolean requestReply) {
 		if(state.speed > 100){
 			state.speed = 100;
 		}
@@ -72,8 +72,9 @@ public class MotorNXT implements MindstormMotor {
 		command.append(state.tachoLimit);
 		command.append((byte)0x00);
 
-        if (reply) {
-            connection.sendAndReceive(command);
+        if (requestReply) {
+            NXTReply reply = new NXTReply(connection.sendAndReceive(command));
+            NXTError.checkForError(reply, 3);
         }
         else {
             connection.send(command);

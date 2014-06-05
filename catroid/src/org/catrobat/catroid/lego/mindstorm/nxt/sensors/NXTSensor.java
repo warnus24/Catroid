@@ -36,7 +36,7 @@ public abstract class NXTSensor implements MindstormSensor {
 	protected final int port;
 	protected final NXTSensorType sensorType;
 	protected final NXTSensorMode sensorMode;
-    protected final int updateInterval = 250;
+    protected int updateInterval = 250;
 
 	protected final MindstormConnection connection;
 

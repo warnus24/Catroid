@@ -69,7 +69,7 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
 
         sensorRegistry = new SensorRegistry();
 
-        sensorScheduler = new ScheduledThreadPoolExecutor(2);
+        sensorScheduler = new ScheduledThreadPoolExecutor(1);
 	}
 
     private class GetSensorValueRunner implements Runnable {
@@ -94,8 +94,8 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.start();
             sensor.updateLastSensorValue();
-            Log.d(TAG, String.format("Time for %s sensor: %d | Value: %d", sensor.getName(),
-                    stopwatch.getElapsedMilliseconds(), sensor.getLastSensorValue()));
+//            Log.d(TAG, String.format("Time for %s sensor: %d | Value: %d", sensor.getName(),
+//                    stopwatch.getElapsedMilliseconds(), sensor.getLastSensorValue()));
         }
     }
 
@@ -235,11 +235,6 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
 
 	private NXTSensor createSensor(String sensorTypeName, int port) {
 
-		if (equals(sensorTypeName, R.string.nxt_no_sensor)) {
-            sensorRegistry.remove(port);
-            return null;
-		}
-
         NXTSensor sensor = null;
 
 		if (equals(sensorTypeName, R.string.nxt_sensor_touch)) {
@@ -258,8 +253,13 @@ public class NXTSensorService implements SharedPreferences.OnSharedPreferenceCha
 			sensor = new NXTI2CUltraSonicSensor(connection);
 		}
 
-        if (sensor == null) {
-            throw new MindstormException("No valid sensor found!"); // Should never occur
+//        if (sensor == null) {
+//            throw new MindstormException("No valid sensor found!"); // Should never occur
+//        }
+
+        if (equals(sensorTypeName, R.string.nxt_no_sensor) || sensor == null) {
+            sensorRegistry.remove(port);
+            return null;
         }
 
         sensorRegistry.add(sensor);
