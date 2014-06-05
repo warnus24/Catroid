@@ -76,7 +76,7 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		if ((sharedPreferences.getBoolean(ArduinoSensor.KEY_SETTINGS_ARDUINO_BRICKS, false))) {
 			instance.sensorManager.registerListener(instance, Sensors.ARDUINODIGITAL);
 			instance.sensorManager.registerListener(instance, Sensors.ARDUINOANALOG);
-		} else if (sensor.getBooleanArduinoBricksUsed()) {
+		} else if (sensor.getAreArduinoBricksUsed()) {
 			instance.sensorManager.registerListener(instance, Sensors.ARDUINODIGITAL);
 			instance.sensorManager.registerListener(instance, Sensors.ARDUINOANALOG);
 		}

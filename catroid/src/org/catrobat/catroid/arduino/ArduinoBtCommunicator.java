@@ -38,15 +38,9 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-/**
- * @author Adrian Schnedlitz
- * 
- */
-
 public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
 	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fc");
-	//	private static final UUID SERIAL_PORT_SERVICE_CLASS_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 	private static final byte BOF = (byte) 126; //Ascii table "~"
 
@@ -79,23 +73,24 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 		try {
 			createConnection();
 		} catch (IOException e) {
+			Log.d("ArduinoBtComm", "Could not create connection");
 		}
 
-		while (connected) {
+		while (isConnected) {
 			try {
-				Log.d("ArduinoBtComm", "<<< receiveMessage() was called >>> ");
+				Log.d("ArduinoBtComm", "receiveMessage() was called ");
 				receiveMessage();
 			} catch (IOException e) {
 				Log.d("ArduinoBtComm", "IOException in run:receiveMessage occured: " + e.toString());
-				if (connected == true) {
+				if (isConnected == true) {
 					sendState(STATE_CONNECTERROR);
-					connected = false;
+					isConnected = false;
 				}
 			} catch (Exception e) {
 				Log.d("ArduinoBtComm", "Exception in run:receiveMessage occured: " + e.toString());
-				if (connected == true) {
+				if (isConnected == true) {
 					sendState(STATE_CONNECTERROR);
-					connected = false;
+					isConnected = false;
 				}
 			}
 		}
@@ -116,9 +111,7 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 					return;
 				}
 			}
-
 			btSocketTemporary = btDevice.createRfcommSocketToServiceRecord(SERIAL_PORT_SERVICE_CLASS_UUID);
-
 			try {
 				btSocketTemporary.connect();
 
@@ -135,7 +128,6 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
 				//try another method for connection, this should work on the HTC desire, credits to Michael Biermann
 				try {
-
 					Method mMethod = btDevice.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
 					btSocketTemporary = (BluetoothSocket) mMethod.invoke(btDevice, Integer.valueOf(1));
 					btSocketTemporary.connect();
@@ -151,7 +143,7 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 			btSocket = btSocketTemporary;
 			inputStream = btSocket.getInputStream();
 			outputStream = btSocket.getOutputStream();
-			connected = true;
+			isConnected = true;
 		} catch (IOException e) {
 			if (uiHandler == null) {
 				throw e;
@@ -176,7 +168,7 @@ public class ArduinoBtCommunicator extends ArduinoCommunicator {
 
 		try {
 			if (btSocket != null) {
-				connected = false;
+				isConnected = false;
 				btSocket.close();
 				btSocket = null;
 			}

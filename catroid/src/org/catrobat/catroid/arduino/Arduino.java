@@ -33,17 +33,13 @@ import org.catrobat.catroid.bluetooth.BTConnectable;
 
 import java.io.IOException;
 
-/**
- * @author Adrian Schnedlitz
- * 
- */
 public class Arduino implements BTConnectable {
 
 	private static final String TAG = BTConnectable.class.getSimpleName();
 
 	private static ArduinoCommunicator myCommunicator;
 
-	private boolean pairing;
+	private boolean isPairing;
 	private static Handler btcHandler = null;
 	private Handler recieverHandler;
 	private Activity activity;
@@ -115,6 +111,6 @@ public class Arduino implements BTConnectable {
 
 	@Override
 	public boolean isPairing() {
-		return pairing;
+		return isPairing;
 	}
 }

@@ -31,10 +31,6 @@ import android.util.Log;
 
 import java.io.IOException;
 
-/**
- * @author Adrian Schnedlitz
- * 
- */
 public abstract class ArduinoCommunicator extends Thread {
 
 	public static final int DISCONNECT = 1;
@@ -50,7 +46,7 @@ public abstract class ArduinoCommunicator extends Thread {
 	public static final int SET_DIGITAL_PIN_VALUE_COMMAND = 100;
 	public static final int GET_DIGITAL_PIN_VALUE_COMMAND = 101;
 
-	protected boolean connected = false;
+	protected boolean isConnected = false;
 	protected Handler uiHandler;
 
 	protected Resources resources;
@@ -73,7 +69,7 @@ public abstract class ArduinoCommunicator extends Thread {
 	 * @return The current status of the connection
 	 */
 	public boolean isConnected() {
-		return connected;
+		return isConnected;
 	}
 
 	/**

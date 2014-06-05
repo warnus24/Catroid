@@ -22,11 +22,6 @@
  */
 package org.catrobat.catroid.arduino;
 
-/**
- * @author Adrian Schnedlitz
- * 
- */
-
 import android.os.Handler;
 import android.util.Log;
 
@@ -39,7 +34,7 @@ import java.util.ArrayList;
 public final class ArduinoSensor {
 
 	private static ArduinoSensor instance = null;
-	private static final int ARDUINO_ANALOG_SENSOR_UPDATE_INTERVAL = 50; //ToDo: check if this is enougth
+	private static final int ARDUINO_ANALOG_SENSOR_UPDATE_INTERVAL = 50;
 
 	private ArrayList<SensorCustomEventListener> listenerList = new ArrayList<SensorCustomEventListener>();
 
@@ -122,11 +117,11 @@ public final class ArduinoSensor {
 	}
 
 	//if arduino bricks are used, set the variable true
-	public void setBooleanArduinoBricks(boolean status) {
+	public void setAreArduinoBricksUsed(boolean status) {
 		usingArduinoBricks = status;
 	}
 
-	public boolean getBooleanArduinoBricksUsed() {
+	public boolean getAreArduinoBricksUsed() {
 		return usingArduinoBricks;
 	}
 }

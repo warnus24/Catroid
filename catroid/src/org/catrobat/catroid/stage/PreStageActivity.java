@@ -185,7 +185,7 @@ public class PreStageActivity extends Activity {
 		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
 			//set flag to start thread to update sensor values in formula editor
 			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
-			sensor.setBooleanArduinoBricks(true);
+			sensor.setAreArduinoBricksUsed(true);
 
 			Bundle bundle = new Bundle();
 			bundle.putInt(DeviceListActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_SENSORS_ARDUINO);
@@ -195,7 +195,7 @@ public class PreStageActivity extends Activity {
 		} else {
 			//disable flag to start thread to update sensor values in formula editor
 			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
-			sensor.setBooleanArduinoBricks(false);
+			sensor.setAreArduinoBricksUsed(false);
 		}
 
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {

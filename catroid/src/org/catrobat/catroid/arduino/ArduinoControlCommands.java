@@ -22,14 +22,9 @@
  */
 package org.catrobat.catroid.arduino;
 
-/**
- * @author Adrian Schnedlitz
- * 
- */
 public class ArduinoControlCommands {
 
 	private byte[] buffer = new byte[3];
-	//	private byte sendFrameNumber = 0;
 
 	private int pinNumberLowerByte;
 	private int pinNumberHigherByte;
