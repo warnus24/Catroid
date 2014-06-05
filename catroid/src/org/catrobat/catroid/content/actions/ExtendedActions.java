@@ -359,20 +359,4 @@ public class ExtendedActions extends Actions {
 		action.setPinValue(pinValue);
 		return action;
 	}
-
-	public static ArduinoAnalogPinSensorAction arduinoAnalogPinSensorAction(Sprite sprite, Formula variableFormula,
-			UserVariable userVariable) {
-		ArduinoAnalogPinSensorAction action = action(ArduinoAnalogPinSensorAction.class);
-		action.setSprite(sprite);
-		action.setUserVariable(userVariable);
-		return action;
-	}
-
-	public static ArduinoDigitalPinSensorAction arduinoDigitalPinSensorAction(Sprite sprite, Formula variableFormula,
-			UserVariable userVariable) {
-		ArduinoDigitalPinSensorAction action = action(ArduinoDigitalPinSensorAction.class);
-		action.setSprite(sprite);
-		action.setUserVariable(userVariable);
-		return action;
-	}
 }

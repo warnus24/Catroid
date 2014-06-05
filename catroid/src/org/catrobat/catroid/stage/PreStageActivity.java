@@ -40,7 +40,7 @@ import android.widget.Toast;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.arduino.Arduino;
-import org.catrobat.catroid.arduino.ArduinoSensor;
+import org.catrobat.catroid.arduino.ArduinoReadPinData;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
@@ -184,8 +184,8 @@ public class PreStageActivity extends Activity {
 
 		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
 			//set flag to start thread to update sensor values in formula editor
-			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
-			sensor.setAreArduinoBricksUsed(true);
+			ArduinoReadPinData sensor = ArduinoReadPinData.getArduinoSensorInstance();
+			sensor.setBooleanArduinoBricks(true);
 
 			Bundle bundle = new Bundle();
 			bundle.putInt(DeviceListActivity.RESOURCE_CONSTANT, Brick.BLUETOOTH_SENSORS_ARDUINO);
@@ -194,8 +194,8 @@ public class PreStageActivity extends Activity {
 			BTResourceQueue.add(bundle);
 		} else {
 			//disable flag to start thread to update sensor values in formula editor
-			ArduinoSensor sensor = ArduinoSensor.getArduinoSensorInstance();
-			sensor.setAreArduinoBricksUsed(false);
+			ArduinoReadPinData sensor = ArduinoReadPinData.getArduinoSensorInstance();
+			sensor.setBooleanArduinoBricks(false);
 		}
 
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
@@ -280,15 +280,6 @@ public class PreStageActivity extends Activity {
 								String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
 								legoNXT.startBTCommunicator(address);
 								break;
-							//							case (Brick.BLUETOOTH_ARDUINO):
-							//
-							//								String arduinoMacAddress = data.getExtras().getString(
-							//										DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-							//								arduino = new Arduino(this, recieveHandler);
-							//								arduino.startBTCommunicator(arduinoMacAddress);
-							//								connectingProgressDialog.dismiss();
-							//								resourceInitialized();
-							//								break;
 							case (Brick.BLUETOOTH_SENSORS_ARDUINO):
 
 								String MacAddress = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
