@@ -117,6 +117,7 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+        Log.d("Lausi", "On Create...");
 		super.onCreate(savedInstanceState);
 		returnToActivityIntent = new Intent();
 
@@ -151,13 +152,16 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 				}
 			}
 		}
-		FaceDetectionHandler.resetFaceDedection();
+
 		if ((requiredResources & Brick.FACE_DETECTION) > 0) {
+            FaceDetectionHandler.resetFaceDedection();  // ober if
 			boolean success = FaceDetectionHandler.startFaceDetection(this);
 			if (success) {
 				resourceInitialized();
+                Log.d("Lausi", "Resource true");
 			} else {
 				resourceFailed();
+                Log.d("Lausi", "Resource false");
 			}
 		}
        if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
@@ -206,6 +210,7 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 	@Override
 	public void onResume() {
 		super.onResume();
+        Log.d("Lausi", "On Resume...");
 		if (requiredResourceCounter == 0) {
 			finish();
 		}
@@ -248,6 +253,7 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 
 	@Override
 	protected void onPause() {
+        Log.d("Lausi", "On pause");
 		if (BuildConfig.DEBUG) {
 			if (droneControlService != null) {
 				droneControlService.pause();
@@ -292,6 +298,7 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 		if (legoNXT != null) {
 			legoNXT.pauseCommunicator();
 		}
+        Log.d("Lausi", "stop FaceDetection");
 		FaceDetectionHandler.stopFaceDetection();
 	}
 

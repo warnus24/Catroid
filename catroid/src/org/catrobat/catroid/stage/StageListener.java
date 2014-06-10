@@ -26,6 +26,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -199,8 +200,10 @@ public class StageListener implements ApplicationListener {
 
 	void menuResume() {
 		if (reloadProject) {
+            Log.d("Lausi", "menuResume: reloadedProject");
 			return;
 		}
+        Log.d("Lausi", "menuResume: NOT reloadedProject");
 		paused = false;
 		FaceDetectionHandler.resumeFaceDetection();
 		SoundManager.getInstance().resume();
@@ -234,6 +237,7 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void resume() {
+        Log.d("Lausi", "Resume:....");
 		if (!paused) {
 			FaceDetectionHandler.resumeFaceDetection();
 			SoundManager.getInstance().resume();
@@ -243,7 +247,7 @@ public class StageListener implements ApplicationListener {
 		}
 
 		for (Sprite sprite : sprites) {
-			sprite.look.refreshTextures();
+            sprite.look.refreshTextures();
 		}
 
 	}
@@ -537,7 +541,7 @@ public class StageListener implements ApplicationListener {
 	private void disposeTextures() {
 		List<Sprite> sprites = project.getSpriteList();
 		int spriteSize = sprites.size();
-		for (int i = 0; i > spriteSize; i++) {
+		for (int i = 0; i < spriteSize; i++) {
 			List<LookData> data = sprites.get(i).getLookDataList();
 			int dataSize = data.size();
 			for (int j = 0; j < dataSize; j++) {

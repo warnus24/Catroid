@@ -54,7 +54,7 @@ public class CameraManager implements Camera.PreviewCallback {
 	private int previewHeight;
 	private int cameraID = 0;
 	private int orientation = 0;
-	private boolean facingBack = true;
+	private boolean facingBack = false;
 	private boolean useTexture = false;
 
 	public static CameraManager getInstance() {
