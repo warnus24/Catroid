@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
@@ -138,7 +139,7 @@ public class CategoryBricksFactory {
 		controlBrickList.add(new RepeatBrick(sprite, BrickValues.REPEAT));
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (sharedPreferences.getBoolean("setting_nfc_bricks", false)) {
+        if (sharedPreferences.getBoolean("setting_nfc_bricks", false) && BuildConfig.FEATURE_NFC_ENABLED) {
             //final String tagName = NfcTagContainer.getFirst(context);
             controlBrickList.add(new WhenNfcBrick(sprite));
         }
