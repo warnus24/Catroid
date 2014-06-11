@@ -97,6 +97,11 @@ public class NfcTagFragmentHardwareTest extends BaseActivityInstrumentationTestC
 	}
 
 	public void testNfcUid() {
+		NfcTagAdapter adapter = getNfcTagAdapter();
+		assertNotNull("Could not get Adapter", adapter);
+
+		int oldCount = adapter.getCount();
+
 		int emulateUid = 0x123456;
 		byte[] expectedUid = { (byte) 0x08, 0x12, 0x34, 0x56 }; // first byte is fixed to 0x08
 
@@ -117,11 +122,12 @@ public class NfcTagFragmentHardwareTest extends BaseActivityInstrumentationTestC
 			e.printStackTrace();
 		}
 
-		solo.clickOnScreen(200, 200);
-		solo.sleep(2000);
+		solo.sleep(500);
 
-		//assertEquals("uid does not match!", NfcHandler.convertByteArrayToDouble(expectedUid), userVariable.getValue());
-		//assertEquals("uid_sensor was not resetted to zero", 0.0, NfcHandler.getInstance().getAndResetUid());
+		int newCount = adapter.getCount();
+
+		assertEquals("Tag not added!", oldCount + 1, newCount);
+		assertEquals("Tag added but not visible!", solo.searchText(solo.getString(R.string.default_tag_name), 1), true);
 
 	}
 
