@@ -403,8 +403,7 @@
     <string name="brick_note">Note</string>
     <string name="brick_forever">Forever</string>
     <string name="brick_repeat">Repeat</string>
-    <string name="brick_arduino_send">Send to Arduino</string>
-    
+   
     <string name="dialog_edit_note_title">Edit note</string>
     <string name="dialog_edit_note_text">Note:</string>
 
@@ -520,10 +519,12 @@
     <!--  -->
     
     <!-- Arduino Bricks -->
+    <string name="brick_arduino_send">Send to Arduino</string>
 	<string name="brick_arduino_select_value">Set Arduino Pin</string>
+	<string name="brick_arduino_trash_robot_command">Send this Trash-Robot Command</string>
 	<!--  -->
 	
-	<!-- Arduino Strings -->
+	<!-- Arduino Spinner Strings -->
     <string name="digital_arduino_pin_1">1</string> <!-- serial Tx -->
 	<string name="digital_arduino_pin_3">3</string> <!-- PWM -->
 	<string name="digital_arduino_pin_4">4</string> <!-- digital I/O -->
@@ -538,6 +539,14 @@
 	<string name="arduino_pin_value_high">high</string>
 	<string name="arduino_pin_value_low">low</string>
     <!--  -->
+    
+    <!-- IR Trash Robot Commands -->
+	<string name="trash_robot_move_forward">move forward</string>
+	<string name="trash_robot_move_backward">move backward</string>
+	<string name="trash_robot_stop">stop</string>
+	<string name="trash_robot_talk">talk</string>
+	<string name="trash_robot_action_button">action button</string>
+	<!--  -->
 
     <!-- Formula Editor Strings -->
     <string name="formula_editor_true">True</string>

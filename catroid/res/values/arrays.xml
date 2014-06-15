@@ -62,4 +62,14 @@
         <item>@string/arduino_pin_value_low</item>
         <item>@string/arduino_pin_value_high</item>
     </string-array>
+    
+    <!-- Arduino Trash Robot Command spinner -->
+    <string-array name="arduino_trash_robot_command_chooser">
+        <!--  <item>@string/pin_0</item> -->
+        <item>@string/trash_robot_move_forward</item>
+        <item>@string/trash_robot_move_backward</item>
+        <item>@string/trash_robot_stop</item>
+        <item>@string/trash_robot_talk</item>
+        <item>@string/trash_robot_action_button</item>
+    </string-array>
 </resources>

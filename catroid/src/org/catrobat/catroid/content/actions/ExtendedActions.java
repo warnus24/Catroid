@@ -359,4 +359,11 @@ public class ExtendedActions extends Actions {
 		action.setPinValue(pinValue);
 		return action;
 	}
+
+	public static ArduinoTrashRobotCommandAction sendTrashRobotValues(Sprite sprite, int commandToSend) {
+		ArduinoTrashRobotCommandAction action = action(ArduinoTrashRobotCommandAction.class);
+		action.setSprite(sprite);
+		action.setTrashRobotCommand(commandToSend);
+		return action;
+	}
 }

@@ -30,6 +30,7 @@ import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.common.MessageContainer;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.ArduinoSendBrick;
+import org.catrobat.catroid.content.bricks.ArduinoTrashRobotCommandBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.BroadcastBrick;
 import org.catrobat.catroid.content.bricks.BroadcastReceiverBrick;
@@ -212,6 +213,7 @@ public class CategoryBricksFactory {
 	private List<Brick> setupArduinoCategoryList(Sprite sprite) {
 		List<Brick> arduinoBrickList = new ArrayList<Brick>();
 		arduinoBrickList.add(new ArduinoSendBrick(sprite));
+		arduinoBrickList.add(new ArduinoTrashRobotCommandBrick(sprite));
 		return arduinoBrickList;
 	}
 
