@@ -39,12 +39,14 @@ import org.catrobat.catroid.content.WhenScript;
 import org.catrobat.catroid.content.bricks.BrickBaseType;
 import org.catrobat.catroid.content.bricks.BroadcastBrick;
 import org.catrobat.catroid.content.bricks.ForeverBrick;
+import org.catrobat.catroid.content.bricks.LoopEndBrick;
 import org.catrobat.catroid.content.bricks.LoopEndlessBrick;
 import org.catrobat.catroid.content.bricks.PlaySoundBrick;
 import org.catrobat.catroid.content.bricks.SetVariableBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.content.bricks.conditional.GlideToBrick;
 import org.catrobat.catroid.content.bricks.conditional.HideBrick;
+import org.catrobat.catroid.content.bricks.conditional.IfOnEdgeBounceBrick;
 import org.catrobat.catroid.content.bricks.conditional.PlaceAtBrick;
 import org.catrobat.catroid.content.bricks.conditional.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.conditional.PointInDirectionBrick.Direction;
@@ -545,6 +547,10 @@ public final class StandardProjectHandler {
 
 		Project defaultPhysicsProject = new Project(context, projectName);
 		defaultPhysicsProject.setDeviceData(context); // density anywhere here
+
+		defaultPhysicsProject.getXmlHeader().virtualScreenHeight = 800;
+		defaultPhysicsProject.getXmlHeader().virtualScreenWidth = 480;
+
 		StorageHandler.getInstance().saveProject(defaultPhysicsProject);
 		ProjectManager.getInstance().setProject(defaultPhysicsProject);
 		//PhysicsWorld physicsWorld = defaultPhysicsProject.getPhysicsWorld();
@@ -648,6 +654,13 @@ public final class StandardProjectHandler {
 		String ballBroadcastMessage = "restart ball";
 		BroadcastBrick ballBroadcastBrick = new BroadcastBrick(ball, ballBroadcastMessage);
 		ballStartScript.addBrick(ballBroadcastBrick);
+
+		ForeverBrick tempForeverBrick = new ForeverBrick(ball);
+
+		ballStartScript.addBrick(tempForeverBrick);
+		ballStartScript.addBrick(new IfOnEdgeBounceBrick(ball));
+		ballStartScript.addBrick(new LoopEndBrick(ball, tempForeverBrick));
+
 		ball.addScript(ballStartScript);
 
 		BroadcastScript ballBroadcastScript = new BroadcastScript(ball, ballBroadcastMessage);
