@@ -50,8 +50,6 @@ import org.catrobat.catroid.content.bricks.conditional.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.conditional.PointInDirectionBrick.Direction;
 import org.catrobat.catroid.content.bricks.conditional.SetLookBrick;
 import org.catrobat.catroid.content.bricks.conditional.SetSizeToBrick;
-import org.catrobat.catroid.content.bricks.conditional.SetXBrick;
-import org.catrobat.catroid.content.bricks.conditional.SetYBrick;
 import org.catrobat.catroid.content.bricks.conditional.ShowBrick;
 import org.catrobat.catroid.content.bricks.conditional.TurnLeftBrick;
 import org.catrobat.catroid.drone.DroneBrickFactory;
@@ -63,11 +61,10 @@ import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.physics.PhysicsObject;
-import org.catrobat.catroid.physics.PhysicsWorld;
 import org.catrobat.catroid.physics.content.bricks.SetBounceBrick;
 import org.catrobat.catroid.physics.content.bricks.SetFrictionBrick;
-import org.catrobat.catroid.physics.content.bricks.SetGravityBrick;
 import org.catrobat.catroid.physics.content.bricks.SetPhysicsObjectTypeBrick;
+import org.catrobat.catroid.physics.content.bricks.SetVelocityBrick;
 import org.catrobat.catroid.physics.content.bricks.TurnLeftSpeedBrick;
 import org.catrobat.catroid.soundrecorder.SoundRecorder;
 import org.catrobat.catroid.stage.StageListener;
@@ -82,6 +79,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Random;
 
 public final class StandardProjectHandler {
 
@@ -122,7 +120,7 @@ public final class StandardProjectHandler {
 				R.drawable.default_project_background, context);
 
 		File backgroundFile = UtilFile.copyImageFromResourceIntoProject(projectName, backgroundName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_background, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_background, context, true,
 				backgroundImageScaleFactor);
 
 		LookData backgroundLookData = new LookData();
@@ -145,7 +143,7 @@ public final class StandardProjectHandler {
 		String takeOffSpriteName = context.getString(R.string.default_drone_project_sprites_takeoff);
 
 		File takeOffArrowFile = UtilFile.copyImageFromResourceIntoProject(projectName, takeOffSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_takeoff, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_takeoff, context, true,
 				backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(takeOffSpriteName,
@@ -155,7 +153,7 @@ public final class StandardProjectHandler {
 		String landSpriteName = context.getString(R.string.default_drone_project_srpites_land);
 
 		File landArrowFile = UtilFile.copyImageFromResourceIntoProject(projectName, takeOffSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_land, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_land, context, true,
 				backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(landSpriteName, DroneBrickFactory.DroneBricks.DRONE_LAND_BRICK,
@@ -165,7 +163,7 @@ public final class StandardProjectHandler {
 		String rotateSpriteName = context.getString(R.string.default_drone_project_srpites_rotate);
 
 		File rotateFile = UtilFile.copyImageFromResourceIntoProject(projectName, rotateSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_rotate, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_rotate, context, true,
 				backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(rotateSpriteName,
@@ -188,7 +186,7 @@ public final class StandardProjectHandler {
 		String upSpriteName = context.getString(R.string.default_drone_project_sprites_up);
 
 		File upFile = UtilFile.copyImageFromResourceIntoProject(projectName, upSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_arrow_up, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_arrow_up, context, true,
 				backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(upSpriteName,
@@ -198,7 +196,7 @@ public final class StandardProjectHandler {
 		String downSpriteName = context.getString(R.string.default_drone_project_sprites_down);
 
 		File downFile = UtilFile.copyImageFromResourceIntoProject(projectName, downSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_arrow_down, context,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_arrow_down, context,
 				true, backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(downSpriteName,
@@ -208,7 +206,7 @@ public final class StandardProjectHandler {
 		String forwardSpriteName = context.getString(R.string.default_drone_project_sprites_forward);
 
 		File forwardFile = UtilFile.copyImageFromResourceIntoProject(projectName, forwardSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_go_forward, context,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_go_forward, context,
 				true, backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(forwardSpriteName,
@@ -218,7 +216,7 @@ public final class StandardProjectHandler {
 		String backwardpriteName = context.getString(R.string.default_drone_project_sprites_back);
 
 		File backwardFile = UtilFile.copyImageFromResourceIntoProject(projectName, downSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_go_back, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_go_back, context, true,
 				backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(backwardpriteName,
@@ -228,7 +226,7 @@ public final class StandardProjectHandler {
 		String leftSpriteName = context.getString(R.string.default_drone_project_sprites_left);
 
 		File leftFile = UtilFile.copyImageFromResourceIntoProject(projectName, leftSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_go_left, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_go_left, context, true,
 				backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(leftSpriteName,
@@ -238,7 +236,7 @@ public final class StandardProjectHandler {
 		String rightSpriteName = context.getString(R.string.default_drone_project_sprites_right);
 
 		File rightFile = UtilFile.copyImageFromResourceIntoProject(projectName, rightSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_go_right, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_go_right, context, true,
 				backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(rightSpriteName,
@@ -248,7 +246,7 @@ public final class StandardProjectHandler {
 		String turnLeftSpriteName = context.getString(R.string.default_drone_project_sprites_turn_left);
 
 		File turnLeftFile = UtilFile.copyImageFromResourceIntoProject(projectName, turnLeftSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_turn_left, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_turn_left, context, true,
 				backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(turnLeftSpriteName,
@@ -258,7 +256,7 @@ public final class StandardProjectHandler {
 		String turnRightSpriteName = context.getString(R.string.default_drone_project_sprites_turn_right);
 
 		File turnrightFile = UtilFile.copyImageFromResourceIntoProject(projectName, turnRightSpriteName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_turn_right, context,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_turn_right, context,
 				true, backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(turnRightSpriteName,
@@ -340,16 +338,16 @@ public final class StandardProjectHandler {
 				R.drawable.default_project_background, context);
 
 		File backgroundFile = UtilFile.copyImageFromResourceIntoProject(projectName, backgroundName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_background, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_background, context, true,
 				backgroundImageScaleFactor);
 		File movingMoleFile = UtilFile.copyImageFromResourceIntoProject(projectName, movingMoleLookName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_moving, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_moving, context, true,
 				backgroundImageScaleFactor);
 		File diggedOutMoleFile = UtilFile.copyImageFromResourceIntoProject(projectName, moleLookName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_digged_out, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_digged_out, context, true,
 				backgroundImageScaleFactor);
 		File whackedMoleFile = UtilFile.copyImageFromResourceIntoProject(projectName, whackedMoleLookName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_whacked, context, true,
+				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_mole_whacked, context, true,
 				backgroundImageScaleFactor);
 		try {
 			File soundFile1 = UtilFile.copySoundFromResourceIntoProject(projectName, soundName + "1"
@@ -542,280 +540,285 @@ public final class StandardProjectHandler {
 		return null;
 	}
 
-	public static Project createAndSaveStandardPhysicsProject(String projectName, Context context)  throws IOException {
-		String backgroundName = context.getString(R.string.default_project_backgroundname);
+	public static Project createAndSaveStandardPhysicsProject(String projectName, Context context) throws IOException {
+		//String backgroundName = context.getString(R.string.default_project_backgroundname);
 
 		Project defaultPhysicsProject = new Project(context, projectName);
 		defaultPhysicsProject.setDeviceData(context); // density anywhere here
 		StorageHandler.getInstance().saveProject(defaultPhysicsProject);
 		ProjectManager.getInstance().setProject(defaultPhysicsProject);
-		PhysicsWorld physicsWorld = defaultPhysicsProject.getPhysicsWorld();
+		//PhysicsWorld physicsWorld = defaultPhysicsProject.getPhysicsWorld();
 
-		backgroundImageScaleFactor = ImageEditing.calculateScaleFactorToScreenSize(
-				R.drawable.background_480_800, context);
-
-		File backgroundFile = UtilFile.copyImageFromResourceIntoProject(projectName, backgroundName
-						+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_background, context, true,
-				backgroundImageScaleFactor);
-
-		LookData backgroundLookData = new LookData();
-		backgroundLookData.setLookName(backgroundName);
-		backgroundLookData.setLookFilename(backgroundFile.getName());
+		//		backgroundImageScaleFactor = ImageEditing.calculateScaleFactorToScreenSize(R.drawable.background_480_800,
+		//				context);
+		//
+		//		File backgroundFile = UtilFile.copyImageFromResourceIntoProject(projectName, backgroundName
+		//				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_project_background, context, true,
+		//				backgroundImageScaleFactor);
+		//
+		//		LookData backgroundLookData = new LookData();
+		//		backgroundLookData.setLookName(backgroundName);
+		//		backgroundLookData.setLookFilename(backgroundFile.getName());
 		// Background
 		Sprite background = defaultPhysicsProject.getSpriteList().get(0);
+		//
+		//		Sprite backgroundSprite = defaultPhysicsProject.getSpriteList().get(0);
+		//
+		//		// Background sprite
+		//		backgroundSprite.getLookDataList().add(backgroundLookData);
+		//		Script backgroundStartScript = new StartScript(backgroundSprite);
+		//
+		//		SetLookBrick setLookBrick = new SetLookBrick(backgroundSprite);
+		//		setLookBrick.setLook(backgroundLookData);
+		//		backgroundStartScript.addBrick(setLookBrick);
+		//
+		//		backgroundSprite.addScript(backgroundStartScript);
 
-		Sprite backgroundSprite = defaultPhysicsProject.getSpriteList().get(0);
+		//		// Square sprite
+		//		Sprite square = new Sprite("square");
+		//		StartScript startScriptSquare = new StartScript(square);
+		//
+		//		Script squareStartScript = createElement(context, projectName, square, "square", R.drawable.square, new Vector2(0.0f, 400.0f),
+		//				Float.NaN);
+		//		squareStartScript.addBrick(new SetXBrick(square, 100));
+		//		squareStartScript.addBrick(new SetYBrick(square, -200));
+		//		squareStartScript.addBrick(new PointInDirectionBrick(square, 135.0));
+		//
+		//		defaultPhysicsProject.addSprite(square);
 
-		// Background sprite
-		backgroundSprite.getLookDataList().add(backgroundLookData);
-		Script backgroundStartScript = new StartScript(backgroundSprite);
-
-		SetLookBrick setLookBrick = new SetLookBrick(backgroundSprite);
-		setLookBrick.setLook(backgroundLookData);
-		backgroundStartScript.addBrick(setLookBrick);
-
-		backgroundSprite.addScript(backgroundStartScript);
-
-		// Square sprite
-		Sprite square = new Sprite("square");
-		StartScript startScriptSquare = new StartScript(square);
-
-		Script squareStartScript = createElement(context, projectName, square, "square", R.drawable.square, new Vector2(0.0f, 400.0f),
-				Float.NaN);
-		squareStartScript.addBrick(new SetXBrick(square, 100));
-		squareStartScript.addBrick(new SetYBrick(square, -200));
-		squareStartScript.addBrick(new PointInDirectionBrick(square, 135.0));
-
-		defaultPhysicsProject.addSprite(square);
-
-		// Physics Square Sprite
-		Sprite squareP = new Sprite("square");
-		StartScript startScriptSquareP = new StartScript(squareP);
-		startScriptSquareP.addBrick(new SetGravityBrick(squareP, new Vector2(0.0f, -1.0f)));
-		squareP.addScript(startScriptSquareP);
-
-		Script squareStartScriptP = createElement(context, projectName, squareP, "square", R.drawable.square, new Vector2(0.0f, 400.0f),
-				Float.NaN);
-		squareStartScriptP.addBrick(new PointInDirectionBrick(squareP, 225.0));
-		setPhysicsProperties(squareP, squareStartScriptP, PhysicsObject.Type.DYNAMIC, 60.0f, 40.0f);
-
-		defaultPhysicsProject.addSprite(squareP);
+		//		// Physics Square Sprite
+		//		Sprite squareP = new Sprite("square");
+		//		StartScript startScriptSquareP = new StartScript(squareP);
+		//		startScriptSquareP.addBrick(new SetGravityBrick(squareP, new Vector2(0.0f, -1.0f)));
+		//		squareP.addScript(startScriptSquareP);
+		//
+		//		Script squareStartScriptP = createElement(context, projectName, squareP, "square", R.drawable.square, new Vector2(0.0f, 400.0f),
+		//				Float.NaN);
+		//		squareStartScriptP.addBrick(new PointInDirectionBrick(squareP, 225.0));
+		//		setPhysicsProperties(squareP, squareStartScriptP, PhysicsObject.Type.DYNAMIC, 60.0f, 40.0f);
+		//
+		//		defaultPhysicsProject.addSprite(squareP);
 
 		Sprite ball = new Sprite("Ball");
-		Sprite ball2 = new Sprite("Ball2");
+		//		Sprite ball2 = new Sprite("Ball2");
 		//		Sprite ball3 = new Sprite("Ball3");
-		//
-		//		Sprite leftButton = new Sprite("Left button");
-		//		Sprite rightButton = new Sprite("Right button");
-		//		Sprite leftArm = new Sprite("Left arm");
-		//		Sprite rightArm = new Sprite("Right arm");
-		//
-		//		Sprite[] upperBouncers = { new Sprite("Middle cat bouncer"), new Sprite("Right cat bouncer") };
-		//
-		//		Sprite[] lowerBouncers = { new Sprite("Left wool bouncer"), new Sprite("Middle wool bouncer"),
-		//				new Sprite("Right wool bouncer") };
-		//
-		//		Sprite middleBouncer = new Sprite("Cat head bouncer");
-		//
-		//		Sprite leftHardBouncer = new Sprite("Left hard bouncer");
-		//		Sprite leftHardBouncerBouncer = new Sprite("Left hard bouncer bouncer");
-		//		Sprite rightHardBouncer = new Sprite("Right hard bouncer");
-		//		Sprite rightHardBouncerBouncer = new Sprite("Right hard bouncer bouncer");
-		//
-		//		Sprite leftVerticalWall = new Sprite("Left vertical wall");
+
+		Sprite leftButton = new Sprite("Left button");
+		Sprite rightButton = new Sprite("Right button");
+		Sprite leftArm = new Sprite("Left arm");
+		Sprite rightArm = new Sprite("Right arm");
+
+		Sprite[] upperBouncers = { new Sprite("Middle cat bouncer"), new Sprite("Right cat bouncer") };
+
+		Sprite[] lowerBouncers = { new Sprite("Left wool bouncer"), new Sprite("Middle wool bouncer"),
+				new Sprite("Right wool bouncer") };
+
+		Sprite middleBouncer = new Sprite("Cat head bouncer");
+
+		Sprite leftHardBouncer = new Sprite("Left hard bouncer");
+		Sprite leftHardBouncerBouncer = new Sprite("Left hard bouncer bouncer");
+		Sprite rightHardBouncer = new Sprite("Right hard bouncer");
+		Sprite rightHardBouncerBouncer = new Sprite("Right hard bouncer bouncer");
+
+		Sprite leftVerticalWall = new Sprite("Left vertical wall");
 		Sprite leftBottomWall = new Sprite("Left bottom wall");
-		//		Sprite rightVerticalWall = new Sprite("Right vertical wall");
-		//		Sprite rightBottomWall = new Sprite("Right bottom wall");
-		//
-		//		final String leftButtonPressed = "Left button pressed";
-		//		final String rightButtonPressed = "Right button pressed";
-		//
-		//		final float armMovingSpeed = 720.0f;
-		//		float doodlydoo = 50.0f;
+		Sprite rightVerticalWall = new Sprite("Right vertical wall");
+		Sprite rightBottomWall = new Sprite("Right bottom wall");
+
+		final String leftButtonPressed = "Left button pressed";
+		final String rightButtonPressed = "Right button pressed";
+
+		final float armMovingSpeed = 720.0f;
+		float doodlydoo = 50.0f;
 
 		// Background
-		createElement(context, projectName, background, "background_480_800", R.drawable.background_480_800, new Vector2(), Float.NaN);
+		createElement(context, projectName, background, "background_480_800", R.drawable.background_480_800,
+				new Vector2(), Float.NaN);
 
-		// Ball
-		StartScript startScript = new StartScript(ball);
-		startScript.addBrick(new SetGravityBrick(ball, new Vector2(0.0f, -1.0f)));
-		ball.addScript(startScript);
-
-		Script ballStartScript = createElement(context, projectName, ball, "pinball", R.drawable.pinball, new Vector2(0.0f, 250.0f),
-				Float.NaN);
+		//		// Ball
+		//		StartScript startScript = new StartScript(ball);
+		//		startScript.addBrick(new SetGravityBrick(ball, new Vector2(0.0f, -1.0f)));
+		//		ball.addScript(startScript);
+		//
+		Script ballStartScript = createElement(context, projectName, ball, "pinball", R.drawable.pinball, new Vector2(
+				0.0f, 250.0f), Float.NaN);
 		setPhysicsProperties(ball, ballStartScript, PhysicsObject.Type.DYNAMIC, 60.0f, 40.0f);
 
-		//		// Ball v2
-		//		String ballBroadcastMessage = "restart ball";
-		//		BroadcastBrick ballBroadcastBrick = new BroadcastBrick(ball, ballBroadcastMessage);
-		//		ballStartScript.addBrick(ballBroadcastBrick);
-		//		ball.addScript(ballStartScript);
+		// Ball v2
+		String ballBroadcastMessage = "restart ball";
+		BroadcastBrick ballBroadcastBrick = new BroadcastBrick(ball, ballBroadcastMessage);
+		ballStartScript.addBrick(ballBroadcastBrick);
+		ball.addScript(ballStartScript);
 
-		//		BroadcastScript ballBroadcastScript = new BroadcastScript(ball, ballBroadcastMessage);
-		//		ballBroadcastScript.addBrick(new PlaceAtBrick(ball, -200, -50));
-		//		ballBroadcastScript.addBrick(new SetVelocityBrick(ball, new Vector2()));
-		//		SetLookBrick ballSetLookBrick = new SetLookBrick(ball);
-		//		ballSetLookBrick.setLook(ball.getLookDataList().get(0));
-		//		ballBroadcastScript.addBrick(ballSetLookBrick);
-		//		ball.addScript(ballBroadcastScript);
+		BroadcastScript ballBroadcastScript = new BroadcastScript(ball, ballBroadcastMessage);
+		ballBroadcastScript.addBrick(new PlaceAtBrick(ball, -200, -50));
+		ballBroadcastScript.addBrick(new SetVelocityBrick(ball, new Vector2()));
+		SetLookBrick ballSetLookBrick = new SetLookBrick(ball);
+		ballSetLookBrick.setLook(ball.getLookDataList().get(0));
+		ballBroadcastScript.addBrick(ballSetLookBrick);
+		ball.addScript(ballBroadcastScript);
 
-		// Ball2
-		StartScript startScript2 = new StartScript(ball2);
-		startScript2.addBrick(new SetGravityBrick(ball2, new Vector2(0.0f, -1.0f)));
-		ball2.addScript(startScript2);
+		//		// Ball2
+		//		StartScript startScript2 = new StartScript(ball2);
+		//		startScript2.addBrick(new SetGravityBrick(ball2, new Vector2(0.0f, -1.0f)));
+		//		ball2.addScript(startScript2);
+		//
+		//		Script ballStartScript2 = createElement(context, projectName, ball2, "pinball", R.drawable.pinball,
+		//				new Vector2(0.0f, 300.0f), Float.NaN);
+		//		setPhysicsProperties(ball2, ballStartScript2, PhysicsObject.Type.DYNAMIC, 60.0f, 40.0f);
 
-		Script ballStartScript2 = createElement(context, projectName, ball2, "pinball", R.drawable.pinball, new Vector2(0.0f, 300.0f),
-				Float.NaN);
-		setPhysicsProperties(ball2, ballStartScript2, PhysicsObject.Type.DYNAMIC, 60.0f, 40.0f);
-		//
-		//		// Ball v2
-		//		BroadcastBrick ballBroadcastBrick2 = new BroadcastBrick(ball2, ballBroadcastMessage);
-		//		ballStartScript2.addBrick(ballBroadcastBrick2);
-		//		ball2.addScript(ballStartScript2);
-		//
-		//		BroadcastScript ballBroadcastScript2 = new BroadcastScript(ball2, ballBroadcastMessage);
-		//		ballBroadcastScript2.addBrick(new PlaceAtBrick(ball2, -100, 300));
-		//		ballBroadcastScript2.addBrick(new SetVelocityBrick(ball2, new Vector2()));
-		//		SetLookBrick ballSetLookBrick2 = new SetLookBrick(ball2);
-		//		ballSetLookBrick2.setLook(ball2.getLookDataList().get(0));
-		//		ballBroadcastScript2.addBrick(ballSetLookBrick);
-		//		ball2.addScript(ballBroadcastScript2);
-		//
+		//				// Ball v2
+		//				BroadcastBrick ballBroadcastBrick2 = new BroadcastBrick(ball2, ballBroadcastMessage);
+		//				ballStartScript2.addBrick(ballBroadcastBrick2);
+		//				ball2.addScript(ballStartScript2);
+		//		
+		//				BroadcastScript ballBroadcastScript2 = new BroadcastScript(ball2, ballBroadcastMessage);
+		//				ballBroadcastScript2.addBrick(new PlaceAtBrick(ball2, -100, 300));
+		//				ballBroadcastScript2.addBrick(new SetVelocityBrick(ball2, new Vector2()));
+		//				SetLookBrick ballSetLookBrick2 = new SetLookBrick(ball2);
+		//				ballSetLookBrick2.setLook(ball2.getLookDataList().get(0));
+		//				ballBroadcastScript2.addBrick(ballSetLookBrick);
+		//				ball2.addScript(ballBroadcastScript2);
+
 		//		// Ball3
 		//		StartScript startScript3 = new StartScript(ball3);
 		//		startScript3.addBrick(new SetGravityBrick(ball3, new Vector2(0.0f, -8.0f)));
 		//		ball3.addScript(startScript3);
 		//
-		//		Script ballStartScript3 = createElement(context, projectName, ball3, "pinball", R.drawable.pinball, new Vector2(-200.0f, 300.0f),
-		//				Float.NaN);
+		//		Script ballStartScript3 = createElement(context, projectName, ball3, "pinball", R.drawable.pinball,
+		//				new Vector2(-200.0f, 300.0f), Float.NaN);
 		//		setPhysicsProperties(ball3, ballStartScript3, PhysicsObject.Type.DYNAMIC, 20.0f, 80.0f);
-		//
-		//		// ball3 v2
-		//		BroadcastBrick ballBroadcastBrick3 = new BroadcastBrick(ball3, ballBroadcastMessage);
-		//		ballStartScript3.addBrick(ballBroadcastBrick3);
-		//		ball3.addScript(ballStartScript);
-		//
-		//		BroadcastScript ballBroadcastScript3 = new BroadcastScript(ball3, ballBroadcastMessage);
-		//		ballBroadcastScript3.addBrick(new PlaceAtBrick(ball3, 0, 300));
-		//		ballBroadcastScript3.addBrick(new SetVelocityBrick(ball3, new Vector2()));
-		//		SetLookBrick ballSetLookBrick3 = new SetLookBrick(ball3);
-		//		ballSetLookBrick3.setLook(ball3.getLookDataList().get(0));
-		//		ballBroadcastScript3.addBrick(ballSetLookBrick3);
-		//		ball3.addScript(ballBroadcastScript3);
-		//
-		//		// Buttons
-		//		createElement(context, projectName, leftButton, "button", R.drawable.button, new Vector2(-175.0f, -330.0f), Float.NaN);
-		//		createButtonPressed(context, projectName, leftButton, leftButtonPressed);
-		//		createElement(context, projectName, rightButton, "button", R.drawable.button, new Vector2(175.0f, -330.0f), Float.NaN);
-		//		createButtonPressed(context, projectName, rightButton, rightButtonPressed);
-		//
-		//		// Arms
-		//		Script leftArmStartScript = createElement(context, projectName, leftArm, "left_arm", R.drawable.left_arm,
-		//				new Vector2(-80.0f, -315.0f), Float.NaN);
-		//		setPhysicsProperties(leftArm, leftArmStartScript, PhysicsObject.Type.FIXED, 50.0f, -1.0f);
-		//		createMovingArm(leftArm, leftButtonPressed, armMovingSpeed);
-		//		Script rightArmStartScript = createElement(context, projectName, rightArm, "right_arm", R.drawable.right_arm, new Vector2(80.0f,
-		//				-315.0f), Float.NaN);
-		//		setPhysicsProperties(rightArm, rightArmStartScript, PhysicsObject.Type.FIXED, 50.0f, -1.0f);
-		//		createMovingArm(rightArm, rightButtonPressed, -armMovingSpeed);
-		//
-		// Lower walls
-		//		Script leftVerticalWallStartScript = createElement(context, projectName, leftVerticalWall, "vertical_wall", R.drawable.vertical_wall,
-		//				new Vector2(-232.0f, -160.0f), 8.0f);
-		//		setPhysicsProperties(leftVerticalWall, leftVerticalWallStartScript, PhysicsObject.Type.FIXED, 5.0f, -1.0f);
-		//		Script rightVerticalWallStartScript = createElement(context, projectName, rightVerticalWall, "vertical_wall",
-		//				R.drawable.vertical_wall, new Vector2(232.0f, -160.0f), -8.0f);
-		//		setPhysicsProperties(rightVerticalWall, rightVerticalWallStartScript, PhysicsObject.Type.FIXED, 5.0f, -1.0f);
-		//
-		Script leftBottomWallStartScript = createElement(context, projectName, leftBottomWall, "wall_bottom", R.drawable.wall_bottom,
-				new Vector2(0.0f, -100.0f), 90f);
-		setPhysicsProperties(leftBottomWall, leftBottomWallStartScript, PhysicsObject.Type.FIXED, 5.0f, -1.0f);
-		//		Script rightBottomWallStartScript = createElement(context, projectName, rightBottomWall, "wall_bottom", R.drawable.wall_bottom,
-		//				new Vector2(155.0f, -255.0f), -58.5f);
-		//		setPhysicsProperties(rightBottomWall, rightBottomWallStartScript, PhysicsObject.Type.FIXED, 5.0f, -1.0f);
-		//
-		//		// Hard Bouncer
-		//		Script leftHardBouncerStartScript = createElement(context, projectName, leftHardBouncer, "left_hard_bouncer",
-		//				R.drawable.left_hard_bouncer, new Vector2(-140.0f, -165.0f), Float.NaN);
-		//		setPhysicsProperties(leftHardBouncer, leftHardBouncerStartScript, PhysicsObject.Type.FIXED, 10.0f, -1.0f);
-		//		Script leftHardBouncerBouncerStartScript = createElement(context, projectName, leftHardBouncerBouncer, "left_light_bouncer",
-		//				R.drawable.left_light_bouncer, new Vector2(-129.0f, -163.0f), Float.NaN);
-		//		setPhysicsProperties(leftHardBouncerBouncer, leftHardBouncerBouncerStartScript, PhysicsObject.Type.FIXED,
-		//				124.0f, -1.0f);
-		//
-		//		Script rightHardBouncerStartScript = createElement(context, projectName, rightHardBouncer, "right_hard_bouncer",
-		//				R.drawable.right_hard_bouncer, new Vector2(140.0f, -165.0f), Float.NaN);
-		//		setPhysicsProperties(rightHardBouncer, rightHardBouncerStartScript, PhysicsObject.Type.FIXED, 10.0f, -1.0f);
-		//		Script rightHardBouncerBouncerStartScript = createElement(context, projectName, rightHardBouncerBouncer, "right_light_bouncer",
-		//				R.drawable.right_light_bouncer, new Vector2(129.0f, -163.0f), Float.NaN);
-		//		setPhysicsProperties(rightHardBouncerBouncer, rightHardBouncerBouncerStartScript, PhysicsObject.Type.FIXED,
-		//				124.0f, -1.0f);
-		//
-		//		// Lower wool bouncers
-		//		Vector2[] lowerBouncersPositions = { new Vector2(-100.0f, -80.0f + doodlydoo),
-		//				new Vector2(0.0f, -140.0f + doodlydoo), new Vector2(100.0f, -80.0f + doodlydoo) };
-		//		for (int index = 0; index < lowerBouncers.length; index++) {
-		//			Script lowerBouncerStartScript = createElement(context, projectName, lowerBouncers[index], "wolle_bouncer",
-		//					R.drawable.wolle_bouncer, lowerBouncersPositions[index], new Random().nextInt(360));
-		//			setPhysicsProperties(lowerBouncers[index], lowerBouncerStartScript, PhysicsObject.Type.FIXED, 116.0f, -1.0f);
-		//		}
-		//
-		//		// Middle bouncer
-		//		Script middleBouncerStartScript = createElement(context, projectName, middleBouncer, "lego", R.drawable.lego, new Vector2(0.0f,
-		//				75.0f + doodlydoo), Float.NaN);
-		//		setPhysicsProperties(middleBouncer, middleBouncerStartScript, PhysicsObject.Type.FIXED, 40.0f, 80.0f);
-		//		middleBouncerStartScript.addBrick(new TurnLeftSpeedBrick(middleBouncer, 145));
-		//
-		//		WhenScript whenPressedScript = new WhenScript(middleBouncer);
-		//		whenPressedScript.setAction(0);
-		//
-		//		BroadcastBrick bb = new BroadcastBrick(middleBouncer, ballBroadcastMessage);
-		//		whenPressedScript.addBrick(bb);
-		//		whenPressedScript.addBrick(new ChangeSizeByNBrick(middleBouncer, 20));
-		//		middleBouncer.addScript(whenPressedScript);
 
-		//		// Upper bouncers
-		//		Vector2[] upperBouncersPositions = { new Vector2(0.0f, 240.f + doodlydoo),
-		//				new Vector2(150.0f, 200.0f + doodlydoo) };
-		//		for (int index = 0; index < upperBouncers.length; index++) {
-		//			Script upperBouncersStartScript = createElement(context, projectName, upperBouncers[index], "cat_bouncer",
-		//					R.drawable.cat_bouncer, upperBouncersPositions[index], Float.NaN);
-		//			setPhysicsProperties(upperBouncers[index], upperBouncersStartScript, PhysicsObject.Type.FIXED, 106.0f, -1.0f);
-		//		}
-		//
-		//		defaultPhysicsProject.addSprite(leftButton);
-		//		defaultPhysicsProject.addSprite(rightButton);
+		//				// ball3 v2
+		//				BroadcastBrick ballBroadcastBrick3 = new BroadcastBrick(ball3, ballBroadcastMessage);
+		//				ballStartScript3.addBrick(ballBroadcastBrick3);
+		//				ball3.addScript(ballStartScript);
+		//		
+		//				BroadcastScript ballBroadcastScript3 = new BroadcastScript(ball3, ballBroadcastMessage);
+		//				ballBroadcastScript3.addBrick(new PlaceAtBrick(ball3, 0, 300));
+		//				ballBroadcastScript3.addBrick(new SetVelocityBrick(ball3, new Vector2()));
+		//				SetLookBrick ballSetLookBrick3 = new SetLookBrick(ball3);
+		//				ballSetLookBrick3.setLook(ball3.getLookDataList().get(0));
+		//				ballBroadcastScript3.addBrick(ballSetLookBrick3);
+		//				ball3.addScript(ballBroadcastScript3);
+
+		// Buttons
+		createElement(context, projectName, leftButton, "button", R.drawable.button, new Vector2(-175.0f, -330.0f),
+				Float.NaN);
+		createButtonPressed(context, projectName, leftButton, leftButtonPressed);
+		createElement(context, projectName, rightButton, "button", R.drawable.button, new Vector2(175.0f, -330.0f),
+				Float.NaN);
+		createButtonPressed(context, projectName, rightButton, rightButtonPressed);
+
+		// Arms
+		Script leftArmStartScript = createElement(context, projectName, leftArm, "left_arm", R.drawable.left_arm,
+				new Vector2(-80.0f, -315.0f), Float.NaN);
+		setPhysicsProperties(leftArm, leftArmStartScript, PhysicsObject.Type.FIXED, 50.0f, -1.0f);
+		createMovingArm(leftArm, leftButtonPressed, armMovingSpeed);
+		Script rightArmStartScript = createElement(context, projectName, rightArm, "right_arm", R.drawable.right_arm,
+				new Vector2(80.0f, -315.0f), Float.NaN);
+		setPhysicsProperties(rightArm, rightArmStartScript, PhysicsObject.Type.FIXED, 50.0f, -1.0f);
+		createMovingArm(rightArm, rightButtonPressed, -armMovingSpeed);
+
+		//Lower walls
+		Script leftVerticalWallStartScript = createElement(context, projectName, leftVerticalWall, "vertical_wall",
+				R.drawable.vertical_wall, new Vector2(-232.0f, -160.0f), -(8.0f + 90));
+		setPhysicsProperties(leftVerticalWall, leftVerticalWallStartScript, PhysicsObject.Type.FIXED, 5.0f, -1.0f);
+		Script rightVerticalWallStartScript = createElement(context, projectName, rightVerticalWall, "vertical_wall",
+				R.drawable.vertical_wall, new Vector2(232.0f, -160.0f), -(-8.0f + 90));
+		setPhysicsProperties(rightVerticalWall, rightVerticalWallStartScript, PhysicsObject.Type.FIXED, 5.0f, -1.0f);
+
+		Script leftBottomWallStartScript = createElement(context, projectName, leftBottomWall, "wall_bottom",
+				R.drawable.wall_bottom, new Vector2(-155.0f, -255.0f), -(58.5f + 90.0f));
+		setPhysicsProperties(leftBottomWall, leftBottomWallStartScript, PhysicsObject.Type.FIXED, 5.0f, -1.0f);
+		Script rightBottomWallStartScript = createElement(context, projectName, rightBottomWall, "wall_bottom",
+				R.drawable.wall_bottom, new Vector2(155.0f, -255.0f), -(-58.5f + 90.0f));
+		setPhysicsProperties(rightBottomWall, rightBottomWallStartScript, PhysicsObject.Type.FIXED, 5.0f, -1.0f);
+
+		// Hard Bouncer
+		Script leftHardBouncerStartScript = createElement(context, projectName, leftHardBouncer, "left_hard_bouncer",
+				R.drawable.left_hard_bouncer, new Vector2(-140.0f, -165.0f), Float.NaN);
+		setPhysicsProperties(leftHardBouncer, leftHardBouncerStartScript, PhysicsObject.Type.FIXED, 10.0f, -1.0f);
+		Script leftHardBouncerBouncerStartScript = createElement(context, projectName, leftHardBouncerBouncer,
+				"left_light_bouncer", R.drawable.left_light_bouncer, new Vector2(-129.0f, -163.0f), Float.NaN);
+		setPhysicsProperties(leftHardBouncerBouncer, leftHardBouncerBouncerStartScript, PhysicsObject.Type.FIXED,
+				124.0f, -1.0f);
+
+		Script rightHardBouncerStartScript = createElement(context, projectName, rightHardBouncer,
+				"right_hard_bouncer", R.drawable.right_hard_bouncer, new Vector2(140.0f, -165.0f), Float.NaN);
+		setPhysicsProperties(rightHardBouncer, rightHardBouncerStartScript, PhysicsObject.Type.FIXED, 10.0f, -1.0f);
+		Script rightHardBouncerBouncerStartScript = createElement(context, projectName, rightHardBouncerBouncer,
+				"right_light_bouncer", R.drawable.right_light_bouncer, new Vector2(129.0f, -163.0f), Float.NaN);
+		setPhysicsProperties(rightHardBouncerBouncer, rightHardBouncerBouncerStartScript, PhysicsObject.Type.FIXED,
+				124.0f, -1.0f);
+
+		// Lower wool bouncers
+		Vector2[] lowerBouncersPositions = { new Vector2(-100.0f, -80.0f + doodlydoo),
+				new Vector2(0.0f, -140.0f + doodlydoo), new Vector2(100.0f, -80.0f + doodlydoo) };
+		for (int index = 0; index < lowerBouncers.length; index++) {
+			Script lowerBouncerStartScript = createElement(context, projectName, lowerBouncers[index], "wolle_bouncer",
+					R.drawable.wolle_bouncer, lowerBouncersPositions[index], new Random().nextInt(360));
+			setPhysicsProperties(lowerBouncers[index], lowerBouncerStartScript, PhysicsObject.Type.FIXED, 116.0f, -1.0f);
+		}
+
+		// Middle bouncer
+		Script middleBouncerStartScript = createElement(context, projectName, middleBouncer, "lego", R.drawable.lego,
+				new Vector2(0.0f, 75.0f + doodlydoo), Float.NaN);
+		setPhysicsProperties(middleBouncer, middleBouncerStartScript, PhysicsObject.Type.FIXED, 40.0f, 80.0f);
+		middleBouncerStartScript.addBrick(new TurnLeftSpeedBrick(middleBouncer, 145));
+
+		WhenScript whenPressedScript = new WhenScript(middleBouncer);
+		whenPressedScript.setAction(0);
+
+		BroadcastBrick bb = new BroadcastBrick(middleBouncer, ballBroadcastMessage);
+		whenPressedScript.addBrick(bb);
+		//whenPressedScript.addBrick(new ChangeSizeByNBrick(middleBouncer, 20));
+		middleBouncer.addScript(whenPressedScript);
+
+		// Upper bouncers
+		Vector2[] upperBouncersPositions = { new Vector2(0.0f, 240.f + doodlydoo),
+				new Vector2(150.0f, 200.0f + doodlydoo) };
+		for (int index = 0; index < upperBouncers.length; index++) {
+			Script upperBouncersStartScript = createElement(context, projectName, upperBouncers[index], "cat_bouncer",
+					R.drawable.cat_bouncer, upperBouncersPositions[index], Float.NaN);
+			setPhysicsProperties(upperBouncers[index], upperBouncersStartScript, PhysicsObject.Type.FIXED, 106.0f,
+					-1.0f);
+		}
+
+		defaultPhysicsProject.addSprite(leftButton);
+		defaultPhysicsProject.addSprite(rightButton);
 		defaultPhysicsProject.addSprite(ball);
-		defaultPhysicsProject.addSprite(ball2);
+		//		defaultPhysicsProject.addSprite(ball2);
 		//		defaultPhysicsProject.addSprite(ball3);
-		//		defaultPhysicsProject.addSprite(leftArm);
-		//		defaultPhysicsProject.addSprite(rightArm);
-		//		defaultPhysicsProject.addSprite(middleBouncer);
-		//		defaultPhysicsProject.addSprite(leftHardBouncerBouncer);
-		//		defaultPhysicsProject.addSprite(leftHardBouncer);
-		//		defaultPhysicsProject.addSprite(rightHardBouncerBouncer);
-		//		defaultPhysicsProject.addSprite(rightHardBouncer);
-		//		defaultPhysicsProject.addSprite(leftVerticalWall);
+		defaultPhysicsProject.addSprite(leftArm);
+		defaultPhysicsProject.addSprite(rightArm);
+		defaultPhysicsProject.addSprite(middleBouncer);
+		defaultPhysicsProject.addSprite(leftHardBouncerBouncer);
+		defaultPhysicsProject.addSprite(leftHardBouncer);
+		defaultPhysicsProject.addSprite(rightHardBouncerBouncer);
+		defaultPhysicsProject.addSprite(rightHardBouncer);
+		defaultPhysicsProject.addSprite(leftVerticalWall);
 		defaultPhysicsProject.addSprite(leftBottomWall);
-		//		defaultPhysicsProject.addSprite(rightVerticalWall);
-		//		defaultPhysicsProject.addSprite(rightBottomWall);
-		//
-		//		for (Sprite sprite : upperBouncers) {
-		//			defaultPhysicsProject.addSprite(sprite);
-		//		}
-		//
-		//		for (Sprite sprite : lowerBouncers) {
-		//			defaultPhysicsProject.addSprite(sprite);
-		//		}
+		defaultPhysicsProject.addSprite(rightVerticalWall);
+		defaultPhysicsProject.addSprite(rightBottomWall);
+
+		for (Sprite sprite : upperBouncers) {
+			defaultPhysicsProject.addSprite(sprite);
+		}
+
+		for (Sprite sprite : lowerBouncers) {
+			defaultPhysicsProject.addSprite(sprite);
+		}
 
 		StorageHandler.getInstance().saveProject(defaultPhysicsProject);
 
 		return defaultPhysicsProject;
 	}
 
-	private static Script createElement(Context context, String projectName, Sprite sprite, String fileName, int fileId, Vector2 position, float angle)
-			throws IOException {
-		File file = UtilFile.copyImageFromResourceIntoProject(projectName, fileName, fileId, context, true, backgroundImageScaleFactor);
+	private static Script createElement(Context context, String projectName, Sprite sprite, String fileName,
+			int fileId, Vector2 position, float angle) throws IOException {
+		File file = UtilFile.copyImageFromResourceIntoProject(projectName, fileName, fileId, context, true,
+				backgroundImageScaleFactor);
 		//File file = copyFromResourceInProject(projectName, Constants.IMAGE_DIRECTORY, fileName, fileId, context);
 		LookData lookData = new LookData();
 		lookData.setLookName(fileName);
@@ -897,7 +900,8 @@ public final class StandardProjectHandler {
 		return startScript;
 	}
 
-	private static void createButtonPressed(Context context, String projectName, Sprite sprite, String broadcastMessage) throws IOException {
+	private static void createButtonPressed(Context context, String projectName, Sprite sprite, String broadcastMessage)
+			throws IOException {
 		MessageContainer.addMessage(broadcastMessage);
 
 		WhenScript whenPressedScript = new WhenScript(sprite);
@@ -939,7 +943,7 @@ public final class StandardProjectHandler {
 		broadcastScript.addBrick(new WaitBrick(sprite, waitInMillis));
 
 		broadcastScript.addBrick(new TurnLeftSpeedBrick(sprite, 0));
-		broadcastScript.addBrick(new PointInDirectionBrick(sprite, Direction.UP));
+		broadcastScript.addBrick(new PointInDirectionBrick(sprite, Direction.RIGHT));
 
 		sprite.addScript(broadcastScript);
 	}
