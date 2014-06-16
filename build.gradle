@@ -65,7 +65,7 @@ def getGitDescribe() {
     try {
         return 'git describe --tags'.execute().text.trim()
     } catch (IOException exception) {
-        throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?")
+        throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
     }
 }
 
@@ -73,7 +73,7 @@ def getCurrentGitBranch() {
     try {
         return 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
     } catch (IOException exception) {
-        throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?")
+        throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
     }
 }
 
@@ -195,4 +195,24 @@ preBuild.dependsOn featuresToBuildconfig
 def signing_config_file = file(System.getProperty("user.home") + "/.catrobat/catroid_signing_config.gradle")
 if (signing_config_file.exists()) {
     apply from: signing_config_file.absolutePath
+}
+
+task gitSkipWorktreeForIntellijConfigFiles << {
+    try {
+        'git update-index --skip-worktree .idea/misc.xml'.execute().text.trim()
+        'git update-index --skip-worktree Catroid.iml'.execute().text.trim()
+        'git update-index --skip-worktree catroidSourceTest/catroidSourceTest.iml'.execute().text.trim()
+    } catch (IOException exception) {
+        throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
+    }
+}
+
+task gitNoSkipWorktreeForIntellijConfigFiles << {
+    try {
+        'git update-index --no-skip-worktree .idea/misc.xml'.execute().text.trim()
+        'git update-index --no-skip-worktree Catroid.iml'.execute().text.trim()
+        'git update-index --no-skip-worktree catroidSourceTest/catroidSourceTest.iml'.execute().text.trim()
+    } catch (IOException exception) {
+        throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
+    }
 }
