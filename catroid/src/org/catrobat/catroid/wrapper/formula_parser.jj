@@ -1,0 +1,250 @@
+options {
+    UNICODE_INPUT = true;
+    STATIC = false;
+}
+
+PARSER_BEGIN(SyntaxChecker)
+
+package org.catrobat.catroid.wrapper;
+
+import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.FormulaElement;
+import org.catrobat.catroid.formulaeditor.Functions;
+import org.catrobat.catroid.formulaeditor.InternFormulaParser;
+import org.catrobat.catroid.formulaeditor.InternToken;
+import org.catrobat.catroid.formulaeditor.InternTokenType;
+import org.catrobat.catroid.formulaeditor.Operators;
+import org.catrobat.catroid.formulaeditor.Sensors;
+
+import org.catrobat.catroid.wrapper.SpriteWrapper;
+
+import android.util.Log;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+public class SyntaxChecker {
+
+	public static void log(List<InternToken> tokens) {
+		String s = "";
+		for (InternToken t : tokens) {
+			s += t.toString();
+		}
+//		Log.e("PARSER", "InternFormula: " + s);
+	}
+
+	public static void addNumber(List<InternToken> tokens, Token number) {
+		tokens.add(new InternToken(InternTokenType.NUMBER, number.toString()));
+	}
+
+	public static void addConst(List<InternToken> tokens, Token cons) {
+		String s = cons.toString();
+		if (s.equals("PI") || s.equals("pi")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.PI.name()));
+		} else if (s.equals("TRUE") || s.equals("true")) {
+          			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.TRUE.name()));
+		} else if (s.equals("FALSE") || s.equals("false")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.FALSE.name()));
+		}
+	}
+
+	public static void addSensor(List<InternToken> tokens, Token sensor) {
+		String s = sensor.toString();
+		if (s.equals("acceleration_x")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.X_ACCELERATION.name()));
+		} else if (s.equals("acceleration_y")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.Y_ACCELERATION.name()));
+		} else if (s.equals("acceleration_z")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.Z_ACCELERATION.name()));
+		} else if (s.equals("compass_direction")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.COMPASS_DIRECTION.name()));
+		} else if (s.equals("inclination_x")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.X_INCLINATION.name()));
+		} else if (s.equals("inclination_y")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.Y_INCLINATION.name()));
+		} else if (s.equals("loudness")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.LOUDNESS.name()));
+		} else if (s.equals("position_x")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.OBJECT_X.name()));
+		} else if (s.equals("position_y")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.OBJECT_Y.name()));
+		} else if (s.equals("transparency")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.OBJECT_GHOSTEFFECT.name()));
+		} else if (s.equals("brightness")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.OBJECT_BRIGHTNESS.name()));
+		} else if (s.equals("size")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.OBJECT_SIZE.name()));
+		} else if (s.equals("direction")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.OBJECT_ROTATION.name()));
+		} else if (s.equals("layer")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.OBJECT_LAYER.name()));
+		} else if (s.equals("x_velocity")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.OBJECT_X_VELOCITY.name()));
+		} else if (s.equals("y_velocity")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.OBJECT_Y_VELOCITY.name()));
+		} else if (s.equals("angular_velocity")) {
+			tokens.add(new InternToken(InternTokenType.SENSOR, Sensors.OBJECT_ANGULAR_VELOCITY.name()));
+		}
+	}
+
+	public static void addVariable(List<InternToken> tokens, Token var) {
+		tokens.add(new InternToken(InternTokenType.USER_VARIABLE, var.toString()));
+	}
+
+	public static void addBracketOpen(List<InternToken> tokens) {
+		tokens.add(new InternToken(InternTokenType.BRACKET_OPEN));
+	}
+
+	public static void addBracketClose(List<InternToken> tokens) {
+    	tokens.add(new InternToken(InternTokenType.BRACKET_CLOSE));
+    }
+
+    public static void addFunctionBracketOpen(List<InternToken> tokens) {
+		tokens.add(new InternToken(InternTokenType.FUNCTION_PARAMETERS_BRACKET_OPEN));
+	}
+
+	public static void addFunctionBracketClose(List<InternToken> tokens) {
+		tokens.add(new InternToken(InternTokenType.FUNCTION_PARAMETERS_BRACKET_CLOSE));
+	}
+
+	public static void addFunctionDelimiter(List<InternToken> tokens) {
+		tokens.add(new InternToken(InternTokenType.FUNCTION_PARAMETER_DELIMITER));
+	}
+
+	public static void addOperator(List<InternToken> tokens, Token un_op) {
+		String s = un_op.toString();
+		if (s.equals("AND") || s.equals("&") || s.equals("&&")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_AND.name()));
+		} else if (s.equals("OR") || s.equals("|") || s.equals("||")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_OR.name()));
+		} else if (s.equals("=") || s.equals("==")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.EQUAL.name()));
+		} else if (s.equals("!=")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.NOT_EQUAL.name()));
+		} else if (s.equals("<=")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.SMALLER_OR_EQUAL.name()));
+		} else if (s.equals(">=")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.GREATER_OR_EQUAL.name()));
+		} else if (s.equals("<")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.SMALLER_THAN.name()));
+		} else if (s.equals(">")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.GREATER_THAN.name()));
+		} else if (s.equals("+")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.PLUS.name()));
+		} else if (s.equals("-")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.MINUS.name()));
+		} else if (s.equals("*")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.MULT.name()));
+		} else if (s.equals("/")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.DIVIDE.name()));
+		} else if (s.equals("^")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.POW.name()));
+		} else if (s.equals("!")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_NOT.name()));
+		} else if (s.equals("~")) {
+			tokens.add(new InternToken(InternTokenType.OPERATOR, Operators.MINUS.name()));
+		}
+	}
+
+	public static void addFunction(List<InternToken> tokens, Token un_fu) {
+		String s = un_fu.toString();
+		if (s.equals("sin")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.SIN.name()));
+		} else if (s.equals("cos")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.COS.name()));
+		} else if (s.equals("tan")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.TAN.name()));
+		} else if (s.equals("ln")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.LN.name()));
+		} else if (s.equals("log")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.LOG.name()));
+		} else if (s.equals("sqrt")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.SQRT.name()));
+		} else if (s.equals("random") || s.equals("rand")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.RAND.name()));
+		} else if (s.equals("round")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.ROUND.name()));
+		} else if (s.equals("abs")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.ABS.name()));
+		} else if (s.equals("mod")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.MOD.name()));
+		} else if (s.equals("arcsin")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.ARCSIN.name()));
+		} else if (s.equals("arccos")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.ARCCOS.name()));
+		} else if (s.equals("arctan")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.ARCTAN.name()));
+		} else if (s.equals("exp")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.EXP.name()));
+		} else if (s.equals("max")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.MAX.name()));
+		} else if (s.equals("min")) {
+			tokens.add(new InternToken(InternTokenType.FUNCTION_NAME, Functions.MIN.name()));
+		}
+	}
+}
+
+PARSER_END(SyntaxChecker)
+
+SKIP:  { " " | "\t" | "\n" | "\r" }
+
+TOKEN: { <NUM: (["0"-"9"])+ ("."(["0"-"9"])+)?> }
+TOKEN: { <OP: ("AND" | "&&" | "&" | "OR" | "||" | "|" | "==" | "=" | "!=" | "<=" | ">=" | "<" | ">" | "+" | "-" | "*" | "/" | "^" | "!")> }
+TOKEN: { <FU: ("sin" | "cos" | "tan" | "ln" | "log" | "sqrt" | "round" | "abs" | "arcsin" | "arccos" | "arctan" | "rand" | "random" | "mod" | "exp" | "max" | "min")> }
+TOKEN: { <CONST: ("PI" | "pi" | "TRUE" | "true" | "FALSE" | "false")> }
+TOKEN: { <SENSOR: ("acceleration_x" | "acceleration_y" | "acceleration_z" | "compass_direction" | "inclination_x" | "inclination_y" | "loudness" | "position_x" | "position_y" | "transparency" | "brightness" | "size" | "direction" | "layer" | "x_velocity" | "y_velocity" | "angular_velocity")> }
+TOKEN: { <VAR: (["A"-"Z"]|["a"-"z"])(["A"-"Z"]|["a"-"z"]|["0"-"9"]|"_")*> }
+
+Formula parse(): {
+	List<InternToken> tokens = new LinkedList<InternToken>();
+} {
+	E(tokens) <EOF> {
+		InternFormulaParser internParser = new InternFormulaParser(tokens);
+		SyntaxChecker.log(tokens);
+		return new Formula(internParser.parseFormula());
+	}
+}
+
+void E(List<InternToken> tokens): {
+	Token t;
+} {
+	t = <NUM> { SyntaxChecker.addNumber(tokens, t); } R(tokens)
+|
+	t = <SENSOR> { SyntaxChecker.addSensor(tokens, t); } R(tokens)
+|
+	t = <CONST> { SyntaxChecker.addConst(tokens, t); } R(tokens)
+|
+	"'"
+	t = <VAR> { SyntaxChecker.addVariable(tokens, t); }
+	"'" R(tokens)
+|
+	t = <OP> { SyntaxChecker.addOperator(tokens, t); }
+	E(tokens)
+	R(tokens)
+|
+	t = <FU> { SyntaxChecker.addFunction(tokens, t); }
+	"(" { SyntaxChecker.addFunctionBracketOpen(tokens); }
+	E(tokens)
+	(
+		"," { SyntaxChecker.addFunctionDelimiter(tokens); }
+		E(tokens)
+	)?
+	")" { SyntaxChecker.addFunctionBracketClose(tokens); }
+	R(tokens)
+|
+	"(" { SyntaxChecker.addBracketOpen(tokens); }
+	E(tokens)
+	")" { SyntaxChecker.addBracketClose(tokens); }
+	R(tokens)
+}
+
+void R(List<InternToken> tokens): {
+	Token t;
+} {
+	t = <OP> { SyntaxChecker.addOperator(tokens, t); }
+	E(tokens)
+|
+	{}
+}

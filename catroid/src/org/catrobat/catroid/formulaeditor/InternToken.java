@@ -146,4 +146,8 @@ public class InternToken {
 		return new InternToken(internTokenType, tokenStringValue);
 	}
 
+	@Override
+	public String toString() {
+		return "[" + ((tokenStringValue.equals("")) ? internTokenType : tokenStringValue) + "]";
+	}
 }
