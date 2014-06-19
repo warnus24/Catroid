@@ -122,7 +122,7 @@ android {
         textReport true
         ignore 'ContentDescription', 'ExtraTranslation', 'MissingTranslation', 'UnusedResources'
         //these should be fixed soon:
-        ignore 'ValidFragment', 'IconDensities', 'InvalidPackage', 'GradleOverrides', 'GradleDependency'
+        ignore 'ValidFragment', 'IconDensities', 'InvalidPackage', 'GradleOverrides', 'GradleDependency', 'ClickableViewAccessibility', 'InflateParams', 'UnusedAttribute'
     }
 }
 
@@ -216,3 +216,4 @@ task gitNoSkipWorktreeForIntellijConfigFiles << {
         throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
     }
 }
+
