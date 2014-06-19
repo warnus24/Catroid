@@ -55,6 +55,7 @@ public class PrototypeBrickAdapter extends BaseAdapter {
 	}
 
 	public void addBrickToList(Brick brick) {
+
 		brickList.add(brick);
 		notifyDataSetChanged();
 	}
@@ -179,7 +180,6 @@ public class PrototypeBrickAdapter extends BaseAdapter {
 				}
 			});
 		}
-
 		return convertView;
 	}
 }

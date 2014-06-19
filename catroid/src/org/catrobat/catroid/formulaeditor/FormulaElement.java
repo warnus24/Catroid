@@ -176,7 +176,6 @@ public class FormulaElement implements Serializable {
 			case USER_VARIABLE:
 				UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject()
 						.getUserVariables();
-
 				UserVariable userVariable = userVariables.getUserVariable(value,
 						userVariables.getCurrentUserBrickBeingEvaluated(), sprite);
 				if (userVariable == null) {
@@ -452,15 +451,8 @@ public class FormulaElement implements Serializable {
 	}
 
 	public boolean containsElement(ElementType elementType) {
-		if (type.equals(elementType)) {
-			return true;
-		}
-
-		if (leftChild != null && leftChild.containsElement(elementType)) {
-			return true;
-		}
-
-		if (rightChild != null && rightChild.containsElement(elementType)) {
+		if (type.equals(elementType) || (leftChild != null && leftChild.containsElement(elementType))
+				|| (rightChild != null && rightChild.containsElement(elementType))) {
 			return true;
 		}
 		return false;

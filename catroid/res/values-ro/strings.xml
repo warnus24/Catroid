@@ -116,7 +116,6 @@
     <string name="rename_sound_dialog">Redenumirea sunetului</string>
     <string name="soundname_invalid">Această denumire de sunet este nevalabilă</string>
     <string name="sound_play">redare</string>
-    <string name="sound_pause">pauză </string>
     <string name="sound_rename">redenumire</string>
     <!-- Sprite dialog -->
     <!-- <string name="sprite_button_text">Creare</string> -->
@@ -307,7 +306,7 @@
     <string name="select_device">Selectați Mindstorms NXT vostru</string>
     <string name="scanning">Scanare</string>
     <string name="connecting_please_wait">Conecare la dispozitivul vostru.\nVă rugăm să așteptați…</string>
-    <string name="pairing_message">Conectare după împerechere.</string>
+    <!-- <string name="pairing_message">Conectare după împerechere.</string> -->
     <string name="problem_at_closing">Problemă la închiderea conexiunii!</string>
     <!-- <string name="connect_device">Conectarea dispozitivului</string> -->
     <!-- <string name="bt_connected">conectat la dispozitiv!</string> -->

@@ -47,6 +47,18 @@
     <!-- UserBrickDataEditorFragment -->
     <dimen name="brick_data_edit_cursor_size">58dp</dimen>
     <!--  -->
+    
+    <!-- Dialog -->
+    <dimen name="dialog_item_height">48dp</dimen>
+    <dimen name="dialog_item_margin">16dp</dimen>
+    <dimen name="dialog_item_edittext_margin">12dp</dimen>
+    <dimen name="dialog_item_header_height">46dp</dimen>
+    <dimen name="dialog_item_header_linepadding">4dp</dimen>
+    <dimen name="dialog_item_header_line_height">2dp</dimen>
+    <dimen name="dialog_margin">16dp</dimen>
+    <dimen name="dialog_item_text_size">14sp</dimen>
+    <!--  -->
+
 
     <!-- Flow Layout -->
     <dimen name="brick_flow_layout_vertical_spacing">0dp</dimen>

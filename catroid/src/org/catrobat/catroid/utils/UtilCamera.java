@@ -36,9 +36,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class UtilCamera {
+public final class UtilCamera {
 
+	// Suppress default constructor for noninstantiability
 	private UtilCamera() {
+		throw new AssertionError();
 	}
 
 	public static Uri getDefaultLookFromCameraUri(String defLookName) {
@@ -48,7 +50,7 @@ public class UtilCamera {
 
 	public static Uri rotatePictureIfNecessary(Uri lookFromCameraUri, String defLookName) {
 		Uri rotatedPictureUri;
-		int rotate = getPhotoRotationDegree(lookFromCameraUri, lookFromCameraUri.getPath());
+		int rotate = getPhotoRotationDegree(lookFromCameraUri.getPath());
 
 		if (rotate != 0) {
 			Project project = ProjectManager.getInstance().getCurrentProject();
@@ -56,7 +58,8 @@ public class UtilCamera {
 
 			// Height and Width switched for proper scaling for portrait format photos from camera
 			Bitmap fullSizeBitmap = ImageEditing.getScaledBitmapFromPath(fullSizeImage.getAbsolutePath(),
-					project.getXmlHeader().virtualScreenHeight, project.getXmlHeader().virtualScreenWidth, true);
+					project.getXmlHeader().virtualScreenHeight, project.getXmlHeader().virtualScreenWidth,
+					ImageEditing.ResizeType.FILL_RECTANGLE_WITH_SAME_ASPECT_RATIO, true);
 			Bitmap rotatedBitmap = ImageEditing.rotateBitmap(fullSizeBitmap, rotate);
 			File downScaledCameraPicture = new File(Constants.DEFAULT_ROOT, defLookName + ".jpg");
 			rotatedPictureUri = Uri.fromFile(downScaledCameraPicture);
@@ -72,7 +75,7 @@ public class UtilCamera {
 		return lookFromCameraUri;
 	}
 
-	private static int getPhotoRotationDegree(Uri imageUri, String imagePath) {
+	private static int getPhotoRotationDegree(String imagePath) {
 		int rotate = 0;
 		try {
 			File imageFile = new File(imagePath);

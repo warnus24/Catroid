@@ -34,22 +34,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LicenseTest extends TestCase {
-	private static final String[] DIRECTORIES = { ".", "../catroid", "../catroidTest", "../catroidUiTest", };
 
-	private ArrayList<String> agplLicenseText;
+	private static final String[] DIRECTORIES = Utils.SOURCE_AND_RESOURCE_DIRECTORIES;
+
+	private List<String> agplLicenseText;
 	private boolean allLicenseTextsPresentAndCorrect;
-	private StringBuilder errorMessages;
+	private String errorMessages;
 
-	public LicenseTest() throws IOException {
+	@Override
+	public void setUp() throws IOException {
 		allLicenseTextsPresentAndCorrect = true;
-		errorMessages = new StringBuilder();
+		errorMessages = "";
 		agplLicenseText = readLicenseFile(new File("res/agpl_license_text.txt"));
 	}
 
-	private ArrayList<String> readLicenseFile(File licenseTextFile) throws IOException {
+	private List<String> readLicenseFile(File licenseTextFile) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(licenseTextFile));
-		String line = null;
-		ArrayList<String> licenseText = new ArrayList<String>();
+		String line;
+		List<String> licenseText = new ArrayList<String>();
 		while ((line = reader.readLine()) != null) {
 			if (line.length() > 0) {
 				licenseText.add(line);
@@ -59,11 +61,11 @@ public class LicenseTest extends TestCase {
 		return licenseText;
 	}
 
-	private void checkFileForLicense(File file, ArrayList<String> licenseText) throws IOException {
+	private void checkFileForLicense(File file, List<String> licenseText) throws IOException {
 		StringBuilder fileContentsBuilder = new StringBuilder();
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 
-		String line = null;
+		String line;
 		while ((line = reader.readLine()) != null) {
 			fileContentsBuilder.append(line);
 		}
@@ -84,14 +86,22 @@ public class LicenseTest extends TestCase {
 			lastPosition = position;
 		}
 
+		StringBuilder errorMessageBuilder = new StringBuilder();
 		if (notFound) {
 			allLicenseTextsPresentAndCorrect = false;
-			errorMessages.append("License text was not found in file " + file.getCanonicalPath() + "\n");
+			errorMessageBuilder
+				.append("License text was not found in file ")
+				.append(file.getCanonicalPath())
+				.append('\n');
 		} else if (wrongOrder) {
 			allLicenseTextsPresentAndCorrect = false;
-			errorMessages.append("License text was found in the wrong order in file " + file.getCanonicalPath() + "\n");
+			errorMessageBuilder
+				.append("License text was found in the wrong order in file ")
+				.append(file.getCanonicalPath())
+				.append('\n');
 		}
 		reader.close();
+		errorMessages += errorMessageBuilder.toString();
 	}
 
 	public void testLicensePresentInAllFiles() throws IOException {
@@ -100,13 +110,13 @@ public class LicenseTest extends TestCase {
 			assertTrue("Couldn't find directory: " + directoryName, directory.exists() && directory.isDirectory());
 			assertTrue("Couldn't read directory: " + directoryName, directory.canRead());
 
-			List<File> filesToCheck = Utils.getFilesFromDirectoryByExtension(directory,
-					new String[] { ".java", ".xml" });
+			List<File> filesToCheck = Utils.getFilesFromDirectoryByExtension(directory, new String[] { ".java", ".xml",
+					".rb" });
 			for (File file : filesToCheck) {
 				checkFileForLicense(file, agplLicenseText);
 			}
 		}
-		assertTrue("Correct license text was not found in all files:\n" + errorMessages.toString(),
+		assertTrue("Correct license text was not found in all files:\n" + errorMessages,
 				allLicenseTextsPresentAndCorrect);
 	}
 }

@@ -103,7 +103,6 @@ public class SpriteTest extends AndroidTestCase {
 		UserBrick outerBrick = new UserBrick(sprite, 0);
 		numberOfBricks++;
 		outerBrick.addUIText("outerBrick");
-		outerBrick.addUIVariable("outerBrickVariable");
 		outerBrick.updateUIComponents(null);
 
 		UserBrick innerBrick = new UserBrick(sprite, 1);

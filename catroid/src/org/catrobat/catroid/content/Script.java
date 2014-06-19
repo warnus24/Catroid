@@ -135,6 +135,7 @@ public abstract class Script implements Serializable {
 	}
 
 	public void removeInstancesOfUserBrick(UserBrick userBrickToRemove) {
+
 		LinkedList<Brick> toRemove = new LinkedList<Brick>();
 
 		for (Brick brick : brickList) {

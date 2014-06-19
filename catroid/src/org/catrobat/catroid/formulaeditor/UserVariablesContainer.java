@@ -42,16 +42,15 @@ import java.util.Map;
 
 public class UserVariablesContainer implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 	private static final int INVALID_ID = -1;
 
 	@XStreamAlias("programVariableList")
 	private List<UserVariable> projectVariables;
 	@XStreamAlias("objectVariableList")
 	private Map<Sprite, List<UserVariable>> spriteVariables;
+
 	@XStreamAlias("userBrickVariableList")
 	private SparseArray<List<UserVariable>> userBrickVariables;
-
 	private int nextUserBrickId = 0;
 	private int currentUserBrickId = 0;
 
@@ -82,6 +81,7 @@ public class UserVariablesContainer implements Serializable {
 	}
 
 	public List<UserVariable> getProjectVariables() {
+
 		return projectVariables;
 	}
 
@@ -147,7 +147,6 @@ public class UserVariablesContainer implements Serializable {
 		if (variableToDelete != null) {
 			context.remove(variableToDelete);
 		}
-
 	}
 
 	public List<UserVariable> getOrCreateVariableListForUserBrick(int userBrickId) {

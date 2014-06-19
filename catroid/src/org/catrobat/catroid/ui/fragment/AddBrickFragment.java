@@ -78,7 +78,6 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 	private PrototypeBrickAdapter adapter;
 	private CategoryBricksFactory categoryBricksFactory = new CategoryBricksFactory();
 	public static AddBrickFragment addButtonHandler = null;
-
 	protected boolean actionModeActive = false;
 	private static String actionModeTitle;
 
@@ -195,12 +194,6 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
@@ -242,7 +235,6 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 
 		ScriptActivity activity = (ScriptActivity) scriptFragment.getActivity();
 		activity.setDeleteModeListener(null);
-
 		super.onDestroy();
 	}
 
@@ -263,7 +255,6 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 
 		ScriptActivity activity = (ScriptActivity) scriptFragment.getActivity();
 		activity.setDeleteModeListener(this);
-
 	}
 
 	@Override
@@ -325,8 +316,8 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 					launchBrickScriptActivityOnBrick(context, clickedBrick);
 				}
 			}
-		});
 
+		});
 		AlertDialog alertDialog = builder.create();
 		alertDialog.show();
 	}
@@ -335,7 +326,8 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		scriptFragment.updateAdapterAfterAddNewBrick(brickToBeAdded.clone());
 
 		if (brickToBeAdded instanceof ScriptBrick) {
-			Script script = ((ScriptBrick) brickToBeAdded).getScriptSafe(ProjectManager.getInstance().getCurrentSprite());
+			Script script = ((ScriptBrick) brickToBeAdded).getScriptSafe(ProjectManager.getInstance()
+					.getCurrentSprite());
 			ProjectManager.getInstance().setCurrentScript(script);
 		}
 

@@ -67,16 +67,13 @@ public class UserVariablesInterpretationTest extends AndroidTestCase {
 		project.addSprite(firstSprite);
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
-
 		UserBrick userBrick = new UserBrick(firstSprite, 0);
 
 		ProjectManager.getInstance().setCurrentUserBrick(userBrick);
 
 		UserVariablesContainer userVariableContainer = ProjectManager.getInstance().getCurrentProject()
 				.getUserVariables();
-
 		userVariableContainer.setCurrentUserBrickBeingEvaluated(userBrick.getId());
-
 		userVariableContainer.addProjectUserVariable(PROJECT_USER_VARIABLE).setValue(USER_VARIABLE_VALUE);
 		userVariableContainer.addSpriteUserVariableToSprite(firstSprite, SPRITE_USER_VARIABLE).setValue(
 				USER_VARIABLE_VALUE2);
@@ -92,7 +89,6 @@ public class UserVariablesInterpretationTest extends AndroidTestCase {
 		userVariable = getUservariableByName(SPRITE_USER_VARIABLE);
 		assertEquals("Formula interpretation of SpriteUserVariable is not as expected", USER_VARIABLE_VALUE2,
 				userVariable.interpretDouble(firstSprite));
-
 		userVariable = getUservariableByName(USER_BRICK_VARIABLE);
 		assertEquals("Formula interpretation of UserBrickVariable is not as expected", USER_VARIABLE_VALUE3,
 				userVariable.interpretDouble(firstSprite));

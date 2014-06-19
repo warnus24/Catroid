@@ -22,22 +22,25 @@
  */
 package org.catrobat.catroid.transfers;
 
-import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import org.catrobat.catroid.utils.UtilDeviceInfo;
 import org.catrobat.catroid.utils.Utils;
 import org.catrobat.catroid.web.ServerCalls;
 import org.catrobat.catroid.web.WebconnectionException;
 
 public class RegistrationTask extends AsyncTask<Void, Void, Boolean> {
+
+	private static final String TAG = RegistrationTask.class.getSimpleName();
 
 	private Context context;
 	private ProgressDialog progressDialog;
@@ -88,9 +91,9 @@ public class RegistrationTask extends AsyncTask<Void, Void, Boolean> {
 
 			return true;
 
-		} catch (WebconnectionException e) {
-			e.printStackTrace();
-			message = e.getMessage();
+		} catch (WebconnectionException webconnectionException) {
+			Log.e(TAG, Log.getStackTraceString(webconnectionException));
+			message = webconnectionException.getMessage();
 		}
 		return false;
 
@@ -127,17 +130,17 @@ public class RegistrationTask extends AsyncTask<Void, Void, Boolean> {
 			return;
 		}
 		if (message == null) {
-			new Builder(context).setTitle(R.string.register_error).setMessage(messageId).setPositiveButton("OK", null)
-					.show();
+			new CustomAlertDialogBuilder(context).setTitle(R.string.register_error).setMessage(messageId)
+					.setPositiveButton(R.string.ok, null).show();
 		} else {
-			new Builder(context).setTitle(R.string.register_error).setMessage(message).setPositiveButton("OK", null)
-					.show();
+			new CustomAlertDialogBuilder(context).setTitle(R.string.register_error).setMessage(message)
+					.setPositiveButton(R.string.ok, null).show();
 		}
 	}
 
 	public interface OnRegistrationCompleteListener {
 
-		public void onRegistrationComplete();
+		void onRegistrationComplete();
 
 	}
 }

@@ -20,11 +20,10 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <!-- NewApi lint warnings can be ignored - functionality is handled by ActionBarSherlock -->
-    <style name="Theme.Catroid" parent="Theme.Sherlock.ForceOverflow">
+    <style name="Theme.Catroid" parent="Theme.Sherlock">
         <item name="actionBarStyle">@style/Widget.Catroid.ActionBar</item>
         <item name="android:actionBarStyle" tools:ignore="NewApi">@style/Widget.Catroid.ActionBar</item>
         <item name="android:windowBackground">@color/application_background_color</item>
@@ -42,6 +41,47 @@
 
     <style name="Widget.Catroid.ActionBar.Title" parent="TextAppearance.Sherlock.Widget.ActionBar.Title">
         <item name="android:textColor">@color/actionbar_title_color</item>
+    </style>
+
+    <style name="DefaultDialog" parent="android:style/Theme.Dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">@dimen/dialog_item_margin</item>
+        <item name="android:layout_marginLeft">@dimen/dialog_margin</item>
+        <item name="android:layout_marginRight">@dimen/dialog_margin</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="DefaultDialog.Item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">@dimen/dialog_item_height</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/dialog_item_margin</item>
+        <item name="android:layout_marginRight">@dimen/dialog_item_margin</item>
+    </style>
+
+    <style name="DefaultDialog.TextView" parent="DefaultDialog.Item">
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingBottom">@dimen/dialog_item_header_linepadding</item>
+        <item name="android:layout_height">@dimen/dialog_item_header_height</item>
+        <item name="android:textSize">@dimen/dialog_item_text_size</item>
+        <item name="android:textColor">@color/spritelist_details_text_color</item>
+        <item name="android:gravity">bottom</item>
+    </style>
+
+    <style name="DefaultDialog.Line" parent="DefaultDialog.Item">
+        <item name="android:layout_height">@dimen/dialog_item_header_line_height</item>
+        <item name="android:background">@color/dialog_text_line</item>
+    </style>
+
+    <style name="DefaultDialog.EditText" parent="@android:style/Widget.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:minHeight">@dimen/dialog_item_height</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/dialog_item_edittext_margin</item>
+        <item name="android:layout_marginRight">@dimen/dialog_item_edittext_margin</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:gravity">bottom</item>
     </style>
 
     <style name="stage_dialog" parent="android:style/Theme.Dialog">
@@ -256,15 +296,15 @@
         <item name="android:minHeight">@dimen/brick_height_big</item>
         <item name="android:background">@drawable/brick_red_3h</item>
     </style>
-
+    
     <style name="BrickContainer.UserBrick"></style>
     
     <style name="BrickContainer.UserBrick.Small">
         <item name="android:minHeight">@dimen/brick_height_small</item>
         <item name="android:background">@drawable/brick_lime_1h</item>
     </style>
-    
-       <style name="BrickContainer.UserBrick.Medium">
+
+    <style name="BrickContainer.UserBrick.Medium">
         <item name="android:minHeight">@dimen/brick_height_medium</item>
         <item name="android:background">@drawable/brick_lime_2h</item>
     </style>
@@ -274,6 +314,23 @@
         <item name="android:background">@drawable/brick_lime_3h</item>
     </style>
     
+    <style name="BrickContainer.Drone"></style>
+
+    <style name="BrickContainer.Drone.Small">
+        <item name="android:minHeight">@dimen/brick_height_small</item>
+        <item name="android:background">@drawable/brick_olive_1h</item>
+    </style>
+
+    <style name="BrickContainer.Drone.Medium">
+        <item name="android:minHeight">@dimen/brick_height_medium</item>
+        <item name="android:background">@drawable/brick_olive_2h</item>
+    </style>
+
+    <style name="BrickContainer.Drone.Big">
+        <item name="android:minHeight">@dimen/brick_height_big</item>
+        <item name="android:background">@drawable/brick_olive_3h</item>
+    </style>
+
     <style name="BrickContainer.Lego"></style>
 
     <style name="BrickContainer.Lego.Small">
@@ -289,6 +346,9 @@
     <style name="BrickContainer.Lego.Big">
         <item name="android:minHeight">@dimen/brick_height_big</item>
         <item name="android:background">@drawable/brick_cyan_3h</item>
+    </style>
+    
+    <style name="NoBackgroundStyle">
     </style>
 
     <style name="BrickContainer.Control"></style>
@@ -366,10 +426,6 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="NoBackgroundStyle">
-	
-    </style>
-    
     <style name="FormulaEditorButton">
         <item name="android:layout_width">0dp</item>
         <item name="android:background">@drawable/formula_editor_keyboard_button</item>
@@ -439,9 +495,15 @@
         <item name="android:background">@drawable/brick_selection_background_variables</item>
         <item name="android:drawableRight">@drawable/main_menu_button_arrow_variables</item>
     </style>
+
     <style name="BrickCategoryText.UserBricks">
         <item name="android:background">@drawable/brick_selection_background_user_bricks</item>
         <item name="android:drawableRight">@drawable/main_menu_button_arrow_user_bricks</item>
+    </style>
+
+    <style name="BrickCategoryText.Drone">
+        <item name="android:background">@drawable/brick_selection_background_drone</item>
+        <item name="android:drawableRight">@drawable/main_menu_button_arrow_drone</item>
     </style>
     
     <style name="BrickCategoryText.Lego">
@@ -463,12 +525,10 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <!-- textAllCaps lint warning ignored - functionality on 2.3.x: capitalized instead of allcaps -->
     <style name="headlineTextView" parent="android:Widget.TextView">
         <item name="android:paddingBottom">5dip</item>
         <item name="android:paddingLeft">16dip</item>
         <item name="android:paddingTop">9dip</item>
-        <item name="android:textAllCaps" tools:ignore="NewApi">true</item>
         <item name="android:textColor">@color/spritelist_details_text_color</item>
         <item name="android:textColorHighlight">@color/spritelist_details_text_color</item>
         <item name="android:textSize">14sp</item>
@@ -485,20 +545,19 @@
         <item name="android:layout_height">1.5dp</item>
     </style>
 
-    <!-- textAllCaps lint warning ignored - functionality on 2.3.x: capitalized instead of allcaps -->
     <style name="headlineTextViewObjects" parent="android:Widget.TextView">
         <item name="android:paddingBottom">5dip</item>
         <item name="android:paddingLeft">16dip</item>
         <item name="android:paddingTop">18dip</item>
-        <item name="android:textAllCaps" tools:ignore="NewApi">true</item>
         <item name="android:textColor">@color/spritelist_details_text_color</item>
         <item name="android:textColorHighlight">@color/spritelist_details_text_color</item>
         <item name="android:textSize">14sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
+
     <style name="userBrickDataTextBackground">
         <item name="android:background">@drawable/brick_data_round_rect</item>
     </style>
+
 </resources>

@@ -42,6 +42,17 @@ import org.catrobat.catroid.content.bricks.ChangeXByNBrick;
 import org.catrobat.catroid.content.bricks.ChangeYByNBrick;
 import org.catrobat.catroid.content.bricks.ClearGraphicEffectBrick;
 import org.catrobat.catroid.content.bricks.ComeToFrontBrick;
+import org.catrobat.catroid.content.bricks.DroneFlipBrick;
+import org.catrobat.catroid.content.bricks.DroneLandBrick;
+import org.catrobat.catroid.content.bricks.DroneMoveBackwardBrick;
+import org.catrobat.catroid.content.bricks.DroneMoveDownBrick;
+import org.catrobat.catroid.content.bricks.DroneMoveForwardBrick;
+import org.catrobat.catroid.content.bricks.DroneMoveLeftBrick;
+import org.catrobat.catroid.content.bricks.DroneMoveRightBrick;
+import org.catrobat.catroid.content.bricks.DroneMoveUpBrick;
+import org.catrobat.catroid.content.bricks.DroneTakeOffBrick;
+import org.catrobat.catroid.content.bricks.DroneTurnLeftBrick;
+import org.catrobat.catroid.content.bricks.DroneTurnRightBrick;
 import org.catrobat.catroid.content.bricks.ForeverBrick;
 import org.catrobat.catroid.content.bricks.GlideToBrick;
 import org.catrobat.catroid.content.bricks.GoNStepsBackBrick;
@@ -92,7 +103,6 @@ import java.util.List;
 public class CategoryBricksFactory {
 
 	public List<Brick> getBricks(String category, Sprite sprite, Context context) {
-
 		UserBrickScriptActivity activity;
 		try {
 			activity = (UserBrickScriptActivity) context;
@@ -118,8 +128,9 @@ public class CategoryBricksFactory {
 			return setupUserBricksCategoryList(sprite, context);
 		} else if (category.equals(context.getString(R.string.category_lego_nxt))) {
 			tempList = setupLegoNxtCategoryList(sprite);
+		} else if (category.equals(context.getString(R.string.category_drone))) {
+			tempList = setupDroneCategoryList(sprite);
 		}
-
 		for (Brick brick : tempList) {
 			ScriptBrick brickAsScriptBrick;
 			try {
@@ -271,6 +282,31 @@ public class CategoryBricksFactory {
 		legoNXTBrickList.add(new LegoNxtPlayToneBrick(sprite, BrickValues.LEGO_FREQUENCY, BrickValues.LEGO_DURATION));
 
 		return legoNXTBrickList;
+	}
+
+	private List<Brick> setupDroneCategoryList(Sprite sprite) {
+		List<Brick> droneBrickList = new ArrayList<Brick>();
+		droneBrickList.add(new DroneTakeOffBrick(sprite));
+		droneBrickList.add(new DroneLandBrick(sprite));
+		droneBrickList.add(new DroneFlipBrick(sprite));
+		droneBrickList.add(new DroneMoveUpBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveDownBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveLeftBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveRightBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveForwardBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveBackwardBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneTurnLeftBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneTurnRightBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+
+		return droneBrickList;
 	}
 
 	private boolean isBackground(Sprite sprite) {

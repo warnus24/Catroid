@@ -23,22 +23,22 @@
 package org.catrobat.catroid.ui.adapter;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.actionbarsherlock.view.ActionMode;
+
 import org.catrobat.catroid.common.SoundInfo;
+import org.catrobat.catroid.ui.controller.BackPackListManager;
+import org.catrobat.catroid.ui.controller.SoundController;
 import org.catrobat.catroid.ui.fragment.BackPackSoundFragment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class BackPackSoundAdapter extends SoundBaseAdapter implements ScriptActivityAdapterInterface {
 
 	private BackPackSoundFragment backPackSoundFragment;
-
-	public BackPackSoundAdapter(Context context, AttributeSet attributeSet, int currentPlayingposition) {
-		super(context, attributeSet, currentPlayingposition);
-	}
 
 	public BackPackSoundAdapter(Context context, int resource, int textViewResourceId, ArrayList<SoundInfo> items,
 			boolean showDetails, BackPackSoundFragment backPackSoundFragment) {
@@ -55,5 +55,15 @@ public class BackPackSoundAdapter extends SoundBaseAdapter implements ScriptActi
 		}
 		return this.backPackSoundFragment.getView(position, convertView);
 
+	}
+
+	public void onDestroyActionModeUnpacking(ActionMode mode) {
+		Iterator<Integer> iterator = checkedSounds.iterator();
+		while (iterator.hasNext()) {
+			int position = iterator.next();
+			SoundController.getInstance().copySound(soundInfoItems.get(position),
+					BackPackListManager.getCurrentSoundInfoArrayList(), BackPackListManager.getCurrentAdapter());
+		}
+		backPackSoundFragment.clearCheckedSoundsAndEnableButtons();
 	}
 }

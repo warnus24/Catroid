@@ -22,18 +22,21 @@
  */
 package org.catrobat.catroid.transfers;
 
-import android.app.Activity;
-import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import org.catrobat.catroid.utils.Utils;
 import org.catrobat.catroid.web.ServerCalls;
 import org.catrobat.catroid.web.WebconnectionException;
 
 public class CheckTokenTask extends AsyncTask<Void, Void, Boolean> {
-	private Activity activity;
+	private static final String TAG = CheckTokenTask.class.getSimpleName();
+
+	private FragmentActivity fragmentActivity;
 	private ProgressDialog progressDialog;
 	private String token;
 	private String username;
@@ -42,8 +45,8 @@ public class CheckTokenTask extends AsyncTask<Void, Void, Boolean> {
 
 	private OnCheckTokenCompleteListener onCheckTokenCompleteListener;
 
-	public CheckTokenTask(Activity activity, String token, String username) {
-		this.activity = activity;
+	public CheckTokenTask(FragmentActivity fragmentActivity, String token, String username) {
+		this.fragmentActivity = fragmentActivity;
 		this.token = token;
 		this.username = username;
 	}
@@ -55,27 +58,27 @@ public class CheckTokenTask extends AsyncTask<Void, Void, Boolean> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		if (activity == null) {
+		if (fragmentActivity == null) {
 			return;
 		}
-		String title = activity.getString(R.string.please_wait);
-		String message = activity.getString(R.string.loading);
-		progressDialog = ProgressDialog.show(activity, title, message);
+		String title = fragmentActivity.getString(R.string.please_wait);
+		String message = fragmentActivity.getString(R.string.loading);
+		progressDialog = ProgressDialog.show(fragmentActivity, title, message);
 	}
 
 	@Override
 	protected Boolean doInBackground(Void... arg0) {
 		try {
-			if (!Utils.isNetworkAvailable(activity)) {
+			if (!Utils.isNetworkAvailable(fragmentActivity)) {
 				exception = new WebconnectionException(WebconnectionException.ERROR_NETWORK, "Network not available!");
 				return false;
 			}
 
 			return ServerCalls.getInstance().checkToken(token, username);
 
-		} catch (WebconnectionException e) {
-			e.printStackTrace();
-			exception = e;
+		} catch (WebconnectionException webconnectionException) {
+			Log.e(TAG, Log.getStackTraceString(webconnectionException));
+			exception = webconnectionException;
 		}
 		return false;
 
@@ -96,33 +99,35 @@ public class CheckTokenTask extends AsyncTask<Void, Void, Boolean> {
 		if (!success) {
 			// token is not valid -> maybe password has changed
 			if (onCheckTokenCompleteListener != null) {
-				onCheckTokenCompleteListener.onTokenNotValid();
+				onCheckTokenCompleteListener.onTokenNotValid(fragmentActivity);
 			}
 
 			return;
 		}
 
 		if (onCheckTokenCompleteListener != null) {
-			onCheckTokenCompleteListener.onCheckTokenSuccess();
+			onCheckTokenCompleteListener.onCheckTokenSuccess(fragmentActivity);
 		}
 	}
 
 	private void showDialog(int messageId) {
-		if (activity == null) {
+		if (fragmentActivity == null) {
 			return;
 		}
 		if (exception.getMessage() == null) {
-			new Builder(activity).setMessage(messageId).setPositiveButton(R.string.ok, null).show();
+			new CustomAlertDialogBuilder(fragmentActivity).setMessage(messageId).setPositiveButton(R.string.ok, null)
+					.show();
 		} else {
-			new Builder(activity).setMessage(exception.getMessage()).setPositiveButton(R.string.ok, null).show();
+			new CustomAlertDialogBuilder(fragmentActivity).setMessage(exception.getMessage())
+					.setPositiveButton(R.string.ok, null).show();
 		}
 	}
 
 	public interface OnCheckTokenCompleteListener {
 
-		public void onTokenNotValid();
+		void onTokenNotValid(FragmentActivity fragmentActivity);
 
-		public void onCheckTokenSuccess();
+		void onCheckTokenSuccess(FragmentActivity fragmentActivity);
 
 	}
 }

@@ -26,6 +26,5 @@ import org.catrobat.catroid.formulaeditor.Formula;
 
 public interface FormulaBrick {
 
-	public Formula getFormula();
-
+	Formula getFormula();
 }

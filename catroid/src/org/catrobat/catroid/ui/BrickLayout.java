@@ -19,9 +19,7 @@
  *  
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
-/**
  * Author: Romain Guy
  * <p/>
  * Using example: <?xml version="4.0" encoding="utf-8"?> <com.example.android.layout.FlowLayout
@@ -92,7 +90,7 @@ public class BrickLayout extends ViewGroup {
 		}
 	}
 
-	private LineData allocateNewLine() {
+	protected LineData allocateNewLine() {
 		LineData lineData = new LineData();
 		for (int i = 0; i < elementsToAllocatePerLine; i++) {
 			lineData.elements.add(new ElementData(null, 0, 0, 0, 0));

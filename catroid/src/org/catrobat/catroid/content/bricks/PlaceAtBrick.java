@@ -155,7 +155,7 @@ public class PlaceAtBrick extends BrickBaseType implements OnClickListener, Mult
 
 		if (view != null) {
 
-			View layout = (View) view.findViewById(R.id.brick_place_at_layout);
+			View layout = view.findViewById(R.id.brick_place_at_layout);
 			Drawable background = layout.getBackground();
 			background.setAlpha(alphaValue);
 
