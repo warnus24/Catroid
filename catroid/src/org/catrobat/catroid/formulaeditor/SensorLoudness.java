@@ -48,36 +48,38 @@ public final class SensorLoudness {
 		recorder = new SoundRecorder("/dev/null");
 	}
 
-	Runnable statusChecker = new Runnable() {
-		@Override
-		public void run() {
-			float[] loudness = new float[1];
-			loudness[0] = (float) (SCALE_RANGE / MAX_AMP_VALUE) * recorder.getMaxAmplitude();
-			if (lastValue != loudness[0] && loudness[0] != 0f) {
-				lastValue = loudness[0];
-				SensorCustomEvent event = new SensorCustomEvent(Sensors.LOUDNESS, loudness);
-				for (SensorCustomEventListener listener : listenerList) {
-					listener.onCustomSensorChanged(event);
-				}
-			}
-			handler.postDelayed(statusChecker, UPDATE_INTERVAL);
-		}
-	};
+    Runnable statusChecker = new Runnable() {
+        @Override
+        public void run() {
+            float[] loudness = new float[1];
+            loudness[0] = (float) (SCALE_RANGE / MAX_AMP_VALUE) * recorder.getMaxAmplitude();
+            if (lastValue != loudness[0] && loudness[0] != 0f) {
+                lastValue = loudness[0];
+                SensorCustomEvent event = new SensorCustomEvent(Sensors.LOUDNESS, loudness);
+                for (SensorCustomEventListener listener : listenerList) {
+                    listener.onCustomSensorChanged(event);
+                }
+            }
+            handler.postDelayed(statusChecker, UPDATE_INTERVAL);
+        }
+    };
 
-	public static SensorLoudness getSensorLoudness() {
-		if (instance == null) {
-			instance = new SensorLoudness();
-		}
-		return instance;
-	}
+    public static SensorLoudness getSensorLoudness() {
+        if (instance == null) {
+            instance = new SensorLoudness();
+        }
+        return instance;
+    }
 
 	public synchronized boolean registerListener(SensorCustomEventListener listener) {
+        Log.d("Lausi", "SensorLoudness_register");
 		if (listenerList.contains(listener)) {
 			return true;
 		}
 		listenerList.add(listener);
 		if (!recorder.isRecording()) {
 			try {
+                Log.d("Lausi", "SensorLoudness_start");
 				recorder.start();
 				statusChecker.run();
 			} catch (Exception e) {
@@ -91,17 +93,20 @@ public final class SensorLoudness {
 	}
 
 	public synchronized void unregisterListener(SensorCustomEventListener listener) {
+        Log.d("Lausi", "SensorLoudness_unregister");
 		if (listenerList.contains(listener)) {
 			listenerList.remove(listener);
 			if (listenerList.size() == 0) {
 				handler.removeCallbacks(statusChecker);
 				if (recorder.isRecording()) {
 					try {
+                        Log.d("Lausi", "SensorLoudness_stopping...");
 						recorder.stop();
 					} catch (IOException ioException) {
 						// ignored, nothing we can do
 						Log.e(TAG, Log.getStackTraceString(ioException));
 					}
+                    Log.d("Lausi", "SensorLoudness_NEW");
 					recorder = new SoundRecorder("/dev/null");
 				}
 				lastValue = 0f;

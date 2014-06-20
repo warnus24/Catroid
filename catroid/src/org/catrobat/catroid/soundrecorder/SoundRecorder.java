@@ -24,6 +24,7 @@ package org.catrobat.catroid.soundrecorder;
 
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,11 +38,13 @@ public class SoundRecorder {
 	private String path;
 
 	public SoundRecorder(String path) {
+        Log.d("Lausi", "SoundRecorder_Constructor");
 		this.recorder = new MediaRecorder();
 		this.path = path;
 	}
 
 	public void start() throws IOException, IllegalStateException {
+        Log.d("Lausi", "SoundRecorder_Start");
 		File soundFile = new File(path);
 		if (soundFile.exists()) {
 			soundFile.delete();
@@ -62,11 +65,15 @@ public class SoundRecorder {
 	}
 
 	public void stop() throws IOException {
-
-		recorder.stop();
-		recorder.reset();
-		recorder.release();
+        Log.d("Lausi", "SoundRecorder_Stop");
+        //recorder.stop();
+        Log.d("Lausi", "SoundRecorder_Stop1");
+        recorder.reset();
+        Log.d("Lausi", "SoundRecorder_Stop2");
+        recorder.release();
+        Log.d("Lausi", "SoundRecorder_Stop3");
 		isRecording = false;
+        Log.d("Lausi", "SoundRecorder_Stop_end");
 	}
 
 	public Uri getPath() {

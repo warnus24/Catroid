@@ -85,6 +85,7 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onResume() {
+        Log.d("Lausi", "on_resume_startListeners");
 		SensorHandler.startSensorListener(this);
 		stageListener.activityResume();
 		super.onResume();
@@ -98,6 +99,7 @@ public class StageActivity extends AndroidApplication {
 	}
 
 	public void resume() {
+        Log.d("Lausi", "resume_startListeners");
 		stageListener.menuResume();
 		SensorHandler.startSensorListener(this);
 	}

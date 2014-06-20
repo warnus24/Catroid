@@ -62,6 +62,7 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		if (instance == null) {
 			instance = new SensorHandler(context);
 		}
+        Log.d("Lausi", "SensorHandler_startListeners");
 		instance.sensorManager.unregisterListener((SensorEventListener) instance);
 		instance.sensorManager.unregisterListener((SensorCustomEventListener) instance);
 		instance.sensorManager.registerListener(instance, instance.accelerometerSensor,
@@ -94,10 +95,13 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		if (instance == null) {
 			return;
 		}
+        Log.d("Lausi", "SensorHandler_stopListeners");
 		instance.sensorManager.unregisterListener((SensorEventListener) instance);
 		instance.sensorManager.unregisterListener((SensorCustomEventListener) instance);
+        Log.d("Lausi", "SensorHandler_stopListeners_beforeFD");
 		FaceDetectionHandler.unregisterOnFaceDetectedListener(instance);
 		FaceDetectionHandler.unregisterOnFaceDetectionStatusListener(instance);
+        Log.d("Lausi", "SensorHandler_stopListeners_afterFD");
 	}
 
 	public static Double getSensorValue(Sensors sensor) {

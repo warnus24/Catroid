@@ -158,10 +158,8 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 			boolean success = FaceDetectionHandler.startFaceDetection(this);
 			if (success) {
 				resourceInitialized();
-                Log.d("Lausi", "Resource true");
 			} else {
 				resourceFailed();
-                Log.d("Lausi", "Resource false");
 			}
 		}
        if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
