@@ -119,19 +119,13 @@ public class ScriptActivity extends BaseActivity {
 		actionBar.setTitle(currentSprite);
 
 		buttonAdd = (ImageButton) findViewById(R.id.button_add);
-		updateHandleAddButtonClickListener();
-	}
-
-	public void updateHandleAddButtonClickListener() {
-		if (buttonAdd == null) {
-			buttonAdd = (ImageButton) findViewById(R.id.button_add);
-		}
 		buttonAdd.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				handleAddButton(view);
 			}
 		});
+
 	}
 
 	private void updateCurrentFragment(int fragmentPosition, FragmentTransaction fragmentTransaction) {
@@ -165,7 +159,7 @@ public class ScriptActivity extends BaseActivity {
 				break;
 		}
 
-		updateHandleAddButtonClickListener();
+
 
 		if (fragmentExists) {
 			fragmentTransaction.show(currentFragment);
@@ -254,7 +248,7 @@ public class ScriptActivity extends BaseActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		updateHandleAddButtonClickListener();
+
 
 		if (requestCode == PreStageActivity.REQUEST_RESOURCES_INIT && resultCode == RESULT_OK) {
 			Intent intent = new Intent(ScriptActivity.this, StageActivity.class);
@@ -347,7 +341,7 @@ public class ScriptActivity extends BaseActivity {
 	}
 
 	public void handlePlayButton(View view) {
-		updateHandleAddButtonClickListener();
+
 
 		Fragment formulaEditorFragment = fragmentManager
 				.findFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
@@ -454,7 +448,7 @@ public class ScriptActivity extends BaseActivity {
 	public void setIsSoundFragmentFromPlaySoundBrickNewFalse() {
 		this.isSoundFragmentFromPlaySoundBrickNew = false;
 		// TODO quickfix for issue #521 - refactor design (activity and fragment interaction)
-		updateHandleAddButtonClickListener();
+
 	}
 
 	public boolean getIsSoundFragmentHandleAddButtonHandled() {
@@ -472,7 +466,7 @@ public class ScriptActivity extends BaseActivity {
 	public void setIsLookFragmentFromSetLookBrickNewFalse() {
 		this.isLookFragmentFromSetLookBrickNew = false;
 		// TODO quickfix for issue #521 - refactor design (activity and fragment interaction)
-		updateHandleAddButtonClickListener();
+
 	}
 
 	public boolean getIsLookFragmentHandleAddButtonHandled() {
@@ -519,7 +513,7 @@ public class ScriptActivity extends BaseActivity {
 				break;
 		}
 
-		updateHandleAddButtonClickListener();
+
 		fragmentTransaction.commit();
 	}
 }
