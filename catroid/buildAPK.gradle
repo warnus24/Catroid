@@ -1,0 +1,51 @@
+import org.rauschig.jarchivelib.ArchiverFactory
+
+import static org.rauschig.jarchivelib.ArchiveFormat.ZIP
+
+buildscript {
+    dependencies {
+        repositories {
+            mavenCentral()
+        }
+        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.9.+'
+        classpath 'org.rauschig:jarchivelib:0.6.0'
+    }
+}
+
+ext.projectName = ""//default name
+
+def getProjectName(String xml) {
+    def program = new XmlSlurper().parseText(xml)
+    println program.header.programName
+    projectName = program.header.programName.text()
+    return projectName
+}
+
+def removeAllSpaces(String name) {
+    def packageNameSuffix = name.removeAll(" ","");
+    return packageNameSuffix;
+}
+
+task replaceAppName(dependsOn: ':catroid:downloadProject') << {
+    def manifestFile = new File("src/main/AndroidManifest.xml");
+    def manifest = manifestFile.text;
+    manifest = manifest.replaceAll("@string/app_name", (String) getProjectName(new File('src/main/assets/standalone/code.xml').text));
+    manifestFile.write(manifest)
+}
+
+task downloadProject() << {
+    //https://pocketcode.org/download/ID.catrobat
+    def url = "https://pocketcode.org/download/719.catrobat"
+    File temp = new File(".", 'project.zip')
+    temp.withOutputStream {
+        it << new URL(url).content
+    }
+
+    unzipProject(temp)
+}
+
+def unzipProject(File tmp) {
+    ArchiverFactory.createArchiver(ZIP).extract(tmp, new File("src/main/assets/standalone/"))
+    tmp.delete()
+}
