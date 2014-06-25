@@ -453,6 +453,7 @@
     
     <!-- <string name="default_drone_project_sprites_blink_led">LED blinken</string> -->
     <string name="default_drone_project_srpites_land">Landen</string>
+    <string name="default_drone_project_srpites_takeoff_or_land">Hebe ab oder lande</string>
     <string name="default_drone_project_srpites_rotate">Flip</string>
     <string name="default_drone_project_sprites_up">Fliege hoch</string>
     <string name="default_drone_project_sprites_down">Fliege runter</string>

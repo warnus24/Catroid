@@ -450,6 +450,7 @@
 
     <!-- <string name="default_drone_project_sprites_blink_led">Blink led</string> -->
     <string name="default_drone_project_srpites_land">Land</string>
+    <string name="default_drone_project_srpites_takeoff_or_land">Takeoff or land</string>
     <string name="default_drone_project_srpites_rotate">Rotate</string>
     <string name="default_drone_project_sprites_up">Up</string>
     <string name="default_drone_project_sprites_down">Down</string>

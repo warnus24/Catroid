@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.drone;
 
-import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.BrickBaseType;
 import org.catrobat.catroid.content.bricks.DroneFlipBrick;
 import org.catrobat.catroid.content.bricks.DroneLandBrick;
@@ -46,7 +45,7 @@ public final class DroneBrickFactory {
 		DRONE_TAKE_OFF_BRICK, DRONE_PLAY_LED_ANIMATION_BRICK, DRONE_LAND_BRICK, DRONE_FLIP_BRICK, DRONE_MOVE_DOWN_BRICK, DRONE_MOVE_UP_BRICK, DRONE_MOVE_LEFT_BRICK, DRONE_MOVE_RIGHT_BRICK, DRONE_MOVE_BACKWARD_BRICK, DRONE_MOVE_FORWARD_BRICK, DRONE_TURN_RIGHT_BRICK, DRONE_TURN_LEFT_BRICK,
 	}
 
-	public static BrickBaseType getInstanceOfDroneBrick(DroneBricks brick, Sprite sprite, int timeInMilliseconds,
+	public static BrickBaseType getInstanceOfDroneBrick(DroneBricks brick, int timeInMilliseconds,
 			int powerInPercent) {
 
 		switch (brick) {
