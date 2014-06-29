@@ -531,7 +531,7 @@
   <string name="formula_editor_variable_dialog_for_all_sprites">Für alle Objekte</string>
   <string name="formula_editor_variable_dialog_for_this_sprite_only">Nur für dieses Objekt</string>
   <string name="formula_editor_variable_dialog_hint">Variablenname eingeben</string>
-  <string name="formula_editor_discard_changes_dialog_message">Möchtest Du deine Änderungen speichern?</string>
+  <string name="formula_editor_discard_changes_dialog_message">Möchtest yyDu deine Änderungen speichern?</string>
   <string name="formula_editor_discard_changes_dialog_title">Änderungen speichern?</string>
   <string name="variable_name">Variablenname:</string>
   <string name="formula_editor_new_string_name">Neuer Text</string>
