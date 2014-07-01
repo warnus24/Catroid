@@ -75,6 +75,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 			possibleFaces = camera.getParameters().getMaxNumDetectedFaces();
 			camera.release();
 		} catch (Exception exc) {
+            Log.e("ICSFacedetectionTest", Log.getStackTraceString(exc));
 		} finally {
 			if (camera != null) {
 				camera.release();

@@ -52,11 +52,6 @@ public class FaceDetectionResourcesTest extends BaseActivityInstrumentationTestC
 		super(MainMenuActivity.class);
 	}
 
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-	}
-
 	public void testResourceNeeded() throws Exception {
 		createProject(true);
 		UiTestUtils.prepareStageForTest();

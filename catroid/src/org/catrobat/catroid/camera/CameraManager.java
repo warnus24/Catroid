@@ -42,7 +42,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CameraManager implements Camera.PreviewCallback {
+public final class CameraManager implements Camera.PreviewCallback {
 
 	public static final int TEXTURE_NAME = 1;
 	private static CameraManager instance;
@@ -114,15 +114,13 @@ public class CameraManager implements Camera.PreviewCallback {
 			return false;
 		}
 		camera.setPreviewCallback(this);
-		if (useTexture) {
-			if (texture != null) {
-				try {
-					setTexture();
-				} catch (IOException e) {
-                    Log.e("CameraManager", Log.getStackTraceString(e)); // TODO
-					return false;
-				}
-			}
+		if (useTexture && texture != null) {
+            try {
+                setTexture();
+            } catch (IOException e) {
+                Log.e("CameraManager", Log.getStackTraceString(e));
+                return false;
+            }
 		}
 		return true;
 	}

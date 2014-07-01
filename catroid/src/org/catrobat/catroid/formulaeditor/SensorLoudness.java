@@ -27,7 +27,6 @@ import android.util.Log;
 
 import org.catrobat.catroid.soundrecorder.SoundRecorder;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public final class SensorLoudness {
@@ -72,14 +71,12 @@ public final class SensorLoudness {
     }
 
 	public synchronized boolean registerListener(SensorCustomEventListener listener) {
-        Log.d("Lausi", "SensorLoudness_register");
 		if (listenerList.contains(listener)) {
 			return true;
 		}
 		listenerList.add(listener);
 		if (!recorder.isRecording()) {
 			try {
-                Log.d("Lausi", "SensorLoudness_start");
 				recorder.start();
 				statusChecker.run();
 			} catch (Exception e) {
@@ -93,20 +90,17 @@ public final class SensorLoudness {
 	}
 
 	public synchronized void unregisterListener(SensorCustomEventListener listener) {
-        Log.d("Lausi", "SensorLoudness_unregister");
 		if (listenerList.contains(listener)) {
 			listenerList.remove(listener);
 			if (listenerList.size() == 0) {
 				handler.removeCallbacks(statusChecker);
 				if (recorder.isRecording()) {
 					try {
-                        Log.d("Lausi", "SensorLoudness_stopping...");
 						recorder.stop();
 					} catch (Exception ioException) {
 						// ignored, nothing we can do
 						Log.e(TAG, Log.getStackTraceString(ioException));
 					}
-                    Log.d("Lausi", "SensorLoudness_NEW");
 					recorder = new SoundRecorder("/dev/null");
 				}
 				lastValue = 0f;

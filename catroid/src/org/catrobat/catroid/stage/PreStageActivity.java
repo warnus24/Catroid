@@ -154,7 +154,7 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 		}
 
 		if ((requiredResources & Brick.FACE_DETECTION) > 0) {
-            FaceDetectionHandler.resetFaceDedection();  // ober if
+            FaceDetectionHandler.resetFaceDedection();
 			boolean success = FaceDetectionHandler.startFaceDetection(this);
 			if (success) {
 				resourceInitialized();
@@ -296,9 +296,9 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 		if (legoNXT != null) {
 			legoNXT.pauseCommunicator();
 		}
-        Log.d("Lausi", "stop FaceDetection");
-        if(FaceDetectionHandler.isFaceDetectionRunning())
-		    FaceDetectionHandler.stopFaceDetection();
+        if (FaceDetectionHandler.isFaceDetectionRunning()) {
+            FaceDetectionHandler.stopFaceDetection();
+        }
 	}
 
 	//all resources that should not have to be reinitialized every stage start

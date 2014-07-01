@@ -42,7 +42,6 @@ public class FaceDetectionHandler {
 	private static boolean paused = false;
 
 	private static void createFaceDetector() {
-        Log.d("Lausi", "CREATE fd");
 		if (isIcsFaceDetectionSupported()) {
 			faceDetector = new IcsFaceDetector();
 		} else {
@@ -55,24 +54,17 @@ public class FaceDetectionHandler {
 	}
 
 	public static boolean startFaceDetection(Context context) {
-        Log.d("Lausi", "START");
-		if (context != null) {
-			if (!useFaceDetection(context)) {
-				SensorHandler.clearFaceDetectionValues();
-                Log.d("Lausi", "START_not_allowed");
-				return true;
-			}
+		if (context != null && !useFaceDetection(context)) {
+            SensorHandler.clearFaceDetectionValues();
+            return true;
 		}
 		if (running) {
-            Log.d("Lausi", "START_running_true");
 			return true;
 		}
 		if (context != null) {
 			CameraManager.getInstance().updateCameraID(context);
-            Log.d("Lausi", "START_update_camid");
 		}
 		if (faceDetector == null) {
-            Log.d("Lausi", "START_fd_null");
 			createFaceDetector();
 			if (faceDetector == null) {
 				return false;
@@ -83,7 +75,6 @@ public class FaceDetectionHandler {
 	}
 
 	public static void resetFaceDedection() {
-        Log.d("Lausi", "RESET face detection");
 		if (running) {
 			stopFaceDetection();
 		}
@@ -92,11 +83,9 @@ public class FaceDetectionHandler {
 
 	public static void stopFaceDetection() {
 		if (!running) {
-            Log.d("Lausi", "STOP_not_running");
 			return;
 		}
 		if (faceDetector == null) {
-            Log.d("Lausi", "STOP_fd_null");
 			return;
 		}
         faceDetector.stopFaceDetection();
@@ -104,7 +93,6 @@ public class FaceDetectionHandler {
 	}
 
 	public static void pauseFaceDetection() {
-        Log.d("Lausi", "PAUSE");
 		if (!running) {
 			return;
 		}
@@ -117,7 +105,6 @@ public class FaceDetectionHandler {
 	}
 
 	public static void resumeFaceDetection() {
-        Log.d("Lausi", "RESUME");
 		if (!paused) {
 			return;
 		}
@@ -154,9 +141,6 @@ public class FaceDetectionHandler {
 	}
 
 	public static boolean isIcsFaceDetectionSupported() {
-		//		if (true) {
-		//			return false; // FIXME just for testing
-		//		}
 		int currentApi = android.os.Build.VERSION.SDK_INT;
 		if (currentApi < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			return false;
@@ -168,6 +152,7 @@ public class FaceDetectionHandler {
 			possibleFaces = getNumberOfCameras(camera);
 			camera.release();
 		} catch (Exception exc) {
+            Log.e("Camera", "Camera unaccessable!", exc);
 		} finally {
 			if (camera != null) {
 				camera.release();
@@ -177,7 +162,6 @@ public class FaceDetectionHandler {
 	}
 
 	public static boolean useFaceDetection(Context context) {
-        Log.d("Lausi", "USE");
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		boolean useFaceDetection = preferences.getBoolean(
 				context.getResources().getString(R.string.preference_key_use_face_detection), true);
