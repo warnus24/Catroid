@@ -119,7 +119,7 @@ public class CameraManager implements Camera.PreviewCallback {
 				try {
 					setTexture();
 				} catch (IOException e) {
-					e.printStackTrace(); // TODO
+                    Log.e("CameraManager", Log.getStackTraceString(e)); // TODO
 					return false;
 				}
 			}
