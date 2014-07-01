@@ -102,7 +102,7 @@ public final class SensorLoudness {
 					try {
                         Log.d("Lausi", "SensorLoudness_stopping...");
 						recorder.stop();
-					} catch (IOException ioException) {
+					} catch (Exception ioException) {
 						// ignored, nothing we can do
 						Log.e(TAG, Log.getStackTraceString(ioException));
 					}

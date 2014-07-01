@@ -297,7 +297,8 @@ public class PreStageActivity extends BaseActivity implements DroneReadyReceiver
 			legoNXT.pauseCommunicator();
 		}
         Log.d("Lausi", "stop FaceDetection");
-		FaceDetectionHandler.stopFaceDetection();
+        if(FaceDetectionHandler.isFaceDetectionRunning())
+		    FaceDetectionHandler.stopFaceDetection();
 	}
 
 	//all resources that should not have to be reinitialized every stage start

@@ -66,7 +66,7 @@ public class SoundRecorder {
 
 	public void stop() throws IOException {
         Log.d("Lausi", "SoundRecorder_Stop");
-        //recorder.stop();
+        recorder.stop();
         Log.d("Lausi", "SoundRecorder_Stop1");
         recorder.reset();
         Log.d("Lausi", "SoundRecorder_Stop2");

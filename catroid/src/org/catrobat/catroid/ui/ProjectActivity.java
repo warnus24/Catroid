@@ -138,7 +138,7 @@ public class ProjectActivity extends BaseActivity {
 
 		if (requestCode == PreStageActivity.REQUEST_RESOURCES_INIT && resultCode == RESULT_OK) {
             Log.d("Lausi", "onActivityResult_startListeners");
-			SensorHandler.startSensorListener(this);
+			//SensorHandler.startSensorListener(this);
 			Intent intent = new Intent(ProjectActivity.this, StageActivity.class);
 			PreStageActivity.addDroneSupportExtraToNewIntentIfPresentInOldIntent(data, intent);
 			startActivity(intent);
