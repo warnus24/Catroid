@@ -7,28 +7,36 @@ buildscript {
         repositories {
             mavenCentral()
         }
-        classpath 'com.android.tools.build:gradle:0.9.+'
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.9.+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
         classpath 'org.rauschig:jarchivelib:0.6.0'
     }
 }
 
-ext.projectName = ""//default name
+project.ext.projectName = "suffix"//default name
 
 def getProjectName(String xml) {
     def program = new XmlSlurper().parseText(xml)
-    println program.header.programName
-    projectName = program.header.programName.text()
-    return projectName
+   // println program.header.programName
+    project.ext.projectName = program.header.programName.text()
+    return project.ext.projectName
 }
 
 def removeAllSpaces(String name) {
-    def packageNameSuffix = name.removeAll(" ","");
-    return packageNameSuffix;
+    def packageNameSuffix = name.replaceAll("[^a-zA-Z0-9\\\\s]","").toLowerCase()
+    return packageNameSuffix
+}
+
+def getStandalonePackageName() {
+    def name = getProjectName(new File('src/main/assets/standalone/code.xml').text)
+    if(project.hasProperty("projectID"))
+        name += project["projectID"]
+    return removeAllSpaces((String)name)  //TODO append "_<ProjectID>"
 }
 
 task replaceAppName(dependsOn: ':catroid:downloadProject') << {
-    def manifestFile = new File("src/main/AndroidManifest.xml");
+    def manifestFile = new File("catroid/src/main/AndroidManifest.xml");
+    //println manifestFile.absolutePath
     def manifest = manifestFile.text;
     manifest = manifest.replaceAll("@string/app_name", (String) getProjectName(new File('src/main/assets/standalone/code.xml').text));
     manifestFile.write(manifest)
@@ -36,7 +44,11 @@ task replaceAppName(dependsOn: ':catroid:downloadProject') << {
 
 task downloadProject() << {
     //https://pocketcode.org/download/ID.catrobat
-    def url = "https://pocketcode.org/download/719.catrobat"
+    def id = 1647;
+    if(project.hasProperty("projectID"))
+        id = project["projectID"]
+
+    def url = "https://pocketcode.org/download/" + id + ".catrobat"
     File temp = new File(".", 'project.zip')
     temp.withOutputStream {
         it << new URL(url).content

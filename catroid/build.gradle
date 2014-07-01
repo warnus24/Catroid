@@ -5,8 +5,8 @@ buildscript {
         repositories {
             mavenCentral()
         }
-        classpath 'com.android.tools.build:gradle:0.9.+'
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.9.+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
     }
 }
 
@@ -20,7 +20,8 @@ apply from: 'buildAPK.gradle'
 
 ext.catroid_version = "0.9"
 ext.features_enabled = [
-        "backpack": false
+        "backpack": false,
+        "standalone": false
 ]
 
 configurations {
@@ -43,7 +44,6 @@ dependencies {
     //androidTestCompile 'junit:junit:4.8.2'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.1'
     androidTestCompile files('libs/the-missing-android-xml-junit-test-runner-release-1.3_2.jar')
-
 }
 
 
@@ -67,13 +67,13 @@ def gitDescribe() {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    buildToolsVersion "19.1.0"
 
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 19
-        packageName "org.catrobat.catroid"
-        testPackageName "org.catrobat.catroid.test"
+        applicationId "org.catrobat.catroid"
+        testApplicationId "org.catrobat.catroid.test"
         testInstrumentationRunner "pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
         versionCode getVersionCode()
         versionName getVersionName()
@@ -96,6 +96,14 @@ android {
     lintOptions {
         lintConfig file('lint.xml')
         textReport true
+        abortOnError false
+    }
+
+    buildTypes {
+        standalone {
+            versionNameSuffix ".standalone"
+            applicationIdSuffix getStandalonePackageName()
+        }
     }
 
 }
@@ -116,7 +124,7 @@ task checkstyle(type: Checkstyle) {
     include '**/*.java'
     exclude 'build/**', 'libraryProjects/**'
 
-    classpath = files(project.configurations.compile.asPath)
+    classpath = files()
 }
 
 // Doesn't work atm. Maybe if the pmd plugin gets updated.
@@ -171,7 +179,10 @@ if (signing_config_file.exists()) {
     apply from: signing_config_file.absolutePath
 }
 
+task buildStandalone(dependsOn: ':catroid:replaceAppName') << {
+}
+assembleStandalone.mustRunAfter buildStandalone
+
+
 //apply from: '../gradle/idea.gradle'
-
-
 //TODO find the "Configuration on demand is an incubation feature"
