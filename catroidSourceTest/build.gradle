@@ -1,16 +1,22 @@
-
 apply plugin: 'java'
+apply plugin: 'groovy'
 
 
 dependencies {
 	testCompile files( project(":catroid").buildDir.getPath()+'/classes/debug')
 	testCompile 'junit:junit:4.10'
+    testCompile 'org.codehaus.groovy:groovy:1.6.0'
 }
 
 sourceSets {
     main {
-        test {
-	    java.srcDir 'src'
+       test {
+           java {
+               srcDir 'src/test/java'
+           }
+           groovy {
+               srcDir 'src/test/groovy'
+           }
         }
         resources {
             srcDir 'res'
