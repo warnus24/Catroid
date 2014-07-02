@@ -41,6 +41,11 @@ public class FaceDetectionHandler {
 	private static boolean running = false;
 	private static boolean paused = false;
 
+    // Suppress default constructor for noninstantiability
+    private FaceDetectionHandler() {
+        throw new AssertionError();
+    }
+
 	private static void createFaceDetector() {
 		if (isIcsFaceDetectionSupported()) {
 			faceDetector = new IcsFaceDetector();

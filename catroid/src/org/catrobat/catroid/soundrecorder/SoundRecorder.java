@@ -24,7 +24,6 @@ package org.catrobat.catroid.soundrecorder;
 
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
