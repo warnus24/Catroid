@@ -52,7 +52,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="Galaxy War"
+        android:label="羅針盤"
         android:theme="@style/Theme.Catroid" >
         <activity
             android:name=".ui.MainMenuActivity"

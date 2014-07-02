@@ -17,7 +17,7 @@ project.ext.projectName = "suffix"//default name
 
 def getProjectName(String xml) {
     def program = new XmlSlurper().parseText(xml)
-   // println program.header.programName
+    println program.header.programName
     project.ext.projectName = program.header.programName.text()
     return project.ext.projectName
 }
@@ -31,7 +31,8 @@ def getStandalonePackageName() {
     def name = getProjectName(new File('src/main/assets/standalone/code.xml').text)
     if(project.hasProperty("projectID"))
         name += project["projectID"]
-    return removeAllSpaces((String)name)  //TODO append "_<ProjectID>"
+    //println 'output name: ' + name
+    return removeAllSpaces((String)name)
 }
 
 task replaceAppName(dependsOn: ':catroid:downloadProject') << {
@@ -47,7 +48,7 @@ task downloadProject() << {
     def id = 1647;
     if(project.hasProperty("projectID"))
         id = project["projectID"]
-
+    println id
     def url = "https://pocketcode.org/download/" + id + ".catrobat"
     File temp = new File(".", 'project.zip')
     temp.withOutputStream {
