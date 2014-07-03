@@ -22,8 +22,7 @@
  */
 package org.catrobat.catroid.test.code;
 
-import junit.framework.TestCase;
-
+/*
 import org.catrobat.catroid.common.Constants;
 
 public class ImportantValuesTest extends TestCase {
@@ -32,4 +31,4 @@ public class ImportantValuesTest extends TestCase {
 		assertEquals("wrong paintroid download link", "market://details?id=org.catrobat.paintroid",
 				Constants.POCKET_PAINT_DOWNLOAD_LINK);
 	}
-}
+}*/
