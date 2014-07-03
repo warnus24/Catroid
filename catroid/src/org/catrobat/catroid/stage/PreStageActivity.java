@@ -81,7 +81,6 @@ public class PreStageActivity extends BaseActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-        Log.d("Lausi", "On Create...");
 		super.onCreate(savedInstanceState);
 		returnToActivityIntent = new Intent();
 
@@ -117,8 +116,13 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 
+		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
+			droneInitializer = getDroneInitializer();
+			droneInitializer.initialise();
+		}
+
 		if ((requiredResources & Brick.FACE_DETECTION) > 0) {
-            FaceDetectionHandler.resetFaceDedection();
+			FaceDetectionHandler.resetFaceDedection();
 			boolean success = FaceDetectionHandler.startFaceDetection(this);
 			if (success) {
 				resourceInitialized();
@@ -126,23 +130,11 @@ public class PreStageActivity extends BaseActivity {
 				resourceFailed();
 			}
 		}
-       if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
-			if (SettingsActivity.areTermsOfSericeAgreedPermanently(getApplicationContext())) {
-				initialiseDrone();
-			} else {
-				Bundle args = new Bundle();
-				args.putBoolean(TermsOfUseDialogFragment.DIALOG_ARGUMENT_TERMS_OF_USE_ACCEPT, true);
-				TermsOfUseDialogFragment termsOfUseDialog = new TermsOfUseDialogFragment();
-				termsOfUseDialog.setArguments(args);
-				termsOfUseDialog.show(getSupportFragmentManager(), TermsOfUseDialogFragment.DIALOG_FRAGMENT_TAG);
-			}
-		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
-			droneInitializer = getDroneInitializer();
-			droneInitializer.initialise();
-		}
+
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}
+
 	}
 
 	public DroneInitializer getDroneInitializer() {
@@ -159,7 +151,6 @@ public class PreStageActivity extends BaseActivity {
 		}
 
 		super.onResume();
-        Log.d("Lausi", "On Resume...");
 		if (requiredResourceCounter == 0) {
 			finish();
 		}
@@ -167,30 +158,6 @@ public class PreStageActivity extends BaseActivity {
 
 	@Override
 	protected void onPause() {
-        Log.d("Lausi", "On pause");
-		if (BuildConfig.DEBUG) {
-			if (droneControlService != null) {
-				droneControlService.pause();
-			}
-
-			LocalBroadcastManager manager = LocalBroadcastManager.getInstance(getApplicationContext());
-			manager.unregisterReceiver(droneReadyReceiver);
-			manager.unregisterReceiver(droneConnectionChangeReceiver);
-			manager.unregisterReceiver(droneStateReceiver);
-			manager.unregisterReceiver(droneBatteryReceiver);
-
-			if (taskRunning(checkDroneConnectionTask)) {
-				checkDroneConnectionTask.cancelAnyFtpOperation();
-			}
-		}
-		super.onPause();
-	}
-
-	private boolean taskRunning(AsyncTask<?, ?, ?> checkMediaTask2) {
-
-		if (checkMediaTask2 == null || checkMediaTask2.getStatus() == Status.FINISHED) {
-			return false;
-		}
 		if (droneInitializer != null) {
 			droneInitializer.onPrestageActivityPause();
 		}

@@ -200,10 +200,8 @@ public class StageListener implements ApplicationListener {
 
 	void menuResume() {
 		if (reloadProject) {
-            Log.d("Lausi", "menuResume: reloadedProject");
 			return;
 		}
-        Log.d("Lausi", "menuResume: NOT reloadedProject");
 		paused = false;
 		FaceDetectionHandler.resumeFaceDetection();
 		SoundManager.getInstance().resume();
@@ -237,7 +235,6 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void resume() {
-        Log.d("Lausi", "Resume:....");
 		if (!paused) {
 			FaceDetectionHandler.resumeFaceDetection();
 			SoundManager.getInstance().resume();
