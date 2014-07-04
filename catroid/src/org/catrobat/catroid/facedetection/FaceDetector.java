@@ -67,7 +67,6 @@ public abstract class FaceDetector {
 	}
 
 	protected void onFaceDetected(Point position, int size) {
-		Log.v("Blah", "face detected @ " + position.x + "x" + position.y);// TODO REMOVE
 		float[] positionXFloatValue = new float[] { position.x };
 		float[] positionYFloatValue = new float[] { position.y };
 		float[] sizeFloatValue = new float[] { size };

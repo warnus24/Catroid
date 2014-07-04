@@ -107,7 +107,6 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onResume() {
-        Log.d("Lausi", "on_resume_startListeners");
 		SensorHandler.startSensorListener(this);
 		stageListener.activityResume();
 		stageAudioFocus.requestAudioFocus();
