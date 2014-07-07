@@ -63,6 +63,8 @@ import org.catrobat.catroid.utils.StatusBarNotificationManager;
 import org.catrobat.catroid.utils.UtilFile;
 import org.catrobat.catroid.utils.UtilZip;
 import org.catrobat.catroid.utils.Utils;
+import org.rauschig.jarchivelib.Archiver;
+import org.rauschig.jarchivelib.ArchiverFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -130,13 +132,13 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		copyProgramZip();
 		String zipFileString = Constants.DEFAULT_ROOT + "/" + ZIP_FILE_NAME;
 		Log.e("STANDALONE", "default root " + Constants.DEFAULT_ROOT);
-		Archiver archiver = ArchiverFactory.createArchiver("zip");
+		/*Archiver archiver = ArchiverFactory.createArchiver("zip");
 		try {
 			archiver.extract(new File(zipFileString), new File(Constants.DEFAULT_ROOT));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		//UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
+		}*/
+		UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
 
 		Log.d("STANDALONE", "moving zip to PC directory successful");
 		loadStageProject(START_PROJECT);
