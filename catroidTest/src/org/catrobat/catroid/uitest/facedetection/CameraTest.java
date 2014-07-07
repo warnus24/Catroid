@@ -73,7 +73,7 @@ public class CameraTest extends BaseActivityInstrumentationTestCase<MainMenuActi
 		final int[] calls = new int[1];
 		calls[0] = 0;
 		JpgPreviewCallback callback = new JpgPreviewCallback() {
-			public void onJpgPreviewFrame(byte[] jpgData) {
+			public void onFrame(byte[] jpgData) {
 				calls[0]++;
 				if (calls[0] == 1) {
 					Bitmap bitmap = BitmapFactory.decodeByteArray(jpgData, 0, jpgData.length);
