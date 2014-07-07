@@ -162,8 +162,8 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		String title = adapter.getAmountOfCheckedItems()
 				+ " "
 				+ getActivity().getResources().getQuantityString(
-						R.plurals.formula_editor_variable_context_action_item_selected,
-						adapter.getAmountOfCheckedItems());
+				R.plurals.formula_editor_variable_context_action_item_selected,
+				adapter.getAmountOfCheckedItems());
 
 		contextActionMode.setTitle(title);
 	}
@@ -321,6 +321,8 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 					+ getActivity().getResources().getQuantityString(
 							R.plurals.formula_editor_variable_context_action_item_selected, 0));
 			BottomBar.hideBottomBar(getActivity());
+
+			//getSherlockActivity().findViewById(R.id.bottom_bar).setVisibility(View.GONE);
 			addSelectAllActionModeButton(mode, menu);
 			return true;
 		}

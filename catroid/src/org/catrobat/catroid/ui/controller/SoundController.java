@@ -165,7 +165,6 @@ public final class SoundController {
 	}
 
 	private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
-
 		Cursor cursor = null;
 		final String column = "_data";
 		final String[] projection = { column };
