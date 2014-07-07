@@ -78,7 +78,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 	private static final String TYPE_FILE = "file";
 	private static final String TYPE_HTTP = "http";
 
-	private static final String START_PROJECT = "Galaxy War Master";
+	private static final String START_PROJECT = "Galaxy War";
 	private static final Boolean STANDALONE_MODE = true;
 	private static final String ZIP_FILE_NAME = "galaxywar.zip";
 
@@ -131,6 +131,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		String zipFileString = Constants.DEFAULT_ROOT + "/" + ZIP_FILE_NAME;
 		UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
 
+		Log.d("STANDALONE", "moving zip to PC directory successful");
 		loadStageProject(START_PROJECT);
 
 		File zipFile = new File(zipFileString);
