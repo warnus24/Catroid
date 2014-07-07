@@ -35,6 +35,7 @@ import org.catrobat.catroid.facedetection.IcsFaceDetector;
 import org.catrobat.catroid.formulaeditor.SensorCustomEvent;
 import org.catrobat.catroid.formulaeditor.SensorCustomEventListener;
 import org.catrobat.catroid.formulaeditor.Sensors;
+import org.catrobat.catroid.uitest.annotation.Device;
 
 import java.util.Random;
 
@@ -63,6 +64,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@Device
 	public void testDeviceFaceDetectionSupport() {
 		if (!isMinApiICS()) {
 			Log.w(TAG, "testDeviceFaceDetectionSupport was not performed (higher API level required)");
