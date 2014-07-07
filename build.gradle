@@ -45,6 +45,7 @@ dependencies {
     compile fileTree(include: '*.jar', dir: 'catroid/libs-natives')
     androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
     pmd 'net.sourceforge.pmd:pmd:5.1.1'
+    compile 'org.rauschig:jarchivelib:0.3.0'
 }
 
 

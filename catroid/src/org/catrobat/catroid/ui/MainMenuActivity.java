@@ -129,7 +129,14 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 //if (!ProjectManager.getInstance().canLoadProject(START_PROJECT)) {
 		copyProgramZip();
 		String zipFileString = Constants.DEFAULT_ROOT + "/" + ZIP_FILE_NAME;
-		UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
+		Log.e("STANDALONE", "default root " + Constants.DEFAULT_ROOT);
+		Archiver archiver = ArchiverFactory.createArchiver("zip");
+		try {
+			archiver.extract(new File(zipFileString), new File(Constants.DEFAULT_ROOT));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
 
 		Log.d("STANDALONE", "moving zip to PC directory successful");
 		loadStageProject(START_PROJECT);
@@ -146,7 +153,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		try {
 			files = assetManager.list("");
 		} catch (IOException e) {
-			Log.e("tag", "Failed to get asset file list.", e);
+			Log.e("STANDALONE", "Failed to get asset file list.", e);
 		}
 		for (String filename : files) {
 			if (filename.contains(ZIP_FILE_NAME)) {
@@ -157,13 +164,13 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 					File outFile = new File(Constants.DEFAULT_ROOT, filename);
 					out = new FileOutputStream(outFile);
 					copyFile(in, out);
-					in.close();
-					in = null;
 					out.flush();
 					out.close();
+					in.close();
+					in = null;
 					out = null;
 				} catch (IOException e) {
-					Log.e("tag", "Failed to copy asset file: " + filename, e);
+					Log.e("STANDALONE", "Failed to copy asset file: " + filename, e);
 				}
 			}
 		}
@@ -178,8 +185,9 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 	}
 
 	private void loadStageProject(String projectName) {
-		LoadProjectTask loadProjectTask = new LoadProjectTask(this, START_PROJECT, false, false);
+		LoadProjectTask loadProjectTask = new LoadProjectTask(this, projectName, false, false);
 		loadProjectTask.setOnLoadProjectCompleteListener(this);
+		Log.e("STANDALONE", "going to execute standalone project");
 		loadProjectTask.execute();
 	}
 
@@ -222,7 +230,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 
 		PreStageActivity.shutdownPersistentResources();
 		setMainMenuButtonContinueText();
-		findViewById(R.id.main_menu_button_continue).setEnabled(true);
+		//findViewById(R.id.main_menu_button_continue).setEnabled(true);
 		String projectName = getIntent().getStringExtra(StatusBarNotificationManager.EXTRA_PROJECT_NAME);
 		if (projectName != null) {
 			loadProjectInBackground(projectName);
@@ -432,7 +440,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		spannableStringBuilder.setSpan(textAppearanceSpan, mainMenuContinue.length() + 1,
 				spannableStringBuilder.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
-		mainMenuButtonContinue.setText(spannableStringBuilder);
+		//mainMenuButtonContinue.setText(spannableStringBuilder);
 	}
 
 	@Override
