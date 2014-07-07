@@ -22,7 +22,39 @@
  */
 package org.catrobat.catroid.formulaeditor;
 
-public enum InternTokenType {
-	NUMBER, OPERATOR, FUNCTION_NAME, BRACKET_OPEN, BRACKET_CLOSE, SENSOR, FUNCTION_PARAMETERS_BRACKET_OPEN, FUNCTION_PARAMETERS_BRACKET_CLOSE, FUNCTION_PARAMETER_DELIMITER, PERIOD, USER_VARIABLE, STRING, PARSER_END_OF_FILE, USER_LIST;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+public class UserList implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	private String name;
+	private transient List<Object> list;
+
+	public UserList(final String name) {
+		this.name = name;
+		this.list = new ArrayList<Object>();
+	}
+
+	public UserList(final String name, final List<Object> value) {
+		this.name = name;
+		this.list = value;
+	}
+
+	public List<Object> getList() {
+		return list;
+	}
+
+	public void addListItem(Object listItem) {
+		this.list.add(listItem);
+	}
+
+	public void setList(List<Object> list) {
+		this.list = list;
+	}
+
+	public String getName() {
+		return name;
+	}
 }

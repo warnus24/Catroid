@@ -236,13 +236,19 @@ public class InternFormulaParser {
 				currentElement.replaceElement(userVariable());
 				break;
 
+			case USER_LIST:
+				currentElement.replaceElement(userList());
+				break;
+
 			case STRING:
 				currentElement.replaceElement(FormulaElement.ElementType.STRING, string());
 				break;
 
 			default:
 				throw new InternFormulaParserException("Parse Error");
+
 		}
+
 		return termTree;
 	}
 
@@ -255,6 +261,21 @@ public class InternFormulaParser {
 		}
 
 		FormulaElement lookTree = new FormulaElement(FormulaElement.ElementType.USER_VARIABLE,
+				currentToken.getTokenStringValue(), null);
+
+		getNextToken();
+		return lookTree;
+	}
+
+	private FormulaElement userList() throws InternFormulaParserException {
+		UserListContainer userLists = ProjectManager.getInstance().getCurrentProject().getUserLists();
+		Sprite currentSprite = ProjectManager.getInstance().getCurrentSprite();
+
+		if (userLists.getUserList(currentToken.getTokenStringValue(), currentSprite) == null) {
+			throw new InternFormulaParserException("Parse Error");
+		}
+
+		FormulaElement lookTree = new FormulaElement(FormulaElement.ElementType.USER_LIST,
 				currentToken.getTokenStringValue(), null);
 
 		getNextToken();
