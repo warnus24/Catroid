@@ -223,8 +223,6 @@ public class AddBrickFragment extends SherlockListFragment {
 
 		});
 	}
-<<<<<<< HEAD
-=======
 
 	public Brick getBrickClone(Brick brick) {
 		return brick.clone();
@@ -391,5 +389,4 @@ public class AddBrickFragment extends SherlockListFragment {
 
 		return brickMap;
 	}
->>>>>>> 2bbda56... new branch for virtual gamepad
 }

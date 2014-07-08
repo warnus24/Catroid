@@ -104,9 +104,4 @@ public final class Constants {
 	public static final String VGP_IMAGE_BUTTON_HOLD = "vgp_image_button_hold";
 	public static final String VGP_IMAGE_BUTTON_SWIPE = "vgp_image_button_swipe";
 
-    //=======
-	// Suppress default constructor for noninstantiability
-	private Constants() {
-		throw new AssertionError();
-	}
 }
