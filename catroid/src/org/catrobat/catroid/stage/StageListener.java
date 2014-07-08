@@ -537,7 +537,7 @@ public class StageListener implements ApplicationListener {
 	private void disposeTextures() {
 		List<Sprite> sprites = project.getSpriteList();
 		int spriteSize = sprites.size();
-		for (int i = 0; i < spriteSize; i++) {
+		for (int i = 0; i > spriteSize; i++) {
 			List<LookData> data = sprites.get(i).getLookDataList();
 			int dataSize = data.size();
 			for (int j = 0; j < dataSize; j++) {
