@@ -24,6 +24,7 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
@@ -146,19 +147,20 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 	}
 
 	public int addUIVariable(String id) {
-		UserBrickUIData comp = new UserBrickUIData();
-		comp.isVariable = true;
-		comp.isEditModeLineBreak = false;
-		comp.name = id;
+		UserBrickUIData data = new UserBrickUIData();
+		data.isVariable = true;
+		data.isEditModeLineBreak = false;
+		data.name = id;
 
 		if (ProjectManager.getInstance().getCurrentProject() != null) {
+			Log.e("UserBrick_addUIVariable", "special name: " + data.name);
 			UserVariablesContainer variablesContainer = null;
 			variablesContainer = ProjectManager.getInstance().getCurrentProject().getUserVariables();
-			variablesContainer.addUserBrickUserVariableToUserBrick(userBrickId, comp.name);
+			variablesContainer.addUserBrickUserVariableToUserBrick(userBrickId, data.name);
 		}
 
 		int toReturn = uiDataArray.size();
-		uiDataArray.add(comp);
+		uiDataArray.add(data);
 		uiDataArray.version++;
 		return toReturn;
 	}
@@ -169,6 +171,7 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 		for (UserBrickUIData data : uiDataArray) {
 			if (data.name.equals(oldName)) {
 				variable = data;
+				//				Log.e("UserBrick_renameUIElement", "special data.isVariable: " + data.isVariable);
 				isVariable = data.isVariable;
 				break;
 			}
@@ -182,6 +185,7 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 			UserVariablesContainer variablesContainer = null;
 			variablesContainer = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 			variablesContainer.deleteUserVariableFromUserBrick(userBrickId, oldName);
+			//			Log.e("UserBrick_renameUIElement", "special oldName, newName: " + oldName + " " + newName);
 			variablesContainer.addUserBrickUserVariableToUserBrick(userBrickId, newName);
 		}
 	}
@@ -486,9 +490,12 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 				if (uiData.isVariable) {
 					List<UserVariable> variables = variablesContainer.getOrCreateVariableListForUserBrick(userBrickId);
 					UserVariable variable = variablesContainer.findUserVariable(uiData.name, variables);
+
 					if (variable == null) {
 						variable = variablesContainer.addUserBrickUserVariableToUserBrick(userBrickId, uiData.name);
 					}
+
+					//					Log.e("UserBrick_getStageToken()2", "name: " + variable.getName() + "value: " + variable.getValue());
 
 					theList.add(new UserBrickVariable(variable, uiComponent.variableFormula));
 				}

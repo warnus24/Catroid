@@ -106,11 +106,15 @@ public class UserScriptDefinitionBrick extends ScriptBrick implements OnClickLis
 			if (brick instanceof MultiFormulaBrick) {
 				List<Formula> formulaList = ((MultiFormulaBrick) brick).getFormulas();
 				for (Formula formula : formulaList) {
+					//					Log.e("UserScriptDefinitionBrick_renameVariablesInFormulas", "special oldName, newName: " + oldName
+					//							+ " " + newName);
 					formula.updateVariableReferences(oldName, newName, context);
 				}
 			}
 			if (brick instanceof FormulaBrick) {
 				Formula formula = ((FormulaBrick) brick).getFormula();
+				//				Log.e("UserScriptDefinitionBrick_renameVariablesInFormulas", "special FormulaBrick oldName, newName: "
+				//						+ oldName + " " + newName);
 				formula.updateVariableReferences(oldName, newName, context);
 			}
 		}

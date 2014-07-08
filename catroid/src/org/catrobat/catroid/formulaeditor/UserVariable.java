@@ -60,4 +60,8 @@ public class UserVariable implements Serializable {
 		return context;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

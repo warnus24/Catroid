@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content.actions;
 
+import android.util.Log;
+
 import com.badlogic.gdx.scenes.scene2d.actions.DelegateAction;
 
 import org.catrobat.catroid.ProjectManager;
@@ -47,11 +49,12 @@ public class UserBrickAction extends DelegateAction {
 	public boolean act(float delta) {
 		for (UserBrickVariable userBrickVariable : userBrickToken.variables) {
 			double value = userBrickVariable.formula.interpretDouble(sprite);
-
+			Log.e("UserBrickAction_act()", "name: " + userBrickVariable.variable.getName() + "value: " + value);
 			userBrickVariable.variable.setValue(value);
 		}
 
 		UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
+
 		userVariables.setCurrentUserBrickBeingEvaluated(userBrickToken.userBrickId);
 
 		return action.act(delta);

@@ -311,6 +311,7 @@ public class UserBrickDataEditorFragment extends SherlockFragment implements OnK
 
 			if (textView != null) {
 				textView.setText(uiData.name);
+				//				Log.e("UserBrickDataEditorFragment_updateBrickView", "special uiData.name: " + uiData.name);
 			}
 			Button button = (Button) dataView.findViewById(R.id.button);
 			button.setOnClickListener(new View.OnClickListener() {
