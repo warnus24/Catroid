@@ -98,7 +98,6 @@ public class Sprite implements Serializable, Cloneable {
 	}
 
 	public void resetSprite() {
-        //Log.d("Lausi", "resetSprite");
 		look = new Look(this);
 		for (LookData lookData : lookList) {
 			lookData.resetLookData();
