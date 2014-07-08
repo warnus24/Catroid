@@ -63,7 +63,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 		ScreenValues.SCREEN_HEIGHT = 1080;
 	}
 
-	// does not run on emulator, and even on nexus 7
+	// does not run on emulator, and
 	/*@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Device
 	public void testDeviceFaceDetectionSupport() {
