@@ -45,8 +45,8 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import org.catrobat.catroid.R;
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
@@ -80,9 +80,9 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 	private static final String TYPE_FILE = "file";
 	private static final String TYPE_HTTP = "http";
 
-	private static final String START_PROJECT = "Galaxy War";
+	private static final String START_PROJECT = "white_tiles";
 	private static final Boolean STANDALONE_MODE = true;
-	private static final String ZIP_FILE_NAME = "galaxywar.zip";
+	private static final String ZIP_FILE_NAME = "white_tiles.zip";
 
 	private Lock viewSwitchLock = new ViewSwitchLock();
 
@@ -131,16 +131,15 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 //if (!ProjectManager.getInstance().canLoadProject(START_PROJECT)) {
 		copyProgramZip();
 		String zipFileString = Constants.DEFAULT_ROOT + "/" + ZIP_FILE_NAME;
-		Log.e("STANDALONE", "default root " + Constants.DEFAULT_ROOT);
-		/*Archiver archiver = ArchiverFactory.createArchiver("zip");
+		Log.d("STANDALONE", "default root " + Constants.DEFAULT_ROOT);
+		Archiver archiver = ArchiverFactory.createArchiver("zip");
 		try {
 			archiver.extract(new File(zipFileString), new File(Constants.DEFAULT_ROOT));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
-		UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
+		}
 
-		Log.d("STANDALONE", "moving zip to PC directory successful");
+		Log.d("STANDALONE", "");
 		loadStageProject(START_PROJECT);
 
 		File zipFile = new File(zipFileString);
