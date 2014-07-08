@@ -138,6 +138,13 @@ android {
         htmlReport false
         xmlOutput file("build/reports/lint.xml")
     }
+
+    buildTypes {
+        debug {
+            versionNameSuffix ".standalone"
+            applicationIdSuffix ".standalone.whiteTiles"
+        }
+    }
 }
 
 // Doesn't work atm. Maybe if the pmd plugin gets updated.
