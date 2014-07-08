@@ -95,7 +95,7 @@ public final class SensorLoudness {
 			listenerList.remove(listener);
 			if (listenerList.size() == 0) {
 				handler.removeCallbacks(statusChecker);
-				if (recorder.isRecording()) {
+				/*if (recorder.isRecording()) {
 					try {
 						recorder.stop();
 					} catch (IOException ioException) {
@@ -103,7 +103,7 @@ public final class SensorLoudness {
 						Log.e(TAG, Log.getStackTraceString(ioException));
 					}
 					recorder = new SoundRecorder("/dev/null");
-				}
+				}*/
 				lastValue = 0f;
 			}
 		}

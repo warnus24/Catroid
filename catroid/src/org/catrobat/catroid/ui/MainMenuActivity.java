@@ -80,9 +80,9 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 	private static final String TYPE_FILE = "file";
 	private static final String TYPE_HTTP = "http";
 
-	private static final String START_PROJECT = "white_tiles";
+	private static final String START_PROJECT = "Don\'t touch the white tiles!";
 	private static final Boolean STANDALONE_MODE = true;
-	private static final String ZIP_FILE_NAME = "white_tiles.zip";
+	private static final String ZIP_FILE_NAME = START_PROJECT + ".zip";
 
 	private Lock viewSwitchLock = new ViewSwitchLock();
 
@@ -134,7 +134,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		Log.d("STANDALONE", "default root " + Constants.DEFAULT_ROOT);
 		Archiver archiver = ArchiverFactory.createArchiver("zip");
 		try {
-			archiver.extract(new File(zipFileString), new File(Constants.DEFAULT_ROOT));
+			archiver.extract(new File(zipFileString), new File(Constants.DEFAULT_ROOT + "/" + START_PROJECT));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
