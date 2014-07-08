@@ -135,6 +135,7 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 	@Override
 	public void onStart() {
 		super.onStart();
+		BottomBar.showBottomBar(getActivity());
 		initListeners();
 	}
 
@@ -156,7 +157,6 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 		BottomBar.showBottomBar(getActivity());
 		BottomBar.showPlayButton(getActivity());
 		BottomBar.showAddButton(getActivity());
-
 		initListeners();
 		adapter.resetAlphas();
 	}
@@ -210,7 +210,6 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 		if (sprite == null) {
 			return;
 		}
-		BottomBar.showBottomBar(getActivity());
 
 		getSherlockActivity().findViewById(R.id.button_add).setOnClickListener(new OnClickListener() {
 
@@ -525,6 +524,14 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
+
+			}
+		});
+
+		builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+			@Override
+			public void onCancel(DialogInterface dialog) {
 				if (!deleteScriptFromContextMenu) {
 					clearCheckedBricksAndEnableButtons();
 				}

@@ -103,6 +103,7 @@ import java.util.List;
 public class CategoryBricksFactory {
 
 	public List<Brick> getBricks(String category, Sprite sprite, Context context) {
+
 		UserBrickScriptActivity activity;
 		try {
 			activity = (UserBrickScriptActivity) context;
@@ -113,7 +114,6 @@ public class CategoryBricksFactory {
 		boolean isUserScriptMode = activity != null;
 		List<Brick> tempList = new LinkedList<Brick>();
 		List<Brick> toReturn = new ArrayList<Brick>();
-
 		if (category.equals(context.getString(R.string.category_control))) {
 			tempList = setupControlCategoryList(sprite, context);
 		} else if (category.equals(context.getString(R.string.category_motion))) {
@@ -131,6 +131,7 @@ public class CategoryBricksFactory {
 		} else if (category.equals(context.getString(R.string.category_drone))) {
 			tempList = setupDroneCategoryList(sprite);
 		}
+
 		for (Brick brick : tempList) {
 			ScriptBrick brickAsScriptBrick;
 			try {
@@ -163,6 +164,43 @@ public class CategoryBricksFactory {
 		controlBrickList.add(new RepeatBrick(sprite, BrickValues.REPEAT));
 
 		return controlBrickList;
+	}
+
+	private List<Brick> setupUserBricksCategoryList(Sprite sprite, Context context) {
+		String defaultText = context.getString(R.string.example_user_brick);
+		String defaultVariable = context.getString(R.string.example_user_brick_variable);
+		List<UserBrick> userBrickList = ProjectManager.getInstance().getCurrentSprite()
+				.getUserBrickListAtLeastOneBrick(defaultText, defaultVariable);
+		ArrayList<Brick> newList = new ArrayList<Brick>();
+
+		UserBrick userBrickWeAreAddingTo = ProjectManager.getInstance().getCurrentUserBrick();
+		if (userBrickWeAreAddingTo != null) {
+			// Maintain a Directed Acyclic Graph of UserBrick call order: Don't allow cycles.
+			for (UserBrick brick : userBrickList) {
+				if (!checkForCycle(brick, userBrickWeAreAddingTo)) {
+					newList.add(brick);
+				}
+			}
+		} else {
+			for (UserBrick brick : userBrickList) {
+				newList.add(brick);
+			}
+		}
+		return newList;
+	}
+
+	public boolean checkForCycle(UserBrick currentBrick, UserBrick parentBrick) {
+		if (parentBrick.getId() == currentBrick.getId()) {
+			return true;
+		}
+
+		for (Brick childBrick : currentBrick.getDefinitionBrick().getUserScript().getBrickList()) {
+			if (childBrick instanceof UserBrick && checkForCycle(((UserBrick) childBrick), parentBrick)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private List<Brick> setupMotionCategoryList(Sprite sprite) {
@@ -233,43 +271,6 @@ public class CategoryBricksFactory {
 		userVariablesBrickList.add(new SetVariableBrick(sprite, 0));
 		userVariablesBrickList.add(new ChangeVariableBrick(sprite, 0));
 		return userVariablesBrickList;
-	}
-
-	private List<Brick> setupUserBricksCategoryList(Sprite sprite, Context context) {
-		String defaultText = context.getString(R.string.example_user_brick);
-		String defaultVariable = context.getString(R.string.example_user_brick_variable);
-		List<UserBrick> userBrickList = ProjectManager.getInstance().getCurrentSprite()
-				.getUserBrickListAtLeastOneBrick(defaultText, defaultVariable);
-		ArrayList<Brick> newList = new ArrayList<Brick>();
-
-		UserBrick userBrickWeAreAddingTo = ProjectManager.getInstance().getCurrentUserBrick();
-		if (userBrickWeAreAddingTo != null) {
-			// Maintain a Directed Acyclic Graph of UserBrick call order: Don't allow cycles.
-			for (UserBrick brick : userBrickList) {
-				if (!checkForCycle(brick, userBrickWeAreAddingTo)) {
-					newList.add(brick);
-				}
-			}
-		} else {
-			for (UserBrick brick : userBrickList) {
-				newList.add(brick);
-			}
-		}
-		return newList;
-	}
-
-	public boolean checkForCycle(UserBrick currentBrick, UserBrick parentBrick) {
-		if (parentBrick.getId() == currentBrick.getId()) {
-			return true;
-		}
-
-		for (Brick childBrick : currentBrick.getDefinitionBrick().getUserScript().getBrickList()) {
-			if (childBrick instanceof UserBrick && checkForCycle(((UserBrick) childBrick), parentBrick)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private List<Brick> setupLegoNxtCategoryList(Sprite sprite) {

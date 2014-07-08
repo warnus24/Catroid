@@ -211,7 +211,7 @@ public class ScriptFragmentTest extends BaseActivityInstrumentationTestCase<Main
 
 		UiTestUtils.addNewBrick(solo, R.string.brick_wait);
 		solo.sleep(500);
-		UiTestUtils.dragFloatingBrickDownwards(solo, 0);
+		UiTestUtils.dragFloatingBrickDownwards(solo);
 		solo.sleep(500);
 
 		UiTestUtils.openActionMode(solo, solo.getString(R.string.copy), R.id.copy, getActivity());
@@ -240,9 +240,8 @@ public class ScriptFragmentTest extends BaseActivityInstrumentationTestCase<Main
 		int brickCountInList = brickListToCheck.size();
 
 		UiTestUtils.addNewBrick(solo, R.string.brick_wait);
-		solo.sleep(500);
-		UiTestUtils.dragFloatingBrickDownwards(solo);
-		solo.sleep(500);
+		solo.clickOnText(solo.getString(R.string.brick_when_started));
+		solo.sleep(100);
 
 		assertTrue("Wait brick is not in List", solo.searchText(solo.getString(R.string.brick_wait)));
 

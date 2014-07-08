@@ -48,14 +48,14 @@ public class Sprite implements Serializable, Cloneable {
 	private static final String TAG = Sprite.class.getSimpleName();
 
 	public transient Look look;
-	private ArrayList<UserBrick> userBricks;
-	private int newUserBrickNext = 1;
 	public transient boolean isPaused;
 
 	private String name;
 	private List<Script> scriptList;
 	private ArrayList<LookData> lookList;
 	private ArrayList<SoundInfo> soundList;
+	private ArrayList<UserBrick> userBricks;
+	private int newUserBrickNext = 1;
 
 	public Sprite(String name) {
 		this.name = name;
@@ -112,7 +112,6 @@ public class Sprite implements Serializable, Cloneable {
 	}
 
 	public void removeUserBrick(UserBrick brickToRemove) {
-
 		for (UserBrick userBrick : userBricks) {
 			userBrick.getDefinitionBrick().getUserScript().removeInstancesOfUserBrick(brickToRemove);
 		}
@@ -211,7 +210,6 @@ public class Sprite implements Serializable, Cloneable {
 		cloneSprite.soundList = cloneSoundList;
 
 		ArrayList<UserBrick> cloneUserBrickList = new ArrayList<UserBrick>();
-
 		for (Brick brick : this.userBricks) {
 			UserBrick original = (UserBrick) brick;
 
@@ -246,7 +244,6 @@ public class Sprite implements Serializable, Cloneable {
 		cloneSprite.scriptList = cloneScriptList;
 
 		// update the IDs to preserve the uniqueness of these ids (for example in the stage).
-
 		for (UserBrick cloneBrick : cloneUserBrickList) {
 			cloneBrick.setId(cloneBrick.getId() + cloneUserBrickList.size());
 			UserScriptDefinitionBrick definitionBrick = cloneBrick.getDefinitionBrick();

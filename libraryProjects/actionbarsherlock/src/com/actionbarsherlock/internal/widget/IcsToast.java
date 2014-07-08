@@ -1,4 +1,3 @@
-
 package com.actionbarsherlock.internal.widget;
 
 import android.content.Context;

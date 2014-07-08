@@ -111,7 +111,6 @@ public class BrickCategoryFragment extends SherlockListFragment {
 	@Override
 	public void onDestroy() {
 		resetActionBar();
-		BottomBar.showBottomBar(getSherlockActivity());
 		super.onDestroy();
 		BottomBar.showBottomBar(getSherlockActivity());
 		BottomBar.showPlayButton(getSherlockActivity());

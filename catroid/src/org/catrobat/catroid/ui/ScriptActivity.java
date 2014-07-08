@@ -40,6 +40,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
@@ -120,22 +121,20 @@ public class ScriptActivity extends BaseActivity {
 		updateHandleAddButtonClickListener();
 	}
 
-	public void setupActionBar() {
-
-		final ActionBar actionBar = getSupportActionBar();
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(true);
-
-		// TODO this line sometimes generates a null ref when returning from stage
-		String currentSprite = ProjectManager.getInstance().getCurrentSprite().getName();
-		actionBar.setTitle(currentSprite);
-	}
-
-	public void setupBottomBar() {
+	private void setupBottomBar() {
 		BottomBar.showBottomBar(this);
 		BottomBar.showAddButton(this);
 		BottomBar.showPlayButton(this);
 		updateHandleAddButtonClickListener();
+
+	}
+
+	public void setupActionBar() {
+		final ActionBar actionBar = getSupportActionBar();
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(true);
+		String currentSprite = ProjectManager.getInstance().getCurrentSprite().getName();
+		actionBar.setTitle(currentSprite);
 	}
 
 	@Override
@@ -285,7 +284,7 @@ public class ScriptActivity extends BaseActivity {
 
 		if (requestCode == PreStageActivity.REQUEST_RESOURCES_INIT && resultCode == RESULT_OK) {
 			Intent intent = new Intent(ScriptActivity.this, StageActivity.class);
-			PreStageActivity.addDroneSupportExtraToNewIntentIfPresentInOldIntent(data, intent);
+			DroneInitializer.addDroneSupportExtraToNewIntentIfPresentInOldIntent(data, intent);
 			startActivity(intent);
 		}
 	}
@@ -303,7 +302,6 @@ public class ScriptActivity extends BaseActivity {
 		}
 
 		String tag1 = UserBrickDataEditorFragment.BRICK_DATA_EDITOR_FRAGMENT_TAG;
-
 		UserBrickDataEditorFragment fragment = (UserBrickDataEditorFragment) fragmentManager.findFragmentByTag(tag1);
 		if (fragment != null) {
 			if (fragment.isVisible()) {

@@ -122,15 +122,6 @@ public class UserVariableAdapter extends BaseAdapter implements ScriptActivityAd
 		return -1;
 	}
 
-	public boolean isUserVariableBrickVariable(UserVariable item) {
-		for (UserVariable userVariable : brickVariables) {
-			if (item.equals(userVariable)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public void setOnCheckedChangeListener(OnCheckedChangeListener onCheckedChangeListener) {
 		this.onCheckedChangeListener = onCheckedChangeListener;
 	}
@@ -307,24 +298,6 @@ public class UserVariableAdapter extends BaseAdapter implements ScriptActivityAd
 
 	public interface OnListItemClickListener {
 		void onListItemClick(int position);
-	}
-
-	public boolean isUserVariableSpriteVariable(UserVariable item) {
-		for (UserVariable userVariable : spriteVariables) {
-			if (item.equals(userVariable)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean isUserVariableProjectVariable(UserVariable item) {
-		for (UserVariable userVariable : projectVariables) {
-			if (item.equals(userVariable)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

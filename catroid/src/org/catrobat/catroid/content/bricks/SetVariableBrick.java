@@ -24,7 +24,6 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -86,9 +85,6 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		if (userVariable == null) {
-			Log.e("SetVariableBrick", "3. null sequence.addAction userVariable is null");
-		}
 		sequence.addAction(ExtendedActions.setVariable(sprite, variableFormula, userVariable));
 		return null;
 	}
@@ -143,6 +139,7 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 			variableSpinner.setClickable(false);
 			variableSpinner.setFocusable(false);
 		}
+
 		setSpinnerSelection(variableSpinner, null);
 
 		variableSpinner.setOnTouchListener(new OnTouchListener() {
@@ -172,14 +169,11 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 				}
 				((UserVariableAdapterWrapper) parent.getAdapter()).resetIsTouchInDropDownView();
 				userVariable = (UserVariable) parent.getItemAtPosition(position);
-				//				Log.e("ON_ITEM_SELECTED_SETVARIABLEBRICK", "is userVariable null here?: " + userVariable.getName()
-				//						+ " " + userVariable.getValue());
 				adapterView = parent;
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-				//				Log.e("ON_NOTHING_SELECTED_SETVARIABLEBRICK", "userVariable = null: ");
+			public void onNothingSelected(AdapterView<?> arg0) {
 				userVariable = null;
 			}
 		});
@@ -191,12 +185,11 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 	public View getPrototypeView(Context context) {
 		View prototypeView = View.inflate(context, R.layout.brick_set_variable, null);
 		Spinner variableSpinner = (Spinner) prototypeView.findViewById(R.id.set_variable_spinner);
-		variableSpinner.setFocusableInTouchMode(false);
-		variableSpinner.setFocusable(false);
-
 		UserBrick currentBrick = ProjectManager.getInstance().getCurrentUserBrick();
 		int userBrickId = (currentBrick == null ? -1 : currentBrick.getDefinitionBrick().getUserBrickId());
 
+		variableSpinner.setFocusableInTouchMode(false);
+		variableSpinner.setFocusable(false);
 		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
 				.createUserVariableAdapter(context, userBrickId, sprite);
 
@@ -267,11 +260,8 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 		return copyBrick;
 	}
 
-	//TODO: something wrong here, talk to forest and ask him what this is about!
 	private void updateUserVariableIfDeleted(UserVariableAdapterWrapper userVariableAdapterWrapper) {
 		if (userVariable != null && (userVariableAdapterWrapper.getPositionOfItem(userVariable) == 0)) {
-			//			Log.e("UPDATEUSERVARIABLEIFDELETED_SETVARIABLEBRICK",
-			//					"does userVariable get null here?: " + userVariable.getName() + " " + userVariable.getValue());
 			userVariable = null;
 		}
 
@@ -280,45 +270,16 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 	private void setSpinnerSelection(Spinner variableSpinner, UserVariable newUserVariable) {
 		UserVariableAdapterWrapper userVariableAdapterWrapper = (UserVariableAdapterWrapper) variableSpinner
 				.getAdapter();
-		if (userVariable == null) {
-			Log.e("SetVariableBrick",
-					"1. null setSpinnerSelection userVariable is null before updateUserVariableIfDeleted");
-		}
 
-		//		updateUserVariableIfDeleted(userVariableAdapterWrapper);
-
-		if (userVariable == null) {
-			Log.e("SetVariableBrick", "2. null setSpinnerSelection userVariable is null");
-		}
+		updateUserVariableIfDeleted(userVariableAdapterWrapper);
 
 		if (userVariable != null) {
-			//			if (!userVariableAdapterWrapper.isBrickVariable(userVariable)
-			//					&& !userVariableAdapterWrapper.isSpriteVariable(userVariable)
-			//					&& !userVariableAdapterWrapper.isProjectVariable(userVariable)) {
-			//				int newPosition = userVariableAdapterWrapper.getPositionOfItem(userVariable);
-			//				variableSpinner.setSelection(0, true);
-			Log.e("SET_SELECTION_SETVARIABLEBRICK", "position userVariable != null " + "variableSpinnerSelection: "
-					+ variableSpinner.getSelectedItemPosition());
-			Log.e("SET_SELECTION_SETVARIABLEBRICK", "null " + userVariable.getName());
-			//			} else {
 			variableSpinner.setSelection(userVariableAdapterWrapper.getPositionOfItem(userVariable), true);
-
-			//			if (!userVariable.getName().equals()) {
-			//				Log.e("SetVariableBrick", "null I'm here ;D: " + userVariableAdapterWrapper.getItem(0).toString()
-			//						+ " - userVariable: " + userVariable.getName());
-			//				variableSpinner.setSelection(1, true);
-			//			}
-			//			Log.e("SET_SELECTION_SETVARIABLEBRICK",
-			//					"position userVariable != null: " + userVariableAdapterWrapper.getPositionOfItem(userVariable)
-			//							+ " " + userVariableAdapterWrapper.isBrickVariable(userVariable));
-			//			}
 		} else if (newUserVariable != null) {
 			variableSpinner.setSelection(userVariableAdapterWrapper.getPositionOfItem(newUserVariable), true);
 			userVariable = newUserVariable;
 		} else {
 			variableSpinner.setSelection(userVariableAdapterWrapper.getCount() - 1, true);
-			//						Log.e("SET_SELECTION_SETVARIABLEBRICK", "position both null: "
-			//								+ (userVariableAdapterWrapper.getCount() - 1));
 			userVariable = userVariableAdapterWrapper.getItem(userVariableAdapterWrapper.getCount() - 1);
 		}
 	}

@@ -284,9 +284,9 @@ public class BrickValueParameterTest extends BaseActivityInstrumentationTestCase
 
 		solo.clickOnText(solo.getString(R.string.brick_speak));
 		solo.sleep(300);
-
+		
 		UiTestUtils.dragFloatingBrickDownwards(solo);
-
+		
 		solo.sleep(300);
 
 		TextView speakEditText = (TextView) solo.getView(R.id.brick_speak_edit_text);

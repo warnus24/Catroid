@@ -39,9 +39,10 @@ public class CheckForVerifiesOrAssertionsTest extends TestCase {
 			"SimulatedSensorManager.java", "SimulatedSoundRecorder.java", "TestUtils.java",
 			"MockPaintroidActivity.java", "TestMainMenuActivity.java", "TestErrorListenerInterface.java",
 			"XmlTestUtils.java", "MockSoundActivity.java", "Reflection.java", "Utils.java",
-			"BaseActivityInstrumentationTestCase.java", "Device.java", "Callback.java", "CallbackBrick.java",
-			"Util.java", "BeforeAfterSteps.java", "Cucumber.java", "CallbackAction.java", "ObjectSteps.java",
-			"CucumberAnnotation.java", "CatroidExampleSteps.java", "PrintBrick.java", "DroneTestUtils.java" };
+			"BaseActivityInstrumentationTestCase.java", "BaseActivityUnitTestCase.java", "Device.java",
+			"Callback.java", "CallbackBrick.java", "Util.java", "BeforeAfterSteps.java", "Cucumber.java",
+			"CallbackAction.java", "ObjectSteps.java", "CucumberAnnotation.java", "CatroidExampleSteps.java",
+			"PrintBrick.java", "DroneTestUtils.java" };
 
 	private boolean fileHasVerifiesOrAssertions(File file) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(file));

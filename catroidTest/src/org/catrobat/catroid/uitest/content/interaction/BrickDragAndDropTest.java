@@ -115,6 +115,7 @@ public class BrickDragAndDropTest extends BaseActivityInstrumentationTestCase<Ma
 		}
 
 		ArrayList<Integer> yPositionList = UiTestUtils.getListItemYPositions(solo, 0);
+
 		//just to gain focus
 		solo.clickOnScreen(20, yPositionList.get(0));
 		solo.goBack();

@@ -72,14 +72,13 @@ public class BrickClickOnEditTextTest extends BaseActivityInstrumentationTestCas
 		solo.sleep(500);
 		UiTestUtils.dragFloatingBrickDownwards(solo);
 		solo.sleep(500);
-
 		List<Brick> brickListToCheck = ProjectManager.getInstance().getCurrentScript().getBrickList();
 		assertEquals("One Brick should be in bricklist", 1, brickListToCheck.size());
 		assertTrue("Set brick should be instance of SetXBrick", brickListToCheck.get(0) instanceof SetXBrick);
 
 		UiTestUtils.addNewBrick(solo, R.string.brick_set_y);
 		solo.sleep(500);
-		UiTestUtils.dragFloatingBrickDownwards(solo);
+		UiTestUtils.dragFloatingBrickUpwards(solo);
 		solo.sleep(500);
 
 		brickListToCheck = ProjectManager.getInstance().getCurrentScript().getBrickList();
@@ -93,6 +92,7 @@ public class BrickClickOnEditTextTest extends BaseActivityInstrumentationTestCas
 		editTextFieldVisibility(solo.getString(R.string.category_motion));
 		editTextFieldVisibility(solo.getString(R.string.category_sound));
 		editTextFieldVisibility(solo.getString(R.string.category_looks));
+		solo.drag(40, 40, 300, 40, UiTestUtils.DRAG_FRAMES);
 		editTextFieldVisibility(solo.getString(R.string.category_variables));
 		ListView fragmentListView = solo.getCurrentViews(ListView.class).get(
 				solo.getCurrentViews(ListView.class).size() - 1);

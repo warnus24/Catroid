@@ -44,6 +44,7 @@ import org.catrobat.catroid.content.bricks.PlaceAtBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.content.bricks.SetSizeToBrick;
 import org.catrobat.catroid.content.bricks.ShowBrick;
+import org.catrobat.catroid.exceptions.ProjectException;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 import org.catrobat.catroid.io.StorageHandler;
@@ -67,12 +68,12 @@ public class ProjectManagerTest extends InstrumentationTestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		TestUtils.clearProject(projectNameOne);
-		TestUtils.clearProject("oldProject");
-		TestUtils.clearProject("newProject");
-		super.setUp();
-	}
-
+		 TestUtils.clearProject(projectNameOne);
+		 TestUtils.clearProject("oldProject");
+		 TestUtils.clearProject("newProject");
+		 super.setUp();
+		 }
+	
 	@Override
 	public void tearDown() throws Exception {
 		TestUtils.clearProject(projectNameOne);
@@ -117,7 +118,12 @@ public class ProjectManagerTest extends InstrumentationTestCase {
 		assertNotNull("no current script set", projectManager.getCurrentScript());
 
 		// loadProject
-		projectManager.loadProject(projectNameOne, context, false);
+		try {
+			ProjectManager.getInstance().loadProject(projectNameOne, context);
+			assertTrue("Load project worked correctly", true);
+		} catch (ProjectException projectException) {
+			fail("Project is not loaded successfully");
+		}
 		assertNotNull("no current project set", projectManager.getCurrentProject());
 		assertEquals("The Projectname is not " + projectNameOne, projectNameOne, projectManager.getCurrentProject()
 				.getName());

@@ -86,7 +86,6 @@ public class GoNStepsBackTest extends BaseActivityInstrumentationTestCase<Script
 
 		assertEquals("Wrong text in field.", STEPS_TO_GO_BACK,
 				(int) ((Formula) Reflection.getPrivateField(goNStepsBackBrick, "steps")).interpretDouble(null));
-
 		assertEquals(
 				"Value in Brick is not updated.",
 				(double) STEPS_TO_GO_BACK,

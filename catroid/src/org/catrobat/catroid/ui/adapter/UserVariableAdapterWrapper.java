@@ -50,18 +50,6 @@ public class UserVariableAdapterWrapper extends BaseAdapter {
 		return userVariableAdapter.getCount() + 1;
 	}
 
-	public boolean isBrickVariable(UserVariable item) {
-		return userVariableAdapter.isUserVariableBrickVariable(item);
-	}
-
-	public boolean isProjectVariable(UserVariable item) {
-		return userVariableAdapter.isUserVariableProjectVariable(item);
-	}
-
-	public boolean isSpriteVariable(UserVariable item) {
-		return userVariableAdapter.isUserVariableSpriteVariable(item);
-	}
-
 	@Override
 	public UserVariable getItem(int position) {
 		if (position == 0) {
@@ -91,12 +79,10 @@ public class UserVariableAdapterWrapper extends BaseAdapter {
 			} else {
 				text1 = (TextView) view.findViewById(android.R.id.text1);
 			}
-			//			Log.e("TEST_USERVARIABLES_USERVARIABLE_ADAPTER_WRAPPER", "New... -- position: " + position);
 			text1.setText(R.string.brick_variable_spinner_create_new_variable);
 
 		} else {
 			view = userVariableAdapter.getView(position - 1, convertView, parent);
-			//			Log.e("TEST_USERVARIABLES_USERVARIABLE_ADAPTER_WRAPPER", "global -- -- position: " + position);
 		}
 		return view;
 	}
@@ -115,11 +101,9 @@ public class UserVariableAdapterWrapper extends BaseAdapter {
 				text1 = (TextView) view.findViewById(android.R.id.text1);
 			}
 			text1.setText(R.string.brick_variable_spinner_create_new_variable);
-			//TODO: same problem as in "getView" here
 
 		} else {
 			view = userVariableAdapter.getDropDownView(position - 1, convertView, parent);
-			//			Log.e("TEST_USERVARIABLES_USERVARIABLE_ADAPTER_WRAPPER", "text didn't change: ");
 		}
 
 		view.setOnTouchListener(new OnTouchListener() {

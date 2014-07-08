@@ -149,13 +149,13 @@ public class FormulaElement implements Serializable {
 	public Double interpretRecursive(Sprite sprite) {
 
 		Double returnValue = 0d;
+
 		switch (type) {
 			case BRACKET:
 				returnValue = rightChild.interpretRecursive(sprite);
 				break;
 			case NUMBER:
 				returnValue = Double.parseDouble(value);
-				Log.e("TEST_USERVARIABLES_IF_LOGIC_FORMULA_ELEMENT", "condition NUMBER: " + returnValue);
 				break;
 			case OPERATOR:
 				Operators operator = Operators.getOperatorByValue(value);
@@ -177,17 +177,14 @@ public class FormulaElement implements Serializable {
 				UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject()
 						.getUserVariables();
 				UserVariable userVariable = userVariables.getUserVariable(value,
-						userVariables.getCurrentUserBrickBeingEvaluated(), sprite);
-
+						+userVariables.getCurrentUserBrickBeingEvaluated(), sprite);
 				if (userVariable == null) {
 					returnValue = NOT_EXISTING_USER_VARIABLE_INTERPRETATION_VALUE;
 					break;
 				}
-				//the value of brickVariables is wrong here (name is correct), global and local variables work fine!
-				Log.e("TEST_USERVARIABLES_IF_LOGIC_FORMULA_ELEMENT", "name " + userVariable.getName() + "value: "
-						+ userVariable.getValue());
 				returnValue = checkDegeneratedDoubleValues(userVariable.getValue());
 				break;
+
 		}
 
 		returnValue = checkDegeneratedDoubleValues(returnValue);

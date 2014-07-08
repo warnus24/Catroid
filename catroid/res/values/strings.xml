@@ -148,7 +148,7 @@
 
 
     <!-- Script fragment -->
-    <string name="fragment_script_text_description">Click \"+\" to add Scripts</string>
+    <string name="fragment_script_text_description">Tap \"+\" to add Scripts</string>
     <string name="dialog_confirm_delete_brick_title">Delete this brick?</string>
     <string name="dialog_confirm_delete_script_title">Delete this script?</string>
     <string name="dialog_confirm_delete_multiple_bricks_title">Delete these bricks?</string>
@@ -166,8 +166,8 @@
 
 
     <!-- Look fragment -->
-    <string name="fragment_look_text_description">Click \"+\" to add Looks</string>
-    <string name="fragment_background_text_description">Click \"+\" to add Backgrounds</string>
+    <string name="fragment_look_text_description">Tap \"+\" to add Looks</string>
+    <string name="fragment_background_text_description">Tap \"+\" to add Backgrounds</string>
     <string name="rename_look_dialog">Rename Look</string>
     <string name="lookname_invalid">This look\'s name is invalid</string>
     <string name="pocket_paint_not_installed_title">Pocket Paint is not installed!</string>
@@ -185,7 +185,7 @@
 
 
     <!-- Sound fragment -->
-    <string name="fragment_sound_text_description">Click \"+\" to add Sounds</string>
+    <string name="fragment_sound_text_description">Tap \"+\" to add Sounds</string>
     <string name="rename_sound_dialog">Rename Sound</string>
     <string name="backpack_title">BackPack</string>
     <string name="soundname_invalid">This sound\'s name is invalid</string>
@@ -227,7 +227,7 @@
     <string name="soundrecorder_name">Pocket Code Recorder</string>
     <string name="soundrecorder_error">Sound recording failed</string>
     <string name="soundrecorder_recorded_filename">record</string>
-    <string name="soundrecorder_text_view">Press icon above to start and stop recording.</string>
+    <string name="soundrecorder_text_view">Tap the icon above to start and stop recording.</string>
     <!--  -->
 
 
@@ -243,7 +243,7 @@
     <string name="brick_context_dialog_copy_brick">Copy Brick</string>
     <string name="brick_context_dialog_animate_bricks">Animate Brick-Parts</string>
     <string name="brick_context_dialog_add_to_script">Add To Script</string>
-    <string name="brick_context_dialog_edit_brick">Edit Brick</string>
+	<string name="brick_context_dialog_edit_brick">Edit Brick</string>
     <string name="brick_context_dialog_formula_edit_brick">Edit Formula</string>
     <string name="brick_context_dialog_delete_script">Delete Script</string>
     <!--  -->
@@ -504,9 +504,9 @@
     <string name="error_drone_low_battery">Insert a charged battery and try again.</string>
     <string name="error_drone_wrong_platform_title">No ARDrone support</string>
     <string name="error_drone_wrong_platform">We can not run a ARDrone project on your device.</string>
-    <string name="error_drone_not_available_in_release_build_title">ARDrone projects not supported</string>
-    <string name="error_drone_not_available_in_release_build">Unfortunately we can\'t run projects with ARDrone bricks for now.</string>
-    <!--  -->
+	<string name="error_rename_incompatible_project">Renaming an incompatible project isn\'t possible.</string>
+    <string name="error_changing_description_of_incompatible_project">Changing the description of an incompatible project isn\'t possible.</string>
+	<!--  -->
 
 
     <!-- Bluetooth Connection Strings -->
@@ -639,7 +639,7 @@
     <string name="formula_editor_image_button_description_redo">redo</string>
     <string name="formula_editor_image_button_description_delete">delete</string>
     <string name="formula_editor_variable_dialog_title">New Variable</string>
-    <string name="formula_editor_variable_dialog_for_this_brick">For this brick</string>
+    <string name="formula_editor_variable_dialog_for_this_brick">For this brick</string> 
     <string name="formula_editor_variable_dialog_for_all_sprites">For all objects</string>
     <string name="formula_editor_variable_dialog_for_this_sprite_only">For this object only</string>
     <string name="formula_editor_variable_dialog_hint">Enter variable name</string>
@@ -652,26 +652,30 @@
         <item quantity="other">Variables selected!</item>
     </plurals>
     <!--  -->
-    <!-- Brick Data Editor Strings -->
-    <string name="brick_data_editor_title">Brick Editor</string>
-    <string name="separator">|</string>
-    <string name="add_text">Add Text</string>
-    <string name="edit_text">Edit Text</string>
-    <string name="text_hint">Brick Text</string>
-    <string name="add_variable">Add Variable</string>
-    <string name="add_line_break">Add Line Break</string>
-    <string name="edit_variable">Edit Variable</string>
-    <string name="variable_hint">Variable Name</string>
-    <!--  -->
+    
+ 	<!-- Brick Data Editor Strings -->
+ 	<string name="brick_data_editor_title">Brick Editor</string>
+ 	<string name="separator">|</string>
+ 	<string name="add_text">Add Text</string>
+ 	<string name="edit_text">Edit Text</string>
+ 	<string name="text_hint">Brick Text</string>
+ 	<string name="add_variable">Add Variable</string>
+ 	<string name="add_line_break">Add Line Break</string>
+ 	<string name="edit_variable">Edit Variable</string>
+ 	<string name="variable_hint">Variable Name</string>
+ 	<!-- -->
 
-    <!-- User Bricks strings  -->
-    <string name="define">define</string>
-    <string name="example_user_brick">Example</string>
-    <string name="example_user_brick_variable">Variable 1</string>
-    <string name="new_user_brick">New Brick</string>
-    <string name="new_user_brick_variable">Variable 1</string>
-    <string name="brick_single">CHANGEME</string>
-    <string name="brick_multiple">CHANGEME</string>
-    <!--  -->
+ 	<!-- User Bricks strings -->
+ 	<string name="define">define</string>
+ 	<string name="example_user_brick">Example</string>
+ 	<string name="example_user_brick_variable">Variable 1</string>
+ 	<string name="new_user_brick">New Brick</string>
+ 	<string name="new_user_brick_variable">Variable 1</string>
+ 	
+ 	<!-- TODO: CHANGE these 2 strings below -->
+ 	<string name="brick_single">CHANGEME</string>
+ 	<string name="brick_multiple">CHANGEME</string>
+ 	
+ 	<!-- -->    
 
 </resources>

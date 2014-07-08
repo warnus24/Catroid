@@ -45,7 +45,6 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
     <!-- drone -->
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-feature android:name="android.hardware.wifi" android:required="false" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -132,12 +131,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ScriptActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-		<activity
-            android:name=".ui.UserBrickScriptActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait" />        
+			android:windowSoftInputMode="adjustPan"
+ 			android:screenOrientation="portrait" />
+ 		<activity
+ 			android:name=".ui.UserBrickScriptActivity"
+ 			android:windowSoftInputMode="adjustPan"
+ 			android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MyProjectsActivity"
             android:noHistory="true"
