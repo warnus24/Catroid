@@ -156,7 +156,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 		}
 	}
 
-	/*@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Device
 	public void testDoubleStart() {
 		if (!isMinApiICS()) {
@@ -315,7 +315,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 		assertTrue("Illegal face size, range is [0,100]", faceSize[0] <= 100);
 
 		detector.removeOnFaceDetectedListener(detectionListener);
-	}*/
+	}
 
 	private boolean isMinApiICS() {
 		int currentApi = android.os.Build.VERSION.SDK_INT;
