@@ -22,7 +22,10 @@
  */
 package org.catrobat.catroid.stage;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -32,10 +35,12 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.io.StageAudioFocus;
+import org.catrobat.catroid.ui.StandaloneWebViewActivity;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.VibratorUtil;
@@ -82,8 +87,29 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onBackPressed() {
+		sendWebviewIntent();
 		pause();
 		stageDialog.show();
+	}
+
+	private void sendWebviewIntent() {
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.APP_LINK));
+			browserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				browserIntent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
+			}
+			startActivity(browserIntent);
+		} else {
+			Intent intent = new Intent(StageActivity.this, StandaloneWebViewActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				intent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
+			}
+			startActivity(intent);
+		}
 	}
 
 	public void manageLoadAndFinish() {
