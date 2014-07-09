@@ -121,46 +121,38 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 		try {
 			camera = Camera.open();
 		} catch (Exception exc) {
-			exc.printStackTrace();
 			fail("Camera not available (" + exc.getMessage() + ")");
-		} /*finally {
-			if (camera != null) {
-				camera.release();
+		}
+
+		int faces = (camera.getParameters()).getMaxNumDetectedFaces();
+
+		if(faces > 0) {
+			IcsFaceDetector detector = new IcsFaceDetector();
+			assertNotNull("Cannot instantiate IcsFaceDetector", detector);
+
+			try {
+				boolean success = detector.startFaceDetection();
+				assertTrue("IcsFaceDetector could not start", success);
+			} catch (Exception exc) {
+				fail("Cannot start face detection (" + exc.getMessage() + ")");
 			}
-		}*/
 
-		IcsFaceDetector detector = new IcsFaceDetector();
-		assertNotNull("Cannot instantiate IcsFaceDetector", detector);
-
-		try {
-			int faces = (camera.getParameters()).getMaxNumDetectedFaces();
-			assertTrue("Face detection is not supported: 0 ", faces > 0);
-		} catch (Exception exc) {
-			fail("Face detection is not supported (" + exc.getMessage() + ")");
-		}
-
-		try {
-			boolean success = detector.startFaceDetection();
-			assertTrue("IcsFaceDetector could not start", success);
-		} catch (Exception exc) {
-			fail("Cannot start face detection (" + exc.getMessage() + ")");
-		}
-
-		try {
-			detector.stopFaceDetection();
-		} catch (Exception exc) {
-			fail("Cannot stop face detection (" + exc.getMessage() + ")");
-		}
-
-		camera = null;
-		try {
-			camera = Camera.open();
-		} catch (Exception exc) {
-			fail("Ressources were not propperly released");
-		} finally {
-			if (camera != null) {
+			try {
+				detector.stopFaceDetection();
 				camera.release();
+			} catch (Exception exc) {
+				fail("Cannot stop face detection (" + exc.getMessage() + ")");
 			}
+
+			camera = null;
+			try {
+				camera = Camera.open();
+			} catch (Exception exc) {
+				fail("Ressources were not properly released");
+			}
+		}
+		if (camera != null) {
+			camera.release();
 		}
 	}
 
