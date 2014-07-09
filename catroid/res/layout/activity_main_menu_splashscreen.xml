@@ -25,7 +25,8 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="@drawable/manual_screenshot_space" >
+              android:background="@drawable/splash_screen" >
+
 
      <LinearLayout
          android:id="@+id/progress_circle"
