@@ -133,6 +133,13 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 		assertNotNull("Cannot instantiate IcsFaceDetector", detector);
 
 		try {
+			int faces = (camera.getParameters()).getMaxNumDetectedFaces();
+			assertTrue("Face detection is not supported: 0 ", faces > 0);
+		} catch (Exception exc) {
+			fail("Face detection is not supported (" + exc.getMessage() + ")");
+		}
+
+		try {
 			boolean success = detector.startFaceDetection();
 			assertTrue("IcsFaceDetector could not start", success);
 		} catch (Exception exc) {
