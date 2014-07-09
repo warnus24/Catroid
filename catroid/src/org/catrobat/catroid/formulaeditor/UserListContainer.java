@@ -81,7 +81,7 @@ public class UserListContainer implements Serializable {
 		return userListToAdd;
 	}
 
-	public void deleteUserVariableByName(String userVariableName) {
+	public void deleteUserListByName(String userVariableName) {
 		Sprite currentSprite = ProjectManager.getInstance().getCurrentSprite();
 		UserList listToDelete;
 		List<UserList> spriteVariables = getOrCreateVariableListForSprite(currentSprite);

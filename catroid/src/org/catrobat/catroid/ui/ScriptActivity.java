@@ -76,6 +76,7 @@ public class ScriptActivity extends BaseActivity {
 	public static final String ACTION_SOUND_RENAMED = "org.catrobat.catroid.SOUND_RENAMED";
 	public static final String ACTION_SOUNDS_LIST_INIT = "org.catrobat.catroid.SOUNDS_LIST_INIT";
 	public static final String ACTION_VARIABLE_DELETED = "org.catrobat.catroid.VARIABLE_DELETED";
+	public static final String ACTION_USERLIST_DELETED = "org.catrobat.catroid.USERLIST_DELETED";
 	private static int currentFragmentPosition;
 	private FragmentManager fragmentManager = getSupportFragmentManager();
 	private ScriptFragment scriptFragment = null;
