@@ -123,11 +123,11 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 		} catch (Exception exc) {
 			exc.printStackTrace();
 			fail("Camera not available (" + exc.getMessage() + ")");
-		} finally {
+		} /*finally {
 			if (camera != null) {
 				camera.release();
 			}
-		}
+		}*/
 
 		IcsFaceDetector detector = new IcsFaceDetector();
 		assertNotNull("Cannot instantiate IcsFaceDetector", detector);
