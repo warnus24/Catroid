@@ -427,6 +427,11 @@
     <string name="brick_broadcast_default_value">"message 1"</string>
     <!--  -->
 
+    <!-- Video bricks -->
+    <string name="brick_video">Switch video: </string>
+    <string name="brick_video_on">ON</string>
+    <string name="brick_video_off">OFF</string>
+    <!--  -->
 
     <!-- defaultValues -->
     <string name="default_project_name">My first program</string>

@@ -38,5 +38,11 @@
         <item>@string/nxt_motor_all</item>
     </string-array>
 
+    <!-- video spinner -->
+    <string-array name="video_on_off">
+        <item>@string/brick_video_on</item>
+        <item>@string/brick_video_off</item>
+    </string-array>
+
 
 </resources>
