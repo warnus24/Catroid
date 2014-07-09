@@ -121,6 +121,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 		try {
 			camera = Camera.open();
 		} catch (Exception exc) {
+			exc.printStackTrace();
 			fail("Camera not available (" + exc.getMessage() + ")");
 		} finally {
 			if (camera != null) {
