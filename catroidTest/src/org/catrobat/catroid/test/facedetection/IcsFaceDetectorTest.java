@@ -126,6 +126,8 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 		}
 
 		int faces = (camera.getParameters()).getMaxNumDetectedFaces();
+		camera.release();
+		camera = null;
 
 		if(faces > 0) {
 			IcsFaceDetector detector = new IcsFaceDetector();
@@ -140,7 +142,6 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 
 			try {
 				detector.stopFaceDetection();
-				camera.release();
 			} catch (Exception exc) {
 				fail("Cannot stop face detection (" + exc.getMessage() + ")");
 			}
@@ -181,6 +182,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 			} finally {
 				detector.stopFaceDetection();
 				camera.release();
+				camera = null;
 			}
 		}
 		if (camera != null) {
