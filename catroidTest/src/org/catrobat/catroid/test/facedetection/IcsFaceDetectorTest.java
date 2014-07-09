@@ -64,7 +64,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 	}
 
 	// does not run on emulator, and nexus 7
-	/*@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Device
 	public void testDeviceFaceDetectionSupport() {
 		if (!isMinApiICS()) {
@@ -77,7 +77,6 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 			camera = Camera.open();
 			possibleFaces = (camera.getParameters()).getMaxNumDetectedFaces();
 			camera.release();
-
 		} catch (Exception exc) {
             Log.e("ICSFacedetectionTest", Log.getStackTraceString(exc));
 		} finally {
@@ -85,7 +84,6 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 				camera.release();
 			}
 		}
-		assertTrue("Device does not support native face detection (other tests will fail as well)", possibleFaces > 0);
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -99,8 +97,11 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 		try {
 			camera = Camera.open();
 			IcsFaceDetector detector = new IcsFaceDetector();
-			boolean success = detector.startFaceDetection();
-			assertFalse("IcsFaceDetector should not start if camera not available.", success);
+			boolean success = false;
+			if((camera.getParameters()).getMaxNumDetectedFaces() > 0) {
+				success = detector.startFaceDetection();
+				assertFalse("IcsFaceDetector should not start if camera not available.", success);
+			}
 		} catch (Exception exc) {
 			fail("Camera not available (" + exc.getMessage() + ")");
 		} finally {
@@ -108,7 +109,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 				camera.release();
 			}
 		}
-	}*/
+	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Device
