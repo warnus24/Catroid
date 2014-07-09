@@ -115,7 +115,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 
 		solo.clickOnView(solo.getView(R.id.button_play));
-		solo.sleep(250);
+		solo.sleep(5000); //TODO just for local testing, reset to 250 before commit
 		assertTrue("StageActivity not shown: ", solo.waitForActivity(StageActivity.class.getSimpleName()));
 
 		solo.goBack();
@@ -470,10 +470,10 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 	public void testVariableListHeadlines() {
 		String local = "local";
 		String global = "global";
-		String globalHeadline = solo.getString(R.string.formula_editor_variable_dialog_for_all_sprites).toUpperCase(
+		String globalHeadline = solo.getString(R.string.formula_editor_dialog_for_all_sprites).toUpperCase(
 				Locale.getDefault());
-		String localHeadline = solo.getString(R.string.formula_editor_variable_dialog_for_this_sprite_only)
-				.toUpperCase(Locale.getDefault());
+		String localHeadline = solo.getString(R.string.formula_editor_dialog_for_this_sprite_only).toUpperCase(
+				Locale.getDefault());
 
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
 

@@ -89,7 +89,7 @@ public class NewStringDialog extends SherlockDialogFragment {
 				.findFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		if (formulaEditor != null) {
 			formulaEditor.addStringToActiveFormula(stringName);
-			formulaEditor.updateButtonViewOnKeyboard();
+			formulaEditor.updateButtonsOnKeyboardAndInvalidateOptionsMenu();
 		}
 
 	}

@@ -33,19 +33,19 @@
 
         <org.catrobat.catroid.ui.CapitalizedTextView
             style="@style/DefaultDialog.TextView"
-            android:text="@string/variable_name" />
+            android:text="@string/userlist_name" />
 
         <View style="@style/DefaultDialog.Line" />
 
         <EditText
-            android:id="@+id/dialog_formula_editor_variable_name_edit_text"
+            android:id="@+id/dialog_formula_editor_userlist_name_edit_text"
             style="@style/DefaultDialog.EditText"
             android:ems="10"
-            android:hint="@string/formula_editor_variable_dialog_hint"
+            android:hint="@string/formula_editor_userlist_dialog_hint"
             android:inputType="text" />
 
         <RadioGroup
-            android:id="@+id/dialog_formula_editor_variable_name_radio_group"
+            android:id="@+id/dialog_formula_editor_userlist_name_radio_group"
             style="@style/DefaultDialog.Item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:paddingTop="12dp" >
 
             <RadioButton
-                android:id="@+id/dialog_formula_editor_variable_name_global_variable_radio_button"
+                android:id="@+id/dialog_formula_editor_userlist_name_global_variable_radio_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="true"
@@ -62,7 +62,7 @@
                 android:textColor="@color/spritelist_details_text_color" />
 
             <RadioButton
-                android:id="@+id/dialog_formula_editor_variable_name_local_variable_radio_button"
+                android:id="@+id/dialog_formula_editor_userlist_name_local_variable_radio_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/formula_editor_dialog_for_this_sprite_only"
