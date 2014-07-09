@@ -64,7 +64,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 	}
 
 	// does not run on emulator, and nexus 7
-	/*@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Device
 	public void testDeviceFaceDetectionSupport() {
 		if (!isMinApiICS()) {
@@ -86,9 +86,10 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 			}
 		}
 		assertTrue("Device does not support native face detection (other tests will fail as well)", possibleFaces > 0);
-	}*/
+	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@Device
 	public void testNotAvailable() {
 		if (!isMinApiICS()) {
 			Log.w(TAG, "testNotAvailable was not performed (higher API level required)");
@@ -110,6 +111,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@Device
 	public void testStartAndStop() {
 		if (!isMinApiICS()) {
 			Log.w(TAG, "testStartAndStop was not performed (higher API level required)");
@@ -155,6 +157,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@Device
 	public void testDoubleStart() {
 		if (!isMinApiICS()) {
 			Log.w(TAG, "testDoubleStart was not performed (higher API level required)");
@@ -172,6 +175,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@Device
 	public void testOnFaceDetectionStatusListener() {
 		if (!isMinApiICS()) {
 			Log.w(TAG, "testOnFaceDetectionStatusListener was not performed (higher API level required)");
@@ -199,6 +203,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@Device
 	public void testOnFaceDetectedListener() {
 		if (!isMinApiICS()) {
 			Log.w(TAG, "testOnFaceDetectedListener was not performed (higher API level required)");
@@ -269,6 +274,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@Device
 	public void testFaceSizeBounds() {
 		if (!isMinApiICS()) {
 			Log.w(TAG, "testFaceSizeBounds was not performed (higher API level required)");
