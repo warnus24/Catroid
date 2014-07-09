@@ -163,15 +163,29 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 			Log.w(TAG, "testDoubleStart was not performed (higher API level required)");
 		}
 
-		IcsFaceDetector detector = new IcsFaceDetector();
-		detector.startFaceDetection();
+		Camera camera = null;
 		try {
-			detector.startFaceDetection();
-		} catch (Exception e) {
-			fail("Second start of face detector should be ignored and not cause errors: " + e.getMessage());
-		} finally {
-			detector.stopFaceDetection();
+			camera = Camera.open();
+		} catch (Exception exc) {
+			fail("Camera not available (" + exc.getMessage() + ")");
 		}
+
+		IcsFaceDetector detector = new IcsFaceDetector();
+		if ((camera.getParameters()).getMaxNumDetectedFaces() > 0) {
+			detector.startFaceDetection();
+			try {
+				detector.startFaceDetection();
+			} catch (Exception e) {
+				fail("Second start of face detector should be ignored and not cause errors: " + e.getMessage());
+			} finally {
+				detector.stopFaceDetection();
+				camera.release();
+			}
+		}
+		if (camera != null) {
+			camera.release();
+		}
+
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
