@@ -539,7 +539,7 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		solo.waitForFragmentById(R.id.fragment_sprites_list);
 
 		solo.goBack();
-		solo.sleep(600);
+		solo.sleep(800);
 		assertTrue("The name of the current projectNameJustTwoDots is not displayed on the continue button", solo
 				.getButton(0).getText().toString().endsWith(projectNameJustTwoDots));
 	}
