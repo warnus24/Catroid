@@ -451,11 +451,13 @@ public final class UiTestUtils {
 
 		Formula formula = (Formula) theBrick.getFormulaWithBrickField(brickField);
 		formulaEditorString = ((TextView) solo.getView(editTextId)).getText().toString();
+
         try{
             assertEquals("Wrong text in field", newValue, formula.interpretString(sprite));
         }catch (InterpretationException interpretationException) {
             fail("Wrong text in field.");
         }
+
 		assertEquals("Text not updated in the brick list", "\'" + newValue + "\'",
 				formulaEditorString.substring(0, formulaEditorString.length() - 1));
 	}
@@ -542,8 +544,8 @@ public final class UiTestUtils {
 		brickCategoryMap.put(R.string.brick_forever, R.string.category_control);
 		brickCategoryMap.put(R.string.brick_repeat, R.string.category_control);
 		brickCategoryMap.put(R.string.brick_if_begin, R.string.category_control);
-		brickCategoryMap.put(R.string.brick_change_variable, R.string.category_control);
-		brickCategoryMap.put(R.string.brick_set_variable, R.string.category_control);
+		brickCategoryMap.put(R.string.brick_change_variable, R.string.category_data);
+		brickCategoryMap.put(R.string.brick_set_variable, R.string.category_data);
 
 		brickCategoryMap.put(R.string.brick_motor_action, R.string.category_lego_nxt);
 	}

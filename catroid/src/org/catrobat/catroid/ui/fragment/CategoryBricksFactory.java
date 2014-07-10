@@ -29,6 +29,7 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.common.MessageContainer;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.bricks.AddItemToUserListBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.BroadcastBrick;
 import org.catrobat.catroid.content.bricks.BroadcastReceiverBrick;
@@ -114,7 +115,7 @@ public class CategoryBricksFactory {
 			return setupVariablesCategoryList();
 			return setupLooksCategoryList(sprite);
 		} else if (category.equals(context.getString(R.string.category_data))) {
-			return setupVariablesCategoryData(sprite);
+			return setupDataCategoryList(sprite);
 		} else if (category.equals(context.getString(R.string.category_lego_nxt))) {
 			return setupLegoNxtCategoryList();
 		} else if (category.equals(context.getString(R.string.category_drone))) {
@@ -209,11 +210,13 @@ public class CategoryBricksFactory {
 		return looksBrickList;
 	}
 
-	private List<Brick> setupVariablesCategoryList() {
-		List<Brick> userVariablesBrickList = new ArrayList<Brick>();
-		userVariablesBrickList.add(new SetVariableBrick(0));
-		userVariablesBrickList.add(new ChangeVariableBrick(0));
-		return userVariablesBrickList;
+	private List<Brick> setupDataCategoryList(Sprite sprite) {
+		List<Brick> dataBrickList = new ArrayList<Brick>();
+		dataBrickList.add(new SetVariableBrick(sprite, 0));
+		dataBrickList.add(new ChangeVariableBrick(sprite, 0));
+		dataBrickList.add(new AddItemToUserListBrick(sprite, 0));
+		return dataBrickList;
+
 	}
 
 	private List<Brick> setupLegoNxtCategoryList() {
