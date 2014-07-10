@@ -31,6 +31,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
@@ -68,7 +69,8 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 				case CameraInfo.CAMERA_FACING_BACK:
 					entries[id] = getResources().getText(R.string.camera_facing_back);
 					break;
-			// TODO find better names for cameras (for n>=3)
+				default:
+					Log.d("CAMERA", "No Camera detected");
 			}
 		}
 		listPreference.setEntries(entries);
