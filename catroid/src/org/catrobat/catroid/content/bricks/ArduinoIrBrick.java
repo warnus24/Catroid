@@ -58,7 +58,7 @@ public class ArduinoIrBrick extends BrickBaseType {
 
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_ARDUINO;
+		return 0;//BLUETOOTH_ARDUINO;
 	}
 
 	@Override
