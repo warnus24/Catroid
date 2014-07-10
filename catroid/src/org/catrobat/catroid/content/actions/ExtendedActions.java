@@ -33,6 +33,7 @@ import org.catrobat.catroid.content.BroadcastEvent;
 import org.catrobat.catroid.content.BroadcastEvent.BroadcastType;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.UserList;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 
 public class ExtendedActions extends Actions {
@@ -316,6 +317,14 @@ public class ExtendedActions extends Actions {
 		action.setSprite(sprite);
 		action.setChangeVariable(variableFormula);
 		action.setUserVariable(userVariable);
+		return action;
+	}
+
+	public static Action addItemToUserList(Sprite sprite, Formula userListFormula, UserList userList) {
+		AddItemToUserListAction action = action(AddItemToUserListAction.class);
+		action.setSprite(sprite);
+		action.setFormulaItemToAdd(userListFormula);
+		action.setUserList(userList);
 		return action;
 	}
 

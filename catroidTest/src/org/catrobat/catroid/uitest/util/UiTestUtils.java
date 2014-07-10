@@ -310,11 +310,11 @@ public final class UiTestUtils {
 		solo.sleep(200);
 
 		Formula formula = (Formula) Reflection.getPrivateField(theBrick, fieldName);
-        try{
-            assertEquals("Wrong text in field", newValue, formula.interpretDouble(theBrick.getSprite()), 0.01f);
-        }catch (InterpretationException interpretationException) {
-            fail("Wrong text in field.");
-        }
+		try {
+			assertEquals("Wrong text in field", newValue, formula.interpretDouble(theBrick.getSprite()), 0.01f);
+		} catch (InterpretationException interpretationException) {
+			fail("Wrong text in field.");
+		}
 		assertEquals("Text not updated in the brick list", newValue,
 				Double.parseDouble(((TextView) solo.getView(editTextId)).getText().toString().replace(',', '.')), 0.01f);
 
@@ -334,11 +334,11 @@ public final class UiTestUtils {
 
 		Formula formula = (Formula) Reflection.getPrivateField(theBrick, fieldName);
 		formulaEditorString = ((TextView) solo.getView(editTextId)).getText().toString();
-        try{
-            assertEquals("Wrong text in field", newValue, formula.interpretString(theBrick.getSprite()));
-        }catch (InterpretationException interpretationException) {
-            fail("Wrong text in field.");
-        }
+		try {
+			assertEquals("Wrong text in field", newValue, formula.interpretString(theBrick.getSprite()));
+		} catch (InterpretationException interpretationException) {
+			fail("Wrong text in field.");
+		}
 		assertEquals("Text not updated in the brick list", "\'" + newValue + "\'",
 				formulaEditorString.substring(0, formulaEditorString.length() - 1));
 	}
@@ -424,8 +424,8 @@ public final class UiTestUtils {
 		brickCategoryMap.put(R.string.brick_forever, R.string.category_control);
 		brickCategoryMap.put(R.string.brick_repeat, R.string.category_control);
 		brickCategoryMap.put(R.string.brick_if_begin, R.string.category_control);
-		brickCategoryMap.put(R.string.brick_change_variable, R.string.category_control);
-		brickCategoryMap.put(R.string.brick_set_variable, R.string.category_control);
+		brickCategoryMap.put(R.string.brick_change_variable, R.string.category_data);
+		brickCategoryMap.put(R.string.brick_set_variable, R.string.category_data);
 
 		brickCategoryMap.put(R.string.brick_motor_action, R.string.category_lego_nxt);
 	}
@@ -1754,20 +1754,17 @@ public final class UiTestUtils {
 		}
 	}
 
-	public static void clickOnExactText(Solo solo, String text)
-	{
-		String regularExpressionForExactClick = "^"+java.util.regex.Pattern.quote(text)+"$";
+	public static void clickOnExactText(Solo solo, String text) {
+		String regularExpressionForExactClick = "^" + java.util.regex.Pattern.quote(text) + "$";
 		solo.clickOnText(regularExpressionForExactClick);
 	}
 
-	public static boolean searchExactText(Solo solo, String text)
-	{
+	public static boolean searchExactText(Solo solo, String text) {
 		return searchExactText(solo, text, false);
 	}
 
-	public static boolean searchExactText(Solo solo, String text, boolean onlyVisible)
-	{
-		String regularExpressionForExactClick = "^"+java.util.regex.Pattern.quote(text)+"$";
+	public static boolean searchExactText(Solo solo, String text, boolean onlyVisible) {
+		String regularExpressionForExactClick = "^" + java.util.regex.Pattern.quote(text) + "$";
 		return solo.searchText(regularExpressionForExactClick, onlyVisible);
 	}
 
