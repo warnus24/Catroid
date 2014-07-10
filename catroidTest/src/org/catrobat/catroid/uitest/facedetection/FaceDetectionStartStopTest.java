@@ -46,7 +46,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 public class FaceDetectionStartStopTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 	private static final int SCREEN_WIDTH = 480;
 	private static final int SCREEN_HEIGHT = 800;
-	private static final int SLEEP_TIME = 1000;
+	private static final int SLEEP_TIME = 1500;
 
 	private Project projectFaceDetection;
 	Sprite sprite;
