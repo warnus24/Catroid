@@ -53,6 +53,7 @@ public class IcsFaceDetector extends FaceDetector implements FaceDetectionListen
 		camera.setFaceDetectionListener(this);
 		running = CameraManager.getInstance().startCamera();
 		camera.startFaceDetection();
+		Log.w("Lasi","started");
 		return running;
 	}
 

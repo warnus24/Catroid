@@ -121,8 +121,8 @@ public class PreStageActivity extends BaseActivity {
 			droneInitializer.initialise();
 		}
 
+		FaceDetectionHandler.resetFaceDedection();
 		if ((requiredResources & Brick.FACE_DETECTION) > 0) {
-			FaceDetectionHandler.resetFaceDedection();
 			boolean success = FaceDetectionHandler.startFaceDetection(this);
 			if (success) {
 				resourceInitialized();
