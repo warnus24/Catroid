@@ -447,4 +447,11 @@ public class ExtendedActions extends Actions {
 		return action(DroneFlipAction.class);
 	}
 
+	public static ArduinoIrCommandAction sendArduinoIrCommand(Sprite sprite, String command) {
+		ArduinoIrCommandAction action = action(ArduinoIrCommandAction.class);
+		action.setSprite(sprite);
+		action.setCommand(command);
+		return action;
+	}
+
 }

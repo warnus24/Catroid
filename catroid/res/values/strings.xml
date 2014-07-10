@@ -421,6 +421,11 @@
     <string name="brick_variable_spinner_create_new_variable">New…</string>
     <string name="brick_note_default_value">"add comment here…"</string>
     <string name="brick_broadcast_default_value">"message 1"</string>
+
+    <string name="brick_arduino_ir">command</string>
+    <string name="brick_arduino_ir_default_value">"add command here"</string>
+    <string name="dialog_edit_arduino_ir_text">send command to arduino</string>
+    <string name="dialog_edit_arduino_ir_title">Enter IR command</string>
     <!--  -->
 
 
