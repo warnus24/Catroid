@@ -19,6 +19,7 @@ apply plugin: 'com.android.application'
 //apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
 apply plugin: 'pmd'
+apply from: 'buildAPK.gradle'
 
 check.dependsOn 'checkstyle'
 check.dependsOn 'pmd'
@@ -230,7 +231,7 @@ task testManifestHack << {
 }
 
 gradle.projectsEvaluated {
-    generateDebugTestBuildConfig.dependsOn testManifestHack
+    generateCatroidDebugTestBuildConfig.dependsOn testManifestHack
 }
 
 preBuild.dependsOn featuresToBuildconfig
@@ -281,4 +282,3 @@ task gitApplyStashSwitchingToOldBranch << {
         throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
     }
 }
-
