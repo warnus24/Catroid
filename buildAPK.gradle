@@ -3,6 +3,9 @@ import static org.rauschig.jarchivelib.ArchiveFormat.ZIP
 
 buildscript {
     dependencies {
+        repositories {
+            mavenCentral()
+        }
         classpath 'org.rauschig:jarchivelib:0.6.0'
     }
 }
