@@ -169,8 +169,8 @@ public class NewUserListDialog extends SherlockDialogFragment {
 			public void afterTextChanged(Editable editable) {
 
 				String userListName = editable.toString();
-				if (ProjectManager.getInstance().getCurrentProject().getUserVariables()
-						.getUserVariable(userListName, ProjectManager.getInstance().getCurrentSprite()) != null) {
+				if (ProjectManager.getInstance().getCurrentProject().getUserLists()
+						.getUserList(userListName, ProjectManager.getInstance().getCurrentSprite()) != null) {
 
 					Toast.makeText(getActivity(), R.string.formula_editor_existing_userlist, Toast.LENGTH_SHORT).show();
 

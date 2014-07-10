@@ -48,6 +48,7 @@ import org.catrobat.catroid.ui.adapter.ScriptActivityAdapterInterface;
 import org.catrobat.catroid.ui.dragndrop.DragAndDropListView;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorListFragment;
+import org.catrobat.catroid.ui.fragment.FormulaEditorUserListFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorVariableListFragment;
 import org.catrobat.catroid.ui.fragment.LookFragment;
 import org.catrobat.catroid.ui.fragment.ScriptActivityFragment;
@@ -283,6 +284,13 @@ public class ScriptActivity extends BaseActivity {
 			return formulaEditorVariableListFragment.onKey(null, keyCode, event);
 		}
 
+		FormulaEditorUserListFragment formulaEditorUserListFragment = (FormulaEditorUserListFragment) getSupportFragmentManager()
+				.findFragmentByTag(FormulaEditorUserListFragment.USERLIST_TAG);
+
+		if (formulaEditorUserListFragment != null && formulaEditorUserListFragment.isVisible()) {
+			return formulaEditorUserListFragment.onKey(null, keyCode, event);
+		}
+
 		FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getSupportFragmentManager().findFragmentByTag(
 				FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 
@@ -379,6 +387,15 @@ public class ScriptActivity extends BaseActivity {
 
 		if (formulaEditorVariableListFragment != null && formulaEditorVariableListFragment.isVisible()) {
 			ListAdapter adapter = formulaEditorVariableListFragment.getListAdapter();
+			((ScriptActivityAdapterInterface) adapter).clearCheckedItems();
+			return super.dispatchKeyEvent(event);
+		}
+
+		FormulaEditorUserListFragment formulaEditorUserListFragment = (FormulaEditorUserListFragment) getSupportFragmentManager()
+				.findFragmentByTag(FormulaEditorUserListFragment.USERLIST_TAG);
+
+		if (formulaEditorUserListFragment != null && formulaEditorUserListFragment.isVisible()) {
+			ListAdapter adapter = formulaEditorUserListFragment.getListAdapter();
 			((ScriptActivityAdapterInterface) adapter).clearCheckedItems();
 			return super.dispatchKeyEvent(event);
 		}

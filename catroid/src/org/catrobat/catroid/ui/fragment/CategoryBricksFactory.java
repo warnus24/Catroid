@@ -107,8 +107,8 @@ public class CategoryBricksFactory {
 			return setupSoundCategoryList(sprite, context);
 		} else if (category.equals(context.getString(R.string.category_looks))) {
 			return setupLooksCategoryList(sprite);
-		} else if (category.equals(context.getString(R.string.category_variables))) {
-			return setupVariablesCategoryList(sprite);
+		} else if (category.equals(context.getString(R.string.category_data))) {
+			return setupVariablesCategoryData(sprite);
 		} else if (category.equals(context.getString(R.string.category_lego_nxt))) {
 			return setupLegoNxtCategoryList(sprite);
 		} else if (category.equals(context.getString(R.string.category_drone))) {
@@ -200,7 +200,7 @@ public class CategoryBricksFactory {
 		return looksBrickList;
 	}
 
-	private List<Brick> setupVariablesCategoryList(Sprite sprite) {
+	private List<Brick> setupVariablesCategoryData(Sprite sprite) {
 		List<Brick> userVariablesBrickList = new ArrayList<Brick>();
 		userVariablesBrickList.add(new SetVariableBrick(sprite, 0));
 		userVariablesBrickList.add(new ChangeVariableBrick(sprite, 0));
@@ -224,14 +224,22 @@ public class CategoryBricksFactory {
 		droneBrickList.add(new DroneTakeOffBrick(sprite));
 		droneBrickList.add(new DroneLandBrick(sprite));
 		droneBrickList.add(new DroneFlipBrick(sprite));
-		droneBrickList.add(new DroneMoveUpBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS, (int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
-		droneBrickList.add(new DroneMoveDownBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS, (int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
-		droneBrickList.add(new DroneMoveLeftBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS, (int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
-		droneBrickList.add(new DroneMoveRightBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS, (int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
-		droneBrickList.add(new DroneMoveForwardBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS, (int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
-		droneBrickList.add(new DroneMoveBackwardBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS, (int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
-		droneBrickList.add(new DroneTurnLeftBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS, (int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
-		droneBrickList.add(new DroneTurnRightBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS, (int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveUpBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveDownBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveLeftBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveRightBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveForwardBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneMoveBackwardBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneTurnLeftBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
+		droneBrickList.add(new DroneTurnRightBrick(sprite, BrickValues.DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS,
+				(int) (BrickValues.DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT * 100)));
 
 		return droneBrickList;
 	}
