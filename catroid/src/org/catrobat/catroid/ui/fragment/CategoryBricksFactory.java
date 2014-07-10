@@ -112,6 +112,9 @@ public class CategoryBricksFactory {
 			return setupLooksCategoryList();
 		} else if (category.equals(context.getString(R.string.category_variables))) {
 			return setupVariablesCategoryList();
+			return setupLooksCategoryList(sprite);
+		} else if (category.equals(context.getString(R.string.category_data))) {
+			return setupVariablesCategoryData(sprite);
 		} else if (category.equals(context.getString(R.string.category_lego_nxt))) {
 			return setupLegoNxtCategoryList();
 		} else if (category.equals(context.getString(R.string.category_drone))) {
@@ -227,6 +230,7 @@ public class CategoryBricksFactory {
 
 	private List<Brick> setupDroneCategoryList() {
 		List<Brick> droneBrickList = new ArrayList<Brick>();
+
 		droneBrickList.add(new DroneTakeOffBrick());
 		droneBrickList.add(new DroneLandBrick());
 		droneBrickList.add(new DroneFlipBrick());

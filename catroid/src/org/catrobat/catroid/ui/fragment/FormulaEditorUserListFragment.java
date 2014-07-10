@@ -230,8 +230,8 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 		switch (item.getItemId()) {
 			case R.id.context_formula_editor_userlist_delete:
 				if (!adapter.isEmpty()) {
-					ProjectManager.getInstance().getCurrentProject().getUserVariables()
-							.deleteUserVariableByName(adapter.getItem(deleteIndex).getName());
+					ProjectManager.getInstance().getCurrentProject().getUserLists()
+							.deleteUserListByName(adapter.getItem(deleteIndex).getName());
 					adapter.notifyDataSetChanged();
 					getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_USERLIST_DELETED));
 				}

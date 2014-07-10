@@ -471,8 +471,8 @@
         <item name="android:drawableRight">@drawable/main_menu_button_arrow_looks</item>
     </style>
 
-    <style name="BrickCategoryText.Variables">
-        <item name="android:background">@drawable/brick_selection_background_variables</item>
+    <style name="BrickCategoryText.Data">
+        <item name="android:background">@drawable/brick_selection_background_data</item>
         <item name="android:drawableRight">@drawable/main_menu_button_arrow_variables</item>
     </style>
 
