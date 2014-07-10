@@ -75,7 +75,7 @@ public class FaceDetectionResourcesTest extends BaseActivityInstrumentationTestC
 		solo.sleep(SLEEP_TIME);
 		assertFalse("Face detection was started although it is not needed as a resource",
 				FaceDetectionHandler.isFaceDetectionRunning());
-		solo.goBackToActivity(MainMenuActivity.class.getSimpleName());
+		//solo.goBackToActivity(MainMenuActivity.class.getSimpleName());
 	}
 
 	public void testResourceChanged() throws Exception {
@@ -99,7 +99,7 @@ public class FaceDetectionResourcesTest extends BaseActivityInstrumentationTestC
 		assertFalse("Face detection was resumed although it is not needed anymore"
 				+ " (if testResourceNotNeeded succeeds: FaceDetectionHandler.reset might be missing)",
 				FaceDetectionHandler.isFaceDetectionRunning());
-		solo.goBackToActivity(MainMenuActivity.class.getSimpleName());
+		//solo.goBackToActivity(MainMenuActivity.class.getSimpleName());
 	}
 
 	private void createProject(boolean faceDetection) {
