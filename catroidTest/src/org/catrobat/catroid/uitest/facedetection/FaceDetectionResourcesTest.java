@@ -47,7 +47,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 public class FaceDetectionResourcesTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 	private static final int SCREEN_WIDTH = 480;
 	private static final int SCREEN_HEIGHT = 800;
-	private static final int SLEEP_TIME = 400;
+	private static final int SLEEP_TIME = 300;
 
 	private Project project;
 	Sprite sprite;
@@ -58,20 +58,19 @@ public class FaceDetectionResourcesTest extends BaseActivityInstrumentationTestC
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public void testResourceNeeded() throws Exception {
-		boolean isSupported = isFaceDetectionSupportedByHardware();
 		createProject(true);
 		UiTestUtils.prepareStageForTest();
 		UiTestUtils.getIntoSpritesFromMainMenu(solo);
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 		solo.sleep(SLEEP_TIME);
-		if(isSupported) {
-			assertTrue("Face detection was not started although it is needed as a resource",
+		assertTrue("Face detection was not started although it is needed as a resource",
 					FaceDetectionHandler.isFaceDetectionRunning());
-		}
 		solo.goBackToActivity(MainMenuActivity.class.getSimpleName());
 		solo.sleep(SLEEP_TIME);
 		assertFalse("Face detection was not stopped", FaceDetectionHandler.isFaceDetectionRunning());
+		solo.goBackToActivity(MainMenuActivity.class.getSimpleName());
+		solo.waitForActivity(StageActivity.class.getSimpleName());
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -83,34 +82,36 @@ public class FaceDetectionResourcesTest extends BaseActivityInstrumentationTestC
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 		solo.sleep(SLEEP_TIME);
 		assertFalse("Face detection was not started although it is needed as a resource",
-				FaceDetectionHandler.isFaceDetectionRunning());
+					FaceDetectionHandler.isFaceDetectionRunning());
+		solo.goBackToActivity(MainMenuActivity.class.getSimpleName());
+		solo.waitForActivity(StageActivity.class.getSimpleName());
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public void testResourceChanged() throws Exception {
-		boolean isSupported = isFaceDetectionSupportedByHardware();
 		createProject(true);
 		UiTestUtils.prepareStageForTest();
 		UiTestUtils.getIntoSpritesFromMainMenu(solo);
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		solo.sleep(SLEEP_TIME);
-		if(isSupported) {
-			assertTrue("Face detection was not started although it is needed as a resource",
+		solo.sleep(SLEEP_TIME*5);
+		assertTrue("Face detection was not started although it is needed as a resource",
 					FaceDetectionHandler.isFaceDetectionRunning());
-		}
 		solo.goBackToActivity(MainMenuActivity.class.getSimpleName());
-		solo.sleep(SLEEP_TIME);
+		solo.sleep(SLEEP_TIME*5);
 		assertFalse("Face detection was not stopped", FaceDetectionHandler.isFaceDetectionRunning());
 		createProject(false);
 		UiTestUtils.prepareStageForTest();
 		UiTestUtils.getIntoSpritesFromMainMenu(solo);
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		solo.sleep(SLEEP_TIME);
+		solo.sleep(SLEEP_TIME*5);
 		assertFalse("Face detection was resumed although it is not needed anymore"
 						+ " (if testResourceNotNeeded succeeds: FaceDetectionHandler.reset might be missing)",
-				FaceDetectionHandler.isFaceDetectionRunning());
+					FaceDetectionHandler.isFaceDetectionRunning());
+		solo.goBackToActivity(MainMenuActivity.class.getSimpleName());
+		solo.waitForActivity(StageActivity.class.getSimpleName());
+		solo.sleep(SLEEP_TIME);
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -135,30 +136,5 @@ public class FaceDetectionResourcesTest extends BaseActivityInstrumentationTestC
 
 		StorageHandler.getInstance().saveProject(project);
 		ProjectManager.getInstance().setProject(project);
-	}
-
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-	private boolean isFaceDetectionSupportedByHardware() {
-
-		Camera camera = null;
-		int faces = 0;
-		try {
-			camera = Camera.open();
-			faces = (camera.getParameters()).getMaxNumDetectedFaces();
-		} catch (Exception exc) {
-			fail("Camera not available (" + exc.getMessage() + ")");
-		}finally {
-			if(camera != null) {
-				camera.release();
-			}
-		}
-
-		if(camera != null) {
-			camera.release();
-		}
-		if(faces > 0)
-			return true;
-		else
-			return false;
 	}
 }
