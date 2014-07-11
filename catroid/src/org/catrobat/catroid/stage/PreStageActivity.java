@@ -44,8 +44,8 @@ import org.catrobat.catroid.bluetooth.DeviceListActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.drone.DroneInitializer;
+import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;

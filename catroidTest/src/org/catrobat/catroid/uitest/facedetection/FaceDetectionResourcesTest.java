@@ -23,7 +23,6 @@
 package org.catrobat.catroid.uitest.facedetection;
 
 import android.annotation.TargetApi;
-import android.hardware.Camera;
 import android.os.Build;
 
 import org.catrobat.catroid.ProjectManager;
