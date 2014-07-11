@@ -482,6 +482,7 @@ public class FormulaElement implements Serializable {
 					ressources |= Brick.FACE_DETECTION;
 					break;
 				default:
+
 			}
 		}
 		return ressources;
