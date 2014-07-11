@@ -144,7 +144,7 @@ public class SlowFaceDetectorTest extends InstrumentationTestCase {
 						detectedFaces[SIZE_INDEX] = value;
 						break;
 					default:
-						fail("Unexpected Sensor on Face Detection event. Expected face size or position.");
+						fail("Unexpected Sensor on Slow Face Detection event. Expected face size or position.");
 				}
 			}
 		};

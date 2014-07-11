@@ -44,8 +44,8 @@ import org.catrobat.catroid.bluetooth.DeviceListActivity;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.drone.DroneInitializer;
+import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
@@ -121,8 +121,8 @@ public class PreStageActivity extends BaseActivity {
 			droneInitializer.initialise();
 		}
 
+		FaceDetectionHandler.resetFaceDedection();
 		if ((requiredResources & Brick.FACE_DETECTION) > 0) {
-			FaceDetectionHandler.resetFaceDedection();
 			boolean success = FaceDetectionHandler.startFaceDetection(this);
 			if (success) {
 				resourceInitialized();

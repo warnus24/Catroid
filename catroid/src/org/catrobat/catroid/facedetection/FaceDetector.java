@@ -23,7 +23,6 @@
 package org.catrobat.catroid.facedetection;
 
 import android.graphics.Point;
-import android.util.Log;
 
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.formulaeditor.SensorCustomEvent;

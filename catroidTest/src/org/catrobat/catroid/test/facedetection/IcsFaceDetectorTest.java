@@ -84,6 +84,9 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 				camera.release();
 			}
 		}
+		if (possibleFaces == 0) {
+			Log.w("CAMERA", "The hardware does not support facedetection");
+		}
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -98,7 +101,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 			camera = Camera.open();
 			IcsFaceDetector detector = new IcsFaceDetector();
 			boolean success = false;
-			if((camera.getParameters()).getMaxNumDetectedFaces() > 0) {
+			if ((camera.getParameters()).getMaxNumDetectedFaces() > 0) {
 				success = detector.startFaceDetection();
 				assertFalse("IcsFaceDetector should not start if camera not available.", success);
 			}
@@ -126,8 +129,10 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 		}
 
 		int faces = (camera.getParameters()).getMaxNumDetectedFaces();
+		camera.release();
+		camera = null;
 
-		if(faces > 0) {
+		if (faces > 0) {
 			IcsFaceDetector detector = new IcsFaceDetector();
 			assertNotNull("Cannot instantiate IcsFaceDetector", detector);
 
@@ -140,7 +145,6 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 
 			try {
 				detector.stopFaceDetection();
-				camera.release();
 			} catch (Exception exc) {
 				fail("Cannot stop face detection (" + exc.getMessage() + ")");
 			}
@@ -181,6 +185,7 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 			} finally {
 				detector.stopFaceDetection();
 				camera.release();
+				camera = null;
 			}
 		}
 		if (camera != null) {
@@ -231,21 +236,21 @@ public class IcsFaceDetectorTest extends InstrumentationTestCase {
 
 			public void onCustomSensorChanged(SensorCustomEvent event) {
 				detectedFaces[COUNTER_INDEX]++;
-				int value = (int) event.values[0];
-				float intFloatDifference = event.values[0] - value;
+				int icsValue = (int) event.values[0];
+				float intFloatDifference = event.values[0] - icsValue;
 				assertEquals("Face detection values should be integer", intFloatDifference, 0f);
 				switch (event.sensor) {
 					case FACE_X_POSITION:
-						detectedFaces[X_POSITION_INDEX] = value;
+						detectedFaces[X_POSITION_INDEX] = icsValue;
 						break;
 					case FACE_Y_POSITION:
-						detectedFaces[Y_POSITION_INDEX] = value;
+						detectedFaces[Y_POSITION_INDEX] = icsValue;
 						break;
 					case FACE_SIZE:
-						detectedFaces[SIZE_INDEX] = value;
+						detectedFaces[SIZE_INDEX] = icsValue;
 						break;
 					default:
-						fail("Unexpected Sensor on Face Detection event. Expected face size or position."
+						fail("Unexpected Sensor on Ics Face Detection event. Expected face size or position."
 								+ event.sensor);
 				}
 			}
