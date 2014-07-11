@@ -35,7 +35,7 @@ import org.catrobat.catroid.camera.CameraManager;
 import org.catrobat.catroid.formulaeditor.SensorCustomEventListener;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 
-final public class FaceDetectionHandler {
+public final class FaceDetectionHandler {
 
 	private static FaceDetector faceDetector;
 	private static boolean running = false;
