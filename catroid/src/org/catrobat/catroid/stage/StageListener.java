@@ -214,6 +214,7 @@ public class StageListener implements ApplicationListener {
 		this.stageDialog = stageDialog;
 
 		project.getUserVariables().resetAllUserVariables();
+		ProjectManager.getInstance().getCurrentProject().getUserLists().resetAllUserLists();
 
 		reloadProject = true;
 	}
@@ -460,7 +461,7 @@ public class StageListener implements ApplicationListener {
 			Thread.yield();
 		}
 		byte[] copyOfTestPixels = new byte[testPixels.length];
-		System.arraycopy(testPixels,0,copyOfTestPixels,0,testPixels.length);
+		System.arraycopy(testPixels, 0, copyOfTestPixels, 0, testPixels.length);
 		return copyOfTestPixels;
 	}
 

@@ -124,6 +124,7 @@ public class ProgramMenuActivity extends BaseActivity {
 			return;
 		}
 		ProjectManager.getInstance().getCurrentProject().getUserVariables().resetAllUserVariables();
+		ProjectManager.getInstance().getCurrentProject().getUserLists().resetAllUserLists();
 		Intent intent = new Intent(this, PreStageActivity.class);
 		startActivityForResult(intent, PreStageActivity.REQUEST_RESOURCES_INIT);
 	}
