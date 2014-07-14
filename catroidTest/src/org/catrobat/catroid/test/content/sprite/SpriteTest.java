@@ -45,6 +45,7 @@ import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.test.utils.TestUtils;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -317,7 +318,7 @@ public class SpriteTest extends AndroidTestCase {
 
 		testSprite.addScript(testScript);
 
-		testSprite.createStartScriptActionSequence();
+		testSprite.createStartScriptActionSequenceAndPutToMap(new HashMap<String, List<String>>());
 
 		testSprite.look.act(1.0f);
 
