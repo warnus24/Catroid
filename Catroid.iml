@@ -61,7 +61,6 @@
     <orderEntry type="library" exported="" name="gdx-natives-for-gradle" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="robotium-solo-4.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
-    <orderEntry type="library" exported="" name="ARDrone_SDK_2_0_1-withoutGPS" level="project" />
     <orderEntry type="library" exported="" name="actionbarsherlock-4.4.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="dexmaker-mockito-1.1" level="project" />
     <orderEntry type="library" exported="" name="gdx" level="project" />
@@ -72,7 +71,6 @@
     <orderEntry type="library" exported="" name="okhttp-1.2.1-jar-with-dependencies" level="project" />
     <orderEntry type="library" exported="" name="ardrone-natives-for-gradle" level="project" />
     <orderEntry type="library" exported="" name="xstream-1.4.4" level="project" />
-    <orderEntry type="library" exported="" name="guava-17.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="robotium-solo-4.3.1-javadoc" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="dexmaker-1.0" level="project" />
   </component>
