@@ -80,7 +80,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 	private static final String TYPE_FILE = "file";
 	private static final String TYPE_HTTP = "http";
 
-	private static final String START_PROJECT = "Space Portal";
+	private static final String START_PROJECT = "Don\'t touch the white tiles!";
 	private static final Boolean STANDALONE_MODE = true;
 	private static final String ZIP_FILE_NAME = START_PROJECT + ".zip";
 

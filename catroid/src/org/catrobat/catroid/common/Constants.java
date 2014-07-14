@@ -74,7 +74,7 @@ public final class Constants {
 
 	public static final String CATROBAT_HELP_URL = "https://www.pocketcode.org/tutorial";
 
-	public static final String APP_LINK = "http://catrob.at/csatttm";
+	public static final String APP_LINK = "http://catrob.at/csadttwt";
 
 	public static final String TOKEN = "token";
 	public static final String NO_TOKEN = "no_token";
