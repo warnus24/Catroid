@@ -35,12 +35,14 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.util.Log;
+import android.view.SurfaceHolder;
 import android.widget.Toast;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BluetoothManager;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
+import org.catrobat.catroid.camera.CameraPreview;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
@@ -131,6 +133,16 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 
+		if ((requiredResources & Brick.CAMERA) > 0) {
+			try {
+				CameraPreview.createCameraPreview(this);
+				resourceInitialized();
+			} catch(Exception e) {
+				Log.d("Lausi", "Prestage: error creating Camera Preview" + e.getMessage());
+				resourceFailed();
+			}
+		}
+		Log.d("Lausi", "Preview initialized!!");
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}

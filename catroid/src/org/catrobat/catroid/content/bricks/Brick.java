@@ -47,6 +47,7 @@ public interface Brick extends Serializable {
 
 	//	public static final int BLUETOOTH_ARDUINO = 0x8;
 	int FACE_DETECTION = 0x10;
+	int CAMERA = 0x08;
 
 	List<SequenceAction> addActionToSequence(SequenceAction sequence);
 

@@ -42,6 +42,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.thoughtworks.xstream.mapper.Mapper;
+
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Script;
@@ -156,7 +158,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 
 	@Override
 	public void drag(int from, int to) {
-
+		Log.d("Lausi", "draging");
 		int toOriginal = to;
 		if (to < 0 || to >= brickList.size()) {
 			to = brickList.size() - 1;
@@ -298,6 +300,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 
 	@Override
 	public void drop() {
+		Log.d("Lausi", "dropping");
 		int to = toEndDrag;
 
 		if (to < 0 || to >= brickList.size()) {
@@ -345,6 +348,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 	}
 
 	private void addScriptToProject(int position, ScriptBrick scriptBrick) {
+		Log.d("Lausi", "addScriptToProject");
 		Sprite currentSprite = ProjectManager.getInstance().getCurrentSprite();
 
 		int[] temp = getScriptAndBrickIndexFromProject(position);
@@ -522,15 +526,20 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 	}
 
 	public void addNewBrick(int position, Brick brickToBeAdded, boolean initInsertedBrick) {
-
+		Log.d("Lausi", "addNewBrick");
 		if (draggedBrick != null) {
 			Log.w(TAG, "Want to add Brick while there is another one currently dragged.");
 			return;
 		}
 
+		if(brickToBeAdded == null) {
+			Log.d("Lausi", "alles NULL");
+		}
+
 		Sprite currentSprite = ProjectManager.getInstance().getCurrentSprite();
 		int scriptCount = currentSprite.getNumberOfScripts();
 		if (scriptCount == 0 && brickToBeAdded instanceof ScriptBrick) {
+			Log.d("Lausi", "1");
 			currentSprite.addScript(((ScriptBrick) brickToBeAdded).initScript(currentSprite));
 			initBrickList();
 			notifyDataSetChanged();
@@ -544,7 +553,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 		}
 
 		if (brickToBeAdded instanceof ScriptBrick) {
-
+			Log.d("Lausi", "bricktobeadded" + brickToBeAdded.toString());
 			brickList.add(position, brickToBeAdded);
 			position = getNewPositionForScriptBrick(position, brickToBeAdded);
 			brickList.remove(brickToBeAdded);
@@ -552,7 +561,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 			scrollToPosition(position);
 
 		} else {
-
+			Log.d("Lausi", "else: " +brickToBeAdded.toString());
 			position = getNewPositionIfEndingBrickIsThere(position, brickToBeAdded);
 			position = position <= 0 ? 1 : position;
 			position = position > brickList.size() ? brickList.size() : position;
@@ -564,6 +573,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 		this.positionOfInsertedBrick = position;
 
 		if (scriptCount == 0) {
+			Log.d("Lausi", "keine andren scripst");
 			Script script = new StartScript(currentSprite);
 			currentSprite.addScript(script);
 			brickList.add(0, script.getScriptBrick());

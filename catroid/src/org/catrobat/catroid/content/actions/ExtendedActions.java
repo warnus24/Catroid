@@ -447,4 +447,10 @@ public class ExtendedActions extends Actions {
 		return action(DroneFlipAction.class);
 	}
 
+	public static VideoAction turn(boolean videoOn) {
+		VideoAction action = action(VideoAction.class);
+		action.setChoosen(videoOn);
+		return action;
+	}
+
 }

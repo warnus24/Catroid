@@ -23,6 +23,7 @@
 package org.catrobat.catroid.ui.fragment;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -85,6 +86,7 @@ import org.catrobat.catroid.content.bricks.SpeakBrick;
 import org.catrobat.catroid.content.bricks.StopAllSoundsBrick;
 import org.catrobat.catroid.content.bricks.TurnLeftBrick;
 import org.catrobat.catroid.content.bricks.TurnRightBrick;
+import org.catrobat.catroid.content.bricks.VideoBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.content.bricks.WhenBrick;
 import org.catrobat.catroid.content.bricks.WhenStartedBrick;
@@ -133,6 +135,7 @@ public class CategoryBricksFactory {
 		controlBrickList.add(new ForeverBrick(sprite));
 		controlBrickList.add(new IfLogicBeginBrick(sprite, 0));
 		controlBrickList.add(new RepeatBrick(sprite, BrickValues.REPEAT));
+		controlBrickList.add(new VideoBrick(context));
 
 		return controlBrickList;
 	}
