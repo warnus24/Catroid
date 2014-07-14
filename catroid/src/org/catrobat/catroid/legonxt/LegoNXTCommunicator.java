@@ -165,12 +165,12 @@ public abstract class LegoNXTCommunicator extends Thread {
 
 	/**
 	 * Create a bluetooth connection with SerialPortServiceClass_UUID
-	 *
+	 * 
 	 * @see <a href=
-	 * "http://lejos.sourceforge.net/forum/viewtopic.php?t=1991&highlight=android"
-	 * />
-	 * On error the method either sends a message to it's owner or creates an exception in the
-	 * case of no message handler.
+	 *      "http://lejos.sourceforge.net/forum/viewtopic.php?t=1991&highlight=android"
+	 *      />
+	 *      On error the method either sends a message to it's owner or creates an exception in the
+	 *      case of no message handler.
 	 */
 	public abstract void createNXTconnection() throws IOException;
 
@@ -182,14 +182,15 @@ public abstract class LegoNXTCommunicator extends Thread {
 
 	/**
 	 * Sends a message on the opened OutputStream
-	 *
-	 * @param message , the message as a byte array
+	 * 
+	 * @param message
+	 *            , the message as a byte array
 	 */
 	public abstract void sendMessage(byte[] message) throws IOException;
 
 	/**
 	 * Receives a message on the opened InputStream
-	 *
+	 * 
 	 * @return the message
 	 */
 
@@ -200,8 +201,9 @@ public abstract class LegoNXTCommunicator extends Thread {
 	/**
 	 * Sends a message on the opened OutputStream. In case of
 	 * an error the state is sent to the handler.
-	 *
-	 * @param message , the message as a byte array
+	 * 
+	 * @param message
+	 *            , the message as a byte array
 	 */
 
 	protected void sendState(int message) {
@@ -293,7 +295,7 @@ public abstract class LegoNXTCommunicator extends Thread {
 		 * tachocount += (message[14] << 8);
 		 * tachocount += (message[15] << 16);
 		 * tachocount += (message[16] << 24);
-		 *
+		 * 
 		 * Log.i("bt", "Tachocount " + tachocount);
 		 */
 	}

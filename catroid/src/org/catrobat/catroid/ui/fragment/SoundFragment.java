@@ -122,6 +122,8 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 
 	private OnSoundInfoListChangedAfterNewListener soundInfoListChangedAfterNewListener;
 
+	private ImageButton addButton;
+
 	public void setOnSoundInfoListChangedAfterNewListener(OnSoundInfoListChangedAfterNewListener listener) {
 		soundInfoListChangedAfterNewListener = listener;
 	}
@@ -413,7 +415,6 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 			if (numberOfSelectedItems == 1) {
 				appendix = singleItemAppendixDeleteActionMode;
 			}
-
 
 			String numberOfItems = Integer.toString(numberOfSelectedItems);
 			String completeTitle = actionModeTitle + " " + numberOfItems + " " + appendix;
