@@ -68,4 +68,5 @@
             android:text="@string/add_look_from_camera"
             android:textSize="12sp"/>
     </LinearLayout>
+
 </ScrollView>

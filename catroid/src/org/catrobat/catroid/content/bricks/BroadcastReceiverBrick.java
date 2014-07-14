@@ -180,7 +180,7 @@ public class BroadcastReceiverBrick extends ScriptBrick implements BroadcastMess
 	}
 
 	@Override
-	public Script initScript(Sprite sprite) {
+	public Script getScriptSafe(Sprite sprite) {
 		return receiveScript;
 	}
 
