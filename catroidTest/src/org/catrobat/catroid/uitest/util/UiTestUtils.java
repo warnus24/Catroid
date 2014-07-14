@@ -598,6 +598,57 @@ public final class UiTestUtils {
 		 }
 		
 		 public static boolean clickOnBrickInAddBrickFragment(Solo solo, String brickName, boolean addToScript) {
+	public static void clickOnBrickCategory(Solo solo, String category) {
+		 if (!solo.waitForText(category, 0, 300)) {
+		 solo.drag(40, 40, 300, 40, DRAG_FRAMES);
+		 }
+		 solo.clickOnText(category);
+		 }
+		
+		 public static void showSourceAndEditBrick(String brickName, Solo solo) {
+		 showSourceAndEditBrick(brickName, true, solo);
+		 }
+		
+		 public static void showSourceAndEditBrick(String brickName, boolean click, Solo solo) {
+		 if (click) {
+		 solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
+		 }
+		
+		 String stringOnShowSourceButton = solo.getCurrentActivity()
+		 .getString(R.string.brick_context_dialog_show_source);
+		 solo.waitForText(stringOnShowSourceButton);
+		 solo.clickOnText(stringOnShowSourceButton);
+		
+		 boolean addBrickShowedUp = solo.waitForFragmentByTag(AddBrickFragment.ADD_BRICK_FRAGMENT_TAG, 2000);
+		 if (!addBrickShowedUp) {
+		 fail("addBrickFragment should have showed up");
+		 }
+		
+		 solo.sleep(1000);
+		
+		 boolean clicked = UiTestUtils.clickOnBrickInAddBrickFragment(solo, brickName, false);
+		 if (!clicked) {
+		 fail("was unable to click on " + brickName + "!");
+		 }
+		
+		 String stringOnEditButton = solo.getCurrentActivity().getString(R.string.brick_context_dialog_edit_brick);
+		
+		 boolean editButtonShowedUp = solo.waitForText(stringOnEditButton, 0, 3000);
+		 if (!editButtonShowedUp) {
+		 fail(stringOnEditButton + " should have showed up");
+		 }
+		
+		 solo.clickOnText(stringOnEditButton);
+		
+		 boolean activityShowedUp = solo.waitForActivity(UserBrickScriptActivity.class, 3000);
+		 if (!activityShowedUp) {
+		 fail("UserBrickScriptActivity should have showed up");
+		 }
+		
+		 solo.sleep(50);
+		 }
+		
+		 public static boolean clickOnBrickInAddBrickFragment(Solo solo, String brickName, boolean addToScript) {
 		boolean success = false;
 		int lowestIdTimeBeforeLast = -2;
 		int lowestIdLastTime = -1;
