@@ -37,7 +37,7 @@ import java.util.List;
 public class AddItemToUserListActionTest extends AndroidTestCase {
 
 	private static final String TEST_USERLIST_NAME = "testUserList";
-	private static final double ITEM_TO_ADD_VALUE = 3.0;
+	private static final double DOUBLE_VALUE_ITEM_TO_ADD = 3.0;
 	private static final List<Object> INITIALIZED_LIST_VALUES = new ArrayList<Object>();
 	static {
 		INITIALIZED_LIST_VALUES.add(1.0);
@@ -58,13 +58,16 @@ public class AddItemToUserListActionTest extends AndroidTestCase {
 		super.setUp();
 	}
 
-	public void testSetVariableWithNumericalFormula() {
-		ExtendedActions.setVariable(testSprite, new Formula(ITEM_TO_ADD_VALUE), userList).act(1f);
-		assertEquals("Variable not changed", ITEM_TO_ADD_VALUE, userList.getValue());
+	public void testAddNumericalValueToUserList() {
+		ExtendedActions.addItemToUserList(testSprite, new Formula(DOUBLE_VALUE_ITEM_TO_ADD), userList).act(1f);
+		Object lastItemOfUserList = userList.getList().get(userList.getList().size() - 1);
+
+		assertEquals("UserList size not changed!", 4, userList.getList().size());
+		assertEquals("UserList not changed!", DOUBLE_VALUE_ITEM_TO_ADD, lastItemOfUserList);
 	}
 
 	public void testSetVariableWithInvalidUserVariable() {
-		ExtendedActions.setVariable(testSprite, new Formula(ITEM_TO_ADD_VALUE), null).act(1f);
+		ExtendedActions.setVariable(testSprite, new Formula(DOUBLE_VALUE_ITEM_TO_ADD), null).act(1f);
 		assertEquals("Variable changed, but should not!", INITIALIZED_LIST_VALUES, userList.getValue());
 	}
 
