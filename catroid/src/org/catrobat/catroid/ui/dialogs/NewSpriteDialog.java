@@ -86,7 +86,7 @@ public class NewSpriteDialog extends DialogFragment {
 	}
 
 	private NewSpriteDialog(DialogWizardStep wizardStep, Uri lookUri, String newObjectName,
-							ActionAfterFinished requestedAction, SpinnerAdapterWrapper spinnerAdapter) {
+			ActionAfterFinished requestedAction, SpinnerAdapterWrapper spinnerAdapter) {
 		this.requestedAction = requestedAction;
 		this.wizardStep = wizardStep;
 		this.lookUri = lookUri;
@@ -216,7 +216,7 @@ public class NewSpriteDialog extends DialogFragment {
 	}
 
 	private Uri decodeUri(Uri uri) {
-		String[] filePathColumn = {MediaStore.Images.Media.DATA};
+		String[] filePathColumn = { MediaStore.Images.Media.DATA };
 		Cursor cursor = getActivity().getContentResolver().query(uri, filePathColumn, null, null, null);
 		cursor.moveToFirst();
 		int columnIndex = cursor.getColumnIndexOrThrow(filePathColumn[0]);

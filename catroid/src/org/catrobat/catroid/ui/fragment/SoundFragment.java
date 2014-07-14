@@ -414,7 +414,6 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 				appendix = singleItemAppendixDeleteActionMode;
 			}
 
-
 			String numberOfItems = Integer.toString(numberOfSelectedItems);
 			String completeTitle = actionModeTitle + " " + numberOfItems + " " + appendix;
 

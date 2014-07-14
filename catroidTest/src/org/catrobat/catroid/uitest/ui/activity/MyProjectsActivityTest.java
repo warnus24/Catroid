@@ -1861,6 +1861,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		assertEquals("There should no text be set", "", addNewProjectEditText.getText().toString());
 
 		solo.enterText(0, longProjectName);
+		solo.waitForDialogToOpen(2000);
 		solo.clickOnButton(solo.getString(R.string.ok));
 		solo.waitForText(solo.getString(R.string.sprites));
 		solo.goBack();
