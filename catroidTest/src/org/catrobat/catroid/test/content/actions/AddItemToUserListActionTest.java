@@ -55,6 +55,7 @@ public class AddItemToUserListActionTest extends AndroidTestCase {
 		ProjectManager.getInstance().getCurrentProject().getUserLists().addProjectUserList(TEST_USERLIST_NAME);
 		userList = ProjectManager.getInstance().getCurrentProject().getUserLists()
 				.getUserList(TEST_USERLIST_NAME, null);
+		userList.setList(INITIALIZED_LIST_VALUES);
 		super.setUp();
 	}
 
@@ -66,30 +67,20 @@ public class AddItemToUserListActionTest extends AndroidTestCase {
 		assertEquals("UserList not changed!", DOUBLE_VALUE_ITEM_TO_ADD, lastItemOfUserList);
 	}
 
-	public void testSetVariableWithInvalidUserVariable() {
-		ExtendedActions.setVariable(testSprite, new Formula(DOUBLE_VALUE_ITEM_TO_ADD), null).act(1f);
-		assertEquals("Variable changed, but should not!", INITIALIZED_LIST_VALUES, userList.getValue());
+	public void testAddItemWithInvalidUserList() {
+		ExtendedActions.addItemToUserList(testSprite, new Formula(DOUBLE_VALUE_ITEM_TO_ADD), null).act(1f);
+		assertEquals("UserList changed, but should not!", 2, userList.getList().size());
 	}
 
-	public void testSetVariableWithNumericalStringFormula() {
-		String myString = "155";
-		ExtendedActions.setVariable(testSprite, new Formula(myString), userList).act(1f);
-		assertEquals("String UserVariable not changed!", Double.valueOf(myString), userList.getValue());
-	}
-
-	public void testSetVariableWithStringFormula() {
-		String myString = "myString";
-		ExtendedActions.setVariable(testSprite, new Formula(myString), userList).act(1f);
-		assertEquals("String UserVariable not changed!", myString, (String) userList.getValue());
-	}
-
-	public void testNullFormula() {
-		ExtendedActions.setVariable(testSprite, null, userList).act(1f);
-		assertEquals("String UserVariable not changed!", 0d, userList.getValue());
+	public void testAddNullFormula() {
+		ExtendedActions.addItemToUserList(testSprite, null, userList).act(1f);
+		Object lastItemOfUserList = userList.getList().get(userList.getList().size() - 1);
+		assertEquals("UserList not changed!", 0d, lastItemOfUserList);
 	}
 
 	public void testNotANumberFormula() {
-		ExtendedActions.setVariable(testSprite, new Formula(Double.NaN), userList).act(1f);
-		assertEquals("String UserVariable not changed!", Double.NaN, userList.getValue());
+		ExtendedActions.addItemToUserList(testSprite, new Formula(Double.NaN), userList).act(1f);
+		Object lastItemOfUserList = userList.getList().get(userList.getList().size() - 1);
+		assertEquals("String UserVariable not changed!", Double.NaN, lastItemOfUserList);
 	}
 }
