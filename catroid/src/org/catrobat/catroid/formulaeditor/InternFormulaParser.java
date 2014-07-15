@@ -248,7 +248,6 @@ public class InternFormulaParser {
 				throw new InternFormulaParserException("Parse Error");
 
 		}
-
 		return termTree;
 	}
 

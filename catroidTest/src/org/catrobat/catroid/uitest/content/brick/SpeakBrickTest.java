@@ -34,7 +34,7 @@ import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.SpeakBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
-import org.catrobat.catroid.ui.ScriptActivity;
+import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.Reflection;
@@ -42,7 +42,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
 
-public class SpeakBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
+public class SpeakBrickTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
 	private Project project;
 	private SpeakBrick speakBrick;
@@ -51,16 +51,14 @@ public class SpeakBrickTest extends BaseActivityInstrumentationTestCase<ScriptAc
 	private String testString = "test";
 
 	public SpeakBrickTest() {
-		super(ScriptActivity.class);
+		super(MainMenuActivity.class);
 	}
 
 	@Override
 	public void setUp() throws Exception {
-		// normally super.setUp should be called first
-		// but kept the test failing due to view is null
-		// when starting in ScriptActivity
-		createProject();
 		super.setUp();
+		createProject();
+		UiTestUtils.getIntoScriptActivityFromMainMenu(solo);
 	}
 
 	public void testSpeakBrick() {
@@ -80,20 +78,20 @@ public class SpeakBrickTest extends BaseActivityInstrumentationTestCase<ScriptAc
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.brick_speak)));
 
 		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.brick_speak_edit_text, testString, "text", speakBrick);
-        try{
-            String brickText = ((Formula) Reflection.getPrivateField(speakBrick, "text")).interpretString(sprite);
-            assertEquals("Wrong text in field.", testString, brickText);
-        }catch (InterpretationException interpretationException){
-            fail("Wrong text in field.");
-        }
+		try {
+			String brickText = ((Formula) Reflection.getPrivateField(speakBrick, "text")).interpretString(sprite);
+			assertEquals("Wrong text in field.", testString, brickText);
+		} catch (InterpretationException interpretationException) {
+			fail("Wrong text in field.");
+		}
 
 		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.brick_speak_edit_text, "", "text", speakBrick);
-        try{
-            String brickText = ((Formula) Reflection.getPrivateField(speakBrick, "text")).interpretString(sprite);
-            assertEquals("Wrong text in field.", "", brickText);
-        }catch (InterpretationException interpretationException){
-            fail("Wrong text in field.");
-        }
+		try {
+			String brickText = ((Formula) Reflection.getPrivateField(speakBrick, "text")).interpretString(sprite);
+			assertEquals("Wrong text in field.", "", brickText);
+		} catch (InterpretationException interpretationException) {
+			fail("Wrong text in field.");
+		}
 	}
 
 	private void createProject() {

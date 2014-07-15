@@ -31,6 +31,7 @@ import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -52,7 +53,10 @@ public class NewStringDialog extends SherlockDialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle bundle) {
-		final View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_formulaeditor_string, null);
+		final ViewGroup root = (ViewGroup) getSherlockActivity().getSupportFragmentManager()
+				.findFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG).getView().getRootView();
+		final View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_formulaeditor_string, root,
+				false);
 
 		newStringDialog = new AlertDialog.Builder(getActivity()).setView(dialogView)
 				.setTitle(R.string.formula_editor_new_string_name)
@@ -93,5 +97,4 @@ public class NewStringDialog extends SherlockDialogFragment {
 		}
 
 	}
-
 }
