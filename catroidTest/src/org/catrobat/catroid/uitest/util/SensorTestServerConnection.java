@@ -107,6 +107,8 @@ public final class SensorTestServerConnection {
 			response = receiveFromServer.readLine();
 			Log.d(TAG, "response received! " + response);
 
+			//assertTrue("Emulation timed out!", response.contains("TIMEDOUT"));
+
 		} catch (IOException ioException) {
 			Log.e(TAG, "Data exchange failed! Check server connection!");
 		} catch (InterruptedException e) {

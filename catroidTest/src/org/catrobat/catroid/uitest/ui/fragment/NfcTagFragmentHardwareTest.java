@@ -37,6 +37,7 @@ import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.NfcTagAdapter;
 import org.catrobat.catroid.ui.fragment.NfcTagFragment;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
+import org.catrobat.catroid.uitest.util.SensorTestServerConnection;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 import org.catrobat.catroid.uitest.util.ArduinoConnection;
 import org.catrobat.catroid.utils.Utils;
@@ -68,6 +69,8 @@ public class NfcTagFragmentHardwareTest extends BaseActivityInstrumentationTestC
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		SensorTestServerConnection.connectToArduinoServer();
+
 		UiTestUtils.createTestProject();
 		UiTestUtils.prepareStageForTest();
 
@@ -102,27 +105,14 @@ public class NfcTagFragmentHardwareTest extends BaseActivityInstrumentationTestC
 
 		int oldCount = adapter.getCount();
 
-		int emulateUid = 0x123456;
-		byte[] expectedUid = { (byte) 0x08, 0x12, 0x34, 0x56 }; // first byte is fixed to 0x08
+		String emulateUid = "123456";
+		//byte[] expectedUid = { (byte) 0x08, 0x12, 0x34, 0x56 }; // first byte is fixed to 0x08
 
-		solo.sleep(6000);
-		//ArduinoConnection ac = new ArduinoConnection("192.168.0.166", 6789);
-		ArduinoConnection ac = new ArduinoConnection("129.27.202.103", 6789);
+		solo.sleep(2000);
 
-		try {
-			System.out.println("starting emulation");
-			boolean emulateOk = false;
-			for (int i = 0; i < NUMBER_EMULATE_TRIES && emulateOk == false; i++) {
-				emulateOk = ac.nfcEmulateTag(emulateUid, false);
-			}
-			System.out.println("emulation ended");
-			assertTrue("Arduino timed out when emulating nfc tag. (no read from emulated tag occured)", emulateOk);
-		} catch (Exception e) {
-			fail("Connection or communication to arduino failed.");
-			e.printStackTrace();
-		}
+		SensorTestServerConnection.emulateNfcTag(false, emulateUid, "");
 
-		solo.sleep(500);
+		solo.sleep(5000);
 
 		int newCount = adapter.getCount();
 
