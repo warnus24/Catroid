@@ -24,9 +24,6 @@ package org.catrobat.catroid.uitest.util;
 
 import android.util.Log;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-
 import junit.framework.AssertionFailedError;
 
 import java.io.BufferedReader;
@@ -35,9 +32,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+
 @SuppressWarnings("AvoidUsingHardCodedIP")
 public final class SensorTestServerConnection {
-	private static final String LOG_TEST = SensorTestServerConnection.class.getSimpleName() + "::";
+	private static final String TAG = SensorTestServerConnection.class.getSimpleName();
 
 	// fields to provide ethernet connection to the arduino server
 	private static Socket clientSocket = null;
@@ -49,6 +49,7 @@ public final class SensorTestServerConnection {
 	private static final String ARDUINO_SERVER_IP = "129.27.202.103"; //NOPMD
 	private static final int SERVER_PORT = 6789;
 
+	private static final int NFC_EMULATE = 0;
 	private static final int GET_VIBRATION_VALUE_ID = 1;
 	private static final int GET_LIGHT_VALUE_ID = 2;
 	private static final int CALIBRATE_VIBRATION_SENSOR_ID = 3;
@@ -65,12 +66,12 @@ public final class SensorTestServerConnection {
 	}
 
 	public static void connectToArduinoServer() throws IOException {
-		Log.d(LOG_TEST, "Trying to connect to server...");
+		Log.d(TAG, "Trying to connect to server...");
 
 		clientSocket = new Socket(ARDUINO_SERVER_IP, SERVER_PORT);
 		clientSocket.setKeepAlive(true);
 
-		Log.d(LOG_TEST, "Connected to: " + ARDUINO_SERVER_IP + " on port " + SERVER_PORT);
+		Log.d(TAG, "Connected to: " + ARDUINO_SERVER_IP + " on port " + SERVER_PORT);
 		sendToServer = new DataOutputStream(clientSocket.getOutputStream());
 		receiveFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 	}
@@ -82,6 +83,35 @@ public final class SensorTestServerConnection {
 		clientSocket = null;
 		sendToServer = null;
 		receiveFromServer = null;
+	}
+
+	public static void emulateNfcTag(boolean writable, String tag_id, String ndef_msg) {
+		try {
+			String response = "";
+			clientSocket.close();
+			Thread.sleep(NETWORK_DELAY_MS);
+			connectToArduinoServer();
+			Log.d(TAG, "requesting sensor value: ");
+
+			String command = "";
+
+			command += Integer.toHexString(NFC_EMULATE);
+			command += writable ? '1' : '0';
+			command += tag_id;
+			command += 2*ndef_msg.length();
+			command += ndef_msg;
+
+			sendToServer.writeBytes(command);
+			sendToServer.flush();
+			Thread.sleep(NETWORK_DELAY_MS);
+			response = receiveFromServer.readLine();
+			Log.d(TAG, "response received! " + response);
+
+		} catch (IOException ioException) {
+			Log.e(TAG, "Data exchange failed! Check server connection!");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void checkLightSensorValue(int expected) {
@@ -100,12 +130,12 @@ public final class SensorTestServerConnection {
 			clientSocket.close();
 			Thread.sleep(NETWORK_DELAY_MS);
 			connectToArduinoServer();
-			Log.d(LOG_TEST, "requesting sensor value: ");
+			Log.d(TAG, "requesting sensor value: ");
 			sendToServer.writeByte(Integer.toHexString(GET_LIGHT_VALUE_ID).charAt(0));
 			sendToServer.flush();
 			Thread.sleep(NETWORK_DELAY_MS);
 			response = receiveFromServer.readLine();
-			Log.d(LOG_TEST, "response received! " + response);
+			Log.d(TAG, "response received! " + response);
 
 			assertFalse("Wrong Command!", response.contains("ERROR"));
 			assertTrue("Wrong data received!", response.contains("LIGHT_END"));
@@ -134,12 +164,12 @@ public final class SensorTestServerConnection {
 			clientSocket.close();
 			Thread.sleep(NETWORK_DELAY_MS);
 			connectToArduinoServer();
-			Log.d(LOG_TEST, "requesting sensor value: ");
+			Log.d(TAG, "requesting sensor value: ");
 			sendToServer.writeByte(Integer.toHexString(GET_VIBRATION_VALUE_ID).charAt(0));
 			sendToServer.flush();
 			Thread.sleep(NETWORK_DELAY_MS);
 			response = receiveFromServer.readLine();
-			Log.d(LOG_TEST, "response received! " + response);
+			Log.d(TAG, "response received! " + response);
 
 			assertFalse("Wrong Command!", response.contains("ERROR"));
 			assertTrue("Wrong data received!", response.contains("VIBRATION_END"));
@@ -158,12 +188,12 @@ public final class SensorTestServerConnection {
 			clientSocket.close();
 			Thread.sleep(NETWORK_DELAY_MS);
 			connectToArduinoServer();
-			Log.d(LOG_TEST, "requesting sensor value: ");
+			Log.d(TAG, "requesting sensor value: ");
 			sendToServer.writeByte(Integer.toHexString(CALIBRATE_VIBRATION_SENSOR_ID).charAt(0));
 			sendToServer.flush();
 			Thread.sleep(NETWORK_DELAY_MS);
 			response = receiveFromServer.readLine();
-			Log.d(LOG_TEST, "response received! " + response);
+			Log.d(TAG, "response received! " + response);
 
 		} catch (IOException ioException) {
 			throw new AssertionFailedError("Data exchange failed! Check server connection!");
