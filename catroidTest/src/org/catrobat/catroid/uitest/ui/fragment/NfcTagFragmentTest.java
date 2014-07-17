@@ -22,14 +22,6 @@
  */
 package org.catrobat.catroid.uitest.ui.fragment;
 
-import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.nfc.NdefMessage;
-import android.nfc.NfcAdapter;
-import android.nfc.Tag;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
