@@ -43,6 +43,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
@@ -63,6 +64,8 @@ import org.catrobat.catroid.utils.Utils;
 import java.util.concurrent.locks.Lock;
 
 public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompleteListener {
+
+	private static final String STARTING_PROJECT = BuildConfig.STARTING_PROJECT;
 
 	public static final String SHARED_PREFERENCES_SHOW_BROWSER_WARNING = "shared_preferences_browser_warning";
 
