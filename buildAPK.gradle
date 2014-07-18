@@ -17,17 +17,17 @@ ext {
 apply plugin: 'com.android.application'
 android {
     defaultConfig {
-        buildConfigField "String", "STARTING_PROJECT", "\"WHACK A MOLE\""
+        buildConfigField "String", "START_PROJECT", "\"WHACK A MOLE\""
     }
     productFlavors {
         catroid {
             applicationId 'org.catrobat.catroid'
-            buildConfigField "String", "STARTING_PROJECT", "\"No Starting Project\""
+            buildConfigField "String", "START_PROJECT", "\"No Starting Project\""
         }
 
         standalone {
             applicationId 'org.catrobat.catroid.' + getPackageNameSuffix()
-            buildConfigField "String", "STARTING_PROJECT", "\"${getStartingProjectName()}\""
+            buildConfigField "String", "START_PROJECT", "\"${getStartingProjectName()}\""
         }
     }
 }
