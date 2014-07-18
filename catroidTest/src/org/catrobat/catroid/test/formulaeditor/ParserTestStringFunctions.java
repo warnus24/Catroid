@@ -23,6 +23,7 @@
 package org.catrobat.catroid.test.formulaeditor;
 
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.Project;
@@ -110,7 +111,8 @@ public class ParserTestStringFunctions extends AndroidTestCase {
 				InternTokenType.STRING, letterString, emptyString, testSprite);
 
 		letterString = "letterString";
-		index = "2";
+		index = "3";
+		Log.i("info","FORMULA TEST VALUE = "+String.valueOf(letterString.charAt(Integer.valueOf(index) - 1)));
 		FormulaEditorUtil.testDoubleParameterFunction(Functions.LETTER, InternTokenType.STRING,
 				String.valueOf(letterString.charAt(Integer.valueOf(index) - 1)), InternTokenType.STRING, letterString,
 				emptyString, testSprite);
