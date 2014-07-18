@@ -10,8 +10,15 @@ buildscript {
     }
 }
 
+ext {
+    projectName = "WHACK A MOLE"
+}
+
 apply plugin: 'com.android.application'
 android {
+    defaultConfig {
+        buildConfigField "String", "STARTING_PROJECT", "WHACK A MOLE"
+    }
     productFlavors {
         catroid {
             applicationId 'org.catrobat.catroid'
@@ -19,8 +26,21 @@ android {
 
         standalone {
             applicationId 'org.catrobat.catroid.' + getPackageNameSuffix()
+            buildConfigField "String", "STARTING_PROJECT", "\"${getStartingProjectName()}\""
         }
     }
+}
+
+def getStartingProjectName() {
+    //return project.ext.projectName
+    def file = new File('catroid/assets/standalone/code.xml')
+    if (file.exists()) {
+        def program = new XmlParser().parseText(file.text)
+        return program.header.programName.text()
+    } else {
+        return "No Project Found"
+    }
+
 }
 
 def getPackageNameSuffix() {
@@ -67,10 +87,6 @@ task downloadProject() << {
 
 def unzipProject(File tmp) {
     ArchiverFactory.createArchiver(ZIP).extract(tmp, new File("catroid/assets/standalone/"))
-}
-
-gradle.projectsEvaluated {
-    assembleStandaloneDebug.mustRunAfter buildStandalone
 }
 
 task assembleDebugTest(dependsOn: ':assembleCatroidDebugTest') << {}
