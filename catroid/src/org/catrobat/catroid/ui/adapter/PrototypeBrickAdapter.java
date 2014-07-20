@@ -81,6 +81,8 @@ public class PrototypeBrickAdapter extends BaseAdapter {
 
 	@Override
 	public int getViewTypeCount() {
+		if(brickList.isEmpty())
+			brickList = ProjectManager.getInstance().getCurrentScript().getBrickList();
 		return brickList.size();
 	}
 

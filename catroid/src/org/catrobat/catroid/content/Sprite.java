@@ -197,8 +197,6 @@ public class Sprite implements Serializable, Cloneable {
 
 	}
 
-
-
 	private void putBroadcastSequenceAction(String broadcastMessage, SequenceAction action) {
 		if (BroadcastSequenceMap.containsKey(broadcastMessage)) {
 			BroadcastSequenceMap.get(broadcastMessage).add(action);

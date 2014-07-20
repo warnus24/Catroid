@@ -31,7 +31,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.UserBrick;
+import org.catrobat.catroid.content.bricks.UserBrickUIData;
 import org.catrobat.catroid.ui.adapter.UserVariableAdapter;
+import org.catrobat.catroid.ui.fragment.UserBrickDataEditorFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -135,11 +137,23 @@ public class UserVariablesContainer implements Serializable {
 		if (currentUserBrick != null) {
 			userBrickId = currentUserBrick.getDefinitionBrick().getUserBrickId();
 		}
-		List<UserVariable> contextList = getUserVariableContext(userVariableName, userBrickId, currentSprite);
-		if (contextList != null) {
-			UserVariable variableToDelete = findUserVariable(userVariableName, contextList);
+		List<UserVariable> context = getUserVariableContext(userVariableName, userBrickId, currentSprite);
+		if (context != null) {
+			UserVariable variableToDelete = findUserVariable(userVariableName, context);
 			if (variableToDelete != null) {
-				contextList.remove(variableToDelete);
+				Log.e("UserVariablesContainer_deleteUserVariableByName()", "bug3" + userVariableName + " context[0]: " + context.get(0).getName());
+				context.remove(variableToDelete);
+				for(int id = 0; id < currentUserBrick.uiDataArray.size(); id++)
+				{
+					if(currentUserBrick.uiDataArray.get(id).name.equals(userVariableName) && currentUserBrick.uiDataArray.get(id).isVariable)
+					{
+						int alpha = currentUserBrick.getAlphaValue();
+						currentUserBrick.getDefinitionBrick().removeVariablesInFormulas(currentUserBrick.uiDataArray.get(id).name, currentUserBrick.getViewWithAlpha(alpha).getContext());
+						currentUserBrick.uiDataArray.remove(id);
+						Log.e("UserVariablesContainer_deleteUserVariableByName()", "bug3" + userVariableName + " UserBrickVariable removed from uiDataArray!");
+						currentUserBrick.uiDataArray.version++;
+					}
+				}
 			}
 		}
 	}
@@ -148,6 +162,7 @@ public class UserVariablesContainer implements Serializable {
 		List<UserVariable> context = userBrickVariables.get(userBrickId);
 		UserVariable variableToDelete = findUserVariable(userVariableName, context);
 		if (variableToDelete != null) {
+			Log.e("UserVariablesContainer_deleteUserVariableFromUserBrick()", "bug3" + userVariableName + " context[0]: " + context.get(0).getName());
 			context.remove(variableToDelete);
 		}
 	}
@@ -247,6 +262,7 @@ public class UserVariablesContainer implements Serializable {
 	}
 
 	public UserVariable findUserVariable(String name, List<UserVariable> variables) {
+		Log.e("UserVariable_findUserVariable()", "flow");
 		if (variables == null) {
 			return null;
 		}
