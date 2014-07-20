@@ -44,18 +44,19 @@ public class SetVariableAction extends TemporalAction {
 		}
 		double value = changeVariable.interpretDouble(sprite);
 		userVariable.setValue(value);
-		Log.e("TEST_USERVARIABLES_SET_VARIABLE_ACTION", userVariable.getName() + "set to " + userVariable.getValue());
+//		Log.e("SetVariableAction_update", userVariable.getName() + "set to " + userVariable.getValue());
 	}
 
 	public void setUserVariable(UserVariable userVariable) {
+//		Log.e("SetVariableAction_setUserVariable", "bug2 - " + userVariable.getName() + " " + userVariable.getValue());
 		if (userVariable == null) {
-			Log.e("TEST_USERVARIABLES_SET_VARIABLE_ACTION", "4. try to set uservariable, but it's null");
 			return;
 		}
 		this.userVariable = userVariable;
 	}
 
 	public void setChangeVariable(Formula changeVariable) {
+//		Log.e("SetVariableAction_setChangeVariable", "bug2 - " + changeVariable.interpretDouble(sprite));
 		this.changeVariable = changeVariable;
 	}
 

@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content.actions;
 
+import android.util.Log;
+
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -324,6 +326,7 @@ public class ExtendedActions extends Actions {
 		IfLogicAction action = action(IfLogicAction.class);
 		action.setIfAction(ifAction);
 		action.setIfCondition(condition);
+//		Log.e("ExtendedActions_ifLogc", "bug2 - " + condition.interpretBoolean(sprite)); -- false when using any variable
 		action.setElseAction(elseAction);
 		action.setSprite(sprite);
 		return action;

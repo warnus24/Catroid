@@ -28,6 +28,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -263,17 +264,17 @@ public class UserScriptDefinitionBrick extends ScriptBrick implements OnClickLis
 		if (getUserScript() == null) {
 			setUserScript(new UserScript(sprite, this));
 		}
-
+//		Log.e("UserScriptDefinitionBrick_getScriptSafe()", "bug2");
 		return getUserScript();
 	}
 
 	public UserScript getUserScript() {
+//		for(int i = 0; i < userScript.getBrickList().size(); i++)
+//			Log.e("UserScriptDefinitionBrick_getUserScript()", "bug2" + userScript.getBrick(i).getClass().getSimpleName());
 		return userScript;
 	}
 
-	public void setUserScript(UserScript userScript) {
-		this.userScript = userScript;
-	}
+	public void setUserScript(UserScript userScript) {	this.userScript = userScript;	}
 
 	public Bitmap getWithBorder(int radius, Bitmap bitmap, int color) {
 

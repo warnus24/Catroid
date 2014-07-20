@@ -154,8 +154,7 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 
 		if (ProjectManager.getInstance().getCurrentProject() != null) {
 			Log.e("UserBrick_addUIVariable", "special name: " + data.name);
-			UserVariablesContainer variablesContainer = null;
-			variablesContainer = ProjectManager.getInstance().getCurrentProject().getUserVariables();
+			UserVariablesContainer variablesContainer = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 			variablesContainer.addUserBrickUserVariableToUserBrick(userBrickId, data.name);
 		}
 
@@ -192,11 +191,11 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 
 	public void removeDataAt(int id, Context context) {
 		definitionBrick.removeVariablesInFormulas(uiDataArray.get(id).name, context);
-
 		if (uiDataArray.get(id).isVariable && ProjectManager.getInstance().getCurrentProject() != null) {
 			UserVariablesContainer variablesContainer = null;
 			variablesContainer = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 			variablesContainer.deleteUserVariableFromUserBrick(userBrickId, uiDataArray.get(id).name);
+			Log.e("UserBrick_removeDataAt()", "bug3" + uiDataArray.get(id).name + " context: " + context);
 		}
 		uiDataArray.remove(id);
 		uiDataArray.version++;
@@ -457,6 +456,7 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
 
+//		Log.e("UserBrick_addActionToSequence()", "bug2");
 		UserBrickStageToken stageToken = getStageToken();
 
 		ArrayList<SequenceAction> returnActionList = new ArrayList<SequenceAction>();
@@ -474,6 +474,7 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 	}
 
 	private UserBrickStageToken getStageToken() {
+//		Log.e("UserBrick_getStageToken()", "flow");
 		if (ProjectManager.getInstance() == null || ProjectManager.getInstance().getCurrentProject() == null) {
 			return null;
 		}
@@ -495,7 +496,7 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 						variable = variablesContainer.addUserBrickUserVariableToUserBrick(userBrickId, uiData.name);
 					}
 
-					//					Log.e("UserBrick_getStageToken()2", "name: " + variable.getName() + "value: " + variable.getValue());
+//					Log.e("UserBrick_getStageToken()2", "flow name: " + variable.getName() + "value: " + variable.getValue());
 
 					theList.add(new UserBrickVariable(variable, uiComponent.variableFormula));
 				}
