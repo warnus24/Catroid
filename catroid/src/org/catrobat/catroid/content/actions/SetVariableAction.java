@@ -41,9 +41,14 @@ public class SetVariableAction extends TemporalAction {
 		}
 		double value = changeVariable.interpretDouble(sprite);
 		userVariable.setValue(value);
+<<<<<<< HEAD
+=======
+//		Log.e("SetVariableAction_update", userVariable.getName() + "set to " + userVariable.getValue());
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 	}
 
 	public void setUserVariable(UserVariable userVariable) {
+//		Log.e("SetVariableAction_setUserVariable", "bug2 - " + userVariable.getName() + " " + userVariable.getValue());
 		if (userVariable == null) {
 			return;
 		}
@@ -51,6 +56,7 @@ public class SetVariableAction extends TemporalAction {
 	}
 
 	public void setChangeVariable(Formula changeVariable) {
+//		Log.e("SetVariableAction_setChangeVariable", "bug2 - " + changeVariable.interpretDouble(sprite));
 		this.changeVariable = changeVariable;
 	}
 

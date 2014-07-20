@@ -58,10 +58,12 @@ public class IfLogicBeginBrick extends NestingBrick implements OnClickListener, 
 
 	public IfLogicBeginBrick(Sprite sprite, int condition) {
 		this.sprite = sprite;
+//		Log.e("IfLogicBeginBrick_constructor(sprite,condition)", "bug2 - " + condition);
 		ifCondition = new Formula(condition);
 	}
 
 	public IfLogicBeginBrick(Sprite sprite, Formula condition) {
+//		Log.e("IfLogicBeginBrick_constructor(sprite,condition)", "bug2 - " + condition.interpretBoolean(sprite));
 		this.sprite = sprite;
 		ifCondition = condition;
 	}

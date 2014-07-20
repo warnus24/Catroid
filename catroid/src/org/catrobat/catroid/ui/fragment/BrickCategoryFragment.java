@@ -152,9 +152,14 @@ public class BrickCategoryFragment extends SherlockListFragment {
 		}
 
 		categories.add(inflater.inflate(R.layout.brick_category_uservariables, null));
+<<<<<<< HEAD
 		if (BuildConfig.FEATURE_USERBRICKS_ENABLED) {
 			categories.add(inflater.inflate(R.layout.brick_category_userbricks, null));
 		}
+=======
+		if(BuildConfig.FEATURE_USERBRICKS_ENABLED)
+			categories.add(inflater.inflate(R.layout.brick_category_userbricks, null));
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 
 		if (SettingsActivity.isDroneSharedPreferenceEnabled(getActivity(), false)) {
 			categories.add(inflater.inflate(R.layout.brick_category_drone, null));

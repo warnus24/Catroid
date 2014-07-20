@@ -81,9 +81,14 @@ public class PrototypeBrickAdapter extends BaseAdapter {
 
 	@Override
 	public int getViewTypeCount() {
+<<<<<<< HEAD
 		if (brickList.isEmpty() && (ProjectManager.getInstance().getCurrentScript() != null)) {
 			brickList = ProjectManager.getInstance().getCurrentScript().getBrickList();
 		}
+=======
+		if(brickList.isEmpty())
+			brickList = ProjectManager.getInstance().getCurrentScript().getBrickList();
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 		return brickList.size();
 	}
 
