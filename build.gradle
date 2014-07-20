@@ -33,7 +33,8 @@ ext {
             "computer_vision_enhancement"       : false,
             "formula_editor_lists"              : false,
             "physics_engine_collision_filtering": false,
-            "time_capsule"                      : false
+            "time_capsule"                      : false,
+            "userbricks"                        : false
     ]
 }
 

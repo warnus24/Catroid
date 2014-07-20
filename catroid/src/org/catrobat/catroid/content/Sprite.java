@@ -158,6 +158,7 @@ public class Sprite implements Serializable, Cloneable {
 	}
 
 	public void createStartScriptActionSequence() {
+		Log.e("Sprite_createStartScriptActionSequence()", "flow");
 		for (Script s : scriptList) {
 			if (s instanceof StartScript) {
 				look.addAction(createActionSequence(s));
@@ -291,6 +292,7 @@ public class Sprite implements Serializable, Cloneable {
 	}
 
 	private SequenceAction createActionSequence(Script s) {
+		Log.e("Sprite_createActionSequence()", "flow");
 		SequenceAction sequence = ExtendedActions.sequence();
 		s.run(sequence);
 		return sequence;

@@ -36,6 +36,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 
+import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.SettingsActivity;
@@ -151,7 +152,8 @@ public class BrickCategoryFragment extends SherlockListFragment {
 		}
 
 		categories.add(inflater.inflate(R.layout.brick_category_uservariables, null));
-		categories.add(inflater.inflate(R.layout.brick_category_userbricks, null));
+		if(BuildConfig.FEATURE_USERBRICKS_ENABLED)
+			categories.add(inflater.inflate(R.layout.brick_category_userbricks, null));
 
 		if (SettingsActivity.isDroneSharedPreferenceEnabled(getActivity(), false)) {
 			categories.add(inflater.inflate(R.layout.brick_category_drone, null));
