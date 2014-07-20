@@ -29,13 +29,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.ToastManager;
 import org.catrobat.catroid.ui.controller.BackPackListManager;
 import org.catrobat.catroid.ui.dialogs.AboutDialogFragment;
 import org.catrobat.catroid.ui.dialogs.TermsOfUseDialogFragment;
@@ -119,7 +119,7 @@ public class BaseActivity extends SherlockFragmentActivity {
 		try {
 			startActivity(myAppLinkToMarket);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(this, R.string.main_menu_play_store_not_installed, Toast.LENGTH_SHORT).show();
+			ToastManager.showError(this, R.string.main_menu_play_store_not_installed);
 		}
 	}
 

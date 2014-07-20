@@ -47,7 +47,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -57,6 +56,7 @@ import com.actionbarsherlock.view.MenuInflater;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.ToastManager;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
@@ -355,7 +355,7 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		} catch (CloneNotSupportedException exception) {
 			Log.e(getTag(), "Adding a Brick was not possible because cloning it from the preview failed",
 					exception);
-			Toast.makeText(getActivity(), R.string.error_adding_brick, Toast.LENGTH_SHORT).show();
+			ToastManager.showError(getActivity(), R.string.error_adding_brick);
 		}
 	}
 

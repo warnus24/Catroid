@@ -44,11 +44,11 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.common.ToastManager;
 import org.catrobat.catroid.transfers.ProjectUploadService;
 import org.catrobat.catroid.utils.StatusBarNotificationManager;
 import org.catrobat.catroid.utils.UtilFile;
@@ -184,8 +184,7 @@ public class UploadProjectDialog extends DialogFragment {
 					projectRename.setVisibility(View.GONE);
 				}
 				if (s.length() == 0) {
-					Toast.makeText(getActivity(), R.string.notification_invalid_text_entered, Toast.LENGTH_SHORT)
-							.show();
+					ToastManager.showError(getActivity(), R.string.notification_invalid_text_entered);
 					((AlertDialog) getDialog()).getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
 				} else {
 					((AlertDialog) getDialog()).getButton(Dialog.BUTTON_POSITIVE).setEnabled(true);

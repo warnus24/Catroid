@@ -40,7 +40,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
@@ -49,6 +48,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.common.ToastManager;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.AllowedAfterDeadEndBrick;
@@ -207,13 +207,7 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 
 		//TODO: allow recursive userbricks if its possible
 		if (adapter.getUserBrick() != null && brickToBeAdded instanceof UserBrick) {// && ((UserBrick) brickToBeAdded).getDefinitionBrick().equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
-			Toast toast = null;
-			if (toast == null || toast.getView().getWindowVisibility() != View.VISIBLE) {
-				toast = Toast.makeText(getActivity().getApplicationContext(), R.string.recursive_user_brick_forbidden, Toast.LENGTH_LONG);
-			} else {
-				toast.setText(R.string.recursive_user_brick_forbidden);
-			}
-			toast.show();
+			ToastManager.showError(getActivity().getApplicationContext(), R.string.recursive_user_brick_forbidden);
 		}
 		else {
 			adapter.addNewBrick(position, brickToBeAdded, true);
@@ -499,7 +493,7 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 			adapter.notifyDataSetChanged();
 		} catch (CloneNotSupportedException exception) {
 			Log.e(getTag(), "Copying a Brick failed", exception);
-			Toast.makeText(getActivity(), R.string.error_copying_brick, Toast.LENGTH_SHORT).show();
+			ToastManager.showError(getActivity(), R.string.error_copying_brick);
 		}
 	}
 
