@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content;
 
+import android.util.Log;
+
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.content.bricks.Brick;
@@ -108,15 +110,19 @@ public abstract class Script implements Serializable {
 		ArrayList<SequenceAction> sequenceList = new ArrayList<SequenceAction>();
 		sequenceList.add(sequence);
 		for (int i = 0; i < brickList.size(); i++) {
+//			Log.e("Script_run()", "bug2_1");
 			List<SequenceAction> actions = brickList.get(i).addActionToSequence(
 					sequenceList.get(sequenceList.size() - 1));
+//			Log.e("Script_run()", "bug2_2" + brickList.get(i).getClass().getSimpleName());
 			if (actions != null) {
+				int j = 0;
 				for (SequenceAction action : actions) {
 					if (sequenceList.contains(action)) {
 						sequenceList.remove(action);
 					} else {
 						sequenceList.add(action);
 					}
+					j++;
 				}
 			}
 		}
