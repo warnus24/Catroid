@@ -56,6 +56,9 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0-RC1'
     compile 'com.github.kevinsawicki:http-request:5.6'
     compile 'org.rauschig:jarchivelib:0.6.0'
+    compile('org.rauschig:jarchivelib:0.6.0') {
+        exclude group: 'org.apache.commons', module: 'commons-compress'
+    }
     compile fileTree(include: '*.jar', dir: 'catroid/libs')
     compile fileTree(include: '*.jar', dir: 'catroid/libs-natives')
     androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
