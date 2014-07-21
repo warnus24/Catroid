@@ -215,6 +215,9 @@ public class FormulaElement implements Serializable {
 				catch(NumberFormatException numberFormatException){
 				}
 			}
+			else{
+				doubleValueOfLeftChild = (Double)left;
+			}
 		}
 
 		if(rightChild != null){
@@ -226,6 +229,9 @@ public class FormulaElement implements Serializable {
 				}
 				catch(NumberFormatException numberFormatException){
 				}
+			}
+			else{
+				doubleValueOfRightChild = (Double)right;
 			}
 		}
 
@@ -251,7 +257,7 @@ public class FormulaElement implements Serializable {
 			case PI:
 				return java.lang.Math.PI;
 			case MOD:
-				return (doubleValueOfLeftChild == null || doubleValueOfRightChild == null) ? 0d : interpretFunctionMOD(right, left);
+				return (doubleValueOfLeftChild == null || doubleValueOfRightChild == null) ? 0d : interpretFunctionMOD(doubleValueOfLeftChild, doubleValueOfRightChild);
 			case ARCSIN:
 				return doubleValueOfLeftChild == null ? 0d : java.lang.Math.toDegrees(Math.asin(doubleValueOfLeftChild));
 			case ARCCOS:
@@ -335,13 +341,15 @@ public class FormulaElement implements Serializable {
 		if(left instanceof String){
 			try {
 				Double doubleValueOfLeftChild =  Double.valueOf((String)left);
-				index = doubleValueOfLeftChild.intValue() -1;
+				index = doubleValueOfLeftChild.intValue();
 			} catch (NumberFormatException numberFormatexception) {
 			}
 		}
 		else{
-			index = ((Double)left).intValue() -1;
+			index = ((Double)left).intValue();
 		}
+
+		index--;
 
 
 		if (index < 0) {
@@ -352,7 +360,7 @@ public class FormulaElement implements Serializable {
 		return String.valueOf(String.valueOf(right).charAt(index));
 	}
 
-	private Object interpretFunctionMOD(Object right, Object left) {
+	private Object interpretFunctionMOD(Object left, Object right) {
 
 		double dividend = (Double) left;
 		double divisor = (Double) right;
@@ -556,9 +564,9 @@ public class FormulaElement implements Serializable {
 //			}
 //		}
 
-		if (value.length() == 0) {
-			return Double.valueOf(0.0);
-		}
+//		if (value.length() == 0) {
+//			return Double.valueOf(0.0);
+//		}
 
 		return value;
 	}
@@ -691,13 +699,6 @@ public class FormulaElement implements Serializable {
 		return false;
 	}
 
-	public boolean hasFunctionStringReturnType() {
-		Functions function = Functions.getFunctionByValue(value);
-		if (function == null) {
-			return false;
-		}
-		return function.returnType == ElementType.STRING;
-	}
 
 	public boolean containsElement(ElementType elementType) {
 		if (type.equals(elementType) || (leftChild != null && leftChild.containsElement(elementType))

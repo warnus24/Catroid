@@ -37,7 +37,7 @@ public class WaitAction extends TemporalAction {
 
 	@Override
 	protected void begin() {
-		Float newDuration;
+		Float newDuration = Float.valueOf(0f);
 		try {
 			newDuration = duration == null ? Float.valueOf(0f) : duration.interpretFloat(sprite);
         } catch (InterpretationException interpretationException) {

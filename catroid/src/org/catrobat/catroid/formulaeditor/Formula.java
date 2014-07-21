@@ -108,14 +108,28 @@ public class Formula implements Serializable {
 
 	public Double interpretDouble(Sprite sprite) throws InterpretationException {
         try{
-            Double returnValue = (Double) formulaTree.interpretRecursive(sprite);
-            if (returnValue.isNaN()) {
-                throw new InterpretationException("NaN in interpretDouble()");
-            }
-            return returnValue;
+			Object returnValue = formulaTree.interpretRecursive(sprite);
+			Double doubleReturnValue = null;
+			if(returnValue instanceof String){
+				doubleReturnValue = Double.valueOf((String)returnValue);
+				if (doubleReturnValue.isNaN()) {
+					throw new InterpretationException("NaN in interpretDouble()");
+				}
+				return doubleReturnValue;
+			}
+			else{
+				doubleReturnValue = (Double)returnValue;
+				if (doubleReturnValue.isNaN()) {
+					throw new InterpretationException("NaN in interpretDouble()");
+				}
+				return (Double)returnValue;
+			}
         }catch(ClassCastException classCastException){
             throw new InterpretationException("Couldn't interpret Formula.", classCastException);
         }
+		catch(NumberFormatException numberFormatException){
+			throw new InterpretationException("Couldn't interpret Formula.", numberFormatException);
+		}
 	}
 
 	public Float interpretFloat(Sprite sprite) throws InterpretationException{
@@ -229,7 +243,7 @@ public class Formula implements Serializable {
             }
 			int logicalFormulaResultIdentifier = result ? R.string.formula_editor_true : R.string.formula_editor_false;
 			return context.getString(logicalFormulaResultIdentifier);
-		} else if (formulaTree.hasFunctionStringReturnType() || formulaTree.getElementType() == ElementType.STRING) {
+		} else if (formulaTree.getElementType() == ElementType.STRING) {
 			try{
                 return interpretString(sprite);
             }catch (InterpretationException interpretationException){
@@ -240,15 +254,20 @@ public class Formula implements Serializable {
 			UserVariable userVariable = userVariables.getUserVariable(formulaTree.getValue(), sprite);
 			return (String) userVariable.getValue();
 		} else {
-			Double interpretationResult;
-            try{
-                interpretationResult = this.interpretDouble(sprite);
-            }catch (InterpretationException interpretationException){
-                return "ERROR";
-            }
-			interpretationResult *= 100;
-			interpretationResult = (double) (Math.round(interpretationResult) / 100f);
-			return String.valueOf(interpretationResult);
+			Object interpretationResultOject = interpretObject(sprite);
+			if(interpretationResultOject instanceof String){
+				return (String)interpretationResultOject;
+			}
+			else{
+				Double interpretationResult = (Double)interpretationResultOject;
+				if(interpretationResult.isNaN()){
+					return "ERROR";
+				}
+				interpretationResult *= 100;
+				interpretationResult = (double) (Math.round(interpretationResult) / 100f);
+				return String.valueOf(interpretationResult);
+
+			}
 		}
 	}
 }

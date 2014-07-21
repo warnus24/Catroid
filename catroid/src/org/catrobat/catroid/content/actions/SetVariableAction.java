@@ -39,7 +39,17 @@ public class SetVariableAction extends TemporalAction {
 		if (userVariable == null) {
 			return;
 		}
+
 		Object value = changeVariable == null ? Double.valueOf(0d) : changeVariable.interpretObject(sprite);
+
+		if(value instanceof String){
+			try
+			{
+				value = Double.valueOf((String)value);
+			}catch (NumberFormatException numberFormatException){
+			}
+		}
+
 		userVariable.setValue(value);
 	}
 
