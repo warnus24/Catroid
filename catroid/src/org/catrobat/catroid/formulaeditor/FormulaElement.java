@@ -213,6 +213,7 @@ public class FormulaElement implements Serializable {
 					doubleValueOfLeftChild = Double.valueOf((String)left);
 				}
 				catch(NumberFormatException numberFormatException){
+					Log.d(getClass().getSimpleName(), "Couldn't parse String", numberFormatException);
 				}
 			}
 			else{
@@ -228,6 +229,7 @@ public class FormulaElement implements Serializable {
 					doubleValueOfRightChild = Double.valueOf((String)right);
 				}
 				catch(NumberFormatException numberFormatException){
+					Log.d(getClass().getSimpleName(), "Couldn't parse String", numberFormatException);
 				}
 			}
 			else{
@@ -343,6 +345,7 @@ public class FormulaElement implements Serializable {
 				Double doubleValueOfLeftChild =  Double.valueOf((String)left);
 				index = doubleValueOfLeftChild.intValue();
 			} catch (NumberFormatException numberFormatexception) {
+				Log.d(getClass().getSimpleName(), "Couldn't parse String", numberFormatexception);
 			}
 		}
 		else{

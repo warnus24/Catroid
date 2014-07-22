@@ -112,7 +112,7 @@ public class ParserTestStringFunctions extends AndroidTestCase {
 
 		letterString = "letterString";
 		index = "3";
-		Log.i("info","FORMULA TEST VALUE = "+String.valueOf(letterString.charAt(Integer.valueOf(index) - 1)));
+		Log.i("info","FORMULA TEST VALUE = "+letterString.charAt(Integer.valueOf(index) - 1));
 		FormulaEditorUtil.testDoubleParameterFunction(Functions.LETTER, InternTokenType.STRING,
 				String.valueOf(letterString.charAt(Integer.valueOf(index) - 1)), InternTokenType.STRING, letterString,
 				emptyString, testSprite);

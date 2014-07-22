@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content.actions;
 
+import android.util.Log;
+
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import org.catrobat.catroid.content.Sprite;
@@ -47,6 +49,7 @@ public class SetVariableAction extends TemporalAction {
 			{
 				value = Double.valueOf((String)value);
 			}catch (NumberFormatException numberFormatException){
+				Log.d(getClass().getSimpleName(), "Couldn't parse String", numberFormatException);
 			}
 		}
 
