@@ -50,9 +50,11 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Project;
+import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.io.LoadProjectTask;
 import org.catrobat.catroid.io.LoadProjectTask.OnLoadProjectCompleteListener;
 import org.catrobat.catroid.stage.PreStageActivity;
+import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.controller.BackPackListManager;
 import org.catrobat.catroid.ui.dialogs.AboutDialogFragment;
 import org.catrobat.catroid.ui.dialogs.NewProjectDialog;
@@ -129,9 +131,8 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 
 	private void unzipProgramme() {
 
-//if (!ProjectManager.getInstance().canLoadProject(START_PROJECT)) {
-		copyProgramZip();
 		String zipFileString = Constants.DEFAULT_ROOT + "/" + ZIP_FILE_NAME;
+		copyProgramZip();
 		Log.d("STANDALONE", "default root " + Constants.DEFAULT_ROOT);
 		Archiver archiver = ArchiverFactory.createArchiver("zip");
 		try {
@@ -140,7 +141,6 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 			e.printStackTrace();
 		}
 
-		Log.d("STANDALONE", "");
 		loadStageProject(START_PROJECT);
 
 		File zipFile = new File(zipFileString);
@@ -200,6 +200,27 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 	}
 
 	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == PreStageActivity.REQUEST_RESOURCES_INIT && resultCode == RESULT_OK) {
+			SensorHandler.startSensorListener(this);
+
+			Intent intent = new Intent(MainMenuActivity.this, StageActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				intent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
+			}
+			startActivityForResult(intent, StageActivity.STAGE_ACTIVITY_FINISH);
+		}
+		if (requestCode == StageActivity.STAGE_ACTIVITY_FINISH) {
+			if (!STANDALONE_MODE) {
+				SensorHandler.stopSensorListeners();
+			}
+			finish();
+		}
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 
@@ -212,8 +233,10 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		UtilFile.createStandardProjectIfRootDirectoryIsEmpty(this);
 
 		PreStageActivity.shutdownPersistentResources();
-		setMainMenuButtonContinueText();
-		findViewById(R.id.main_menu_button_continue).setEnabled(true);
+		if (!STANDALONE_MODE) {
+			setMainMenuButtonContinueText();
+			findViewById(R.id.main_menu_button_continue).setEnabled(true);
+		}
 		String projectName = getIntent().getStringExtra(StatusBarNotificationManager.EXTRA_PROJECT_NAME);
 		if (projectName != null) {
 			loadProjectInBackground(projectName);
@@ -293,7 +316,10 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 
 	@Override
 	public void onLoadProjectSuccess(boolean startProjectActivity) {
-		if (ProjectManager.getInstance().getCurrentProject() != null && startProjectActivity) {
+		if (STANDALONE_MODE) {
+			Log.d("STANDALONE", "onLoadProjectSucess -> startStage");
+			startStageProject();
+		} else if (ProjectManager.getInstance().getCurrentProject() != null && startProjectActivity) {
 			Intent intent = new Intent(MainMenuActivity.this, ProjectActivity.class);
 			startActivity(intent);
 		}

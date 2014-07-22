@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 
+import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
@@ -108,7 +109,9 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onResume() {
-		SensorHandler.startSensorListener(this);
+		if (!BuildConfig.FEATURE_APK_GENERATOR_ENABLED) { //TODO use STANDALONE_MODE
+			SensorHandler.startSensorListener(this);
+		}
 		stageAudioFocus.requestAudioFocus();
 		LedUtil.resumeLed();
 		VibratorUtil.resumeVibrator();
