@@ -75,7 +75,7 @@ import java.util.concurrent.locks.Lock;
 public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompleteListener {
 
 	private static final String START_PROJECT = BuildConfig.START_PROJECT;
-	private static final Boolean STANDALONE_MODE = false;
+	private static final Boolean STANDALONE_MODE = BuildConfig.FEATURE_APK_GENERATOR_ENABLED;
 	private static final String ZIP_FILE_NAME = START_PROJECT + ".zip";
 
 	public static final String SHARED_PREFERENCES_SHOW_BROWSER_WARNING = "shared_preferences_browser_warning";
@@ -94,7 +94,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		Utils.updateScreenWidthAndHeight(this);
 
 		if (STANDALONE_MODE) {
-			//setContentView(R.layout.activity_main_menu_splashscreen);
+			setContentView(R.layout.activity_main_menu_splashscreen);
 			unzipProgramme();
 		} else {
 
