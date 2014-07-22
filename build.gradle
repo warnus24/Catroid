@@ -141,7 +141,7 @@ android {
 
     buildTypes {
         debug {
-            versionNameSuffix ".standalone"
+            versionNameSuffix ".whiteTiles"
             applicationIdSuffix ".standalone.whiteTiles"
         }
     }

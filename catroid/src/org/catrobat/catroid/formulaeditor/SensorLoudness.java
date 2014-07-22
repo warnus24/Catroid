@@ -27,7 +27,6 @@ import android.util.Log;
 
 import org.catrobat.catroid.soundrecorder.SoundRecorder;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public final class SensorLoudness {
