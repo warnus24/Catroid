@@ -22,7 +22,13 @@
  */
 package org.catrobat.catroid.stage;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -33,10 +39,12 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.io.StageAudioFocus;
+import org.catrobat.catroid.ui.StandaloneWebViewActivity;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.VibratorUtil;
@@ -83,8 +91,48 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onBackPressed() {
-		pause();
-		stageDialog.show();
+		if (BuildConfig.FEATURE_APK_GENERATOR_ENABLED) {
+			if (isOnline()) {
+				sendWebviewIntent();
+			} else {
+				finish();
+			}
+		} else {
+			pause();
+			stageDialog.show();
+		}
+	}
+
+	public boolean isOnline() {
+		ConnectivityManager cm =
+				(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+			return true;
+		}
+		return false;
+	}
+
+	private void sendWebviewIntent() {
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.STANDALONE_URL));
+			browserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				browserIntent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
+			}
+			startActivity(browserIntent);
+			//finish();
+		} else {
+			Intent intent = new Intent(StageActivity.this, StandaloneWebViewActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				intent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
+			}
+			startActivity(intent);
+			//finish();
+		}
 	}
 
 	public void manageLoadAndFinish() {
