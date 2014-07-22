@@ -110,7 +110,7 @@ public class Formula implements Serializable {
         try{
 			Object returnValue = formulaTree.interpretRecursive(sprite);
 			Double doubleReturnValue = null;
-			if(returnValue instanceof String){
+			if(returnValue instanceof String) {
 				doubleReturnValue = Double.valueOf((String)returnValue);
 				if (doubleReturnValue.isNaN()) {
 					throw new InterpretationException("NaN in interpretDouble()");
@@ -255,12 +255,12 @@ public class Formula implements Serializable {
 			return (String) userVariable.getValue();
 		} else {
 			Object interpretationResultOject = interpretObject(sprite);
-			if(interpretationResultOject instanceof String){
+			if(interpretationResultOject instanceof String) {
 				return (String)interpretationResultOject;
 			}
 			else{
 				Double interpretationResult = (Double)interpretationResultOject;
-				if(interpretationResult.isNaN()){
+				if(interpretationResult.isNaN()) {
 					return "ERROR";
 				}
 				interpretationResult *= 100;
