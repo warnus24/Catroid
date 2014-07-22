@@ -63,12 +63,22 @@ def renameZipFile() {
     zipFile.renameTo 'catroid/assets/' + project.ext.projectName + '.zip'  //TODO remove illegal characters
 }
 
-def copyAndRenameIcon() {
-    def icon = new File('catroid/assets/standalone/manual_screenshot.png')
-    if (!icon.exists()) {
-        icon = new File('catroid/assets/standalone/automatic_screenshot.png')
+def copyAndRename() {
+    copy {
+        from 'catroid/assets/standalone/automatic_screenshot.png'
+        into 'catroid/res/drawable'
+        rename { String fileName ->
+            fileName.replace('automatic_screenshot', 'icon')
+        }
     }
-    icon.renameTo 'catroid/res/drawable/icon.png'
+
+    copy {
+        from 'catroid/assets/standalone/automatic_screenshot.png'
+        into 'catroid/res/drawable'
+        rename { String fileName ->
+            fileName.replace('automatic_screenshot', 'splash_screen')
+        }
+    }
 }
 
 task buildStandalone(dependsOn: ':downloadProject') << {
@@ -79,7 +89,7 @@ task buildStandalone(dependsOn: ':downloadProject') << {
     //TODO solve this via flavor specific res folder
     manifestFile.write(manifest)
     renameZipFile()
-    copyAndRenameIcon()
+    copyAndRename()
 }
 
 task downloadProject() << {
