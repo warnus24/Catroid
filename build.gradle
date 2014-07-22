@@ -64,7 +64,7 @@ def generateVersionName(version, buildNumber) {
 
 def getGitDescribe() {
     try {
-        return 'git describe --tags'.execute().text.trim()
+        return 'git'//'git describe --tags'.execute().text.trim()
     } catch (IOException exception) {
         throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
     }
@@ -72,7 +72,7 @@ def getGitDescribe() {
 
 def getCurrentGitBranch() {
     try {
-        return 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
+        return 'git'//'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
     } catch (IOException exception) {
         throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
     }

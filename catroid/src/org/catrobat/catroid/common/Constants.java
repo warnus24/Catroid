@@ -91,6 +91,16 @@ public final class Constants {
 	public static final int DOWNLOAD_NOTIFICATION = 103;
 	public static final int COPY_NOTIFICATION = 104;
 
+	//Virtual Gamepad
+	public static final String VGP_SPRITE_PAD = "vgp_sprite_pad";
+	public static final String VGP_SPRITE_BUTTON = "vgp_sprite_button";
+	public static final String VGP_IMAGE_PAD_CENTER = "vgp_image_pad_center";
+	public static final String VGP_IMAGE_PAD_STRAIGHT = "vgp_image_pad_straight";
+	public static final String VGP_IMAGE_PAD_DIAGONAL = "vgp_image_pad_diagonal";
+	public static final String VGP_IMAGE_BUTTON_TOUCH = "vgp_image_button_touch";
+	public static final String VGP_IMAGE_BUTTON_HOLD = "vgp_image_button_hold";
+	public static final String VGP_IMAGE_BUTTON_SWIPE = "vgp_image_button_swipe";
+
 	// Suppress default constructor for noninstantiability
 	private Constants() {
 		throw new AssertionError();

@@ -23,6 +23,7 @@
 package org.catrobat.catroid.common;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
@@ -56,9 +57,14 @@ import org.catrobat.catroid.soundrecorder.SoundRecorder;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.ImageEditing;
 import org.catrobat.catroid.utils.UtilFile;
+import org.catrobat.catroid.utils.Utils;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public final class StandardProjectHandler {
 
@@ -513,6 +519,8 @@ public final class StandardProjectHandler {
 		}
 
 		StorageHandler.getInstance().saveProject(defaultProject);
+
+		ProjectManager.loadVirtualGamepadImages(projectName, context);
 
 		return defaultProject;
 	}

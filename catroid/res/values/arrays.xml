@@ -37,6 +37,29 @@
         <item>@string/nxt_motor_a_and_c</item>
         <item>@string/nxt_motor_all</item>
     </string-array>
+    <!-- New Look Dialog -->
+    <string-array name="new_look_chooser">
+        <item>@string/add_look_from_camera</item>
+        <item>@string/add_look_choose_image</item>
+        <item>@string/add_look_draw_new_image</item>
+    </string-array>
 
+    <!-- Virtual pad spinner -->
+    <string-array name="virtual_pad_chooser">
+		<item>@string/virtual_gamepad_pad_up</item>
+		<item>@string/virtual_gamepad_pad_down</item>
+		<item>@string/virtual_gamepad_pad_left</item>
+		<item>@string/virtual_gamepad_pad_right</item>
+	</string-array>
+
+    <!-- Virtual button spinner -->
+    <string-array name="virtual_button_chooser">
+		<item>@string/virtual_gamepad_button_press</item>
+		<item>@string/virtual_gamepad_button_hold</item>
+		<item>@string/virtual_gamepad_button_wipe_up</item>
+		<item>@string/virtual_gamepad_button_wipe_down</item>
+		<item>@string/virtual_gamepad_button_wipe_left</item>
+		<item>@string/virtual_gamepad_button_wipe_right</item>
+	</string-array>
 
 </resources>

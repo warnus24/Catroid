@@ -421,6 +421,9 @@
     <string name="brick_variable_spinner_create_new_variable">New…</string>
     <string name="brick_note_default_value">"add comment here…"</string>
     <string name="brick_broadcast_default_value">"message 1"</string>
+
+    <string name="brick_when_virtual_pad_pressed">When virtual d-pad pressed</string>
+    <string name="brick_when_virtual_button_pressed">When virtual button pressed</string>
     <!--  -->
 
 
@@ -648,4 +651,16 @@
     </plurals>
     <!--  -->
 
+    <!-- Virtual Gamepad -->
+    <string name="virtual_gamepad_pad_up">Up</string>
+    <string name="virtual_gamepad_pad_down">Down</string>
+    <string name="virtual_gamepad_pad_left">Left</string>
+    <string name="virtual_gamepad_pad_right">Right</string>
+    <string name="virtual_gamepad_button_press">Press</string>
+    <string name="virtual_gamepad_button_hold">Hold</string>
+    <string name="virtual_gamepad_button_wipe_up">Wipe up</string>
+    <string name="virtual_gamepad_button_wipe_down">Wipe down</string>
+    <string name="virtual_gamepad_button_wipe_left">Wipe left</string>
+    <string name="virtual_gamepad_button_wipe_right">Wipe right</string>
+    <!--  -->
 </resources>
