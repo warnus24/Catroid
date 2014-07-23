@@ -55,7 +55,9 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
+import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.Utils;
+import org.catrobat.catroid.utils.VibratorUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -222,6 +224,8 @@ public class StageListener implements ApplicationListener {
 
 		project.getUserVariables().resetAllUserVariables();
 		ProjectManager.getInstance().getCurrentProject().getUserLists().resetAllUserLists();
+		LedUtil.reset();
+		VibratorUtil.reset();
 
 		reloadProject = true;
 	}

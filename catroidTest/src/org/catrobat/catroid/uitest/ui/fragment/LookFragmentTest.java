@@ -260,6 +260,7 @@ public class LookFragmentTest extends BaseActivityInstrumentationTestCase<MainMe
 		assertEquals("New count is not correct - one look should be deleted", 1, newCount);
 		assertEquals("Count of the lookDataList is not correct", newCount, lookDataList.size());
 
+		Log.d("LookFragmentTest", "path: " + lookToDelete.getAbsolutePath());
 		File deletedFile = new File(lookToDelete.getAbsolutePath());
 		assertFalse("File should be deleted", deletedFile.exists());
 	}
@@ -463,6 +464,7 @@ public class LookFragmentTest extends BaseActivityInstrumentationTestCase<MainMe
 
 		solo.sleep(200);
 		solo.waitForActivity(ScriptActivity.class.getSimpleName());
+		solo.sleep(200);
 		assertNotNull("there must be an Intent", getLookFragment().lastRecivedIntent);
 		Bundle bundle = getLookFragment().lastRecivedIntent.getExtras();
 		String pathOfPocketPaintImage = bundle.getString(Constants.EXTRA_PICTURE_PATH_POCKET_PAINT);

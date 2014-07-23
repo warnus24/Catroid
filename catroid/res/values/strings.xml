@@ -235,6 +235,8 @@
 
     <!-- PreStage activity -->
     <string name="text_to_speech_engine_not_installed">Text-to-Speech engine not installed!\nDo you want to install it?</string>
+    <string name="no_flash_led_available">No flash LED available</string>
+    <string name="no_vibrator_available">Vibrator not available</string>
     <!--  -->
 
 
@@ -250,9 +252,9 @@
 
     <!-- New look dialog -->
     <string name="new_look_dialog_title">Add Look</string>
-    <string name="add_look_from_camera">From Camera</string>
-    <string name="add_look_draw_new_image">Draw new image</string>
-    <string name="add_look_choose_image">Choose image</string>
+    <string name="add_look_from_camera">Take Picture</string>
+    <string name="add_look_draw_new_image">Draw image</string>
+    <string name="add_look_choose_image">Select image</string>
     <!--  -->
 
 
@@ -374,6 +376,9 @@
     <string name="brick_clear_graphic_effect">Clear graphic effects</string>
     <string name="brick_next_look">Next look</string>
     <string name="brick_next_background">Next background</string>
+    <string name="brick_led_on">switch camera LED ON</string>
+    <string name="brick_led_off">switch camera LED OFF</string>
+    <string name="brick_vibration">vibrate for</string>
     <!--  -->
 
 

@@ -278,12 +278,11 @@ public class LookFragment extends ScriptActivityFragment implements OnLookEditLi
 		menu.findItem(R.id.show_details).setVisible(true);
 		menu.findItem(R.id.settings).setVisible(true);
 
-		boolean visibility = false;
-		if (BuildConfig.FEATURE_BACKPACK_ENABLED) {
-			visibility = true;
+		if (!BuildConfig.FEATURE_BACKPACK_ENABLED) {
+			menu.findItem(R.id.backpack).setVisible(false);
+			menu.findItem(R.id.unpacking).setVisible(false);
 		}
-		menu.findItem(R.id.backpack).setVisible(visibility);
-		menu.findItem(R.id.unpacking).setVisible(false);
+
 
 		super.onPrepareOptionsMenu(menu);
 	}
@@ -418,7 +417,7 @@ public class LookFragment extends ScriptActivityFragment implements OnLookEditLi
 		}
 
 		if (requestCode == LookController.REQUEST_POCKET_PAINT_EDIT_IMAGE) {
-			StorageHandler.getInstance().deletTempImageCopy();
+			StorageHandler.getInstance().deleteTempImageCopy();
 		}
 	}
 

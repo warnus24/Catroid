@@ -185,7 +185,8 @@ task pmd(type: Pmd) {
     }
 }
 
-task jenkins() << {
+if(project.hasProperty('jenkins')) {
+    project.android.dexOptions.preDexLibraries = false
 //    android.buildTypes.each { type ->
 //        if (type.name == "debug") {
 //            type.packageNameSuffix = ".jenkinsdebug"
@@ -254,6 +255,28 @@ task gitNoSkipWorktreeForIntellijConfigFiles << {
         'git update-index --no-skip-worktree .idea/misc.xml'.execute().text.trim()
         'git update-index --no-skip-worktree Catroid.iml'.execute().text.trim()
         'git update-index --no-skip-worktree catroidSourceTest/catroidSourceTest.iml'.execute().text.trim()
+    } catch (IOException exception) {
+        throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
+    }
+}
+
+task gitSaveStashSwitchingToOldBranch << {
+    try {
+        'git update-index --no-skip-worktree .idea/misc.xml'.execute().text.trim()
+        'git update-index --no-skip-worktree Catroid.iml'.execute().text.trim()
+        'git update-index --no-skip-worktree catroidSourceTest/catroidSourceTest.iml'.execute().text.trim()
+        'git stash save "IntelliJConfig"'.execute().text.trim()
+    } catch (IOException exception) {
+        throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
+    }
+}
+
+task gitApplyStashSwitchingToOldBranch << {
+    try {
+        'git stash apply "IntelliJConfig"'.execute().text.trim()
+        'git update-index --skip-worktree .idea/misc.xml'.execute().text.trim()
+        'git update-index --skip-worktree Catroid.iml'.execute().text.trim()
+        'git update-index --skip-worktree catroidSourceTest/catroidSourceTest.iml'.execute().text.trim()
     } catch (IOException exception) {
         throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
     }

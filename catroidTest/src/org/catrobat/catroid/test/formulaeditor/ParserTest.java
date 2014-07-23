@@ -109,11 +109,11 @@ public class ParserTest extends AndroidTestCase {
 	}
 
 	public void testStrings() {
-		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, "1.0", 1d, testSprite);
-		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, "1", 1d, testSprite);
+		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, "1.0", "1.0", testSprite);
+		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, "1", "1", testSprite);
 		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, "", "", testSprite);
 		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, ".", ".", testSprite);
-		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, ".1", 0.1d, testSprite);
+		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, ".1", ".1", testSprite);
 		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, "1.1.1", "1.1.1", testSprite);
 		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, "\"o.o\"", "\"o.o\"", testSprite);
 		FormulaEditorUtil.testSingleToken(InternTokenType.STRING, "\'^_^\'", "\'^_^\'", testSprite);
