@@ -44,7 +44,7 @@ public class SetVariableAction extends TemporalAction {
 
 		Object value = changeVariable == null ? Double.valueOf(0d) : changeVariable.interpretObject(sprite);
 
-		if(value instanceof String) {
+		if (value instanceof String) {
 			try
 			{
 				value = Double.valueOf((String)value);

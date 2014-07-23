@@ -297,7 +297,7 @@ public class FormulaElement implements Serializable {
 
 		if (leftChild != null) {
 			left = leftChild.interpretRecursive(sprite);
-			if(left instanceof String) {
+			if (left instanceof String) {
 				try
 				{
 					doubleValueOfLeftChild = Double.valueOf((String)left);
@@ -311,9 +311,9 @@ public class FormulaElement implements Serializable {
 			}
 		}
 
-		if(rightChild != null) {
+		if (rightChild != null) {
 			right = rightChild.interpretRecursive(sprite);
-			if(right instanceof String) {
+			if (right instanceof String) {
 				try
 				{
 					doubleValueOfRightChild = Double.valueOf((String)right);
@@ -430,7 +430,7 @@ public class FormulaElement implements Serializable {
 
 		int index = 0;
 		//((Double) left).intValue() - 1;
-		if(left instanceof String) {
+		if (left instanceof String) {
 			try {
 				Double doubleValueOfLeftChild =  Double.valueOf((String)left);
 				index = doubleValueOfLeftChild.intValue();

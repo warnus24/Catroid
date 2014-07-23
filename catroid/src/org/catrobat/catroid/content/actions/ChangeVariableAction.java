@@ -45,7 +45,7 @@ public class ChangeVariableAction extends Action {
 		Object value = changeVariable == null ? 0d : changeVariable.interpretObject(sprite);
 
 		try{
-			if(value instanceof String) {
+			if (value instanceof String) {
 				value = Double.parseDouble((String)value);
 			}
 		}catch(NumberFormatException numberFormatException){
