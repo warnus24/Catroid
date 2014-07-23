@@ -103,7 +103,7 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View fragmentView = inflater.inflate(R.layout.fragment_formula_editor_variablelist, container, false);
+		View fragmentView = inflater.inflate(R.layout.fragment_formula_editor_userlist, container, false);
 		return fragmentView;
 	}
 

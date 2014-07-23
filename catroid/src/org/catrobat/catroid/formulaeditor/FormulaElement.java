@@ -198,12 +198,12 @@ public class FormulaElement implements Serializable {
 			}
 
 		} else {
-			return interpretMultipleItemsUserList(sprite, userListValues);
+			return interpretMultipleItemsUserList( userListValues);
 		}
 
 	}
 
-	private Object interpretMultipleItemsUserList(Sprite sprite, List<Object> userListValues) {
+	private Object interpretMultipleItemsUserList( List<Object> userListValues) {
 		List<String> userListStringValues = new ArrayList<String>();
 		boolean concatenateWithoutWhitespace = true;
 

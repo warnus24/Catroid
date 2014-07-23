@@ -43,10 +43,16 @@ public class UserList implements Serializable {
 	}
 
 	public List<Object> getList() {
+		if (list == null) {
+			list = new ArrayList<Object>();
+		}
 		return list;
 	}
 
 	public void addListItem(Object listItem) {
+		if (list == null) {
+			list = new ArrayList<Object>();
+		}
 		this.list.add(listItem);
 	}
 
