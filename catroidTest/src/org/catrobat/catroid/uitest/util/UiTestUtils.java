@@ -299,8 +299,8 @@ public final class UiTestUtils {
 	/**
 	 * Clicks on the EditText given by editTextId, inserts the integer value and closes the Dialog
 	 * 
-	 * @param editTextId
-	 *            The ID of the EditText to click on
+	 * @param solo
+	 *            solo of the EditText to click on
 	 * @param value
 	 *            The value you want to put into the EditText
 	 */
@@ -311,8 +311,8 @@ public final class UiTestUtils {
 	/**
 	 * Clicks on the EditText given by editTextId, inserts the double value and closes the Dialog
 	 * 
-	 * @param editTextId
-	 *            The ID of the EditText to click on
+	 * @param solo
+	 *            solo of the EditText to click on
 	 * @param value
 	 *            The value you want to put into the EditText
 	 */
@@ -517,7 +517,7 @@ public final class UiTestUtils {
 		}
 
 		solo.sleep(600);
-		boolean succeeded = clickOnBrickInAddBrickFragment(solo, brickName);
+		boolean succeeded = clickOnBrickInAddBrickFragment(solo, brickName, false);
 		if (!succeeded) {
 			fail(brickName + " should appear. Failed to scroll to find it.");
 		}
@@ -531,6 +531,21 @@ public final class UiTestUtils {
 			 solo.clickOnText(stringOnAddToScriptButton);
 			 }
 		solo.sleep(600);
+	}
+
+	public static void deleteFirstUserBrick(Solo solo, String brickName)
+	{
+		boolean fragmentAppeared = solo.waitForFragmentByTag(AddBrickFragment.ADD_BRICK_FRAGMENT_TAG, 5000);
+		if (!fragmentAppeared) {
+			fail("add brick fragment should appear");
+		}
+
+		solo.sleep(600);
+		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, solo.getCurrentActivity());
+		solo.clickOnCheckBox(0);
+
+		UiTestUtils.acceptAndCloseActionMode(solo);
+		solo.clickOnButton(solo.getString(R.string.yes));
 	}
 
 	public static void clickOnBrickCategory(Solo solo, String category) {
@@ -1340,8 +1355,8 @@ public final class UiTestUtils {
 	 *            Use Robotium functionality
 	 * @param overflowMenuItemName
 	 *            Name of the overflow menu item
-	 * @param overflowMenuItemId
-	 *            ID of an action item (icon)
+	 * @param activity
+	 *            Activity
 	 */
 	public static void openActionMode(Solo solo, String overflowMenuItemName, int menuItemId, Activity activity) {
 

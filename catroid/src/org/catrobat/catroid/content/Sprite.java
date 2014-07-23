@@ -220,7 +220,7 @@ public class Sprite implements Serializable, Cloneable {
 		List<UserVariable> originalSpriteVariables = userVariables.getOrCreateVariableListForSprite(this);
 		List<UserVariable> clonedSpriteVariables = userVariables.getOrCreateVariableListForSprite(cloneSprite);
 		for (UserVariable variable : originalSpriteVariables) {
-			clonedSpriteVariables.add(new UserVariable(variable.getName(), variable.getValue()));
+			clonedSpriteVariables.add(new UserVariable(variable.getName(), variable.getValue(), clonedSpriteVariables));
 		}
 
 		ArrayList<LookData> cloneLookList = new ArrayList<LookData>();
@@ -264,7 +264,7 @@ public class Sprite implements Serializable, Cloneable {
 		//The scripts have to be the last copied items
 		List<Script> cloneScriptList = new ArrayList<Script>();
 		for (Script element : this.scriptList) {
-			Script addElement = element.copyScriptForSprite(cloneSprite);
+			Script addElement = element.copyScriptForSprite(cloneSprite, cloneUserBrickList);
 			cloneScriptList.add(addElement);
 		}
 		cloneSprite.scriptList = cloneScriptList;

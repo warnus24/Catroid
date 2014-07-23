@@ -97,6 +97,7 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 	}
 
 	public static AddBrickFragment newInstance(String selectedCategory, ScriptFragment scriptFragment) {
+		Log.e("AddBrickFragment_newInstance()", "bug6");
 		AddBrickFragment fragment = new AddBrickFragment();
 		Bundle arguments = new Bundle();
 		arguments.putString(BUNDLE_ARGUMENTS_SELECTED_CATEGORY, selectedCategory);
@@ -127,6 +128,8 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 
 		if (selectedCategory.equals(userBricksCategoryString)) {
 			addButtonHandler = this;
+
+//			Log.e("AddBrickFragment_setupSelectedBrickCategory()", "bug5 brickList.size(): " + brickList.size());
 
 			ScriptActivity activity = (ScriptActivity) scriptFragment.getActivity();
 			activity.setDeleteModeListener(this);
@@ -408,6 +411,9 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		int brickId = adapter.getBrickList().indexOf(brick);
 		if (brickId != -1) {
 			adapter.removeUserBrick(brick);
+			ScriptFragment scriptFragment = (ScriptFragment)
+					getFragmentManager().findFragmentByTag(ScriptFragment.TAG);
+			scriptFragment.getAdapter().updateProjectBrickList();
 		}
 	}
 
