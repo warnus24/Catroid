@@ -25,6 +25,7 @@ package org.catrobat.catroid.uitest.util;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.app.NotificationManager;
