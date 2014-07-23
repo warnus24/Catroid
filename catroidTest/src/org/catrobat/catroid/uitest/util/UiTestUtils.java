@@ -515,7 +515,7 @@ public final class UiTestUtils {
 		}
 
 		solo.sleep(600);
-		boolean succeeded = clickOnBrickInAddBrickFragment(solo, brickName);
+		boolean succeeded = clickOnBrickInAddBrickFragment(solo, brickName, false);
 		if (!succeeded) {
 			fail(brickName + " should appear. Failed to scroll to find it.");
 		}
@@ -529,6 +529,21 @@ public final class UiTestUtils {
 			 solo.clickOnText(stringOnAddToScriptButton);
 			 }
 		solo.sleep(600);
+	}
+
+	public static void deleteFirstUserBrick(Solo solo, String brickName)
+	{
+		boolean fragmentAppeared = solo.waitForFragmentByTag(AddBrickFragment.ADD_BRICK_FRAGMENT_TAG, 5000);
+		if (!fragmentAppeared) {
+			fail("add brick fragment should appear");
+		}
+
+		solo.sleep(600);
+		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, solo.getCurrentActivity());
+		solo.clickOnCheckBox(0);
+
+		UiTestUtils.acceptAndCloseActionMode(solo);
+		solo.clickOnButton(solo.getString(R.string.yes));
 	}
 
 	public static void clickOnBrickCategory(Solo solo, String category) {

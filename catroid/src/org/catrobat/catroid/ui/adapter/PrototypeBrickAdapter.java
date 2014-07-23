@@ -28,6 +28,7 @@ package org.catrobat.catroid.ui.adapter;
  */
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -38,6 +39,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.UserBrick;
+import org.catrobat.catroid.ui.ScriptActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +83,7 @@ public class PrototypeBrickAdapter extends BaseAdapter {
 
 	@Override
 	public int getViewTypeCount() {
-		if(brickList.isEmpty())
+		if(brickList.isEmpty() && (ProjectManager.getInstance().getCurrentScript() != null))
 			brickList = ProjectManager.getInstance().getCurrentScript().getBrickList();
 		return brickList.size();
 	}
@@ -107,6 +109,8 @@ public class PrototypeBrickAdapter extends BaseAdapter {
 	public void removeUserBrick(Brick brick) {
 		brickList.remove(brick);
 		UserBrick deleteThisBrick = (UserBrick) brick;
+		Log.e("PrototypeBrickAdapter_removeUserBrick()", "bug6 brick removed");
+
 		ProjectManager.getInstance().getCurrentSprite().removeUserBrick(deleteThisBrick);
 
 		notifyDataSetChanged();

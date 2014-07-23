@@ -66,6 +66,7 @@ public class AddBrickFragmentTest extends BaseActivityInstrumentationTestCase<Ma
 		solo.scrollDownList(fragmentListView);
 		checkActionBarInACategory(solo.getString(R.string.category_variables), "variables");
 		checkActionBarInACategory(solo.getString(R.string.category_lego_nxt), "lego nxt");
+		checkActionBarInACategory(solo.getString(R.string.category_user_bricks), "userbricks");
 	}
 
 	public void testCorrectReturnToScriptFragment() {

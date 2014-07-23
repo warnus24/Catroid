@@ -51,14 +51,14 @@ public class Sprite implements Serializable, Cloneable {
 	private static final String TAG = Sprite.class.getSimpleName();
 
 	public transient Look look;
+	private ArrayList<UserBrick> userBricks;
+	private int newUserBrickNext = 1;
 	public transient boolean isPaused;
 
 	private String name;
 	private List<Script> scriptList;
 	private ArrayList<LookData> lookList;
 	private ArrayList<SoundInfo> soundList;
-	private ArrayList<UserBrick> userBricks;
-	private int newUserBrickNext = 1;
 
 	public Sprite(String name) {
 		this.name = name;
@@ -103,51 +103,14 @@ public class Sprite implements Serializable, Cloneable {
 			scriptList = new ArrayList<Script>();
 		}
 		if (userBricks == null) {
-			userBricks = new ArrayList<UserBrick>();
-		}
+			 userBricks = new ArrayList<UserBrick>();
+			 }
 	}
 
 	public void resetSprite() {
 		look = new Look(this);
 		for (LookData lookData : lookList) {
 			lookData.resetLookData();
-		}
-	}
-
-	public void createStartScriptActionSequenceAndPutToMap(Map<String, List<String>> scriptActions) {
-		for (Script script : scriptList) {
-			if (script instanceof StartScript) {
-				Action sequenceAction = createActionSequence(script);
-				look.addAction(sequenceAction);
-				BroadcastHandler.getActionSpriteMap().put(sequenceAction, script.getScriptBrick().getSprite());
-				String actionName = sequenceAction.toString() + Constants.ACTION_SPRITE_SEPARATOR + name;
-				if (scriptActions.containsKey(Constants.START_SCRIPT)) {
-					scriptActions.get(Constants.START_SCRIPT).add(actionName);
-					BroadcastHandler.getStringActionMap().put(actionName, sequenceAction);
-				} else {
-					List<String> startScriptList = new ArrayList<String>();
-					startScriptList.add(actionName);
-					scriptActions.put(Constants.START_SCRIPT, startScriptList);
-					BroadcastHandler.getStringActionMap().put(actionName, sequenceAction);
-				}
-			}
-			if (script instanceof BroadcastScript) {
-				BroadcastScript broadcastScript = (BroadcastScript) script;
-				SequenceAction action = createActionSequence(broadcastScript);
-				BroadcastHandler.getActionSpriteMap().put(action, script.getScriptBrick().getSprite());
-				putBroadcastSequenceAction(broadcastScript.getBroadcastMessage(), action);
-				String actionName = action.toString() + Constants.ACTION_SPRITE_SEPARATOR + name;
-
-				if (scriptActions.containsKey(Constants.BROADCAST_SCRIPT)) {
-					scriptActions.get(Constants.BROADCAST_SCRIPT).add(actionName);
-					BroadcastHandler.getStringActionMap().put(actionName, action);
-				} else {
-					List<String> broadcastScriptList = new ArrayList<String>();
-					broadcastScriptList.add(actionName);
-					scriptActions.put(Constants.BROADCAST_SCRIPT, broadcastScriptList);
-					BroadcastHandler.getStringActionMap().put(actionName, action);
-				}
-			}
 		}
 	}
 
@@ -195,6 +158,43 @@ public class Sprite implements Serializable, Cloneable {
 		exampleBrick.addUIText(defaultText);
 		exampleBrick.addUIVariable(defaultVariable);
 
+	}
+
+	public void createStartScriptActionSequenceAndPutToMap(Map<String, List<String>> scriptActions) {
+		for (Script script : scriptList) {
+			if (script instanceof StartScript) {
+				Action sequenceAction = createActionSequence(script);
+				look.addAction(sequenceAction);
+				BroadcastHandler.getActionSpriteMap().put(sequenceAction, script.getScriptBrick().getSprite());
+				String actionName = sequenceAction.toString() + Constants.ACTION_SPRITE_SEPARATOR + name;
+				if (scriptActions.containsKey(Constants.START_SCRIPT)) {
+					scriptActions.get(Constants.START_SCRIPT).add(actionName);
+					BroadcastHandler.getStringActionMap().put(actionName, sequenceAction);
+				} else {
+					List<String> startScriptList = new ArrayList<String>();
+					startScriptList.add(actionName);
+					scriptActions.put(Constants.START_SCRIPT, startScriptList);
+					BroadcastHandler.getStringActionMap().put(actionName, sequenceAction);
+				}
+			}
+			if (script instanceof BroadcastScript) {
+				BroadcastScript broadcastScript = (BroadcastScript) script;
+				SequenceAction action = createActionSequence(broadcastScript);
+				BroadcastHandler.getActionSpriteMap().put(action, script.getScriptBrick().getSprite());
+				putBroadcastSequenceAction(broadcastScript.getBroadcastMessage(), action);
+				String actionName = action.toString() + Constants.ACTION_SPRITE_SEPARATOR + name;
+
+				if (scriptActions.containsKey(Constants.BROADCAST_SCRIPT)) {
+					scriptActions.get(Constants.BROADCAST_SCRIPT).add(actionName);
+					BroadcastHandler.getStringActionMap().put(actionName, action);
+				} else {
+					List<String> broadcastScriptList = new ArrayList<String>();
+					broadcastScriptList.add(actionName);
+					scriptActions.put(Constants.BROADCAST_SCRIPT, broadcastScriptList);
+					BroadcastHandler.getStringActionMap().put(actionName, action);
+				}
+			}
+		}
 	}
 
 	private void putBroadcastSequenceAction(String broadcastMessage, SequenceAction action) {

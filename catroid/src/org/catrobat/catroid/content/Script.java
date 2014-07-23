@@ -154,6 +154,7 @@ public abstract class Script implements Serializable {
 		}
 
 		for (Brick brick : toRemove) {
+//			Log.e("Script_removeInstancesOfUserBrick()","bug6 brick removed");
 			brickList.remove(brick);
 		}
 	}
