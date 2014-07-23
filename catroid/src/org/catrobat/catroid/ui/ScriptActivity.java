@@ -79,6 +79,9 @@ public class ScriptActivity extends BaseActivity {
 	public static final String ACTION_SOUND_RENAMED = "org.catrobat.catroid.SOUND_RENAMED";
 	public static final String ACTION_SOUNDS_LIST_INIT = "org.catrobat.catroid.SOUNDS_LIST_INIT";
 	public static final String ACTION_VARIABLE_DELETED = "org.catrobat.catroid.VARIABLE_DELETED";
+
+	private static final String TAG = ProgramMenuActivity.class.getSimpleName();
+
 	private static int currentFragmentPosition;
 	private FragmentManager fragmentManager = getSupportFragmentManager();
 	private ScriptFragment scriptFragment = null;
@@ -136,8 +139,14 @@ public class ScriptActivity extends BaseActivity {
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
+		//The try-catch block is added in the same way as in ProgramMenuActivity
+		try{
 		String currentSprite = ProjectManager.getInstance().getCurrentSprite().getName();
 		actionBar.setTitle(currentSprite);
+	} catch (NullPointerException nullPointerException) {
+		Log.e(TAG, "onCreate: NPE -> finishing", nullPointerException);
+		finish();
+	}
 	}
 
 	@Override

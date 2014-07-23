@@ -1,34 +1,36 @@
 /**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2013 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content;
 
 import android.util.Log;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.BroadcastSequenceMap;
+import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.FileChecksumContainer;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.SoundInfo;
@@ -42,20 +44,21 @@ import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Sprite implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 	private static final String TAG = Sprite.class.getSimpleName();
 
 	public transient Look look;
+	private ArrayList<UserBrick> userBricks;
+	private int newUserBrickNext = 1;
 	public transient boolean isPaused;
 
 	private String name;
 	private List<Script> scriptList;
 	private ArrayList<LookData> lookList;
 	private ArrayList<SoundInfo> soundList;
-	private ArrayList<UserBrick> userBricks;
-	private int newUserBrickNext = 1;
 
 	public Sprite(String name) {
 		this.name = name;
@@ -70,7 +73,7 @@ public class Sprite implements Serializable, Cloneable {
 	}
 
 	private Object readResolve() {
-		//filling FileChecksumContainer:
+//filling FileChecksumContainer:
 		if (soundList != null && lookList != null && ProjectManager.getInstance().getCurrentProject() != null) {
 			FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
 			if (container == null) {
@@ -100,8 +103,8 @@ public class Sprite implements Serializable, Cloneable {
 			scriptList = new ArrayList<Script>();
 		}
 		if (userBricks == null) {
-			userBricks = new ArrayList<UserBrick>();
-		}
+			 userBricks = new ArrayList<UserBrick>();
+			 }
 	}
 
 	public void resetSprite() {
@@ -112,62 +115,84 @@ public class Sprite implements Serializable, Cloneable {
 	}
 
 	public void removeUserBrick(UserBrick brickToRemove) {
-		for (UserBrick userBrick : userBricks) {
-			userBrick.getDefinitionBrick().getUserScript().removeInstancesOfUserBrick(brickToRemove);
-		}
+		 for (UserBrick userBrick : userBricks) {
+			 userBrick.getDefinitionBrick().getUserScript().removeInstancesOfUserBrick(brickToRemove);
+			 }
 
+				 for (Script script : scriptList) {
+			 script.removeInstancesOfUserBrick(brickToRemove);
+			 }
+
+				 userBricks.remove(brickToRemove);
+		 }
+
+			 public UserBrick addUserBrick(UserBrick brick) {
+		 if (userBricks == null) {
+			 userBricks = new ArrayList<UserBrick>();
+			 }
+		 userBricks.add(brick);
+		 return brick;
+		 }
+
+			 public List<UserBrick> getUserBrickList() {
+		 if (userBricks == null) {
+			 userBricks = new ArrayList<UserBrick>();
+			 }
+		 return userBricks;
+		 }
+
+			 public List<UserBrick> getUserBrickListAtLeastOneBrick(String defaultText, String defaultVariable) {
+		 if (userBricks == null || userBricks.size() == 0) {
+			 int newBrickId = ProjectManager.getInstance().getCurrentProject().getUserVariables()
+					 .getAndIncrementUserBrickId();
+			 initUserBrickList(defaultText, defaultVariable, newBrickId);
+			 }
+		 return userBricks;
+		 }
+
+			 void initUserBrickList(String defaultText, String defaultVariable, int nextUserBrickId) {
+		 userBricks = new ArrayList<UserBrick>();
+
+				 // the UserBrick constructor will insert the UserBrick into this Sprite's userBricks list.
+						 UserBrick exampleBrick = new UserBrick(this, nextUserBrickId);
+		 exampleBrick.addUIText(defaultText);
+		 exampleBrick.addUIVariable(defaultVariable);
+
+				 }
+
+	public void createStartScriptActionSequenceAndPutToMap(Map<String, List<String>> scriptActions) {
 		for (Script script : scriptList) {
-			script.removeInstancesOfUserBrick(brickToRemove);
-		}
-
-		userBricks.remove(brickToRemove);
-	}
-
-	public UserBrick addUserBrick(UserBrick brick) {
-		if (userBricks == null) {
-			userBricks = new ArrayList<UserBrick>();
-		}
-		userBricks.add(brick);
-		return brick;
-	}
-
-	public List<UserBrick> getUserBrickList() {
-		if (userBricks == null) {
-			userBricks = new ArrayList<UserBrick>();
-		}
-		return userBricks;
-	}
-
-	public List<UserBrick> getUserBrickListAtLeastOneBrick(String defaultText, String defaultVariable) {
-		if (userBricks == null || userBricks.size() == 0) {
-			int newBrickId = ProjectManager.getInstance().getCurrentProject().getUserVariables()
-					.getAndIncrementUserBrickId();
-			initUserBrickList(defaultText, defaultVariable, newBrickId);
-		}
-		return userBricks;
-	}
-
-	void initUserBrickList(String defaultText, String defaultVariable, int nextUserBrickId) {
-		userBricks = new ArrayList<UserBrick>();
-
-		// the UserBrick constructor will insert the UserBrick into this Sprite's userBricks list.
-		UserBrick exampleBrick = new UserBrick(this, nextUserBrickId);
-		exampleBrick.addUIText(defaultText);
-		exampleBrick.addUIVariable(defaultVariable);
-
-	}
-
-	public void createStartScriptActionSequence() {
-		Log.e("Sprite_createStartScriptActionSequence()", "flow");
-		for (Script s : scriptList) {
-			if (s instanceof StartScript) {
-				look.addAction(createActionSequence(s));
+			if (script instanceof StartScript) {
+				Action sequenceAction = createActionSequence(script);
+				look.addAction(sequenceAction);
+				BroadcastHandler.getActionSpriteMap().put(sequenceAction, script.getScriptBrick().getSprite());
+				String actionName = sequenceAction.toString() + Constants.ACTION_SPRITE_SEPARATOR + name;
+				if (scriptActions.containsKey(Constants.START_SCRIPT)) {
+					scriptActions.get(Constants.START_SCRIPT).add(actionName);
+					BroadcastHandler.getStringActionMap().put(actionName, sequenceAction);
+				} else {
+					List<String> startScriptList = new ArrayList<String>();
+					startScriptList.add(actionName);
+					scriptActions.put(Constants.START_SCRIPT, startScriptList);
+					BroadcastHandler.getStringActionMap().put(actionName, sequenceAction);
+				}
 			}
-			if (s instanceof BroadcastScript) {
-				BroadcastScript script = (BroadcastScript) s;
-				SequenceAction action = createBroadcastScriptActionSequence(script);
-				putBroadcastSequenceAction(script.getBroadcastMessage(), action);
+			if (script instanceof BroadcastScript) {
+				BroadcastScript broadcastScript = (BroadcastScript) script;
+				SequenceAction action = createActionSequence(broadcastScript);
+				BroadcastHandler.getActionSpriteMap().put(action, script.getScriptBrick().getSprite());
+				putBroadcastSequenceAction(broadcastScript.getBroadcastMessage(), action);
+				String actionName = action.toString() + Constants.ACTION_SPRITE_SEPARATOR + name;
 
+				if (scriptActions.containsKey(Constants.BROADCAST_SCRIPT)) {
+					scriptActions.get(Constants.BROADCAST_SCRIPT).add(actionName);
+					BroadcastHandler.getStringActionMap().put(actionName, action);
+				} else {
+					List<String> broadcastScriptList = new ArrayList<String>();
+					broadcastScriptList.add(actionName);
+					scriptActions.put(Constants.BROADCAST_SCRIPT, broadcastScriptList);
+					BroadcastHandler.getStringActionMap().put(actionName, action);
+				}
 			}
 		}
 	}
@@ -211,32 +236,32 @@ public class Sprite implements Serializable, Cloneable {
 		cloneSprite.soundList = cloneSoundList;
 
 		ArrayList<UserBrick> cloneUserBrickList = new ArrayList<UserBrick>();
-		for (Brick brick : this.userBricks) {
-			UserBrick original = (UserBrick) brick;
+		 for (Brick brick : this.userBricks) {
+			 UserBrick original = (UserBrick) brick;
 
-			UserBrick deepClone = new UserBrick(cloneSprite, original.getId());
-			deepClone.uiDataArray = original.uiDataArray.clone();
-			deepClone.updateUIComponents(null);
+					 UserBrick deepClone = new UserBrick(cloneSprite, original.getId());
+			 deepClone.uiDataArray = original.uiDataArray.clone();
+			 deepClone.updateUIComponents(null);
 
-			UserScriptDefinitionBrick clonedDefinitionBrick = new UserScriptDefinitionBrick(cloneSprite, deepClone,
-					original.getId());
-			deepClone.setDefinitionBrick(clonedDefinitionBrick);
+					 UserScriptDefinitionBrick clonedDefinitionBrick = new UserScriptDefinitionBrick(cloneSprite, deepClone,
+					 original.getId());
+			 deepClone.setDefinitionBrick(clonedDefinitionBrick);
 
-			cloneUserBrickList.add(deepClone);
-		}
+					 cloneUserBrickList.add(deepClone);
+			 }
 
-		// once all the UserBricks have been copied over, we can copy their scripts over as well
-		// (preserve recursive references)
-		for (Brick cloneBrick : cloneUserBrickList) {
-			UserBrick deepClone = (UserBrick) cloneBrick;
-			UserBrick original = findBrickWithId(userBricks, deepClone.getId());
+				 // once all the UserBricks have been copied over, we can copy their scripts over as well
+						 // (preserve recursive references)
+								 for (Brick cloneBrick : cloneUserBrickList) {
+			 UserBrick deepClone = (UserBrick) cloneBrick;
+			 UserBrick original = findBrickWithId(userBricks, deepClone.getId());
 
-			UserScript originalScript = original.getDefinitionBrick().getUserScript();
-			UserScript newScript = originalScript.copyScriptForSprite(cloneSprite, cloneUserBrickList);
-			deepClone.getDefinitionBrick().setUserScript(newScript);
-		}
+					 UserScript originalScript = original.getDefinitionBrick().getUserScript();
+			 UserScript newScript = originalScript.copyScriptForSprite(cloneSprite, cloneUserBrickList);
+			 deepClone.getDefinitionBrick().setUserScript(newScript);
+			 }
 
-		//The scripts have to be the last copied items
+//The scripts have to be the last copied items
 		List<Script> cloneScriptList = new ArrayList<Script>();
 		for (Script element : this.scriptList) {
 			Script addElement = element.copyScriptForSprite(cloneSprite, cloneUserBrickList);
@@ -245,12 +270,12 @@ public class Sprite implements Serializable, Cloneable {
 		cloneSprite.scriptList = cloneScriptList;
 
 		// update the IDs to preserve the uniqueness of these ids (for example in the stage).
-		for (UserBrick cloneBrick : cloneUserBrickList) {
-			cloneBrick.setId(cloneBrick.getId() + cloneUserBrickList.size());
-			UserScriptDefinitionBrick definitionBrick = cloneBrick.getDefinitionBrick();
-			definitionBrick.setUserBrickId(definitionBrick.getUserBrickId() + cloneUserBrickList.size());
-		}
-		cloneSprite.userBricks = cloneUserBrickList;
+		 for (UserBrick cloneBrick : cloneUserBrickList) {
+			 cloneBrick.setId(cloneBrick.getId() + cloneUserBrickList.size());
+			 UserScriptDefinitionBrick definitionBrick = cloneBrick.getDefinitionBrick();
+			 definitionBrick.setUserBrickId(definitionBrick.getUserBrickId() + cloneUserBrickList.size());
+			 }
+		 cloneSprite.userBricks = cloneUserBrickList;
 
 		cloneSprite.init();
 
@@ -266,13 +291,13 @@ public class Sprite implements Serializable, Cloneable {
 	}
 
 	protected UserBrick findBrickWithId(List<UserBrick> list, int id) {
-		for (UserBrick brick : list) {
-			if (brick.getId() == id) {
-				return brick;
-			}
-		}
-		return null;
-	}
+		 for (UserBrick brick : list) {
+			 if (brick.getId() == id) {
+				 return brick;
+				 }
+			 }
+		 return null;
+		 }
 
 	public void createWhenScriptActionSequence(String action) {
 		ParallelAction whenParallelAction = ExtendedActions.parallel();
@@ -287,21 +312,10 @@ public class Sprite implements Serializable, Cloneable {
 		look.addAction(whenParallelAction);
 	}
 
-	public SequenceAction createBroadcastScriptActionSequence(BroadcastScript script) {
-		return createActionSequence(script);
-	}
-
 	private SequenceAction createActionSequence(Script s) {
-		Log.e("Sprite_createActionSequence()", "flow");
 		SequenceAction sequence = ExtendedActions.sequence();
 		s.run(sequence);
 		return sequence;
-	}
-
-	public void startScriptBroadcast(Script s, boolean overload) {
-		SequenceAction sequence = ExtendedActions.sequence();
-		s.run(sequence);
-		look.addAction(sequence);
 	}
 
 	public void pause() {
@@ -399,8 +413,8 @@ public class Sprite implements Serializable, Cloneable {
 	}
 
 	public int getNextNewUserBrickId() {
-		return newUserBrickNext++;
-	}
+		 return newUserBrickNext++;
+		 }
 
 	@Override
 	public String toString() {

@@ -1,24 +1,24 @@
 /**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2013 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.stage;
 
@@ -26,7 +26,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -44,12 +43,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.google.common.collect.Multimap;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenModes;
 import org.catrobat.catroid.common.ScreenValues;
+import org.catrobat.catroid.content.BroadcastHandler;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.SoundManager;
@@ -59,7 +60,10 @@ import org.catrobat.catroid.utils.Utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StageListener implements ApplicationListener {
 
@@ -67,9 +71,11 @@ public class StageListener implements ApplicationListener {
 	private static final float DELTA_ACTIONS_DIVIDER_MAXIMUM = 50f;
 	private static final int ACTIONS_COMPUTATION_TIME_MAXIMUM = 8;
 	private static final boolean DEBUG = false;
+	private static final java.lang.String SEQUENCE = "Sequence(";
+	public static final String BROADCAST_NOTIFY = ", BroadcastNotify)";
 
 	// needed for UiTests - is disabled to fix crashes with EMMA coverage
-	// CHECKSTYLE DISABLE StaticVariableNameCheck FOR 1 LINES
+// CHECKSTYLE DISABLE StaticVariableNameCheck FOR 1 LINES
 	private static boolean DYNAMIC_SAMPLING_RATE_FOR_ACTIONS = true;
 
 	private float deltaActionTimeDivisor = 10f;
@@ -94,7 +100,7 @@ public class StageListener implements ApplicationListener {
 	private int screenshotY;
 	private byte[] screenshot = null;
 	// in first frame, framebuffer could be empty and screenshot
-	// would be white
+// would be white
 	private boolean skipFirstFrameForAutomaticScreenshot;
 
 	private Project project;
@@ -257,7 +263,6 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void render() {
-		Log.e("StageListener_render()", "flow");
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		if (reloadProject) {
@@ -296,28 +301,36 @@ public class StageListener implements ApplicationListener {
 			if (spriteSize > 0) {
 				sprites.get(0).look.setLookData(createWhiteBackgroundLookData());
 			}
-			Sprite sprite;
-			for (int i = 0; i < spriteSize; i++) {
-				sprite = sprites.get(i);
-				sprite.createStartScriptActionSequence();
+			Map<String, List<String>> scriptActions = new HashMap<String, List<String>>();
+			for (int currentSprite = 0; currentSprite < spriteSize; currentSprite++) {
+				Sprite sprite = sprites.get(currentSprite);
+				sprite.createStartScriptActionSequenceAndPutToMap(scriptActions);
 				if (!sprite.getLookDataList().isEmpty()) {
 					sprite.look.setLookData(sprite.getLookDataList().get(0));
 				}
 			}
+
+			if (scriptActions.get(Constants.BROADCAST_SCRIPT) != null && !scriptActions.get(Constants.BROADCAST_SCRIPT).isEmpty()) {
+				List<String> broadcastWaitNotifyActions = reconstructNotifyActions(scriptActions);
+				Map<String, List<String>> notifyMap = new HashMap<String, List<String>>();
+				notifyMap.put(Constants.BROADCAST_NOTIFY_ACTION, broadcastWaitNotifyActions);
+				scriptActions.putAll(notifyMap);
+			}
+			precomputeActionsForBroadcastEvents(scriptActions);
 			firstStart = false;
 		}
 		if (!paused) {
 			float deltaTime = Gdx.graphics.getDeltaTime();
 
-			/*
-			 * Necessary for UiTests, when EMMA - code coverage is enabled.
-			 *
-			 * Without setting DYNAMIC_SAMPLING_RATE_FOR_ACTIONS to false(via reflection), before
-			 * the UiTest enters the stage, random segmentation faults(triggered by EMMA) will occur.
-			 *
-			 * Can be removed, when EMMA is replaced by an other code coverage tool, or when a
-			 * future EMMA - update will fix the bugs.
-			 */
+/*
+* Necessary for UiTests, when EMMA - code coverage is enabled.
+*
+* Without setting DYNAMIC_SAMPLING_RATE_FOR_ACTIONS to false(via reflection), before
+* the UiTest enters the stage, random segmentation faults(triggered by EMMA) will occur.
+*
+* Can be removed, when EMMA is replaced by an other code coverage tool, or when a
+* future EMMA - update will fix the bugs.
+*/
 			if (DYNAMIC_SAMPLING_RATE_FOR_ACTIONS == false) {
 				stage.act(deltaTime);
 			} else {
@@ -369,6 +382,96 @@ public class StageListener implements ApplicationListener {
 		if (makeTestPixels) {
 			testPixels = ScreenUtils.getFrameBufferPixels(testX, testY, testWidth, testHeight, false);
 			makeTestPixels = false;
+		}
+	}
+
+	private List<String> reconstructNotifyActions(Map<String, List<String>> actions) {
+		List<String> broadcastWaitNotifyActions = new ArrayList<String>();
+		for (String actionString : actions.get(Constants.BROADCAST_SCRIPT)) {
+			String broadcastNotifyString = SEQUENCE + actionString.substring(0, actionString.indexOf(Constants.ACTION_SPRITE_SEPARATOR)) + BROADCAST_NOTIFY + actionString.substring(actionString.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
+			broadcastWaitNotifyActions.add(broadcastNotifyString);
+		}
+		return broadcastWaitNotifyActions;
+	}
+
+	public void precomputeActionsForBroadcastEvents(Map<String, List<String>> currentActions) {
+		Multimap<String, String> actionsToRestartMap = BroadcastHandler.getActionsToRestartMap();
+		if (!actionsToRestartMap.isEmpty()) {
+			return;
+		}
+		List<String> actions = new ArrayList<String>();
+		if (currentActions.get(Constants.START_SCRIPT) != null) {
+			actions.addAll(currentActions.get(Constants.START_SCRIPT));
+		}
+		if (currentActions.get(Constants.BROADCAST_SCRIPT) != null) {
+			actions.addAll(currentActions.get(Constants.BROADCAST_SCRIPT));
+		}
+		if (currentActions.get(Constants.BROADCAST_NOTIFY_ACTION) != null) {
+			actions.addAll(currentActions.get(Constants.BROADCAST_NOTIFY_ACTION));
+		}
+		for (String action : actions) {
+			for (String actionOfLook : actions) {
+				if (action.equals(actionOfLook) || bothSequenceActionsAndEqual(actionOfLook, action)
+						|| isFirstSequenceActionAndEqualsSecond(action, actionOfLook)
+						|| isFirstSequenceActionAndEqualsSecond(actionOfLook, action)) {
+					if (!actionsToRestartMap.containsKey(action)) {
+						actionsToRestartMap.put(action, actionOfLook);
+					} else {
+						actionsToRestartMap.get(action).add(actionOfLook);
+					}
+				}
+			}
+		}
+	}
+
+	private static boolean isFirstSequenceActionAndEqualsSecond(String action1, String action2) {
+		String spriteOfAction1 = action1.substring(action1.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
+		String spriteOfAction2 = action2.substring(action2.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
+
+		if (!spriteOfAction1.equals(spriteOfAction2)) {
+			return false;
+		}
+
+		if (!action1.startsWith(SEQUENCE) || !action1.contains(BROADCAST_NOTIFY)) {
+			return false;
+		}
+
+		int startIndex1 = action1.indexOf(Constants.OPENING_BRACE) + 1;
+		int endIndex1 = action1.indexOf(BROADCAST_NOTIFY);
+		String innerAction1 = action1.substring(startIndex1, endIndex1);
+
+		String action2Sub = action2.substring(0, action2.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
+		if (innerAction1.equals(action2Sub)) {
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean bothSequenceActionsAndEqual(String action1, String action2) {
+		String spriteOfAction1 = action1.substring(action1.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
+		String spriteOfAction2 = action2.substring(action2.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
+
+		if (!spriteOfAction1.equals(spriteOfAction2)) {
+			return false;
+		}
+
+		if (!(action1.startsWith(SEQUENCE) && action2.startsWith(SEQUENCE))) {
+			return false;
+		}
+
+		int startIndex1 = action1.indexOf(Constants.OPENING_BRACE);
+		int endIndex1 = action1.lastIndexOf(Constants.CLOSING_BRACE) + 1;
+
+		int startIndex2 = action2.indexOf(Constants.OPENING_BRACE);
+		int endIndex2 = action2.lastIndexOf(Constants.CLOSING_BRACE) + 1;
+
+		String sequenceOfAction1 = action1.substring(startIndex1, endIndex1);
+		String sequenceOfAction2 = action2.substring(startIndex2, endIndex2);
+
+		if (sequenceOfAction1.equals(sequenceOfAction2)) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -462,7 +565,7 @@ public class StageListener implements ApplicationListener {
 			Thread.yield();
 		}
 		byte[] copyOfTestPixels = new byte[testPixels.length];
-		System.arraycopy(testPixels,0,copyOfTestPixels,0,testPixels.length);
+		System.arraycopy(testPixels, 0, copyOfTestPixels, 0, testPixels.length);
 		return copyOfTestPixels;
 	}
 

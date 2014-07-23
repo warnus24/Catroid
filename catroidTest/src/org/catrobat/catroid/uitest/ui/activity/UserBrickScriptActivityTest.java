@@ -132,11 +132,11 @@ public class UserBrickScriptActivityTest extends ActivityInstrumentationTestCase
 		String stringOnVariablesButton = solo.getCurrentActivity().getString(R.string.formula_editor_variables);
 		solo.clickOnText(stringOnVariablesButton, depth);
 
-		String stringOnGlobalTag = solo.getCurrentActivity().getString(
-				R.string.formula_editor_variable_dialog_for_all_sprites);
+		String stringOnGlobalTag = "FOR ALL OBJECTS";
 		boolean gotIntoVariableList = solo.waitForText(stringOnGlobalTag, 0, 5000);
 		if (!gotIntoVariableList) {
 			fail("'" + stringOnGlobalTag + "' should have appeared");
+
 		}
 
 		String stringOnUserBrickVar = UiTestUtils.TEST_USER_BRICK_VARIABLE;

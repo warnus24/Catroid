@@ -23,6 +23,7 @@
 package org.catrobat.catroid.ui.fragment;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -103,7 +104,7 @@ import java.util.List;
 public class CategoryBricksFactory {
 
 	public List<Brick> getBricks(String category, Sprite sprite, Context context) {
-
+//		Log.e("CategoryBricksFactory_getBricks()", "bug5 beginning");
 		UserBrickScriptActivity activity;
 		try {
 			activity = (UserBrickScriptActivity) context;
@@ -131,7 +132,6 @@ public class CategoryBricksFactory {
 		} else if (category.equals(context.getString(R.string.category_drone))) {
 			tempList = setupDroneCategoryList(sprite);
 		}
-
 		for (Brick brick : tempList) {
 			ScriptBrick brickAsScriptBrick;
 			try {
@@ -173,19 +173,21 @@ public class CategoryBricksFactory {
 				.getUserBrickListAtLeastOneBrick(defaultText, defaultVariable);
 		ArrayList<Brick> newList = new ArrayList<Brick>();
 
-		UserBrick userBrickWeAreAddingTo = ProjectManager.getInstance().getCurrentUserBrick();
-		if (userBrickWeAreAddingTo != null) {
-			// Maintain a Directed Acyclic Graph of UserBrick call order: Don't allow cycles.
-			for (UserBrick brick : userBrickList) {
-				if (!checkForCycle(brick, userBrickWeAreAddingTo)) {
-					newList.add(brick);
-				}
-			}
-		} else {
+//		UserBrick userBrickWeAreAddingTo = ProjectManager.getInstance().getCurrentUserBrick();
+//		if (userBrickWeAreAddingTo != null) {
+//			// Maintain a Directed Acyclic Graph of UserBrick call order: Don't allow cycles.
+//			for (UserBrick brick : userBrickList) {
+//				if (!checkForCycle(brick, userBrickWeAreAddingTo)) {
+//					newList.add(brick);
+//					Log.e("CategoryBricksFactory_setupUserBricksCategoryList()", "bug5 if-for brick added");
+//				}
+//			}
+//		} else {
 			for (UserBrick brick : userBrickList) {
 				newList.add(brick);
+//				Log.e("CategoryBricksFactory_setupUserBricksCategoryList()", "bug5 else-for brick added");
 			}
-		}
+//		}
 		return newList;
 	}
 
