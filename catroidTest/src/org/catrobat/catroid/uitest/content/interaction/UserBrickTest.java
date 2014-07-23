@@ -60,6 +60,7 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo = null;
 	}
 
+<<<<<<< HEAD
 	public void testCopyAndDeleteBricksInUserScriptInclDefineBrick()
 	{
 		UiTestUtils.showSourceAndEditBrick(UiTestUtils.TEST_USER_BRICK_NAME, solo);
@@ -338,52 +339,85 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 	}
 
 	public void testUserBrickEditInstanceScriptChangesOtherInstanceScript() throws InterruptedException {
+=======
+	// delete a userbrick, go back to scripts and check if the deletion was updated
+	public void testDeleteUserBrickAndCheckIfScriptActivityUpdates() throws InterruptedException {
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 		UiTestUtils.addNewBrick(solo, R.string.category_user_bricks, UiTestUtils.TEST_USER_BRICK_NAME, 0);
-
 		solo.sleep(1000);
 		// click on position x brick-heights above/below the place where the brick currently is
 		int[] location = UiTestUtils.dragFloatingBrick(solo, -1);
 		assertTrue("was not able to find the brick we just added: first user brick", location != null);
 		solo.sleep(4000);
+		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
 
+		String stringOnShowSourceButton = solo.getCurrentActivity()
+				.getString(R.string.brick_context_dialog_show_source);
+		solo.waitForText(stringOnShowSourceButton);
+		solo.clickOnText(stringOnShowSourceButton);
+
+		boolean addBrickShowedUp = solo.waitForFragmentByTag(AddBrickFragment.ADD_BRICK_FRAGMENT_TAG, 2000);
+		if (!addBrickShowedUp) {
+			fail("addBrickFragment should have showed up");
+		}
+
+		UiTestUtils.deleteFirstUserBrick(solo, UiTestUtils.TEST_USER_BRICK_NAME);
+		solo.sleep(500);
+		solo.goBack();
+		solo.sleep(200);
 		Script currentScript = UiTestUtils.getProjectManager().getCurrentScript();
 		int indexOfUserBrickInScript = currentScript.containsBrickOfTypeReturnsFirstIndex(UserBrick.class);
-		assertTrue("current script should contain a User Brick after we tried to add one.",
-				indexOfUserBrickInScript != -1);
-
-		UserBrick userBrick = (UserBrick) currentScript.getBrick(indexOfUserBrickInScript);
-		assertTrue("we should be able to cast the brick we found to a User Brick.", userBrick != null);
-
-		UiTestUtils.showSourceAndEditBrick(UiTestUtils.TEST_USER_BRICK_NAME, solo);
-
-		// add a new brick to the internal script of the user brick
-		UiTestUtils.addNewBrick(solo, R.string.brick_change_y_by);
-
-		// place it
-		location = UiTestUtils.dragFloatingBrick(solo, 1);
-		assertTrue("was not able to find the brick we just added: brick inside user brick", location != null);
-		solo.sleep(1000);
-
-		// go back to normal script activity
-		solo.goBack();
-		solo.sleep(2000);
-		solo.goBack();
-		solo.sleep(2000);
-
-		UiTestUtils.addNewBrick(solo, R.string.category_user_bricks, UiTestUtils.TEST_USER_BRICK_NAME, 0);
-
-		location = UiTestUtils.dragFloatingBrick(solo, 1);
-		assertTrue("was not able to find the brick we just added: second user brick", location != null);
-
-		solo.sleep(2000);
-
-		// click on the location the brick was just dragged to.
-		solo.clickLongOnScreen(location[0], location[1], 10);
-
-		UiTestUtils.showSourceAndEditBrick(UiTestUtils.TEST_USER_BRICK_NAME, false, solo);
-
-		String brickAddedToUserBrickScriptName = solo.getCurrentActivity().getString(R.string.brick_change_y_by);
-		assertTrue("was not able to find the script we added to the other instance",
-				solo.searchText(brickAddedToUserBrickScriptName));
+		assertTrue("current script should not contain a User Brick after we tried to delete one.",
+				indexOfUserBrickInScript == -1);
 	}
+
+//	public void testUserBrickEditInstanceScriptChangesOtherInstanceScript() throws InterruptedException {
+//		UiTestUtils.addNewBrick(solo, R.string.category_user_bricks, UiTestUtils.TEST_USER_BRICK_NAME, 0);
+//
+//		solo.sleep(1000);
+//		// click on position x brick-heights above/below the place where the brick currently is
+//		int[] location = UiTestUtils.dragFloatingBrick(solo, -1);
+//		assertTrue("was not able to find the brick we just added: first user brick", location != null);
+//		solo.sleep(4000);
+//
+//		Script currentScript = UiTestUtils.getProjectManager().getCurrentScript();
+//		int indexOfUserBrickInScript = currentScript.containsBrickOfTypeReturnsFirstIndex(UserBrick.class);
+//		assertTrue("current script should contain a User Brick after we tried to add one.",
+//				indexOfUserBrickInScript != -1);
+//
+//		UserBrick userBrick = (UserBrick) currentScript.getBrick(indexOfUserBrickInScript);
+//		assertTrue("we should be able to cast the brick we found to a User Brick.", userBrick != null);
+
+//		UiTestUtils.showSourceAndEditBrick(UiTestUtils.TEST_USER_BRICK_NAME, solo);
+//
+//		// add a new brick to the internal script of the user brick
+//		UiTestUtils.addNewBrick(solo, R.string.brick_change_y_by);
+//
+//		// place it
+//		location = UiTestUtils.dragFloatingBrick(solo, 1);
+//		assertTrue("was not able to find the brick we just added: brick inside user brick", location != null);
+//		solo.sleep(1000);
+//
+//		// go back to normal script activity
+//		solo.goBack();
+//		solo.sleep(2000);
+//		solo.goBack();
+//		solo.sleep(2000);
+//
+//		UiTestUtils.addNewBrick(solo, R.string.category_user_bricks, UiTestUtils.TEST_USER_BRICK_NAME, 0);
+//
+//		location = UiTestUtils.dragFloatingBrick(solo, 1);
+//		assertTrue("was not able to find the brick we just added: second user brick", location != null);
+//
+//		solo.sleep(2000);
+//
+//		// click on the location the brick was just dragged to.
+//		solo.clickLongOnScreen(location[0], location[1], 10);
+//
+//		UiTestUtils.showSourceAndEditBrick(UiTestUtils.TEST_USER_BRICK_NAME, false, solo);
+//
+//		String brickAddedToUserBrickScriptName = solo.getCurrentActivity().getString(R.string.brick_change_y_by);
+//		assertTrue("was not able to find the script we added to the other instance",
+//				solo.searchText(brickAddedToUserBrickScriptName));
+//	}
 }

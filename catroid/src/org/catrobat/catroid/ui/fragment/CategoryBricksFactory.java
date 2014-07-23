@@ -23,6 +23,7 @@
 package org.catrobat.catroid.ui.fragment;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -106,6 +107,10 @@ import java.util.List;
 public class CategoryBricksFactory {
 
 	public List<Brick> getBricks(String category, Sprite sprite, Context context) {
+<<<<<<< HEAD
+=======
+//		Log.e("CategoryBricksFactory_getBricks()", "bug5 beginning");
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 		UserBrickScriptActivity activity;
 		try {
 			activity = (UserBrickScriptActivity) context;
@@ -180,11 +185,16 @@ public class CategoryBricksFactory {
 //			for (UserBrick brick : userBrickList) {
 //				if (!checkForCycle(brick, userBrickWeAreAddingTo)) {
 //					newList.add(brick);
+<<<<<<< HEAD
+=======
+//					Log.e("CategoryBricksFactory_setupUserBricksCategoryList()", "bug5 if-for brick added");
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 //				}
 //			}
 //		} else {
 			for (UserBrick brick : userBrickList) {
 				newList.add(brick);
+//				Log.e("CategoryBricksFactory_setupUserBricksCategoryList()", "bug5 else-for brick added");
 			}
 //		}
 		return newList;

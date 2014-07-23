@@ -139,9 +139,14 @@ public class DragAndDropListView extends ListView implements OnLongClickListener
 				brick.getView(adapter.getContext(), itemPosition, adapter);
 				return true;
 			}
+<<<<<<< HEAD
 			else if (adapter.isActionMode() && brick instanceof UserScriptDefinitionBrick) {
 				return true;
 			}
+=======
+			else if (adapter.isActionMode() && brick instanceof UserScriptDefinitionBrick)
+				return true;
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 		}
 
 		if (dragAndDropListener != null && dragView != null) {

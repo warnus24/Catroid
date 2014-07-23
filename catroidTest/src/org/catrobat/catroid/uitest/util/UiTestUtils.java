@@ -298,9 +298,17 @@ public final class UiTestUtils {
 
 	/**
 	 * Clicks on the EditText given by editTextId, inserts the integer value and closes the Dialog
+<<<<<<< HEAD
 	 *
 	 * @param editTextId The ID of the EditText to click on
 	 * @param value      The value you want to put into the EditText
+=======
+	 * 
+	 * @param solo
+	 *            solo of the EditText to click on
+	 * @param value
+	 *            The value you want to put into the EditText
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 	 */
 	public static void insertIntegerIntoEditText(Solo solo, int value) {
 		insertValue(solo, value + "");
@@ -308,9 +316,17 @@ public final class UiTestUtils {
 
 	/**
 	 * Clicks on the EditText given by editTextId, inserts the double value and closes the Dialog
+<<<<<<< HEAD
 	 *
 	 * @param editTextId The ID of the EditText to click on
 	 * @param value      The value you want to put into the EditText
+=======
+	 * 
+	 * @param solo
+	 *            solo of the EditText to click on
+	 * @param value
+	 *            The value you want to put into the EditText
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 	 */
 	public static void insertDoubleIntoEditText(Solo solo, double value) {
 		insertValue(solo, value + "");
@@ -540,13 +556,18 @@ public final class UiTestUtils {
 
 		solo.sleep(600);
 		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, solo.getCurrentActivity());
+<<<<<<< HEAD
 
 		solo.clickOnCheckBox(1);
+=======
+		solo.clickOnCheckBox(0);
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 
 		UiTestUtils.acceptAndCloseActionMode(solo);
 		solo.clickOnButton(solo.getString(R.string.yes));
 	}
 
+<<<<<<< HEAD
 	public static void clickOnBrickCategory(Solo solo, String category) {
 		 if (!solo.waitForText(category, 0, 300)) {
 		 solo.drag(40, 40, 300, 40, DRAG_FRAMES);
@@ -598,6 +619,8 @@ public final class UiTestUtils {
 		 }
 		
 		 public static boolean clickOnBrickInAddBrickFragment(Solo solo, String brickName, boolean addToScript) {
+=======
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 	public static void clickOnBrickCategory(Solo solo, String category) {
 		 if (!solo.waitForText(category, 0, 300)) {
 		 solo.drag(40, 40, 300, 40, DRAG_FRAMES);
@@ -1398,10 +1421,20 @@ public final class UiTestUtils {
 	 * This method can be used in 2 ways. Either to click on an action item
 	 * (icon), or to click on an item in the overflow menu. So either pass a
 	 * String + ID --OR-- a String + 0.
+<<<<<<< HEAD
 	 *
 	 * @param solo                 Use Robotium functionality
 	 * @param overflowMenuItemName Name of the overflow menu item
 	 * @param overflowMenuItemId   ID of an action item (icon)
+=======
+	 * 
+	 * @param solo
+	 *            Use Robotium functionality
+	 * @param overflowMenuItemName
+	 *            Name of the overflow menu item
+	 * @param activity
+	 *            Activity
+>>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 	 */
 	public static void openActionMode(Solo solo, String overflowMenuItemName, int menuItemId, Activity activity) {
 
