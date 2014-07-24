@@ -33,6 +33,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -97,7 +98,6 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 	}
 
 	public static AddBrickFragment newInstance(String selectedCategory, ScriptFragment scriptFragment) {
-		Log.e("AddBrickFragment_newInstance()", "bug6");
 		AddBrickFragment fragment = new AddBrickFragment();
 		Bundle arguments = new Bundle();
 		arguments.putString(BUNDLE_ARGUMENTS_SELECTED_CATEGORY, selectedCategory);
@@ -122,9 +122,42 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
 		String selectedCategory = getArguments().getString(BUNDLE_ARGUMENTS_SELECTED_CATEGORY);
 
-		List<Brick> brickList = categoryBricksFactory.getBricks(selectedCategory, sprite, context);
-		adapter = new PrototypeBrickAdapter(context, brickList);
-		setListAdapter(adapter);
+//		FragmentManager fragManager = this.getFragmentManager();
+//		int count = this.getFragmentManager().getBackStackEntryCount()-1;
+//		Fragment fragment = null;
+//		if(count != -1)
+//			fragment = fragManager.getFragments().get(count);
+////		Log.e("AddBrickFragment_getActivity()", "bug8 fragment from manager: " + fragment.getActivity().getClass());
+//
+//		List<Brick> brickList = null;
+//
+//		if(fragment != null)
+//		{
+//			if(fragment.getActivity().getClass().equals(ScriptActivity.class))	{
+////				Log.e("AddBrickFragment_setupSelectedBrickCategory()", "bug8 ScriptActivity");
+//				brickList = categoryBricksFactory.getBricks(selectedCategory, sprite, context, false);
+//				adapter = new PrototypeBrickAdapter(context, brickList);
+//				setListAdapter(adapter);
+//			}
+//			else if(fragment.getActivity().getClass().equals(UserBrickScriptActivity.class))
+//			{
+////				Log.e("AddBrickFragment_setupSelectedBrickCategory()", "bug8 UserBrickScriptActivity");
+//				brickList = categoryBricksFactory.getBricks(selectedCategory, sprite, context, true);
+//				adapter = new PrototypeBrickAdapter(context, brickList);
+//				setListAdapter(adapter);
+//			}
+//		}
+//		else
+//		{
+////			Log.e("AddBrickFragment_setupSelectedBrickCategory()", "bug8 fragment is null");
+//			brickList = categoryBricksFactory.getBricks(selectedCategory, sprite, context, false);
+//			adapter = new PrototypeBrickAdapter(context, brickList);
+//			setListAdapter(adapter);
+//		}
+
+			List<Brick> brickList = categoryBricksFactory.getBricks(selectedCategory, sprite, context);
+			adapter = new PrototypeBrickAdapter(context, brickList);
+			setListAdapter(adapter);
 
 		if (selectedCategory.equals(userBricksCategoryString)) {
 			addButtonHandler = this;
@@ -240,8 +273,6 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		ScriptActivity activity = (ScriptActivity) scriptFragment.getActivity();
 		if(activity != null)
 			activity.setDeleteModeListener(null);
-		else
-			Log.e("AddBrickFragment_onDestroy()", "bug4 scriptFragment.getActivity() returns null!");
 		super.onDestroy();
 	}
 

@@ -542,7 +542,8 @@ public final class UiTestUtils {
 
 		solo.sleep(600);
 		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, solo.getCurrentActivity());
-		solo.clickOnCheckBox(0);
+
+		solo.clickOnCheckBox(1);
 
 		UiTestUtils.acceptAndCloseActionMode(solo);
 		solo.clickOnButton(solo.getString(R.string.yes));
@@ -855,6 +856,8 @@ public final class UiTestUtils {
 		 firstUserBrick.addUIText(TEST_USER_BRICK_NAME);
 		 firstUserBrick.addUIVariable(TEST_USER_BRICK_VARIABLE);
 		 firstUserBrick.appendBrickToScript(new ChangeXByNBrick(firstSprite, BrickValues.CHANGE_X_BY));
+
+		 testScript.addBrick(firstUserBrick);
 		
 		 project.addSprite(firstSprite);
 		
