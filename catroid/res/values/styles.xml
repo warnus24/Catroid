@@ -349,6 +349,42 @@
         <item name="android:background" >@drawable/brick_cyan_3h</item >
     </style >
 
+    <style name="BrickContainer.Arduino"></style>
+
+    <style name="BrickContainer.Arduino.Small">
+        <item name="android:minHeight">@dimen/brick_height_small</item>
+        <item name="android:background">@drawable/brick_cyan_1h</item>
+    </style>
+
+    <style name="BrickContainer.Arduino.Medium">
+        <item name="android:minHeight">@dimen/brick_height_medium</item>
+        <item name="android:background">@drawable/brick_cyan_2h</item>
+    </style>
+
+    <style name="BrickContainer.Arduino.Big">
+        <item name="android:minHeight">@dimen/brick_height_big</item>
+        <item name="android:background">@drawable/brick_cyan_3h</item>
+    </style>
+
+    <!-- Kodey implementation ToDo: change brick colors?-->
+    <style name="BrickContainer.Kodey" ></style >
+
+    <style name="BrickContainer.Kodey.Small" >
+        <item name="android:minHeight" >@dimen/brick_height_small</item >
+        <item name="android:background" >@drawable/brick_cyan_1h</item >
+    </style >
+
+    <style name="BrickContainer.Kodey.Medium" >
+        <item name="android:minHeight" >@dimen/brick_height_medium</item >
+        <item name="android:background" >@drawable/brick_cyan_2h</item >
+    </style >
+
+    <style name="BrickContainer.Kodey.Big" >
+        <item name="android:minHeight" >@dimen/brick_height_big</item >
+        <item name="android:background" >@drawable/brick_cyan_3h</item >
+    </style >
+    <!-- -->
+
     <style name="BrickContainer.Control" ></style >
 
     <style name="BrickContainer.Control.Small" >
@@ -512,6 +548,18 @@
         <item name="android:background" >@drawable/brick_selection_background_lego</item >
         <item name="android:drawableRight" >@drawable/main_menu_button_arrow_lego</item >
     </style >
+
+    <style name="BrickCategoryText.Arduino">
+        <item name="android:background">@drawable/brick_selection_background_arduino</item>
+        <item name="android:drawableRight">@drawable/main_menu_button_arrow_arduino</item>
+    </style>
+
+    <!-- Kodey implementation -->
+    <style name="BrickCategoryText.Kodey">
+        <item name="android:background">@drawable/brick_selection_background_kodey</item>
+        <item name="android:drawableRight">@drawable/main_menu_button_arrow_kodey</item>
+    </style>
+    <!-- -->
     
     <style name="userBrickDataTextBackground" >
  		<item name="android:background" >@drawable/brick_data_round_rect</item >
