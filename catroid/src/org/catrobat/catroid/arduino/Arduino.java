@@ -23,9 +23,6 @@
 package org.catrobat.catroid.arduino;
 
 import org.catrobat.catroid.bluetooth.BTDeviceService;
-import org.catrobat.catroid.formulaeditor.Sensors;
-import org.catrobat.catroid.lego.mindstorm.MindstormSensor;
-import org.catrobat.catroid.lego.mindstorm.nxt.NXTMotor;
 
 public interface Arduino extends BTDeviceService {
 
