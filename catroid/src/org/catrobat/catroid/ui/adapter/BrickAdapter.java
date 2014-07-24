@@ -49,11 +49,13 @@ import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.UserScript;
 import org.catrobat.catroid.content.bricks.AllowedAfterDeadEndBrick;
 import org.catrobat.catroid.content.bricks.Brick;
+import org.catrobat.catroid.content.bricks.ChangeVariableBrick;
 import org.catrobat.catroid.content.bricks.DeadEndBrick;
 import org.catrobat.catroid.content.bricks.FormulaBrick;
 import org.catrobat.catroid.content.bricks.MultiFormulaBrick;
 import org.catrobat.catroid.content.bricks.NestingBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
+import org.catrobat.catroid.content.bricks.SetVariableBrick;
 import org.catrobat.catroid.content.bricks.UserBrick;
 import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
@@ -158,10 +160,12 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 
 		userScript.getScriptBrick().setBrickAdapter(this);
 		for (Brick brick : userScript.getBrickList()) {
+			if(brick.getClass().equals(ChangeVariableBrick.class) || brick.getClass().equals(SetVariableBrick.class)) {
+				brick.setInUserBrick(true);
+			}
 			brickList.add(brick);
 			brick.setBrickAdapter(this);
 		}
-
 	}
 
 	public void resetAlphas() {
@@ -886,6 +890,18 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 		notifyDataSetChanged();
 	}
 
+//	public void updateBricksUsingUserVariables()
+//	{
+//		Log.e("BrickAdapter_updateBricksUsingUserVariables()","bug8 before for()");
+//			for (Brick brick : ProjectManager.getInstance().getCurrentScript().getBrickList()) {
+//				if(brick.getClass().equals(ChangeVariableBrick.class) || brick.getClass().equals(SetVariableBrick.class)) {
+//					brick.setInUserBrick(true);
+//					Log.e("BrickAdapter_updateBricksUsingUserVariables()","bug8 in for() setInUserBrick was set to true");
+//				}
+//			}
+//		notifyDataSetChanged();
+//	}
+
 	@Override
 	public void setTouchedScript(int index) {
 		if (index >= 0 && index < brickList.size() && brickList.get(index) instanceof ScriptBrick
@@ -1174,8 +1190,11 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 
 	public void setCheckboxVisibility(int visibility) {
 		int i = 0;
-		if(brickList.get(0).equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
-			i = 1;
+
+		if(ProjectManager.getInstance().getCurrentUserBrick() != null){
+			if (brickList.get(0).equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
+				i = 1;
+			}
 		}
 		for(; i < brickList.size(); i++)
 		{

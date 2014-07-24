@@ -63,9 +63,10 @@ public class UserVariablesContainer implements Serializable {
 		userBrickVariables = new SparseArray<List<UserVariable>>();
 	}
 
-	public UserVariableAdapter createUserVariableAdapter(Context context, int userBrickId, Sprite sprite) {
+	public UserVariableAdapter createUserVariableAdapter(Context context, int userBrickId, Sprite sprite, boolean inUserBrick)
+	{
 		List<UserVariable> userBrickVariables = null;
-		if (userBrickId == INVALID_ID) {
+		if (userBrickId == INVALID_ID || !inUserBrick) {
 			userBrickVariables = new LinkedList<UserVariable>();
 		} else {
 			userBrickVariables = getOrCreateVariableListForUserBrick(userBrickId);
