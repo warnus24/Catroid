@@ -698,6 +698,9 @@ public class LookFragment extends ScriptActivityFragment implements OnLookEditLi
 			Log.e(TAG, Log.getStackTraceString(nullPointerException));
 			Toast.makeText(getActivity(), R.string.error_load_image, Toast.LENGTH_SHORT).show();
 		}
+		catch (NullPointerException e) {
+			Log.e(TAG, e.getMessage());
+		}
 
 	}
 
