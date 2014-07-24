@@ -27,9 +27,6 @@ public interface ArduinoConnection {
 	public void init();
 	public boolean isConnected();
 	public void disconnect();
-
 	public byte[] sendAndReceive(byte[] message);
-
 	public void send(byte[] message);
-
 }
