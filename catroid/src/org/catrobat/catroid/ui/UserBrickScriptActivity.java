@@ -64,5 +64,7 @@ public class UserBrickScriptActivity extends ScriptActivity {
 	public void setupBrickAdapter(BrickAdapter adapter) {
 		adapter.setUserBrick(userBrick);
 		adapter.updateProjectBrickList();
+//		Log.e("UserBrickScriptActivity_setupBrickAdapter()", "bug8");
+//		adapter.updateBricksUsingUserVariables();
 	}
 }
