@@ -42,6 +42,7 @@ import org.catrobat.catroid.R;
 public class SettingsActivity extends SherlockPreferenceActivity {
 
 	private static final String SETTINGS_SHOW_LEGO_NXT_BRICKS = "setting_mindstorms_enable_nxt_bricks";
+	private static final String SETTINGS_SHOW_ARDUINO_BRICKS = "setting_arduino_enable_arduino_bricks";
 	public static final String SETTINGS_SHOW_PARROT_AR_DRONE_BRICKS = "setting_parrot_ar_drone_bricks";
 	public static final String SETTINGS_PARROT_AR_DRONE_CATROBAT_TERMS_OF_SERVICE_ACCEPTED_PERMANENTLY = "setting_parrot_ar_drone_catrobat_terms_of_service_accepted_permanently";
 	PreferenceScreen screen = null;
@@ -130,5 +131,9 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 
 	public static boolean isLegoNXTSharedPreferenceEnabled(Context context, boolean defaultValue) {
 		return getBooleanSharedPreference(defaultValue, SETTINGS_SHOW_LEGO_NXT_BRICKS, context);
+	}
+
+	public static boolean isArduinoSharedPreferenceEnabled(Context context, boolean defaultValue) {
+		return getBooleanSharedPreference(defaultValue, SETTINGS_SHOW_ARDUINO_BRICKS, context);
 	}
 }
