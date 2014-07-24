@@ -70,6 +70,10 @@ public interface Brick extends Serializable {
 
 	void setBrickAdapter(BrickAdapter adapter);
 
+	void setInUserBrick(boolean inUserBrick);
+
+	boolean getInUserBrick();
+
 	CheckBox getCheckBox();
 
 	boolean isChecked();

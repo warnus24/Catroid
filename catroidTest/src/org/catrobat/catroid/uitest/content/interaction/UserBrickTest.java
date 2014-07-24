@@ -23,9 +23,11 @@
 package org.catrobat.catroid.uitest.content.interaction;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 
 import com.jayway.android.robotium.solo.Solo;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.bricks.UserBrick;
@@ -59,35 +61,109 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo = null;
 	}
 
-	// delete a userbrick, go back to scripts and check if the deletion was updated
-	public void testDeleteUserBrickAndCheckIfScriptActivityUpdates() throws InterruptedException {
-		UiTestUtils.addNewBrick(solo, R.string.category_user_bricks, UiTestUtils.TEST_USER_BRICK_NAME, 0);
-		solo.sleep(1000);
-		// click on position x brick-heights above/below the place where the brick currently is
-		int[] location = UiTestUtils.dragFloatingBrick(solo, -1);
-		assertTrue("was not able to find the brick we just added: first user brick", location != null);
-		solo.sleep(4000);
-		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
+	public void testEditFormulaWithUserBrickDataAndChangeValuesViaFormulaEditor()
+	{
+		//add 4 userbrick variables, userbrick text and a userbrick linebreak
 
-		String stringOnShowSourceButton = solo.getCurrentActivity()
-				.getString(R.string.brick_context_dialog_show_source);
-		solo.waitForText(stringOnShowSourceButton);
-		solo.clickOnText(stringOnShowSourceButton);
-
-		boolean addBrickShowedUp = solo.waitForFragmentByTag(AddBrickFragment.ADD_BRICK_FRAGMENT_TAG, 2000);
-		if (!addBrickShowedUp) {
-			fail("addBrickFragment should have showed up");
-		}
-
-		UiTestUtils.deleteFirstUserBrick(solo, UiTestUtils.TEST_USER_BRICK_NAME);
-		solo.sleep(500);
-		solo.goBack();
-		solo.sleep(200);
-		Script currentScript = UiTestUtils.getProjectManager().getCurrentScript();
-		int indexOfUserBrickInScript = currentScript.containsBrickOfTypeReturnsFirstIndex(UserBrick.class);
-		assertTrue("current script should not contain a User Brick after we tried to delete one.",
-				indexOfUserBrickInScript == -1);
+		//click on EditFormula and change all values
 	}
+
+//	public void testCopyAndDeleteUserBrickFromScriptWithBothVariants() {
+//		//copy via action mode
+//		UiTestUtils.openActionMode(solo, solo.getString(R.string.copy), R.id.copy, solo.getCurrentActivity());
+//		solo.scrollDown();
+//		solo.clickOnCheckBox(6);
+//		UiTestUtils.acceptAndCloseActionMode(solo);
+//		boolean twoUserBricksExist = (ProjectManager.getInstance().getCurrentScript().getBrickList().size() == 8);
+//		solo.scrollDown();
+//		solo.sleep(300);
+//		assertTrue("2 userbricks should exist in the script after copying via action mode, but they don't!", twoUserBricksExist);
+//
+//		//delete via action mode
+//		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, solo.getCurrentActivity());
+//		solo.scrollDown();
+//		solo.clickOnCheckBox(6);
+//		UiTestUtils.acceptAndCloseActionMode(solo);
+//		solo.clickOnButton(solo.getString(R.string.yes));
+//		boolean oneUserBrickExists = (ProjectManager.getInstance().getCurrentScript().getBrickList().size() == 7);
+//		solo.scrollDown();
+//		solo.sleep(500);
+//		assertTrue("only 1 userbrick should exist in the script after copying via action mode, but that's not the case!", oneUserBrickExists);
+//
+//		//copy via context menu
+//		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
+//		String stringOnCopy = solo.getCurrentActivity()
+//				.getString(R.string.brick_context_dialog_copy_brick);
+//		solo.waitForText(stringOnCopy);
+//		solo.clickOnText(stringOnCopy);
+//		solo.sleep(1000);
+//		UiTestUtils.dragFloatingBrick(solo, -1);
+//		solo.sleep(2000);
+//		solo.scrollDown();
+//		boolean twoUserBricksExistContextMenu = (ProjectManager.getInstance().getCurrentScript().getBrickList().size() == 8);
+//		solo.sleep(500);
+//		assertTrue("2 userbricks should exist in the script after copying via context menu, but they don't!", twoUserBricksExistContextMenu);
+//		solo.sleep(300);
+//
+////		//delete via context menu
+//		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
+//		String stringOnDelete = solo.getCurrentActivity()
+//				.getString(R.string.brick_context_dialog_delete_brick);
+//		solo.waitForText(stringOnDelete);
+//		solo.clickOnText(stringOnDelete);
+//		solo.waitForDialogToOpen();
+//		solo.clickOnButton(solo.getString(R.string.yes));
+//		solo.waitForDialogToClose();
+//		solo.scrollDown();
+//		boolean oneUserBrickExistsContextMenu = (ProjectManager.getInstance().getCurrentScript().getBrickList().size() == 7);
+//		solo.sleep(500);
+//		assertTrue("only 1 userbrick should exist in the script after copying via context menu, but that's not the case!", oneUserBrickExistsContextMenu);
+//		solo.sleep(300);
+//	}
+
+//	public void testMoveUserBrickUpAndDown() throws InterruptedException {
+//		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
+//
+//		String stringOnMove = solo.getCurrentActivity()
+//				.getString(R.string.brick_context_dialog_move_brick);
+//		solo.waitForText(stringOnMove);
+//		solo.clickOnText(stringOnMove);
+//
+//		int[] location = UiTestUtils.dragFloatingBrick(solo, -3);
+//		assertTrue("was not able to move the brick up", location != null);
+//		solo.sleep(1000);
+//
+//		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
+//		solo.waitForText(stringOnMove);
+//		solo.clickOnText(stringOnMove);
+//		location = UiTestUtils.dragFloatingBrick(solo, 3);
+//		assertTrue("was not able to move the brick down", location != null);
+//		solo.sleep(300);
+//	}
+
+	// delete a userbrick, go back to scripts and check if the deletion was updated
+//	public void testDeleteUserBrickAndCheckIfScriptActivityUpdates() throws InterruptedException {
+//		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
+//
+//		String stringOnShowSourceButton = solo.getCurrentActivity()
+//				.getString(R.string.brick_context_dialog_show_source);
+//		solo.waitForText(stringOnShowSourceButton);
+//		solo.clickOnText(stringOnShowSourceButton);
+//
+//		boolean addBrickShowedUp = solo.waitForFragmentByTag(AddBrickFragment.ADD_BRICK_FRAGMENT_TAG, 2000);
+//		if (!addBrickShowedUp) {
+//			fail("addBrickFragment should have showed up");
+//		}
+//
+//		UiTestUtils.deleteFirstUserBrick(solo, UiTestUtils.TEST_USER_BRICK_NAME);
+//		solo.sleep(500);
+//		solo.goBack();
+//		solo.sleep(200);
+//		Script currentScript = UiTestUtils.getProjectManager().getCurrentScript();
+//		int indexOfUserBrickInScript = currentScript.containsBrickOfTypeReturnsFirstIndex(UserBrick.class);
+//		assertTrue("current script should not contain a User Brick after we tried to delete one.",
+//				indexOfUserBrickInScript == -1);
+//	}
 
 //	public void testUserBrickEditInstanceScriptChangesOtherInstanceScript() throws InterruptedException {
 //		UiTestUtils.addNewBrick(solo, R.string.category_user_bricks, UiTestUtils.TEST_USER_BRICK_NAME, 0);
