@@ -187,6 +187,15 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	}
 
 	public boolean initializeDefaultProject(Context context) {
+
+		if (BuildConfig.FEATURE_PARROT_AR_DRONE_ENABLED)
+			return initializeDroneProject(context);
+		else
+			return initializeStandardProject(context);
+	}
+
+	public boolean initializeStandardProject(Context context) {
+
 		try {
 			fileChecksumContainer = new FileChecksumContainer();
 			project = StandardProjectHandler.createAndSaveStandardProject(context);
