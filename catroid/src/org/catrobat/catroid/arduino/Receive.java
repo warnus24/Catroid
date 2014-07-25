@@ -22,16 +22,14 @@
  */
 package org.catrobat.catroid.arduino;
 
-import org.catrobat.catroid.bluetooth.BTDeviceService;
-import org.catrobat.catroid.formulaeditor.Sensors;
-import org.catrobat.catroid.arduino.ArduinoImpl;
-import org.catrobat.catroid.arduino.ArduinoConnectionImpl;
+public interface Receive {
+	public int getValue();
 
-public interface Arduino extends BTDeviceService {
+	public int getUpdateInterval();
+	public void updateLastSensorValue();
+	public int getLastSensorValue();
 
-	public void setDigitalArduinoPin(String digitalPinNumber, char pinValue);
+	public String getName();
 
-	public double getDigitalArduinoPin(String digitalPinNumber);
-
-	public double getAnalogArduinoPin(String analogPinNumber);
+	public int getConnectedPort();
 }

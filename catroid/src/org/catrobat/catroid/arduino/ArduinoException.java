@@ -22,16 +22,24 @@
  */
 package org.catrobat.catroid.arduino;
 
-import org.catrobat.catroid.bluetooth.BTDeviceService;
-import org.catrobat.catroid.formulaeditor.Sensors;
-import org.catrobat.catroid.arduino.ArduinoImpl;
-import org.catrobat.catroid.arduino.ArduinoConnectionImpl;
+public class ArduinoException extends RuntimeException {
 
-public interface Arduino extends BTDeviceService {
+	private Exception innerException;
 
-	public void setDigitalArduinoPin(String digitalPinNumber, char pinValue);
+	public ArduinoException(String message) {
+		super(message);
+	}
 
-	public double getDigitalArduinoPin(String digitalPinNumber);
+	public ArduinoException(Exception innerException, String message) {
+		super(message);
 
-	public double getAnalogArduinoPin(String analogPinNumber);
+		this.innerException = innerException;
+	}
+
+	public ArduinoException() {}
+
+	public Exception getInnerException()
+	{
+		return innerException;
+	}
 }

@@ -101,6 +101,10 @@ public class PreStageActivity extends BaseActivity {
 			connectBTDevice(CatrobatService.LEGO_NXT, true);
 		}
 
+		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
+			connectBTDevice(CatrobatService.ARDUINO, false);  //broken
+		}
+
 		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
 			droneInitializer = getDroneInitializer();
 			droneInitializer.initialise();
@@ -238,9 +242,9 @@ public class PreStageActivity extends BaseActivity {
 		BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
 		btConnector.disconnectDevices();
 
-        if (FaceDetectionHandler.isFaceDetectionRunning()) {
-            FaceDetectionHandler.stopFaceDetection();
-        }
+		if (FaceDetectionHandler.isFaceDetectionRunning()) {
+			FaceDetectionHandler.stopFaceDetection();
+		}
 	}
 
 	//all resources that should not have to be reinitialized every stage start

@@ -2,21 +2,21 @@
  *  Catroid: An on-device visual programming system for Android devices
  *  Copyright (C) 2010-2013 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
  *  published by the Free Software Foundation, either version 3 of the
  *  License, or (at your option) any later version.
- *  
+ *
  *  An additional term exception under section 7 of the GNU Affero
  *  General Public License, version 3, is available at
  *  http://developer.catrobat.org/license_additional_term
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU Affero General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,6 +24,7 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -53,6 +54,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	private int pinValue = 0;
 	private int pinSpinnerPosition = 0;
 	private int valueSpinnerPosition = 0;
+	private String pinNumberString = "";
 
 	public ArduinoSendBrick() {
 	}
@@ -167,6 +169,10 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String tempSavingString = "00";
 				tempSavingString = parent.getItemAtPosition(position).toString();
+
+				if(tempSavingString != "")
+					pinNumberString = tempSavingString;
+
 				if (tempSavingString.length() < 2) {
 					pinNumberLowerByte = '0';
 					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
@@ -233,7 +239,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.sendArduinoValues(sprite, pinNumberLowerByte, pinNumberHigherByte, pinValue));
+		sequence.addAction(ExtendedActions.sendArduinoValues(sprite, pinNumberString, pinValue));
 		return null;
 	}
 }
