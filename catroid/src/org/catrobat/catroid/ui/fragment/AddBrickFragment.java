@@ -129,8 +129,6 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		if (selectedCategory.equals(userBricksCategoryString)) {
 			addButtonHandler = this;
 
-//			Log.e("AddBrickFragment_setupSelectedBrickCategory()", "bug5 brickList.size(): " + brickList.size());
-
 			ScriptActivity activity = (ScriptActivity) scriptFragment.getActivity();
 			activity.setDeleteModeListener(this);
 
