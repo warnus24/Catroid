@@ -22,14 +22,17 @@
  */
 package org.catrobat.catroid.common;
 
+import org.catrobat.catroid.arduino.Arduino;
 import org.catrobat.catroid.bluetooth.BTDeviceConnector;
 import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
+import org.catrobat.catroid.devices.arduino.kodey.Kodey;
 
 // CHECKSTYLE DISABLE InterfaceIsType FOR 1 LINES
 public interface CatrobatService {
 
 	public static final Class<LegoNXT> LEGO_NXT = LegoNXT.class;
-//    public static final Class<Arduino> ARDUINO = Arduino.class;
+    public static final Class<Arduino> ARDUINO = Arduino.class;
+	public static final Class<Kodey> KODEY = Kodey.class;
 //    public static final Class<Albert> ALBERT = Albert.class;
 
 

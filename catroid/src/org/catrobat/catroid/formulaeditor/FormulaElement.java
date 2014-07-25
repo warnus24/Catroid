@@ -27,6 +27,8 @@ import android.util.Log;
 
 import org.catrobat.catroid.arduino.Arduino;
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.common.CatrobatService;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 
@@ -274,59 +276,11 @@ public class FormulaElement implements Serializable {
 			case JOIN:
 				return interpretFunctionJOIN(sprite);
 			case ARDUINODIGITAL:
-				char pinNumberLowerByteDigital = '0';
-				char pinNumberHigherByteDigital = '0';
-				//split up the pin number
-				if (left.toString().length() > 4) {
-					return -1.0;
-				}
-
-				if (left.toString().length() < 4) {
-					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
-				} else {
-					pinNumberLowerByteDigital = left.toString().charAt(left.toString().length() - 4);
-					pinNumberHigherByteDigital = left.toString().charAt(left.toString().length() - 3);
-				}
-
-				int pinValueFromArduinoDigital = 2000;
-				pinValueFromArduinoDigital = Arduino.getArduinoDigitalSensorMessage();
-				Arduino.sendArduinoDigitalPinMessage(pinNumberLowerByteDigital, pinNumberHigherByteDigital, 'D');
-				pinValueFromArduinoDigital = 2000;
-				while (pinValueFromArduinoDigital == 2000) {
-					pinValueFromArduinoDigital = Arduino.getArduinoDigitalSensorMessage();
-				}
-
-				if (pinValueFromArduinoDigital == 72) {
-					return 1.0;
-				} else if (pinValueFromArduinoDigital == 76) {
-					return 0.0;
-				} else {
-					return (double) pinValueFromArduinoDigital;
-				}
-
+				Arduino arduinoDigital = ServiceProvider.getService(CatrobatService.ARDUINO);
+				return arduinoDigital.getDigitalArduinoPin(left.toString());
 			case ARDUINOANALOG:
-				char pinNumberLowerByteAnalog = '0';
-				char pinNumberHigherByteAnalog = '0';
-				//split up the pin number
-				if (left.toString().length() > 4) {
-					return -1.0;
-				}
-
-				if (left.toString().length() < 4) {
-					pinNumberHigherByteAnalog = left.toString().charAt(left.toString().length() - 3);
-				} else {
-					pinNumberLowerByteAnalog = left.toString().charAt(left.toString().length() - 4);
-					pinNumberHigherByteAnalog = left.toString().charAt(left.toString().length() - 3);
-				}
-				int pinValueFromArduinoAnalog = 2000;
-				pinValueFromArduinoAnalog = Arduino.getArduinoAnalogSensorMessage();
-				Arduino.sendArduinoDigitalPinMessage(pinNumberLowerByteAnalog, pinNumberHigherByteAnalog, 'A');
-				pinValueFromArduinoAnalog = 2000;
-				while (pinValueFromArduinoAnalog == 2000) {
-					pinValueFromArduinoAnalog = Arduino.getArduinoAnalogSensorMessage();
-				}
-
-				return (double) pinValueFromArduinoAnalog;
+				Arduino arduinoAnalog = ServiceProvider.getService(CatrobatService.ARDUINO);
+				return arduinoAnalog.getAnalogArduinoPin(left.toString());
 		}
 		return 0d;
 	}
