@@ -37,20 +37,17 @@ public class UserBrickScriptActivity extends ScriptActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-//		Log.e("UserBrickScriptActivity_onCreate()", "flow2");
 		super.onCreate(savedInstanceState);
 		setUserBrickIfJustCreated();
 	}
 
 	@Override
 	public void onResume() {
-//		Log.e("UserBrickScriptActivity_onResume()", "flow2");
 		super.onResume();
 		setUserBrickIfJustCreated();
 	}
 
 	public void setUserBrickIfJustCreated() {
-//		Log.e("UserBrickScriptActivity_setUserBrickIfJustCreated()", "flow2");
 		if (UserBrickScriptActivity.cachedUserBrick != null) {
 			userBrick = UserBrickScriptActivity.cachedUserBrick;
 			UserBrickScriptActivity.cachedUserBrick = null;
@@ -66,17 +63,13 @@ public class UserBrickScriptActivity extends ScriptActivity {
 
 	@Override
 	public void onPause() {
-//		Log.e("UserBrickScriptActivity_onPause()", "flow2");
 		super.onPause();
 //		ProjectManager.getInstance().setCurrentUserBrick(null);
 	}
 
 	@Override
 	public void setupBrickAdapter(BrickAdapter adapter) {
-//		Log.e("UserBrickScriptActivity_setupBrickAdapter()", "flow2");
 		adapter.setUserBrick(userBrick);
 		adapter.updateProjectBrickList();
-//		Log.e("UserBrickScriptActivity_setupBrickAdapter()", "bug8");
-//		adapter.updateBricksUsingUserVariables();
 	}
 }
