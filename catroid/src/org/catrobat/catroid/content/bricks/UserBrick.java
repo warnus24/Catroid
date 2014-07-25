@@ -303,8 +303,8 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				checked = isChecked;
-				adapter.handleCheck(brickInstance, isChecked);
+					checked = isChecked;
+					adapter.handleCheck(brickInstance, isChecked);
 			}
 		});
 

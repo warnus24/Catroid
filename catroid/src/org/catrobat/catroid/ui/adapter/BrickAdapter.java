@@ -890,18 +890,6 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 		notifyDataSetChanged();
 	}
 
-//	public void updateBricksUsingUserVariables()
-//	{
-//		Log.e("BrickAdapter_updateBricksUsingUserVariables()","bug8 before for()");
-//			for (Brick brick : ProjectManager.getInstance().getCurrentScript().getBrickList()) {
-//				if(brick.getClass().equals(ChangeVariableBrick.class) || brick.getClass().equals(SetVariableBrick.class)) {
-//					brick.setInUserBrick(true);
-//					Log.e("BrickAdapter_updateBricksUsingUserVariables()","bug8 in for() setInUserBrick was set to true");
-//				}
-//			}
-//		notifyDataSetChanged();
-//	}
-
 	@Override
 	public void setTouchedScript(int index) {
 		if (index >= 0 && index < brickList.size() && brickList.get(index) instanceof ScriptBrick
@@ -1215,15 +1203,20 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 			return;
 		}
 		if (isChecked) {
+//			Log.e("BrickAdapter_handleCheck()","bug9 if(isChecked)");
 			if (selectMode == ListView.CHOICE_MODE_SINGLE) {
 				clearCheckedItems();
+//				Log.e("BrickAdapter_handleCheck()","bug9 if(isChecked)-->if(selectMode...)");
 			}
 			if (brick.getCheckBox() != null && smartBrickSelection(brick, isChecked)) {
+//				Log.e("BrickAdapter_handleCheck()","bug9 if(isChecked)-->if(brick.getCheckbox()...)");
 				return;
 			}
 			addElementToCheckedBricks(brick);
 		} else {
+//			Log.e("BrickAdapter_handleCheck()","bug9 else(isChecked)");
 			if (brick.getCheckBox() != null && smartBrickSelection(brick, isChecked)) {
+//				Log.e("BrickAdapter_handleCheck()","bug9 else(isChecked)-->if(brick.getCheckbox()...)");
 				return;
 			}
 			checkedBricks.remove(brick);
@@ -1360,7 +1353,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 	}
 
 	private void addElementToCheckedBricks(Brick brick) {
-		if (!(checkedBricks.contains(brick))) {
+		if (!(checkedBricks.contains(brick)) && !brick.getClass().equals(UserScriptDefinitionBrick.class)) {
 			checkedBricks.add(brick);
 		}
 	}

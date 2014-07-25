@@ -122,47 +122,12 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
 		String selectedCategory = getArguments().getString(BUNDLE_ARGUMENTS_SELECTED_CATEGORY);
 
-//		FragmentManager fragManager = this.getFragmentManager();
-//		int count = this.getFragmentManager().getBackStackEntryCount()-1;
-//		Fragment fragment = null;
-//		if(count != -1)
-//			fragment = fragManager.getFragments().get(count);
-////		Log.e("AddBrickFragment_getActivity()", "bug8 fragment from manager: " + fragment.getActivity().getClass());
-//
-//		List<Brick> brickList = null;
-//
-//		if(fragment != null)
-//		{
-//			if(fragment.getActivity().getClass().equals(ScriptActivity.class))	{
-////				Log.e("AddBrickFragment_setupSelectedBrickCategory()", "bug8 ScriptActivity");
-//				brickList = categoryBricksFactory.getBricks(selectedCategory, sprite, context, false);
-//				adapter = new PrototypeBrickAdapter(context, brickList);
-//				setListAdapter(adapter);
-//			}
-//			else if(fragment.getActivity().getClass().equals(UserBrickScriptActivity.class))
-//			{
-////				Log.e("AddBrickFragment_setupSelectedBrickCategory()", "bug8 UserBrickScriptActivity");
-//				brickList = categoryBricksFactory.getBricks(selectedCategory, sprite, context, true);
-//				adapter = new PrototypeBrickAdapter(context, brickList);
-//				setListAdapter(adapter);
-//			}
-//		}
-//		else
-//		{
-////			Log.e("AddBrickFragment_setupSelectedBrickCategory()", "bug8 fragment is null");
-//			brickList = categoryBricksFactory.getBricks(selectedCategory, sprite, context, false);
-//			adapter = new PrototypeBrickAdapter(context, brickList);
-//			setListAdapter(adapter);
-//		}
-
 			List<Brick> brickList = categoryBricksFactory.getBricks(selectedCategory, sprite, context);
 			adapter = new PrototypeBrickAdapter(context, brickList);
 			setListAdapter(adapter);
 
 		if (selectedCategory.equals(userBricksCategoryString)) {
 			addButtonHandler = this;
-
-//			Log.e("AddBrickFragment_setupSelectedBrickCategory()", "bug5 brickList.size(): " + brickList.size());
 
 			ScriptActivity activity = (ScriptActivity) scriptFragment.getActivity();
 			activity.setDeleteModeListener(this);
