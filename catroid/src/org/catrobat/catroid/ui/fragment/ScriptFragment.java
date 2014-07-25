@@ -50,11 +50,13 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.UserScript;
 import org.catrobat.catroid.content.bricks.AllowedAfterDeadEndBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.DeadEndBrick;
 import org.catrobat.catroid.content.bricks.NestingBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
+import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrick;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.ViewSwitchLock;
@@ -455,7 +457,14 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 
 		int newPosition = adapter.getCount();
 		Brick copy = brick.clone();
-		Script scriptList = ProjectManager.getInstance().getCurrentScript();
+
+		Script scriptList = null;
+		if(adapter.getUserBrick() != null) {
+			scriptList = ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick().getUserScript();
+		}
+		else {
+			scriptList = ProjectManager.getInstance().getCurrentScript();
+		}
 
 		if (brick instanceof NestingBrick) {
 			NestingBrick nestingBrickCopy = (NestingBrick) copy;
