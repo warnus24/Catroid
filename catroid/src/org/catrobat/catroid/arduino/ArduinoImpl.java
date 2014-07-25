@@ -41,7 +41,6 @@ public class ArduinoImpl implements Arduino {
 
 	private boolean isInitialized = false;
 
-
 	public ArduinoImpl(Context applicationContext) {
 		this.context = applicationContext;
 	}
