@@ -40,6 +40,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
@@ -56,6 +57,7 @@ import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.DeadEndBrick;
 import org.catrobat.catroid.content.bricks.NestingBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
+import org.catrobat.catroid.content.bricks.UserBrick;
 import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrick;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.ScriptActivity;
@@ -204,8 +206,26 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 		int lastVisibleBrick = listView.getLastVisiblePosition();
 		int position = ((1 + lastVisibleBrick - firstVisibleBrick) / 2);
 		position += firstVisibleBrick;
-		adapter.addNewBrick(position, brickToBeAdded, true);
-		adapter.notifyDataSetChanged();
+
+		//TODO: allow recursive userbricks if its possible
+		if(adapter.getUserBrick() != null && ((UserBrick) brickToBeAdded).getDefinitionBrick().equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())){
+			Toast toast = null;
+			if (toast == null || toast.getView().getWindowVisibility() != View.VISIBLE) {
+				toast = Toast.makeText(getActivity().getApplicationContext(), R.string.recursive_user_brick_forbidden, Toast.LENGTH_LONG);
+			} else {
+				toast.setText(R.string.recursive_user_brick_forbidden);
+			}
+			toast.show();
+		}
+		else {
+			adapter.addNewBrick(position, brickToBeAdded, true);
+			adapter.notifyDataSetChanged();
+		}
+
+//		if(adapter.getUserBrick() != null && brickToBeAdded.equals(ProjectManager.getInstance().getCurrentUserBrick())) {
+//				Log.e("ScriptFragment_updateAdapterAfterAddNewBrick", "GSOCSF-2 Add the current UserBrick is not allowed, because of recursivity!");
+//		}
+
 	}
 
 	private void initListeners() {
