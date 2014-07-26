@@ -63,23 +63,21 @@ public class UserBrickDataEditorFragmentTest extends ActivityInstrumentationTest
 		UiTestUtils.showSourceAndEditBrick(UiTestUtils.TEST_USER_BRICK_NAME, solo);
 
 		String textOnChangeXBrickTextField = "" + Math.round(BrickValues.CHANGE_X_BY);
-		if (!solo.waitForText(textOnChangeXBrickTextField, 0, 2000)) {
-			fail("'" + textOnChangeXBrickTextField + "' should have appeared");
-		}
+
+		assertTrue("'" + textOnChangeXBrickTextField + "' should have appeared", solo.waitForText(textOnChangeXBrickTextField, 0, 2000));
+
 		solo.clickOnText(textOnChangeXBrickTextField);
 		boolean gotIntoFormulaEditor = solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
-		if (!gotIntoFormulaEditor) {
-			fail("FormulaEditor should have appeared");
-		}
+
+		assertTrue("FormulaEditor should have appeared", gotIntoFormulaEditor);
 
 		String stringOnVariablesButton = solo.getCurrentActivity().getString(R.string.formula_editor_variables);
 		solo.clickOnText(stringOnVariablesButton);
 
 		String stringOnUserBrickVar = UiTestUtils.TEST_USER_BRICK_VARIABLE;
 		boolean hasBrickVariable = solo.waitForText(stringOnUserBrickVar, 0, 100);
-		if (!hasBrickVariable) {
-			fail("'" + stringOnUserBrickVar + "' didn't appear");
-		}
+
+		assertTrue("'" + stringOnUserBrickVar + "' didn't appear", hasBrickVariable);
 		solo.clickOnText(stringOnUserBrickVar);
 
 		solo.goBack();
@@ -88,14 +86,11 @@ public class UserBrickDataEditorFragmentTest extends ActivityInstrumentationTest
 		solo.waitForDialogToClose(2000);
 
 		String defineString = solo.getCurrentActivity().getString(R.string.define);
-		if (!solo.waitForText(defineString, 0, 2000)) {
-			fail("'" + defineString + "' should have appeared");
-		}
+
+		assertTrue("'" + defineString + "' should have appeared", solo.waitForText(defineString, 0, 2000));
 		solo.clickOnText(defineString);
 
-		if (!solo.waitForText(stringOnUserBrickVar, 1, 2000)) {
-			fail("'" + stringOnUserBrickVar + "' should have appeared");
-		}
+		assertTrue("'" + stringOnUserBrickVar + "' should have appeared", solo.waitForText(stringOnUserBrickVar, 1, 2000));
 		solo.clickOnText(stringOnUserBrickVar, 1);
 
 		solo.waitForDialogToOpen(2000);
@@ -113,9 +108,7 @@ public class UserBrickDataEditorFragmentTest extends ActivityInstrumentationTest
 		solo.waitForFragmentByTag(ScriptFragment.TAG);
 		solo.sleep(500);
 
-		if (!solo.waitForText(newVariableName, 0, 2000)) {
-			fail("'" + newVariableName + "' should have appeared");
-		}
+		assertTrue("'" + newVariableName + "' should have appeared", solo.waitForText(newVariableName, 0, 2000));
 
 	}
 
