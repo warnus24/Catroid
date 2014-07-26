@@ -1207,15 +1207,20 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 			return;
 		}
 		if (isChecked) {
+//			Log.e("BrickAdapter_handleCheck()","bug9 if(isChecked)");
 			if (selectMode == ListView.CHOICE_MODE_SINGLE) {
 				clearCheckedItems();
+//				Log.e("BrickAdapter_handleCheck()","bug9 if(isChecked)-->if(selectMode...)");
 			}
 			if (brick.getCheckBox() != null && smartBrickSelection(brick, isChecked)) {
+//				Log.e("BrickAdapter_handleCheck()","bug9 if(isChecked)-->if(brick.getCheckbox()...)");
 				return;
 			}
 			addElementToCheckedBricks(brick);
 		} else {
+//			Log.e("BrickAdapter_handleCheck()","bug9 else(isChecked)");
 			if (brick.getCheckBox() != null && smartBrickSelection(brick, isChecked)) {
+//				Log.e("BrickAdapter_handleCheck()","bug9 else(isChecked)-->if(brick.getCheckbox()...)");
 				return;
 			}
 			checkedBricks.remove(brick);
