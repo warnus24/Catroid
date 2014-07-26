@@ -225,7 +225,7 @@ public class UserBrickDataEditorFragment extends SherlockFragment implements OnK
 			takenVariables.add(variable.getName());
 		}
 
-		UserBrickEditElementDialog dialog = new UserBrickEditElementDialog();
+		UserBrickEditElementDialog dialog = new UserBrickEditElementDialog(fragmentView);
 		dialog.addDialogListener(this);
 		dialog.show(((SherlockFragmentActivity) getActivity()).getSupportFragmentManager(),
 				UserBrickEditElementDialog.DIALOG_FRAGMENT_TAG);
