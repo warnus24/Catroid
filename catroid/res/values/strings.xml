@@ -676,7 +676,7 @@
  	<string name="example_user_brick_variable">Variable 1</string>
  	<string name="new_user_brick">New Brick</string>
  	<string name="new_user_brick_variable">Variable 2</string>
-    <string name="recursive_user_brick_forbidden">Adding UserBrick to UserBrick is not allowed yet!</string>
+    <string name="recursive_user_brick_forbidden">Adding the current UserBrick is not allowed yet!</string>
  	
  	<!-- TODO: CHANGE these 2 strings below -->
  	<string name="brick_single">CHANGEME</string>
