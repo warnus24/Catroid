@@ -22,8 +22,6 @@
  */
 package org.catrobat.catroid.content.actions;
 
-import android.util.Log;
-
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import org.catrobat.catroid.content.Sprite;
@@ -39,16 +37,13 @@ public class SetVariableAction extends TemporalAction {
 	@Override
 	protected void update(float percent) {
 		if (userVariable == null) {
-			//			Log.e("TEST_USERVARIABLES_SET_VARIABLE_ACTION", "try to set uservariable, but it's null");
 			return;
 		}
 		double value = changeVariable.interpretDouble(sprite);
 		userVariable.setValue(value);
-//		Log.e("SetVariableAction_update", userVariable.getName() + "set to " + userVariable.getValue());
 	}
 
 	public void setUserVariable(UserVariable userVariable) {
-//		Log.e("SetVariableAction_setUserVariable", "bug2 - " + userVariable.getName() + " " + userVariable.getValue());
 		if (userVariable == null) {
 			return;
 		}
@@ -56,7 +51,6 @@ public class SetVariableAction extends TemporalAction {
 	}
 
 	public void setChangeVariable(Formula changeVariable) {
-//		Log.e("SetVariableAction_setChangeVariable", "bug2 - " + changeVariable.interpretDouble(sprite));
 		this.changeVariable = changeVariable;
 	}
 

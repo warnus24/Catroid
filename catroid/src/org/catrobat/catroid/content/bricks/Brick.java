@@ -72,8 +72,6 @@ public interface Brick extends Serializable {
 
 	void setInUserBrick(boolean inUserBrick);
 
-	boolean getInUserBrick();
-
 	CheckBox getCheckBox();
 
 	boolean isChecked();

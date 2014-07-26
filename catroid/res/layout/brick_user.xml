@@ -27,7 +27,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal" xmlns:app="http://schemas.android.com/apk/res/org.catrobat.catroid">
+    android:orientation="horizontal" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <CheckBox
         android:id="@+id/brick_user_checkbox"

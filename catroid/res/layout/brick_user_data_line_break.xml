@@ -22,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/org.catrobat.catroid"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/brick_data_line_break"
     style="@style/userBrickDataTextBackground"
     android:layout_width="wrap_content"

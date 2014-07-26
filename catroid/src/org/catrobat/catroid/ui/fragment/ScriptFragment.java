@@ -34,7 +34,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,14 +50,12 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.UserScript;
 import org.catrobat.catroid.content.bricks.AllowedAfterDeadEndBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.DeadEndBrick;
 import org.catrobat.catroid.content.bricks.NestingBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
 import org.catrobat.catroid.content.bricks.UserBrick;
-import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrick;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.ViewSwitchLock;
@@ -208,7 +205,7 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 		position += firstVisibleBrick;
 
 		//TODO: allow recursive userbricks if its possible
-		if(adapter.getUserBrick() != null && ((UserBrick) brickToBeAdded).getDefinitionBrick().equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())){
+		if (adapter.getUserBrick() != null && ((UserBrick) brickToBeAdded).getDefinitionBrick().equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
 			Toast toast = null;
 			if (toast == null || toast.getView().getWindowVisibility() != View.VISIBLE) {
 				toast = Toast.makeText(getActivity().getApplicationContext(), R.string.recursive_user_brick_forbidden, Toast.LENGTH_LONG);
@@ -221,11 +218,6 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 			adapter.addNewBrick(position, brickToBeAdded, true);
 			adapter.notifyDataSetChanged();
 		}
-
-//		if(adapter.getUserBrick() != null && brickToBeAdded.equals(ProjectManager.getInstance().getCurrentUserBrick())) {
-//				Log.e("ScriptFragment_updateAdapterAfterAddNewBrick", "GSOCSF-2 Add the current UserBrick is not allowed, because of recursivity!");
-//		}
-
 	}
 
 	private void initListeners() {
@@ -479,7 +471,7 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 		Brick copy = brick.clone();
 
 		Script scriptList = null;
-		if(adapter.getUserBrick() != null) {
+		if (adapter.getUserBrick() != null) {
 			scriptList = ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick().getUserScript();
 		}
 		else {

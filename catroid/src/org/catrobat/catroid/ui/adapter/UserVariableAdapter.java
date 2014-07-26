@@ -23,7 +23,6 @@
 package org.catrobat.catroid.ui.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -207,7 +206,6 @@ public class UserVariableAdapter extends BaseAdapter implements ScriptActivityAd
 					}
 					checkedVariables.add(position);
 				} else {
-//					Log.e("UserVariablesAdapter_getView()", "bug3" + getItem(position).getName());
 					checkedVariables.remove(position);
 				}
 				if (onCheckedChangeListener != null) {
