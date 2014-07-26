@@ -124,7 +124,7 @@ public class CategoryBricksFactory {
 		} else if (category.equals(context.getString(R.string.category_variables))) {
 			tempList = setupVariablesCategoryList(sprite);
 		} else if (category.equals(context.getString(R.string.category_user_bricks))) {
-			return setupUserBricksCategoryList(sprite, context);
+			return setupUserBricksCategoryList(context);
 		} else if (category.equals(context.getString(R.string.category_lego_nxt))) {
 			tempList = setupLegoNxtCategoryList(sprite);
 		} else if (category.equals(context.getString(R.string.category_drone))) {
@@ -164,7 +164,7 @@ public class CategoryBricksFactory {
 		return controlBrickList;
 	}
 
-	private List<Brick> setupUserBricksCategoryList(Sprite sprite, Context context) {
+	private List<Brick> setupUserBricksCategoryList(Context context) {
 		String defaultText = context.getString(R.string.example_user_brick);
 		String defaultVariable = context.getString(R.string.example_user_brick_variable);
 		List<UserBrick> userBrickList = ProjectManager.getInstance().getCurrentSprite()

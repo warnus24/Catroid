@@ -31,12 +31,12 @@ import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 
 public class UserBrickAction extends DelegateAction {
 
-	private Sprite sprite;
+//	private Sprite sprite;
 	private UserBrickStageToken userBrickToken;
 
-	public void setSprite(Sprite sprite) {
-		this.sprite = sprite;
-	}
+//	public void setSprite(Sprite sprite) {
+//		this.sprite = sprite;
+//	}
 
 	public void setUserBrickStageToken(UserBrickStageToken userBrickToken) {
 		this.userBrickToken = userBrickToken;

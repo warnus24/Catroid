@@ -22,6 +22,7 @@
  */
 package org.catrobat.catroid.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -108,7 +109,6 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 	private List<Brick> checkedBricks = new ArrayList<Brick>();
 
 	private int selectMode;
-	private OnBrickCheckedListener onBrickCheckedListener;
 	private OnBrickCheckedListener scriptFragment;
 	private boolean actionMode = false;
 
@@ -841,7 +841,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 
 		// Hack!!!
 		// if wrapper isn't used the longClick event won't be triggered
-		ViewGroup wrapper = (ViewGroup) View.inflate(context, R.layout.brick_wrapper, null);
+		@SuppressLint("ViewHolder") ViewGroup wrapper = (ViewGroup) View.inflate(context, R.layout.brick_wrapper, null);
 		if (currentBrickView.getParent() != null) {
 			((ViewGroup) currentBrickView.getParent()).removeView(currentBrickView);
 		}
@@ -1179,10 +1179,8 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 	public void setCheckboxVisibility(int visibility) {
 		int i = 0;
 
-		if (ProjectManager.getInstance().getCurrentUserBrick() != null){
-			if (brickList.get(0).equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
+		if (ProjectManager.getInstance().getCurrentUserBrick() != null && brickList.get(0).equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
 				i = 1;
-			}
 		}
 		for (; i < brickList.size(); i++)
 		{

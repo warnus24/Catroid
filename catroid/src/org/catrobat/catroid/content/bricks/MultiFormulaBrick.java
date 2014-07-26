@@ -28,5 +28,5 @@ import java.util.List;
 
 public interface MultiFormulaBrick {
 
-	public List<Formula> getFormulas();
+	List<Formula> getFormulas();
 }
