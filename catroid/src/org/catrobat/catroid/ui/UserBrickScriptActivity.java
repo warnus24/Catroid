@@ -64,7 +64,6 @@ public class UserBrickScriptActivity extends ScriptActivity {
 <<<<<<< HEAD
 =======
 	public void onPause() {
-		super.onPause();
 //		ProjectManager.getInstance().setCurrentUserBrick(null);
 	}
 
