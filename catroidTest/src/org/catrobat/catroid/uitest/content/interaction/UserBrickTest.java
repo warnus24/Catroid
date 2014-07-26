@@ -127,9 +127,7 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo.clickOnText("0");
 		solo.clickOnText(solo.getString(R.string.ok));
 
-		if (!solo.waitForText("\"test\" - 0", 1, 1000)) {
-			fail("'" + "\"test\" - 0" + "' should have appeared");
-		}
+		assertTrue("'" + "\"test\" - 0" + "' should have appeared", solo.waitForText("\"test\" - 0", 1, 1000));
 
 		//delete userbrickvariable in variablesview of formulaeditor
 		solo.clickOnText("\"test\" - 0");
@@ -140,14 +138,11 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo.goBack();
 		solo.goBack();
 
-		if (solo.waitForText("test:", 1, 1000)) {
-			fail("'" + "test:" + "' should have disappeared in dropdown menu of set variable");
-		}
+		assertFalse("'" + "test:" + "' should have disappeared in dropdown menu of set variable", solo.waitForText("test:", 1, 1000));
 
 		String defineString = solo.getCurrentActivity().getString(R.string.define);
-		if (!solo.waitForText(defineString, 0, 1000)) {
-			fail("'" + defineString + "' should have appeared");
-		}
+
+		assertTrue("'" + defineString + "' should have appeared", solo.waitForText(defineString, 0, 1000));
 		solo.clickOnText(defineString);
 
 		assertEquals("The variable \"test\" should have disappeared", 1, ProjectManager.getInstance().getCurrentUserBrick().uiDataArray.size());
@@ -157,21 +152,19 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 	{
 		UiTestUtils.showSourceAndEditBrick(UiTestUtils.TEST_USER_BRICK_NAME, solo);
 		String defineString = solo.getCurrentActivity().getString(R.string.define);
-		if (!solo.waitForText(defineString, 0, 2000)) {
-			fail("'" + defineString + "' should have appeared");
-		}
+
+		assertTrue("'" + defineString + "' should have appeared", solo.waitForText(defineString, 0, 2000));
 		solo.clickOnText(defineString);
 
 		String stringOnUserBrickVar = UiTestUtils.TEST_USER_BRICK_VARIABLE;
-		if (!solo.waitForText(stringOnUserBrickVar, 1, 2000)) {
-			fail("'" + stringOnUserBrickVar + "' should have appeared");
-		}
+
+		assertTrue("'" + stringOnUserBrickVar + "' should have appeared", solo.waitForText(stringOnUserBrickVar, 1, 2000));
 
 		solo.clickOnText(solo.getCurrentActivity().getString(R.string.add_line_break));
 		solo.sleep(200);
 
 		String stringOnUserBrickText = UiTestUtils.TEST_USER_BRICK_NAME;
-		solo.clickOnText(stringOnUserBrickVar, 1);
+		solo.clickOnText(stringOnUserBrickText, 1);
 		solo.waitForDialogToOpen(2000);
 		String newTextName = "newName";
 		solo.clearEditText(0);
@@ -183,9 +176,7 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.button));
 		solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.button));
 
-		if (solo.waitForText(newTextName, 0, 1000) || solo.waitForText(UiTestUtils.TEST_USER_BRICK_NAME, 0, 1000) || solo.waitForText(UiTestUtils.TEST_USER_BRICK_VARIABLE, 0, 1000)) {
-			fail("the whole data (Variable, Text and LineBreak) should have disappeared");
-		}
+		assertFalse("the whole data (Variable, Text and LineBreak) should have disappeared", solo.waitForText(newTextName, 0, 1000) || solo.waitForText(UiTestUtils.TEST_USER_BRICK_NAME, 0, 1000) || solo.waitForText(UiTestUtils.TEST_USER_BRICK_VARIABLE, 0, 1000));
 	}
 
 	public void testEditFormulaWithUserBrickDataAndChangeValuesViaFormulaEditor()
@@ -194,15 +185,12 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		UiTestUtils.showSourceAndEditBrick(UiTestUtils.TEST_USER_BRICK_NAME, solo);
 
 		String defineString = solo.getCurrentActivity().getString(R.string.define);
-		if (!solo.waitForText(defineString, 0, 2000)) {
-			fail("'" + defineString + "' should have appeared");
-		}
+
+		assertTrue("'" + defineString + "' should have appeared", solo.waitForText(defineString, 0, 2000));
 		solo.clickOnText(defineString);
 
 		String stringOnUserBrickVar = UiTestUtils.TEST_USER_BRICK_VARIABLE;
-		if (!solo.waitForText(stringOnUserBrickVar, 1, 2000)) {
-			fail("'" + stringOnUserBrickVar + "' should have appeared");
-		}
+		assertTrue("'" + stringOnUserBrickVar + "' should have appeared", solo.waitForText(stringOnUserBrickVar, 1, 2000));
 
 		String newTextName = "newName";
 		solo.clickOnText(solo.getCurrentActivity().getString(R.string.add_text));
@@ -210,9 +198,7 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo.enterText(0, newTextName);
 		solo.clickOnText(solo.getCurrentActivity().getString(R.string.ok));
 		solo.waitForDialogToClose(2000);
-		if (!solo.waitForText(newTextName, 0, 2000)) {
-			fail("'" + newTextName + "' should have appeared");
-		}
+		assertTrue("'" + newTextName + "' should have appeared", solo.waitForText(newTextName, 0, 2000));
 
 		solo.clickOnText(solo.getCurrentActivity().getString(R.string.add_line_break));
 		solo.sleep(200);
@@ -223,9 +209,7 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo.enterText(0, newVariableName);
 		solo.clickOnText(solo.getCurrentActivity().getString(R.string.ok));
 		solo.waitForDialogToClose(2000);
-		if (!solo.waitForText(newVariableName, 0, 2000)) {
-			fail("'" + newVariableName + "' should have appeared");
-		}
+		assertTrue("'" + newVariableName + "' should have appeared", solo.waitForText(newVariableName, 0, 2000));
 
 		String newVariableName2 = "newVariable2";
 		solo.clickOnText(solo.getCurrentActivity().getString(R.string.add_variable));
@@ -233,9 +217,7 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo.enterText(0, newVariableName2);
 		solo.clickOnText(solo.getCurrentActivity().getString(R.string.ok));
 		solo.waitForDialogToClose(2000);
-		if (!solo.waitForText(newVariableName2, 0, 2000)) {
-			fail("'" + newVariableName2 + "' should have appeared");
-		}
+		assertTrue("'" + newVariableName2 + "' should have appeared", solo.waitForText(newVariableName2, 0, 2000));
 
 		solo.clickOnText(solo.getCurrentActivity().getString(R.string.close));
 		solo.goBack();
@@ -258,9 +240,7 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo.goBack();
 		solo.clickOnButton(solo.getString(R.string.yes));
 
-		if (!solo.waitForText("5", 0, 1000) || !solo.waitForText("3", 0, 1000) || !solo.waitForText("6", 0, 1000) ) {
-			fail("Variable values: '5', '3' and '6' should have appeared");
-		}
+		assertTrue("Variable values: '5', '3' and '6' should have appeared", solo.waitForText("5", 0, 1000) || solo.waitForText("3", 0, 1000) || solo.waitForText("6", 0, 1000));
 	}
 
 	public void testCopyAndDeleteUserBrickFromScriptWithBothVariants() {
@@ -346,9 +326,7 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo.clickOnText(stringOnShowSourceButton);
 
 		boolean addBrickShowedUp = solo.waitForFragmentByTag(AddBrickFragment.ADD_BRICK_FRAGMENT_TAG, 2000);
-		if (!addBrickShowedUp) {
-			fail("addBrickFragment should have showed up");
-		}
+		assertTrue("addBrickFragment should have showed up", addBrickShowedUp);
 
 		UiTestUtils.deleteFirstUserBrick(solo, UiTestUtils.TEST_USER_BRICK_NAME);
 		solo.sleep(500);
