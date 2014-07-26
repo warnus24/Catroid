@@ -24,7 +24,6 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -86,7 +85,6 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-//		Log.e("SetVariableBrick_addActionToSequence", "bug2 - " + userVariable.getName() + " " + variableFormula.interpretDouble(sprite));
 		sequence.addAction(ExtendedActions.setVariable(sprite, variableFormula, userVariable));
 		return null;
 	}

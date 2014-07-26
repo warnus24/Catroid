@@ -28,7 +28,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -39,10 +38,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
-import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.UserScript;
@@ -109,15 +106,11 @@ public class UserScriptDefinitionBrick extends ScriptBrick implements OnClickLis
 			if (brick instanceof MultiFormulaBrick) {
 				List<Formula> formulaList = ((MultiFormulaBrick) brick).getFormulas();
 				for (Formula formula : formulaList) {
-					//					Log.e("UserScriptDefinitionBrick_renameVariablesInFormulas", "special oldName, newName: " + oldName
-					//							+ " " + newName);
 					formula.updateVariableReferences(oldName, newName, context);
 				}
 			}
 			if (brick instanceof FormulaBrick) {
 				Formula formula = ((FormulaBrick) brick).getFormula();
-				//				Log.e("UserScriptDefinitionBrick_renameVariablesInFormulas", "special FormulaBrick oldName, newName: "
-				//						+ oldName + " " + newName);
 				formula.updateVariableReferences(oldName, newName, context);
 			}
 		}
@@ -266,13 +259,10 @@ public class UserScriptDefinitionBrick extends ScriptBrick implements OnClickLis
 		if (getUserScript() == null) {
 			setUserScript(new UserScript(sprite, this));
 		}
-//		Log.e("UserScriptDefinitionBrick_getScriptSafe()", "bug2");
 		return getUserScript();
 	}
 
 	public UserScript getUserScript() {
-//		for(int i = 0; i < userScript.getBrickList().size(); i++)
-//			Log.e("UserScriptDefinitionBrick_getUserScript()", "bug2" + userScript.getBrick(i).getClass().getSimpleName());
 		return userScript;
 	}
 

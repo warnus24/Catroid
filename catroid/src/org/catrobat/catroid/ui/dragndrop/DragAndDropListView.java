@@ -139,8 +139,9 @@ public class DragAndDropListView extends ListView implements OnLongClickListener
 				brick.getView(adapter.getContext(), itemPosition, adapter);
 				return true;
 			}
-			else if (adapter.isActionMode() && brick instanceof UserScriptDefinitionBrick)
+			else if (adapter.isActionMode() && brick instanceof UserScriptDefinitionBrick) {
 				return true;
+			}
 		}
 
 		if (dragAndDropListener != null && dragView != null) {

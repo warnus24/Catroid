@@ -44,7 +44,7 @@ public class BrickBaseType implements Brick {
 	protected transient BrickAdapter adapter;
 	protected transient int alphaValue = 255;
 	public transient boolean animationState = false;
-	boolean inUserBrick = false;
+	public boolean inUserBrick = false;
 
 	@Override
 	public boolean isChecked() {
@@ -84,11 +84,6 @@ public class BrickBaseType implements Brick {
 	@Override
 	public void setInUserBrick(boolean inUserBrick) {
 		this.inUserBrick = inUserBrick;
-	}
-
-	@Override
-	public boolean getInUserBrick() {
-		return inUserBrick;
 	}
 
 	@Override

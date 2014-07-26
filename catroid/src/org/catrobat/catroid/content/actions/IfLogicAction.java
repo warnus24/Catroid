@@ -22,8 +22,6 @@
  */
 package org.catrobat.catroid.content.actions;
 
-import android.util.Log;
-
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -41,7 +39,6 @@ public class IfLogicAction extends Action {
 
 	protected void begin() {
 		ifConditionValue = ifCondition.interpretBoolean(sprite);
-//		Log.e("IfLogicAction_begin()", "bug2 - " + ifConditionValue);
 	}
 
 	@Override
@@ -50,7 +47,6 @@ public class IfLogicAction extends Action {
 			begin();
 			isInitialized = true;
 		}
-//		Log.e("IfLogicAction_act()", "bug2 - " + ifConditionValue);
 		if (ifConditionValue) {
 			return ifAction.act(delta);
 		} else {
@@ -81,7 +77,6 @@ public class IfLogicAction extends Action {
 
 	public void setIfCondition(Formula ifCondition) {
 		this.ifCondition = ifCondition;
-//		Log.e("IfLogicAction_setIfCondition()", "bug2 - " + this.ifCondition.interpretBoolean(sprite));
 	}
 
 	@Override
