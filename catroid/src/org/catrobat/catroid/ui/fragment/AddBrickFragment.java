@@ -393,7 +393,7 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 			if (adapter.getAmountOfCheckedItems() == 0) {
 				clearCheckedBricksAndEnableButtons();
 			} else {
-				showConfirmDeleteDialog(false);
+				showConfirmDeleteDialog();
 			}
 		}
 	};
@@ -420,7 +420,7 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		}
 	}
 
-	private void showConfirmDeleteDialog(boolean fromContextMenu) {
+	private void showConfirmDeleteDialog() {
 		String yes = getActivity().getString(R.string.yes);
 		String no = getActivity().getString(R.string.no);
 		String title = "";
