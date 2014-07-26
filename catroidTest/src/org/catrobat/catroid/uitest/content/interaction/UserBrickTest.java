@@ -23,7 +23,6 @@
 package org.catrobat.catroid.uitest.content.interaction;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 
 import com.jayway.android.robotium.solo.Solo;
 
@@ -33,7 +32,6 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.bricks.UserBrick;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.fragment.AddBrickFragment;
-import org.catrobat.catroid.ui.fragment.ScriptFragment;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {

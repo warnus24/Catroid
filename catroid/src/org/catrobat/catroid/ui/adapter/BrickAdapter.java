@@ -160,7 +160,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 
 		userScript.getScriptBrick().setBrickAdapter(this);
 		for (Brick brick : userScript.getBrickList()) {
-			if(brick.getClass().equals(ChangeVariableBrick.class) || brick.getClass().equals(SetVariableBrick.class)) {
+			if (brick.getClass().equals(ChangeVariableBrick.class) || brick.getClass().equals(SetVariableBrick.class)) {
 				brick.setInUserBrick(true);
 			}
 			brickList.add(brick);
@@ -1094,7 +1094,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 	}
 
 	public void launchAddBrickAndSelectBrickAt(Context context, int index) {
-		int temp[] = getScriptAndBrickIndexFromProject(index);
+		int[] temp = getScriptAndBrickIndexFromProject(index);
 		Script script = ProjectManager.getInstance().getCurrentSprite().getScript(temp[0]);
 		if (script != null) {
 			Brick brick = script.getBrick(temp[1]);
@@ -1179,12 +1179,12 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 	public void setCheckboxVisibility(int visibility) {
 		int i = 0;
 
-		if(ProjectManager.getInstance().getCurrentUserBrick() != null){
+		if (ProjectManager.getInstance().getCurrentUserBrick() != null){
 			if (brickList.get(0).equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
 				i = 1;
 			}
 		}
-		for(; i < brickList.size(); i++)
+		for (; i < brickList.size(); i++)
 		{
 			brickList.get(i).setCheckboxVisibility(visibility);
 		}
@@ -1203,20 +1203,15 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 			return;
 		}
 		if (isChecked) {
-//			Log.e("BrickAdapter_handleCheck()","bug9 if(isChecked)");
 			if (selectMode == ListView.CHOICE_MODE_SINGLE) {
 				clearCheckedItems();
-//				Log.e("BrickAdapter_handleCheck()","bug9 if(isChecked)-->if(selectMode...)");
 			}
 			if (brick.getCheckBox() != null && smartBrickSelection(brick, isChecked)) {
-//				Log.e("BrickAdapter_handleCheck()","bug9 if(isChecked)-->if(brick.getCheckbox()...)");
 				return;
 			}
 			addElementToCheckedBricks(brick);
 		} else {
-//			Log.e("BrickAdapter_handleCheck()","bug9 else(isChecked)");
 			if (brick.getCheckBox() != null && smartBrickSelection(brick, isChecked)) {
-//				Log.e("BrickAdapter_handleCheck()","bug9 else(isChecked)-->if(brick.getCheckbox()...)");
 				return;
 			}
 			checkedBricks.remove(brick);

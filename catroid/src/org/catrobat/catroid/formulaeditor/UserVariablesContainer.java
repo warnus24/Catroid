@@ -23,7 +23,6 @@
 package org.catrobat.catroid.formulaeditor;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.SparseArray;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -31,9 +30,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.UserBrick;
-import org.catrobat.catroid.content.bricks.UserBrickUIData;
 import org.catrobat.catroid.ui.adapter.UserVariableAdapter;
-import org.catrobat.catroid.ui.fragment.UserBrickDataEditorFragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -98,8 +95,6 @@ public class UserVariablesContainer implements Serializable {
 	}
 
 	public UserVariable addUserBrickUserVariableToUserBrick(int userBrickId, String userVariableName) {
-		//		Log.e("UserVariablesContainer_addUserBrickUserVariableToUserBrick", "special userVariableName: "
-		//				+ userVariableName);
 		List<UserVariable> varList = getOrCreateVariableListForUserBrick(userBrickId);
 		UserVariable userVariableToAdd = new UserVariable(userVariableName, varList);
 		userVariableToAdd.setValue(0);
@@ -142,16 +137,14 @@ public class UserVariablesContainer implements Serializable {
 		if (context != null) {
 			UserVariable variableToDelete = findUserVariable(userVariableName, context);
 			if (variableToDelete != null) {
-				Log.e("UserVariablesContainer_deleteUserVariableByName()", "bug3" + userVariableName + " context[0]: " + context.get(0).getName());
 				context.remove(variableToDelete);
-				for(int id = 0; id < currentUserBrick.uiDataArray.size(); id++)
+				for (int id = 0; id < currentUserBrick.uiDataArray.size(); id++)
 				{
-					if(currentUserBrick.uiDataArray.get(id).name.equals(userVariableName) && currentUserBrick.uiDataArray.get(id).isVariable)
+					if (currentUserBrick.uiDataArray.get(id).name.equals(userVariableName) && currentUserBrick.uiDataArray.get(id).isVariable)
 					{
 						int alpha = currentUserBrick.getAlphaValue();
 						currentUserBrick.getDefinitionBrick().removeVariablesInFormulas(currentUserBrick.uiDataArray.get(id).name, currentUserBrick.getViewWithAlpha(alpha).getContext());
 						currentUserBrick.uiDataArray.remove(id);
-						Log.e("UserVariablesContainer_deleteUserVariableByName()", "bug3" + userVariableName + " UserBrickVariable removed from uiDataArray!");
 						currentUserBrick.uiDataArray.version++;
 					}
 				}
@@ -163,27 +156,12 @@ public class UserVariablesContainer implements Serializable {
 		List<UserVariable> context = userBrickVariables.get(userBrickId);
 		UserVariable variableToDelete = findUserVariable(userVariableName, context);
 		if (variableToDelete != null) {
-			Log.e("UserVariablesContainer_deleteUserVariableFromUserBrick()", "bug3" + userVariableName + " context[0]: " + context.get(0).getName());
 			context.remove(variableToDelete);
 		}
 	}
 
 	public List<UserVariable> getOrCreateVariableListForUserBrick(int userBrickId) {
 		List<UserVariable> variables = userBrickVariables.get(userBrickId);
-		//		Log.e("UserVariablesContainer_getOrCreateVariableListForUserBrick", "name/value: "
-		//				+ userBrickVariables.valueAt(0).get(0).getName() + " "
-		//				+ userBrickVariables.valueAt(0).get(0).getValue());
-
-		//the value of a brick variable is NOT correct here, in the beginning it is, but after a set/change variable brick in stagemode it's not!
-		//		UserVariable uv = new UserVariable("testUserVar2", variables);
-		//		uv.setValue(5.0);
-		//		uv.setName("blabli2");
-		//		Log.e("UserVariablesContainer_getOrCreateVariableListForUserBrick",
-		//				"name/value: " + uv.getName() + " " + uv.getValue());
-		//		userBrickVariables.get(userBrickId).add(uv);
-		//		Log.e("UserVariablesContainer_getOrCreateVariableListForUserBrick",
-		//				"name/value: " + userBrickVariables.get(userBrickId).get(0).getName() + " "
-		//						+ userBrickVariables.get(userBrickId).get(0).getValue());
 
 		if (variables == null) {
 			variables = new ArrayList<UserVariable>();
@@ -203,10 +181,6 @@ public class UserVariablesContainer implements Serializable {
 
 	public List<UserVariable> getOrCreateVariableListForSprite(Sprite sprite) {
 		List<UserVariable> variables = spriteVariables.get(sprite);
-
-		//the value of a sprite variable is correct here in the beginning and after a set/change variable brick in stagemode
-		//		Log.e("UserVariablesContainer_getOrCreateVariableListForUserBrick", "name/value: "
-		//				+ spriteVariables.get(sprite).get(0).getName() + " " + spriteVariables.get(sprite).get(0).getValue());
 
 		if (variables == null) {
 			variables = new ArrayList<UserVariable>();
@@ -263,14 +237,11 @@ public class UserVariablesContainer implements Serializable {
 	}
 
 	public UserVariable findUserVariable(String name, List<UserVariable> variables) {
-		Log.e("UserVariable_findUserVariable()", "flow");
 		if (variables == null) {
 			return null;
 		}
 		for (UserVariable variable : variables) {
 			if (variable.getName().equals(name)) {
-				Log.e("UserVariablesContainer_findUserVariable()",
-						"name: " + variable.getName() + "value: " + variable.getValue());
 				return variable;
 			}
 		}
@@ -290,8 +261,6 @@ public class UserVariablesContainer implements Serializable {
 			int key = userBrickVariables.keyAt(i);
 			resetUserVariables(userBrickVariables.get(key));
 		}
-		Log.e("TEST_USERVARIABLES_USERVARIABLES_CONTAINER",
-				"number of userBrickVariables: " + userBrickVariables.size());
 	}
 
 	private void resetUserVariables(List<UserVariable> userVariableList) {

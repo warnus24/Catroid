@@ -60,7 +60,6 @@ import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.InternFormulaParser;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.ScriptActivity;
-import org.catrobat.catroid.ui.UserBrickScriptActivity;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import org.catrobat.catroid.ui.dialogs.FormulaEditorComputeDialog;
 
@@ -505,10 +504,12 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		Fragment fragment = fragmentManager.findFragmentByTag(tag);
 
 		if (fragment == null) {
-			if(getActivity().getClass().equals(ScriptActivity.class))
+			if (getActivity().getClass().equals(ScriptActivity.class)) {
 				fragment = new FormulaEditorVariableListFragment(false);
-			else
+			}
+			else {
 				fragment = new FormulaEditorVariableListFragment(true);
+			}
 			Bundle bundle = new Bundle();
 			bundle.putString(FormulaEditorVariableListFragment.ACTION_BAR_TITLE_BUNDLE_ARGUMENT,
 					context.getString(actionbarResId));

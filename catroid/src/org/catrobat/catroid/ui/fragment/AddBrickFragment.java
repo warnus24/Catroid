@@ -33,12 +33,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -236,8 +234,9 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		}
 
 		ScriptActivity activity = (ScriptActivity) scriptFragment.getActivity();
-		if(activity != null)
+		if (activity != null) {
 			activity.setDeleteModeListener(null);
+		}
 		super.onDestroy();
 	}
 
