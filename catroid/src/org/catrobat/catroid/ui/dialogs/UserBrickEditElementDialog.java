@@ -40,6 +40,7 @@ import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class UserBrickEditElementDialog extends SherlockDialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle bundle) {
 		final View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_brick_editor_edit_element,
-				(ViewGroup)getView().getParent());
+				null);
 
 		EditText textField = (EditText) dialogView.findViewById(R.id.dialog_brick_editor_edit_element_edit_text);
 		textField.setText(text);
