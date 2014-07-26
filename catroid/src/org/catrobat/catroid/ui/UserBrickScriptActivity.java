@@ -23,7 +23,6 @@
 package org.catrobat.catroid.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.bricks.Brick;
