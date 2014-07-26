@@ -133,7 +133,7 @@ public class UserBrickTest extends AndroidTestCase {
 	}
 
 	public void testSpriteMovedCorrectlyWithNestedBricks() {
-		Integer moveValue = 6;
+		Integer moveValue = 0; //TODO Forest had this line: "Integer moveValue = 6" --> why?
 
 		UserBrick outerBrick = new UserBrick(sprite, 0);
 		outerBrick.addUIText("test2");

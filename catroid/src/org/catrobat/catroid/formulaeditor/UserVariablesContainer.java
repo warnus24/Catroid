@@ -138,14 +138,14 @@ public class UserVariablesContainer implements Serializable {
 			UserVariable variableToDelete = findUserVariable(userVariableName, context);
 			if (variableToDelete != null) {
 				context.remove(variableToDelete);
-				for (int id = 0; id < currentUserBrick.uiDataArray.size(); id++)
-				{
-					if (currentUserBrick.uiDataArray.get(id).name.equals(userVariableName) && currentUserBrick.uiDataArray.get(id).isVariable)
-					{
-						int alpha = currentUserBrick.getAlphaValue();
-						currentUserBrick.getDefinitionBrick().removeVariablesInFormulas(currentUserBrick.uiDataArray.get(id).name, currentUserBrick.getViewWithAlpha(alpha).getContext());
-						currentUserBrick.uiDataArray.remove(id);
-						currentUserBrick.uiDataArray.version++;
+				if (currentUserBrick != null) {
+					for (int id = 0; id < currentUserBrick.uiDataArray.size(); id++) {
+						if (currentUserBrick.uiDataArray.get(id).name.equals(userVariableName) && currentUserBrick.uiDataArray.get(id).isVariable) {
+							int alpha = currentUserBrick.getAlphaValue();
+							currentUserBrick.getDefinitionBrick().removeVariablesInFormulas(currentUserBrick.uiDataArray.get(id).name, currentUserBrick.getViewWithAlpha(alpha).getContext());
+							currentUserBrick.uiDataArray.remove(id);
+							currentUserBrick.uiDataArray.version++;
+						}
 					}
 				}
 			}
