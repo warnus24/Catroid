@@ -80,11 +80,11 @@ public interface Brick extends Serializable {
 
 	void setCheckboxView(int id);
 
-	public void setCheckboxView(int id, View view);
+	void setCheckboxView(int id, View view);
 
 	View getViewWithAlpha(int alphaValue);
 
 	void setAnimationState(boolean animationState);
 
-	public void setAlpha(int alphaFull);
+	void setAlpha(int alphaFull);
 }

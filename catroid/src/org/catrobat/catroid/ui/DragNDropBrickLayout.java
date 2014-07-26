@@ -300,7 +300,7 @@ public class DragNDropBrickLayout extends BrickLayout {
 			case MotionEvent.ACTION_UP:
 			default:
 				if (dragging) {
-					drop(x, y);
+					drop();
 				}
 				break;
 		}
@@ -383,7 +383,7 @@ public class DragNDropBrickLayout extends BrickLayout {
 		}
 	}
 
-	private void drop(int x, int y) {
+	private void drop() {
 		dragEndMillis = System.currentTimeMillis();
 
 		long difference = dragEndMillis - dragBeganMillis;

@@ -62,7 +62,6 @@ public class UserBrickScriptActivity extends ScriptActivity {
 
 	@Override
 	public void onPause() {
-		super.onPause();
 //		ProjectManager.getInstance().setCurrentUserBrick(null);
 	}
 

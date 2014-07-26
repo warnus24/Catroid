@@ -111,14 +111,12 @@ public abstract class Script implements Serializable {
 			List<SequenceAction> actions = brickList.get(i).addActionToSequence(
 					sequenceList.get(sequenceList.size() - 1));
 			if (actions != null) {
-				int j = 0;
 				for (SequenceAction action : actions) {
 					if (sequenceList.contains(action)) {
 						sequenceList.remove(action);
 					} else {
 						sequenceList.add(action);
 					}
-					j++;
 				}
 			}
 		}
