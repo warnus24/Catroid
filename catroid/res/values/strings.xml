@@ -644,7 +644,7 @@
     <string name="formula_editor_image_button_description_redo">redo</string>
     <string name="formula_editor_image_button_description_delete">delete</string>
     <string name="formula_editor_variable_dialog_title">New Variable</string>
-    <string name="formula_editor_variable_dialog_for_this_brick">For this brick</string>
+    <string name="formula_editor_variable_dialog_for_this_brick">For this brick</string> 
     <string name="formula_editor_variable_dialog_for_all_sprites">For all objects</string>
     <string name="formula_editor_variable_dialog_for_this_sprite_only">For this object only</string>
     <string name="formula_editor_variable_dialog_hint">Enter variable name</string>
@@ -657,7 +657,7 @@
         <item quantity="other">Variables selected!</item>
     </plurals>
     <!--  -->
-
+    
  	<!-- Brick Data Editor Strings -->
  	<string name="brick_data_editor_title">Brick Editor</string>
  	<string name="separator">|</string>
@@ -681,7 +681,7 @@
  	<!-- TODO: CHANGE these 2 strings below -->
  	<string name="brick_single">CHANGEME</string>
  	<string name="brick_multiple">CHANGEME</string>
-
- 	<!-- -->
+ 	
+ 	<!-- -->    
 
 </resources>
