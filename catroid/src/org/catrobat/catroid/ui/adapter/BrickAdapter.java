@@ -118,6 +118,8 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 
 	private int clickItemPosition = 0;
 
+	private AlertDialog alertDialog = null;
+
 	public BrickAdapter(Context context, Sprite sprite, DragAndDropListView listView) {
 		this.context = context;
 		this.sprite = sprite;
@@ -926,6 +928,10 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 		return ProjectManager.getInstance().getCurrentSprite().getNumberOfScripts();
 	}
 
+	public AlertDialog getAlertDialog() {
+		return alertDialog;
+	}
+
 	@Override
 	public void onClick(final View view) {
 		if (!viewSwitchLock.tryLock()) {
@@ -997,7 +1003,7 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 
 			}
 		});
-		AlertDialog alertDialog = builder.create();
+		alertDialog = builder.create();
 
 		if ((selectMode == ListView.CHOICE_MODE_NONE)) {
 			alertDialog.show();
