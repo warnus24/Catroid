@@ -306,6 +306,7 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		int[] location = UiTestUtils.dragFloatingBrick(solo, -1);
 		assertTrue("was not able to move the brick up", location != null);
 
+		solo.scrollUp();
 		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
 		solo.waitForText(stringOnMove);
 		solo.clickOnText(stringOnMove);
