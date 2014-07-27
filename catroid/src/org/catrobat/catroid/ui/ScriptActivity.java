@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.ui;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -212,10 +211,6 @@ public class ScriptActivity extends BaseActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		setVolumeControlStream(AudioManager.STREAM_RING);
-		AlertDialog alertDialog = scriptFragment.getAdapter().getAlertDialog();
-		if (alertDialog != null && alertDialog.isShowing() ){
-			alertDialog.cancel();
-		}
 	}
 
 	@Override
