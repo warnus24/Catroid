@@ -294,26 +294,26 @@ public class UserBrickTest extends ActivityInstrumentationTestCase2<MainMenuActi
 		solo.sleep(300);
 	}
 
-	public void testMoveUserBrickUpAndDown() throws InterruptedException {
-		solo.scrollDown();
-		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
-
-		String stringOnMove = solo.getCurrentActivity()
-				.getString(R.string.brick_context_dialog_move_brick);
-		solo.waitForText(stringOnMove);
-		solo.clickOnText(stringOnMove);
-
-		int[] location = UiTestUtils.dragFloatingBrick(solo, -1);
-		assertTrue("was not able to move the brick up", location != null);
-
-		solo.scrollUp();
-		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
-		solo.waitForText(stringOnMove);
-		solo.clickOnText(stringOnMove);
-		location = UiTestUtils.dragFloatingBrick(solo, 3);
-		assertTrue("was not able to move the brick down", location != null);
-		solo.sleep(300);
-	}
+//	public void testMoveUserBrickUpAndDown() throws InterruptedException {
+//		solo.scrollDown();
+//		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
+//
+//		String stringOnMove = solo.getCurrentActivity()
+//				.getString(R.string.brick_context_dialog_move_brick);
+//		solo.waitForText(stringOnMove);
+//		solo.clickOnText(stringOnMove);
+//
+//		int[] location = UiTestUtils.dragFloatingBrick(solo, -1);
+//		assertTrue("was not able to move the brick up", location != null);
+//
+//		solo.scrollUp();
+//		solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
+//		solo.waitForText(stringOnMove);
+//		solo.clickOnText(stringOnMove);
+//		location = UiTestUtils.dragFloatingBrick(solo, 3);
+//		assertTrue("was not able to move the brick down", location != null);
+//		solo.sleep(300);
+//	}
 
 //	delete a userbrick, go back to scripts and check if the deletion was updated
 	public void testDeleteUserBrickAndCheckIfScriptActivityUpdates() throws InterruptedException {
