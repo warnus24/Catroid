@@ -90,6 +90,7 @@ public final class Constants {
 	//Various:
 	public static final int BUFFER_8K = 8 * 1024;
 	public static final String PREF_PROJECTNAME_KEY = "projectName";
+	public static final String PREF_LWP_PROJECTNAME_KEY = "lwpProjectName";
 	public static final String PROJECTNAME_TO_LOAD = "projectNameToLoad";
 
 	//Services + Notifications
@@ -98,6 +99,12 @@ public final class Constants {
 	public static final int UPLOAD_NOTIFICATION = 102;
 	public static final int DOWNLOAD_NOTIFICATION = 103;
 	public static final int COPY_NOTIFICATION = 104;
+
+	//Livewallpaper
+	public static final String PREF_SOUND_DISABLED = "Sound disabled";
+	public static final String POCKET_CODE_PACKAGE_NAME = "org.catrobat.catroid.livewallpaper";
+	public static final String POCKET_CODE_INTENT_ACTIVITY_NAME = "org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity";
+	public static final String POCKET_CODE_DOWNLOAD_LINK = "market://details?id=" + POCKET_CODE_PACKAGE_NAME;
 
 	// Suppress default constructor for noninstantiability
 	private Constants() {

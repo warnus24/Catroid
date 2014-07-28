@@ -651,4 +651,31 @@
     </plurals>
     <!--  -->
 
+
+	<!-- Live Wallpaper Strings -->
+    <string name="lwp_general_information">General information</string>
+ 	<string name="about_this_wallpaper">About this wallpaper</string>
+ 	<string name="get_more_wallpapers">Get more wallpapers</string>
+ 	<string name="lwp_project_name">Name: </string>
+ 	<string name="lwp_project_description">Description: </string> 
+ 	<string name="lwp_preferences">Preferences </string>
+ 	<string name="lwp_allow_sounds">Allow sounds </string> 
+ 	<string name="lwp_select_program">Select wallpaper </string>
+ 	<string name="lwp_no_landscape_support">Unfortuanetely, this livewallpaper does not support landscape screen orientation.</string>
+ 	<string name="lwp_app_name">Pocket Code Live Wallpaper</string>
+ 	<string name="lwp_confirm_set_program_message">Set this program?</string>
+ 	<string name="create_programs">Create new wallpaper</string>
+ 	<string name="download_programs">Explore</string>
+ 	<string name="lwp_error_delete_current_program">You cannot delete this program because it is currently in preview.</string>
+ 	<string name="lwp_error_delete_multiple_program">"One of the selected programs is in preview and cannot be deleted. Do you wish to delete the other selected programs?"</string>
+ 	
+ 	<string name="pocket_code_not_installed">Pocket Code is not installed. Do you want to install it?</string>
+ 	
+ 	<string name="lwp_delete">Delete</string>
+ 	<string name="lwp_new">New</string>
+ 	<string name="lwp_tinting">Tinting</string>
+ 	<string name="lwp_about">About</string>
+ 	<string name="lwp_enable_sound">Enable sounds</string>
+ 	<string name="lwp_disable_tinting">Disable tinting</string>
+	<!--  -->
 </resources>

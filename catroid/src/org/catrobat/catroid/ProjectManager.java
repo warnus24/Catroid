@@ -49,6 +49,7 @@ import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
 import org.catrobat.catroid.io.LoadProjectTask;
 import org.catrobat.catroid.io.LoadProjectTask.OnLoadProjectCompleteListener;
 import org.catrobat.catroid.io.StorageHandler;
+import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.transfers.CheckTokenTask;
 import org.catrobat.catroid.transfers.CheckTokenTask.OnCheckTokenCompleteListener;
 import org.catrobat.catroid.ui.dialogs.LoginRegisterDialog;
@@ -62,12 +63,18 @@ import java.util.ArrayList;
 
 public final class ProjectManager implements OnLoadProjectCompleteListener, OnCheckTokenCompleteListener {
 	private static final ProjectManager INSTANCE = new ProjectManager();
+    private static final ProjectManager INSTANCE_LWP = new ProjectManager();
 	private static final String TAG = ProjectManager.class.getSimpleName();
 
 	private Project project;
 	private Script currentScript;
 	private Sprite currentSprite;
 	private boolean asynchronTask = true;
+	private static ProjectManagerState currentProjectManagerState = ProjectManagerState.NORMAL;
+
+	public static void changeState(ProjectManagerState state) {
+		currentProjectManagerState = state;
+	}
 
 	private FileChecksumContainer fileChecksumContainer = new FileChecksumContainer();
 
@@ -75,7 +82,25 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	}
 
 	public static ProjectManager getInstance() {
-		return INSTANCE;
+		switch (currentProjectManagerState) {
+			case LWP:
+				return INSTANCE_LWP;
+			case NORMAL:
+				return INSTANCE;
+			default:
+				return INSTANCE;
+		}
+	}
+
+	public static ProjectManager getInstance(ProjectManagerState projectManagerType) {
+		switch (projectManagerType) {
+			case LWP:
+				return INSTANCE_LWP;
+			case NORMAL:
+				return INSTANCE;
+			default:
+				return INSTANCE;
+		}
 	}
 
 	public void uploadProject(String projectName, FragmentActivity fragmentActivity) {
@@ -164,6 +189,21 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		currentScript = null;
 		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
 	}
+
+	private void saveProjectNameToPreferences(Context context) {
+		switch (currentProjectManagerState) {
+			case LWP:
+				Utils.saveToPreferences(context, Constants.PREF_LWP_PROJECTNAME_KEY, project.getName());
+				break;
+			case NORMAL:
+				Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
+				break;
+			default:
+				Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
+				break;
+		}
+	}
+
 
 	public boolean cancelLoadProject() {
 		return StorageHandler.getInstance().cancelLoadProject();
@@ -386,6 +426,8 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	public void onLoadProjectFailure() {
 
 	}
+
+
 
 	public void checkNestingBrickReferences() {
 		Project currentProject = ProjectManager.getInstance().getCurrentProject();

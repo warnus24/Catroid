@@ -66,7 +66,7 @@ public class StageActivity extends AndroidApplication {
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		calculateScreenSizes();
 
-		initialize(stageListener, true);
+		initialize(stageListener);
 		if (droneConnection != null) {
 			try {
 				droneConnection.initialise();
@@ -108,6 +108,7 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onResume() {
+		Log.d(TAG, "StageActivity::onResume()");
 		SensorHandler.startSensorListener(this);
 		stageAudioFocus.requestAudioFocus();
 		LedUtil.resumeLed();
