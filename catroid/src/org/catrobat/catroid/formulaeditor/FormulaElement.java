@@ -450,6 +450,9 @@ public class FormulaElement implements Serializable {
 		if (leftChild.type == ElementType.USER_VARIABLE) {
 			return (double) handleLengthUserVariableParameter(sprite);
 		}
+		if (leftChild.type == ElementType.USER_LIST) {
+			return (double) handleLengthUserListParameter(sprite);
+		}
 		if (left instanceof Double && ((Double) left).isNaN()) {
 			return 0d;
 		}
@@ -866,6 +869,17 @@ public class FormulaElement implements Serializable {
 				return Double.toString(((Double) userVariableValue)).length();
 			}
 		}
+
+	}private int handleLengthUserListParameter(Sprite sprite) {
+		UserListContainer userListContainer = ProjectManager.getInstance().getCurrentProject()
+				.getUserLists();
+		UserList userList = userListContainer.getUserList(leftChild.value, sprite);
+
+		if(userList == null){
+			return 0;
+		}
+
+		return userList.getList().size();
 
 	}
 
