@@ -459,4 +459,16 @@ public class ExtendedActions extends Actions {
 		action.setDuration(duration);
 		return action;
 	}
+
+	public static VideoAction turn(boolean videoOn) {
+		VideoAction action = action(VideoAction.class);
+		action.setChoosen(videoOn);
+		return action;
+	}
+
+	public static VideoTransparencyAction set(String transparency) {
+		VideoTransparencyAction action = action(VideoTransparencyAction.class);
+		action.setChoosen(transparency);
+		return action;
+	}
 }

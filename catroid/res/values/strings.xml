@@ -429,6 +429,14 @@
     <!--  -->
 
 
+    <!-- Video bricks -->
+    <string name="brick_video">Switch video: </string>
+    <string name="brick_video_on">ON</string>
+    <string name="brick_video_off">OFF</string>
+    <string name="brick_video_transparency">Set video transparency to: </string>
+    <!--  -->
+
+
     <!-- defaultValues -->
     <string name="default_project_name">My first program</string>
     <string name="default_project_sprites_mole_name">Mole</string>

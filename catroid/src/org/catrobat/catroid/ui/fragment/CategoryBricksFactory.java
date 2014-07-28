@@ -88,6 +88,8 @@ import org.catrobat.catroid.content.bricks.StopAllSoundsBrick;
 import org.catrobat.catroid.content.bricks.TurnLeftBrick;
 import org.catrobat.catroid.content.bricks.TurnRightBrick;
 import org.catrobat.catroid.content.bricks.VibrationBrick;
+import org.catrobat.catroid.content.bricks.VideoBrick;
+import org.catrobat.catroid.content.bricks.VideoTransparencyBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.content.bricks.WhenBrick;
 import org.catrobat.catroid.content.bricks.WhenStartedBrick;
@@ -136,6 +138,9 @@ public class CategoryBricksFactory {
 		controlBrickList.add(new ForeverBrick(sprite));
 		controlBrickList.add(new IfLogicBeginBrick(sprite, 0));
 		controlBrickList.add(new RepeatBrick(sprite, BrickValues.REPEAT));
+
+		controlBrickList.add(new VideoBrick(context));
+		controlBrickList.add(new VideoTransparencyBrick(BrickValues.TRANSPARENCY_DEFAULT, sprite));
 
 		return controlBrickList;
 	}

@@ -431,6 +431,13 @@
     <string name="brick_broadcast_default_value">"Nachricht 1"</string>
     <!--  -->
 
+    <!-- Video bricks -->
+    <string name="brick_video">Schalte video: </string>
+    <string name="brick_video_on">AN</string>
+    <string name="brick_video_off">AUS</string>
+    <string name="brick_video_transparency">Setzte video Transparenz auf: </string>
+    <!--  -->
+
 
     <!-- defaultValues -->
     <string name="default_project_name">Mein erstes Programm</string>

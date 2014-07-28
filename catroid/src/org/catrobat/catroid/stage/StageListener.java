@@ -26,6 +26,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -41,11 +42,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.common.collect.Multimap;
 
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.camera.CameraController;
+import org.catrobat.catroid.camera.SurfaceForCallback;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenModes;
@@ -191,6 +195,7 @@ public class StageListener implements ApplicationListener {
 		if (checkIfAutomaticScreenshotShouldBeTaken) {
 			makeAutomaticScreenshot = project.manualScreenshotExists(SCREENSHOT_MANUAL_FILE_NAME);
 		}
+		CameraController.getInstance().init();
 
 	}
 
@@ -200,6 +205,7 @@ public class StageListener implements ApplicationListener {
 		}
 		paused = false;
 		SoundManager.getInstance().resume();
+		CameraController.getInstance().resume();
 		for (Sprite sprite : sprites) {
 			sprite.resume();
 		}
@@ -233,6 +239,7 @@ public class StageListener implements ApplicationListener {
 	public void resume() {
 		if (!paused) {
 			SoundManager.getInstance().resume();
+			CameraController.getInstance().resume();
 			for (Sprite sprite : sprites) {
 				sprite.resume();
 			}
@@ -251,6 +258,7 @@ public class StageListener implements ApplicationListener {
 		}
 		if (!paused) {
 			SoundManager.getInstance().pause();
+			CameraController.getInstance().pause();
 			for (Sprite sprite : sprites) {
 				sprite.pause();
 			}
@@ -260,6 +268,7 @@ public class StageListener implements ApplicationListener {
 	public void finish() {
 		finished = true;
 		SoundManager.getInstance().clear();
+		CameraController.getInstance().destroy();
 		if (thumbnail != null && !makeAutomaticScreenshot) {
 			saveScreenshot(thumbnail, SCREENSHOT_AUTOMATIC_FILE_NAME);
 		}
@@ -267,8 +276,21 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void render() {
-		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+	//	Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+		if(!finished && CameraController.getInstance().isVideoRunning()) {
+			//draw VideoBackground
+			Log.d("lausi", "videoIsRUNNING.... show");
+			CameraController.getInstance().renderBackground();
+		}
+		/*}else {
+			Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		}*/
+
 		if (reloadProject) {
 			int spriteSize = sprites.size();
 			for (int i = 0; i < spriteSize; i++) {

@@ -29,9 +29,11 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
+import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.camera.CameraController;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
@@ -66,7 +68,16 @@ public class StageActivity extends AndroidApplication {
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		calculateScreenSizes();
 
-		initialize(stageListener, true);
+		// lausi
+		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
+		cfg.useGL20 = true; //This line is obsolete in the newest libgdx version
+		cfg.a = 8;
+		cfg.b = 8;
+		cfg.g = 8;
+		cfg.r = 8;
+
+		//initialize(stageListener, true);
+		initialize(stageListener,cfg);
 		if (droneConnection != null) {
 			try {
 				droneConnection.initialise();

@@ -43,6 +43,7 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BluetoothManager;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
+import org.catrobat.catroid.camera.CameraController;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
@@ -123,10 +124,20 @@ public class PreStageActivity extends BaseActivity {
 			droneInitializer.initialise();
 		}
 
+		if ((requiredResources & Brick.CAMERA ) > 0) {
+			boolean hasCamera = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+			if ( hasCamera && CameraController.getInstance().createCamera()) {
+				Log.d("Lausi", "init.............................................!");
+				resourceInitialized();
+			} else {
+				resourceFailed();
+			}
+		}
+
 		if ((requiredResources & Brick.CAMERA_LED ) > 0) {
 			boolean hasCamera = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 			boolean hasLed = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-
+			Log.d("Lausi", "init.........................XXXXXXXXXX....................!");
 			if ( hasCamera && hasLed ) {
 				requiredResourceCounter--;
 				LedUtil.activateLedThread();
