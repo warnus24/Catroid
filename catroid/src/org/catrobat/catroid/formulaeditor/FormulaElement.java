@@ -2,21 +2,21 @@
  *  Catroid: An on-device visual programming system for Android devices
  *  Copyright (C) 2010-2013 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
  *  published by the Free Software Foundation, either version 3 of the
  *  License, or (at your option) any later version.
- *  
+ *
  *  An additional term exception under section 7 of the GNU Affero
  *  General Public License, version 3, is available at
  *  http://developer.catrobat.org/license_additional_term
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU Affero General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -198,12 +198,12 @@ public class FormulaElement implements Serializable {
 			}
 
 		} else {
-			return interpretMultipleItemsUserList( userListValues);
+			return interpretMultipleItemsUserList(userListValues);
 		}
 
 	}
 
-	private Object interpretMultipleItemsUserList( List<Object> userListValues) {
+	private Object interpretMultipleItemsUserList(List<Object> userListValues) {
 		List<String> userListStringValues = new ArrayList<String>();
 		boolean concatenateWithoutWhitespace = true;
 
@@ -298,32 +298,26 @@ public class FormulaElement implements Serializable {
 		if (leftChild != null) {
 			left = leftChild.interpretRecursive(sprite);
 			if (left instanceof String) {
-				try
-				{
-					doubleValueOfLeftChild = Double.valueOf((String)left);
-				}
-				catch(NumberFormatException numberFormatException){
+				try {
+					doubleValueOfLeftChild = Double.valueOf((String) left);
+				} catch (NumberFormatException numberFormatException) {
 					Log.d(getClass().getSimpleName(), "Couldn't parse String", numberFormatException);
 				}
-			}
-			else{
-				doubleValueOfLeftChild = (Double)left;
+			} else {
+				doubleValueOfLeftChild = (Double) left;
 			}
 		}
 
 		if (rightChild != null) {
 			right = rightChild.interpretRecursive(sprite);
 			if (right instanceof String) {
-				try
-				{
-					doubleValueOfRightChild = Double.valueOf((String)right);
-				}
-				catch(NumberFormatException numberFormatException){
+				try {
+					doubleValueOfRightChild = Double.valueOf((String) right);
+				} catch (NumberFormatException numberFormatException) {
 					Log.d(getClass().getSimpleName(), "Couldn't parse String", numberFormatException);
 				}
-			}
-			else{
-				doubleValueOfRightChild = (Double)right;
+			} else {
+				doubleValueOfRightChild = (Double) right;
 			}
 		}
 
@@ -374,8 +368,44 @@ public class FormulaElement implements Serializable {
 				return interpretFunctionLENGTH(left, sprite);
 			case JOIN:
 				return interpretFunctionJOIN(sprite);
+			case LIST_ITEM:
+				return interpretFunctionLISTITEM(left, right, sprite);
 		}
 		return 0d;
+	}
+
+	private Object interpretFunctionLISTITEM(Object left, Object right, Sprite sprite) {
+		UserList userList = null;
+		if ( rightChild.getElementType() == ElementType.USER_LIST){
+			UserListContainer userLists = ProjectManager.getInstance().getCurrentProject().getUserLists();
+			userList = userLists.getUserList(rightChild.getValue(), sprite);
+		}
+
+		if (userList == null) {
+			return "";
+		}
+
+		int index = 0;
+		if (left instanceof String) {
+			try {
+				Double doubleValueOfLeftChild = Double.valueOf((String) left);
+				index = doubleValueOfLeftChild.intValue();
+			} catch (NumberFormatException numberFormatexception) {
+				Log.d(getClass().getSimpleName(), "Couldn't parse String", numberFormatexception);
+			}
+		} else {
+			index = ((Double) left).intValue();
+		}
+
+		index--;
+
+		if (index < 0) {
+			return "";
+		} else if (index >= userList.getList().size()) {
+			return "";
+		}
+
+		return userList.getList().get(index);
 	}
 
 	private Object interpretFunctionJOIN(Sprite sprite) {
@@ -432,14 +462,13 @@ public class FormulaElement implements Serializable {
 		//((Double) left).intValue() - 1;
 		if (left instanceof String) {
 			try {
-				Double doubleValueOfLeftChild =  Double.valueOf((String)left);
+				Double doubleValueOfLeftChild = Double.valueOf((String) left);
 				index = doubleValueOfLeftChild.intValue();
 			} catch (NumberFormatException numberFormatexception) {
 				Log.d(getClass().getSimpleName(), "Couldn't parse String", numberFormatexception);
 			}
-		}
-		else{
-			index = ((Double)left).intValue();
+		} else {
+			index = ((Double) left).intValue();
 		}
 
 		index--;
@@ -497,9 +526,6 @@ public class FormulaElement implements Serializable {
 			return randomDouble;
 		}
 	}
-
-
-
 
 
 	private Object interpretOperator(Operators operator, Sprite sprite) {
@@ -620,7 +646,7 @@ public class FormulaElement implements Serializable {
 		return returnValue;
 	}
 
-	private Object interpretString(String value)  {
+	private Object interpretString(String value) {
 
 //		if (parent == null && type != ElementType.USER_VARIABLE) {
 //			Double anotherValue;
