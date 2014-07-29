@@ -124,11 +124,12 @@ public class PreStageActivity extends BaseActivity {
 			droneInitializer.initialise();
 		}
 
-		if ((requiredResources & Brick.CAMERA ) > 0) {
+		if ((requiredResources & Brick.CAMERA ) > 0 || ((requiredResources & Brick.CAMERA_LED ) > 0)) {
 			boolean hasCamera = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 			if ( hasCamera && CameraController.getInstance().createCamera()) {
-				Log.d("Lausi", "init.............................................!");
-				resourceInitialized();
+				if (!((requiredResources & Brick.CAMERA_LED ) > 0)) {
+					resourceInitialized();
+				}
 			} else {
 				resourceFailed();
 			}
@@ -137,7 +138,6 @@ public class PreStageActivity extends BaseActivity {
 		if ((requiredResources & Brick.CAMERA_LED ) > 0) {
 			boolean hasCamera = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 			boolean hasLed = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-			Log.d("Lausi", "init.........................XXXXXXXXXX....................!");
 			if ( hasCamera && hasLed ) {
 				requiredResourceCounter--;
 				LedUtil.activateLedThread();

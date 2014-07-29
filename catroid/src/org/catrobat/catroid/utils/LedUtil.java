@@ -36,9 +36,6 @@ import java.util.concurrent.Semaphore;
 public final class LedUtil {
 
 	private static final String TAG = LedUtil.class.getSimpleName();
-	//private static Camera.Parameters paramsOn = null;
-	//private static Camera.Parameters paramsOff = null;
-
 	private static Semaphore lightThreadSemaphore = new Semaphore(1);
 
 	private static boolean paused = false;
@@ -102,9 +99,6 @@ public final class LedUtil {
 			lightThreadSemaphore.release();
 		}
 		lightThread = null;
-
-		//paramsOn = null;
-		//paramsOff = null;
 		currentLedValue = false;
 	}
 
@@ -155,9 +149,6 @@ public final class LedUtil {
 		}
 
 		lightThread = null;
-
-		//paramsOn = null;
-		//paramsOff = null;
 		currentLedValue = false;
 		Log.d(TAG, "killLedThread() : camera released! nextLedValue="+nextLedValue);
 

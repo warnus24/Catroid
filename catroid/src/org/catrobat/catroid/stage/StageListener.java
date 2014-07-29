@@ -281,15 +281,15 @@ public class StageListener implements ApplicationListener {
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-		if(!finished && CameraController.getInstance().isVideoRunning()) {
+		//if(!finished && CameraController.getInstance().isVideoRunning()) {
 			//draw VideoBackground
 			Log.d("lausi", "videoIsRUNNING.... show");
 			CameraController.getInstance().renderBackground();
-		}
+		//}
 		/*}else {
 			Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		}*/
+		}
 
 		if (reloadProject) {
 			int spriteSize = sprites.size();
@@ -356,7 +356,7 @@ public class StageListener implements ApplicationListener {
 			 * 
 			 * Can be removed, when EMMA is replaced by an other code coverage tool, or when a
 			 * future EMMA - update will fix the bugs.
-			 */
+			 *
 			if (DYNAMIC_SAMPLING_RATE_FOR_ACTIONS == false) {
 				stage.act(deltaTime);
 			} else {
@@ -408,7 +408,7 @@ public class StageListener implements ApplicationListener {
 		if (makeTestPixels) {
 			testPixels = ScreenUtils.getFrameBufferPixels(testX, testY, testWidth, testHeight, false);
 			makeTestPixels = false;
-		}
+		}*/
 	}
 
 	private List<String> reconstructNotifyActions(Map<String, List<String>> actions) {

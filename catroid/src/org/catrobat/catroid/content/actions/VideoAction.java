@@ -34,7 +34,10 @@ public class VideoAction extends TemporalAction {
 
 	@Override
 	protected void update(float delta) {
-		Log.d("Lausi", "updateVideoAction....");
+		if (videoOn)
+			Log.d("Lausi", "updateVideoAction....ON");
+		else
+			Log.d("Lausi", "updateVideoAction....OFF");
 		CameraController.getInstance().setVideoRunning(videoOn);
 	}
 
