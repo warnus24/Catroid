@@ -12,6 +12,7 @@ buildscript {
 }
 
 apply plugin: 'android-sdk-manager'
+apply plugin: 'android'
 apply plugin: 'com.android.application'
 //apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
@@ -49,7 +50,6 @@ dependencies {
     compile files('libs/gdx.jar')
     compile files('libs/gdx-backend-android.jar')
     compile 'com.google.guava:guava:17.0'
-    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
@@ -108,6 +108,7 @@ android {
         buildConfigField "String", "GIT_DESCRIBE", "\"${getGitDescribe()}\""
         buildConfigField "String", "GIT_CURRENT_BRANCH", "\"${getCurrentGitBranch()}\""
     }
+
     sourceSets {
         main {
             manifest.srcFile 'catroid/AndroidManifest.xml'
@@ -129,6 +130,13 @@ android {
             if (file('testexclusions.txt').exists()) {
                 java.exclude file('testexclusions.txt').readLines()
             }
+
+
+            packagingOptions {
+                exclude 'lib/armeabi/libgdx.so'
+                exclude 'lib/armeabi-v7a/libgdx.so'
+                exclude 'lib/x86/libgdx.so'
+            }
         }
     }
     lintOptions {
@@ -146,6 +154,56 @@ android {
         htmlReport false
         xmlOutput file("build/reports/lint.xml")
     }
+}
+// needed to add JNI shared libraries to APK when compiling on CLI
+tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
+    pkgTask.jniFolders = new HashSet<File>()
+    pkgTask.jniFolders.add(new File(projectDir, 'libs'))
+}
+
+// called every time gradle gets executed, takes the native dependencies of
+// the natives configuration, and extracts them to the proper libs/ folders
+// so they get packed with the APK.
+task copyAndroidNatives() {
+    file("libs/armeabi/").mkdirs();
+    file("libs/armeabi-v7a/").mkdirs();
+    file("libs/x86/").mkdirs();
+
+    configurations.natives.files.each { jar ->
+        def outputDir = null
+        if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
+        if(jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
+        if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
+        if(outputDir != null) {
+            copy {
+                from zipTree(jar)
+                into outputDir
+                include "*.so"
+            }
+        }
+    }
+}
+
+task run(type: Exec) {
+    def path
+    def localProperties = project.file("../local.properties")
+    if (localProperties.exists()) {
+        Properties properties = new Properties()
+        localProperties.withInputStream { instr ->
+            properties.load(instr)
+        }
+        def sdkDir = properties.getProperty('sdk.dir')
+        if (sdkDir) {
+            path = sdkDir
+        } else {
+            path = "$System.env.ANDROID_HOME"
+        }
+    } else {
+        path = "$System.env.ANDROID_HOME"
+    }
+
+    def adb = path + "/platform-tools/adb"
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'org.catrobat.catroid.android/org.catrobat.catroid.android.AndroidLauncher'
 }
 
 // Doesn't work atm. Maybe if the pmd plugin gets updated.

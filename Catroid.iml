@@ -63,9 +63,9 @@
     <orderEntry type="library" exported="" name="robotium-solo-4.3.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="actionbarsherlock-4.4.0" level="project" />
-    <orderEntry type="library" exported="" name="gdx-1.2.0" level="project" />
-    <orderEntry type="library" exported="" name="dexmaker-mockito-1.1" level="project" />
     <orderEntry type="library" exported="" name="gdx" level="project" />
+    <orderEntry type="library" exported="" name="1_gdx" level="project" />
+    <orderEntry type="library" exported="" name="dexmaker-mockito-1.1" level="project" />
     <orderEntry type="library" exported="" name="the-missing-android-xml-junit-test-runner-release-1.3_2" level="project" />
     <orderEntry type="library" exported="" name="gdx-backend-android" level="project" />
     <orderEntry type="library" exported="" name="1_gdx-backend-android" level="project" />
@@ -75,6 +75,7 @@
     <orderEntry type="library" exported="" name="xstream-1.4.4" level="project" />
     <orderEntry type="library" exported="" name="ardrone-natives-for-gradle" level="project" />
     <orderEntry type="library" exported="" name="guava-17.0" level="project" />
+    <orderEntry type="library" exported="" name="1_guava-17.0" level="project" />
     <orderEntry type="library" exported="" name="robotium-solo-4.3.1-javadoc" level="project" />
     <orderEntry type="library" exported="" name="dexmaker-1.0" level="project" />
   </component>
