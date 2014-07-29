@@ -83,7 +83,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	private static final int IMAGE_RESOURCE_3 = org.catrobat.catroid.test.R.drawable.background_black;
 	private static final int IMAGE_RESOURCE_4 = org.catrobat.catroid.test.R.drawable.background_green;
 	private static final int IMAGE_RESOURCE_5 = org.catrobat.catroid.test.R.drawable.background_red;
-	private static final String MY_PROJECTS_ACTIVITY_TEST_TAG = MyProjectsActivityTest.class.getSimpleName();
+	private static final String TAG = MyProjectsActivityTest.class.getSimpleName();
 	private static final String KEY_SHOW_DETAILS = "showDetailsMyProjects";
 	private static final String ZIPFILE_NAME = "testzip";
 	// temporarily removed - because of upcoming release, and bad performance of projectdescription
@@ -141,7 +141,6 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		// normally super.teardown should be called last
 		// but tests crashed with Nullpointer
 		super.tearDown();
-		ProjectManager.getInstance().deleteCurrentProject();
 		if (unzip) {
 			unzipProjects();
 		}
@@ -453,13 +452,13 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 					IMAGE_RESOURCE_2, getInstrumentation().getContext(), UiTestUtils.FileTypes.ROOT);
 		}
 
-		Log.v(MY_PROJECTS_ACTIVITY_TEST_TAG, "before sleep");
+		Log.v(TAG, "before sleep");
 		solo.sleep(100);
-		Log.v(MY_PROJECTS_ACTIVITY_TEST_TAG, "after sleep");
+		Log.v(TAG, "after sleep");
 		solo.clickOnButton(solo.getString(R.string.main_menu_programs));
-		Log.v(MY_PROJECTS_ACTIVITY_TEST_TAG, "after intent");
+		Log.v(TAG, "after intent");
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
-		Log.v(MY_PROJECTS_ACTIVITY_TEST_TAG, "activity visible");
+		Log.v(TAG, "activity visible");
 
 		ArrayList<ListView> listViews = solo.getCurrentViews(ListView.class);
 		while (solo.getCurrentViews(ListView.class).size() == 0) {
@@ -510,9 +509,9 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
 
 		solo.scrollToBottom();
-		Log.v(MY_PROJECTS_ACTIVITY_TEST_TAG, "scroll bottom");
+		Log.v(TAG, "scroll bottom");
 		solo.scrollToTop();
-		Log.v(MY_PROJECTS_ACTIVITY_TEST_TAG, "scroll up");
+		Log.v(TAG, "scroll up");
 		solo.sleep(500);
 		int currentViewID;
 		int pixelColor;
@@ -2166,7 +2165,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	private void createStandardProgramIfNeeded() {
 		File rootDirectory = new File(Constants.DEFAULT_ROOT);
 		if (UtilFile.getProjectNames(rootDirectory).isEmpty()) {
-			Log.v(MY_PROJECTS_ACTIVITY_TEST_TAG, "projectlist empty - creating standard project");
+			Log.v(TAG, "projectlist empty - creating standard project");
 			try {
 				StandardProjectHandler.createAndSaveStandardProject(getActivity());
 			} catch (IOException e) {
