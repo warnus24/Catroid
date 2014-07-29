@@ -393,4 +393,5 @@ public class PreStageActivity extends BaseActivity {
 			resourceFailed();
 		}
 	}
+	
 }
