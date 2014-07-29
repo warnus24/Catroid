@@ -23,6 +23,7 @@
 package org.catrobat.catroid;
 
 import android.app.Application;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.parrot.freeflight.settings.ApplicationSettings;

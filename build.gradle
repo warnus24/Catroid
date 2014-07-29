@@ -38,25 +38,25 @@ ext {
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
 }
 
 configurations { natives }
 dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:19.1.0'
+    compile files('libs/gdx.jar')
+    compile files('libs/gdx-backend-android.jar')
     compile 'com.google.guava:guava:17.0'
-    compile fileTree(include: '*.jar', dir: 'catroid/libs')
-    compile fileTree(include: '*.jar', dir: 'catroid/libs-natives')
-    androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
-    pmd 'net.sourceforge.pmd:pmd:5.1.1'
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
-
+    compile fileTree(dir: 'catroid/libs', include: '*.jar')
+    compile fileTree(dir: 'catroid/libs-natives', include: '*.jar')
+    compile fileTree(dir: 'catroidTest/libs', include: '*.jar')
+    pmd 'net.sourceforge.pmd:pmd:5.1.1'
 }
 
 
@@ -293,4 +293,3 @@ task gitApplyStashSwitchingToOldBranch << {
         throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
     }
 }
-
