@@ -251,6 +251,7 @@ public class PreStageActivity extends BaseActivity {
 		}
 	}
 
+	//all resources that should not have to be reinitialized every stage start
 	public static void shutdownPersistentResources() {
 
 		BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
