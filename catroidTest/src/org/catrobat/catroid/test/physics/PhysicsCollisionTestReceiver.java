@@ -18,31 +18,22 @@
  *  GNU Affero General Public License for more details.
  *
  *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.i
  */
-package org.catrobat.catroid.content;
 
-import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.IfLogicEndBrick;
-import org.catrobat.catroid.content.bricks.LoopEndBrick;
-import org.catrobat.catroid.content.bricks.ScriptBrick;
-import org.catrobat.catroid.physics.content.bricks.CollisionReceiverBrick;
+package org.catrobat.catroid.test.physics;
 
-import java.util.ArrayList;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class CollisionScript extends BroadcastScript {
 
-	private static final long serialVersionUID = 1L;
+public interface PhysicsCollisionTestReceiver {
+	void beginContactCallback(Contact contact);
 
-	public CollisionScript(String broadcastMessage) {
-		super(broadcastMessage);
-	}
+	void endContactCallback(Contact contact);
 
-	@Override
-	public ScriptBrick getScriptBrick() {
-		if (brick == null) {
-			brick = new CollisionReceiverBrick(this);
-		}
-		return brick;
-	}
+	void preSolveCallback(Contact contact, Manifold oldManifold);
+
+	void postSolveCallback(Contact contact, ContactImpulse impulse);
 }
