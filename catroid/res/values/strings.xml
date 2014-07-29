@@ -257,6 +257,8 @@
 
     <!-- PreStage activity -->
     <string name="text_to_speech_engine_not_installed">Text-to-Speech engine not installed!\nDo you want to install it?</string>
+    <string name="no_flash_led_available">No flash LED available</string>
+    <string name="no_vibrator_available">Vibrator not available</string>
     <!--  -->
 
 
@@ -272,9 +274,9 @@
 
     <!-- New look dialog -->
     <string name="new_look_dialog_title">Add Look</string>
-    <string name="add_look_from_camera">From Camera</string>
-    <string name="add_look_draw_new_image">Draw new image</string>
-    <string name="add_look_choose_image">Choose image</string>
+    <string name="add_look_from_camera">Take Picture</string>
+    <string name="add_look_draw_new_image">Draw image</string>
+    <string name="add_look_choose_image">Select image</string>
     <!--  -->
 
 
@@ -406,6 +408,9 @@
     <string name="brick_clear_graphic_effect">Clear graphic effects</string>
     <string name="brick_next_look">Next look</string>
     <string name="brick_next_background">Next background</string>
+    <string name="brick_led_on">switch camera LED ON</string>
+    <string name="brick_led_off">switch camera LED OFF</string>
+    <string name="brick_vibration">vibrate for</string>
     <!--  -->
 
 
@@ -578,22 +583,22 @@
 
 
     <!-- Drone Bricks -->
-    <string name="brick_drone_takeoff">take off</string>
-    <string name="brick_drone_land">land</string>
+    <string name="brick_drone_takeoff">Take off</string>
+    <string name="brick_drone_land">Land</string>
     <string name="brick_drone_play_led_animation">Play LED animation</string>
-    <string name="brick_drone_move_left">move left</string>
-    <string name="brick_drone_move_right">move right</string>
-    <string name="brick_drone_move_forward">move forward</string>
-    <string name="brick_drone_move_backward">move backward</string>
-    <string name="brick_drone_move_up">move up</string>
-    <string name="brick_drone_move_down">move down</string>
-    <string name="brick_drone_flip">flip</string>
-    <string name="brick_drone_power">power</string>
-    <string name="brick_drone_turn_right">turn right</string>
-    <string name="brick_drone_turn_left">turn left</string>
-    <string name="brick_drone_turn_left_magneto">turn left [angle]</string>
-    <string name="brick_drone_turn_right_magneto">turn right [angle]</string>
-    <string name="brick_drone_angle">angle</string>
+    <string name="brick_drone_move_left">Move left</string>
+    <string name="brick_drone_move_right">Move right</string>
+    <string name="brick_drone_move_forward">Move forward</string>
+    <string name="brick_drone_move_backward">Move backward</string>
+    <string name="brick_drone_move_up">Move up</string>
+    <string name="brick_drone_move_down">Move down</string>
+    <string name="brick_drone_flip">Flip</string>
+    <string name="brick_drone_power">Power</string>
+    <string name="brick_drone_turn_right">Turn right</string>
+    <string name="brick_drone_turn_left">Turn left</string>
+    <string name="brick_drone_turn_left_magneto">Turn left [angle]</string>
+    <string name="brick_drone_turn_right_magneto">Turn right [angle]</string>
+    <string name="brick_drone_angle">Angle</string>
 
     <!-- <string name="brick_drone_land">Drone: land</string> -->
     <!--  -->

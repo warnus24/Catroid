@@ -33,7 +33,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.SpeakBrick;
-import org.catrobat.catroid.ui.ScriptActivity;
+import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.Reflection;
@@ -41,7 +41,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
 
-public class SpeakBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
+public class SpeakBrickTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
 	private Project project;
 	private SpeakBrick speakBrick;
@@ -55,16 +55,14 @@ public class SpeakBrickTest extends BaseActivityInstrumentationTestCase<ScriptAc
 	private String testTrailingWhitespaces = trailing + " \t\n";
 
 	public SpeakBrickTest() {
-		super(ScriptActivity.class);
+		super(MainMenuActivity.class);
 	}
 
 	@Override
 	public void setUp() throws Exception {
-		// normally super.setUp should be called first
-		// but kept the test failing due to view is null
-		// when starting in ScriptActivity
-		createProject();
 		super.setUp();
+		createProject();
+		UiTestUtils.getIntoScriptActivityFromMainMenu(solo);
 	}
 
 	public void testSpeakBrick() {
@@ -90,6 +88,7 @@ public class SpeakBrickTest extends BaseActivityInstrumentationTestCase<ScriptAc
 
 		String brickText = (String) Reflection.getPrivateField(speakBrick, "text");
 		assertEquals("Wrong text in field.", testString, brickText);
+		solo.waitForText(testString);
 		assertEquals("Value in Brick is not updated.", testString,
 				((TextView) solo.getView(R.id.brick_speak_edit_text)).getText().toString());
 
@@ -100,6 +99,7 @@ public class SpeakBrickTest extends BaseActivityInstrumentationTestCase<ScriptAc
 
 		brickText = (String) Reflection.getPrivateField(speakBrick, "text");
 		assertEquals("Wrong text in field.", leading, brickText);
+		solo.waitForText(leading);
 		assertEquals("Value in Brick is not updated.", leading, ((TextView) solo.getView(R.id.brick_speak_edit_text))
 				.getText().toString());
 
@@ -110,6 +110,7 @@ public class SpeakBrickTest extends BaseActivityInstrumentationTestCase<ScriptAc
 
 		brickText = (String) Reflection.getPrivateField(speakBrick, "text");
 		assertEquals("Wrong text in field.", trailing, brickText);
+		solo.waitForText(trailing);
 		assertEquals("Value in Brick is not updated.", trailing, ((TextView) solo.getView(R.id.brick_speak_edit_text))
 				.getText().toString());
 	}
