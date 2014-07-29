@@ -102,7 +102,7 @@ public class PreStageActivity extends BaseActivity {
 		}
 
 		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
-			connectBTDevice(CatrobatService.ARDUINO, false); //broken
+			connectBTDevice(CatrobatService.ARDUINO, false);  //broken
 		}
 
 		if ((requiredResources & Brick.BLUETOOTH_KODEY) > 0) {
