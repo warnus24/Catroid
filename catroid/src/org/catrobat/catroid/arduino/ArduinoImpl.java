@@ -38,7 +38,6 @@ public class ArduinoImpl implements Arduino {
 
 	protected ArduinoConnection arduinoConnection;
 	protected Context context;
-
 	private boolean isInitialized = false;
 
 
