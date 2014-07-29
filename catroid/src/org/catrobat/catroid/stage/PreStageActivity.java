@@ -383,7 +383,7 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 	}
-
+	
 	private void ledInitialize() {
 		if ( hasFlash() ) {
 			resourceInitialized();
