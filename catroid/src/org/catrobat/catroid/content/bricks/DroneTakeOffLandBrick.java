@@ -23,14 +23,11 @@
 package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
@@ -41,32 +38,30 @@ import org.catrobat.catroid.content.actions.ExtendedActions;
 
 import java.util.List;
 
-public class DroneLandBrick extends DroneBrick {
+public class DroneTakeOffLandBrick extends DroneBrick {
 	private static final long serialVersionUID = 1L;
 
-	private transient AdapterView<?> adapterView;
-
-	public DroneLandBrick(Sprite sprite) {
+	public DroneTakeOffLandBrick(Sprite sprite) {
 		this.sprite = sprite;
 	}
 
 	@Override
 	public Brick copyBrickForSprite(Sprite sprite, Script script) {
-		DroneLandBrick copyBrick = (DroneLandBrick) clone();
+		DroneTakeOffLandBrick copyBrick = (DroneTakeOffLandBrick) clone();
 		copyBrick.sprite = sprite;
 		return copyBrick;
 	}
 
 	@Override
 	public View getPrototypeView(Context context) {
-		View prototypeView = View.inflate(context, R.layout.brick_drone_land, null);
+		View prototypeView = View.inflate(context, R.layout.brick_drone_takeoff, null);
 
 		return prototypeView;
 	}
 
 	@Override
 	public Brick clone() {
-		return new DroneLandBrick(getSprite());
+		return new DroneTakeOffLandBrick(getSprite());
 	}
 
 	@Override
@@ -77,10 +72,10 @@ public class DroneLandBrick extends DroneBrick {
 		if (view == null) {
 			alphaValue = 255;
 		}
-		view = View.inflate(context, R.layout.brick_drone_land, null);
+		view = View.inflate(context, R.layout.brick_drone_takeoff, null);
 		view = getViewWithAlpha(alphaValue);
 
-		setCheckboxView(R.id.brick_drone_land_checkbox);
+		setCheckboxView(R.id.brick_drone_takeoff_checkbox);
 		final Brick brickInstance = this;
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
@@ -96,16 +91,9 @@ public class DroneLandBrick extends DroneBrick {
 	@Override
 	public View getViewWithAlpha(int alphaValue) {
 		if (view != null) {
-			View layout = view.findViewById(R.id.brick_drone_land);
+			View layout = view.findViewById(R.id.brick_drone_takeoff);
 			Drawable background = layout.getBackground();
 			background.setAlpha(alphaValue);
-
-			TextView textLegoMotorStopLabel = (TextView) view.findViewById(R.id.ValueTextView);
-			textLegoMotorStopLabel.setTextColor(textLegoMotorStopLabel.getTextColors().withAlpha(alphaValue));
-			ColorStateList color = textLegoMotorStopLabel.getTextColors().withAlpha(alphaValue);
-			if (adapterView != null) {
-				((TextView) adapterView.getChildAt(0)).setTextColor(color);
-			}
 			this.alphaValue = (alphaValue);
 		}
 		return view;
@@ -113,7 +101,7 @@ public class DroneLandBrick extends DroneBrick {
 
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.droneTakeOff()); // same command
+		sequence.addAction(ExtendedActions.droneTakeOff());
 		return null;
 	}
 }

@@ -48,7 +48,7 @@
         <TextView
             android:id="@+id/ValueTextView"
             style="@style/BrickText.SingleLine"
-            android:text="@string/brick_drone_takeoff" >
+            android:text="@string/brick_drone_takeoff_land" >
         </TextView>
     </org.catrobat.catroid.ui.BrickLayout>
 

@@ -26,7 +26,6 @@ package org.catrobat.catroid.drone;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.BrickBaseType;
 import org.catrobat.catroid.content.bricks.DroneFlipBrick;
-import org.catrobat.catroid.content.bricks.DroneLandBrick;
 import org.catrobat.catroid.content.bricks.DroneMoveBackwardBrick;
 import org.catrobat.catroid.content.bricks.DroneMoveDownBrick;
 import org.catrobat.catroid.content.bricks.DroneMoveForwardBrick;
@@ -34,7 +33,7 @@ import org.catrobat.catroid.content.bricks.DroneMoveLeftBrick;
 import org.catrobat.catroid.content.bricks.DroneMoveRightBrick;
 import org.catrobat.catroid.content.bricks.DroneMoveUpBrick;
 import org.catrobat.catroid.content.bricks.DronePlayLedAnimationBrick;
-import org.catrobat.catroid.content.bricks.DroneTakeOffBrick;
+import org.catrobat.catroid.content.bricks.DroneTakeOffLandBrick;
 import org.catrobat.catroid.content.bricks.DroneTurnLeftBrick;
 import org.catrobat.catroid.content.bricks.DroneTurnRightBrick;
 
@@ -52,16 +51,13 @@ public final class DroneBrickFactory {
 
 		switch (brick) {
 			case DRONE_TAKE_OFF_BRICK:
-				return new DroneTakeOffBrick(sprite);
+				return new DroneTakeOffLandBrick(sprite);
 
 			case DRONE_FLIP_BRICK:
 				return new DroneFlipBrick(sprite);
 
 			case DRONE_PLAY_LED_ANIMATION_BRICK:
 				return new DronePlayLedAnimationBrick(sprite);
-
-			case DRONE_LAND_BRICK:
-				return new DroneLandBrick(sprite);
 
 			case DRONE_MOVE_DOWN_BRICK:
 				return new DroneMoveDownBrick(sprite, timeInMilliseconds, powerInPercent);

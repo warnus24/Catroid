@@ -41,7 +41,7 @@ import org.catrobat.catroid.content.bricks.DroneMoveLeftBrick;
 import org.catrobat.catroid.content.bricks.DroneMoveRightBrick;
 import org.catrobat.catroid.content.bricks.DroneMoveUpBrick;
 import org.catrobat.catroid.content.bricks.DronePlayLedAnimationBrick;
-import org.catrobat.catroid.content.bricks.DroneTakeOffBrick;
+import org.catrobat.catroid.content.bricks.DroneTakeOffLandBrick;
 import org.catrobat.catroid.drone.DroneServiceWrapper;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.mockito.Mockito;
@@ -95,7 +95,7 @@ public class DroneBricksActionTests extends InstrumentationTestCase {
 	}
 
 	public void testTakeOff() {
-		addActionToSequenceAndAct(new DroneTakeOffBrick(sprite));
+		addActionToSequenceAndAct(new DroneTakeOffLandBrick(sprite));
 		Mockito.verify(droneControlService, Mockito.atLeast(1)).triggerTakeOff();
 	}
 
