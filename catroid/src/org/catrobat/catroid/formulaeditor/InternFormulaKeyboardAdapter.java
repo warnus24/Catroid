@@ -2,31 +2,27 @@
  *  Catroid: An on-device visual programming system for Android devices
  *  Copyright (C) 2010-2013 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
  *  published by the Free Software Foundation, either version 3 of the
  *  License, or (at your option) any later version.
- *  
+ *
  *  An additional term exception under section 7 of the GNU Affero
  *  General Public License, version 3, is available at
  *  http://developer.catrobat.org/license_additional_term
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU Affero General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.formulaeditor;
 
-import android.content.Context;
-
-import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.Project;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +50,7 @@ public class InternFormulaKeyboardAdapter {
 		}
 
 		switch (resource) {
-		// NUMBER:
+			// NUMBER:
 			case R.id.formula_editor_keyboard_0:
 				return buildNumber("0");
 			case R.id.formula_editor_keyboard_1:
@@ -76,7 +72,7 @@ public class InternFormulaKeyboardAdapter {
 			case R.id.formula_editor_keyboard_9:
 				return buildNumber("9");
 
-				//FUNCTIONS:
+			//FUNCTIONS:
 			case R.string.formula_editor_function_sin:
 				return buildSingleParameterFunction(Functions.SIN, InternTokenType.NUMBER, "0");
 			case R.string.formula_editor_function_cos:
@@ -133,7 +129,7 @@ public class InternFormulaKeyboardAdapter {
 			case R.string.formula_editor_function_contains:
 				return buildDoubleParameterFunction(Functions.CONTAINS, InternTokenType.USER_LIST, "list name", InternTokenType.NUMBER, "1");
 
-				//SENSOR
+			//SENSOR
 
 			case R.string.formula_editor_sensor_x_acceleration:
 				return buildSensor(Sensors.X_ACCELERATION);
@@ -150,11 +146,11 @@ public class InternFormulaKeyboardAdapter {
 			case R.string.formula_editor_sensor_loudness:
 				return buildSensor(Sensors.LOUDNESS);
 
-				//PERIOD
+			//PERIOD
 			case R.id.formula_editor_keyboard_decimal_mark:
 				return buildPeriod();
 
-				//OPERATOR
+			//OPERATOR
 
 			case R.id.formula_editor_keyboard_plus:
 				return buildOperator(Operators.PLUS);
@@ -187,14 +183,14 @@ public class InternFormulaKeyboardAdapter {
 			case R.string.formula_editor_logic_not:
 				return buildOperator(Operators.LOGICAL_NOT);
 
-				//BRACKETS
+			//BRACKETS
 
 			case R.id.formula_editor_keyboard_bracket_open:
 				return buildBracketOpen();
 			case R.id.formula_editor_keyboard_bracket_close:
 				return buildBracketClose();
 
-				//COSTUME
+			//COSTUME
 
 			case R.string.formula_editor_object_x:
 				return buildObject(Sensors.OBJECT_X);
