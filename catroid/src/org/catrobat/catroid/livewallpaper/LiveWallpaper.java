@@ -1,23 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  *  Catroid: An on-device visual programming system for Android devices
  *  Copyright (C) 2010-2013 The Catrobat Team
@@ -135,7 +116,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public void onCreate() {
-		onCreateApplication();// mal sehen °|°
 		//android.os.Debug.waitForDebugger();
 		if (!TEST) {
 			super.onCreate();
@@ -153,15 +133,15 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 
 	public void onCreateApplication() {
-		//super.onCreateApplication();
+		super.onCreateApplication();
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.getTouchEventsForLiveWallpaper = true;
 
 		setScreenSize(false);
 		loadProject();
 		ProjectManager.changeState(ProjectManagerState.LWP);
-		stageListener = new StageListener();
-		//initialize(stageListener, config); libgdx fail patch to higher version
+		stageListener = new StageListener(true);
+		initialize(stageListener, config);
 		stageListener.create();
 		Log.d("LWP", "Preview was initialized");
 	}
@@ -361,10 +341,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			if (getLocalStageListener() == null) {
 				return;
 			}
-
+			super.onResume();
 			SensorHandler.startSensorListener(getApplicationContext());
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
-			super.onResume();
+
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ENDE");
 		}
 

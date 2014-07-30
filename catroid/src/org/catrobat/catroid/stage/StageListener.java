@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.stage;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Color;
@@ -34,7 +33,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.backends.android.AndroidWallpaperListener;
 import com.badlogic.gdx.files.FileHandle;
-
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -199,7 +197,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		} else {
 			project = ProjectManager.getInstance(ProjectManagerState.NORMAL).getCurrentProject();
 		}
-
+		Log.d("LWP", "current project name is"+project.getName());
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";
 
 		virtualWidth = project.getXmlHeader().virtualScreenWidth;
