@@ -68,16 +68,7 @@ public class StageActivity extends AndroidApplication {
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		calculateScreenSizes();
 
-		// lausi
-		AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-		cfg.useGL20 = true; //This line is obsolete in the newest libgdx version
-		cfg.a = 8;
-		cfg.b = 8;
-		cfg.g = 8;
-		cfg.r = 8;
-
-		//initialize(stageListener, true);
-		initialize(stageListener,cfg);
+		initialize(stageListener, true);
 		if (droneConnection != null) {
 			try {
 				droneConnection.initialise();

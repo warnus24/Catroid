@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.content;
 
+import android.util.Log;
+
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -391,17 +393,21 @@ public class Look extends Image {
 			super(VERTEX_SHADER, FRAGMENT_SHADER);
 			ShaderProgram.pedantic = false;
 			if (isCompiled()) {
+				Log.d("Lausi", "Look begin 2");
 				begin();
 				setUniformf(BRIGHTNESS_STRING_IN_SHADER, 0.0f);
 				setUniformf(CONTRAST_STRING_IN_SHADER, 1.0f);
 				end();
+				Log.d("Lausi", "Look end 2");
 			}
 		}
 
 		public void setBrightness(float brightness) {
+			Log.d("Lausi", "Look begin 1");
 			begin();
 			setUniformf(BRIGHTNESS_STRING_IN_SHADER, brightness - 1f);
 			end();
+			Log.d("Lausi", "Look end 1");
 		}
 	}
 }

@@ -49,7 +49,6 @@ import com.google.common.collect.Multimap;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.camera.CameraController;
-import org.catrobat.catroid.camera.SurfaceForCallback;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenModes;
@@ -148,6 +147,7 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void create() {
+		Log.d("Lausi", "StageListener Create");
 		font = new BitmapFont();
 		font.setColor(1f, 0f, 0.05f, 1f);
 		font.setScale(1.2f);
@@ -217,6 +217,7 @@ public class StageListener implements ApplicationListener {
 		}
 		paused = true;
 		SoundManager.getInstance().pause();
+		CameraController.getInstance().pause();
 		for (Sprite sprite : sprites) {
 			sprite.pause();
 		}
@@ -276,20 +277,19 @@ public class StageListener implements ApplicationListener {
 
 	@Override
 	public void render() {
-
-	//	Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+		//Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		//if(!finished && CameraController.getInstance().isVideoRunning()) {
 			//draw VideoBackground
-			Log.d("lausi", "videoIsRUNNING.... show");
-			CameraController.getInstance().renderBackground();
+			//Log.d("lausi", "videoIsRUNNING.... show");
+			//CameraController.getInstance().renderBackground();
 		//}
 		/*}else {
 			Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		}
+		}*/
 
 		if (reloadProject) {
 			int spriteSize = sprites.size();
@@ -320,7 +320,13 @@ public class StageListener implements ApplicationListener {
 			}
 		}
 
+		//batch.setShader(CameraController.getInstance().shader);
 		batch.setProjectionMatrix(camera.combined);
+		Log.d("lausi", "videoIsRUNNING.... show");
+		CameraController.getInstance().renderBackground();
+		//if(!paused && CameraController.getInstance().isVideoRunning()) {
+		//draw VideoBackground
+		//}
 
 		if (firstStart) {
 			int spriteSize = sprites.size();
@@ -356,7 +362,7 @@ public class StageListener implements ApplicationListener {
 			 * 
 			 * Can be removed, when EMMA is replaced by an other code coverage tool, or when a
 			 * future EMMA - update will fix the bugs.
-			 *
+			 */
 			if (DYNAMIC_SAMPLING_RATE_FOR_ACTIONS == false) {
 				stage.act(deltaTime);
 			} else {
@@ -376,7 +382,6 @@ public class StageListener implements ApplicationListener {
 				}
 			}
 		}
-
 		if (!finished) {
 			stage.draw();
 		}
@@ -408,7 +413,7 @@ public class StageListener implements ApplicationListener {
 		if (makeTestPixels) {
 			testPixels = ScreenUtils.getFrameBufferPixels(testX, testY, testWidth, testHeight, false);
 			makeTestPixels = false;
-		}*/
+		}
 	}
 
 	private List<String> reconstructNotifyActions(Map<String, List<String>> actions) {

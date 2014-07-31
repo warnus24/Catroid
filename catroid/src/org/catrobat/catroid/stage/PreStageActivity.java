@@ -126,11 +126,11 @@ public class PreStageActivity extends BaseActivity {
 
 		if ((requiredResources & Brick.CAMERA ) > 0 || ((requiredResources & Brick.CAMERA_LED ) > 0)) {
 			boolean hasCamera = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
-			if ( hasCamera && CameraController.getInstance().createCamera()) {
+			//if ( CameraController.getInstance().createCamera()) {
 				if (!((requiredResources & Brick.CAMERA_LED ) > 0)) {
 					resourceInitialized();
 				}
-			} else {
+			else {
 				resourceFailed();
 			}
 		}
