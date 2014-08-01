@@ -53,6 +53,7 @@ import com.actionbarsherlock.view.Menu;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaEditorEditText;
@@ -263,20 +264,16 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 							formulaEditorEditText.redo();
 							return true;
 						case R.id.formula_editor_keyboard_function:
-							showFormulaEditorListFragment(FormulaEditorListFragment.FUNCTION_TAG,
-									R.string.formula_editor_function);
+							showFormulaEditorListFragment(Constants.FORMULA_EDITOR_FUNCTIONS_TAG);
 							return true;
 						case R.id.formula_editor_keyboard_logic:
-							showFormulaEditorListFragment(FormulaEditorListFragment.LOGIC_TAG,
-									R.string.formula_editor_logic);
+							showFormulaEditorListFragment(Constants.FORMULA_EDITOR_LOGIC_TAG);
 							return true;
 						case R.id.formula_editor_keyboard_object:
-							showFormulaEditorListFragment(FormulaEditorListFragment.OBJECT_TAG,
-									R.string.formula_editor_choose_object_variable);
+							showFormulaEditorListFragment(Constants.FORMULA_EDITOR_OBJECT_TAG);
 							return true;
 						case R.id.formula_editor_keyboard_sensors:
-							showFormulaEditorListFragment(FormulaEditorListFragment.SENSOR_TAG,
-									R.string.formula_editor_sensors);
+							showFormulaEditorListFragment(Constants.FORMULA_EDITOR_SENSOR_TAG);
 							return true;
 						case R.id.formula_editor_keyboard_variables:
 							showFormulaEditorVariableListFragment(FormulaEditorVariableListFragment.VARIABLE_TAG,
@@ -495,17 +492,24 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		currentFormula.highlightTextField(brickView, orientation);
 	}
 
-	private void showFormulaEditorListFragment(String tag, int actionbarResId) {
+	private void showFormulaEditorListFragment(String tag) {
 		FragmentManager fragmentManager = ((SherlockFragmentActivity) context).getSupportFragmentManager();
 		Fragment fragment = fragmentManager.findFragmentByTag(tag);
 
 		if (fragment == null) {
-			fragment = new FormulaEditorListFragment();
-			Bundle bundle = new Bundle();
-			bundle.putString(FormulaEditorListFragment.ACTION_BAR_TITLE_BUNDLE_ARGUMENT,
-					context.getString(actionbarResId));
-			bundle.putString(FormulaEditorListFragment.FRAGMENT_TAG_BUNDLE_ARGUMENT, tag);
-			fragment.setArguments(bundle);
+
+			if (tag == Constants.FORMULA_EDITOR_OBJECT_TAG) {
+				fragment = new FormulaEditorObjectFragment();
+			} else if (tag == Constants.FORMULA_EDITOR_LOGIC_TAG) {
+				fragment = new FormulaEditorLogicFragment();
+			} else if (tag == Constants.FORMULA_EDITOR_FUNCTIONS_TAG) {
+				fragment = new FormulaEditorFunctionsFragment();
+			} else if (tag == Constants.FORMULA_EDITOR_SENSOR_TAG) {
+				fragment = new FormularEditorSensorFragment();
+			} else {
+				return;
+			}
+
 			fragmentManager.beginTransaction().add(R.id.script_fragment_container, fragment, tag).commit();
 		}
 		((FormulaEditorListFragment) fragment).showFragment(context);

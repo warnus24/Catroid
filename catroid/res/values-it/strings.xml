@@ -429,7 +429,6 @@
   <string name="formula_editor_parse_fail">Errore di sintassi!</string>
   <string name="formula_nothing_selected">Definire il valore di input</string>
   <string name="formula_editor_parse_fail_formula_too_long">Formula troppo lunga!</string>
-  <string name="formula_editor_choose_object_variable">Proprietà di questo oggetto</string>
   <string name="formula_editor_existing_variable">Nome già in uso!</string>
   <string name="formula_editor_bracket_open">(</string>
   <string name="formula_editor_bracket_close">)</string>

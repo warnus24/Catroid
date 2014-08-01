@@ -41,6 +41,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.BroadcastHandler;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.stage.PreStageActivity;
@@ -302,7 +303,7 @@ public class ScriptActivity extends BaseActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 
-		for (String tag : FormulaEditorListFragment.TAGS) {
+		for (String tag : Constants.FORMULA_EDITOR_TAGS) {
 			FormulaEditorListFragment fragment = (FormulaEditorListFragment) fragmentManager.findFragmentByTag(tag);
 			if (fragment != null && fragment.isVisible()) {
 				return fragment.onKey(null, keyCode, event);

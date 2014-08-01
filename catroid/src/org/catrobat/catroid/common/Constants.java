@@ -24,6 +24,8 @@ package org.catrobat.catroid.common;
 
 import android.os.Environment;
 
+import org.catrobat.catroid.R;
+
 public final class Constants {
 
 	// Reflection in testcases needed
@@ -99,6 +101,52 @@ public final class Constants {
 	public static final int UPLOAD_NOTIFICATION = 102;
 	public static final int DOWNLOAD_NOTIFICATION = 103;
 	public static final int COPY_NOTIFICATION = 104;
+
+	//FormulaEditor Strings and Tags
+	public static final String FORMULA_EDITOR_OBJECT_TAG = "objectFragment";
+	public static final String FORMULA_EDITOR_FUNCTIONS_TAG = "functionFragment";
+	public static final String FORMULA_EDITOR_LOGIC_TAG = "logicFragment";
+	public static final String FORMULA_EDITOR_SENSOR_TAG = "sensorFragment";
+	public static final String[] FORMULA_EDITOR_TAGS = {FORMULA_EDITOR_OBJECT_TAG, FORMULA_EDITOR_FUNCTIONS_TAG, FORMULA_EDITOR_LOGIC_TAG, FORMULA_EDITOR_SENSOR_TAG};
+
+	public static final int[] OBJECT_ITEMS = { R.string.formula_editor_object_x, R.string.formula_editor_object_y,
+			R.string.formula_editor_object_ghosteffect, R.string.formula_editor_object_brightness,
+			R.string.formula_editor_object_size, R.string.formula_editor_object_rotation,
+			R.string.formula_editor_object_layer };
+	public static final int[] LOGIC_ITEMS = { R.string.formula_editor_logic_equal,
+			R.string.formula_editor_logic_notequal, R.string.formula_editor_logic_lesserthan,
+			R.string.formula_editor_logic_leserequal, R.string.formula_editor_logic_greaterthan,
+			R.string.formula_editor_logic_greaterequal, R.string.formula_editor_logic_and,
+			R.string.formula_editor_logic_or, R.string.formula_editor_logic_not, R.string.formula_editor_function_true,
+			R.string.formula_editor_function_false };
+	public static final int[] FUNCTIONS_ITEMS = { R.string.formula_editor_function_sin,
+			R.string.formula_editor_function_cos, R.string.formula_editor_function_tan,
+			R.string.formula_editor_function_ln, R.string.formula_editor_function_log,
+			R.string.formula_editor_function_pi, R.string.formula_editor_function_sqrt,
+			R.string.formula_editor_function_rand, R.string.formula_editor_function_abs,
+			R.string.formula_editor_function_round, R.string.formula_editor_function_mod,
+			R.string.formula_editor_function_arcsin, R.string.formula_editor_function_arccos,
+			R.string.formula_editor_function_arctan, R.string.formula_editor_function_exp,
+			R.string.formula_editor_function_max, R.string.formula_editor_function_min,
+			R.string.formula_editor_function_length, R.string.formula_editor_function_letter,
+			R.string.formula_editor_function_join };
+	public static final int[] FUNCTIONS_PARAMETERS = { R.string.formula_editor_function_sin_parameter,
+			R.string.formula_editor_function_cos_parameter, R.string.formula_editor_function_tan_parameter,
+			R.string.formula_editor_function_ln_parameter, R.string.formula_editor_function_log_parameter,
+			R.string.formula_editor_function_pi_parameter, R.string.formula_editor_function_sqrt_parameter,
+			R.string.formula_editor_function_rand_parameter, R.string.formula_editor_function_abs_parameter,
+			R.string.formula_editor_function_round_parameter, R.string.formula_editor_function_mod_parameter,
+			R.string.formula_editor_function_arcsin_parameter, R.string.formula_editor_function_arccos_parameter,
+			R.string.formula_editor_function_arctan_parameter, R.string.formula_editor_function_exp_parameter,
+			R.string.formula_editor_function_max_parameter, R.string.formula_editor_function_min_parameter,
+			R.string.formula_editor_function_length_parameter, R.string.formula_editor_function_letter_parameter,
+			R.string.formula_editor_function_join_parameter };
+	public static final int[] SENSOR_ITEMS = { R.string.formula_editor_sensor_x_acceleration,
+			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
+			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
+			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
+			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
+			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position };
 
 	// Suppress default constructor for noninstantiability
 	private Constants() {
