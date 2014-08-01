@@ -24,6 +24,7 @@ package org.catrobat.catroid.test.content.sprite;
 
 import android.test.AndroidTestCase;
 
+
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
