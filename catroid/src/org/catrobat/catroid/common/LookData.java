@@ -31,6 +31,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.utils.ImageEditing;
@@ -43,6 +45,7 @@ public class LookData implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 	private static final String TAG = LookData.class.getSimpleName();
 
+	@XStreamAsAttribute
 	private String name;
 	private String fileName;
 	private transient Bitmap thumbnailBitmap;
