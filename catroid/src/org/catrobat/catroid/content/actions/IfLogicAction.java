@@ -50,10 +50,6 @@ public class IfLogicAction extends Action {
 			begin();
 			isInitialized = true;
 		}
-<<<<<<< HEAD
-=======
-//		Log.e("IfLogicAction_act()", "bug2 - " + ifConditionValue);
->>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 		if (ifConditionValue) {
 			return ifAction.act(delta);
 		} else {

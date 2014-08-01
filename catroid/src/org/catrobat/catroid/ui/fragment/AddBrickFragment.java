@@ -236,16 +236,10 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 		}
 
 		ScriptActivity activity = (ScriptActivity) scriptFragment.getActivity();
-<<<<<<< HEAD
+
 		if (activity != null) {
 			activity.setDeleteModeListener(null);
 		}
-=======
-		if(activity != null)
-			activity.setDeleteModeListener(null);
-		else
-			Log.e("AddBrickFragment_onDestroy()", "bug4 scriptFragment.getActivity() returns null!");
->>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 		super.onDestroy();
 	}
 
@@ -383,8 +377,8 @@ public class AddBrickFragment extends SherlockListFragment implements DeleteMode
 			actionModeActive = true;
 
 			actionModeTitle = getString(R.string.delete);
-			singleItemAppendixActionMode = getString(R.string.brick_single);
-			multipleItemAppendixActionMode = getString(R.string.brick_multiple);
+//			singleItemAppendixActionMode = getString(R.string.brick_single);
+//			multipleItemAppendixActionMode = getString(R.string.brick_multiple);
 
 			mode.setTitle(actionModeTitle);
 

@@ -1183,21 +1183,13 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 	}
 
 	public void setCheckboxVisibility(int visibility) {
-		int i = 0;
-<<<<<<< HEAD
-
-		if (ProjectManager.getInstance().getCurrentUserBrick() != null && brickList.get(0).equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
-				i = 1;
+		int index = 0;
+		if (brickList.get(0).equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
+			index = 1;
 		}
-		for (; i < brickList.size(); i++)
-=======
-		if(brickList.get(0).equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
-			i = 1;
-		}
-		for(; i < brickList.size(); i++)
->>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
+		for (; index < brickList.size(); index++)
 		{
-			brickList.get(i).setCheckboxVisibility(visibility);
+			brickList.get(index).setCheckboxVisibility(visibility);
 		}
 	}
 

@@ -674,10 +674,6 @@
     <string name="new_user_brick">Neuer Baustein</string>
     <string name="new_user_brick_variable">Variable 2</string>
     <string name="recursive_user_brick_forbidden">Hinzufügen eines Userbricks in einem Userbrick ist noch nicht erlaubt!</string>
-
-    <!-- TODO: CHANGE these 2 strings below -->
-    <string name="brick_single">CHANGEME</string>
- 	<string name="brick_multiple">CHANGEME</string>
     <!--  -->    
 
 </resources>

@@ -140,21 +140,12 @@ public class ScriptActivity extends BaseActivity {
 		actionBar.setDisplayShowTitleEnabled(true);
 		//The try-catch block is added in the same way as in ProgramMenuActivity
 		try{
-<<<<<<< HEAD
 			String currentSprite = ProjectManager.getInstance().getCurrentSprite().getName();
 			actionBar.setTitle(currentSprite);
 		} catch (NullPointerException nullPointerException) {
 			Log.e(TAG, "onCreate: NPE -> finishing", nullPointerException);
 			finish();
 		}
-=======
-		String currentSprite = ProjectManager.getInstance().getCurrentSprite().getName();
-		actionBar.setTitle(currentSprite);
-	} catch (NullPointerException nullPointerException) {
-		Log.e(TAG, "onCreate: NPE -> finishing", nullPointerException);
-		finish();
-	}
->>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 	}
 
 	@Override

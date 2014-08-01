@@ -41,10 +41,6 @@ public class SetVariableAction extends TemporalAction {
 		}
 		double value = changeVariable.interpretDouble(sprite);
 		userVariable.setValue(value);
-<<<<<<< HEAD
-=======
-//		Log.e("SetVariableAction_update", userVariable.getName() + "set to " + userVariable.getValue());
->>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 	}
 
 	public void setUserVariable(UserVariable userVariable) {

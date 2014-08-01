@@ -158,7 +158,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 public final class UiTestUtils {
@@ -277,10 +276,10 @@ public final class UiTestUtils {
 	private UiTestUtils() {
 		throw new AssertionError();
 	}
-	
+
 	public static ProjectManager getProjectManager() {
-		 return projectManager;
-		 }
+		return projectManager;
+	}
 
 	public static void enterText(Solo solo, int editTextIndex, String text) {
 
@@ -298,17 +297,11 @@ public final class UiTestUtils {
 
 	/**
 	 * Clicks on the EditText given by editTextId, inserts the integer value and closes the Dialog
-<<<<<<< HEAD
 	 *
-	 * @param editTextId The ID of the EditText to click on
-	 * @param value      The value you want to put into the EditText
-=======
-	 * 
 	 * @param solo
 	 *            solo of the EditText to click on
 	 * @param value
 	 *            The value you want to put into the EditText
->>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 	 */
 	public static void insertIntegerIntoEditText(Solo solo, int value) {
 		insertValue(solo, value + "");
@@ -316,17 +309,11 @@ public final class UiTestUtils {
 
 	/**
 	 * Clicks on the EditText given by editTextId, inserts the double value and closes the Dialog
-<<<<<<< HEAD
 	 *
-	 * @param editTextId The ID of the EditText to click on
-	 * @param value      The value you want to put into the EditText
-=======
-	 * 
 	 * @param solo
 	 *            solo of the EditText to click on
 	 * @param value
 	 *            The value you want to put into the EditText
->>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 	 */
 	public static void insertDoubleIntoEditText(Solo solo, double value) {
 		insertValue(solo, value + "");
@@ -391,8 +378,7 @@ public final class UiTestUtils {
 				"Text not updated within FormulaEditor",
 				newValue,
 				Double.parseDouble(((EditText) solo.getView(R.id.formula_editor_edit_field)).getText().toString()
-						.replace(',', '.'))
-		);
+						.replace(',', '.')));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 		solo.sleep(200);
 
@@ -413,8 +399,7 @@ public final class UiTestUtils {
 				"Text not updated within FormulaEditor",
 				value,
 				Double.parseDouble(((EditText) solo.getView(R.id.formula_editor_edit_field)).getText().toString()
-						.replace(',', '.'))
-		);
+						.replace(',', '.')));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 		solo.sleep(200);
 	}
@@ -535,15 +520,15 @@ public final class UiTestUtils {
 		if (!succeeded) {
 			fail(brickName + " should appear. Failed to scroll to find it.");
 		}
-		
+
 		if (categoryStringId == R.string.category_user_bricks) {
-			 String stringOnAddToScriptButton = solo.getCurrentActivity().getString(
-			 R.string.brick_context_dialog_add_to_script);
-			 if (!solo.waitForText(stringOnAddToScriptButton, 0, 2000)) {
-			 fail("Text '" + stringOnAddToScriptButton + "' not shown in 5 secs!");
-			 }
-			 solo.clickOnText(stringOnAddToScriptButton);
-			 }
+			String stringOnAddToScriptButton = solo.getCurrentActivity().getString(
+					R.string.brick_context_dialog_add_to_script);
+			if (!solo.waitForText(stringOnAddToScriptButton, 0, 2000)) {
+				fail("Text '" + stringOnAddToScriptButton + "' not shown in 5 secs!");
+			}
+			solo.clickOnText(stringOnAddToScriptButton);
+		}
 		solo.sleep(600);
 	}
 
@@ -556,122 +541,64 @@ public final class UiTestUtils {
 
 		solo.sleep(600);
 		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, solo.getCurrentActivity());
-<<<<<<< HEAD
 
 		solo.clickOnCheckBox(1);
-=======
-		solo.clickOnCheckBox(0);
->>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 
 		UiTestUtils.acceptAndCloseActionMode(solo);
 		solo.clickOnButton(solo.getString(R.string.yes));
 	}
 
-<<<<<<< HEAD
 	public static void clickOnBrickCategory(Solo solo, String category) {
-		 if (!solo.waitForText(category, 0, 300)) {
-		 solo.drag(40, 40, 300, 40, DRAG_FRAMES);
-		 }
-		 solo.clickOnText(category);
-		 }
-		
-		 public static void showSourceAndEditBrick(String brickName, Solo solo) {
-		 showSourceAndEditBrick(brickName, true, solo);
-		 }
-		
-		 public static void showSourceAndEditBrick(String brickName, boolean click, Solo solo) {
-		 if (click) {
-		 solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
-		 }
-		
-		 String stringOnShowSourceButton = solo.getCurrentActivity()
-		 .getString(R.string.brick_context_dialog_show_source);
-		 solo.waitForText(stringOnShowSourceButton);
-		 solo.clickOnText(stringOnShowSourceButton);
-		
-		 boolean addBrickShowedUp = solo.waitForFragmentByTag(AddBrickFragment.ADD_BRICK_FRAGMENT_TAG, 2000);
-		 if (!addBrickShowedUp) {
-		 fail("addBrickFragment should have showed up");
-		 }
-		
-		 solo.sleep(1000);
-		
-		 boolean clicked = UiTestUtils.clickOnBrickInAddBrickFragment(solo, brickName, false);
-		 if (!clicked) {
-		 fail("was unable to click on " + brickName + "!");
-		 }
-		
-		 String stringOnEditButton = solo.getCurrentActivity().getString(R.string.brick_context_dialog_edit_brick);
-		
-		 boolean editButtonShowedUp = solo.waitForText(stringOnEditButton, 0, 3000);
-		 if (!editButtonShowedUp) {
-		 fail(stringOnEditButton + " should have showed up");
-		 }
-		
-		 solo.clickOnText(stringOnEditButton);
-		
-		 boolean activityShowedUp = solo.waitForActivity(UserBrickScriptActivity.class, 3000);
-		 if (!activityShowedUp) {
-		 fail("UserBrickScriptActivity should have showed up");
-		 }
-		
-		 solo.sleep(50);
-		 }
-		
-		 public static boolean clickOnBrickInAddBrickFragment(Solo solo, String brickName, boolean addToScript) {
-=======
->>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
-	public static void clickOnBrickCategory(Solo solo, String category) {
-		 if (!solo.waitForText(category, 0, 300)) {
-		 solo.drag(40, 40, 300, 40, DRAG_FRAMES);
-		 }
-		 solo.clickOnText(category);
-		 }
-		
-		 public static void showSourceAndEditBrick(String brickName, Solo solo) {
-		 showSourceAndEditBrick(brickName, true, solo);
-		 }
-		
-		 public static void showSourceAndEditBrick(String brickName, boolean click, Solo solo) {
-		 if (click) {
-		 solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
-		 }
-		
-		 String stringOnShowSourceButton = solo.getCurrentActivity()
-		 .getString(R.string.brick_context_dialog_show_source);
-		 solo.waitForText(stringOnShowSourceButton);
-		 solo.clickOnText(stringOnShowSourceButton);
-		
-		 boolean addBrickShowedUp = solo.waitForFragmentByTag(AddBrickFragment.ADD_BRICK_FRAGMENT_TAG, 2000);
-		 if (!addBrickShowedUp) {
-		 fail("addBrickFragment should have showed up");
-		 }
-		
-		 solo.sleep(1000);
-		
-		 boolean clicked = UiTestUtils.clickOnBrickInAddBrickFragment(solo, brickName, false);
-		 if (!clicked) {
-		 fail("was unable to click on " + brickName + "!");
-		 }
-		
-		 String stringOnEditButton = solo.getCurrentActivity().getString(R.string.brick_context_dialog_edit_brick);
-		
-		 boolean editButtonShowedUp = solo.waitForText(stringOnEditButton, 0, 3000);
-		 if (!editButtonShowedUp) {
-		 fail(stringOnEditButton + " should have showed up");
-		 }
-		
-		 solo.clickOnText(stringOnEditButton);
-		
-		 boolean activityShowedUp = solo.waitForActivity(UserBrickScriptActivity.class, 3000);
-		 if (!activityShowedUp) {
-		 fail("UserBrickScriptActivity should have showed up");
-		 }
-		
-		 solo.sleep(50);
-		 }
-		
-		 public static boolean clickOnBrickInAddBrickFragment(Solo solo, String brickName, boolean addToScript) {
+		if (!solo.waitForText(category, 0, 300)) {
+			solo.drag(40, 40, 300, 40, DRAG_FRAMES);
+		}
+		solo.clickOnText(category);
+	}
+
+	public static void showSourceAndEditBrick(String brickName, Solo solo) {
+		showSourceAndEditBrick(brickName, true, solo);
+	}
+
+	public static void showSourceAndEditBrick(String brickName, boolean click, Solo solo) {
+		if (click) {
+			solo.clickOnText(UiTestUtils.TEST_USER_BRICK_NAME);
+		}
+
+		String stringOnShowSourceButton = solo.getCurrentActivity()
+				.getString(R.string.brick_context_dialog_show_source);
+		solo.waitForText(stringOnShowSourceButton);
+		solo.clickOnText(stringOnShowSourceButton);
+
+		boolean addBrickShowedUp = solo.waitForFragmentByTag(AddBrickFragment.ADD_BRICK_FRAGMENT_TAG, 2000);
+		if (!addBrickShowedUp) {
+			fail("addBrickFragment should have showed up");
+		}
+
+		solo.sleep(1000);
+
+		boolean clicked = UiTestUtils.clickOnBrickInAddBrickFragment(solo, brickName, false);
+		if (!clicked) {
+			fail("was unable to click on " + brickName + "!");
+		}
+
+		String stringOnEditButton = solo.getCurrentActivity().getString(R.string.brick_context_dialog_edit_brick);
+
+		boolean editButtonShowedUp = solo.waitForText(stringOnEditButton, 0, 3000);
+		if (!editButtonShowedUp) {
+			fail(stringOnEditButton + " should have showed up");
+		}
+
+		solo.clickOnText(stringOnEditButton);
+
+		boolean activityShowedUp = solo.waitForActivity(UserBrickScriptActivity.class, 3000);
+		if (!activityShowedUp) {
+			fail("UserBrickScriptActivity should have showed up");
+		}
+
+		solo.sleep(50);
+	}
+
+	public static boolean clickOnBrickInAddBrickFragment(Solo solo, String brickName, boolean addToScript) {
 		boolean success = false;
 		int lowestIdTimeBeforeLast = -2;
 		int lowestIdLastTime = -1;
@@ -760,10 +687,10 @@ public final class UiTestUtils {
 				height = view.getHeight();
 			}
 		}
-		
+
 		if (location == null) {
-			 return null;
-			 }
+			return null;
+		}
 
 		int originX = location[0] + Math.round(width * 0.2f);
 		int originY = location[1] + Math.round(height * 0.5f);
@@ -895,81 +822,81 @@ public final class UiTestUtils {
 
 		return brickList;
 	}
-	
-	public static List<Brick> createTestProjectWithUserBrick() {
-		 int xPosition = 457;
-		 int yPosition = 598;
-		 double size = 0.8;
-		
-		 Project project = new Project(null, DEFAULT_TEST_PROJECT_NAME);
-		 Sprite firstSprite = new Sprite("cat");
-		
-		 Script testScript = new StartScript(firstSprite);
-		
-		 projectManager.setProject(project);
-		 projectManager.setCurrentSprite(firstSprite);
-		 projectManager.setCurrentScript(testScript);
-		
-		 ArrayList<Brick> brickList = new ArrayList<Brick>();
-		 brickList.add(new HideBrick(firstSprite));
-		 brickList.add(new ShowBrick(firstSprite));
-		 brickList.add(new SetSizeToBrick(firstSprite, size));
-		 brickList.add(new GoNStepsBackBrick(firstSprite, 1));
-		 brickList.add(new ComeToFrontBrick(firstSprite));
-		 brickList.add(new PlaceAtBrick(firstSprite, xPosition, yPosition));
-		
-		 for (Brick brick : brickList) {
-		 testScript.addBrick(brick);
-		 }
-		
-		 firstSprite.addScript(testScript);
-		
-		 UserBrick firstUserBrick = new UserBrick(firstSprite, 0);
-		 firstUserBrick.addUIText(TEST_USER_BRICK_NAME);
-		 firstUserBrick.addUIVariable(TEST_USER_BRICK_VARIABLE);
-		 firstUserBrick.appendBrickToScript(new ChangeXByNBrick(firstSprite, BrickValues.CHANGE_X_BY));
 
-		 testScript.addBrick(firstUserBrick);
-		
-		 project.addSprite(firstSprite);
-		
-		 projectManager.setFileChecksumContainer(new FileChecksumContainer());
-		 StorageHandler.getInstance().saveProject(project);
-		
-		 return brickList;
-		 }
-		
-		 public static void createTestProjectWithNestedUserBrick() {
-		 Project project = new Project(null, DEFAULT_TEST_PROJECT_NAME);
-		 Sprite firstSprite = new Sprite("cat");
-		
-		 Script testScript = new StartScript(firstSprite);
-		
-		 projectManager.setProject(project);
-		 projectManager.setCurrentSprite(firstSprite);
-		 projectManager.setCurrentScript(testScript);
-		
-		 UserBrick firstUserBrick = new UserBrick(firstSprite, 0);
-		 firstUserBrick.addUIText(TEST_USER_BRICK_NAME + "2");
-		 firstUserBrick.addUIVariable(TEST_USER_BRICK_VARIABLE + "2");
-		 firstUserBrick.appendBrickToScript(new ChangeXByNBrick(firstSprite, BrickValues.CHANGE_X_BY));
-		
-		 UserBrick secondUserBrick = new UserBrick(firstSprite, 1);
-		 secondUserBrick.addUIText(TEST_USER_BRICK_NAME);
-		 secondUserBrick.addUIVariable(TEST_USER_BRICK_VARIABLE);
-		 secondUserBrick.appendBrickToScript(firstUserBrick);
-		 secondUserBrick.appendBrickToScript(new ChangeYByNBrick(firstSprite, BrickValues.CHANGE_Y_BY));
-		
-		 testScript.addBrick(secondUserBrick);
-		 testScript.addBrick(new SetSizeToBrick(firstSprite, BrickValues.SET_SIZE_TO));
-		 testScript.addBrick(new SetVariableBrick(firstSprite, BrickValues.SET_BRIGHTNESS_TO));
-		
-		 firstSprite.addScript(testScript);
-		
-		 project.addSprite(firstSprite);
-		 projectManager.setFileChecksumContainer(new FileChecksumContainer());
-		 StorageHandler.getInstance().saveProject(project);
-		 }	
+	public static List<Brick> createTestProjectWithUserBrick() {
+		int xPosition = 457;
+		int yPosition = 598;
+		double size = 0.8;
+
+		Project project = new Project(null, DEFAULT_TEST_PROJECT_NAME);
+		Sprite firstSprite = new Sprite("cat");
+
+		Script testScript = new StartScript(firstSprite);
+
+		projectManager.setProject(project);
+		projectManager.setCurrentSprite(firstSprite);
+		projectManager.setCurrentScript(testScript);
+
+		ArrayList<Brick> brickList = new ArrayList<Brick>();
+		brickList.add(new HideBrick(firstSprite));
+		brickList.add(new ShowBrick(firstSprite));
+		brickList.add(new SetSizeToBrick(firstSprite, size));
+		brickList.add(new GoNStepsBackBrick(firstSprite, 1));
+		brickList.add(new ComeToFrontBrick(firstSprite));
+		brickList.add(new PlaceAtBrick(firstSprite, xPosition, yPosition));
+
+		for (Brick brick : brickList) {
+			testScript.addBrick(brick);
+		}
+
+		firstSprite.addScript(testScript);
+
+		UserBrick firstUserBrick = new UserBrick(firstSprite, 0);
+		firstUserBrick.addUIText(TEST_USER_BRICK_NAME);
+		firstUserBrick.addUIVariable(TEST_USER_BRICK_VARIABLE);
+		firstUserBrick.appendBrickToScript(new ChangeXByNBrick(firstSprite, BrickValues.CHANGE_X_BY));
+
+		testScript.addBrick(firstUserBrick);
+
+		project.addSprite(firstSprite);
+
+		projectManager.setFileChecksumContainer(new FileChecksumContainer());
+		StorageHandler.getInstance().saveProject(project);
+
+		return brickList;
+	}
+
+	public static void createTestProjectWithNestedUserBrick() {
+		Project project = new Project(null, DEFAULT_TEST_PROJECT_NAME);
+		Sprite firstSprite = new Sprite("cat");
+
+		Script testScript = new StartScript(firstSprite);
+
+		projectManager.setProject(project);
+		projectManager.setCurrentSprite(firstSprite);
+		projectManager.setCurrentScript(testScript);
+
+		UserBrick firstUserBrick = new UserBrick(firstSprite, 0);
+		firstUserBrick.addUIText(TEST_USER_BRICK_NAME + "2");
+		firstUserBrick.addUIVariable(TEST_USER_BRICK_VARIABLE + "2");
+		firstUserBrick.appendBrickToScript(new ChangeXByNBrick(firstSprite, BrickValues.CHANGE_X_BY));
+
+		UserBrick secondUserBrick = new UserBrick(firstSprite, 1);
+		secondUserBrick.addUIText(TEST_USER_BRICK_NAME);
+		secondUserBrick.addUIVariable(TEST_USER_BRICK_VARIABLE);
+		secondUserBrick.appendBrickToScript(firstUserBrick);
+		secondUserBrick.appendBrickToScript(new ChangeYByNBrick(firstSprite, BrickValues.CHANGE_Y_BY));
+
+		testScript.addBrick(secondUserBrick);
+		testScript.addBrick(new SetSizeToBrick(firstSprite, BrickValues.SET_SIZE_TO));
+		testScript.addBrick(new SetVariableBrick(firstSprite, BrickValues.SET_BRIGHTNESS_TO));
+
+		firstSprite.addScript(testScript);
+
+		project.addSprite(firstSprite);
+		projectManager.setFileChecksumContainer(new FileChecksumContainer());
+		StorageHandler.getInstance().saveProject(project);
+	}
 
 	public static List<Brick> createTestProjectIfBricks() {
 		Project project = new Project(null, DEFAULT_TEST_PROJECT_NAME);
@@ -1121,11 +1048,15 @@ public final class UiTestUtils {
 	 * saves a file into the project folder
 	 * if project == null or "" file will be saved into Catroid folder
 	 *
-	 * @param project Folder where the file will be saved, this folder should exist
-	 * @param name    Name of the file
-	 * @param fileID  the id of the file --> needs the right context
+	 * @param project
+	 *            Folder where the file will be saved, this folder should exist
+	 * @param name
+	 *            Name of the file
+	 * @param fileID
+	 *            the id of the file --> needs the right context
 	 * @param context
-	 * @param type    type of the file: 0 = imagefile, 1 = soundfile
+	 * @param type
+	 *            type of the file: 0 = imagefile, 1 = soundfile
 	 * @return the file
 	 * @throws IOException
 	 */
@@ -1421,20 +1352,13 @@ public final class UiTestUtils {
 	 * This method can be used in 2 ways. Either to click on an action item
 	 * (icon), or to click on an item in the overflow menu. So either pass a
 	 * String + ID --OR-- a String + 0.
-<<<<<<< HEAD
 	 *
-	 * @param solo                 Use Robotium functionality
-	 * @param overflowMenuItemName Name of the overflow menu item
-	 * @param overflowMenuItemId   ID of an action item (icon)
-=======
-	 * 
 	 * @param solo
 	 *            Use Robotium functionality
 	 * @param overflowMenuItemName
 	 *            Name of the overflow menu item
 	 * @param activity
 	 *            Activity
->>>>>>> fixed GSOCSF-6 Variabletext doesn't get deleted
 	 */
 	public static void openActionMode(Solo solo, String overflowMenuItemName, int menuItemId, Activity activity) {
 
@@ -1837,9 +1761,7 @@ public final class UiTestUtils {
 	}
 
 	public static ListView getScriptListView(Solo solo) {
-		ArrayList<ListView> listOfListViews = solo.getCurrentViews(ListView.class);
-		assertTrue("no ListView found!", listOfListViews.size() > 0);
-		return listOfListViews.get(0);
+		return solo.getCurrentViews(ListView.class).get(0);
 	}
 
 	public static void waitForFragment(Solo solo, int fragmentRootLayoutId) {
@@ -2033,7 +1955,6 @@ public final class UiTestUtils {
 		assertEquals("Not in expected fragment", true, solo.waitForText(solo.getString(R.string.looks), 0, 500));
 		assertEquals("Not in expected fragment", true, solo.waitForText(solo.getString(R.string.sounds), 0, 500));
 		solo.goBack();
-		solo.waitForActivity(ProjectActivity.class);
 		hidePocketPaintDialog(solo);
 		solo.waitForFragmentById(R.id.fragment_sprites_list);
 		assertEquals("Not in expected fragment", true,
@@ -2046,17 +1967,20 @@ public final class UiTestUtils {
 		}
 	}
 
-	public static void clickOnExactText(Solo solo, String text) {
-		String regularExpressionForExactClick = "^" + java.util.regex.Pattern.quote(text) + "$";
+	public static void clickOnExactText(Solo solo, String text)
+	{
+		String regularExpressionForExactClick = "^"+java.util.regex.Pattern.quote(text)+"$";
 		solo.clickOnText(regularExpressionForExactClick);
 	}
 
-	public static boolean searchExactText(Solo solo, String text) {
+	public static boolean searchExactText(Solo solo, String text)
+	{
 		return searchExactText(solo, text, false);
 	}
 
-	public static boolean searchExactText(Solo solo, String text, boolean onlyVisible) {
-		String regularExpressionForExactClick = "^" + java.util.regex.Pattern.quote(text) + "$";
+	public static boolean searchExactText(Solo solo, String text, boolean onlyVisible)
+	{
+		String regularExpressionForExactClick = "^"+java.util.regex.Pattern.quote(text)+"$";
 		return solo.searchText(regularExpressionForExactClick, onlyVisible);
 	}
 
