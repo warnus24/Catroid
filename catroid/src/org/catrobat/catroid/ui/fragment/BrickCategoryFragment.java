@@ -41,6 +41,7 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.SettingsActivity;
 import org.catrobat.catroid.ui.ViewSwitchLock;
+import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.ui.adapter.BrickCategoryAdapter;
 
 import java.util.ArrayList;
@@ -54,11 +55,16 @@ public class BrickCategoryFragment extends SherlockListFragment {
 	private CharSequence previousActionBarTitle;
 	private OnCategorySelectedListener scriptFragment;
 	private BrickCategoryAdapter adapter;
+	private BrickAdapter brickAdapter;
 
 	private Lock viewSwitchLock = new ViewSwitchLock();
 
 	public void setOnCategorySelectedListener(OnCategorySelectedListener listener) {
 		scriptFragment = listener;
+	}
+
+	public void setBrickAdapter(BrickAdapter brickAdapter) {
+		this.brickAdapter = brickAdapter;
 	}
 
 	@Override
@@ -153,7 +159,25 @@ public class BrickCategoryFragment extends SherlockListFragment {
 
 		categories.add(inflater.inflate(R.layout.brick_category_uservariables, null));
 
-		if (BuildConfig.FEATURE_USERBRICKS_ENABLED) {
+		if (BuildConfig.FEATURE_USERBRICKS_ENABLED && brickAdapter.getUserBrick() == null) {
+			//			if (category.equals("My Bricks")) {
+//				Log.e("ScriptFragment_onCategorySelected","GSOCSF-2 equals My Bricks category: " + category);
+//			}
+//			if (brickAdapter.getUserBrick() != null) {
+//				Log.e("ScriptFragment_onCategorySelected", "GSOCSF-2");
+//				return;
+//			setUserBrickUnclickableAndShowToast();
+//			//TODO: allow recursive userbricks if its possible
+//			if (adapter.getUserBrick() != null && brickToBeAdded instanceof UserBrick) {// && ((UserBrick) brickToBeAdded).getDefinitionBrick().equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
+//				Toast toast = null;
+//				if (toast == null || toast.getView().getWindowVisibility() != View.VISIBLE) {
+//					toast = Toast.makeText(getActivity().getApplicationContext(), R.string.recursive_user_brick_forbidden, Toast.LENGTH_LONG);
+//				} else {
+//					toast.setText(R.string.recursive_user_brick_forbidden);
+//				}
+//				toast.show();
+//			}
+//			}
 			categories.add(inflater.inflate(R.layout.brick_category_userbricks, null));
 		}
 

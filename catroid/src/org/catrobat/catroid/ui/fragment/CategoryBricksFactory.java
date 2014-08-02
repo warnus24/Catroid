@@ -23,7 +23,6 @@
 package org.catrobat.catroid.ui.fragment;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -187,7 +186,6 @@ public class CategoryBricksFactory {
 //		} else {
 			for (UserBrick brick : userBrickList) {
 				newList.add(brick);
-//				Log.e("CategoryBricksFactory_setupUserBricksCategoryList()", "bug5 else-for brick added");
 			}
 //		}
 		return newList;

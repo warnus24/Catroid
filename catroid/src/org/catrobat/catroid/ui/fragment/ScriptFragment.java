@@ -34,7 +34,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -252,6 +251,7 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 
 	private void showCategoryFragment() {
 		BrickCategoryFragment brickCategoryFragment = new BrickCategoryFragment();
+		brickCategoryFragment.setBrickAdapter(adapter);
 		brickCategoryFragment.setOnCategorySelectedListener(this);
 		FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -384,7 +384,6 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			setSelectMode(ListView.CHOICE_MODE_MULTIPLE);
 			setActionModeActive(true);
-
 			mode.setTag(ACTION_MODE_DELETE);
 			addSelectAllActionModeButton(mode, menu);
 

@@ -122,8 +122,6 @@ public class SoundFragment extends ScriptActivityFragment implements SoundBaseAd
 
 	private OnSoundInfoListChangedAfterNewListener soundInfoListChangedAfterNewListener;
 
-	private ImageButton addButton;
-
 	public void setOnSoundInfoListChangedAfterNewListener(OnSoundInfoListChangedAfterNewListener listener) {
 		soundInfoListChangedAfterNewListener = listener;
 	}
