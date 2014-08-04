@@ -24,7 +24,6 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
@@ -153,7 +152,6 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 		data.name = id;
 
 		if (ProjectManager.getInstance().getCurrentProject() != null) {
-			Log.e("UserBrick_addUIVariable", "special name: " + data.name);
 			UserVariablesContainer variablesContainer = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 			variablesContainer.addUserBrickUserVariableToUserBrick(userBrickId, data.name);
 		}
@@ -170,7 +168,6 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 		for (UserBrickUIData data : uiDataArray) {
 			if (data.name.equals(oldName)) {
 				variable = data;
-				//				Log.e("UserBrick_renameUIElement", "special data.isVariable: " + data.isVariable);
 				isVariable = data.isVariable;
 				break;
 			}
@@ -184,7 +181,6 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 			UserVariablesContainer variablesContainer = null;
 			variablesContainer = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 			variablesContainer.deleteUserVariableFromUserBrick(userBrickId, oldName);
-			//			Log.e("UserBrick_renameUIElement", "special oldName, newName: " + oldName + " " + newName);
 			variablesContainer.addUserBrickUserVariableToUserBrick(userBrickId, newName);
 		}
 	}
@@ -195,7 +191,6 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 			UserVariablesContainer variablesContainer = null;
 			variablesContainer = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 			variablesContainer.deleteUserVariableFromUserBrick(userBrickId, uiDataArray.get(id).name);
-			Log.e("UserBrick_removeDataAt()", "bug3" + uiDataArray.get(id).name + " context: " + context);
 		}
 		uiDataArray.remove(id);
 		uiDataArray.version++;
@@ -456,7 +451,6 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
 
-//		Log.e("UserBrick_addActionToSequence()", "bug2");
 		UserBrickStageToken stageToken = getStageToken();
 
 		ArrayList<SequenceAction> returnActionList = new ArrayList<SequenceAction>();
@@ -474,7 +468,6 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 	}
 
 	private UserBrickStageToken getStageToken() {
-//		Log.e("UserBrick_getStageToken()", "flow");
 		if (ProjectManager.getInstance() == null || ProjectManager.getInstance().getCurrentProject() == null) {
 			return null;
 		}
@@ -495,9 +488,7 @@ public class UserBrick extends BrickBaseType implements OnClickListener, MultiFo
 					if (variable == null) {
 						variable = variablesContainer.addUserBrickUserVariableToUserBrick(userBrickId, uiData.name);
 					}
-
-//					Log.e("UserBrick_getStageToken()2", "flow name: " + variable.getName() + "value: " + variable.getValue());
-
+					variable.setValue(uiComponent.variableFormula.interpretDouble(sprite));
 					theList.add(new UserBrickVariable(variable, uiComponent.variableFormula));
 				}
 			}

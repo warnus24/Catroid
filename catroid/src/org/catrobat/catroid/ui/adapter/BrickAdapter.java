@@ -281,7 +281,6 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 				}
 			}
 		}
-
 		return to;
 	}
 
@@ -492,15 +491,16 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 			((NestingBrick) draggedBrick).initialize();
 			List<NestingBrick> nestingBrickList = ((NestingBrick) draggedBrick).getAllNestingBrickParts(true);
 			for (int i = 0; i < nestingBrickList.size(); i++) {
-				if (nestingBrickList.get(i) instanceof DeadEndBrick) {
-					if (i < nestingBrickList.size() - 1) {
-						Log.w(TAG, "Adding a DeadEndBrick in the middle of the NestingBricks");
-					}
-					position = getPositionForDeadEndBrick(position);
-					userScript.addBrick(position, nestingBrickList.get(i));
-				} else {
+//				if (nestingBrickList.get(i) instanceof DeadEndBrick) {
+//					if (i < nestingBrickList.size() - 1) {
+//						Log.w(TAG, "Adding a DeadEndBrick in the middle of the NestingBricks");
+//					}
+//					position = getPositionForDeadEndBrick(position);
+//					Log.e("BrickAdapter_addBrickToPositionInUserScript", "GSOCSF-16 IF userbrick name: " + nestingBrickList.get(i).getClass().getSimpleName());
+//					userScript.addBrick(position, nestingBrickList.get(i));
+//				} else {
 					userScript.addBrick(position + i, nestingBrickList.get(i));
-				}
+//				}
 			}
 		} else {
 			userScript.addBrick(position, brick);
@@ -656,12 +656,10 @@ public class BrickAdapter extends BaseAdapter implements DragAndDropListener, On
 			scrollToPosition(position);
 
 		} else {
-
 			position = getNewPositionIfEndingBrickIsThere(position, brickToBeAdded);
 			position = position <= 0 ? 1 : position;
 			position = position > brickList.size() ? brickList.size() : position;
 			brickList.add(position, brickToBeAdded);
-
 		}
 
 		this.initInsertedBrick = initInsertedBrick;
