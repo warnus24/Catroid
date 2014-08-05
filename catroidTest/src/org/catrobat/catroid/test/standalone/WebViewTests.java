@@ -23,5 +23,20 @@
 
 package org.catrobat.catroid.test.standalone;
 
-public class WebViewTests {
+import org.catrobat.catroid.stage.StageActivity;
+import org.catrobat.catroid.ui.MainMenuActivity;
+import org.catrobat.catroid.ui.WebViewActivity;
+import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
+
+public class WebViewTests extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
+	public WebViewTests(Class<MainMenuActivity> clazz) {
+		super(MainMenuActivity.class);
+	}
+
+	public void testWebViewAfterStage() {
+		solo.waitForActivity(StageActivity.class);
+		solo.goBack();
+		solo.waitForActivity(WebViewActivity.class);
+		solo.assertCurrentActivity("No WebviewActivity found on go Back", WebViewActivity.class);
+	}
 }
