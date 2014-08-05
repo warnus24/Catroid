@@ -119,7 +119,6 @@ public final class BroadcastHandler {
 			actionScriptMap.put(broadcastWaitAction, receiverScript);
 			Sprite receiverSprite = scriptSpriteMap.get(receiverScript);
 			String actionName = broadcastWaitAction.toString() + Constants.ACTION_SPRITE_SEPARATOR + receiverSprite.getName() + receiverSprite.getScriptIndex(receiverScript);
-
 			stringActionMap.put(actionName, broadcastWaitAction);
 			if (!handleActionFromBroadcastWait(look, broadcastWaitAction)) {
 				event.raiseNumberOfReceivers();
