@@ -33,63 +33,21 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.badlogic.gdx.backends.android.AndroidApplication;
+
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.utils.DownloadUtil;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class StandaloneWebViewActivity extends BaseActivity {
-
-	private WebView webView;
+public class StandaloneWebViewActivity extends AndroidApplication {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_webview);
 
-		getSupportActionBar().hide();
-
-		webView = (WebView) findViewById(R.id.webView);
-		webView.setWebChromeClient(new WebChromeClient());
-		webView.setWebViewClient(new MyWebViewClient());
-		webView.getSettings().setJavaScriptEnabled(true);
-
-		webView.loadUrl(Constants.STANDALONE_URL);
-
-		webView.setDownloadListener(new DownloadListener() {
-			@Override
-			public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype,
-					long contentLength) {
-				DownloadUtil.getInstance().prepareDownloadAndStartIfPossible(StandaloneWebViewActivity.this, url);
-				Toast.makeText(StandaloneWebViewActivity.this, getText(R.string.notification_download_pending), Toast.LENGTH_LONG)
-						.show();
-			}
-		});
 	}
 
-	private class MyWebViewClient extends WebViewClient {
-		@Override
-		public void onPageStarted(WebView view, String url, Bitmap favicon) {
-			super.onPageStarted(view, url, favicon);
 
-		}
-
-		@Override
-		public void onPageFinished(WebView view, String url) {
-			super.onPageFinished(view, url);
-			if (url.equals(Constants.STANDALONE_URL) && !webView.canGoBack()) {
-				finish();
-			}
-		}
-
-		@Override
-		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			if (url != null && url.startsWith("market://")) {
-				view.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
 }
