@@ -23,6 +23,43 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
+        <PreferenceScreen
+            android:defaultValue="true"
+            android:key="setting_mindstorms_nxt_bricks"
+            android:summary="@string/preference_description_mindstorms_bricks"
+            android:title="@string/preference_title_enable_mindstorms_nxt" >
+
+        <CheckBoxPreference android:key="setting_mindstorms_nxt_bool"
+                            android:title="@string/nxt_bool" />
+
+        <PreferenceCategory android:title="@string/preference_title_enable_mindstorms_motors">
+            <CheckBoxPreference android:key="setting_mindstorms_nxt_motor_a"
+                                android:title="@string/nxt_motor_a" />
+            <CheckBoxPreference android:key="setting_mindstorms_nxt_motor_b"
+                                android:title="@string/nxt_motor_b" />
+            <CheckBoxPreference android:key="setting_mindstorms_nxt_motor_c"
+                                android:title="@string/nxt_motor_c" />
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/preference_title_enable_mindstorms_sensors">
+            <ListPreference android:key="setting_mindstorms_nxt_sensor_1"
+                            android:title="@string/nxt_choose_sensor"
+                            android:entryValues="@array/setting_mindstorms_nxt_sensor"
+                            android:entries="@array/nxt_sensor_chooser"/>
+            <ListPreference android:key="setting_mindstorms_nxt_sensor_2"
+                            android:title="@string/nxt_choose_sensor"
+                            android:entryValues="@array/setting_mindstorms_nxt_sensor"
+                            android:entries="@array/nxt_sensor_chooser"/>
+            <ListPreference android:key="setting_mindstorms_nxt_sensor_3"
+                            android:title="@string/nxt_choose_sensor"
+                            android:entryValues="@array/setting_mindstorms_nxt_sensor"
+                            android:entries="@array/nxt_sensor_chooser"/>
+            <ListPreference android:key="setting_mindstorms_nxt_sensor_4"
+                            android:title="@string/nxt_choose_sensor"
+                            android:entryValues="@array/setting_mindstorms_nxt_sensor"
+                            android:entries="@array/nxt_sensor_chooser"/>
+        </PreferenceCategory>
+    </PreferenceScreen>
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="setting_mindstorm_bricks"
