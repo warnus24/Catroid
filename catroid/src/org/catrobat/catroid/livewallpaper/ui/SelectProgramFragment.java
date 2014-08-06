@@ -212,6 +212,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			str_loadable = ProjectLoadableEnum.IS_LOADABLE.toString();
 
 			return str_loadable;
+
 		}
 
 		@Override

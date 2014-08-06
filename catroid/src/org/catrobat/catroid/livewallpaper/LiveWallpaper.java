@@ -116,7 +116,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public void onCreate() {
-		//android.os.Debug.waitForDebugger();
+		android.os.Debug.waitForDebugger();
 		if (!TEST) {
 			super.onCreate();
 			SharedPreferences sharedPreferences = PreferenceManager
@@ -271,6 +271,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				if (mVisible) {
 					mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 				}
+
 			}
 		};
 
@@ -341,10 +342,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			if (getLocalStageListener() == null) {
 				return;
 			}
-			super.onResume();
+
 			SensorHandler.startSensorListener(getApplicationContext());
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
-
+			super.onResume();
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ENDE");
 		}
 
@@ -417,11 +418,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 					getLocalStageListener().reloadProjectLWP(engine);
 					onResume();
 					engine.wait();
-					Log.d("LWP", "StageListener, changeWallpaper wait... ENDE");
 				} catch (InterruptedException e) {
 					Log.d("LWP", "StageListener, Fehler bei changeWallpaper wait...");
 				}
 			}
+			Log.d("LWP", "StageListener, changeWallpaper wait... ENDE");
+
 			getLocalStageListener().menuResume();
 		}
 
