@@ -83,7 +83,7 @@ public final class CameraManager implements Camera.PreviewCallback {
 	public void updateCameraID(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String idAsString = preferences.getString(
-				context.getResources().getString(R.string.preference_key_select_camera), "0");
+				context.getResources().getString(R.string.preference_key_select_camera), "1");
 		cameraID = Integer.parseInt(idAsString);
 
 		CameraInfo cameraInfo = new CameraInfo();
