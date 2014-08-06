@@ -59,7 +59,7 @@ import java.util.Locale;
 
 public class ScriptFragmentTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
-	private static final String KEY_SETTINGS_MINDSTORM_BRICKS = "setting_mindstorm_bricks";
+	private static final String KEY_SETTINGS_MINDSTORM_BRICKS = "setting_mindstorms_nxt_bool";
 	private static final String SCRIPT_FRAGMENT_TEST_TAG = ScriptFragmentTest.class.getSimpleName();
 
 	public ScriptFragmentTest() {

@@ -27,7 +27,7 @@ import android.util.Log;
 public enum Sensors {
 	X_ACCELERATION, Y_ACCELERATION, Z_ACCELERATION, COMPASS_DIRECTION, X_INCLINATION, Y_INCLINATION, LOUDNESS, FACE_DETECTED, FACE_SIZE, FACE_X_POSITION, FACE_Y_POSITION, OBJECT_X(
 			true), OBJECT_Y(true), OBJECT_GHOSTEFFECT(true), OBJECT_BRIGHTNESS(true), OBJECT_SIZE(true), OBJECT_ROTATION(
-			true), OBJECT_LAYER(true);
+			true), OBJECT_LAYER(true), LEGO_NXT_SOUND, LEGO_NXT_TOUCH, LEGO_NXT_LIGHT, LEGO_NXT_ULTRASONIC;
 
 	public final boolean isObjectSensor;
 	public static final String TAG = Sensors.class.getSimpleName();

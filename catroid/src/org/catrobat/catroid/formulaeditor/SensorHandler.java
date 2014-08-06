@@ -45,16 +45,33 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 	private float linearAcceleartionZ = 0f;
 
 	private float loudness = 0f;
+
 	private float faceDetected = 0f;
 	private float faceSize = 0f;
 	private float facePositionX = 0f;
 	private float facePositionY = 0f;
+
+	private float nxt_touch = 0f;
+	private float nxt_light = 50f;
+    private float nxt_sound = 0f;
+	private float nxt_ultrasonic = 0f;
+
 
 	private SensorHandler(Context context) {
 		sensorManager = new SensorManager(
 				(android.hardware.SensorManager) context.getSystemService(Context.SENSOR_SERVICE));
 		accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 		rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+	}
+
+	private static boolean nxtSensorsNeeded;
+
+	public static void setNXTSensorsNeeded(boolean b) {
+		nxtSensorsNeeded = b;
+	}
+
+	public static boolean getNXTSensorsNeeded() {
+		return nxtSensorsNeeded;
 	}
 
 	public static void startSensorListener(Context context) {
@@ -69,8 +86,17 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 		instance.sensorManager.registerListener(instance, instance.rotationVectorSensor,
 				android.hardware.SensorManager.SENSOR_DELAY_NORMAL);
 		instance.sensorManager.registerListener(instance, Sensors.LOUDNESS);
+
 		FaceDetectionHandler.registerOnFaceDetectedListener(instance);
 		FaceDetectionHandler.registerOnFaceDetectionStatusListener(instance);
+
+		// NXT Sensors
+		if (getNXTSensorsNeeded()) {
+			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_TOUCH);
+			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_LIGHT);
+			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_SOUND);
+			instance.sensorManager.registerListener(instance, Sensors.LEGO_NXT_ULTRASONIC);
+		}
 	}
 
 	public static void registerListener(SensorEventListener listener) {
@@ -166,6 +192,15 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 
 			case LOUDNESS:
 				return Double.valueOf(instance.loudness);
+
+			case LEGO_NXT_TOUCH:
+				return Double.valueOf(instance.nxt_touch);
+			case LEGO_NXT_LIGHT:
+				return Double.valueOf(instance.nxt_light);
+            case LEGO_NXT_SOUND:
+                return Double.valueOf(instance.nxt_sound);
+			case LEGO_NXT_ULTRASONIC:
+				return Double.valueOf(instance.nxt_ultrasonic);
 		}
 		return 0d;
 	}
@@ -209,6 +244,18 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 				break;
 			case FACE_Y_POSITION:
 				instance.facePositionY = event.values[0];
+				break;
+			case LEGO_NXT_TOUCH:
+				instance.nxt_touch = event.values[0];
+				break;
+			case LEGO_NXT_LIGHT:
+				instance.nxt_light = event.values[0];
+                break;
+            case LEGO_NXT_SOUND:
+                instance.nxt_sound = event.values[0];
+                break;
+			case LEGO_NXT_ULTRASONIC:
+				instance.nxt_ultrasonic = event.values[0];
 				break;
 			default:
 				Log.v(TAG, "Unhandled sensor: " + event.sensor);

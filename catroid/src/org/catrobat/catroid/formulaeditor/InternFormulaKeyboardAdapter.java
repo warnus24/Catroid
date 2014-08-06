@@ -102,7 +102,6 @@ public class InternFormulaKeyboardAdapter {
 				return buildFunctionWithoutParametersAndBrackets(Functions.FALSE);
 
 				//SENSOR
-
 			case R.string.formula_editor_sensor_x_acceleration:
 				return buildSensor(Sensors.X_ACCELERATION);
 			case R.string.formula_editor_sensor_y_acceleration:
@@ -125,13 +124,20 @@ public class InternFormulaKeyboardAdapter {
 				return buildSensor(Sensors.FACE_X_POSITION);
 			case R.string.formula_editor_sensor_face_y_position:
 				return buildSensor(Sensors.FACE_Y_POSITION);
+			case R.string.formula_editor_sensor_lego_nxt_sound:
+				return buildSensor(Sensors.LEGO_NXT_SOUND);
+			case R.string.formula_editor_sensor_lego_nxt_touch:
+				return buildSensor(Sensors.LEGO_NXT_TOUCH);
+			case R.string.formula_editor_sensor_lego_nxt_light:
+				return buildSensor(Sensors.LEGO_NXT_LIGHT);
+			case R.string.formula_editor_sensor_lego_nxt_ultrasonic:
+				return buildSensor(Sensors.LEGO_NXT_ULTRASONIC);
 
 				//PERIOD
 			case R.id.formula_editor_keyboard_decimal_mark:
 				return buildPeriod();
 
 				//OPERATOR
-
 			case R.id.formula_editor_keyboard_plus:
 				return buildOperator(Operators.PLUS);
 			case R.id.formula_editor_keyboard_minus:
@@ -164,14 +170,12 @@ public class InternFormulaKeyboardAdapter {
 				return buildOperator(Operators.LOGICAL_NOT);
 
 				//BRACKETS
-
 			case R.id.formula_editor_keyboard_bracket_open:
 				return buildBracketOpen();
 			case R.id.formula_editor_keyboard_bracket_close:
 				return buildBracketClose();
 
 				//COSTUME
-
 			case R.string.formula_editor_object_x:
 				return buildObject(Sensors.OBJECT_X);
 			case R.string.formula_editor_object_y:

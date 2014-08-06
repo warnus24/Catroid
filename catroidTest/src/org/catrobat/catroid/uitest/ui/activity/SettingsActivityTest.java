@@ -114,7 +114,7 @@ public class SettingsActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
 		//disable mindstorm bricks, if enabled at start
-		if (preferences.getBoolean("setting_mindstorm_bricks", false)) {
+		if (preferences.getBoolean("setting_mindstorms_nxt_bool", false)) {
 			solo.clickOnMenuItem(settings);
 			solo.assertCurrentActivity("Wrong Activity", SettingsActivity.class);
 			solo.clickOnText(mindstormsPreferenceString);

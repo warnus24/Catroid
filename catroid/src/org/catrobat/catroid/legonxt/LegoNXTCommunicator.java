@@ -44,6 +44,7 @@ package org.catrobat.catroid.legonxt;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -91,6 +92,7 @@ public abstract class LegoNXTCommunicator extends Thread {
 	public static final int GENERAL_COMMAND = 100;
 	public static final int MOTOR_COMMAND = 102;
 	public static final int TONE_COMMAND = 101;
+	public static final int SENSOR_COMMAND = 103;
 	// receive messages from the UI
 	// TODO should be fixed - could lead to problems
 	@SuppressLint("HandlerLeak")
@@ -103,6 +105,9 @@ public abstract class LegoNXTCommunicator extends Thread {
 					doBeep(myMessage.getData().getInt("frequency"), myMessage.getData().getInt("duration"));
 					break;
 				case DISCONNECT:
+					break;
+				case SENSOR_COMMAND:
+					sendMessageAndState(myMessage.getData().getByteArray("message"));
 					break;
 				default:
 					int motor;
@@ -252,6 +257,17 @@ public abstract class LegoNXTCommunicator extends Thread {
 				//sendState(RECEIVED_MESSAGE, message);
 				receivedMessages.add(message);
 				analyzeMessageGetOutputState(message);
+				break;
+			case NXTSensor.CMD_GET_INPUT_VALUES:
+				NXTSensor.handleSensorValue(message);
+				break;
+			case NXTSensor.CMD_SET_INPUT_MODE:
+				Log.d("Communicator", String.format("CMD_SET_INPUT_MODE OK, Status: %d", message[2]));
+				break;
+			case NXTSensor.LS_GET_STATUS:
+			case NXTSensor.LS_READ:
+			case NXTSensor.LS_WRITE:
+				NXTUltraSonicSensor.getInstance().receivedMessage(message);
 				break;
 			default:
 				Log.i("bt", "Unknown Message received by LegoNXTCommunicator over bluetooth " + message.length);
