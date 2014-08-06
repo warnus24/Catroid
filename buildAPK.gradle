@@ -90,6 +90,7 @@ task buildStandalone(dependsOn: ':downloadProject') << {
     manifestFile.write(manifest)
     renameZipFile()
     copyAndRename()
+    //delete 'catroid/assets/standalone'
 }
 
 task downloadProject() << {
