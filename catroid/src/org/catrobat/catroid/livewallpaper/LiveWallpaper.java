@@ -281,7 +281,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		public LiveWallpaperEngine() {
 			super();
 			//activateTextToSpeechIfNeeded();
-			SensorHandler.startSensorListener(getApplicationContext());
+			//SensorHandler.startSensorListener(getApplicationContext());
 		}
 
 		@Override

@@ -282,16 +282,15 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	}
 
 	public void reloadProjectLWP(LiveWallpaperEngine engine) {
-
-		this.lwpEngine = engine;
 		if (reloadProject) {
 			return;
 		}
+		this.lwpEngine = engine;
 
 		project.getUserVariables().resetAllUserVariables();
 
 		reloadProject = true;
-		//this.firstStart = true;
+		this.firstStart = true;
 		Log.d("LWP", "StageListener reloadProject!!!!!");
 	}
 
