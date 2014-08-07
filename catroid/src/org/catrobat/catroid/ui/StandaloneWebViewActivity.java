@@ -23,6 +23,7 @@
 package org.catrobat.catroid.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -40,12 +41,12 @@ import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.utils.DownloadUtil;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class StandaloneWebViewActivity extends AndroidApplication {
+public class StandaloneWebViewActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_webview);
+		setContentView(R.layout.activity_standalone_advertising);
 
 	}
 

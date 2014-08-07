@@ -37,10 +37,12 @@ def getStartingProjectName() {
     def file = new File('catroid/assets/standalone/code.xml')
     if (file.exists()) {
         def program = new XmlParser().parseText(file.text)
+        delete 'catroid/assets/standalone'
         return program.header.programName.text()
     } else {
         return "No Project Found"
     }
+
 
 }
 
