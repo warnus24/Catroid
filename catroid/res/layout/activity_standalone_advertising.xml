@@ -13,46 +13,36 @@
         android:id="@+id/title"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         style="@style/Theme.Catroid" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="@string/standalone_description"
         android:id="@+id/description"
         android:layout_marginTop="35dp"
         android:layout_below="@+id/title"
         android:layout_centerHorizontal="true" />
 
-    <ImageButton
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/pocket_code_image"
-        android:layout_marginTop="35dp"
-        android:layout_below="@+id/description"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
+        android:id="@+id/imageView" android:layout_centerVertical="true" android:layout_centerHorizontal="true" android:scaleType="fitXY" android:layout_below="@+id/description" android:layout_marginTop="15dp" /><TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="@string/standalone_pocketcode_org_link"
         android:id="@+id/website_link"
-        android:layout_below="@+id/pocket_code_image"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp" />
+        android:layout_below="@+id/imageView" android:layout_alignLeft="@+id/description" android:layout_alignStart="@+id/description" android:layout_marginTop="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="@string/standalone_play_store_link"
         android:id="@+id/playStore_link"
-        android:layout_marginTop="35dp"
-        android:layout_below="@+id/website_link"
-        android:layout_alignRight="@+id/description"
-        android:layout_alignEnd="@+id/description" />
+        android:layout_alignTop="@+id/website_link" android:layout_alignLeft="@+id/website_link" android:layout_alignStart="@+id/website_link" android:layout_marginTop="51dp" />
 
     </RelativeLayout >

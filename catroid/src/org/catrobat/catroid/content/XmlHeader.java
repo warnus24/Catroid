@@ -157,4 +157,8 @@ public class XmlHeader implements Serializable {
 	ScreenModes getScreenMode() {
 		return this.screenMode;
 	}
+
+	public String getUrl() {
+		return url;
+	}
 }
