@@ -92,11 +92,14 @@ public class StageActivity extends AndroidApplication {
 	@Override
 	public void onBackPressed() {
 		if (BuildConfig.FEATURE_APK_GENERATOR_ENABLED) {
-			if (isOnline()) {
+			/*if (isOnline()) {
 				sendWebviewIntent();
 			} else {
 				finish();
-			}
+			}*/
+			Intent marketingIntent = new Intent(StageActivity.this, StandaloneWebViewActivity.class);
+			startActivity(marketingIntent);
+			finish();
 		} else {
 			pause();
 			stageDialog.show();
@@ -157,9 +160,7 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onResume() {
-		if (!BuildConfig.FEATURE_APK_GENERATOR_ENABLED) { //TODO use STANDALONE_MODE
-			SensorHandler.startSensorListener(this);
-		}
+		SensorHandler.startSensorListener(this);
 		stageAudioFocus.requestAudioFocus();
 		LedUtil.resumeLed();
 		VibratorUtil.resumeVibrator();
