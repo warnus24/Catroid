@@ -46,9 +46,6 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.exceptions.CompatibilityProjectException;
 import org.catrobat.catroid.exceptions.LoadingProjectException;
 import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
-import org.catrobat.catroid.formulaeditor.SensorHandler;
-import org.catrobat.catroid.io.SoundManager;
-import org.catrobat.catroid.soundrecorder.SoundRecorder;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
 
@@ -114,22 +111,17 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		this.homeEngine.name = "HOME";
 	}
 
-	public boolean TEST = false;
-
 	@Override
 	public void onCreate() {
 		//android.os.Debug.waitForDebugger();
-		if (!TEST) {
 			super.onCreate();
 			SharedPreferences sharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(getApplicationContext());
 			//SoundManager.getInstance().soundDisabledByLwp = sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED,
 			//		false);
 			context = this;
-		}
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		oldProjectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
 
+		oldProjectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
 		Log.d("LWP", "Neuer Service wurde geladen");
 	}
 
@@ -159,7 +151,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		INSTANCE = null;
 		super.onDestroy();
 		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
-
 	}
 
 	public void changeWallpaperProgram() {
@@ -171,13 +162,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public void loadProject() {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String projectName = "";
-		boolean loadable = false;
+		boolean loadable = true;
 		ProjectManager projectManagerLWP = ProjectManager.getInstance(ProjectManagerState.LWP);
 
 		projectName = sharedPreferences.getString(Constants.PREF_LWP_PROJECTNAME_KEY, null);
 		if (projectName == null) {
 			projectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
 		}
+
 		if (projectManagerLWP.getCurrentProject() != null
 				&& projectManagerLWP.getCurrentProject().getName().equals(projectName)) {
 			return;
@@ -188,30 +180,24 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		try {
 			projectManagerLWP.loadProject(projectName, context);
 		} catch (LoadingProjectException e) {
-			result = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
-			Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
-			toast.show();
-			Log.d("LWP", "Project is not loadable");
+			loadable = false;
 			e.printStackTrace();
-			return;
 		} catch (OutdatedVersionProjectException e) {
-			result = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
-			Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
-			toast.show();
-			Log.d("LWP", "Project is not loadable");
+			loadable = false;
 			e.printStackTrace();
-			return;
 		} catch (CompatibilityProjectException e) {
-			result = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
-			Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
-			toast.show();
-			Log.d("LWP", "Project is not loadable");
+			loadable = false;
 			e.printStackTrace();
-			return;
 		}
 
-
-
+		if(!loadable)
+		{
+			result = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
+			Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
+			toast.show();
+			Log.d("LWP", "Project is not loadable");
+			return;
+		}
 
 		result = ProjectLoadableEnum.IS_LOADABLE.toString();
 		Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
@@ -225,11 +211,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public Engine onCreateEngine() {
-
 		Log.d("LWP", "Eine neue Engine wurde erstellt!!!");
 		return new LiveWallpaperEngine();
 	}
-
 
 	private void setScreenSize(boolean isPreview) {
 		DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -272,7 +256,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				if (mVisible) {
 					mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 				}
-
 			}
 		};
 
