@@ -1,28 +1,29 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.content.brick;
 
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.util.Log;
 import android.widget.ListView;
 
@@ -46,6 +47,7 @@ import org.catrobat.catroid.uitest.util.SensorTestServerConnection;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 
@@ -70,6 +72,7 @@ public class LedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActi
 			super.setUp();
 			SensorTestServerConnection.connectToArduinoServer();
 			setActivityInitialTouchMode(false);
+			SensorTestServerConnection.closeConnection();
 		} else {
 			Log.d(TAG, " setUp() - no flash led available");
 		}
@@ -77,9 +80,9 @@ public class LedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActi
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
 		SensorTestServerConnection.closeConnection();
 		setActivityInitialTouchMode(true);
+		super.tearDown();
 	}
 
 	@Device
@@ -178,7 +181,43 @@ public class LedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActi
 	private boolean hasLedSystemFeature() {
 		boolean hasCamera = this.getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 		boolean hasLed = this.getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-		return (hasCamera && hasLed);
+
+		if (!hasCamera || !hasLed) {
+			return false;
+		}
+
+		Camera camera = null;
+
+		try {
+			camera = Camera.open();
+		} catch (Exception exception) {
+			Log.e(TAG, "failed to open Camera", exception);
+		}
+
+		if (camera == null) {
+			return false;
+		}
+
+		Camera.Parameters parameters = camera.getParameters();
+
+		if (parameters.getFlashMode() == null) {
+			camera.release();
+			camera = null;
+			return false;
+		}
+
+		List<String> supportedFlashModes = parameters.getSupportedFlashModes();
+		if (supportedFlashModes == null || supportedFlashModes.isEmpty() ||
+				supportedFlashModes.size() == 1 && supportedFlashModes.get(0).equals(Camera.Parameters.FLASH_MODE_OFF)) {
+			camera.release();
+			camera = null;
+			return false;
+		}
+
+		camera.release();
+		camera = null;
+
+		return true;
 	}
 
 }

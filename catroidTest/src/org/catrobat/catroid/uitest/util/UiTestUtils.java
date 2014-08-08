@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.util;
 
@@ -155,6 +155,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 public final class UiTestUtils {
@@ -263,6 +264,56 @@ public final class UiTestUtils {
 		return initialRotation;
 	}
 
+	public static SetVariableBrick createSameActionsBroadcastProject(String message) {
+		Project project = new Project(null, DEFAULT_TEST_PROJECT_NAME);
+		Sprite firstSprite = new Sprite("sprite1");
+		Script firstScript = new StartScript(firstSprite);
+
+		firstSprite.addScript(firstScript);
+		project.addSprite(firstSprite);
+
+		Script startScript = firstSprite.getScript(0);
+		SetVariableBrick setVariableBrick = new SetVariableBrick(firstSprite, 0.0f);
+		startScript.addBrick(setVariableBrick);
+		LoopBeginBrick beginBrick = new RepeatBrick(firstSprite, 10);
+		LoopEndBrick endBrick = new LoopEndBrick(firstSprite, beginBrick);
+		beginBrick.setLoopEndBrick(endBrick);
+		startScript.addBrick(beginBrick);
+		startScript.addBrick(new BroadcastWaitBrick(firstSprite, message));
+		startScript.addBrick(endBrick);
+
+		Sprite secondSprite = new Sprite("sprite2");
+		Script secondScript = new BroadcastScript(secondSprite, message);
+		secondSprite.addScript(secondScript);
+		IfLogicBeginBrick ifBeginBrickSecondScript = new IfLogicBeginBrick(secondSprite, 1);
+		IfLogicElseBrick ifElseBrickSecondScript = new IfLogicElseBrick(secondSprite, ifBeginBrickSecondScript);
+		IfLogicEndBrick ifEndBrickSecondScript = new IfLogicEndBrick(secondSprite, ifElseBrickSecondScript, ifBeginBrickSecondScript);
+		secondScript.addBrick(ifBeginBrickSecondScript);
+		secondScript.addBrick(new ChangeVariableBrick(secondSprite, 1.0f));
+		secondScript.addBrick(ifElseBrickSecondScript);
+		secondScript.addBrick(ifEndBrickSecondScript);
+		project.addSprite(secondSprite);
+
+		Sprite thirdSprite = new Sprite("sprite3");
+		Script thirdScript = new BroadcastScript(thirdSprite, message);
+		thirdSprite.addScript(thirdScript);
+		IfLogicBeginBrick ifBeginBrickThirdScript = new IfLogicBeginBrick(thirdSprite, 1);
+		IfLogicElseBrick ifElseBrickThirdScript = new IfLogicElseBrick(thirdSprite, ifBeginBrickThirdScript);
+		IfLogicEndBrick ifEndBrickThirdScript = new IfLogicEndBrick(thirdSprite, ifElseBrickThirdScript, ifBeginBrickThirdScript);
+		thirdScript.addBrick(ifBeginBrickThirdScript);
+		thirdScript.addBrick(new ChangeVariableBrick(thirdSprite, 1.0f));
+		thirdScript.addBrick(ifElseBrickThirdScript);
+		thirdScript.addBrick(ifEndBrickThirdScript);
+		project.addSprite(thirdSprite);
+
+		projectManager.setFileChecksumContainer(new FileChecksumContainer());
+		projectManager.setProject(project);
+		projectManager.setCurrentSprite(firstSprite);
+		projectManager.setCurrentScript(thirdScript);
+
+		return setVariableBrick;
+	}
+
 	public static enum FileTypes {
 		IMAGE, SOUND, ROOT
 	};
@@ -288,11 +339,9 @@ public final class UiTestUtils {
 
 	/**
 	 * Clicks on the EditText given by editTextId, inserts the integer value and closes the Dialog
-	 * 
-	 * @param editTextId
-	 *            The ID of the EditText to click on
-	 * @param value
-	 *            The value you want to put into the EditText
+	 *
+	 * @param editTextId The ID of the EditText to click on
+	 * @param value      The value you want to put into the EditText
 	 */
 	public static void insertIntegerIntoEditText(Solo solo, int value) {
 		insertValue(solo, value + "");
@@ -300,11 +349,9 @@ public final class UiTestUtils {
 
 	/**
 	 * Clicks on the EditText given by editTextId, inserts the double value and closes the Dialog
-	 * 
-	 * @param editTextId
-	 *            The ID of the EditText to click on
-	 * @param value
-	 *            The value you want to put into the EditText
+	 *
+	 * @param editTextId The ID of the EditText to click on
+	 * @param value      The value you want to put into the EditText
 	 */
 	public static void insertDoubleIntoEditText(Solo solo, double value) {
 		insertValue(solo, value + "");
@@ -369,7 +416,8 @@ public final class UiTestUtils {
 				"Text not updated within FormulaEditor",
 				newValue,
 				Double.parseDouble(((EditText) solo.getView(R.id.formula_editor_edit_field)).getText().toString()
-						.replace(',', '.')));
+						.replace(',', '.'))
+		);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 		solo.sleep(200);
 
@@ -390,7 +438,8 @@ public final class UiTestUtils {
 				"Text not updated within FormulaEditor",
 				value,
 				Double.parseDouble(((EditText) solo.getView(R.id.formula_editor_edit_field)).getText().toString()
-						.replace(',', '.')));
+						.replace(',', '.'))
+		);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 		solo.sleep(200);
 	}
@@ -887,16 +936,12 @@ public final class UiTestUtils {
 	/**
 	 * saves a file into the project folder
 	 * if project == null or "" file will be saved into Catroid folder
-	 * 
-	 * @param project
-	 *            Folder where the file will be saved, this folder should exist
-	 * @param name
-	 *            Name of the file
-	 * @param fileID
-	 *            the id of the file --> needs the right context
+	 *
+	 * @param project Folder where the file will be saved, this folder should exist
+	 * @param name    Name of the file
+	 * @param fileID  the id of the file --> needs the right context
 	 * @param context
-	 * @param type
-	 *            type of the file: 0 = imagefile, 1 = soundfile
+	 * @param type    type of the file: 0 = imagefile, 1 = soundfile
 	 * @return the file
 	 * @throws IOException
 	 */
@@ -1192,13 +1237,10 @@ public final class UiTestUtils {
 	 * This method can be used in 2 ways. Either to click on an action item
 	 * (icon), or to click on an item in the overflow menu. So either pass a
 	 * String + ID --OR-- a String + 0.
-	 * 
-	 * @param solo
-	 *            Use Robotium functionality
-	 * @param overflowMenuItemName
-	 *            Name of the overflow menu item
-	 * @param overflowMenuItemId
-	 *            ID of an action item (icon)
+	 *
+	 * @param solo                 Use Robotium functionality
+	 * @param overflowMenuItemName Name of the overflow menu item
+	 * @param overflowMenuItemId   ID of an action item (icon)
 	 */
 	public static void openActionMode(Solo solo, String overflowMenuItemName, int menuItemId, Activity activity) {
 
@@ -1601,7 +1643,9 @@ public final class UiTestUtils {
 	}
 
 	public static ListView getScriptListView(Solo solo) {
-		return solo.getCurrentViews(ListView.class).get(0);
+		ArrayList<ListView> listOfListViews = solo.getCurrentViews(ListView.class);
+		assertTrue("no ListView found!", listOfListViews.size() > 0);
+		return listOfListViews.get(0);
 	}
 
 	public static void waitForFragment(Solo solo, int fragmentRootLayoutId) {
@@ -1795,6 +1839,7 @@ public final class UiTestUtils {
 		assertEquals("Not in expected fragment", true, solo.waitForText(solo.getString(R.string.looks), 0, 500));
 		assertEquals("Not in expected fragment", true, solo.waitForText(solo.getString(R.string.sounds), 0, 500));
 		solo.goBack();
+		solo.waitForActivity(ProjectActivity.class);
 		hidePocketPaintDialog(solo);
 		solo.waitForFragmentById(R.id.fragment_sprites_list);
 		assertEquals("Not in expected fragment", true,
@@ -1807,20 +1852,17 @@ public final class UiTestUtils {
 		}
 	}
 
-	public static void clickOnExactText(Solo solo, String text)
-	{
-		String regularExpressionForExactClick = "^"+java.util.regex.Pattern.quote(text)+"$";
+	public static void clickOnExactText(Solo solo, String text) {
+		String regularExpressionForExactClick = "^" + java.util.regex.Pattern.quote(text) + "$";
 		solo.clickOnText(regularExpressionForExactClick);
 	}
 
-	public static boolean searchExactText(Solo solo, String text)
-	{
+	public static boolean searchExactText(Solo solo, String text) {
 		return searchExactText(solo, text, false);
 	}
 
-	public static boolean searchExactText(Solo solo, String text, boolean onlyVisible)
-	{
-		String regularExpressionForExactClick = "^"+java.util.regex.Pattern.quote(text)+"$";
+	public static boolean searchExactText(Solo solo, String text, boolean onlyVisible) {
+		String regularExpressionForExactClick = "^" + java.util.regex.Pattern.quote(text) + "$";
 		return solo.searchText(regularExpressionForExactClick, onlyVisible);
 	}
 

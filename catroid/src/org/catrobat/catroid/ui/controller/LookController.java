@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.ui.controller;
 
@@ -229,16 +229,17 @@ public final class LookController {
 
 	private void copyImageToCatroid(String originalImagePath, Activity activity, ArrayList<LookData> lookDataList,
 			LookFragment fragment) {
-		int[] imageDimensions = ImageEditing.getImageDimensions(originalImagePath);
-
-		if (imageDimensions[0] < 0 || imageDimensions[1] < 0) {
-			Utils.showErrorDialog(activity, R.string.error_load_image);
-			return;
-		}
-
-		File oldFile = new File(originalImagePath);
-
 		try {
+
+			int[] imageDimensions = ImageEditing.getImageDimensions(originalImagePath);
+
+			if (imageDimensions[0] < 0 || imageDimensions[1] < 0) {
+				Utils.showErrorDialog(activity, R.string.error_load_image);
+				return;
+			}
+
+			File oldFile = new File(originalImagePath);
+
 			if (originalImagePath.equals("")) {
 				throw new IOException();
 			}
@@ -273,6 +274,10 @@ public final class LookController {
 			pixmap = null;
 			updateLookAdapter(imageName, imageFileName, lookDataList, fragment);
 		} catch (IOException e) {
+			Utils.showErrorDialog(activity, R.string.error_load_image);
+		}
+		catch (NullPointerException e) {
+			Log.e("NullPointerException", "probably originalImagePath null; message: " + e.getMessage());
 			Utils.showErrorDialog(activity, R.string.error_load_image);
 		}
 		fragment.destroyLoader();

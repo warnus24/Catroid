@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.content.brick;
 
@@ -61,27 +61,18 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 
 	@Override
 	protected void setUp() throws Exception {
-
 		createProject();
-		super.setUp();
-
-		// create server connection
 		SensorTestServerConnection.connectToArduinoServer();
-
-		// disable touch screen while testing
 		setActivityInitialTouchMode(false);
-
-		Log.d(TAG, "setUp() - no flash led available");
-
+		SensorTestServerConnection.closeConnection();
+		super.setUp();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
-
 		SensorTestServerConnection.closeConnection();
-
 		setActivityInitialTouchMode(true);
+		super.tearDown();
 	}
 
 	@Device
@@ -109,16 +100,14 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 
-		solo.sleep(3000);
+		solo.sleep(WLAN_DELAY_MS);
 		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_ON_VALUE);
 		solo.sleep(WLAN_DELAY_MS);
 
-		Log.d(TAG, "sleep two seconds. the phone should have stopped vibrating");
+		Log.d(TAG, "sleep four seconds. the phone should have stopped vibrating");
 
-		solo.sleep(2000);
+		solo.sleep(4000);
 		Log.d(TAG, "checking vibration sensor value");
-		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE);
-		solo.sleep(WLAN_DELAY_MS);
 		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE);
 		solo.sleep(WLAN_DELAY_MS);
 
@@ -167,5 +156,4 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 		ProjectManager.getInstance().setCurrentSprite(sprite);
 		ProjectManager.getInstance().setCurrentScript(startScript);
 	}
-
 }

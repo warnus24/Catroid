@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.util;
 
@@ -97,15 +97,15 @@ public final class SensorTestServerConnection {
 			assertString = "Error: LED is turned on!";
 		}
 		try {
-			clientSocket.close();
-			Thread.sleep(NETWORK_DELAY_MS);
 			connectToArduinoServer();
+			Thread.sleep(NETWORK_DELAY_MS);
 			Log.d(TAG, "requesting sensor value: ");
 			sendToServer.writeByte(Integer.toHexString(GET_LIGHT_VALUE_ID).charAt(0));
 			sendToServer.flush();
 			Thread.sleep(NETWORK_DELAY_MS);
 			response = receiveFromServer.readLine();
 			Log.d(TAG, "response received! " + response);
+			clientSocket.close();
 
 			assertFalse("Wrong Command!", response.contains("ERROR"));
 			assertTrue("Wrong data received!", response.contains("LIGHT_END"));
@@ -131,15 +131,15 @@ public final class SensorTestServerConnection {
 			assertString = "Error: Vibrator is turned on!";
 		}
 		try {
-			clientSocket.close();
-			Thread.sleep(NETWORK_DELAY_MS);
 			connectToArduinoServer();
+			Thread.sleep(NETWORK_DELAY_MS);
 			Log.d(TAG, "requesting sensor value: ");
 			sendToServer.writeByte(Integer.toHexString(GET_VIBRATION_VALUE_ID).charAt(0));
 			sendToServer.flush();
 			Thread.sleep(NETWORK_DELAY_MS);
 			response = receiveFromServer.readLine();
 			Log.d(TAG, "response received! " + response);
+			clientSocket.close();
 
 			assertFalse("Wrong Command!", response.contains("ERROR"));
 			assertTrue("Wrong data received!", response.contains("VIBRATION_END"));
@@ -155,15 +155,15 @@ public final class SensorTestServerConnection {
 	public static void calibrateVibrationSensor() {
 		String response;
 		try {
-			clientSocket.close();
-			Thread.sleep(NETWORK_DELAY_MS);
 			connectToArduinoServer();
+			Thread.sleep(NETWORK_DELAY_MS);
 			Log.d(TAG, "requesting sensor value: ");
 			sendToServer.writeByte(Integer.toHexString(CALIBRATE_VIBRATION_SENSOR_ID).charAt(0));
 			sendToServer.flush();
 			Thread.sleep(NETWORK_DELAY_MS);
 			response = receiveFromServer.readLine();
 			Log.d(TAG, "response received! " + response);
+			clientSocket.close();
 
 		} catch (IOException ioException) {
 			throw new AssertionFailedError("Data exchange failed! Check server connection!");

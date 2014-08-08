@@ -30,6 +30,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -176,12 +177,12 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			//}
 			String str_loadable = ProjectLoadableEnum.IS_ALREADY_LOADED.toString();
 
-			if (projectManagerLWP.getCurrentProject() != null
+			/*if (projectManagerLWP.getCurrentProject() != null
 					&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
-				//getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-				//getFragmentManager().popBackStack();
+				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
+				getFragmentManager().popBackStack();
 				return str_loadable;
-			}
+			}*/
 
 			boolean preview_loadable = true;
 			try {
@@ -245,26 +246,18 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 		final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		checkBox.setChecked(!sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
-
+		SoundManager.getInstance().setVolume(50);
 		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-				//SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-				Editor editor = sharedPreferences.edit();
-
 				if (isChecked) {
-					SoundManager.getInstance().pause();
-					editor.putBoolean(Constants.PREF_SOUND_DISABLED, false);
+					SoundManager.getInstance().setVolume(50);
+					Log.d("LWP", "Enable Sound Volume is :" +SoundManager.getInstance().getVolume()+" CHECK!");
 				} else {
-					SoundManager.getInstance().resume();
-					editor.putBoolean(Constants.PREF_SOUND_DISABLED, true);
+					SoundManager.getInstance().setVolume(0);
+					Log.d("LWP", "Enable Sound Volume is :" +SoundManager.getInstance().getVolume()+"  UNCHECK!");
 				}
-
-				editor.commit();
-
 			}
-
 		});
 
 		LinearLayout linearLayout = new LinearLayout(getActivity());
