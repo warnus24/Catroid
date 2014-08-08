@@ -51,19 +51,6 @@ public class SpeakActionTest extends AndroidTestCase {
 		assertEquals("Text is not updated after SpeakBrick executed", text, textAfterExecution);
 	}
 
-	public void testNullSprite() {
-		String text = "hello world!";
-		SpeakBrick speakBrick = new SpeakBrick(null, text);
-		SpeakAction action = ExtendedActions.speak(text, speakBrick);
-		try {
-			action.act(1.0f);
-			fail("Execution of ShowBrick with null Sprite did not cause a NullPointerException to be thrown");
-		} catch (NullPointerException expected) {
-			assertTrue("Exception thrown  as expected", true);
-		}
-		assertEquals("Stored wrong text in speak brick", text, speakBrick.getText());
-	}
-
 	public void testRequirements() {
 		SpeakBrick speakBrick = new SpeakBrick(null, null);
 		assertEquals("Wrong required brick resources", Brick.TEXT_TO_SPEECH, speakBrick.getRequiredResources());
