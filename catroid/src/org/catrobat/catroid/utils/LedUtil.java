@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.utils;
 
@@ -34,7 +34,7 @@ import java.util.concurrent.Semaphore;
 public final class LedUtil {
 
 	private static final String TAG = LedUtil.class.getSimpleName();
-	private static Camera cam = Camera.open();
+	private static Camera cam = null;
 	private static Camera.Parameters paramsOn = null;
 	private static Camera.Parameters paramsOff = null;
 
@@ -68,6 +68,20 @@ public final class LedUtil {
 
 	public static boolean isActive() {
 		return keepAlive;
+	}
+
+	public static Camera getCamera() {
+		return cam;
+	}
+
+	public static void openCamera() {
+		if (cam == null) {
+			try {
+				cam = Camera.open();
+			} catch (Exception exception) {
+				Log.e(TAG, "failed to open Camera", exception);
+			}
+		}
 	}
 
 	public static void setNextLedValue(boolean val) {
@@ -137,9 +151,7 @@ public final class LedUtil {
 			});
 		}
 
-		if (cam == null) {
-			cam = Camera.open();
-		}
+		openCamera();
 
 		if (cam != null) {
 
@@ -152,7 +164,7 @@ public final class LedUtil {
 				paramsOff.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
 			}
 
-			initializeCamera();
+			initializeSurfaceTexture();
 
 			if (!lightThread.isAlive()) {
 				try {
@@ -164,8 +176,6 @@ public final class LedUtil {
 				lightThread.setName("lightThread");
 				lightThread.start();
 			}
-		} else {
-			Log.e(TAG, "cam.open() failed!");
 		}
 	}
 
@@ -180,6 +190,10 @@ public final class LedUtil {
 
 		lightThread = null;
 
+		closeCamera();
+	}
+
+	public static void closeCamera() {
 		if (cam != null) {
 			cam.stopPreview();
 			cam.release();
@@ -192,7 +206,7 @@ public final class LedUtil {
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private static void initializeCamera() {
+	private static void initializeSurfaceTexture() {
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
 			try {
 				surfaceTexture = new SurfaceTexture(1);

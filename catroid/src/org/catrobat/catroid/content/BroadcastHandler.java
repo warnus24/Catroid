@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content;
 
@@ -42,7 +42,7 @@ import java.util.HashMap;
 public final class BroadcastHandler {
 
 	private static Multimap<String, String> actionsToRestartMap = ArrayListMultimap.create();
-	private static HashMap<Action, Sprite> actionSpriteMap = new HashMap<Action, Sprite>();
+	private static HashMap<Action, Script> actionScriptMap = new HashMap<Action, Script>();
 	private static HashMap<String, Action> stringActionMap = new HashMap<String, Action>();
 
 	private static final String TAG = "BroadcastHandler";
@@ -57,9 +57,9 @@ public final class BroadcastHandler {
 		}
 
 		for (SequenceAction action : BroadcastSequenceMap.get(broadcastMessage)) {
-			Sprite spriteOfAction = actionSpriteMap.get(action);
+			Script scriptOfAction = actionScriptMap.get(action);
 
-			if (!handleAction(action, spriteOfAction)) {
+			if (!handleAction(action, scriptOfAction)) {
 				addOrRestartAction(look, action);
 			}
 		}
@@ -114,9 +114,10 @@ public final class BroadcastHandler {
 		for (SequenceAction action : BroadcastSequenceMap.get(broadcastMessage)) {
 			SequenceAction broadcastWaitAction = ExtendedActions.sequence(action,
 					ExtendedActions.broadcastNotify(event));
-			Sprite receiverSprite = actionSpriteMap.get(action);
-			actionSpriteMap.put(broadcastWaitAction, receiverSprite);
-			String actionName = broadcastWaitAction.toString() + Constants.ACTION_SPRITE_SEPARATOR + receiverSprite.getName();
+			Script receiverScript = actionScriptMap.get(action);
+			actionScriptMap.put(broadcastWaitAction, receiverScript);
+			Sprite receiverSprite = receiverScript.getObject();
+			String actionName = broadcastWaitAction.toString() + Constants.ACTION_SPRITE_SEPARATOR + receiverSprite.getName() + receiverSprite.getScriptIndex(receiverScript);
 			stringActionMap.put(actionName, broadcastWaitAction);
 			if (!handleActionFromBroadcastWait(look, broadcastWaitAction)) {
 				event.raiseNumberOfReceivers();
@@ -129,8 +130,9 @@ public final class BroadcastHandler {
 		}
 	}
 
-	private static boolean handleAction(Action action, Sprite spriteOfAction) {
-		String actionToHandle = action.toString() + Constants.ACTION_SPRITE_SEPARATOR + spriteOfAction.getName();
+	private static boolean handleAction(Action action, Script scriptOfAction) {
+		Sprite spriteOfAction = scriptOfAction.getObject();
+		String actionToHandle = action.toString() + Constants.ACTION_SPRITE_SEPARATOR + spriteOfAction.getName() + spriteOfAction.getScriptIndex(scriptOfAction);
 
 		if (!actionsToRestartMap.containsKey(actionToHandle)) {
 			return false;
@@ -182,7 +184,7 @@ public final class BroadcastHandler {
 
 	public static void clearActionMaps() {
 		actionsToRestartMap.clear();
-		actionSpriteMap.clear();
+		actionScriptMap.clear();
 		stringActionMap.clear();
 	}
 
@@ -190,8 +192,8 @@ public final class BroadcastHandler {
 		return actionsToRestartMap;
 	}
 
-	public static HashMap<Action, Sprite> getActionSpriteMap() {
-		return actionSpriteMap;
+	public static HashMap<Action, Script> getActionScriptMap() {
+		return actionScriptMap;
 	}
 
 	public static HashMap<String, Action> getStringActionMap() {

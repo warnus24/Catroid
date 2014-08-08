@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.stage;
 
@@ -156,25 +156,13 @@ public class BroadCastReceiverRegressionTest extends BaseActivityInstrumentation
 				(int) sprite.look.getXInUserInterfaceDimensionUnit() > 5 * xMovement);
 	}
 
-	public void testRestartingSendBroadcastAfterBroadcastAndWait(){
+	public void testRestartingSendBroadcastAfterBroadcastAndWait() {
 		String message = "increase variable value";
 		String variableName = "test variable";
 		SetVariableBrick setVariableBrick = UiTestUtils.createSendBroadcastAfterBroadcastAndWaitProject(message);
 
 		UiTestUtils.getIntoScriptActivityFromMainMenu(solo);
-
-		solo.clickOnText(getInstrumentation().getTargetContext().getString(
-				R.string.brick_variable_spinner_create_new_variable));
-		assertTrue("NewVariableDialog not visible", solo.waitForFragmentByTag(NewVariableDialog.DIALOG_FRAGMENT_TAG));
-
-		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_variable_name_edit_text);
-		solo.enterText(editText, variableName);
-		solo.clickOnButton(solo.getString(R.string.ok));
-		assertTrue("ScriptFragment not visible", solo.waitForText(solo.getString(R.string.brick_set_variable)));
-		assertTrue("Created ProjectVariable not set on first position in spinner", solo.searchText(variableName));
-
-		UserVariable userVariable = (UserVariable) Reflection.getPrivateField(setVariableBrick, "userVariable");
-		assertNotNull("UserVariable is null", userVariable);
+		createUserVariable(variableName);
 
 		switchToScriptFragmentOfAnotherSprite("sprite1");
 		switchToScriptFragmentOfAnotherSprite("sprite2");
@@ -184,11 +172,14 @@ public class BroadCastReceiverRegressionTest extends BaseActivityInstrumentation
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 		solo.sleep(3000);
 
+		UserVariable userVariable = (UserVariable) Reflection.getPrivateField(setVariableBrick, "userVariable");
+		assertNotNull("UserVariable is null", userVariable);
+
 		double expectedValue = 2111.0f;
 		assertEquals("Broadcast script of sprite 3 does not restart itself when a BroadcastWait is sent!", expectedValue, userVariable.getValue());
 	}
 
-	public void testRestartingSendBroadcastInBroadcastAndWait(){
+	public void testRestartingSendBroadcastInBroadcastAndWait() {
 		String message1 = "message1";
 		String message2 = "message2";
 		double degreesToTurn = 15.0f;
@@ -210,7 +201,30 @@ public class BroadCastReceiverRegressionTest extends BaseActivityInstrumentation
 
 	}
 
-	public void switchToScriptFragmentOfAnotherSprite(String spriteName){
+	public void testCorrectRestartingOfBroadcastsWithSameActionStringsWithinOneSprite() {
+		String message = "message";
+		String variableName = "test variable";
+		SetVariableBrick setVariableBrick = UiTestUtils.createSameActionsBroadcastProject(message);
+
+		UiTestUtils.getIntoScriptActivityFromMainMenu(solo);
+		createUserVariable(variableName);
+
+		switchToScriptFragmentOfAnotherSprite("sprite1");
+		switchToScriptFragmentOfAnotherSprite("sprite2");
+		switchToScriptFragmentOfAnotherSprite("sprite3");
+
+		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
+		solo.waitForActivity(StageActivity.class.getSimpleName());
+		solo.sleep(3000);
+
+		UserVariable userVariable = (UserVariable) Reflection.getPrivateField(setVariableBrick, "userVariable");
+		assertNotNull("UserVariable is null", userVariable);
+
+		double expectedValue = 20.0f;
+		assertEquals("Actions of identical action strings were not restarted!", expectedValue, userVariable.getValue());
+	}
+
+	public void switchToScriptFragmentOfAnotherSprite(String spriteName) {
 		solo.goBack();
 		solo.goBack();
 		solo.clickOnText(spriteName);
@@ -218,5 +232,17 @@ public class BroadCastReceiverRegressionTest extends BaseActivityInstrumentation
 		solo.waitForActivity(ScriptActivity.class.getSimpleName());
 		solo.waitForView(ListView.class);
 		solo.sleep(200);
+	}
+
+	private void createUserVariable(String variableName) {
+		solo.clickOnText(getInstrumentation().getTargetContext().getString(
+				R.string.brick_variable_spinner_create_new_variable));
+		assertTrue("NewVariableDialog not visible", solo.waitForFragmentByTag(NewVariableDialog.DIALOG_FRAGMENT_TAG));
+
+		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_variable_name_edit_text);
+		solo.enterText(editText, variableName);
+		solo.clickOnButton(solo.getString(R.string.ok));
+		assertTrue("ScriptFragment not visible", solo.waitForText(solo.getString(R.string.brick_set_variable)));
+		assertTrue("Created ProjectVariable not set on first position in spinner", solo.searchText(variableName));
 	}
 }
