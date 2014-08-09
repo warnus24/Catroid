@@ -45,6 +45,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.effects.Zoomer;
 import com.bitfire.postprocessing.effects.Vignette;
 import com.google.common.collect.Multimap;
@@ -155,6 +156,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private boolean isTinting = false;
 	private com.badlogic.gdx.graphics.Color tintingColor = null;
 	PostProcessor postProcessor;
+	List<PostProcessorEffect> effects = new ArrayList<PostProcessorEffect>();
 	private static final boolean isDesktop = false;
 
 	public StageListener(boolean isLWP) {
@@ -250,13 +252,36 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			makeAutomaticScreenshot = project.manualScreenshotExists(SCREENSHOT_MANUAL_FILE_NAME);
 		}
 
+		initializePostProcessEffects();
+
+		Log.d("LWP", "StageListener created!!!!!");
+	}
+
+	public void initializePostProcessEffects()
+	{
 		ShaderLoader.BasePath = "data/shaders/";
-		postProcessor = new PostProcessor(false, false, isDesktop);
-		//Bloom bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
-		//postProcessor.addEffect(bloom);
+
+		if(postProcessor != null)
+		{
+			if(effects != null)
+			{
+				for(PostProcessorEffect effect : effects)
+				{
+					postProcessor.removeEffect(effect);
+				}
+				effects.clear();
+			}
+		}
+		else
+		{
+			postProcessor = new PostProcessor(false, false, isDesktop);
+		}
+
+		Bloom bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
+		postProcessor.addEffect(bloom);
 		Vignette vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
 		postProcessor.addEffect(vignette);
-		Log.d("LWP", "StageListener created!!!!!");
+		effects.add(vignette);
 	}
 
 	public void menuResume() {
@@ -296,15 +321,18 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	}
 
 	public void reloadProjectLWP(LiveWallpaperEngine engine) {
+
+		this.lwpEngine = engine;
+
 		if (reloadProject) {
 			return;
 		}
-		this.lwpEngine = engine;
+
 
 		project.getUserVariables().resetAllUserVariables();
 
 		reloadProject = true;
-		this.firstStart = true;
+		//this.firstStart = true;
 		Log.d("LWP", "StageListener reloadProject!!!!!");
 	}
 
