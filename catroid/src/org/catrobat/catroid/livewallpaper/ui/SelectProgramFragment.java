@@ -22,6 +22,7 @@
  */
 package org.catrobat.catroid.livewallpaper.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -37,9 +38,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -243,11 +244,37 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		selectedProject = projectList.get(position).projectName;
 		CheckBox checkBox = new CheckBox(getActivity());
 		checkBox.setText(R.string.lwp_enable_sound);
+		SeekBar seekBar = new SeekBar(getActivity());
+		seekBar.setMax(100);
 
-		final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		seekBar.setProgress(1);
+		seekBar.setVisibility(View.VISIBLE);
+		seekBar.setProgress((int)SoundManager.getInstance().getVolume());
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(500,100);
+		seekBar.setLayoutParams(lp);
+
+		seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+			public void onStopTrackingTouch(SeekBar arg0) {
+				// TODO Auto-generated method stub
+			}
+
+			public void onStartTrackingTouch(SeekBar arg0) {
+				// TODO Auto-generated method stub
+			}
+
+			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+				// TODO Auto-generated method stub
+				SoundManager.getInstance().setVolume(arg1);
+			}
+		});
+
+
+
+			final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		checkBox.setChecked(!sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
 		SoundManager.getInstance().setVolume(50);
-		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked) {
@@ -264,7 +291,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT));
 		linearLayout.addView(checkBox);
-
+		linearLayout.addView(seekBar);
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setView(linearLayout);
 		builder.setTitle(selectedProject);
@@ -278,10 +305,11 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		});
 
 		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+			@SuppressLint("NewApi")
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				LoadProject Loader = new LoadProject();
-				Loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				Loader.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 			}
 		});
 		AlertDialog alertDialog = builder.create();
