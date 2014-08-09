@@ -45,6 +45,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.bitfire.postprocessing.effects.Zoomer;
+import com.bitfire.postprocessing.effects.Vignette;
 import com.google.common.collect.Multimap;
 
 import org.catrobat.catroid.ProjectManager;
@@ -62,6 +64,9 @@ import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.Utils;
 import org.catrobat.catroid.utils.VibratorUtil;
+import com.bitfire.utils.ShaderLoader;
+import com.bitfire.postprocessing.PostProcessor;
+import com.bitfire.postprocessing.effects.Bloom;
 
 import java.io.File;
 import java.io.IOException;
@@ -149,6 +154,8 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private boolean isLWP = false;
 	private boolean isTinting = false;
 	private com.badlogic.gdx.graphics.Color tintingColor = null;
+	PostProcessor postProcessor;
+	private static final boolean isDesktop = false;
 
 	public StageListener(boolean isLWP) {
 		super();
@@ -242,6 +249,13 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		if (checkIfAutomaticScreenshotShouldBeTaken) {
 			makeAutomaticScreenshot = project.manualScreenshotExists(SCREENSHOT_MANUAL_FILE_NAME);
 		}
+
+		ShaderLoader.BasePath = "data/shaders/";
+		postProcessor = new PostProcessor(false, false, isDesktop);
+		//Bloom bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
+		//postProcessor.addEffect(bloom);
+		Vignette vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
+		postProcessor.addEffect(vignette);
 		Log.d("LWP", "StageListener created!!!!!");
 	}
 
@@ -307,6 +321,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			sprite.look.refreshTextures();
 		}
 
+		if(postProcessor != null)
+		{
+			postProcessor.rebind();
+		}
 	}
 
 	@Override
@@ -441,8 +459,18 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 
 		if (!finished) {
+			if(postProcessor != null)
+			{
+				postProcessor.capture();
+			}
+
 			tinting();
 			stage.draw();
+
+			if(postProcessor != null)
+			{
+				postProcessor.render();
+			}
 		}
 
 		if (makeAutomaticScreenshot) {
@@ -594,6 +622,11 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		font.dispose();
 		axes.dispose();
 		disposeTextures();
+
+		if(postProcessor != null)
+		{
+			postProcessor.dispose();
+		}
 	}
 
 	public boolean makeManualScreenshot() {
