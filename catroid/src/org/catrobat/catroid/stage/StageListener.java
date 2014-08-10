@@ -151,6 +151,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	private byte[] thumbnail;
 
+
 	private boolean isPreview = true;
 	private boolean isLWP = false;
 	private boolean isTinting = false;
@@ -261,27 +262,15 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	{
 		ShaderLoader.BasePath = "data/shaders/";
 
-		if(postProcessor != null)
-		{
-			if(effects != null)
-			{
-				for(PostProcessorEffect effect : effects)
-				{
-					postProcessor.removeEffect(effect);
-				}
-				effects.clear();
-			}
-		}
-		else
+		if(postProcessor == null)
 		{
 			postProcessor = new PostProcessor(false, false, isDesktop);
+			Bloom bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
+			postProcessor.addEffect(bloom);
+			effects.add(bloom);
+			Vignette vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
+			postProcessor.addEffect(vignette);
 		}
-
-		Bloom bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
-		postProcessor.addEffect(bloom);
-		Vignette vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
-		postProcessor.addEffect(vignette);
-		effects.add(vignette);
 	}
 
 	public void menuResume() {
@@ -321,12 +310,11 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	}
 
 	public void reloadProjectLWP(LiveWallpaperEngine engine) {
-
-		this.lwpEngine = engine;
-
 		if (reloadProject) {
 			return;
 		}
+
+		this.lwpEngine = engine;
 
 
 		project.getUserVariables().resetAllUserVariables();
@@ -489,7 +477,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		if (!finished) {
 			if(postProcessor != null)
 			{
-				postProcessor.capture();
+				postProcessor.captureNoClear();
 			}
 
 			tinting();
