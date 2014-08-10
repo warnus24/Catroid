@@ -245,6 +245,37 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 	}
 
+	public void activateEffect1()
+	{
+		if (previewEngine != null) {
+			previewEngine.activateEffect1();
+		}
+		if (homeEngine != null) {
+			homeEngine.activateEffect1();
+		}
+	}
+
+	public void activateEffect2()
+	{
+		if (previewEngine != null) {
+			previewEngine.activateEffect2();
+		}
+		if (homeEngine != null) {
+			homeEngine.activateEffect2();
+		}
+	}
+
+
+	public void disableEffects()
+	{
+		if (previewEngine != null) {
+			previewEngine.disableEffects();
+		}
+		if (homeEngine != null) {
+			homeEngine.disableEffects();
+		}
+	}
+
 	public class LiveWallpaperEngine extends AndroidWallpaperEngine {
 		public String name = "";
 		private final int REFRESH_RATE = 300;
@@ -418,6 +449,22 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		public void setTinting(boolean isTinting) {
 			getLocalStageListener().setTinting(isTinting);
+		}
+
+
+		public void activateEffect1()
+		{
+			getLocalStageListener().activateEffect1();
+		}
+
+		public void activateEffect2()
+		{
+			getLocalStageListener().activateEffect2();
+		}
+
+		public void disableEffects()
+		{
+			getLocalStageListener().disableEffects();
 		}
 
 		private void activateTextToSpeechIfNeeded() {

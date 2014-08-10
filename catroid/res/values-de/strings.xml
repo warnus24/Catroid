@@ -677,5 +677,8 @@
  	<string name="lwp_about">About</string>
  	<string name="lwp_enable_sound">Enable sounds</string>
  	<string name="lwp_disable_tinting">Disable tinting</string>
+    <string name="lwp_effect1">Effect 1</string>
+    <string name="lwp_effect2">Effect 2</string>
+    <string name="lwp_disable_effect">Disable effects</string>
 	<!--  -->
 </resources>

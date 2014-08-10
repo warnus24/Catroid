@@ -102,6 +102,19 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 				disableTinting();
 				break;
 			}
+
+			case R.id.lwp_effect1: {
+				activateEffect1();
+				break;
+			}
+			case R.id.lwp_effect2: {
+				activateEffect2();
+				break;
+			}
+			case R.id.lwp_disable_effect: {
+				disableEffects();
+				break;
+			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -115,6 +128,18 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 		ColorPickerDialog dialog = new ColorPickerDialog(SelectProgramActivity.this, SelectProgramActivity.this,
 				mPaint.getColor());
 		dialog.show();
+	}
+
+	public void activateEffect1() {
+		selectProgramFragment.activateEffect1();
+	}
+
+	public void activateEffect2() {
+		selectProgramFragment.activateEffect2();
+	}
+
+	public void disableEffects() {
+		selectProgramFragment.disableEffects();
 	}
 
 	private void setUpActionBar() {

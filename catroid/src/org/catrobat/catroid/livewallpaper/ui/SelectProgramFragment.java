@@ -407,6 +407,21 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 	}
 
+	public void activateEffect1()
+	{
+		LiveWallpaper.getInstance().activateEffect1();
+	}
+
+	public void activateEffect2()
+	{
+		LiveWallpaper.getInstance().activateEffect2();
+	}
+
+	public void disableEffects()
+	{
+		LiveWallpaper.getInstance().disableEffects();
+	}
+
 	private void showConfirmDeleteDialog() {
 		int titleId;
 		if (adapter.getAmountOfCheckedProjects() == 1) {
