@@ -45,8 +45,8 @@ import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProgramMenuActivity;
 import org.catrobat.catroid.ui.ProjectActivity;
 import org.catrobat.catroid.ui.ScriptActivity;
+import org.catrobat.catroid.ui.fragment.FormulaEditorDataFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
-import org.catrobat.catroid.ui.fragment.FormulaEditorVariableListFragment;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
@@ -89,13 +89,13 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
-		ProjectManager.getInstance().getCurrentProject().getUserVariables()
+		ProjectManager.getInstance().getCurrentProject().getDataContainer()
 				.addProjectUserVariable(USER_VARIABLE_NAME_UNDERLINE_PREFIX);
 
 		Double setVariableToValue = Double.valueOf(SET_USERVARIABLE_TO_BRICK_VALUE);
 
 		SetVariableBrick setVariableBrick = new SetVariableBrick(firstSprite, new Formula(setVariableToValue),
-				ProjectManager.getInstance().getCurrentProject().getUserVariables()
+				ProjectManager.getInstance().getCurrentProject().getDataContainer()
 						.getUserVariable(USER_VARIABLE_NAME_UNDERLINE_PREFIX, firstSprite));
 
 		Script startScript1 = new StartScript(firstSprite);
@@ -128,8 +128,8 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		assertTrue("FormulaEditorFragment not shown: ",
 				solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
-		assertTrue("FormulaEditorVariableListFragment not shown: ",
-				solo.waitForFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG));
+		assertTrue("FormulaEditorDataFragment not shown: ",
+				solo.waitForFragmentByTag(FormulaEditorDataFragment.VARIABLE_TAG));
 
 		createUserVariableFromVariableFragment(userVariableString, false);
 		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
@@ -160,7 +160,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
-		solo.waitForFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG);
+		solo.waitForFragmentByTag(FormulaEditorDataFragment.VARIABLE_TAG);
 
 		ListView listView = getVariableListView();
 
@@ -187,7 +187,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
-		solo.waitForFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG);
+		solo.waitForFragmentByTag(FormulaEditorDataFragment.VARIABLE_TAG);
 
 		listView = getVariableListView();
 
@@ -220,7 +220,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
-		solo.waitForFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG);
+		solo.waitForFragmentByTag(FormulaEditorDataFragment.VARIABLE_TAG);
 
 		listView = getVariableListView();
 
@@ -250,7 +250,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
 
-		ProjectManager.getInstance().getCurrentProject().getUserVariables().deleteUserVariableByName("zzz");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("zzz");
 	}
 
 	public void testDeleteUserVariableWithLongPress() {
@@ -288,7 +288,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 
 		assertEquals("Wrong number of UserVariables deleted", 0, userVariableListView.getAdapter().getCount());
 
-		ProjectManager.getInstance().getCurrentProject().getUserVariables().deleteUserVariableByName("del");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("del");
 	}
 
 	public void testDeleteUserVariableWithMultipleChoice() {
@@ -322,9 +322,9 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		assertFalse(itemString + "not deleted", solo.searchText(itemString, true));
 		assertFalse(itemString3rd + "not deleted", solo.searchText(itemString3rd, true));
 
-		ProjectManager.getInstance().getCurrentProject().getUserVariables().deleteUserVariableByName(itemString);
-		ProjectManager.getInstance().getCurrentProject().getUserVariables().deleteUserVariableByName(itemString2nd);
-		ProjectManager.getInstance().getCurrentProject().getUserVariables().deleteUserVariableByName(itemString3rd);
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName(itemString);
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName(itemString2nd);
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName(itemString3rd);
 	}
 
 	public void testKeyCodeBackOnContextMode() {
@@ -382,8 +382,8 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		assertFalse(itemString + "  should not be found:", solo.searchText(itemString, true));
 		assertTrue(itemString2nd + " not found:", solo.searchText(itemString2nd, true));
 
-		ProjectManager.getInstance().getCurrentProject().getUserVariables().deleteUserVariableByName("local");
-		ProjectManager.getInstance().getCurrentProject().getUserVariables().deleteUserVariableByName("global");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("local");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("global");
 	}
 
 	public void testCreateUserVariableDoubleName() {
@@ -415,8 +415,8 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 
 		solo.clickOnButton(solo.getString(R.string.ok));
 
-		ProjectManager.getInstance().getCurrentProject().getUserVariables().deleteUserVariableByName("var1");
-		ProjectManager.getInstance().getCurrentProject().getUserVariables().deleteUserVariableByName("var2");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("var1");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("var2");
 	}
 
 	public void testVisibilityOfMenuItems() {
@@ -555,8 +555,8 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 	}
 
 	private void createUserVariableFromVariableFragment(String variableName, boolean forAllSprites) {
-		assertTrue("FormulaEditorVariableListFragment not shown: ",
-				solo.waitForFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG));
+		assertTrue("FormulaEditorDataFragment not shown: ",
+				solo.waitForFragmentByTag(FormulaEditorDataFragment.VARIABLE_TAG));
 
 		solo.clickOnView(solo.getView(R.id.button_add));
 		assertTrue("Add Variable Dialog not shown",

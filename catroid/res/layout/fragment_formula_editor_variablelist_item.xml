@@ -26,9 +26,9 @@
     android:longClickable="true"
     android:orientation="vertical" >
 
-    <include layout="@layout/fragment_formula_editor_variablelist_and_userlist_global_headline" />
+    <include layout="@layout/fragment_formula_editor_data_global_headline" />
 
-    <include layout="@layout/fragment_formula_editor_variablelist_and_userlist_local_headline" />
+    <include layout="@layout/fragment_formula_editor_data_local_headline" />
 
     <LinearLayout
         android:layout_width="match_parent"

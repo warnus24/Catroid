@@ -675,7 +675,7 @@
     <string name="formula_editor_dialog_for_all_sprites">Für alle Objekte</string>
     <string name="formula_editor_dialog_for_this_sprite_only">Nur für dieses Objekt</string>
     <string name="formula_editor_variable_dialog_hint">Variablenname eingeben</string>
-     <string name="formula_editor_userlist_dialog_hint">Listenname eingeben</string>
+     <string name="formula_editor_data_dialog_hint" >Name eingeben</string>
     <string name="formula_editor_discard_changes_dialog_message">Möchten Sie die Änderungen speichern?</string>
     <string name="formula_editor_discard_changes_dialog_title">Änderungen speichern?</string>
     <string name="variable_name">Variablenname:</string>
@@ -686,9 +686,13 @@
         <item quantity="one">Variable ausgewählt!</item>
         <item quantity="other">Variablen ausgewählt!</item>
     </plurals>
-    <string name="formula_editor_userlist_dialog_title">New List</string>
+    <string name="formula_editor_data_dialog_title">New</string>
     <string name="userlist_name">Listenname:</string>
     <string name="formula_editor_existing_userlist">Name wird bereits verwendet!</string>
+    <string name="formula_editor_fragment_data_current_items" >Aktuelle Items</string >
+    <string name="formula_editor_data_dialog_new" >Neu</string >
+    <string name="formula_editor_data_dialog_name" >Name</string >
+    <string name="formula_editor_data_dialog_is_list" >is List</string >
     <plurals name="formula_editor_userlist_context_action_item_selected">
         <item quantity="one">Liste ausgewähl!</item>
         <item quantity="other">Listen ausgewählt!</item>

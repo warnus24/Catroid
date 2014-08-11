@@ -50,13 +50,12 @@ import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.ui.adapter.UserVariableAdapter;
 import org.catrobat.catroid.ui.adapter.UserVariableAdapterWrapper;
-import org.catrobat.catroid.ui.dialogs.NewVariableDialog;
-import org.catrobat.catroid.ui.dialogs.NewVariableDialog.NewVariableDialogListener;
+import org.catrobat.catroid.ui.dialogs.NewDataDialog;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class SetVariableBrick extends BrickBaseType implements OnClickListener, NewVariableDialogListener, FormulaBrick {
+public class SetVariableBrick extends BrickBaseType implements OnClickListener, FormulaBrick, NewDataDialog.NewVariableDialogListener {
 	private static final long serialVersionUID = 1L;
 	private UserVariable userVariable;
 	private Formula variableFormula;
@@ -121,7 +120,7 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 		textField.setOnClickListener(this);
 
 		Spinner variableSpinner = (Spinner) view.findViewById(R.id.set_variable_spinner);
-		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
+		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getDataContainer()
 				.createUserVariableAdapter(context, sprite);
 		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
 				userVariableAdapter);
@@ -146,10 +145,10 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 				if (event.getAction() == MotionEvent.ACTION_UP
 						&& (((Spinner) view).getSelectedItemPosition() == 0
 						&& ((Spinner) view).getAdapter().getCount() == 1)) {
-					NewVariableDialog dialog = new NewVariableDialog((Spinner) view);
+					NewDataDialog dialog = new NewDataDialog((Spinner) view, NewDataDialog.DialogType.USER_VARIABLE);
 					dialog.addVariableDialogListener(SetVariableBrick.this);
 					dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
-							NewVariableDialog.DIALOG_FRAGMENT_TAG);
+							NewDataDialog.DIALOG_FRAGMENT_TAG);
 					return true;
 				}
 
@@ -160,10 +159,10 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (position == 0 && ((UserVariableAdapterWrapper) parent.getAdapter()).isTouchInDropDownView()) {
-					NewVariableDialog dialog = new NewVariableDialog((Spinner) parent);
+					NewDataDialog dialog = new NewDataDialog((Spinner) parent, NewDataDialog.DialogType.USER_VARIABLE);
 					dialog.addVariableDialogListener(SetVariableBrick.this);
 					dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
-							NewVariableDialog.DIALOG_FRAGMENT_TAG);
+							NewDataDialog.DIALOG_FRAGMENT_TAG);
 				}
 				((UserVariableAdapterWrapper) parent.getAdapter()).resetIsTouchInDropDownView();
 				userVariable = (UserVariable) parent.getItemAtPosition(position);
@@ -185,7 +184,7 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 		Spinner variableSpinner = (Spinner) prototypeView.findViewById(R.id.set_variable_spinner);
 		variableSpinner.setFocusableInTouchMode(false);
 		variableSpinner.setFocusable(false);
-		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
+		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getDataContainer()
 				.createUserVariableAdapter(context, sprite);
 
 		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
@@ -251,7 +250,7 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 
 		SetVariableBrick copyBrick = (SetVariableBrick) clone();
 		copyBrick.sprite = sprite;
-		copyBrick.userVariable = currentProject.getUserVariables().getUserVariable(userVariable.getName(), sprite);
+		copyBrick.userVariable = currentProject.getDataContainer().getUserVariable(userVariable.getName(), sprite);
 		return copyBrick;
 	}
 

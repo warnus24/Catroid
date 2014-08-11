@@ -37,7 +37,7 @@ import org.catrobat.catroid.content.bricks.DeleteItemOfUserListBrick;
 import org.catrobat.catroid.formulaeditor.UserList;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
-import org.catrobat.catroid.ui.dialogs.NewUserListDialog;
+import org.catrobat.catroid.ui.dialogs.NewDataDialog;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorUserListFragment;
 import org.catrobat.catroid.ui.fragment.ScriptFragment;
@@ -84,9 +84,9 @@ public class DeleteItemOfUserListTest extends BaseActivityInstrumentationTestCas
 
 		solo.clickOnText(getInstrumentation().getTargetContext().getString(
 				R.string.brick_variable_spinner_create_new_variable));
-		assertTrue("NewUserListDialog not visible", solo.waitForFragmentByTag(NewUserListDialog.DIALOG_FRAGMENT_TAG));
+		assertTrue("NewUserListDialog not visible", solo.waitForFragmentByTag(NewDataDialog.DIALOG_FRAGMENT_TAG));
 
-		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_userlist_name_edit_text);
+		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 		solo.enterText(editText, userListName);
 		solo.clickOnButton(solo.getString(R.string.ok));
 		assertTrue("ScriptFragment not visible", solo.waitForText(solo.getString(R.string.brick_delete_item_from_userlist)));
@@ -101,9 +101,9 @@ public class DeleteItemOfUserListTest extends BaseActivityInstrumentationTestCas
 		solo.clickOnText(getInstrumentation().getTargetContext().getString(
 				R.string.brick_variable_spinner_create_new_variable));
 
-		assertTrue("NewUserListDialog not visible", solo.waitForFragmentByTag(NewUserListDialog.DIALOG_FRAGMENT_TAG));
+		assertTrue("NewUserListDialog not visible", solo.waitForFragmentByTag(NewDataDialog.DIALOG_FRAGMENT_TAG));
 
-		editText = (EditText) solo.getView(R.id.dialog_formula_editor_userlist_name_edit_text);
+		editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 		solo.enterText(editText, secondUserListName);
 		solo.clickOnButton(solo.getString(R.string.ok));
 		assertTrue("ScriptFragment not visible", solo.waitForText(solo.getString(R.string.brick_delete_item_from_userlist)));
@@ -185,21 +185,21 @@ public class DeleteItemOfUserListTest extends BaseActivityInstrumentationTestCas
 
 	private void createUserListFromUserListFragment(String userListName, boolean forAllSprites) {
 		assertTrue("FormulaEditorUserListFragment not shown: ",
-				solo.waitForFragmentByTag(FormulaEditorUserListFragment.USERLIST_TAG));
+				solo.waitForFragmentByTag(FormulaEditorUserListFragment.USER_DATA_TAG));
 
 		solo.clickOnView(solo.getView(R.id.button_add));
 		assertTrue("Add UserList Dialog not shown",
-				solo.waitForText(solo.getString(R.string.formula_editor_userlist_dialog_title)));
-		solo.waitForView(solo.getView(R.id.dialog_formula_editor_userlist_name_edit_text));
-		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_userlist_name_edit_text);
+				solo.waitForText(solo.getString(R.string.formula_editor_data_dialog_title)));
+		solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_edit_text));
+		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 		solo.enterText(editText, userListName);
 
 		if (forAllSprites) {
-			solo.waitForView(solo.getView(R.id.dialog_formula_editor_userlist_name_global_variable_radio_button));
-			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_userlist_name_global_variable_radio_button));
+			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
+			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
 		} else {
-			solo.waitForView(solo.getView(R.id.dialog_formula_editor_userlist_name_local_variable_radio_button));
-			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_userlist_name_local_variable_radio_button));
+			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_local_variable_radio_button));
+			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_name_local_variable_radio_button));
 		}
 		solo.clickOnButton(solo.getString(R.string.ok));
 	}
