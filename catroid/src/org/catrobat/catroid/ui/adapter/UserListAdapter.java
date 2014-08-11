@@ -69,12 +69,13 @@ public class UserListAdapter extends BaseAdapter implements ScriptActivityAdapte
 		this.projectLists = projectLists;
 		this.context = context;
 		this.selectMode = ListView.CHOICE_MODE_NONE;
-		this.itemLayout = R.layout.fragment_formula_editor_variablelist_item;
-		this.checkboxId = R.id.fragment_formula_editor_variablelist_item_checkbox;
-		this.textViewId = R.id.fragment_formula_editor_variablelist_item_name_text_view;
-		this.textViewId2 = R.id.fragment_formula_editor_variablelist_item_value_text_view;
-		this.linearLayoutGlobalId = R.id.variablelist_and_userlist_global_headline;
-		this.linearLayoutLocalId = R.id.variablelist_and_userlist_local_headline;
+
+		this.itemLayout = R.layout.fragment_formula_editor_userlist_item;
+		this.checkboxId = R.id.fragment_formula_editor_datalist_item_checkbox;
+		this.textViewId = R.id.fragment_formula_editor_datalist_item_name_text_view;
+		this.textViewId2 = R.id.fragment_formula_editor_data_list_item_value_text_view;
+		this.linearLayoutGlobalId = R.id.data_global_headline;
+		this.linearLayoutLocalId = R.id.data_local_headline;
 	}
 
 	public void setItemLayout(int itemLayout, int textViewId) {

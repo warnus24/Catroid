@@ -520,6 +520,7 @@
         <item name="android:layout_height">1.5dp</item>
     </style>
 
+
     <style name="headlineTextViewObjects" parent="android:Widget.TextView">
         <item name="android:paddingBottom">5dip</item>
         <item name="android:paddingLeft">16dip</item>

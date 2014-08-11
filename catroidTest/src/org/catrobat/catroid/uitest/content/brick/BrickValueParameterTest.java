@@ -463,7 +463,7 @@ public class BrickValueParameterTest extends BaseActivityInstrumentationTestCase
 		sprite.addScript(script1);
 		project.addSprite(sprite);
 		project.addSprite(sprite1);
-		project.getUserVariables().addProjectUserVariable("BrickValueParameterTestUserVariable");
+		project.getDataContainer().addProjectUserVariable("BrickValueParameterTestUserVariable");
 
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(sprite);

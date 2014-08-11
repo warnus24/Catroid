@@ -29,12 +29,12 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.ChangeSizeByNBrick;
+import org.catrobat.catroid.formulaeditor.DataContainer;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.InternFormulaParser;
 import org.catrobat.catroid.formulaeditor.InternToken;
 import org.catrobat.catroid.formulaeditor.InternTokenType;
-import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -65,8 +65,8 @@ public class ParserTestUserVariables extends AndroidTestCase {
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
-		UserVariablesContainer userVariableContainer = ProjectManager.getInstance().getCurrentProject()
-				.getUserVariables();
+		DataContainer userVariableContainer = ProjectManager.getInstance().getCurrentProject()
+				.getDataContainer();
 		userVariableContainer.addProjectUserVariable(PROJECT_USER_VARIABLE).setValue(USER_VARIABLE_1_VALUE_TYPE_DOUBLE);
 		userVariableContainer.addSpriteUserVariableToSprite(firstSprite, SPRITE_USER_VARIABLE).setValue(
                         USER_VARIABLE_2_VALUE_TYPE_DOUBLE);
@@ -84,7 +84,7 @@ public class ParserTestUserVariables extends AndroidTestCase {
 	}
 
 	public void testUserVariableReseting() {
-		ProjectManager.getInstance().getCurrentProject().getUserVariables().resetAllUserVariables();
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().resetAllDataObjects();
 
 		assertEquals("ProjectUserVariable did not reset", USER_VARIABLE_RESET,
                 interpretUservariable(PROJECT_USER_VARIABLE));

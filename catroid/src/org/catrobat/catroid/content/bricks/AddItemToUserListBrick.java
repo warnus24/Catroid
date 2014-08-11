@@ -50,8 +50,8 @@ import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.UserList;
 import org.catrobat.catroid.ui.adapter.UserListAdapter;
 import org.catrobat.catroid.ui.adapter.UserListAdapterWrapper;
-import org.catrobat.catroid.ui.dialogs.NewUserListDialog;
-import org.catrobat.catroid.ui.dialogs.NewUserListDialog.NewUserListDialogListener;
+import org.catrobat.catroid.ui.dialogs.NewDataDialog;
+import org.catrobat.catroid.ui.dialogs.NewDataDialog.NewUserListDialogListener;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
@@ -122,7 +122,7 @@ public class AddItemToUserListBrick extends BrickBaseType implements OnClickList
 		textField.setOnClickListener(this);
 
 		Spinner userListSpinner = (Spinner) view.findViewById(R.id.add_item_to_userlist_spinner);
-		UserListAdapter userListAdapter = ProjectManager.getInstance().getCurrentProject().getUserLists()
+		UserListAdapter userListAdapter = ProjectManager.getInstance().getCurrentProject().getDataContainer()
 				.createUserListAdapter(context, sprite);
 		UserListAdapterWrapper userListAdapterWrapper = new UserListAdapterWrapper(context, userListAdapter);
 		userListAdapterWrapper.setItemLayout(android.R.layout.simple_spinner_item, android.R.id.text1);
@@ -145,10 +145,10 @@ public class AddItemToUserListBrick extends BrickBaseType implements OnClickList
 			public boolean onTouch(View view, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP
 						&& (((Spinner) view).getSelectedItemPosition() == 0 && ((Spinner) view).getAdapter().getCount() == 1)) {
-					NewUserListDialog dialog = new NewUserListDialog((Spinner) view);
+					NewDataDialog dialog = new NewDataDialog((Spinner) view, NewDataDialog.DialogType.USER_LIST);
 					dialog.addUserListDialogListener(AddItemToUserListBrick.this);
 					dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
-							NewUserListDialog.DIALOG_FRAGMENT_TAG);
+							NewDataDialog.DIALOG_FRAGMENT_TAG);
 					return true;
 				}
 
@@ -159,10 +159,10 @@ public class AddItemToUserListBrick extends BrickBaseType implements OnClickList
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				if (position == 0 && ((UserListAdapterWrapper) parent.getAdapter()).isTouchInDropDownView()) {
-					NewUserListDialog dialog = new NewUserListDialog((Spinner) parent);
+					NewDataDialog dialog = new NewDataDialog((Spinner) parent, NewDataDialog.DialogType.USER_LIST);
 					dialog.addUserListDialogListener(AddItemToUserListBrick.this);
 					dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
-							NewUserListDialog.DIALOG_FRAGMENT_TAG);
+							NewDataDialog.DIALOG_FRAGMENT_TAG);
 				}
 				((UserListAdapterWrapper) parent.getAdapter()).resetIsTouchInDropDownView();
 				userList = (UserList) parent.getItemAtPosition(position);
@@ -184,7 +184,7 @@ public class AddItemToUserListBrick extends BrickBaseType implements OnClickList
 		Spinner userListSpinner = (Spinner) prototypeView.findViewById(R.id.add_item_to_userlist_spinner);
 		userListSpinner.setFocusableInTouchMode(false);
 		userListSpinner.setFocusable(false);
-		UserListAdapter userListAdapter = ProjectManager.getInstance().getCurrentProject().getUserLists()
+		UserListAdapter userListAdapter = ProjectManager.getInstance().getCurrentProject().getDataContainer()
 				.createUserListAdapter(context, sprite);
 
 		UserListAdapterWrapper userListAdapterWrapper = new UserListAdapterWrapper(context, userListAdapter);
@@ -250,7 +250,7 @@ public class AddItemToUserListBrick extends BrickBaseType implements OnClickList
 
 		AddItemToUserListBrick copyBrick = (AddItemToUserListBrick) clone();
 		copyBrick.sprite = sprite;
-		copyBrick.userList = currentProject.getUserLists().getUserList(userList.getName(), sprite);
+		copyBrick.userList = currentProject.getDataContainer().getUserList(userList.getName(), sprite);
 		return copyBrick;
 	}
 

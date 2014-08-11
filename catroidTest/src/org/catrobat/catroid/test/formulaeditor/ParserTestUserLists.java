@@ -29,13 +29,13 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.ChangeSizeByNBrick;
+import org.catrobat.catroid.formulaeditor.DataContainer;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.Functions;
 import org.catrobat.catroid.formulaeditor.InternFormulaParser;
 import org.catrobat.catroid.formulaeditor.InternToken;
 import org.catrobat.catroid.formulaeditor.InternTokenType;
-import org.catrobat.catroid.formulaeditor.UserListContainer;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -91,7 +91,7 @@ public class ParserTestUserLists extends AndroidTestCase {
 
 	private static final String USER_LIST_VALUES_STRINGS_AND_NUMBERS_INTERPRETATION_VALUE = "Hello 42.0 WORLDS";
 	private static final List<Object> USER_LIST_VALUES_STRINGS_AND_NUMBERS = new ArrayList<Object>();
-	private UserListContainer userListContainer;
+	private DataContainer dataContainer;
 
 	static {
 		USER_LIST_VALUES_STRINGS_AND_NUMBERS.add("Hello");
@@ -111,15 +111,15 @@ public class ParserTestUserLists extends AndroidTestCase {
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
-		userListContainer = ProjectManager.getInstance().getCurrentProject().getUserLists();
-		userListContainer.addProjectUserList(PROJECT_USER_LIST_NAME);
-		userListContainer.addSpriteUserListToSprite(firstSprite, SPRITE_USER_LIST_NAME);
-		userListContainer.addProjectUserList(PROJECT_USER_LIST_NAME_2);
+		dataContainer = ProjectManager.getInstance().getCurrentProject().getDataContainer();
+		dataContainer.addProjectUserList(PROJECT_USER_LIST_NAME);
+		dataContainer.addSpriteUserListToSprite(firstSprite, SPRITE_USER_LIST_NAME);
+		dataContainer.addProjectUserList(PROJECT_USER_LIST_NAME_2);
 
 	}
 
 	public void testUserListInterpretationMultipleStringAndNumbers() {
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(
 				USER_LIST_VALUES_MULTIPLE_NUMBERS_STRING_INTEGER);
 		assertEquals("Formula interpretation of List is not as expected",
 				USER_LIST_VALUES_MULTIPLE_NUMBERS_STRING_INTEGER_INTERPRETATION_VALUE,
@@ -127,7 +127,7 @@ public class ParserTestUserLists extends AndroidTestCase {
 	}
 
 	public void testUserListInterpretationSingleNumberString() {
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(
 				USER_LIST_VALUES_SINGLE_NUMBER_STRING);
 		assertEquals("Formula interpretation of List is not as expected",
 				USER_LIST_VALUES_SINGLE_NUMBER_STRING_INTERPRETATION_VALUE,
@@ -135,42 +135,42 @@ public class ParserTestUserLists extends AndroidTestCase {
 	}
 
 	public void testUserListInterpretationMultipleNumberString() {
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(
 				USER_LIST_VALUES_MULTIPLE_NUMBER_STRING);
 		assertEquals("Formula interpretation of List is not as expected",
 				USER_LIST_VALUES_MULTIPLE_NUMBER_STRING_INTERPRETATION_VALUE, interpretUserList(PROJECT_USER_LIST_NAME));
 	}
 
 	public void testUserListInterpretationMultipleNumbers() {
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
 		assertEquals("Formula interpretation of List is not as expected",
 				USER_LIST_VALUES_MULTIPLE_NUMBERS_INTERPRETATION_VALUE, interpretUserList(PROJECT_USER_LIST_NAME));
 	}
 
 	public void testUserListInterpretationStringsAndNumbers() {
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite)
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite)
 				.setList(USER_LIST_VALUES_STRINGS_AND_NUMBERS);
 		assertEquals("Formula interpretation of List is not as expected",
 				USER_LIST_VALUES_STRINGS_AND_NUMBERS_INTERPRETATION_VALUE, interpretUserList(PROJECT_USER_LIST_NAME));
 	}
 
 	public void testUserListInterpretationEmptyList() {
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).getList().clear();
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).getList().clear();
 
 		assertEquals("Formula interpretation of List is not as expected", EMPTY_USER_LIST_INTERPRETATION_VALUE,
 				(Double) interpretUserList(PROJECT_USER_LIST_NAME), DELTA);
 	}
 
 	public void testUserListReset() {
-		userListContainer.addSpriteUserList(SPRITE_USER_LIST_NAME);
-		userListContainer.addSpriteUserList(PROJECT_USER_LIST_NAME_2);
-		userListContainer.addSpriteUserList(PROJECT_USER_LIST_NAME);
+		dataContainer.addSpriteUserList(SPRITE_USER_LIST_NAME);
+		dataContainer.addSpriteUserList(PROJECT_USER_LIST_NAME_2);
+		dataContainer.addSpriteUserList(PROJECT_USER_LIST_NAME);
 
-		userListContainer.getUserList(SPRITE_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME_2, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
+		dataContainer.getUserList(SPRITE_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME_2, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
 
-		userListContainer.resetAllUserLists();
+		dataContainer.resetAllDataObjects();
 
 		assertEquals("Sprite UserList did not reset", EMPTY_USER_LIST_INTERPRETATION_VALUE,
 				interpretUserList(SPRITE_USER_LIST_NAME));
@@ -192,8 +192,8 @@ public class ParserTestUserLists extends AndroidTestCase {
 	}
 
 	public void testFunctionListItem() {
-		userListContainer.addSpriteUserList(PROJECT_USER_LIST_NAME);
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
+		dataContainer.addSpriteUserList(PROJECT_USER_LIST_NAME);
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
 
 		String index = "1";
 		FormulaEditorUtil.testDoubleParameterFunction(Functions.LIST_ITEM, InternTokenType.NUMBER, index,
@@ -223,20 +223,20 @@ public class ParserTestUserLists extends AndroidTestCase {
 	}
 
 	public void testFunctionLength() {
-		userListContainer.addProjectUserList(PROJECT_USER_LIST_NAME);
+		dataContainer.addProjectUserList(PROJECT_USER_LIST_NAME);
 
 		FormulaEditorUtil.testSingleParameterFunction(Functions.LENGTH, InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME,
 				(double) 0, firstSprite);
 
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
 		FormulaEditorUtil.testSingleParameterFunction(Functions.LENGTH, InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME,
 				(double) USER_LIST_VALUES_MULTIPLE_NUMBERS.size(), firstSprite);
 
 	}
 
 	public void testFunctionContains() {
-		userListContainer.addProjectUserList(PROJECT_USER_LIST_NAME);
-		userListContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
+		dataContainer.addProjectUserList(PROJECT_USER_LIST_NAME);
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
 
 		FormulaEditorUtil.testDoubleParameterFunction(Functions.CONTAINS, InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME,
 				InternTokenType.NUMBER, "1", 1d, firstSprite);

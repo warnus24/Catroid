@@ -54,16 +54,16 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.formulaeditor.DataContainer;
 import org.catrobat.catroid.formulaeditor.UserVariable;
-import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.UserVariableAdapter;
-import org.catrobat.catroid.ui.dialogs.NewVariableDialog;
-import org.catrobat.catroid.ui.dialogs.NewVariableDialog.NewVariableDialogListener;
+import org.catrobat.catroid.ui.dialogs.NewDataDialog;
+import org.catrobat.catroid.ui.dialogs.NewDataDialog.NewVariableDialogListener;
 import org.catrobat.catroid.utils.Utils;
 
-public class FormulaEditorVariableListFragment extends SherlockListFragment implements Dialog.OnKeyListener,
+public class FormulaEditorDataFragment extends SherlockListFragment implements Dialog.OnKeyListener,
 		UserVariableAdapter.OnCheckedChangeListener, UserVariableAdapter.OnListItemClickListener,
 		NewVariableDialogListener {
 
@@ -79,7 +79,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	private int deleteIndex;
 	private UserVariableAdapter adapter;
 
-	public FormulaEditorVariableListFragment() {
+	public FormulaEditorDataFragment() {
 		contextActionMode = null;
 		deleteIndex = -1;
 		inContextMode = false;
@@ -197,9 +197,9 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		buttonAdd.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				NewVariableDialog dialog = new NewVariableDialog();
-				dialog.addVariableDialogListener(FormulaEditorVariableListFragment.this);
-				dialog.show(getSherlockActivity().getSupportFragmentManager(), NewVariableDialog.DIALOG_FRAGMENT_TAG);
+				NewDataDialog dialog = new NewDataDialog(NewDataDialog.DialogType.SHOW_LIST_CHECKBOX);
+				dialog.addVariableDialogListener(FormulaEditorDataFragment.this);
+				dialog.show(getSherlockActivity().getSupportFragmentManager(), NewDataDialog.DIALOG_FRAGMENT_TAG);
 			}
 		});
 	}
@@ -222,7 +222,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		switch (item.getItemId()) {
 			case R.id.menu_delete:
 				if (!adapter.isEmpty()) {
-					ProjectManager.getInstance().getCurrentProject().getUserVariables()
+					ProjectManager.getInstance().getCurrentProject().getDataContainer()
 							.deleteUserVariableByName(adapter.getItem(deleteIndex).getName());
 					adapter.notifyDataSetChanged();
 					getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_VARIABLE_DELETED));
@@ -262,7 +262,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	private void initializeUserVariableAdapter() {
 		Sprite currentSprite = ProjectManager.getInstance().getCurrentSprite();
 		Project currentProject = ProjectManager.getInstance().getCurrentProject();
-		UserVariablesContainer userVariableContainer = currentProject.getUserVariables();
+		DataContainer userVariableContainer = currentProject.getDataContainer();
 		adapter = userVariableContainer.createUserVariableAdapter(getSherlockActivity(), currentSprite);
 		setListAdapter(adapter);
 		adapter.setOnCheckedChangeListener(this);
@@ -333,11 +333,11 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-			UserVariablesContainer userVariablesContainer = ProjectManager.getInstance().getCurrentProject()
-					.getUserVariables();
+			DataContainer dataContainer = ProjectManager.getInstance().getCurrentProject()
+					.getDataContainer();
 			if (!adapter.isEmpty()) {
 				for (UserVariable var : adapter.getCheckedUserVariables()) {
-					userVariablesContainer.deleteUserVariableByName(var.getName());
+					dataContainer.deleteUserVariableByName(var.getName());
 				}
 			}
 

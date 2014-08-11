@@ -55,19 +55,20 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.formulaeditor.DataContainer;
 import org.catrobat.catroid.formulaeditor.UserList;
-import org.catrobat.catroid.formulaeditor.UserListContainer;
+import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.ScriptActivity;
-import org.catrobat.catroid.ui.adapter.UserListAdapter;
-import org.catrobat.catroid.ui.dialogs.NewUserListDialog;
-import org.catrobat.catroid.ui.dialogs.NewUserListDialog.NewUserListDialogListener;
+import org.catrobat.catroid.ui.adapter.DataAdapter;
+import org.catrobat.catroid.ui.dialogs.NewDataDialog;
+import org.catrobat.catroid.ui.dialogs.NewDataDialog.NewUserListDialogListener;
 import org.catrobat.catroid.utils.Utils;
 
 public class FormulaEditorUserListFragment extends SherlockListFragment implements Dialog.OnKeyListener,
-		UserListAdapter.OnCheckedChangeListener, UserListAdapter.OnListItemClickListener, NewUserListDialogListener {
+		DataAdapter.OnCheckedChangeListener, DataAdapter.OnListItemClickListener, NewUserListDialogListener {
 
-	public static final String USERLIST_TAG = "userListFragment";
+	public static final String USER_DATA_TAG = "userDataFragment";
 	public static final String EDIT_TEXT_BUNDLE_ARGUMENT = "formulaEditorEditText";
 	public static final String ACTION_BAR_TITLE_BUNDLE_ARGUMENT = "actionBarTitle";
 	public static final String FRAGMENT_TAG_BUNDLE_ARGUMENT = "fragmentTag";
@@ -77,7 +78,7 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 	private View selectAllActionModeButton;
 	private boolean inContextMode;
 	private int deleteIndex;
-	private UserListAdapter adapter;
+	private DataAdapter adapter;
 
 	public FormulaEditorUserListFragment() {
 		contextActionMode = null;
@@ -88,7 +89,7 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.d("CatroidFragmentTag", "FormulaEditorUserList onresume()");
+		Log.d("CatroidFragmentTag", "FormulaEditorData onresume()");
 
 	}
 
@@ -96,7 +97,7 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		initializeUserListAdapter();
+		initializeDataAdapter();
 
 		this.actionBarTitle = getArguments().getString(ACTION_BAR_TITLE_BUNDLE_ARGUMENT);
 	}
@@ -143,7 +144,7 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 			FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getSherlockActivity()
 					.getSupportFragmentManager().findFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 			if (formulaEditor != null) {
-				formulaEditor.addUserListToActiveFormula(adapter.getItem(position).getName());
+				formulaEditor.addUserListToActiveFormula(getNameOfItemInAdapter(position));
 				formulaEditor.updateButtonsOnKeyboardAndInvalidateOptionsMenu();
 			}
 			KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
@@ -204,9 +205,9 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 		buttonAdd.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				NewUserListDialog dialog = new NewUserListDialog();
+				NewDataDialog dialog = new NewDataDialog(NewDataDialog.DialogType.USER_LIST);
 				dialog.addUserListDialogListener(FormulaEditorUserListFragment.this);
-				dialog.show(getSherlockActivity().getSupportFragmentManager(), NewUserListDialog.DIALOG_FRAGMENT_TAG);
+				dialog.show(getSherlockActivity().getSupportFragmentManager(), NewDataDialog.DIALOG_FRAGMENT_TAG);
 			}
 		});
 	}
@@ -230,8 +231,8 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 		switch (item.getItemId()) {
 			case R.id.context_formula_editor_userlist_delete:
 				if (!adapter.isEmpty()) {
-					ProjectManager.getInstance().getCurrentProject().getUserLists()
-							.deleteUserListByName(adapter.getItem(deleteIndex).getName());
+					ProjectManager.getInstance().getCurrentProject().getDataContainer()
+							.deleteUserListByName(getNameOfItemInAdapter(deleteIndex));
 					adapter.notifyDataSetChanged();
 					getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_USERLIST_DELETED));
 				}
@@ -263,15 +264,15 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 		fragTransaction.commit();
 
 		if (adapter != null) {
-			initializeUserListAdapter();
+			initializeDataAdapter();
 		}
 	}
 
-	private void initializeUserListAdapter() {
+	private void initializeDataAdapter() {
 		Sprite currentSprite = ProjectManager.getInstance().getCurrentSprite();
 		Project currentProject = ProjectManager.getInstance().getCurrentProject();
-		UserListContainer userListContainer = currentProject.getUserLists();
-		adapter = userListContainer.createUserListAdapter(getSherlockActivity(), currentSprite);
+		DataContainer dataContainer = currentProject.getDataContainer();
+		adapter = dataContainer.createDataAdapter(getSherlockActivity(), currentSprite);
 		setListAdapter(adapter);
 		adapter.setOnCheckedChangeListener(this);
 		adapter.setOnListItemClickListener(this);
@@ -341,10 +342,13 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
-			UserListContainer userListsContainer = ProjectManager.getInstance().getCurrentProject().getUserLists();
+			DataContainer dataContainer = ProjectManager.getInstance().getCurrentProject().getDataContainer();
 			if (!adapter.isEmpty()) {
 				for (UserList var : adapter.getCheckedUserLists()) {
-					userListsContainer.deleteUserListByName(var.getName());
+					dataContainer.deleteUserListByName(var.getName());
+				}
+				for (UserVariable var : adapter.getCheckedUserVariables()) {
+					dataContainer.deleteUserVariableByName(var.getName());
 				}
 			}
 
@@ -356,4 +360,16 @@ public class FormulaEditorUserListFragment extends SherlockListFragment implemen
 			getSherlockActivity().findViewById(R.id.bottom_bar).setVisibility(View.VISIBLE);
 		}
 	};
+
+	private String getNameOfItemInAdapter(int position){
+		Object item = adapter.getItem(position);
+		if(item instanceof UserList){
+			return ((UserList)item).getName();
+		}
+		else if(item instanceof  UserVariable){
+			return ((UserVariable)item).getName();
+		}
+
+		return null;
+	}
 }

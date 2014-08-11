@@ -239,7 +239,7 @@ public class Formula implements Serializable {
                 return "ERROR";
             }
 		} else if (formulaTree.isUserVariableWithTypeString(sprite)) {
-			UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
+			DataContainer userVariables = ProjectManager.getInstance().getCurrentProject().getDataContainer();
 			UserVariable userVariable = userVariables.getUserVariable(formulaTree.getValue(), sprite);
 			return (String) userVariable.getValue();
 		} else {
