@@ -75,7 +75,7 @@ public class DroneTakeOffLandBrick extends DroneBrick {
 		view = View.inflate(context, R.layout.brick_drone_takeoff, null);
 		view = getViewWithAlpha(alphaValue);
 
-		setCheckboxView(R.id.brick_drone_takeoff_checkbox);
+		setCheckboxView(R.id.brick_drone_takeoff_land_checkbox);
 		final Brick brickInstance = this;
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
@@ -91,7 +91,7 @@ public class DroneTakeOffLandBrick extends DroneBrick {
 	@Override
 	public View getViewWithAlpha(int alphaValue) {
 		if (view != null) {
-			View layout = view.findViewById(R.id.brick_drone_takeoff);
+			View layout = view.findViewById(R.id.brick_drone_takeoff_land);
 			Drawable background = layout.getBackground();
 			background.setAlpha(alphaValue);
 			this.alphaValue = (alphaValue);

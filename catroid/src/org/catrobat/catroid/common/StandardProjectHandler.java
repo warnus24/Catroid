@@ -124,7 +124,7 @@ public final class StandardProjectHandler {
 				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_takeoff, context, true,
 				backgroundImageScaleFactor);
 
-		defaultDroneProject.addSprite(createDroneSprite(takeOffSpriteName, DroneBrickFactory.DroneBricks.DRONE_TAKE_OFF_BRICK,
+		defaultDroneProject.addSprite(createDroneSprite(takeOffSpriteName, DroneBrickFactory.DroneBricks.DRONE_TAKE_OFF_LAND_BRICK,
 				-260, -200, takeOffArrowFile));
 
 		//rotate Sprite start
