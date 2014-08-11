@@ -117,3 +117,15 @@ task assembleDebugTest(dependsOn: ':assembleCatroidDebugTest') << {}
 task commandlineAdbInstallDebug(dependsOn: ':commandlineAdbInstallCatroidDebug') << {}
 task commandlineAdbInstallDebugTest(dependsOn: 'commandlineAdbInstallCatroidDebugTest') << {}
 
+def messUpIntentFilters() {
+    def manifestFile = new File("catroid/AndroidManifest.xml");
+    def manifestText = manifestFile.text
+    println manifestText
+    String regex = "<intent-filter>\\n.+?<action android:name=\"android.intent.action.(VIEW|GET_CONTENT)(.|\\n)+?</intent-filter>"
+    String noIntentManifest = manifestText.replaceAll(regex, "")
+    manifestFile.write(noIntentManifest)
+}
+
+task testremoveIntentFilters() << {
+    messUpIntentFilters()
+}
