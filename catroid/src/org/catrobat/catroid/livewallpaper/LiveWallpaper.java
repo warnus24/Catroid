@@ -25,10 +25,12 @@ package org.catrobat.catroid.livewallpaper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -423,11 +425,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 
 		private void activateTextToSpeechIfNeeded() {
-			//			if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
-			//				Intent installIntent = new Intent();
-			//				installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-			//				startActivity(installIntent);
-			//			}
+						if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
+							Intent installIntent = new Intent();
+							installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+							startActivity(installIntent);
+						}
 		}
 	}
 

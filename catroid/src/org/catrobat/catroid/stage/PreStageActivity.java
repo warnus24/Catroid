@@ -26,6 +26,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -398,6 +399,31 @@ public class PreStageActivity extends BaseActivity {
 			if (status == TextToSpeech.ERROR) {
 				Log.e(TAG, "File synthesizing failed");
 			}
+		}
+	}
+
+	public static int initTextToSpeechForLiveWallpaper(Context context) {
+		if (getRequiredRessources() == Brick.TEXT_TO_SPEECH && textToSpeech == null) {
+			textToSpeech = new TextToSpeech(context, new OnInitListener() {
+				@Override
+				public void onInit(int status) {
+					onUtteranceCompletedListenerContainer = new OnUtteranceCompletedListenerContainer();
+					textToSpeech.setOnUtteranceCompletedListener(onUtteranceCompletedListenerContainer);
+				}
+			});
+
+			if (textToSpeech.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_MISSING_DATA) {
+				return -1;
+			}
+		}
+		return 0;
+	}
+
+	public static void shutDownTextToSpeechForLiveWallpaper() {
+		if (textToSpeech != null) {
+			textToSpeech.stop();
+			textToSpeech.shutdown();
+			textToSpeech = null;
 		}
 	}
 
