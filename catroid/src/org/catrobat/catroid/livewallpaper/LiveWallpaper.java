@@ -46,6 +46,7 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.exceptions.CompatibilityProjectException;
 import org.catrobat.catroid.exceptions.LoadingProjectException;
 import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
+import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
 
@@ -145,12 +146,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public void onDestroy() {
-		Log.d("LWP", "Service wird zerstört");
+		Log.d("LWP", "Service wird beendet");
 		ProjectManager.changeState(ProjectManagerState.NORMAL);
 		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, oldProjectName);
 		INSTANCE = null;
 		super.onDestroy();
-		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
+		PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
 	}
 
 	public void changeWallpaperProgram() {
@@ -263,7 +264,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		public LiveWallpaperEngine() {
 			super();
-			//activateTextToSpeechIfNeeded();
+			activateTextToSpeechIfNeeded();
 			//SensorHandler.startSensorListener(getApplicationContext());
 		}
 
@@ -326,6 +327,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			if (getLocalStageListener() == null) {
 				return;
 			}
+
 
 			//SensorHandler.startSensorListener(getApplicationContext());
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
