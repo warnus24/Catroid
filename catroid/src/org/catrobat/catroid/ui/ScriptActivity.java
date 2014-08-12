@@ -205,7 +205,7 @@ public class ScriptActivity extends BaseActivity {
 		}
 
 		FormulaEditorDataFragment formulaEditorDataFragment = (FormulaEditorDataFragment) getSupportFragmentManager()
-				.findFragmentByTag(FormulaEditorDataFragment.DATA_TAG);
+				.findFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 
 		if (formulaEditorDataFragment != null && formulaEditorDataFragment.isVisible()) {
 			return super.onOptionsItemSelected(item);
@@ -278,7 +278,7 @@ public class ScriptActivity extends BaseActivity {
 		}
 
 		FormulaEditorDataFragment formulaEditorDataFragment = (FormulaEditorDataFragment) getSupportFragmentManager()
-				.findFragmentByTag(FormulaEditorDataFragment.DATA_TAG);
+				.findFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 
 		if (formulaEditorDataFragment != null && formulaEditorDataFragment.isVisible()) {
 			return formulaEditorDataFragment.onKey(null, keyCode, event);
@@ -376,7 +376,7 @@ public class ScriptActivity extends BaseActivity {
 		//Dismiss ActionMode without effecting checked items
 
 		FormulaEditorDataFragment formulaEditorDataFragment = (FormulaEditorDataFragment) getSupportFragmentManager()
-				.findFragmentByTag(FormulaEditorDataFragment.DATA_TAG);
+				.findFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 
 		if (formulaEditorDataFragment != null && formulaEditorDataFragment.isVisible()) {
 			ListAdapter adapter = formulaEditorDataFragment.getListAdapter();

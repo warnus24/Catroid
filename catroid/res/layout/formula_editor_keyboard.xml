@@ -235,5 +235,4 @@
             android:layout_weight="0.35"
             android:text="@string/ok" />
     </LinearLayout >
-
 </LinearLayout >

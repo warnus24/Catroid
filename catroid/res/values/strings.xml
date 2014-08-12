@@ -577,7 +577,6 @@
     <!--  -->
 
     <!-- Formula Editor Strings -->
-
     <string name="formula_editor_data" >Data</string >
     <string name="formula_editor_true" >True</string >
     <string name="formula_editor_false" >False</string >

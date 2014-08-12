@@ -68,7 +68,7 @@ import org.catrobat.catroid.utils.Utils;
 public class FormulaEditorDataFragment extends SherlockListFragment implements Dialog.OnKeyListener,
 		DataAdapter.OnCheckedChangeListener, DataAdapter.OnListItemClickListener, NewUserListDialogListener, NewDataDialog.NewVariableDialogListener {
 
-	public static final String DATA_TAG = "userDataFragment";
+	public static final String USER_DATA_TAG = "userDataFragment";
 	public static final String EDIT_TEXT_BUNDLE_ARGUMENT = "formulaEditorEditText";
 	public static final String ACTION_BAR_TITLE_BUNDLE_ARGUMENT = "actionBarTitle";
 	public static final String FRAGMENT_TAG_BUNDLE_ARGUMENT = "fragmentTag";
@@ -238,21 +238,10 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 		switch (item.getItemId()) {
 			case R.id.context_formula_editor_userlist_delete:
 				if (!adapter.isEmpty()) {
-					Object itemToDelete = adapter.getItem(deleteIndex);
-					if(itemToDelete instanceof UserList){
-						ProjectManager.getInstance().getCurrentProject().getDataContainer()
-								.deleteUserListByName(getNameOfItemInAdapter(deleteIndex));
-						adapter.notifyDataSetChanged();
-						getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_USERLIST_DELETED));
-					}
-					else {
-						ProjectManager.getInstance().getCurrentProject().getDataContainer()
-								.deleteUserVariableByName(getNameOfItemInAdapter(deleteIndex));
-						adapter.notifyDataSetChanged();
-						getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_VARIABLE_DELETED));
-					}
-
-
+					ProjectManager.getInstance().getCurrentProject().getDataContainer()
+							.deleteUserListByName(getNameOfItemInAdapter(deleteIndex));
+					adapter.notifyDataSetChanged();
+					getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_USERLIST_DELETED));
 				}
 				return true;
 			default:
@@ -378,6 +367,7 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 			adapter.notifyDataSetChanged();
 			getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_USERLIST_DELETED));
 			getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_VARIABLE_DELETED));
+
 			adapter.setSelectMode(ListView.CHOICE_MODE_NONE);
 			contextActionMode = null;
 			inContextMode = false;

@@ -276,7 +276,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 									R.string.formula_editor_sensors);
 							return true;
 						case R.id.formula_editor_keyboard_data:
-							showFormulaEditorUserListFragment(FormulaEditorDataFragment.DATA_TAG,
+							showFormulaEditorUserListFragment(FormulaEditorDataFragment.USER_DATA_TAG,
 									R.string.formula_editor_data);
 							return true;
 						case R.id.formula_editor_keyboard_ok:

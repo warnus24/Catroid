@@ -129,7 +129,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 				solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
 		assertTrue("FormulaEditorDataFragment not shown: ",
-				solo.waitForFragmentByTag(FormulaEditorDataFragment.DATA_TAG));
+				solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
 		UiTestUtils.createUserVariableFromDataFragment(solo,userVariableString, false);
 		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
@@ -160,8 +160,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		solo.waitForFragmentByTag(FormulaEditorDataFragment.DATA_TAG);
-
+		solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 		ListView listView = getVariableListView();
 
 		UserVariable userVariable = (UserVariable) listView.getItemAtPosition(0);
@@ -187,7 +186,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		solo.waitForFragmentByTag(FormulaEditorDataFragment.DATA_TAG);
+		solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 
 		listView = getVariableListView();
 
@@ -220,7 +219,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		solo.waitForFragmentByTag(FormulaEditorDataFragment.DATA_TAG);
+		solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 
 		listView = getVariableListView();
 
@@ -506,7 +505,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 
 		UiTestUtils.createUserVariableFromDataFragment(solo,"global", true);
 		UiTestUtils.createUserVariableFromDataFragment(solo,"local", false);
@@ -554,7 +553,26 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		startScript2.addBrick(glideToBrick);
 	}
 
+	private void createUserVariableFromVariableFragment(String variableName, boolean forAllSprites) {
+		assertTrue("FormulaEditorDataFragment not shown: ",
+				solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
+		solo.clickOnView(solo.getView(R.id.button_add));
+		assertTrue("Add Variable Dialog not shown",
+				solo.waitForText(solo.getString(R.string.formula_editor_variable_dialog_title)));
+		solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_edit_text));
+		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
+		solo.enterText(editText, variableName);
+
+		if (forAllSprites) {
+			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
+			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
+		} else {
+			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_local_variable_radio_button));
+			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_name_local_variable_radio_button));
+		}
+		solo.clickOnButton(solo.getString(R.string.ok));
+	}
 
 	private ListView getVariableListView() {
 		return solo.getCurrentViews(ListView.class).get(1);
