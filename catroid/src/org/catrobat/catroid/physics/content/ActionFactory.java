@@ -441,6 +441,10 @@ public class ActionFactory extends Actions {
 		throw new RuntimeException("No physics action available in non-physics sprite!");
 	}
 
+	public Action createSetPhysicsCollisionFilterAction(Sprite sprite, PhysicsObject.Behavior behavior) {
+		throw new RuntimeException("No physics action available in non-physics sprite!");
+	}
+
 	public Action createSetMassAction(Sprite sprite, Formula mass) {
 		throw new RuntimeException("No physics action available in non-physics sprite!");
 	}
