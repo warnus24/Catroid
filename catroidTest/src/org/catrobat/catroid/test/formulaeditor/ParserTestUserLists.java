@@ -91,13 +91,16 @@ public class ParserTestUserLists extends AndroidTestCase {
 
 	private static final String USER_LIST_VALUES_STRINGS_AND_NUMBERS_INTERPRETATION_VALUE = "Hello 42.0 WORLDS";
 	private static final List<Object> USER_LIST_VALUES_STRINGS_AND_NUMBERS = new ArrayList<Object>();
-	private DataContainer dataContainer;
 
 	static {
 		USER_LIST_VALUES_STRINGS_AND_NUMBERS.add("Hello");
 		USER_LIST_VALUES_STRINGS_AND_NUMBERS.add(42.0);
 		USER_LIST_VALUES_STRINGS_AND_NUMBERS.add("WORLDS");
 	}
+
+	private static final String PROJECT_USER_VARIABLE = "projectUserVariable";
+
+	private DataContainer dataContainer;
 
 	@Override
 	protected void setUp() {
@@ -194,6 +197,7 @@ public class ParserTestUserLists extends AndroidTestCase {
 	public void testFunctionListItem() {
 		dataContainer.addSpriteUserList(PROJECT_USER_LIST_NAME);
 		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
+		dataContainer.addProjectUserVariable(PROJECT_USER_VARIABLE);
 
 		String index = "1";
 		FormulaEditorUtil.testDoubleParameterFunction(Functions.LIST_ITEM, InternTokenType.NUMBER, index,
@@ -220,6 +224,37 @@ public class ParserTestUserLists extends AndroidTestCase {
 				InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME, 1.0,
 				firstSprite);
 
+		dataContainer.getUserVariable(PROJECT_USER_VARIABLE, firstSprite).setValue("1");
+		FormulaEditorUtil.testDoubleParameterFunction(Functions.LIST_ITEM, InternTokenType.USER_VARIABLE, PROJECT_USER_VARIABLE,
+				InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME, 1.0,
+				firstSprite);
+
+		dataContainer.getUserVariable(PROJECT_USER_VARIABLE, firstSprite).setValue("0");
+		FormulaEditorUtil.testDoubleParameterFunction(Functions.LIST_ITEM, InternTokenType.USER_VARIABLE, PROJECT_USER_VARIABLE,
+				InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME, "",
+				firstSprite);
+
+		dataContainer.getUserVariable(PROJECT_USER_VARIABLE, firstSprite).setValue("4");
+		FormulaEditorUtil.testDoubleParameterFunction(Functions.LIST_ITEM, InternTokenType.USER_VARIABLE, PROJECT_USER_VARIABLE,
+				InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME, "",
+				firstSprite);
+
+		dataContainer.getUserVariable(PROJECT_USER_VARIABLE, firstSprite).setValue(1d);
+		FormulaEditorUtil.testDoubleParameterFunction(Functions.LIST_ITEM, InternTokenType.USER_VARIABLE, PROJECT_USER_VARIABLE,
+				InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME, 1.0,
+				firstSprite);
+
+		dataContainer.getUserVariable(PROJECT_USER_VARIABLE, firstSprite).setValue(0d);
+		FormulaEditorUtil.testDoubleParameterFunction(Functions.LIST_ITEM, InternTokenType.USER_VARIABLE, PROJECT_USER_VARIABLE,
+				InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME, "",
+				firstSprite);
+
+		dataContainer.getUserVariable(PROJECT_USER_VARIABLE, firstSprite).setValue(4d);
+		FormulaEditorUtil.testDoubleParameterFunction(Functions.LIST_ITEM, InternTokenType.USER_VARIABLE, PROJECT_USER_VARIABLE,
+				InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME, "",
+				firstSprite);
+
+
 	}
 
 	public void testFunctionLength() {
@@ -231,12 +266,12 @@ public class ParserTestUserLists extends AndroidTestCase {
 		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
 		FormulaEditorUtil.testSingleParameterFunction(Functions.LENGTH, InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME,
 				(double) USER_LIST_VALUES_MULTIPLE_NUMBERS.size(), firstSprite);
-
 	}
 
 	public void testFunctionContains() {
 		dataContainer.addProjectUserList(PROJECT_USER_LIST_NAME);
 		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_MULTIPLE_NUMBERS);
+		dataContainer.addProjectUserVariable(PROJECT_USER_VARIABLE);
 
 		FormulaEditorUtil.testDoubleParameterFunction(Functions.CONTAINS, InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME,
 				InternTokenType.NUMBER, "1", 1d, firstSprite);
@@ -250,6 +285,14 @@ public class ParserTestUserLists extends AndroidTestCase {
 		FormulaEditorUtil.testDoubleParameterFunction(Functions.CONTAINS, InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME,
 				InternTokenType.NUMBER, "0", 0d, firstSprite);
 
+		dataContainer.getUserList(PROJECT_USER_LIST_NAME, firstSprite).setList(USER_LIST_VALUES_STRINGS_AND_NUMBERS);
+
+		FormulaEditorUtil.testDoubleParameterFunction(Functions.CONTAINS, InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME,
+				InternTokenType.STRING, "Hello", 1d, firstSprite);
+
+		dataContainer.getUserVariable(PROJECT_USER_VARIABLE,firstSprite).setValue("Hello");
+		FormulaEditorUtil.testDoubleParameterFunction(Functions.CONTAINS, InternTokenType.USER_LIST, PROJECT_USER_LIST_NAME,
+				InternTokenType.USER_VARIABLE, PROJECT_USER_VARIABLE, 1d, firstSprite);
 	}
 
 	private Object interpretUserList(String userListName) {
