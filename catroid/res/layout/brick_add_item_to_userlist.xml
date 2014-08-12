@@ -27,7 +27,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal" xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="horizontal">
 
     <CheckBox
         android:id="@+id/brick_add_item_to_userlist_checkbox"
@@ -46,23 +46,12 @@
         android:layout_height="wrap_content"
         app:horizontalSpacing="@dimen/brick_flow_layout_horizontal_spacing"
         app:verticalSpacing="@dimen/brick_flow_layout_vertical_spacing" >
+        android:gravity="center_vertical"
 
         <TextView
             android:id="@+id/brick_add_item_to_userlist_label"
             style="@style/BrickText.SingleLine"
             android:text="@string/brick_add_item_to_userlist_add" />
-        
-         <Spinner
-            android:id="@+id/add_item_to_userlist_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:focusable="false" />
-         
-           <TextView
-            android:id="@+id/brick_add_item_to_userlist_textview"
-            style="@style/BrickText.SingleLine"
-            android:text="@string/brick_add_item_to_userlist" />
         
          <TextView
             android:id="@+id/brick_add_item_to_userlist_prototype_view"
@@ -73,7 +62,20 @@
             android:id="@+id/brick_add_item_to_userlist_edit_text"
             style="@style/BrickEditText"
             app:layout_inputType="number"
-            app:layout_textField="true" />
+            app:layout_textField="true"/>
+
+        <TextView
+            android:id="@+id/brick_add_item_to_userlist_textview"
+            style="@style/BrickText.SingleLine"
+            android:text="@string/brick_add_item_to_userlist" />
+
+         <Spinner
+             app:layout_newLine="true"
+             android:id="@+id/add_item_to_userlist_spinner"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:clickable="false"
+             android:focusable="false" />
         
        
     </org.catrobat.catroid.ui.BrickLayout>

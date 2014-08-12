@@ -121,6 +121,7 @@ public class FormulaElement implements Serializable {
 				break;
 			case USER_LIST:
 				internTokenList.add(new InternToken(InternTokenType.USER_LIST, this.value));
+				break;
 			case NUMBER:
 				internTokenList.add(new InternToken(InternTokenType.NUMBER, this.value));
 				break;

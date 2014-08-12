@@ -38,7 +38,8 @@ import org.catrobat.catroid.content.bricks.ChangeVariableBrick;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
-import org.catrobat.catroid.ui.dialogs.NewVariableDialog;
+import org.catrobat.catroid.ui.dialogs.NewDataDialog;
+import org.catrobat.catroid.ui.fragment.FormulaEditorDataFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.ui.fragment.ScriptFragment;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
@@ -85,9 +86,9 @@ public class ChangeVariableTest extends BaseActivityInstrumentationTestCase<Main
 
 		solo.clickOnText(getInstrumentation().getTargetContext().getString(
 				R.string.brick_variable_spinner_create_new_variable));
-		assertTrue("NewVariableDialog not visible", solo.waitForFragmentByTag(NewVariableDialog.DIALOG_FRAGMENT_TAG));
+		assertTrue("NewVariableDialog not visible", solo.waitForFragmentByTag(NewDataDialog.DIALOG_FRAGMENT_TAG));
 
-		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_variable_name_edit_text);
+		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 		solo.enterText(editText, userVariableName);
 		solo.clickOnButton(solo.getString(R.string.ok));
 		assertTrue("ScriptFragment not visible", solo.waitForText(solo.getString(R.string.brick_change_variable)));
@@ -102,9 +103,9 @@ public class ChangeVariableTest extends BaseActivityInstrumentationTestCase<Main
 		solo.clickOnText(getInstrumentation().getTargetContext().getString(
 				R.string.brick_variable_spinner_create_new_variable));
 
-		assertTrue("NewVariableDialog not visible", solo.waitForFragmentByTag(NewVariableDialog.DIALOG_FRAGMENT_TAG));
+		assertTrue("NewVariableDialog not visible", solo.waitForFragmentByTag(NewDataDialog.DIALOG_FRAGMENT_TAG));
 
-		editText = (EditText) solo.getView(R.id.dialog_formula_editor_variable_name_edit_text);
+		editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 		solo.enterText(editText, secondUserVariableName);
 		solo.clickOnButton(solo.getString(R.string.ok));
 		assertTrue("ScriptFragment not visible", solo.waitForText(solo.getString(R.string.brick_change_variable)));
@@ -116,13 +117,13 @@ public class ChangeVariableTest extends BaseActivityInstrumentationTestCase<Main
 
 		solo.clickOnView(solo.getView(R.id.brick_change_variable_edit_text));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
-		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
+		assertTrue("Data Fragment not shown", solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
 		solo.clickLongOnText(secondUserVariableName);
 		assertTrue("Delete not shown", solo.waitForText(solo.getString(R.string.delete)));
 		solo.clickOnText(solo.getString(R.string.delete));
-		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
+		assertTrue("Data Fragment not shown",solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
 		solo.goBack();
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
@@ -146,13 +147,13 @@ public class ChangeVariableTest extends BaseActivityInstrumentationTestCase<Main
 
 		solo.clickOnView(solo.getView(R.id.brick_change_variable_edit_text));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
-		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
+		assertTrue("Data Fragment not shown", solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
 		solo.clickOnView(solo.getView(R.id.button_add));
-		assertTrue("Add Variable Dialog not shown",
-				solo.waitForText(solo.getString(R.string.formula_editor_variable_dialog_title)));
-		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_variable_name_edit_text);
+		assertTrue("Add Data Dialog not shown",
+				solo.waitForText(solo.getString(R.string.formula_editor_data_dialog_title)));
+		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 
 		solo.enterText(editText, userVariableName);
 		finishUserVariableCreationSafeButSlow(userVariableName, true);
@@ -206,7 +207,7 @@ public class ChangeVariableTest extends BaseActivityInstrumentationTestCase<Main
 				assertTrue("Add Variable Dialog not shown",
 						solo.waitForText(solo.getString(R.string.formula_editor_variable_dialog_title)));
 
-				EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_variable_name_edit_text);
+				EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 				solo.enterText(editText, itemString);
 
 				if (forAllSprites) {

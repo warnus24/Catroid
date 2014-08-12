@@ -38,8 +38,8 @@ import org.catrobat.catroid.formulaeditor.UserList;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.ui.dialogs.NewDataDialog;
+import org.catrobat.catroid.ui.fragment.FormulaEditorDataFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
-import org.catrobat.catroid.ui.fragment.FormulaEditorUserListFragment;
 import org.catrobat.catroid.ui.fragment.ScriptFragment;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.Reflection;
@@ -115,13 +115,13 @@ public class AddItemToUserListTest extends BaseActivityInstrumentationTestCase<M
 
 		solo.clickOnView(solo.getView(R.id.brick_add_item_to_userlist_edit_text));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_lists));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_lists)));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
+		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 
 		solo.clickLongOnText(secondUserListName);
 		assertTrue("Delete not shown", solo.waitForText(solo.getString(R.string.delete)));
 		solo.clickOnText(solo.getString(R.string.delete));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_lists)));
+		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 
 		solo.goBack();
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
@@ -145,14 +145,14 @@ public class AddItemToUserListTest extends BaseActivityInstrumentationTestCase<M
 
 		solo.clickOnView(solo.getView(R.id.brick_add_item_to_userlist_edit_text));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_lists));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_lists)));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
+		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 
 		createUserListFromUserListFragment(userListName, true);
 
 		solo.goBack();
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
-		assertTrue("UserList not set in spinner after creation", solo.searchText(userListName));
+		assertTrue("Data not set in spinner after creation", solo.searchText(userListName));
 		Spinner userListSpinner = (Spinner) UiTestUtils.getViewContainerByIds(solo, R.id.add_item_to_userlist_spinner,
 				R.id.formula_editor_brick_space);
 		assertEquals("UserList count not as expected in spinner", 2, userListSpinner.getAdapter().getCount());
@@ -184,13 +184,14 @@ public class AddItemToUserListTest extends BaseActivityInstrumentationTestCase<M
 	}
 
 	private void createUserListFromUserListFragment(String userListName, boolean forAllSprites) {
-		assertTrue("FormulaEditorUserListFragment not shown: ",
-				solo.waitForFragmentByTag(FormulaEditorUserListFragment.USER_DATA_TAG));
+		assertTrue("FormulaEditorDataFragment not shown: ",
+				solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
 		solo.clickOnView(solo.getView(R.id.button_add));
-		assertTrue("Add UserList Dialog not shown",
+		assertTrue("Add Data Dialog not shown",
 				solo.waitForText(solo.getString(R.string.formula_editor_data_dialog_title)));
 		solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_edit_text));
+		solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_is_list_checkbox));
 		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 		solo.enterText(editText, userListName);
 

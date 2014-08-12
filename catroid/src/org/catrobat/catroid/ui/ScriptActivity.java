@@ -50,7 +50,6 @@ import org.catrobat.catroid.ui.dragndrop.DragAndDropListView;
 import org.catrobat.catroid.ui.fragment.FormulaEditorDataFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorListFragment;
-import org.catrobat.catroid.ui.fragment.FormulaEditorUserListFragment;
 import org.catrobat.catroid.ui.fragment.LookFragment;
 import org.catrobat.catroid.ui.fragment.ScriptActivityFragment;
 import org.catrobat.catroid.ui.fragment.ScriptFragment;
@@ -206,7 +205,7 @@ public class ScriptActivity extends BaseActivity {
 		}
 
 		FormulaEditorDataFragment formulaEditorDataFragment = (FormulaEditorDataFragment) getSupportFragmentManager()
-				.findFragmentByTag(FormulaEditorDataFragment.VARIABLE_TAG);
+				.findFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 
 		if (formulaEditorDataFragment != null && formulaEditorDataFragment.isVisible()) {
 			return super.onOptionsItemSelected(item);
@@ -279,17 +278,10 @@ public class ScriptActivity extends BaseActivity {
 		}
 
 		FormulaEditorDataFragment formulaEditorDataFragment = (FormulaEditorDataFragment) getSupportFragmentManager()
-				.findFragmentByTag(FormulaEditorDataFragment.VARIABLE_TAG);
+				.findFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 
 		if (formulaEditorDataFragment != null && formulaEditorDataFragment.isVisible()) {
 			return formulaEditorDataFragment.onKey(null, keyCode, event);
-		}
-
-		FormulaEditorUserListFragment formulaEditorUserListFragment = (FormulaEditorUserListFragment) getSupportFragmentManager()
-				.findFragmentByTag(FormulaEditorUserListFragment.USER_DATA_TAG);
-
-		if (formulaEditorUserListFragment != null && formulaEditorUserListFragment.isVisible()) {
-			return formulaEditorUserListFragment.onKey(null, keyCode, event);
 		}
 
 		FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getSupportFragmentManager().findFragmentByTag(
@@ -384,19 +376,10 @@ public class ScriptActivity extends BaseActivity {
 		//Dismiss ActionMode without effecting checked items
 
 		FormulaEditorDataFragment formulaEditorDataFragment = (FormulaEditorDataFragment) getSupportFragmentManager()
-				.findFragmentByTag(FormulaEditorDataFragment.VARIABLE_TAG);
+				.findFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 
 		if (formulaEditorDataFragment != null && formulaEditorDataFragment.isVisible()) {
 			ListAdapter adapter = formulaEditorDataFragment.getListAdapter();
-			((ScriptActivityAdapterInterface) adapter).clearCheckedItems();
-			return super.dispatchKeyEvent(event);
-		}
-
-		FormulaEditorUserListFragment formulaEditorUserListFragment = (FormulaEditorUserListFragment) getSupportFragmentManager()
-				.findFragmentByTag(FormulaEditorUserListFragment.USER_DATA_TAG);
-
-		if (formulaEditorUserListFragment != null && formulaEditorUserListFragment.isVisible()) {
-			ListAdapter adapter = formulaEditorUserListFragment.getListAdapter();
 			((ScriptActivityAdapterInterface) adapter).clearCheckedItems();
 			return super.dispatchKeyEvent(event);
 		}
