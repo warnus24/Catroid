@@ -44,7 +44,9 @@ public class PhysicsObject {
 	public enum Type {
 		DYNAMIC, FIXED, NONE;
 	}
-
+	public enum Behavior {
+		FRIENDLY, HOSTILE, NEUTRAL
+	}
 	public static final float DEFAULT_DENSITY = 1.0f;
 	public static final float DEFAULT_FRICTION = 0.2f;
 	public static final float MAX_FRICTION = 1.0f;
@@ -428,4 +430,6 @@ public class PhysicsObject {
 		bodyAABBupper.x = Math.max(fixtureAABBupper.x, bodyAABBupper.x);
 		bodyAABBupper.y = Math.max(fixtureAABBupper.y, bodyAABBupper.y);
 	}
+
+
 }

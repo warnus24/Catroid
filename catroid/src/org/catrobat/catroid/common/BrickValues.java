@@ -42,6 +42,7 @@ public final class BrickValues {
 	public static final int GO_BACK = 1;
 
 	//constants Physics
+	public static final PhysicsObject.Behavior PHYSIC_BEHAVIOR = PhysicsObject.Behavior.NEUTRAL;
 	public static final PhysicsObject.Type PHYSIC_TYPE = Type.DYNAMIC;
 	public static final Float PHYSIC_MASS = PhysicsObject.DEFAULT_MASS;
 	public static final Float PHYSIC_BOUNCE_FACTOR = PhysicsObject.DEFAULT_BOUNCE_FACTOR;

@@ -45,5 +45,11 @@
         <item>No</item>
     </string-array>
 
+    <!-- Physicscollisionfilter -->
+    <string-array name="physics_collision_filters">
+        <item>Friendly</item>
+        <item>Hostile</item>
+        <item>Neutral</item>
+    </string-array>
 
 </resources>
