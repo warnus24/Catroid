@@ -40,8 +40,6 @@
         android:id="@+id/brick_replace_item_in_userlist_layout"
         style="@style/BrickContainer.UserVariables.Medium"
         android:orientation="horizontal"
-        android:paddingBottom="0dp"
-        android:paddingTop="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:horizontalSpacing="@dimen/brick_flow_layout_horizontal_spacing"
@@ -53,6 +51,7 @@
             android:text="@string/brick_replace_item_in_userlist_replace_in_list" />
         
          <Spinner
+             app:layout_newLine="true"
              android:id="@+id/replace_item_in_userlist_spinner"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"

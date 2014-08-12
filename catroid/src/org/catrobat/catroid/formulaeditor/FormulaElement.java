@@ -121,6 +121,7 @@ public class FormulaElement implements Serializable {
 				break;
 			case USER_LIST:
 				internTokenList.add(new InternToken(InternTokenType.USER_LIST, this.value));
+				break;
 			case NUMBER:
 				internTokenList.add(new InternToken(InternTokenType.NUMBER, this.value));
 				break;
@@ -171,7 +172,7 @@ public class FormulaElement implements Serializable {
 				returnValue = interpretUserList(sprite);
 				break;
 			case STRING:
-				returnValue = interpretString(value);
+				returnValue = value;
 				break;
 		}
 		return normalizeDegeneratedDoubleValues(returnValue);
@@ -269,11 +270,7 @@ public class FormulaElement implements Serializable {
 
 		Object userVariableValue = userVariable.getValue();
 		if (userVariableValue instanceof String) {
-			try {
-				return interpretString((String) userVariableValue);
-			} catch (NumberFormatException numberFormatException) {
-				return userVariableValue;
-			}
+				return (String) userVariableValue;
 		} else {
 			return userVariableValue;
 		}
@@ -335,7 +332,7 @@ public class FormulaElement implements Serializable {
 			case SQRT:
 				return doubleValueOfLeftChild == null ? 0d : java.lang.Math.sqrt(doubleValueOfLeftChild);
 			case RAND:
-				return (doubleValueOfLeftChild == null || doubleValueOfRightChild == null) ? 0d : interpretFunctionRAND(doubleValueOfLeftChild, doubleValueOfRightChild);
+				return (doubleValueOfLeftChild == null || doubleValueOfRightChild == null) ? 0d : interpretFunctionRand(doubleValueOfLeftChild, doubleValueOfRightChild);
 			case ABS:
 				return doubleValueOfLeftChild == null ? 0d : java.lang.Math.abs(doubleValueOfLeftChild);
 			case ROUND:
@@ -343,7 +340,7 @@ public class FormulaElement implements Serializable {
 			case PI:
 				return java.lang.Math.PI;
 			case MOD:
-				return (doubleValueOfLeftChild == null || doubleValueOfRightChild == null) ? 0d : interpretFunctionMOD(doubleValueOfLeftChild, doubleValueOfRightChild);
+				return (doubleValueOfLeftChild == null || doubleValueOfRightChild == null) ? 0d : interpretFunctionMod(doubleValueOfLeftChild, doubleValueOfRightChild);
 			case ARCSIN:
 				return doubleValueOfLeftChild == null ? 0d : java.lang.Math.toDegrees(Math.asin(doubleValueOfLeftChild));
 			case ARCCOS:
@@ -363,20 +360,20 @@ public class FormulaElement implements Serializable {
 			case FALSE:
 				return 0d;
 			case LETTER:
-				return interpretFunctionLETTER(right, left);
+				return interpretFunctionLetter(right, left);
 			case LENGTH:
-				return interpretFunctionLENGTH(left, sprite);
+				return interpretFunctionLength(left, sprite);
 			case JOIN:
-				return interpretFunctionJOIN(sprite);
+				return interpretFunctionJoin(sprite);
 			case LIST_ITEM:
-				return interpretFunctionLISTITEM(left, sprite);
+				return interpretFunctionListItem(left, sprite);
 			case CONTAINS:
-				return interpretFunctionCONTAINS(right, sprite);
+				return interpretFunctionContains(right, sprite);
 		}
 		return 0d;
 	}
 
-	private Object interpretFunctionCONTAINS(Object right, Sprite sprite) {
+	private Object interpretFunctionContains(Object right, Sprite sprite) {
 		if (leftChild.getElementType() == ElementType.USER_LIST) {
 			DataContainer dataContainer = ProjectManager.getInstance().getCurrentProject().getDataContainer();
 			UserList userList = dataContainer.getUserList(leftChild.getValue(), sprite);
@@ -395,7 +392,7 @@ public class FormulaElement implements Serializable {
 		return 0d;
 	}
 
-	private Object interpretFunctionLISTITEM(Object left, Sprite sprite) {
+	private Object interpretFunctionListItem(Object left, Sprite sprite) {
 		UserList userList = null;
 		if (rightChild.getElementType() == ElementType.USER_LIST) {
 			DataContainer dataContainer = ProjectManager.getInstance().getCurrentProject().getDataContainer();
@@ -429,12 +426,12 @@ public class FormulaElement implements Serializable {
 		return userList.getList().get(index);
 	}
 
-	private Object interpretFunctionJOIN(Sprite sprite) {
-		return interpretinterpretFunctionJOINParameter(leftChild, sprite)
-				+ interpretinterpretFunctionJOINParameter(rightChild, sprite);
+	private Object interpretFunctionJoin(Sprite sprite) {
+		return interpretInterpretFunctionJoinParameter(leftChild, sprite)
+				+ interpretInterpretFunctionJoinParameter(rightChild, sprite);
 	}
 
-	private String interpretinterpretFunctionJOINParameter(FormulaElement child, Sprite sprite) {
+	private String interpretInterpretFunctionJoinParameter(FormulaElement child, Sprite sprite) {
 		String parameterInterpretation = "";
 		if (child != null) {
 			if (child.getElementType() == ElementType.NUMBER) {
@@ -457,7 +454,7 @@ public class FormulaElement implements Serializable {
 		return parameterInterpretation;
 	}
 
-	private Object interpretFunctionLENGTH(Object left, Sprite sprite) {
+	private Object interpretFunctionLength(Object left, Sprite sprite) {
 		if (leftChild == null) {
 			return 0d;
 		}
@@ -480,7 +477,7 @@ public class FormulaElement implements Serializable {
 		return (double) (String.valueOf(left)).length();
 	}
 
-	private Object interpretFunctionLETTER(Object right, Object left) {
+	private Object interpretFunctionLetter(Object right, Object left) {
 
 		int index = 0;
 		//((Double) left).intValue() - 1;
@@ -506,7 +503,7 @@ public class FormulaElement implements Serializable {
 		return String.valueOf(String.valueOf(right).charAt(index));
 	}
 
-	private Object interpretFunctionMOD(Object left, Object right) {
+	private Object interpretFunctionMod(Object left, Object right) {
 
 		double dividend = (Double) left;
 		double divisor = (Double) right;
@@ -528,7 +525,7 @@ public class FormulaElement implements Serializable {
 	}
 
 
-	private Object interpretFunctionRAND(Object right, Object left) {
+	private Object interpretFunctionRand(Object right, Object left) {
 
 		Double minimum = java.lang.Math.min((Double) left, (Double) right);
 		Double maximum = java.lang.Math.max((Double) left, (Double) right);
@@ -668,54 +665,6 @@ public class FormulaElement implements Serializable {
 				break;
 		}
 		return returnValue;
-	}
-
-	private Object interpretString(String value) {
-
-//		if (parent == null && type != ElementType.USER_VARIABLE) {
-//			Double anotherValue;
-//			try {
-//				anotherValue = Double.valueOf(value);
-//			} catch (NumberFormatException numberFormatException) {
-//				return value;
-//			}
-//			return anotherValue;
-//		}
-//
-//		if (parent != null) {
-//			boolean isParentAFunction = Functions.getFunctionByValue(parent.value) != null;
-//			if (isParentAFunction && Functions.getFunctionByValue(parent.value).returnType == ElementType.STRING) {
-//				if (Functions.getFunctionByValue(parent.value) == Functions.LETTER && parent.leftChild == this) {
-//					try {
-//						return Double.valueOf(value);
-//					} catch (NumberFormatException numberFormatexception) {
-//						return Double.valueOf(0);
-//					}
-//				}
-//				return value;
-//			}
-//
-//			if (isParentAFunction) {
-//				try {
-//					return Double.valueOf(value);
-//				} catch (NumberFormatException numberFormatexception) {
-//					return value;
-//				}
-//			}
-//
-//			boolean isParentAOperator = Operators.getOperatorByValue(parent.value) != null;
-//			if (isParentAOperator
-//					&& (Operators.getOperatorByValue(parent.value) == Operators.EQUAL || Operators
-//							.getOperatorByValue(parent.value) == Operators.NOT_EQUAL)) {
-//				return value;
-//			}
-//		}
-
-//		if (value.length() == 0) {
-//			return Double.valueOf(0.0);
-//		}
-
-		return value;
 	}
 
 	private Double interpretOperatorEqual(Object left, Object right) {

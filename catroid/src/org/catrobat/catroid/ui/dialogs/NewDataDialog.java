@@ -213,6 +213,19 @@ public class NewDataDialog extends SherlockDialogFragment {
 
 		final CheckBox isListCheckbox = (CheckBox) dialogNewUserList.findViewById(R.id.dialog_formula_editor_data_is_list_checkbox);
 
+		switch(dialogType)
+		{
+			case SHOW_LIST_CHECKBOX:
+				isListCheckbox.setVisibility(View.VISIBLE);
+				break;
+			case USER_VARIABLE:
+				isListCheckbox.setVisibility(View.GONE);
+				break;
+			case USER_LIST:
+				isListCheckbox.setVisibility(View.GONE);
+				break;
+		}
+
 		final EditText dialogEditText = (EditText) dialogNewUserList
 				.findViewById(R.id.dialog_formula_editor_data_name_edit_text);
 
