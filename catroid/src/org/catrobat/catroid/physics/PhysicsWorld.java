@@ -52,6 +52,16 @@ public class PhysicsWorld {
 	public static final short CATEGORY_BOUNDARYBOX = 0x0002;
 	public static final short CATEGORY_PHYSICSOBJECT = 0x0004;
 
+	// FILTER
+	public static  final short 	CATEGORY_FRIENDLY = 0x0008;
+	public static  final short 	CATEGORY_HOSTILE = 0x0010;
+	public static  final short 	CATEGORY_NEUTRAL = 0x0020;
+
+	// ALTERNATIVE FILTER
+	public static  final short 	GROUP_FRIENDLY = -1;
+	public static  final short 	GROUP_HOSTILE = -2;
+	public static  final short 	GROUP_NEUTRAL = -3;
+
 	// COLLISION_MODE
 	public static final short MASK_BOUNDARYBOX = CATEGORY_PHYSICSOBJECT; // collides with physics_objects
 	public static final short MASK_PHYSICSOBJECT = ~CATEGORY_BOUNDARYBOX; // collides with everything but not with the boundarybox

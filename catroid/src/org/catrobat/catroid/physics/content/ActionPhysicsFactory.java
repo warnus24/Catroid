@@ -31,9 +31,11 @@ import org.catrobat.catroid.content.actions.conditional.GlideToPhysicsAction;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.physics.PhysicsObject;
 import org.catrobat.catroid.physics.PhysicsObject.Type;
+import org.catrobat.catroid.physics.PhysicsObject.Behavior;
 import org.catrobat.catroid.physics.PhysicsWorld;
 import org.catrobat.catroid.physics.content.actions.IfOnEdgeBouncePhysicsAction;
 import org.catrobat.catroid.physics.content.actions.SetBounceFactorAction;
+import org.catrobat.catroid.physics.content.actions.SetPhysicsCollisionFilterAction;
 import org.catrobat.catroid.physics.content.actions.SetFrictionAction;
 import org.catrobat.catroid.physics.content.actions.SetGravityAction;
 import org.catrobat.catroid.physics.content.actions.SetMassAction;
@@ -102,6 +104,14 @@ public class ActionPhysicsFactory extends ActionFactory {
 		action.setSprite(sprite);
 		action.setPhysicsObject(getPhysicsObject(sprite));
 		action.setMass(mass);
+		return action;
+	}
+
+	@Override
+	public Action createSetPhysicsCollisionFilterAction(Sprite sprite, Behavior behavior) {
+		SetPhysicsCollisionFilterAction action = Actions.action(SetPhysicsCollisionFilterAction.class);
+		action.setPhysicsObject(getPhysicsObject(sprite));
+		action.setBehavior(behavior);
 		return action;
 	}
 

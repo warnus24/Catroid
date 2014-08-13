@@ -67,6 +67,7 @@ public class PhysicsObject {
 	private final Body body;
 	private final FixtureDef fixtureDef = new FixtureDef();
 	private Shape[] shapes;
+	private Behavior behavior;
 	private Type type;
 	private float mass;
 	private boolean ifOnEdgeBounce = false;
@@ -143,6 +144,30 @@ public class PhysicsObject {
 				break;
 			case NONE:
 				body.setType(BodyType.KinematicBody);
+				collisionMaskRecord = PhysicsWorld.NOCOLLISION_MASK;
+				break;
+		}
+		setCollisionBits(categoryMaskRecord, collisionMaskRecord);
+	}
+
+	public Behavior getBehavior() {
+		return behavior;
+	}
+
+	public void setBehavior (Behavior behavior) {
+		if (this.behavior == behavior) {
+			return;
+		}
+		this.behavior = behavior;
+
+		switch (behavior) {
+			case FRIENDLY:
+				collisionMaskRecord = PhysicsWorld.MASK_PHYSICSOBJECT;
+				break;
+			case HOSTILE:
+				collisionMaskRecord = PhysicsWorld.MASK_PHYSICSOBJECT;
+				break;
+			case NEUTRAL:
 				collisionMaskRecord = PhysicsWorld.NOCOLLISION_MASK;
 				break;
 		}
