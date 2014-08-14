@@ -58,6 +58,7 @@ public class PhysicsObject {
 	public static final float DEFAULT_MASS = 1.0f;
 	public static final float MIN_MASS = 0.000001f;
 
+	private short collisionGroup = 0;
 	private short collisionMaskRecord = 0;
 	private short categoryMaskRecord = PhysicsWorld.CATEGORY_PHYSICSOBJECT;
 	private Vector2 velocity;
@@ -88,6 +89,7 @@ public class PhysicsObject {
 		fixtureDef.density = PhysicsObject.DEFAULT_DENSITY;
 		fixtureDef.friction = PhysicsObject.DEFAULT_FRICTION;
 		fixtureDef.restitution = PhysicsObject.DEFAULT_BOUNCE_FACTOR;
+		setBehavior(Behavior.NEUTRAL);
 		setType(Type.NONE);
 		// --
 		tmpVertice = new Vector2();
@@ -162,16 +164,22 @@ public class PhysicsObject {
 
 		switch (behavior) {
 			case FRIENDLY:
-				collisionMaskRecord = PhysicsWorld.MASK_PHYSICSOBJECT;
+				collisionGroup = PhysicsWorld.GROUP_FRIENDLY;
 				break;
 			case HOSTILE:
-				collisionMaskRecord = PhysicsWorld.MASK_PHYSICSOBJECT;
+				collisionGroup = PhysicsWorld.GROUP_HOSTILE;
 				break;
 			case NEUTRAL:
-				collisionMaskRecord = PhysicsWorld.NOCOLLISION_MASK;
+				collisionMaskRecord = PhysicsWorld.MASK_PHYSICSOBJECT;
+//				collisionGroup = PhysicsWorld.GROUP_NEUTRAL;
 				break;
 		}
-		setCollisionBits(categoryMaskRecord, collisionMaskRecord);
+		if(collisionGroup != 0) {
+			setCollisionGroup(collisionGroup);
+		}
+		else {
+			setCollisionBits(categoryMaskRecord, collisionMaskRecord);
+		}
 	}
 
 	public float getDirection() {
@@ -341,6 +349,16 @@ public class PhysicsObject {
 			Filter filter = fixture.getFilterData();
 			filter.categoryBits = categoryBits;
 			filter.maskBits = maskBits;
+			fixture.setFilterData(filter);
+		}
+	}
+
+	public void setCollisionGroup(short groupIndex) {
+		fixtureDef.filter.groupIndex = groupIndex;
+
+		for (Fixture fixture : body.getFixtureList()) {
+			Filter filter = fixture.getFilterData();
+			filter.groupIndex = groupIndex;
 			fixture.setFilterData(filter);
 		}
 	}
