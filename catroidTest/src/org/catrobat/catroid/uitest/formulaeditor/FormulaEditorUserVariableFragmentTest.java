@@ -554,8 +554,6 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		startScript2.addBrick(glideToBrick);
 	}
 
-
-
 	private ListView getVariableListView() {
 		return solo.getCurrentViews(ListView.class).get(1);
 	}

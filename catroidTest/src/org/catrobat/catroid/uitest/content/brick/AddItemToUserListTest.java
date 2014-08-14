@@ -183,5 +183,4 @@ public class AddItemToUserListTest extends BaseActivityInstrumentationTestCase<M
 		ProjectManager.getInstance().setCurrentScript(script);
 	}
 
-
 }

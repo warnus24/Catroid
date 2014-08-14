@@ -183,5 +183,4 @@ public class DeleteItemOfUserListTest extends BaseActivityInstrumentationTestCas
 		ProjectManager.getInstance().setCurrentScript(script);
 	}
 
-
 }
