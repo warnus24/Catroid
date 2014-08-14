@@ -37,6 +37,7 @@ import org.catrobat.catroid.common.FileChecksumContainer;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.content.BroadcastScript;
+import org.catrobat.catroid.content.CollisionScript;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
@@ -121,6 +122,7 @@ import org.catrobat.catroid.physics.content.bricks.SetBounceBrick;
 import org.catrobat.catroid.physics.content.bricks.SetFrictionBrick;
 import org.catrobat.catroid.physics.content.bricks.SetGravityBrick;
 import org.catrobat.catroid.physics.content.bricks.SetMassBrick;
+import org.catrobat.catroid.physics.content.bricks.SetPhysicsObjectTypeBrick;
 import org.catrobat.catroid.physics.content.bricks.SetVelocityBrick;
 import org.catrobat.catroid.physics.content.bricks.TurnLeftSpeedBrick;
 import org.catrobat.catroid.physics.content.bricks.TurnRightSpeedBrick;
@@ -301,13 +303,17 @@ public final class StorageHandler {
 		xstream.alias("userBrickElement", UserScriptDefinitionBrickElement.class);
 		xstream.alias("userBrickParameter", UserBrickParameter.class);
 
+
+		// Physics Script
+		// TODO physics change to normal script xml tag
+		xstream.alias("script", CollisionScript.class);
 		// Physics Bricks
 		xstream.alias("brick", CollisionReceiverBrick.class);
 		xstream.alias("brick", SetBounceBrick.class);
 		xstream.alias("brick", SetFrictionBrick.class);
 		xstream.alias("brick", SetGravityBrick.class);
 		xstream.alias("brick", SetMassBrick.class);
-		// xstream.alias("setPhysicsObjectTypeBrick", SetPhysicsObjectTypeBrick.class);
+		xstream.alias("brick", SetPhysicsObjectTypeBrick.class);
 		xstream.alias("brick", SetVelocityBrick.class);
 		xstream.alias("brick", TurnLeftSpeedBrick.class);
 		xstream.alias("brick", TurnRightSpeedBrick.class);
@@ -407,7 +413,6 @@ public final class StorageHandler {
 			}
 
 			File projectDirectory = new File(buildProjectPath(project.getName()));
-			Log.d(TAG, "# # " + projectDirectory.getAbsolutePath());
 			createProjectDataStructure(projectDirectory);
 
 			writer = new BufferedWriter(new FileWriter(tmpCodeFile), Constants.BUFFER_8K);
