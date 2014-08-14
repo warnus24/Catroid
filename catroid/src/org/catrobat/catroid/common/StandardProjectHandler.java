@@ -33,12 +33,15 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.WhenScript;
 import org.catrobat.catroid.content.bricks.BrickBaseType;
+import org.catrobat.catroid.content.bricks.ChangeSizeByNBrick;
 import org.catrobat.catroid.content.bricks.ForeverBrick;
 import org.catrobat.catroid.content.bricks.GlideToBrick;
 import org.catrobat.catroid.content.bricks.HideBrick;
+import org.catrobat.catroid.content.bricks.LoopEndBrick;
 import org.catrobat.catroid.content.bricks.LoopEndlessBrick;
 import org.catrobat.catroid.content.bricks.PlaceAtBrick;
 import org.catrobat.catroid.content.bricks.PlaySoundBrick;
+import org.catrobat.catroid.content.bricks.RepeatBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.content.bricks.SetSizeToBrick;
 import org.catrobat.catroid.content.bricks.SetVariableBrick;
@@ -191,13 +194,13 @@ public final class StandardProjectHandler {
 				DroneBrickFactory.DroneBricks.DRONE_MOVE_FORWARD_BRICK, 180, -75, forwardFile, 2000));
 
 		//Backward Sprite
-		String backwardpriteName = context.getString(R.string.default_drone_project_sprites_back);
+		String backwardSpriteName = context.getString(R.string.default_drone_project_sprites_back);
 
 		File backwardFile = UtilFile.copyImageFromResourceIntoProject(projectName, downSpriteName
 				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_go_back, context, true,
 				backgroundImageScaleFactor);
 
-		defaultDroneProject.addSprite(createDroneSprite(backwardpriteName,
+		defaultDroneProject.addSprite(createDroneSprite(backwardSpriteName,
 				DroneBrickFactory.DroneBricks.DRONE_MOVE_BACKWARD_BRICK, 180, -450, backwardFile, 2000));
 
 		//Left Sprite
@@ -233,12 +236,12 @@ public final class StandardProjectHandler {
 		//Turn Right Sprite
 		String turnRightSpriteName = context.getString(R.string.default_drone_project_sprites_turn_right);
 
-		File turnrightFile = UtilFile.copyImageFromResourceIntoProject(projectName, turnRightSpriteName
+		File turnRightFile = UtilFile.copyImageFromResourceIntoProject(projectName, turnRightSpriteName
 				+ Constants.IMAGE_STANDARD_EXTENTION, R.drawable.default_drone_project_orange_turn_right, context,
 				true, backgroundImageScaleFactor);
 
 		defaultDroneProject.addSprite(createDroneSprite(turnRightSpriteName,
-				DroneBrickFactory.DroneBricks.DRONE_TURN_RIGHT_BRICK, 260, -200, turnrightFile, 2000));
+				DroneBrickFactory.DroneBricks.DRONE_TURN_RIGHT_BRICK, 260, -200, turnRightFile, 2000));
 
 		StorageHandler.getInstance().saveProject(defaultDroneProject);
 		return defaultDroneProject;
@@ -250,24 +253,38 @@ public final class StandardProjectHandler {
 
 	}
 
-	private static Sprite createDroneSprite(String spriteName, DroneBrickFactory.DroneBricks brickName, int xPostition,
+	private static Sprite createDroneSprite(String spriteName, DroneBrickFactory.DroneBricks brickName, int xPosition,
 			int yPosition, File lookFile, int timeInMilliseconds) {
-		return createDroneSprite(spriteName, brickName, xPostition, yPosition, lookFile, timeInMilliseconds, 20);
+		return createDroneSprite(spriteName, brickName, xPosition, yPosition, lookFile, timeInMilliseconds, 20);
 
 	}
 
-	private static Sprite createDroneSprite(String spriteName, DroneBrickFactory.DroneBricks brickName, int xPostition,
+	private static Sprite createDroneSprite(String spriteName, DroneBrickFactory.DroneBricks brickName, int xPosition,
 			int yPosition, File lookFile, int timeInMilliseconds, int powerInPercent) {
-		//
-		Sprite sprite = new Sprite(spriteName);
-		//defaultDroneProject.addSprite(takeOffSprite);
 
-		Script whenSpriteTappedScript = new WhenScript();
+		Sprite sprite = new Sprite(spriteName);
+
+		Script whenSpriteTappedScriptTakeoff = new WhenScript();
 		BrickBaseType brick = DroneBrickFactory.getInstanceOfDroneBrick(brickName, sprite, timeInMilliseconds, powerInPercent);
-		whenSpriteTappedScript.addBrick(brick);
+		//whenSpriteTappedScriptTakeoff.addBrick(brick);
+
+		Script whenSpriteTappedScriptAnimateButton = new WhenScript();
+		RepeatBrick repeatBrickDecreaseButtonSize = new RepeatBrick(5);
+		whenSpriteTappedScriptAnimateButton.addBrick(repeatBrickDecreaseButtonSize);
+		whenSpriteTappedScriptAnimateButton.addBrick(new ChangeSizeByNBrick(new Formula(-2)));
+		whenSpriteTappedScriptAnimateButton.addBrick(new LoopEndBrick(repeatBrickDecreaseButtonSize));
+		RepeatBrick repeatBrickIncreaseButtonSize = new RepeatBrick(15);
+		whenSpriteTappedScriptAnimateButton.addBrick(repeatBrickIncreaseButtonSize);
+		whenSpriteTappedScriptAnimateButton.addBrick(new ChangeSizeByNBrick(new Formula(1)));
+		whenSpriteTappedScriptAnimateButton.addBrick(new LoopEndBrick(repeatBrickIncreaseButtonSize));
+		RepeatBrick repeatBrickDecreaseButtonSizeAfterIncrease = new RepeatBrick(2);
+		whenSpriteTappedScriptAnimateButton.addBrick(repeatBrickDecreaseButtonSizeAfterIncrease);
+		whenSpriteTappedScriptAnimateButton.addBrick(new ChangeSizeByNBrick(new Formula(-2.5)));
+		whenSpriteTappedScriptAnimateButton.addBrick(new LoopEndBrick(repeatBrickDecreaseButtonSizeAfterIncrease));
+		whenSpriteTappedScriptAnimateButton.addBrick(new SetSizeToBrick( 50));
 
 		Script whenProjectStartsScript = new StartScript();
-		PlaceAtBrick placeAtBrick = new PlaceAtBrick(calculateValueRelativeToScaledBackground(xPostition),
+		PlaceAtBrick placeAtBrick = new PlaceAtBrick(calculateValueRelativeToScaledBackground(xPosition),
 				calculateValueRelativeToScaledBackground(yPosition));
 		SetSizeToBrick setSizeBrick = new SetSizeToBrick(50.0);
 
@@ -281,7 +298,8 @@ public final class StandardProjectHandler {
 
 		sprite.getLookDataList().add(lookData);
 
-		sprite.addScript(whenSpriteTappedScript);
+		sprite.addScript(whenSpriteTappedScriptTakeoff);
+		sprite.addScript(whenSpriteTappedScriptAnimateButton);
 		sprite.addScript(whenProjectStartsScript);
 
 		return sprite;
