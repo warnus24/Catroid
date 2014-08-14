@@ -35,8 +35,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.WhenScript;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.LedOffBrick;
-import org.catrobat.catroid.content.bricks.LedOnBrick;
+import org.catrobat.catroid.content.bricks.LedBrick;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
@@ -55,8 +54,8 @@ public class LedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActi
 	private static final int LED_DELAY_MS = 8000;
 	private static final int WLAN_DELAY_MS = 700;
 
-	private LedOffBrick ledOffBrick;
-	private LedOnBrick ledOnBrick;
+	private LedBrick ledOffBrick;
+	private LedBrick ledOnBrick;
 	private Project project;
 
 
@@ -164,8 +163,8 @@ public class LedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActi
 		Script startScript = new StartScript();
 		Script tappedScript = new WhenScript();
 
-		ledOnBrick = new LedOnBrick();
-		ledOffBrick = new LedOffBrick();
+		ledOnBrick = new LedBrick(true);
+		ledOffBrick = new LedBrick(false);
 
 		sprite.addScript(startScript);
 		startScript.addBrick(ledOffBrick);
