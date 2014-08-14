@@ -23,6 +23,7 @@
 package org.catrobat.catroid.ui.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -63,6 +64,7 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 	private int linearLayoutUserListAboveItemId;
 	private int linearLayoutUserVariablesId;
 	private int spinnerUserListValuesId;
+
 
 	private static class ViewHolder {
 		private CheckBox checkbox;
@@ -113,6 +115,14 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 		return count;
 	}
 
+	public int getUserListCount() {
+		return spriteLists.size() + projectLists.size();
+	}
+
+	public int getUserVariablesCount() {
+		return spriteVariables.size() + projectVariables.size();
+	}
+
 	@Override
 	public Object getItem(int position) {
 		if (position < spriteVariables.size()) {
@@ -123,6 +133,24 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 			return spriteLists.get(position - (spriteVariables.size() + projectVariables.size()));
 		} else if (position < spriteVariables.size() + projectVariables.size() + spriteLists.size() + projectLists.size()) {
 			return projectLists.get(position - (spriteVariables.size() + projectVariables.size() + spriteLists.size()));
+		}
+		return null;
+	}
+
+	public UserList getUserListItem(int position) {
+		if (position < spriteLists.size()) {
+			return spriteLists.get(position);
+		} else if (position < spriteLists.size() + projectLists.size()) {
+			return projectLists.get(position - spriteLists.size());
+		}
+		return null;
+	}
+
+	public UserVariable getUserVariableItem(int position) {
+		if (position < spriteVariables.size()) {
+			return spriteVariables.get(position);
+		} else if (position < spriteVariables.size() + projectVariables.size()) {
+			return projectVariables.get(position - spriteVariables.size());
 		}
 		return null;
 	}
@@ -138,6 +166,10 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 
 	public void setOnListItemClickListener(OnListItemClickListener onListItemClickListener) {
 		this.onListItemClickListener = onListItemClickListener;
+	}
+
+	public View getViewForUserListItem(final int position, View convertView, ViewGroup parent) {
+		return getView(position + spriteVariables.size() + projectVariables.size(), convertView, parent);
 	}
 
 	@Override
@@ -183,10 +215,17 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 			holder = (ViewHolder) view.getTag();
 		}
 
+		if (holder.text1 != null) {
+			if (currentDataItem instanceof UserVariable) {
+				holder.text1.setText(nameOfCurrentDataItem + ":");
+			} else {
+				holder.text1.setText(nameOfCurrentDataItem);
+			}
+		}
 
-		holder.text1.setText(nameOfCurrentDataItem + ":");
 		if (holder.text2 != null) {
 			if (currentDataItem instanceof UserVariable) {
+				holder.text2.setVisibility(View.VISIBLE);
 				holder.text2.setText(String.valueOf(((UserVariable) currentDataItem).getValue()));
 			} else {
 				holder.text2.setVisibility(View.GONE);
@@ -224,21 +263,21 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 			}
 		}
 
-		if(currentDataItem instanceof UserList){
-			UserList userList = (UserList) currentDataItem;
-			holder.userListValuesSpinner.setVisibility(view.VISIBLE);
-			int test = android.R.layout.simple_spinner_dropdown_item;
-			List<String> userListEntries = new ArrayList<String>();
-			userListEntries.add(view.getContext().getString(R.string.formula_editor_fragment_data_current_items));
-			for(Object userListItem : userList.getList()){
-				userListEntries.add(userListItem.toString());
-			}
-			ArrayAdapter<String> userListValuesAdapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, userListEntries);
+		if (holder.userListValuesSpinner != null) {
+			if (currentDataItem instanceof UserList) {
+				UserList userList = (UserList) currentDataItem;
+				holder.userListValuesSpinner.setVisibility(view.VISIBLE);
+				List<String> userListEntries = new ArrayList<String>();
+				userListEntries.add(view.getContext().getString(R.string.formula_editor_fragment_data_current_items));
+				for (Object userListItem : userList.getList()) {
+					userListEntries.add(userListItem.toString());
+				}
+				ArrayAdapter<String> userListValuesAdapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, userListEntries);
 
-			holder.userListValuesSpinner.setAdapter(userListValuesAdapter);
-		}
-		else{
-			holder.userListValuesSpinner.setVisibility(view.GONE);
+				holder.userListValuesSpinner.setAdapter(userListValuesAdapter);
+			} else {
+				holder.userListValuesSpinner.setVisibility(view.GONE);
+			}
 		}
 
 		if (onListItemClickListener != null) {
@@ -288,6 +327,39 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 			holder.checkbox.setChecked(false);
 		}
 
+		return view;
+	}
+
+	public View getDropDownViewForUserListItem(final int position, View convertView, ViewGroup parent) {
+		return getDropDownView(position + spriteVariables.size() + projectVariables.size(), convertView, parent);
+	}
+
+	@Override
+	public View getDropDownView(final int position, View convertView, ViewGroup parent) {
+		String nameOfCurrentDataItem = "";
+		Object currentDataItem = getItem(position);
+		if (currentDataItem instanceof UserVariable) {
+			nameOfCurrentDataItem = ((UserVariable) currentDataItem).getName();
+		} else {
+			nameOfCurrentDataItem = ((UserList) currentDataItem).getName();
+		}
+
+		View view = convertView;
+		ViewHolder holder;
+		if (view == null) {
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			view = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
+			holder = new ViewHolder();
+			holder.text1 = (TextView) view.findViewById(android.R.id.text1);
+			view.setTag(holder);
+		} else if (view.getTag() instanceof ViewHolder) {
+			holder = (ViewHolder) view.getTag();
+		} else {
+			holder = new ViewHolder();
+			holder.text1 = (TextView) view.findViewById(android.R.id.text1);
+			view.setTag(holder);
+		}
+		holder.text1.setText(nameOfCurrentDataItem);
 		return view;
 	}
 
@@ -346,6 +418,24 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 		return userVariables;
 	}
 
+	public int getPositionOfUserListItem(UserList userList) {
+		for (int index = 0; index < getUserListCount(); index++) {
+			if (((UserList) getItem(spriteVariables.size() + projectVariables.size() + index)).getName().equals(userList.getName())) {
+				return index;
+			}
+		}
+		return -1;
+	}
+
+	public int getPositionOfUserVariableItem(UserVariable userVariable) {
+		for (int index = 0; index < getUserVariablesCount(); index++) {
+			if (((UserVariable) getItem(index)).getName().equals(userVariable.getName())) {
+				return index;
+			}
+		}
+		return -1;
+	}
+
 	public void addCheckedItem(int position) {
 		checkedItems.add(position);
 	}
@@ -356,11 +446,14 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 	}
 
 	public interface OnCheckedChangeListener {
+
 		void onCheckedChange();
 	}
 
 	public interface OnListItemClickListener {
+
 		void onListItemClick(int position);
 	}
+
 
 }

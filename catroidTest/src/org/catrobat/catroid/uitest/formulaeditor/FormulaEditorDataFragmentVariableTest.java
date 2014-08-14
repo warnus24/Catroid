@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.formulaeditor;
 
@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -34,12 +35,12 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
-import org.catrobat.catroid.content.bricks.AddItemToUserListBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.ChangeSizeByNBrick;
 import org.catrobat.catroid.content.bricks.GlideToBrick;
+import org.catrobat.catroid.content.bricks.SetVariableBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
-import org.catrobat.catroid.formulaeditor.UserList;
+import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProgramMenuActivity;
@@ -53,10 +54,10 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
+public class FormulaEditorDataFragmentVariableTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
-	private static final double ADD_VALUE_TO_LIST = 10d;
-	private static final String USER_LIST_NAME = "_userList1";
+	private static final double SET_USERVARIABLE_TO_BRICK_VALUE = 10d;
+	private static final String USER_VARIABLE_NAME_UNDERLINE_PREFIX = "_userVar1";
 	private Project project;
 	private Sprite firstSprite;
 	private Sprite secondSprite;
@@ -64,13 +65,12 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 	private Brick glideToBrick;
 
 	private static final int CHANGE_SIZE_EDIT_TEXT_RID = R.id.brick_change_size_by_edit_text;
-	private static final int ADD_ITEM_TO_USERLIST_EDIT_TEXT_RID = R.id.brick_add_item_to_userlist_edit_text;
+	private static final int SET_VARIABLE_EDIT_TEXT_RID = R.id.brick_set_variable_edit_text;
 	private static final int GLIDE_TO_EDIT_TEXT_RID = R.id.brick_glide_to_edit_text_x;
 	private static final int ACTIONMODE_INDEX = 0;
-	private static final String LIST_SYMBOL_LEFT = "[";
-	private static final String LIST_SYMBOL_RIGHT = "]";
+	private static final String QUOTE = "\"";
 
-	public FormulaEditorDataFragmentTest() {
+	public FormulaEditorDataFragmentVariableTest() {
 		super(MainMenuActivity.class);
 	}
 
@@ -81,7 +81,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		UiTestUtils.getIntoScriptActivityFromMainMenu(solo);
 	}
 
-	public void createProjectAndAddAddItemToListBrick(String projectName) throws InterruptedException {
+	public void createProjectSetVariableToBrick(String projectName) throws InterruptedException {
 
 		project = new Project(null, projectName);
 
@@ -91,33 +91,32 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
 		ProjectManager.getInstance().getCurrentProject().getDataContainer()
-				.addProjectUserList(USER_LIST_NAME);
+				.addProjectUserVariable(USER_VARIABLE_NAME_UNDERLINE_PREFIX);
 
-		Double listItemToAdd = Double.valueOf(ADD_VALUE_TO_LIST);
+		Double setVariableToValue = Double.valueOf(SET_USERVARIABLE_TO_BRICK_VALUE);
 
-		AddItemToUserListBrick addItemToUserListBrick = new AddItemToUserListBrick(firstSprite, new Formula(listItemToAdd),
+		SetVariableBrick setVariableBrick = new SetVariableBrick(new Formula(setVariableToValue),
 				ProjectManager.getInstance().getCurrentProject().getDataContainer()
-						.getUserList(USER_LIST_NAME, firstSprite)
-		);
+						.getUserVariable(USER_VARIABLE_NAME_UNDERLINE_PREFIX, firstSprite));
 
-		Script startScript1 = new StartScript(firstSprite);
+		Script startScript1 = new StartScript();
 		firstSprite.addScript(startScript1);
-		startScript1.addBrick(addItemToUserListBrick);
+		startScript1.addBrick(setVariableBrick);
 	}
 
-	public void testAddUserListAfterStage() throws InterruptedException {
-		String userListName = "userList1";
+	public void testAddUserVariableAfterStage() throws InterruptedException {
+		String userVariableString = "userVar1";
 
 		solo.goBack();
-		createProjectAndAddAddItemToListBrick("testProject");
+		createProjectSetVariableToBrick("testProject");
 		solo.clickOnView(solo.getView(R.id.program_menu_button_scripts));
-		solo.clickOnView(solo.getView(ADD_ITEM_TO_USERLIST_EDIT_TEXT_RID));
+		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
 		solo.goBack();
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 
 		solo.clickOnView(solo.getView(R.id.button_play));
-		solo.sleep(5000); //TODO set to 500
+		solo.sleep(500);
 		assertTrue("StageActivity not shown: ", solo.waitForActivity(StageActivity.class.getSimpleName()));
 
 		solo.goBack();
@@ -126,30 +125,30 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		assertTrue("ScriptActivity not shown: ", solo.waitForActivity(ScriptActivity.class.getSimpleName()));
 
 		solo.sleep(500);
-		solo.clickOnView(solo.getView(ADD_ITEM_TO_USERLIST_EDIT_TEXT_RID));
+		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		assertTrue("FormulaEditorFragment not shown: ",
 				solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("FormulaEditorUserListFragment not shown: ",
+		assertTrue("FormulaEditorDataFragment not shown: ",
 				solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
-		createUserListFromUserListFragment(userListName, false);
-		assertTrue("User List Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		UiTestUtils.createUserVariableFromDataFragment(solo,userVariableString, false);
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 
-		ListView listView = getUserListListView();
-		assertTrue("UserList not added!", listView.getCount() == 2);
+		ListView listView = getVariableListView();
+		assertTrue("UserVariable not added!", listView.getCount() == 2);
 	}
 
-	public void testModifyUserListValuesInStage() throws InterruptedException {
+	public void testModifyUserVariableValuesInStage() throws InterruptedException {
 
 		solo.goBack();
-		createProjectAndAddAddItemToListBrick("testProject");
+		createProjectSetVariableToBrick("testProject");
 		solo.waitForView(solo.getView(R.id.program_menu_button_scripts));
 		solo.clickOnView(solo.getView(R.id.program_menu_button_scripts));
 		solo.waitForActivity(ScriptActivity.class.getSimpleName());
 		solo.clickOnView(solo.getView(R.id.button_play));
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		solo.sleep(500);
+		solo.sleep(2500); //TODO set to 250
 		solo.goBack();
 		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
 		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
@@ -159,18 +158,16 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.waitForActivity(ProgramMenuActivity.class.getSimpleName());
 		solo.clickOnView(solo.getView(R.id.program_menu_button_scripts));
 		solo.waitForActivity(ScriptActivity.class.getSimpleName());
-		solo.clickOnView(solo.getView(ADD_ITEM_TO_USERLIST_EDIT_TEXT_RID));
+		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
 		solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
+		ListView listView = getVariableListView();
 
-		ListView listView = getUserListListView();
-
-		UserList userList = (UserList) listView.getItemAtPosition(0);
-		Double addValueToList = Double.valueOf(ADD_VALUE_TO_LIST);
-		assertEquals("Wrong size of User List after stage!", userList.getList().size(), 1);
-		assertTrue("Value of UserList not saved after stage1!",
-				((Double) userList.getList().get(0)).compareTo(addValueToList) == 0);
+		UserVariable userVariable = (UserVariable) listView.getItemAtPosition(0);
+		Double setVariableToValue = Double.valueOf(SET_USERVARIABLE_TO_BRICK_VALUE);
+		assertTrue("Value of UserVariable not saved after stage1!",
+				((Double) userVariable.getValue()).compareTo(setVariableToValue) == 0);
 
 		solo.goBack();
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
@@ -180,24 +177,24 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.waitForActivity(ProgramMenuActivity.class.getSimpleName());
 		solo.clickOnView(solo.getView(R.id.button_play));
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		solo.sleep(500);
+		solo.sleep(2500); //TODO set to 250
 		solo.goBack();
 		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
 		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
 		solo.waitForActivity(ProgramMenuActivity.class.getSimpleName());
 		solo.clickOnView(solo.getView(R.id.program_menu_button_scripts));
 		solo.waitForActivity(ScriptActivity.class.getSimpleName());
-		solo.clickOnView(solo.getView(ADD_ITEM_TO_USERLIST_EDIT_TEXT_RID));
+		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
 		solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 
-		listView = getUserListListView();
+		listView = getVariableListView();
 
-		userList = (UserList) listView.getItemAtPosition(0);
-		addValueToList = Double.valueOf(ADD_VALUE_TO_LIST);
-		assertTrue("Value of UserList not added after stage2!",
-				((Double) userList.getList().get(0)).compareTo(addValueToList) == 0);
+		userVariable = (UserVariable) listView.getItemAtPosition(0);
+		setVariableToValue = Double.valueOf(SET_USERVARIABLE_TO_BRICK_VALUE);
+		assertTrue("Value of UserVariable not saved after stage2!",
+				((Double) userVariable.getValue()).compareTo(setVariableToValue) == 0);
 
 		solo.goBack();
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
@@ -210,7 +207,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 
 		solo.clickOnView(solo.getView(R.id.button_play));
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		solo.sleep(500);
+		solo.sleep(2500); //TODO set to 250
 		solo.goBack();
 		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
 		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
@@ -220,32 +217,36 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 
 		UiTestUtils.getIntoScriptActivityFromMainMenu(solo);
 
-		solo.clickOnView(solo.getView(ADD_ITEM_TO_USERLIST_EDIT_TEXT_RID));
+		solo.clickOnView(solo.getView(SET_VARIABLE_EDIT_TEXT_RID));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
 		solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG);
 
-		listView = getUserListListView();
+		listView = getVariableListView();
 
-		userList = (UserList) listView.getItemAtPosition(0);
-		addValueToList = Double.valueOf(ADD_VALUE_TO_LIST);
-		assertTrue("Value of UserList not saved after stage3!",
-				((Double) userList.getList().get(0)).compareTo(addValueToList) == 0);
+		userVariable = (UserVariable) listView.getItemAtPosition(0);
+		setVariableToValue = Double.valueOf(SET_USERVARIABLE_TO_BRICK_VALUE);
+		assertTrue("Value of UserVariable not saved after stage3!",
+				((Double) userVariable.getValue()).compareTo(setVariableToValue) == 0);
+
+		TextView textViewValue = (TextView) solo.getView(R.id.fragment_formula_editor_data_list_item_value_text_view);
+		assertTrue("Value of UserVariable not displayed in DataFragment after stage3!",
+				((Double) Double.parseDouble(textViewValue.getText().toString())).compareTo(setVariableToValue) == 0);
 	}
 
-	public void testCreateUserList() {
+	public void testCreateUserVariable() {
 
 		String itemString = "zzz";
 
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
-		createUserListFromUserListFragment(itemString, false);
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString, false);
 
 		solo.waitForText(itemString);
 		solo.clickOnText(itemString);
-		itemString = LIST_SYMBOL_LEFT + itemString + LIST_SYMBOL_RIGHT;
+		itemString = QUOTE + itemString + QUOTE;
 		solo.waitForView(solo.getView(R.id.formula_editor_edit_field));
 		EditText text = (EditText) solo.getView(R.id.formula_editor_edit_field);
 		String editTextString = text.getText().toString();
@@ -253,83 +254,81 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
 
-		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserListByName("zzz");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("zzz");
 	}
 
-	public void testDeleteUserListWithLongPress() {
+	public void testDeleteUserVariableWithLongPress() {
 
 		String itemString = "del";
 
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
-		createUserListFromUserListFragment(itemString, true);
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString, true);
 
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 		solo.clickOnText(itemString);
 		solo.waitForView(solo.getView(R.id.formula_editor_edit_field));
 		EditText text = (EditText) solo.getView(R.id.formula_editor_edit_field);
-		itemString = LIST_SYMBOL_LEFT + itemString + LIST_SYMBOL_RIGHT;
+		itemString = QUOTE + itemString + QUOTE;
 		Log.i("info", "editText: " + text.getText().toString());
 		assertEquals("Wrong button clicked", itemString, text.getText().toString().substring(0, itemString.length()));
 		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		itemString = itemString.replace(LIST_SYMBOL_LEFT, "");
-		itemString = itemString.replace(LIST_SYMBOL_RIGHT, "");
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		itemString = itemString.replace(QUOTE, "");
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 		solo.clickLongOnText(itemString);
 		assertTrue("Delete not shown", solo.waitForText(solo.getString(R.string.delete)));
 		solo.goBack();
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 		solo.clickLongOnText(itemString);
 		assertTrue("Delete not shown", solo.waitForText(solo.getString(R.string.delete)));
 		solo.clickOnText(solo.getString(R.string.delete));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 
-		ListView userListsListView = getUserListListView();
+		ListView userVariableListView = getVariableListView();
 
-		assertEquals("Wrong number of UserLists deleted", 1, userListsListView.getAdapter().getCount());
-		assertNull("Wrong number of UserLists deleted", userListsListView.getAdapter().getItem(0));
+		assertEquals("Wrong number of UserVariables deleted", 0, userVariableListView.getAdapter().getCount());
 
-		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserListByName("del");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("del");
 	}
 
-	public void testDeleteUserListWithMultipleChoice() {
+	public void testDeleteUserVariableWithMultipleChoice() {
 
 		String itemString = "1stdel";
-		String itemString2nd = "myList";
+		String itemString2nd = "myvar";
 		String itemString3rd = "2ndDel";
 
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 
-		UiTestUtils.createUserListFromDataFragment(solo, itemString, true);
-		UiTestUtils.createUserListFromDataFragment(solo, itemString2nd, true);
-		UiTestUtils.createUserListFromDataFragment(solo, itemString3rd, false);
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString, true);
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString2nd, true);
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString3rd, false);
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_userlist_delete));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		solo.clickOnView(solo.getView(R.id.delete));
+		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 		solo.clickOnCheckBox(0);
 		solo.clickOnCheckBox(1);
 		solo.clickOnImage(ACTIONMODE_INDEX);
 		solo.sleep(250);
 
-		ListView userListListView = getUserListListView();
+		ListView userVariableListView = getVariableListView();
 
-		assertEquals("Wrong number of UserLists deleted", 1, userListListView.getAdapter().getCount());
+		assertEquals("Wrong number of UserVariables deleted", 1, userVariableListView.getAdapter().getCount());
 
-		UserList userList = (UserList) userListListView.getAdapter().getItem(0);
-		assertEquals(itemString2nd + " deleted, but should not!", userList.getName(), itemString2nd);
+		UserVariable myVar = (UserVariable) userVariableListView.getAdapter().getItem(0);
+		assertEquals(itemString2nd + " deleted, but should not!", myVar.getName(), itemString2nd);
 		assertFalse(itemString + "not deleted", solo.searchText(itemString, true));
 		assertFalse(itemString3rd + "not deleted", solo.searchText(itemString3rd, true));
 
-		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserListByName(itemString);
-		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserListByName(itemString2nd);
-		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserListByName(itemString3rd);
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName(itemString);
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName(itemString2nd);
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName(itemString3rd);
 	}
 
 	public void testKeyCodeBackOnContextMode() {
@@ -340,14 +339,14 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 
-		UiTestUtils.createUserListFromDataFragment(solo, itemString, true);
-		UiTestUtils.createUserListFromDataFragment(solo, itemString2nd, true);
-		UiTestUtils.createUserListFromDataFragment(solo, itemString3rd, true);
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString, true);
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString2nd, true);
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString3rd, true);
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_userlist_delete));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		solo.clickOnView(solo.getView(R.id.delete));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 		solo.clickOnCheckBox(0);
 		solo.clickOnCheckBox(1);
 		solo.goBack();
@@ -356,7 +355,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		assertTrue("KeyCode Back deleted checked item: " + itemString3rd, solo.searchText(itemString3rd, true));
 	}
 
-	public void testScopeOfUserList() {
+	public void testScopeOfUserVariable() {
 
 		String itemString = "local";
 		String itemString2nd = "global";
@@ -364,12 +363,12 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 
-		UiTestUtils.createUserListFromDataFragment(solo, itemString, false);
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString, false);
 		assertTrue(itemString + " not found:", solo.searchText(itemString, true));
 
-		UiTestUtils.createUserListFromDataFragment(solo, itemString2nd, true);
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString2nd, true);
 		assertTrue(itemString2nd + " not found:", solo.searchText(itemString2nd, true));
 
 		solo.goBack();
@@ -383,61 +382,60 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.clickOnView(solo.getView(GLIDE_TO_EDIT_TEXT_RID));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 		assertFalse(itemString + "  should not be found:", solo.searchText(itemString, true));
 		assertTrue(itemString2nd + " not found:", solo.searchText(itemString2nd, true));
 
-		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserListByName("local");
-		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserListByName("global");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("local");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("global");
 	}
 
-	public void testCreateUserListDoubleName() {
+	public void testCreateUserVariableDoubleName() {
 
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 		String itemString = "var1";
-		UiTestUtils.createUserListFromDataFragment(solo, itemString, true);
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
-		solo.clickOnView(solo.getView(R.id.button_add));
-		assertTrue("Add UserList Dialog not shown",
-				solo.waitForText(solo.getString(R.string.formula_editor_data_dialog_title)));
+		UiTestUtils.createUserVariableFromDataFragment(solo,itemString, true);
 
-		solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_is_list_checkbox));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
+		solo.clickOnView(solo.getView(R.id.button_add));
+		assertTrue("Add Variable Dialog not shown",
+				solo.waitForText(solo.getString(R.string.formula_editor_variable_dialog_title)));
 
 		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 		solo.enterText(editText, itemString);
 
-		assertTrue("Toast not shown when UserListName already exists",
-				solo.waitForText(solo.getString(R.string.formula_editor_existing_userlist), 0, 5000));
+		assertTrue("Toast not shown when UserVariableName already exists",
+				solo.waitForText(solo.getString(R.string.formula_editor_existing_variable), 0, 5000));
 
 		solo.waitForText(itemString);
 
 		solo.clearEditText(editText);
 		solo.enterText(editText, "var2");
 
-		assertTrue("Inserted list not shown", solo.waitForText("var2"));
+		assertTrue("Inserted variable not shown", solo.waitForText("var2"));
 
 		solo.clickOnButton(solo.getString(R.string.ok));
 
-		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserListByName("var1");
-		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserListByName("var2");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("var1");
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().deleteUserVariableByName("var2");
 	}
 
 	public void testVisibilityOfMenuItems() {
 
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 		ArrayList<View> currentViews = solo.getCurrentViews();
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		for (View view : currentViews) {
 			ids.add(view.getId());
 		}
 
-		assertTrue("MenuItem should have been found!", solo.getView(R.id.formula_editor_userlist_delete) != null);
+		assertTrue("MenuItem should have been found!", solo.getView(R.id.delete) != null);
 
 		assertFalse("MenuItem should not be found!", ids.contains(R.id.copy));
 		assertFalse("MenuItem should not be found!", ids.contains(R.id.cut));
@@ -448,15 +446,15 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		assertFalse("MenuItem should not be found!", ids.contains(R.id.settings));
 	}
 
-	public void testEmptyUserListCreation() {
+	public void testEmptyUserVariableCreation() {
 
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 		solo.clickOnView(solo.getView(R.id.button_add));
-		assertTrue("Add UserList Dialog not shown",
-				solo.waitForText(solo.getString(R.string.formula_editor_data_dialog_title)));
+		assertTrue("Add Variable Dialog not shown",
+				solo.waitForText(solo.getString(R.string.formula_editor_variable_dialog_title)));
 
 		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 
@@ -473,7 +471,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		assertFalse("Ok-Button should not be enabled!", ok.isEnabled());
 	}
 
-	public void testUserListListHeadlines() {
+	public void testVariableListHeadlines() {
 		String local = "local";
 		String global = "global";
 		String globalHeadline = solo.getString(R.string.formula_editor_dialog_for_all_sprites).toUpperCase(
@@ -484,13 +482,13 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
 
-		UiTestUtils.createUserListFromDataFragment(solo, global, true);
+		UiTestUtils.createUserVariableFromDataFragment(solo,global, true);
 
 		assertTrue("Global Headline not shown", solo.searchText(globalHeadline, true));
 
-		UiTestUtils.createUserListFromDataFragment(solo, local, false);
+		UiTestUtils.createUserVariableFromDataFragment(solo, local, false);
 
 		assertTrue("Local Headline not shown", solo.searchText(localHeadline, true));
 
@@ -508,20 +506,20 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 
 	}
 
-	public void testSelectAllActionModeButton() {
+	public void testSelectAllVariablesActionModeButton() {
 		solo.clickOnView(solo.getView(CHANGE_SIZE_EDIT_TEXT_RID));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("UserList Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 
-		UiTestUtils.createUserListFromDataFragment(solo, "global", true);
-		UiTestUtils.createUserListFromDataFragment(solo, "local", false);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
+		assertTrue("Variable Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_variables)));
+
+		UiTestUtils.createUserVariableFromDataFragment(solo,"global", true);
+		UiTestUtils.createUserVariableFromDataFragment(solo,"local", false);
 
 		String selectAll = solo.getString(R.string.select_all).toUpperCase(Locale.getDefault());
 
 		solo.sleep(400);
 
-		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.formula_editor_userlist_delete,
-				getActivity());
+		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, getActivity());
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
 
 		solo.clickOnText(selectAll);
@@ -549,10 +547,10 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
-		Script startScript1 = new StartScript(firstSprite);
-		Script startScript2 = new StartScript(secondSprite);
-		changeBrick = new ChangeSizeByNBrick(firstSprite, 0);
-		glideToBrick = new GlideToBrick(secondSprite, 0, 0, 0);
+		Script startScript1 = new StartScript();
+		Script startScript2 = new StartScript();
+		changeBrick = new ChangeSizeByNBrick(0);
+		glideToBrick = new GlideToBrick(0, 0, 0);
 
 		firstSprite.addScript(startScript1);
 		secondSprite.addScript(startScript2);
@@ -560,16 +558,16 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		startScript2.addBrick(glideToBrick);
 	}
 
-	private void createUserListFromUserListFragment(String userListName, boolean forAllSprites) {
-		assertTrue("FormulaEditorUserListFragment not shown: ",
+	private void createUserVariableFromVariableFragment(String variableName, boolean forAllSprites) {
+		assertTrue("FormulaEditorDataFragment not shown: ",
 				solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
 		solo.clickOnView(solo.getView(R.id.button_add));
-		assertTrue("Add UserList Dialog not shown",
-				solo.waitForText(solo.getString(R.string.formula_editor_data_dialog_title)));
+		assertTrue("Add Variable Dialog not shown",
+				solo.waitForText(solo.getString(R.string.formula_editor_variable_dialog_title)));
 		solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_edit_text));
 		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
-		solo.enterText(editText, userListName);
+		solo.enterText(editText, variableName);
 
 		if (forAllSprites) {
 			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
@@ -581,7 +579,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.clickOnButton(solo.getString(R.string.ok));
 	}
 
-	private ListView getUserListListView() {
+	private ListView getVariableListView() {
 		return solo.getCurrentViews(ListView.class).get(1);
 	}
 

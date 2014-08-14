@@ -515,12 +515,7 @@
     <string name="formula_editor_variable_dialog_title">"Nieuwe variabele"</string>
     <string name="formula_editor_dialog_for_all_sprites">"Voor alle objecten"</string>
     <string name="formula_editor_dialog_for_this_sprite_only">"Alleen voor dit object"</string>
-    <string name="formula_editor_variable_dialog_hint">"Voer variabelenaam in"</string>
 
-    <plurals name="formula_editor_variable_context_action_item_selected">
-        <item quantity="one">"Variabele geselecteerd!"</item>
-        <item quantity="other">"Variabelen geselecteerd!"</item>
-    </plurals>
     <!--  -->
 
 </resources>

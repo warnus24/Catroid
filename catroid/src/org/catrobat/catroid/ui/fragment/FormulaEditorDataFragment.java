@@ -104,7 +104,7 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View fragmentView = inflater.inflate(R.layout.fragment_formula_editor_userlist, container, false);
+		View fragmentView = inflater.inflate(R.layout.fragment_formula_editor_data_list, container, false);
 		return fragmentView;
 	}
 
@@ -120,7 +120,7 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.menu_formulaeditor_userlist, menu);
+		inflater.inflate(R.menu.menu_formulaeditor_data_fragment, menu);
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 		for (int index = 0; index < menu.size(); index++) {
 			menu.getItem(index).setVisible(false);
 		}
-		menu.findItem(R.id.formula_editor_userlist_delete).setVisible(true);
+		menu.findItem(R.id.formula_editor_data_item_delete).setVisible(true);
 
 		getSherlockActivity().getSupportActionBar().setDisplayShowTitleEnabled(true);
 		getSherlockActivity().getSupportActionBar().setTitle(actionBarTitle);
@@ -147,8 +147,7 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 				Object itemToAdd = adapter.getItem(position);
 				if (itemToAdd instanceof UserVariable) {
 					formulaEditor.addUserVariableToActiveFormula(((UserVariable) itemToAdd).getName());
-				}
-				else if(itemToAdd instanceof UserList){
+				} else if (itemToAdd instanceof UserList) {
 					formulaEditor.addUserListToActiveFormula(((UserList) itemToAdd).getName());
 				}
 				formulaEditor.updateButtonsOnKeyboardAndInvalidateOptionsMenu();
@@ -174,8 +173,8 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 		String title = adapter.getAmountOfCheckedItems()
 				+ " "
 				+ getActivity().getResources().getQuantityString(
-						R.plurals.formula_editor_userlist_context_action_item_selected,
-						adapter.getAmountOfCheckedItems());
+				R.plurals.formula_editor_data_fragment_context_action_item_selected,
+				adapter.getAmountOfCheckedItems());
 
 		contextActionMode.setTitle(title);
 	}
@@ -222,7 +221,7 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.formula_editor_userlist_delete:
+			case R.id.formula_editor_data_item_delete:
 				inContextMode = true;
 				contextActionMode = getSherlockActivity().startActionMode(contextModeCallback);
 				return true;
@@ -238,10 +237,18 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 		switch (item.getItemId()) {
 			case R.id.context_formula_editor_userlist_delete:
 				if (!adapter.isEmpty()) {
-					ProjectManager.getInstance().getCurrentProject().getDataContainer()
-							.deleteUserListByName(getNameOfItemInAdapter(deleteIndex));
-					adapter.notifyDataSetChanged();
-					getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_USERLIST_DELETED));
+					Object itemToDelete = adapter.getItem(deleteIndex);
+					if (itemToDelete instanceof UserList) {
+						ProjectManager.getInstance().getCurrentProject().getDataContainer()
+								.deleteUserListByName(getNameOfItemInAdapter(deleteIndex));
+						adapter.notifyDataSetChanged();
+						getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_USERLIST_DELETED));
+					} else {
+						ProjectManager.getInstance().getCurrentProject().getDataContainer()
+								.deleteUserVariableByName(getNameOfItemInAdapter(deleteIndex));
+						adapter.notifyDataSetChanged();
+						getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_VARIABLE_DELETED));
+					}
 				}
 				return true;
 			default:
@@ -336,7 +343,7 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 			adapter.notifyDataSetChanged();
 			mode.setTitle("0 "
 					+ getActivity().getResources().getQuantityString(
-							R.plurals.formula_editor_userlist_context_action_item_selected, 0));
+					R.plurals.formula_editor_data_fragment_context_action_item_selected, 0));
 			getSherlockActivity().findViewById(R.id.bottom_bar).setVisibility(View.GONE);
 			addSelectAllActionModeButton(mode, menu);
 			return true;
@@ -375,13 +382,12 @@ public class FormulaEditorDataFragment extends SherlockListFragment implements D
 		}
 	};
 
-	private String getNameOfItemInAdapter(int position){
+	private String getNameOfItemInAdapter(int position) {
 		Object item = adapter.getItem(position);
-		if(item instanceof UserList){
-			return ((UserList)item).getName();
-		}
-		else if(item instanceof  UserVariable){
-			return ((UserVariable)item).getName();
+		if (item instanceof UserList) {
+			return ((UserList) item).getName();
+		} else if (item instanceof UserVariable) {
+			return ((UserVariable) item).getName();
 		}
 
 		return null;

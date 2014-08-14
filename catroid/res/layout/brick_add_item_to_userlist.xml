@@ -46,7 +46,6 @@
         android:layout_height="wrap_content"
         app:horizontalSpacing="@dimen/brick_flow_layout_horizontal_spacing"
         app:verticalSpacing="@dimen/brick_flow_layout_vertical_spacing" >
-        android:gravity="center_vertical"
 
         <TextView
             android:id="@+id/brick_add_item_to_userlist_label"

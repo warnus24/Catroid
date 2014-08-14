@@ -29,8 +29,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.ui.adapter.DataAdapter;
-import org.catrobat.catroid.ui.adapter.UserListAdapter;
-import org.catrobat.catroid.ui.adapter.UserVariableAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -58,14 +56,6 @@ public class DataContainer implements Serializable {
 
 		projectLists = new ArrayList<UserList>();
 		spriteListOfLists = new HashMap<Sprite, List<UserList>>();
-	}
-
-	public UserListAdapter createUserListAdapter(Context context, Sprite sprite) {
-		return new UserListAdapter(context, getOrCreateUserListListForSprite(sprite), projectLists);
-	}
-
-	public UserVariableAdapter createUserVariableAdapter(Context context, Sprite sprite) {
-		return new UserVariableAdapter(context, getOrCreateVariableListForSprite(sprite), projectVariables);
 	}
 
 	public DataAdapter createDataAdapter(Context context, Sprite sprite) {
