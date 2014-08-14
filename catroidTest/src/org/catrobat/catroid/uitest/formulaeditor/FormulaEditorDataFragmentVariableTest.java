@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -53,7 +54,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
+public class FormulaEditorDataFragmentVariableTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
 	private static final double SET_USERVARIABLE_TO_BRICK_VALUE = 10d;
 	private static final String USER_VARIABLE_NAME_UNDERLINE_PREFIX = "_userVar1";
@@ -69,7 +70,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 	private static final int ACTIONMODE_INDEX = 0;
 	private static final String QUOTE = "\"";
 
-	public FormulaEditorUserVariableFragmentTest() {
+	public FormulaEditorDataFragmentVariableTest() {
 		super(MainMenuActivity.class);
 	}
 
@@ -147,7 +148,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		solo.waitForActivity(ScriptActivity.class.getSimpleName());
 		solo.clickOnView(solo.getView(R.id.button_play));
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		solo.sleep(250);
+		solo.sleep(2500); //TODO set to 250
 		solo.goBack();
 		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
 		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
@@ -177,7 +178,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		solo.waitForActivity(ProgramMenuActivity.class.getSimpleName());
 		solo.clickOnView(solo.getView(R.id.button_play));
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		solo.sleep(250);
+		solo.sleep(2500); //TODO set to 250
 		solo.goBack();
 		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
 		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
@@ -207,7 +208,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 
 		solo.clickOnView(solo.getView(R.id.button_play));
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		solo.sleep(250);
+		solo.sleep(2500); //TODO set to 250
 		solo.goBack();
 		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
 		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
@@ -228,6 +229,10 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		setVariableToValue = Double.valueOf(SET_USERVARIABLE_TO_BRICK_VALUE);
 		assertTrue("Value of UserVariable not saved after stage3!",
 				((Double) userVariable.getValue()).compareTo(setVariableToValue) == 0);
+
+		TextView textViewValue = (TextView) solo.getView(R.id.fragment_formula_editor_data_list_item_value_text_view);
+		assertTrue("Value of UserVariable not displayed in DataFragment after stage3!",
+				((Double) Double.parseDouble(textViewValue.getText().toString())).compareTo(setVariableToValue) == 0);
 	}
 
 	public void testCreateUserVariable() {

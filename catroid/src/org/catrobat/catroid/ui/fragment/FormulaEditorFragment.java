@@ -278,7 +278,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 									R.string.formula_editor_sensors);
 							return true;
 						case R.id.formula_editor_keyboard_data:
-							showFormulaEditorUserListFragment(FormulaEditorDataFragment.DATA_TAG,
+							showFormulaEditorDataFragment(FormulaEditorDataFragment.DATA_TAG,
 									R.string.formula_editor_data);
 							return true;
 						case R.id.formula_editor_keyboard_ok:
@@ -550,7 +550,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void showFormulaEditorUserListFragment(String tag, int actionbarResId) {
+	private void showFormulaEditorDataFragment(String tag, int actionbarResId) {
 		FragmentManager fragmentManager = ((SherlockFragmentActivity) context).getSupportFragmentManager();
 		Fragment fragment = fragmentManager.findFragmentByTag(tag);
 
@@ -567,22 +567,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		((FormulaEditorDataFragment) fragment).showFragment(context);
 	}
 
-	private void showFormulaEditorVariableListFragment(String tag, int actionbarResId) {
-		FragmentManager fragmentManager = ((SherlockFragmentActivity) context).getSupportFragmentManager();
-		Fragment fragment = fragmentManager.findFragmentByTag(tag);
-
-		if (fragment == null) {
-			fragment = new FormulaEditorDataFragment();
-			Bundle bundle = new Bundle();
-			bundle.putString(FormulaEditorDataFragment.ACTION_BAR_TITLE_BUNDLE_ARGUMENT,
-					context.getString(actionbarResId));
-			bundle.putString(FormulaEditorDataFragment.FRAGMENT_TAG_BUNDLE_ARGUMENT, tag);
-			fragment.setArguments(bundle);
-			fragmentManager.beginTransaction().add(R.id.script_fragment_container, fragment, tag).commit();
-		}
-		((FormulaEditorDataFragment) fragment).setAddButtonListener(getSherlockActivity());
-		((FormulaEditorDataFragment) fragment).showFragment(context);
-	}
 
 	@SuppressWarnings("deprecation")
 	@Override

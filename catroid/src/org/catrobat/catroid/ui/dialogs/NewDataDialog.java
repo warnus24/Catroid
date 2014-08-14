@@ -178,7 +178,7 @@ public class NewDataDialog extends SherlockDialogFragment {
 		if (global.isChecked()) {
 			if (!isListNameValid(name)) {
 
-				Toast.makeText(getActivity(), R.string.formula_editor_existing_userlist, Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), R.string.formula_editor_existing_data_item, Toast.LENGTH_LONG).show();
 
 			} else {
 				newUserList = ProjectManager.getInstance().getCurrentProject().getDataContainer()
@@ -220,9 +220,11 @@ public class NewDataDialog extends SherlockDialogFragment {
 				break;
 			case USER_VARIABLE:
 				isListCheckbox.setVisibility(View.GONE);
+				dialogNewUserList.setTitle(R.string.formula_editor_variable_dialog_title);
 				break;
 			case USER_LIST:
 				isListCheckbox.setVisibility(View.GONE);
+				dialogNewUserList.setTitle(R.string.formula_editor_list_dialog_title);
 				break;
 		}
 
@@ -266,7 +268,7 @@ public class NewDataDialog extends SherlockDialogFragment {
 					if (isListNameValid(name)) {
 						positiveButton.setEnabled(true);
 					} else {
-						Toast.makeText(getActivity(), R.string.formula_editor_existing_userlist, Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), R.string.formula_editor_existing_data_item, Toast.LENGTH_SHORT).show();
 						positiveButton.setEnabled(false);
 					}
 				} else {
@@ -282,7 +284,7 @@ public class NewDataDialog extends SherlockDialogFragment {
 				if (isListNameValid(name)) {
 					positiveButton.setEnabled(true);
 				} else {
-					Toast.makeText(getActivity(), R.string.formula_editor_existing_userlist, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), R.string.formula_editor_existing_data_item, Toast.LENGTH_SHORT).show();
 					positiveButton.setEnabled(false);
 				}
 				break;

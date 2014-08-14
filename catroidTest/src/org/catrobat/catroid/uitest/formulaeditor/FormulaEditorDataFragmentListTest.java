@@ -53,7 +53,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
+public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
 	private static final double ADD_VALUE_TO_LIST = 10d;
 	private static final String USER_LIST_NAME = "_userList1";
@@ -70,7 +70,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 	private static final String LIST_SYMBOL_LEFT = "[";
 	private static final String LIST_SYMBOL_RIGHT = "]";
 
-	public FormulaEditorDataFragmentTest() {
+	public FormulaEditorDataFragmentListTest() {
 		super(MainMenuActivity.class);
 	}
 
@@ -136,7 +136,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		UiTestUtils.createUserListFromDataFragment(solo, userListName, false);
 		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 
-		ListView listView = getUserListListView();
+		ListView listView = getDataListListView();
 		assertTrue("UserList not added!", listView.getCount() == 2);
 	}
 
@@ -149,7 +149,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.waitForActivity(ScriptActivity.class.getSimpleName());
 		solo.clickOnView(solo.getView(R.id.button_play));
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		solo.sleep(500);
+		solo.sleep(5000); //TODO set to 500
 		solo.goBack();
 		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
 		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
@@ -164,7 +164,12 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
 		solo.waitForFragmentByTag(FormulaEditorDataFragment.DATA_TAG);
 
-		ListView listView = getUserListListView();
+		solo.clickOnView(solo.getView(R.id.fragment_formula_editor_data_list_item_spinner));
+		ListView currentItemsListView = solo.getCurrentViews(ListView.class).get(0);
+		assertEquals("Wrong number of list items in List after stage!",2,currentItemsListView.getAdapter().getCount());
+		solo.goBack();
+
+		ListView listView = getDataListListView();
 
 		UserList userList = (UserList) listView.getItemAtPosition(0);
 		Double addValueToList = Double.valueOf(ADD_VALUE_TO_LIST);
@@ -192,7 +197,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
 		solo.waitForFragmentByTag(FormulaEditorDataFragment.DATA_TAG);
 
-		listView = getUserListListView();
+		listView = getDataListListView();
 
 		userList = (UserList) listView.getItemAtPosition(0);
 		addValueToList = Double.valueOf(ADD_VALUE_TO_LIST);
@@ -225,12 +230,13 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
 		solo.waitForFragmentByTag(FormulaEditorDataFragment.DATA_TAG);
 
-		listView = getUserListListView();
+		listView = getDataListListView();
 
 		userList = (UserList) listView.getItemAtPosition(0);
 		addValueToList = Double.valueOf(ADD_VALUE_TO_LIST);
 		assertTrue("Value of UserList not saved after stage3!",
 				((Double) userList.getList().get(0)).compareTo(addValueToList) == 0);
+
 	}
 
 	public void testCreateUserList() {
@@ -241,6 +247,10 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
 		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+		ListView dataListListView = getDataListListView();
+		assertEquals("Wrong number of Data items",1,dataListListView.getAdapter().getCount());
+		assertNull("Data item should be null, on initialisation!",dataListListView.getAdapter().getItem(0));
+
 		UiTestUtils.createUserListFromDataFragment(solo, itemString, false);
 
 		solo.waitForText(itemString);
@@ -288,7 +298,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.clickOnText(solo.getString(R.string.delete));
 		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 
-		ListView userListsListView = getUserListListView();
+		ListView userListsListView = getDataListListView();
 
 		assertEquals("Wrong number of UserLists deleted", 1, userListsListView.getAdapter().getCount());
 		assertNull("Wrong number of UserLists deleted", userListsListView.getAdapter().getItem(0));
@@ -311,14 +321,14 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		UiTestUtils.createUserListFromDataFragment(solo, itemString2nd, true);
 		UiTestUtils.createUserListFromDataFragment(solo, itemString3rd, false);
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_userlist_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_data_item_delete));
 		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 		solo.clickOnCheckBox(0);
 		solo.clickOnCheckBox(1);
 		solo.clickOnImage(ACTIONMODE_INDEX);
 		solo.sleep(250);
 
-		ListView userListListView = getUserListListView();
+		ListView userListListView = getDataListListView();
 
 		assertEquals("Wrong number of UserLists deleted", 1, userListListView.getAdapter().getCount());
 
@@ -346,7 +356,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		UiTestUtils.createUserListFromDataFragment(solo, itemString2nd, true);
 		UiTestUtils.createUserListFromDataFragment(solo, itemString3rd, true);
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_userlist_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_data_item_delete));
 		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 		solo.clickOnCheckBox(0);
 		solo.clickOnCheckBox(1);
@@ -411,7 +421,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		solo.enterText(editText, itemString);
 
 		assertTrue("Toast not shown when UserListName already exists",
-				solo.waitForText(solo.getString(R.string.formula_editor_existing_userlist), 0, 5000));
+				solo.waitForText(solo.getString(R.string.formula_editor_existing_data_item), 0, 5000));
 
 		solo.waitForText(itemString);
 
@@ -439,7 +449,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 			ids.add(view.getId());
 		}
 
-		assertTrue("MenuItem should have been found!", solo.getView(R.id.formula_editor_userlist_delete) != null);
+		assertTrue("MenuItem should have been found!", solo.getView(R.id.formula_editor_data_item_delete) != null);
 
 		assertFalse("MenuItem should not be found!", ids.contains(R.id.copy));
 		assertFalse("MenuItem should not be found!", ids.contains(R.id.cut));
@@ -523,7 +533,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 
 		solo.sleep(400);
 
-		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.formula_editor_userlist_delete,
+		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.formula_editor_data_item_delete,
 				getActivity());
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
 
@@ -563,7 +573,7 @@ public class FormulaEditorDataFragmentTest extends BaseActivityInstrumentationTe
 		startScript2.addBrick(glideToBrick);
 	}
 
-	private ListView getUserListListView() {
+	private ListView getDataListListView() {
 		return solo.getCurrentViews(ListView.class).get(1);
 	}
 

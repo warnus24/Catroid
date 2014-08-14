@@ -48,7 +48,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.UserList;
-import org.catrobat.catroid.ui.adapter.UserListAdapter;
+import org.catrobat.catroid.ui.adapter.DataAdapter;
 import org.catrobat.catroid.ui.adapter.UserListAdapterWrapper;
 import org.catrobat.catroid.ui.dialogs.NewDataDialog;
 import org.catrobat.catroid.ui.dialogs.NewDataDialog.NewUserListDialogListener;
@@ -122,9 +122,9 @@ public class AddItemToUserListBrick extends BrickBaseType implements OnClickList
 		textField.setOnClickListener(this);
 
 		Spinner userListSpinner = (Spinner) view.findViewById(R.id.add_item_to_userlist_spinner);
-		UserListAdapter userListAdapter = ProjectManager.getInstance().getCurrentProject().getDataContainer()
-				.createUserListAdapter(context, sprite);
-		UserListAdapterWrapper userListAdapterWrapper = new UserListAdapterWrapper(context, userListAdapter);
+		DataAdapter dataAdapter = ProjectManager.getInstance().getCurrentProject().getDataContainer()
+				.createDataAdapter(context, sprite);
+		UserListAdapterWrapper userListAdapterWrapper = new UserListAdapterWrapper(context, dataAdapter);
 		userListAdapterWrapper.setItemLayout(android.R.layout.simple_spinner_item, android.R.id.text1);
 
 		userListSpinner.setAdapter(userListAdapterWrapper);
@@ -184,10 +184,10 @@ public class AddItemToUserListBrick extends BrickBaseType implements OnClickList
 		Spinner userListSpinner = (Spinner) prototypeView.findViewById(R.id.add_item_to_userlist_spinner);
 		userListSpinner.setFocusableInTouchMode(false);
 		userListSpinner.setFocusable(false);
-		UserListAdapter userListAdapter = ProjectManager.getInstance().getCurrentProject().getDataContainer()
-				.createUserListAdapter(context, sprite);
+		DataAdapter dataAdapter = ProjectManager.getInstance().getCurrentProject().getDataContainer()
+				.createDataAdapter(context, sprite);
 
-		UserListAdapterWrapper userListAdapterWrapper = new UserListAdapterWrapper(context, userListAdapter);
+		UserListAdapterWrapper userListAdapterWrapper = new UserListAdapterWrapper(context, dataAdapter);
 
 		userListAdapterWrapper.setItemLayout(android.R.layout.simple_spinner_item, android.R.id.text1);
 		userListSpinner.setAdapter(userListAdapterWrapper);
