@@ -40,6 +40,7 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.parrot.freeflight.drone.NavData;
 import com.parrot.freeflight.receivers.DroneAvailabilityDelegate;
 import com.parrot.freeflight.receivers.DroneAvailabilityReceiver;
 import com.parrot.freeflight.receivers.DroneBatteryChangedReceiver;
@@ -175,6 +176,14 @@ public class DroneInitializer implements DroneReadyReceiverDelegate, DroneConnec
 					prestageStageActivity.getString(R.string.error_drone_low_battery));
 			return;
 		}
+
+
+		// test navdata getter
+		Log.d("asdf", String.format("BatterieStatus = %d", droneControlService.getDroneNavData().batteryStatus));
+		Log.d("asdf", "Flying = " + Boolean.toString(droneControlService.getDroneNavData().flying));
+		Log.d("asdf", "Recording = " + Boolean.toString(droneControlService.getDroneNavData().recording));
+		Log.d("asdf", "Camera ready = " + Boolean.toString(droneControlService.getDroneNavData().cameraReady));
+
 		prestageStageActivity.resourceInitialized();
 	}
 
