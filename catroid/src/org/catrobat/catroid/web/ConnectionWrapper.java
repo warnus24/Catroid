@@ -68,22 +68,24 @@ public class ConnectionWrapper {
 		String fileName = postValues.get(TAG_PROJECT_TITLE);
 
 		if (filePath != null) {
+			OkHttpClient okHttpClient = new OkHttpClient();
+			okHttpClient.setTransports(Arrays.asList("http/1.1"));
+			HttpRequest.setConnectionFactory(new OkConnectionFactory(okHttpClient));
+			HttpRequest uploadRequest = HttpRequest.post(urlString).chunk(0);
+
+			for (HashMap.Entry<String, String> entry : postValues.entrySet()) {
+				uploadRequest.part(entry.getKey(), entry.getValue());
+			}
+			File file = new File(filePath);
+			uploadRequest.part(fileTag, fileName, file);
+
 			try {
-				HttpRequest.setConnectionFactory(new OkConnectionFactory());
-				HttpRequest uploadRequest = HttpRequest.post(urlString).chunk(0);
-
-				for (HashMap.Entry<String, String> entry : postValues.entrySet()) {
-					uploadRequest.part(entry.getKey(), entry.getValue());
-				}
-				File file = new File(filePath);
-				uploadRequest.part(fileTag, fileName, file);
-
 				int responseCode = uploadRequest.code();
 				if (!(responseCode == 200 || responseCode == 201)) {
 					throw new WebconnectionException(responseCode, "Error response code should be 200 or 201!");
 				}
 				if (!uploadRequest.ok()) {
-					Log.v(TAG, "Upload not succesful");
+					Log.v(TAG, "Upload not successful");
 					StatusBarNotificationManager.getInstance().cancelNotification(notificationId);
 				} else {
 					StatusBarNotificationManager.getInstance().showOrUpdateNotification(notificationId, 100);
@@ -91,10 +93,9 @@ public class ConnectionWrapper {
 
 				answer = uploadRequest.body();
 				Log.v(TAG, "Upload response is: " + answer);
-			} catch (HttpRequestException httpRequestException) {
-				Log.e(TAG, Log.getStackTraceString(httpRequestException));
-				throw new WebconnectionException(WebconnectionException.ERROR_NETWORK,
-						"Connection could not be established!");
+			} catch (HttpRequest.HttpRequestException exception) {
+				Log.e(TAG, "OkHttpError", exception);
+				throw new WebconnectionException(WebconnectionException.ERROR_NETWORK, "OkHttp threw an exception");
 			}
 		}
 		return answer;
