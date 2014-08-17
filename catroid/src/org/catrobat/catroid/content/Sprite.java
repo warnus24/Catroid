@@ -27,6 +27,7 @@ import android.util.Log;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.BroadcastSequenceMap;
@@ -52,6 +53,7 @@ public class Sprite implements Serializable, Cloneable {
 	public transient Look look;
 	public transient boolean isPaused;
 
+	@XStreamAsAttribute
 	private String name;
 	private List<Script> scriptList;
 	private ArrayList<LookData> lookList;
@@ -120,6 +122,7 @@ public class Sprite implements Serializable, Cloneable {
 				Action sequenceAction = createActionSequence(script);
 				look.addAction(sequenceAction);
 				BroadcastHandler.getActionScriptMap().put(sequenceAction, script);
+				BroadcastHandler.getScriptSpriteMapMap().put(script, this);
 				String actionName = sequenceAction.toString() + Constants.ACTION_SPRITE_SEPARATOR + name + scriptCounter;
 				if (scriptActions.containsKey(Constants.START_SCRIPT)) {
 					scriptActions.get(Constants.START_SCRIPT).add(actionName);
@@ -136,6 +139,7 @@ public class Sprite implements Serializable, Cloneable {
 				BroadcastScript broadcastScript = (BroadcastScript) script;
 				SequenceAction action = createActionSequence(broadcastScript);
 				BroadcastHandler.getActionScriptMap().put(action, script);
+				BroadcastHandler.getScriptSpriteMapMap().put(script, this);
 				putBroadcastSequenceAction(broadcastScript.getBroadcastMessage(), action);
 				String actionName = action.toString() + Constants.ACTION_SPRITE_SEPARATOR + name + scriptCounter;
 
@@ -232,7 +236,7 @@ public class Sprite implements Serializable, Cloneable {
 
 	private SequenceAction createActionSequence(Script s) {
 		SequenceAction sequence = ExtendedActions.sequence();
-		s.run(sequence);
+		s.run(this, sequence);
 		return sequence;
 	}
 
@@ -346,12 +350,12 @@ public class Sprite implements Serializable, Cloneable {
 	}
 
 	public int getRequiredResources() {
-		int ressources = Brick.NO_RESOURCES;
+		int resources = Brick.NO_RESOURCES;
 
 		for (Script script : scriptList) {
-			ressources |= script.getRequiredResources();
+			resources |= script.getRequiredResources();
 		}
-		return ressources;
+		return resources;
 	}
 
     public ArrayList<NfcTagData> getNfcTagList() {
