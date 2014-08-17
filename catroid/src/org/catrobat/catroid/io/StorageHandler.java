@@ -482,9 +482,16 @@ public final class StorageHandler {
 		}
 	}
 
+	public boolean deleteProject(String projectName) {
+		if (projectName != null) {
+			return UtilFile.deleteDirectory(new File(buildProjectPath(projectName)));
+		}
+		return false;
+	}
+
 	public boolean deleteProject(Project project) {
 		if (project != null) {
-			return UtilFile.deleteDirectory(new File(buildProjectPath(project.getName())));
+			return deleteProject(project.getName());
 		}
 		return false;
 	}

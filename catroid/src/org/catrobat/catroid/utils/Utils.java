@@ -282,15 +282,26 @@ public final class Utils {
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 			String projectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
 
+			String standardProjectName = context.getString(R.string.default_project_name);
 			if (projectName == null) {
-				projectName = context.getString(R.string.default_project_name);
+				projectName = standardProjectName;
 			}
 
 			try {
 				ProjectManager.getInstance().loadProject(projectName, context);
 			} catch (ProjectException projectException) {
-				Log.e(TAG, "Project cannot load", projectException);
-				ProjectManager.getInstance().initializeDefaultProject(context);
+				Log.e(TAG, "Project with name '" + projectName + "' cannot load. Try to load Standard Project", projectException);
+				if (StorageHandler.getInstance().projectExists(standardProjectName)) {
+					try {
+						ProjectManager.getInstance().loadProject(standardProjectName, context);
+					} catch (ProjectException innerProjectException) {
+						Log.e(TAG, "Cannot load Standard Project!", innerProjectException);
+						StorageHandler.getInstance().deleteProject(standardProjectName);
+						ProjectManager.getInstance().initializeDefaultProject(context);
+					}
+				} else {
+					ProjectManager.getInstance().initializeDefaultProject(context);
+				}
 			}
 
 		}
