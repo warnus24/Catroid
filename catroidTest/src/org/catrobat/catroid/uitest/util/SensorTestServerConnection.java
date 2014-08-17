@@ -101,6 +101,8 @@ public final class SensorTestServerConnection {
 			command += 2*ndef_msg.length();
 			command += ndef_msg;
 
+			Log.d(TAG, "emulateNfcTag() - command: " + command);
+
 			sendToServer.writeBytes(command);
 			sendToServer.flush();
 			Thread.sleep(NETWORK_DELAY_MS);

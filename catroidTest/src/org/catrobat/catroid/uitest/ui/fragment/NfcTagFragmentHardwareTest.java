@@ -93,7 +93,7 @@ public class NfcTagFragmentHardwareTest extends BaseActivityInstrumentationTestC
 		}
 	}
 
-	public void testNfcUid() {
+	public void testScanTag() {
 		NfcTagAdapter adapter = getNfcTagAdapter();
 		assertNotNull("Could not get Adapter", adapter);
 
