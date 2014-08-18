@@ -611,6 +611,13 @@
     <string name="formula_editor_sensor_y_inclination">inclination_y</string>
     <string name="formula_editor_sensor_loudness">loudness</string>
     <string name="formula_editor_sensor_drone_battery_status">drone_battery_status</string>
+    <string name="formula_editor_sensor_drone_emergency_state">drone_emergency_state</string>
+    <string name="formula_editor_sensor_drone_flying">drone_flying</string>
+    <string name="formula_editor_sensor_drone_initialized">drone_initialized</string>
+    <string name="formula_editor_sensor_drone_usb_active">drone_usb_active</string>
+    <string name="formula_editor_sensor_drone_usb_remaining_time">drone_usb_remaining_time</string>
+    <string name="formula_editor_sensor_drone_camera_ready">drone_camera_ready</string>
+    <string name="formula_editor_sensor_drone_record_ready">drone_record_ready</string>
     <string name="formula_editor_object_x">position_x</string>
     <string name="formula_editor_object_y">position_y</string>
     <string name="formula_editor_object_ghosteffect">transparency</string>

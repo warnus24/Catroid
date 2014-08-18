@@ -29,8 +29,6 @@ import android.hardware.SensorEventListener;
 import android.util.Log;
 
 import org.catrobat.catroid.drone.DroneInitializer;
-import com.parrot.freeflight.drone.NavData;
-import com.parrot.freeflight.service.DroneControlService;
 
 public final class SensorHandler implements SensorEventListener, SensorCustomEventListener {
 	private static final String TAG = SensorHandler.class.getSimpleName();
@@ -153,7 +151,48 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 				return Double.valueOf(instance.loudness);
 
 			case DRONE_BATTERY_STATUS:
-				return 10.0;
+				return (double)DroneInitializer.droneControlService.getDroneNavData().batteryStatus;
+
+			case DRONE_EMERGENCY_STATE:
+				return (double)DroneInitializer.droneControlService.getDroneNavData().emergencyState;
+
+			case DRONE_FLYING:
+				if(DroneInitializer.droneControlService.getDroneNavData().flying){
+					return 1.0;
+				} else {
+					return 0.0;
+				}
+
+			case DRONE_INITIALIZED:
+				if(DroneInitializer.droneControlService.getDroneNavData().initialized){
+					return 1.0;
+				} else {
+					return 0.0;
+				}
+
+			case DRONE_USB_ACTIVE:
+				if(DroneInitializer.droneControlService.getDroneNavData().usbActive){
+					return 1.0;
+				} else {
+					return 0.0;
+				}
+
+			case DRONE_USB_REMAINING_TIME:
+				return (double)DroneInitializer.droneControlService.getDroneNavData().usbRemainingTime;
+
+			case DRONE_CAMERA_READY:
+				if(DroneInitializer.droneControlService.getDroneNavData().cameraReady){
+					return 1.0;
+				} else {
+					return 0.0;
+				}
+
+			case DRONE_RECORD_READY:
+				if(DroneInitializer.droneControlService.getDroneNavData().recordReady){
+					return 1.0;
+				} else {
+					return 0.0;
+				}
 		}
 		return 0d;
 	}

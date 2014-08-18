@@ -65,7 +65,7 @@ public class DroneInitializer implements DroneReadyReceiverDelegate, DroneConnec
 	public static final String INIT_DRONE_STRING_EXTRA = "STRING_EXTRA_INIT_DRONE";
 	private static final int DRONE_BATTERY_THRESHOLD = 5;
 
-	private DroneControlService droneControlService = null;
+	public static DroneControlService droneControlService = null;
 	private BroadcastReceiver droneReadyReceiver = null;
 	private BroadcastReceiver droneStateReceiver = null;
 	private int droneBatteryCharge = 0;
@@ -182,6 +182,11 @@ public class DroneInitializer implements DroneReadyReceiverDelegate, DroneConnec
 		Log.d("asdf", "Flying = " + Boolean.toString(droneControlService.getDroneNavData().flying));
 		Log.d("asdf", "Recording = " + Boolean.toString(droneControlService.getDroneNavData().recording));
 		Log.d("asdf", "Camera ready = " + Boolean.toString(droneControlService.getDroneNavData().cameraReady));
+		Log.d("asdf", "initialized = " + Boolean.toString(droneControlService.getDroneNavData().initialized));
+		Log.d("asdf", String.format("emergency state = %d", droneControlService.getDroneNavData().emergencyState));
+		Log.d("asdf", "recording ready = " + Boolean.toString(droneControlService.getDroneNavData().recordReady));
+		Log.d("asdf", "Camera ready = " + Boolean.toString(droneControlService.getDroneNavData().usbActive));
+		Log.d("asdf", String.format("usb remaining = %d", droneControlService.getDroneNavData().usbRemainingTime));
 
 		prestageStageActivity.resourceInitialized();
 	}
