@@ -28,6 +28,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
+import org.catrobat.catroid.drone.DroneInitializer;
+import com.parrot.freeflight.drone.NavData;
+import com.parrot.freeflight.service.DroneControlService;
+
 public final class SensorHandler implements SensorEventListener, SensorCustomEventListener {
 	private static final String TAG = SensorHandler.class.getSimpleName();
 	private static SensorHandler instance = null;
@@ -147,6 +151,9 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 
 			case LOUDNESS:
 				return Double.valueOf(instance.loudness);
+
+			case DRONE_BATTERY_STATUS:
+				return 10.0;
 		}
 		return 0d;
 	}
