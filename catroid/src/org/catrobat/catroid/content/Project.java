@@ -53,6 +53,32 @@ public class Project implements Serializable {
 	@XStreamAlias("variables")
 	private UserVariablesContainer userVariables = null;
 
+	public Project(Context context, String name, boolean landscape) {
+		xmlHeader.setProgramName(name);
+		xmlHeader.setDescription("");
+
+		ifLandscapeSwitchWidthAndHeight();
+		if (ScreenValues.SCREEN_HEIGHT == 0 || ScreenValues.SCREEN_WIDTH == 0) {
+			Utils.updateScreenWidthAndHeight(context);
+		}
+
+		xmlHeader.virtualScreenWidth = ScreenValues.SCREEN_WIDTH;
+		xmlHeader.virtualScreenHeight = ScreenValues.SCREEN_HEIGHT;
+		setDeviceData(context);
+
+		MessageContainer.clear();
+
+		userVariables = new UserVariablesContainer();
+
+		if (context == null) {
+			return;
+		}
+
+		Sprite background = new Sprite(context.getString(R.string.background));
+		background.look.setZIndex(0);
+		addSprite(background);
+	}
+
 	public Project(Context context, String name) {
 		xmlHeader.setProgramName(name);
 		xmlHeader.setDescription("");
