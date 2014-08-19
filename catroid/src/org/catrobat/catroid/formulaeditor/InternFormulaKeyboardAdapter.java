@@ -134,6 +134,10 @@ public class InternFormulaKeyboardAdapter {
 				return buildSensor(Sensors.DRONE_CAMERA_READY);
 			case R.string.formula_editor_sensor_drone_record_ready:
 				return buildSensor(Sensors.DRONE_RECORD_READY);
+			case R.string.formula_editor_sensor_drone_recording:
+				return buildSensor(Sensors.DRONE_RECORDING);
+			case R.string.formula_editor_sensor_drone_num_frames:
+				return buildSensor(Sensors.DRONE_NUM_FRAMES);
 
 				//PERIOD
 			case R.id.formula_editor_keyboard_decimal_mark:

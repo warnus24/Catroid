@@ -78,6 +78,15 @@ public class InternToExternGenerator {
 				R.string.formula_editor_sensor_y_inclination);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.LOUDNESS.name(), R.string.formula_editor_sensor_loudness);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.DRONE_BATTERY_STATUS.name(), R.string.formula_editor_sensor_drone_battery_status);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.DRONE_EMERGENCY_STATE.name(), R.string.formula_editor_sensor_drone_emergency_state);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.DRONE_FLYING.name(), R.string.formula_editor_sensor_drone_flying);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.DRONE_INITIALIZED.name(), R.string.formula_editor_sensor_drone_initialized);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.DRONE_USB_ACTIVE.name(), R.string.formula_editor_sensor_drone_usb_active);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.DRONE_USB_REMAINING_TIME.name(), R.string.formula_editor_sensor_drone_usb_remaining_time);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.DRONE_CAMERA_READY.name(), R.string.formula_editor_sensor_drone_camera_ready);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.DRONE_RECORD_READY.name(), R.string.formula_editor_sensor_drone_record_ready);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.DRONE_RECORDING.name(), R.string.formula_editor_sensor_drone_recording);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.DRONE_NUM_FRAMES.name(), R.string.formula_editor_sensor_drone_num_frames);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.OBJECT_X.name(), R.string.formula_editor_object_x);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.OBJECT_Y.name(), R.string.formula_editor_object_y);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.OBJECT_GHOSTEFFECT.name(),

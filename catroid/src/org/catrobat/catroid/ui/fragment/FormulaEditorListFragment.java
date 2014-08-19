@@ -83,7 +83,7 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness, R.string.formula_editor_sensor_drone_battery_status,
 			R.string.formula_editor_sensor_drone_emergency_state, R.string.formula_editor_sensor_drone_flying, R.string.formula_editor_sensor_drone_initialized,
 			R.string.formula_editor_sensor_drone_usb_active, R.string.formula_editor_sensor_drone_usb_remaining_time, R.string.formula_editor_sensor_drone_camera_ready,
-			R.string.formula_editor_sensor_drone_record_ready};
+			R.string.formula_editor_sensor_drone_record_ready , R.string.formula_editor_sensor_drone_recording, R.string.formula_editor_sensor_drone_num_frames};
 
 
 	private String tag;

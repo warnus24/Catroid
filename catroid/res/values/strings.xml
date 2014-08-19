@@ -618,6 +618,8 @@
     <string name="formula_editor_sensor_drone_usb_remaining_time">drone_usb_remaining_time</string>
     <string name="formula_editor_sensor_drone_camera_ready">drone_camera_ready</string>
     <string name="formula_editor_sensor_drone_record_ready">drone_record_ready</string>
+    <string name="formula_editor_sensor_drone_recording">drone_recording</string>
+    <string name="formula_editor_sensor_drone_num_frames">drone_num_frames</string>
     <string name="formula_editor_object_x">position_x</string>
     <string name="formula_editor_object_y">position_y</string>
     <string name="formula_editor_object_ghosteffect">transparency</string>

@@ -156,42 +156,52 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 			case DRONE_EMERGENCY_STATE:
 				return (double)DroneInitializer.droneControlService.getDroneNavData().emergencyState;
 
+			case DRONE_USB_REMAINING_TIME:
+				return (double)DroneInitializer.droneControlService.getDroneNavData().usbRemainingTime;
+
+			case DRONE_NUM_FRAMES:
+				return (double)DroneInitializer.droneControlService.getDroneNavData().numFrames;
+
+			case DRONE_RECORDING:
+				if(DroneInitializer.droneControlService.getDroneNavData().recording){
+					return 1d;
+				} else {
+					return 0d;
+				}
+
 			case DRONE_FLYING:
 				if(DroneInitializer.droneControlService.getDroneNavData().flying){
-					return 1.0;
+					return 1d;
 				} else {
-					return 0.0;
+					return 0d;
 				}
 
 			case DRONE_INITIALIZED:
 				if(DroneInitializer.droneControlService.getDroneNavData().initialized){
-					return 1.0;
+					return 1d;
 				} else {
-					return 0.0;
+					return 0d;
 				}
 
 			case DRONE_USB_ACTIVE:
 				if(DroneInitializer.droneControlService.getDroneNavData().usbActive){
-					return 1.0;
+					return 1d;
 				} else {
-					return 0.0;
+					return 0d;
 				}
-
-			case DRONE_USB_REMAINING_TIME:
-				return (double)DroneInitializer.droneControlService.getDroneNavData().usbRemainingTime;
 
 			case DRONE_CAMERA_READY:
 				if(DroneInitializer.droneControlService.getDroneNavData().cameraReady){
-					return 1.0;
+					return 1d;
 				} else {
-					return 0.0;
+					return 0d;
 				}
 
 			case DRONE_RECORD_READY:
 				if(DroneInitializer.droneControlService.getDroneNavData().recordReady){
-					return 1.0;
+					return 1d;
 				} else {
-					return 0.0;
+					return 0d;
 				}
 		}
 		return 0d;

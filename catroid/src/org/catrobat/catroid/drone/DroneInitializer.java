@@ -188,6 +188,9 @@ public class DroneInitializer implements DroneReadyReceiverDelegate, DroneConnec
 		Log.d("asdf", "Camera ready = " + Boolean.toString(droneControlService.getDroneNavData().usbActive));
 		Log.d("asdf", String.format("usb remaining = %d", droneControlService.getDroneNavData().usbRemainingTime));
 
+		Log.d("asdf", "recording = " + Boolean.toString(droneControlService.getDroneNavData().recording));
+		Log.d("asdf", String.format("num frames = %d", droneControlService.getDroneNavData().numFrames));
+
 		prestageStageActivity.resourceInitialized();
 	}
 
