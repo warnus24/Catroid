@@ -19,6 +19,7 @@ android {
     defaultConfig {
         buildConfigField "String", "START_PROJECT", "\"WHACK A MOLE\""
     }
+
     productFlavors {
         catroid {
             applicationId 'org.catrobat.catroid'
