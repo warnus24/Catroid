@@ -373,6 +373,7 @@ public class SpritesListFragment extends SherlockListFragment implements OnSprit
 		projectManager.setCurrentSprite(copiedSprite);
 
 		getActivity().sendBroadcast(new Intent(ScriptActivity.ACTION_SPRITES_LIST_CHANGED));
+		getActivity().invalidateOptionsMenu();
 
 		Toast.makeText(
 				getActivity(),
@@ -452,6 +453,7 @@ public class SpritesListFragment extends SherlockListFragment implements OnSprit
 			deleteSprite();
 			numDeleted++;
 		}
+		getActivity().supportInvalidateOptionsMenu();
 	}
 
 	private void clearCheckedSpritesAndEnableButtons() {
@@ -517,6 +519,7 @@ public class SpritesListFragment extends SherlockListFragment implements OnSprit
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(ScriptActivity.ACTION_SPRITES_LIST_CHANGED)) {
 				spriteAdapter.notifyDataSetChanged();
+				getActivity().supportInvalidateOptionsMenu();
 				final ListView listView = getListView();
 				listView.post(new Runnable() {
 					@Override
@@ -646,6 +649,10 @@ public class SpritesListFragment extends SherlockListFragment implements OnSprit
 		}
 	};
 
+	public boolean containsMoreSpriteThanBackground() {
+		return (spriteAdapter.getCount() > 1);
+	}
+
 	private void initListeners() {
 		spriteList = (ArrayList<Sprite>) ProjectManager.getInstance().getCurrentProject().getSpriteList();
 		spriteAdapter = new SpriteAdapter(getActivity(), R.layout.activity_project_spritelist_item,
@@ -672,6 +679,7 @@ public class SpritesListFragment extends SherlockListFragment implements OnSprit
 	public void onLoadProjectSuccess(boolean startProjectActivity) {
 		initListeners();
 		spriteAdapter.notifyDataSetChanged();
+		getActivity().supportInvalidateOptionsMenu();
 		isLoading = false;
 		this.getSherlockActivity().supportInvalidateOptionsMenu();
 		getActivity().findViewById(R.id.progress_circle).setVisibility(View.GONE);

@@ -95,6 +95,13 @@ public class ProjectActivity extends BaseActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (spritesListFragment != null && spritesListFragment.isLoading == false) {
 			getSupportMenuInflater().inflate(R.menu.menu_current_project, menu);
+			boolean visibiliy = false;
+			if (spritesListFragment.containsMoreSpriteThanBackground()) {
+				visibiliy = true;
+			}
+			menu.findItem(R.id.delete).setVisible(visibiliy);
+			menu.findItem(R.id.copy).setVisible(visibiliy);
+			menu.findItem(R.id.rename).setVisible(visibiliy);
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
