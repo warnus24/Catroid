@@ -374,9 +374,9 @@
     <string name="brick_clear_graphic_effect">Clear graphic effects</string>
     <string name="brick_next_look">Next look</string>
     <string name="brick_next_background">Next background</string>
-    <string name="brick_led_on">switch camera LED ON</string>
-    <string name="brick_led_off">switch camera LED OFF</string>
-    <string name="brick_vibration">vibrate for</string>
+    <string name="brick_led_on">Turn flashlight ON</string>
+    <string name="brick_led_off">Turn flashlight OFF</string>
+    <string name="brick_vibration">Vibrate for</string>
     <!--  -->
 
 
@@ -499,6 +499,8 @@
     <string name="error_copy_project">An error occurred while copying the program.</string>
     <string name="error_upload_project_with_default_name">You cannot upload a program with the name \'My first program\'. Please rename the program.</string>
     <string name="error_upload_default_project">You cannot upload this program because it is the same as \'My first program\'. Please modify it, and try again.</string>
+    <string name="error_adding_brick">An error occurred while adding this Brick</string>
+    <string name="error_copying_brick">An error occurred while copying this Brick</string>
     <string name="error_no_drone_connected_title">Cannot find ARDrone</string>
     <string name="error_no_drone_connected">Connect your wifi to the ARDrone and try again.</string>
     <string name="error_drone_low_battery_title">Drone battery low: %d%%</string>
