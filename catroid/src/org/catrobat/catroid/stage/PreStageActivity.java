@@ -71,7 +71,7 @@ public class PreStageActivity extends BaseActivity {
 	public static final int REQUEST_RESOURCES_INIT = 101;
 	public static final int REQUEST_TEXT_TO_SPEECH = 10;
 
-	private int resources = Brick.NO_RESOURCES;
+	private static int resources = Brick.NO_RESOURCES;
 	private int requiredResourceCounter;
 
 	private static LegoNXT legoNXT;
@@ -291,7 +291,7 @@ public class PreStageActivity extends BaseActivity {
 		this.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 	}
 
-	private int getRequiredRessources() {
+	private static int getRequiredRessources() {
 		ArrayList<Sprite> spriteList = (ArrayList<Sprite>) ProjectManager.getInstance().getCurrentProject()
 				.getSpriteList();
 

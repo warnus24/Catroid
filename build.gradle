@@ -266,4 +266,3 @@ def signing_config_file = file(System.getProperty("user.home") + "/.catrobat/cat
 if (signing_config_file.exists()) {
     apply from: signing_config_file.absolutePath
 }
-
