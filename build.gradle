@@ -54,6 +54,7 @@ dependencies {
     compile 'com.android.support:support-v4:19.1.0'
     compile files('libs/gdx.jar')
     compile files('libs/gdx-backend-android.jar')
+    compile files('catroidTest/libs/uiautomator.jar')
     compile 'com.google.guava:guava:17.0'
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
