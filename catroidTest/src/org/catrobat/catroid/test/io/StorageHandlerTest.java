@@ -37,23 +37,32 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.ComeToFrontBrick;
+import org.catrobat.catroid.content.bricks.DroneFlipBrick;
 import org.catrobat.catroid.content.bricks.FormulaBrick;
 import org.catrobat.catroid.content.bricks.HideBrick;
+import org.catrobat.catroid.content.bricks.LedOnBrick;
+import org.catrobat.catroid.content.bricks.LegoNxtPlayToneBrick;
 import org.catrobat.catroid.content.bricks.PlaceAtBrick;
 import org.catrobat.catroid.content.bricks.SetSizeToBrick;
 import org.catrobat.catroid.content.bricks.ShowBrick;
+import org.catrobat.catroid.content.bricks.SpeakBrick;
+import org.catrobat.catroid.content.bricks.VibrationBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.test.utils.TestUtils;
 import org.catrobat.catroid.utils.UtilFile;
-
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static org.catrobat.catroid.common.Constants.BUFFER_8K;
 import static org.catrobat.catroid.common.Constants.PROJECTCODE_NAME;
 import static org.catrobat.catroid.common.Constants.PROJECTCODE_NAME_TMP;
+import static org.catrobat.catroid.common.Constants.PROJECTPERMISSIONS_NAME;
+import static org.catrobat.catroid.common.Constants.PROJECTPERMISSIONS_NAME_TMP;
 import static org.catrobat.catroid.utils.Utils.buildProjectPath;
 
 public class StorageHandlerTest extends AndroidTestCase {
@@ -272,6 +281,62 @@ public class StorageHandlerTest extends AndroidTestCase {
 		storageHandler.saveProject(project);
 
 		assertFalse("Sanity Check Failed. tmp file was not discarded.", tmpCodeFile.exists());
+	}
+
+	public void testPermissionFileWritten() throws IOException {
+
+		String possibleContent = "NO_RESOURCES " +
+				"TEXT_TO_SPEECH " +
+				"BLUETOOTH_LEGO_NXT " +
+				"ARDRONE_SUPPORT " +
+				"CAMERA_LED VIBRATOR";
+
+		final Project project = new Project(getContext(), projectName);
+		Sprite firstSprite = new Sprite("first");
+		Sprite secondSprite = new Sprite("second");
+
+		Script testScript = new StartScript();
+		Script otherScript = new StartScript();
+		LedOnBrick ledOnBrick = new LedOnBrick();
+		SpeakBrick speakBrick = new SpeakBrick();
+		DroneFlipBrick droneFlipBrick = new DroneFlipBrick();
+		VibrationBrick vibrationBrick = new VibrationBrick(2);
+		LegoNxtPlayToneBrick legoNxtPlayToneBrick = new LegoNxtPlayToneBrick();
+
+
+		testScript.addBrick(ledOnBrick);
+		testScript.addBrick(speakBrick);
+		testScript.addBrick(droneFlipBrick);
+		otherScript.addBrick(vibrationBrick);
+		otherScript.addBrick(legoNxtPlayToneBrick);
+
+		firstSprite.addScript(testScript);
+		secondSprite.addScript(otherScript);
+
+		project.addSprite(firstSprite);
+		project.addSprite(secondSprite);
+
+		File tmpPermissionFile = new File(buildProjectPath(project.getName()), PROJECTPERMISSIONS_NAME_TMP);
+		File currentPermissionFile = new File(buildProjectPath(project.getName()), PROJECTPERMISSIONS_NAME);
+		assertFalse(tmpPermissionFile.getName() + " exists!", tmpPermissionFile.exists());
+		assertFalse(currentPermissionFile.getName() + " exists!", currentPermissionFile.exists());
+
+		storageHandler.saveProject(project);
+
+		assertTrue(currentPermissionFile.getName() + " was not created!", currentPermissionFile.exists());
+		assertTrue(PROJECTPERMISSIONS_NAME + " is empty!", currentPermissionFile.length() > 0);
+
+		String content = "";
+		String line = "";
+		BufferedReader reader = new BufferedReader(new FileReader(currentPermissionFile), BUFFER_8K);
+		reader.read();
+		while ((line = reader.readLine()) != null) {
+			content += line + "\n";
+			Log.e("TEST", line);
+			assertTrue("Resource not in possible permissions range!", possibleContent.contains(line));
+		}
+
+		assertNotNull("empty file!", content);
 	}
 
 	// TODO: add XML header validation based on xsd
