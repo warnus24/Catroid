@@ -89,6 +89,24 @@ public class NewProjectDialogTest extends BaseActivityInstrumentationTestCase<Ma
 		assertEquals("New Project is not testingproject!", UiTestUtils.PROJECTNAME1, ProjectManager.getInstance().getCurrentProject().getName());
 	}
 
+	public void testLandscapeCheckbox() {
+		String buttonOkText = solo.getString(R.string.ok);
+		boolean emptyProject = true;
+		boolean landscapeProject = true;
+		solo.clickOnButton(solo.getString(R.string.main_menu_new));
+		assertTrue("dialog not loaded in 5 seconds",
+				solo.waitForText(solo.getString(R.string.new_project_dialog_title), 0, 5000));
+		EditText newProject = (EditText) solo.getView(R.id.project_name_edittext);
+		assertFalse("Landscape checkbox found, although empty was not ticked", solo.searchText("Landscape screen orientation",true));
+		solo.clickOnCheckBox(0);
+		assertTrue("Landscape Checkbox not found", solo.searchText("Landscape screen orientation",true));
+		solo.clickOnCheckBox(1);
+		solo.enterText(0, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
+		solo.clickOnButton(buttonOkText);
+		solo.waitForActivity(ProjectActivity.class.getSimpleName());
+		assertEquals("New Project was not initialized as landscape", landscapeProject, ProjectManager.getInstance().getCurrentProject().getLandscape());
+	}
+
 	public void testNewProjectJustSpecialChars() {
 		String buttonOkText = solo.getString(R.string.ok);
 		solo.clickOnButton(solo.getString(R.string.main_menu_new));

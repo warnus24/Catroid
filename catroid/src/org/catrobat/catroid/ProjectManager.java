@@ -231,6 +231,20 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		currentScript = null;
 	}
 
+	public void initializeNewProject(String projectName, Context context, boolean empty)
+			throws IllegalArgumentException, IOException {
+		fileChecksumContainer = new FileChecksumContainer();
+
+		if (empty) {
+			project = StandardProjectHandler.createAndSaveEmptyProject(projectName, context, false);
+		} else {
+			project = StandardProjectHandler.createAndSaveStandardProject(projectName, context);
+		}
+
+		currentSprite = null;
+		currentScript = null;
+	}
+
 	public Project getCurrentProject() {
 		return project;
 	}

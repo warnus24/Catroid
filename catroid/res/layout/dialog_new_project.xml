@@ -75,7 +75,8 @@
                 android:layout_gravity="bottom"
                 android:checked="false"
                 android:text="@string/new_project_landscape"
-                android:textColor="@color/spritelist_details_text_color" />
+                android:textColor="@color/spritelist_details_text_color"
+                android:visibility="gone"/>
         </LinearLayout>
     </RelativeLayout>
 

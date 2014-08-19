@@ -53,11 +53,19 @@ public class Project implements Serializable {
 	@XStreamAlias("variables")
 	private UserVariablesContainer userVariables = null;
 
+	private boolean is_landscape = false;
+
 	public Project(Context context, String name, boolean landscape) {
 		xmlHeader.setProgramName(name);
 		xmlHeader.setDescription("");
 
-		ifLandscapeSwitchWidthAndHeight();
+		is_landscape = landscape;
+
+		if (!is_landscape) {
+			ifLandscapeSwitchWidthAndHeight();
+		} else {
+			ifPortraitSwitchWidthAndHeight();
+		}
 		if (ScreenValues.SCREEN_HEIGHT == 0 || ScreenValues.SCREEN_WIDTH == 0) {
 			Utils.updateScreenWidthAndHeight(context);
 		}
@@ -110,7 +118,14 @@ public class Project implements Serializable {
 			ScreenValues.SCREEN_HEIGHT = ScreenValues.SCREEN_WIDTH;
 			ScreenValues.SCREEN_WIDTH = tmp;
 		}
+	}
 
+	private void ifPortraitSwitchWidthAndHeight() {
+		if (ScreenValues.SCREEN_WIDTH < ScreenValues.SCREEN_HEIGHT) {
+			int tmp = ScreenValues.SCREEN_HEIGHT;
+			ScreenValues.SCREEN_HEIGHT = ScreenValues.SCREEN_WIDTH;
+			ScreenValues.SCREEN_WIDTH = tmp;
+		}
 	}
 
 	public synchronized void addSprite(Sprite sprite) {
@@ -161,6 +176,8 @@ public class Project implements Serializable {
 	public XmlHeader getXmlHeader() {
 		return this.xmlHeader;
 	}
+
+	public boolean getLandscape() { return is_landscape; }
 
 	// this method should be removed by the nex refactoring
 	// (used only in tests)

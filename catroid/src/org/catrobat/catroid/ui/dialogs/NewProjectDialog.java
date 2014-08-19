@@ -100,6 +100,8 @@ public class NewProjectDialog extends DialogFragment {
 						Context.INPUT_METHOD_SERVICE);
 				inputManager.showSoftInput(newProjectEditText, InputMethodManager.SHOW_IMPLICIT);
 
+
+
 				((AlertDialog) newProjectDialog).getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
 				newProjectEditText.addTextChangedListener(new TextWatcher() {
 
@@ -137,6 +139,16 @@ public class NewProjectDialog extends DialogFragment {
 
 		emptyProjectCheckBox = (CheckBox) dialogView.findViewById(R.id.project_empty_checkbox);
 		emptyProjectCheckBox.setChecked(shouldBeEmpty);
+
+		emptyProjectCheckBox.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+				if (emptyProjectCheckBox.isChecked()) {
+					landscapeProjectCheckBox.setChecked(sharedPreferences.getBoolean(SHARED_PREFERENCES_LANDSCAPE_PROJECT, false));
+					landscapeProjectCheckBox.setVisibility(View.VISIBLE);
+				}
+			}
+		});
 
 		boolean shouldBeLandscape = sharedPreferences.getBoolean(SHARED_PREFERENCES_LANDSCAPE_PROJECT, false);
 
