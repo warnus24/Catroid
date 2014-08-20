@@ -141,11 +141,6 @@ public class SetBounceBrick extends FormulaBrick implements OnClickListener {
 		return view;
 	}
 
-	/*@Override
-	public Brick clone() {
-		return new SetBounceBrick(getSprite(), bounceFactor.clone());
-	}*/
-
 	@Override
 	public void onClick(final View view) {
 		if (checkbox.getVisibility() == View.VISIBLE) {

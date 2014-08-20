@@ -430,7 +430,7 @@ public final class UiTestUtils {
 				"Text not updated within FormulaEditor",
 				newValue,
 				Double.parseDouble(((EditText) solo.getView(R.id.formula_editor_edit_field)).getText().toString()
-						.replace(',', '.')));
+						.replace(',', '.').replace(" ", "")));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 		solo.sleep(200);
@@ -1925,7 +1925,8 @@ public final class UiTestUtils {
 	}
 
 	public static void waitForText(Solo solo, String text) {
-		assertEquals("Text not found!", true, solo.waitForText(text, 0, 3000));
+		assertEquals("Text not found!", true, solo.waitForText(text, 0, 2000));
+
 	}
 
 	public static void switchToFragmentInScriptActivity(Solo solo, int fragmentIndex) {

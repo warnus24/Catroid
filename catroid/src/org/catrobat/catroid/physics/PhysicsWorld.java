@@ -137,12 +137,11 @@ public class PhysicsWorld {
 		PhysicsObject physicsObject = getPhysicsObject(sprite);
 		physicsObject.setShape(physicsShapeBuilder.getShape(sprite.look.getLookData(),
 				sprite.look.getSizeInUserInterfaceDimensionUnit() / 100f));
-
 		try {
 			physicsObject.setX(new Formula(-sprite.look.getX()).interpretFloat(sprite));
 			physicsObject.setY(new Formula(sprite.look.getY()).interpretFloat(sprite));
-		}catch(InterpretationException interpretationException){
-
+		} catch (InterpretationException e) {
+			Log.e(TAG, "Interpretation exception captured", e);
 		}
 		physicsObject.setDirection(sprite.look.getDirectionInUserInterfaceDimensionUnit());
 	}

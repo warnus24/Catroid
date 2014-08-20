@@ -24,10 +24,7 @@ package org.catrobat.catroid.test.content.actions;
 
 import android.test.AndroidTestCase;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
-
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.content.bricks.conditional.PointInDirectionBrick.Direction;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.physics.content.ActionFactory;
@@ -35,13 +32,13 @@ import org.catrobat.catroid.physics.content.ActionFactory;
 public class PointInDirectionActionTest extends AndroidTestCase {
 
 	private static final String NOT_NUMERICAL_STRING = "NOT_NUMERICAL_STRING";
-    private Sprite sprite;
+	private Sprite sprite;
 
-    @Override
-    protected void setUp() throws Exception {
-        sprite = new Sprite("testSprite");
-        super.setUp();
-    }
+	@Override
+	protected void setUp() throws Exception {
+		sprite = new Sprite("testSprite");
+		super.setUp();
+	}
 
 	public void testPointRight() {
 		sprite.getActionFactory().createPointInDirectionAction(sprite, new Formula(Direction.RIGHT.getDegrees()))
@@ -69,7 +66,6 @@ public class PointInDirectionActionTest extends AndroidTestCase {
 
 	public void testRotateAndPoint() {
 		Sprite sprite = new Sprite("test");
-		ActionFactory factory = sprite.getActionFactory();
 		sprite.look.setRotation(-42);
 		sprite.getActionFactory().createPointInDirectionAction(sprite, new Formula(Direction.RIGHT.getDegrees()))
 				.act(1.0f);
@@ -77,11 +73,13 @@ public class PointInDirectionActionTest extends AndroidTestCase {
 	}
 
 	public void testBrickWithStringFormula() {
+
 		ActionFactory.pointInDirection(sprite, new Formula(String.valueOf(Direction.RIGHT.getDegrees()))).act(1.0f);
 		assertEquals("Wrong direction", (float) Direction.RIGHT.getDegrees(),
 				sprite.look.getDirectionInUserInterfaceDimensionUnit());
 
 		ActionFactory.pointInDirection(sprite, new Formula(NOT_NUMERICAL_STRING)).act(1.0f);
+
 		assertEquals("Wrong direction", (float) Direction.RIGHT.getDegrees(),
 				sprite.look.getDirectionInUserInterfaceDimensionUnit());
 	}

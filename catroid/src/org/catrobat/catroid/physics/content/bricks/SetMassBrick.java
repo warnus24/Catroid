@@ -33,8 +33,8 @@ import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.FormulaBrick;
@@ -138,11 +138,6 @@ public class SetMassBrick extends FormulaBrick implements OnClickListener {
 		}
 		return view;
 	}
-
-	/*@Override
-	public Brick clone() {
-		return new SetMassBrick(getSprite(), mass.clone());
-	}*/
 
 	@Override
 	public void onClick(final View view) {

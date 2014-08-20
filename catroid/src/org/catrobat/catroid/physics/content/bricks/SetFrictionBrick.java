@@ -33,8 +33,8 @@ import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.FormulaBrick;
@@ -145,12 +145,6 @@ public class SetFrictionBrick extends FormulaBrick implements OnClickListener {
 		textXPosition.setText(String.valueOf(BrickField.PHYSICS_FRICTION));
 		return prototypeView;
 	}
-
-	/*@Override
-	public Brick clone() {
-		return new SetFrictionBrick(getSprite(), friction.clone().interpretFloat(sprite));
-	}*/
-
 
 	@Override
 	public void onClick(final View view) {

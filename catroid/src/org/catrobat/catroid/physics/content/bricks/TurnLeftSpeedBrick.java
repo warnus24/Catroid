@@ -33,8 +33,8 @@ import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.FormulaBrick;
@@ -140,11 +140,6 @@ public class TurnLeftSpeedBrick extends FormulaBrick implements OnClickListener 
 
 		return view;
 	}
-
-	/*@Override
-	public Brick clone() {
-		return new TurnLeftSpeedBrick(sprite, degreesPerSecond.clone());
-	}*/
 
 	@Override
 	public void onClick(final View view) {
