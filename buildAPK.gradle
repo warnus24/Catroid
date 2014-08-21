@@ -84,6 +84,46 @@ def copyAndRename() {
     }
 }
 
+def messUpIntentFilters() {
+    def manifestFile = new File("catroid/AndroidManifest.xml");
+    def manifestText = manifestFile.text
+
+    String regex = "<intent-filter>\\n.+?<action android:name=\"android.intent.action.(VIEW|GET_CONTENT)(.|\\n)+?</intent-filter>"
+    String noIntentManifest = manifestText.replaceAll(regex, "")
+    manifestFile.write(noIntentManifest)
+}
+
+def unzipProject(File tmp) {
+    ArchiverFactory.createArchiver(ZIP).extract(tmp, new File("catroid/assets/standalone/"))
+}
+
+def managePermissions(String manifestText) {
+    def permissionsFile = new File('catroid/assets/standalone/permissions.txt')
+    if(!permissionsFile.exists()) {
+        return
+    }
+    def permissionsText = permissionsFile.text
+
+    if(!permissionsText.contains("TEXT_TO_SPEECH")){
+        manifestText = manifestText.replaceAll("<uses-.+?record.+?/>\\n", "")
+    }
+    if(!permissionsText.contains("BLUETOOTH_LEGO_NXT")){
+        manifestText = manifestText.replaceAll("<uses-.+bluetooth.+?/>\\n", "")
+    }
+    if(!permissionsText.contains("ARDRONE_SUPPORT")){
+        manifestText = manifestText.replaceAll("<uses-.+?wifi.+?/>\\n", "")
+    }
+    if(!permissionsText.contains("CAMERA_LED")){
+        manifestText = manifestText.replaceAll("<uses-.+camera.+?/>\\n", "")
+    }
+    if(!permissionsText.contains("VIBRATOR")){
+        manifestText = manifestText.replaceAll("<uses-.+vibrate.+?/>\\n", "")
+    }
+
+    manifestFile.write(manifestText)
+
+}
+
 task buildStandalone(dependsOn: ':downloadProject') << {
     def manifestFile = new File("catroid/AndroidManifest.xml");
     def manifest = manifestFile.text;
@@ -91,6 +131,7 @@ task buildStandalone(dependsOn: ':downloadProject') << {
     manifest = manifest.replaceAll("@drawable/ic_launcher", "@drawable/icon");
     //TODO solve this via flavor specific res folder
     manifestFile.write(manifest)
+    managePermissions(manifest)
     renameZipFile()
     copyAndRename()
 }
@@ -110,22 +151,9 @@ task downloadProject() << {
     unzipProject(temp)
 }
 
-def unzipProject(File tmp) {
-    ArchiverFactory.createArchiver(ZIP).extract(tmp, new File("catroid/assets/standalone/"))
-}
-
 task assembleDebugTest(dependsOn: ':assembleCatroidDebugTest') << {}
 task commandlineAdbInstallDebug(dependsOn: ':commandlineAdbInstallCatroidDebug') << {}
 task commandlineAdbInstallDebugTest(dependsOn: 'commandlineAdbInstallCatroidDebugTest') << {}
-
-def messUpIntentFilters() {
-    def manifestFile = new File("catroid/AndroidManifest.xml");
-    def manifestText = manifestFile.text
-    println manifestText
-    String regex = "<intent-filter>\\n.+?<action android:name=\"android.intent.action.(VIEW|GET_CONTENT)(.|\\n)+?</intent-filter>"
-    String noIntentManifest = manifestText.replaceAll(regex, "")
-    manifestFile.write(noIntentManifest)
-}
 
 task testremoveIntentFilters() << {
     messUpIntentFilters()
