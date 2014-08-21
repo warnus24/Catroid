@@ -22,13 +22,8 @@
  */
 package org.catrobat.catroid.stage;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -39,12 +34,11 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.io.StageAudioFocus;
-import org.catrobat.catroid.ui.StandaloneWebViewActivity;
+import org.catrobat.catroid.ui.MarketingActivity;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.VibratorUtil;
@@ -92,7 +86,7 @@ public class StageActivity extends AndroidApplication {
 	@Override
 	public void onBackPressed() {
 		if (BuildConfig.FEATURE_APK_GENERATOR_ENABLED) {
-			Intent marketingIntent = new Intent(StageActivity.this, StandaloneWebViewActivity.class);
+			Intent marketingIntent = new Intent(StageActivity.this, MarketingActivity.class);
 			startActivity(marketingIntent);
 			stageDialog.onBackPressed();
 		} else {
