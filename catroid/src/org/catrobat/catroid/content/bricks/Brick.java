@@ -48,7 +48,7 @@ public interface Brick extends Serializable, Cloneable {
 		DRONE_TIME_TO_FLY_IN_SECONDS, DRONE_POWER_IN_PERCENT
 	}
 
-	//use bitwise | for using multiple ressources in a brick
+	//use bitwise | for using multiple resources in a brick
 	int NO_RESOURCES = 0x0;
 	//	public static final int SOUND_MANAGER = 0x1;
 	int TEXT_TO_SPEECH = 0x2;
