@@ -35,7 +35,7 @@
         android:gravity="center_vertical"
         android:visibility="gone" />
 
-    <main.java.org.catrobat.catroid.ui.BrickLayout
+    <org.catrobat.catroid.ui.BrickLayout
         android:id="@+id/brick_go_back_layout"
         style="@style/BrickContainer.Motion.Small"
         android:layout_width="match_parent"
@@ -66,6 +66,6 @@
             android:id="@+id/brick_go_back_layers_text_view"
             style="@style/BrickText.SingleLine" >
         </TextView>
-    </main.java.org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout >
 
 </LinearLayout>

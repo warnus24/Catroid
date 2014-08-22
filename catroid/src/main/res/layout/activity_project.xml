@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_bar"
-        class="main.java.org.catrobat.catroid.ui.fragment.SpritesListFragment"
+        class="org.catrobat.catroid.ui.fragment.SpritesListFragment"
         tools:layout="@layout/fragment_sprites_list" />
 
 </RelativeLayout>

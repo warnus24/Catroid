@@ -35,7 +35,7 @@
         android:gravity="center_vertical"
         android:visibility="gone" />
 
-    <main.java.org.catrobat.catroid.ui.BrickLayout
+    <org.catrobat.catroid.ui.BrickLayout
         android:id="@+id/brick_note_layout"
         style="@style/BrickContainer.Control.Medium"
         android:layout_width="match_parent"
@@ -68,6 +68,6 @@
             android:maxLines="3"
             android:minLines="1"
             android:singleLine="false" />
-    </main.java.org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout >
 
 </LinearLayout>

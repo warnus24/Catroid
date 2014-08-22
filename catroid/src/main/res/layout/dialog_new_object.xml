@@ -93,7 +93,7 @@
                 android:maxHeight="200dp"
                 android:maxWidth="200dp" />
 
-            <main.java.org.catrobat.catroid.ui.CapitalizedTextView
+            <org.catrobat.catroid.ui.CapitalizedTextView
                 android:id="@+id/dialog_new_object_name_text_view"
                 style="@style/DefaultDialog.TextView"
                 android:text="@string/dialog_new_object_name" />

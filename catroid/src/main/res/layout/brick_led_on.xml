@@ -36,7 +36,7 @@
         android:gravity="center_vertical"
         android:visibility="gone" />
 
-    <main.java.org.catrobat.catroid.ui.BrickLayout
+    <org.catrobat.catroid.ui.BrickLayout
         android:id="@+id/brick_led_on_layout"
         style="@style/BrickContainer.Look.Small"
         android:layout_width="match_parent"
@@ -51,6 +51,6 @@
             android:text="@string/brick_led_on" >
         </TextView>
 
-    </main.java.org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout >
 
 </LinearLayout>

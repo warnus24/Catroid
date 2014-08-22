@@ -37,7 +37,7 @@
         android:visibility="gone" >
     </CheckBox>
 
-    <main.java.org.catrobat.catroid.ui.BrickLayout
+    <org.catrobat.catroid.ui.BrickLayout
         android:id="@+id/brick_change_x_layout"
         style="@style/BrickContainer.Motion.Small"
         android:layout_width="match_parent"
@@ -63,6 +63,6 @@
             app:layout_inputType="number"
             app:layout_textField="true" >
         </TextView>
-    </main.java.org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout >
 
 </LinearLayout>

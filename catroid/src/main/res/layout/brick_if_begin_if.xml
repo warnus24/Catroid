@@ -36,7 +36,7 @@
         android:gravity="center_vertical"
         android:visibility="gone" />
 
-    <main.java.org.catrobat.catroid.ui.BrickLayout
+    <org.catrobat.catroid.ui.BrickLayout
         android:id="@+id/brick_if_begin_layout"
         style="@style/BrickContainer.Control.Small"
         android:layout_width="match_parent"
@@ -67,6 +67,6 @@
             android:paddingLeft="5dip"
             android:text="@string/brick_if_begin_second_part" >
         </TextView>
-    </main.java.org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout >
 
 </LinearLayout>

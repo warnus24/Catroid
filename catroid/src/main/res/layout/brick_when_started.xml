@@ -36,7 +36,7 @@
         android:gravity="center_vertical"
         android:visibility="gone" />
 
-    <main.java.org.catrobat.catroid.ui.BrickLayout
+    <org.catrobat.catroid.ui.BrickLayout
         android:id="@+id/brick_when_started_layout"
         style="@style/BrickContainer.Script.Small"
         android:layout_width="match_parent"
@@ -48,6 +48,6 @@
             style="@style/BrickText.SingleLine"
             android:text="@string/brick_when_started" >
         </TextView>
-    </main.java.org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout >
 
 </LinearLayout>

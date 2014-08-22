@@ -35,7 +35,7 @@
         android:gravity="center_vertical"
         android:visibility="gone" />
 
-    <main.java.org.catrobat.catroid.ui.BrickLayout
+    <org.catrobat.catroid.ui.BrickLayout
         android:id="@+id/brick_if_end_if_layout"
         style="@style/BrickContainer.Control.Small"
         android:layout_width="match_parent"
@@ -48,6 +48,6 @@
             android:id="@+id/brick_if_end_if_label"
             style="@style/BrickText"
             android:text="@string/brick_if_end" />
-    </main.java.org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout >
 
 </LinearLayout>

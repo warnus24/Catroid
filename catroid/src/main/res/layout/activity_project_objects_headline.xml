@@ -25,7 +25,7 @@
     android:id="@+id/spritelist_objects_headline"
     style="@style/headlineLinearLayout" >
 
-    <main.java.org.catrobat.catroid.ui.CapitalizedTextView
+    <org.catrobat.catroid.ui.CapitalizedTextView
         style="@style/headlineTextViewObjects"
         android:text="@string/sprites" />
 

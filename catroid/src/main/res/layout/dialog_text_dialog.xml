@@ -25,7 +25,7 @@
     style="@style/DefaultDialog"
     android:orientation="vertical" >
 
-    <main.java.org.catrobat.catroid.ui.CapitalizedTextView
+    <org.catrobat.catroid.ui.CapitalizedTextView
         android:id="@+id/dialog_text_text_view"
         style="@style/DefaultDialog.TextView"
         android:text="" />

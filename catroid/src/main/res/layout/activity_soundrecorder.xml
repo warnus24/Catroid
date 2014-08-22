@@ -47,7 +47,7 @@
         android:layout_marginBottom="35dp"
         android:background="@color/button_background_top_border_color" />
 
-    <main.java.org.catrobat.catroid.soundrecorder.RecordButton
+    <org.catrobat.catroid.soundrecorder.RecordButton
         android:id="@id/soundrecorder_record_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

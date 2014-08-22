@@ -13,8 +13,8 @@ apply plugin: 'checkstyle'
 apply plugin: 'pmd'
 apply from: '../gradle/adb_tasks.gradle'
 
-check.dependsOn 'checkstyle'
-check.dependsOn 'pmd'
+check.dependsOn {tasks.find {'checkstyle'}}
+check.dependsOn {tasks.find {'pmd'}}
 
 ext {
     projectVersion = "0.9"
@@ -39,8 +39,8 @@ dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.google.guava:guava:17.0'
-    compile fileTree(include: '*.jar', dir: 'catroid/libs')
-    compile fileTree(include: '*.jar', dir: 'catroid/libs-natives')
+    compile fileTree(include: '*.jar', dir: 'libs')
+    compile fileTree(include: '*.jar', dir: 'libs-natives')
 //    androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
     pmd 'net.sourceforge.pmd:pmd:5.1.1'
 }
@@ -78,6 +78,7 @@ android {
         ignore 'ContentDescription', 'InvalidPackage', 'ValidFragment', 'GradleDependency',
                 'ClickableViewAccessibility', 'UnusedAttribute', 'CommitPrefEdits', 'OldTargetApi'
 
+        abortOnError false
         textReport true
         xmlReport true
         htmlReport false

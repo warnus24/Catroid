@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <main.java.org.catrobat.catroid.ui.CapitalizedTextView
+            <org.catrobat.catroid.ui.CapitalizedTextView
                 style="@style/DefaultDialog.TextView"
                 android:layout_width="wrap_content"
                 android:layout_marginRight="0dp"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <main.java.org.catrobat.catroid.ui.CapitalizedTextView
+            <org.catrobat.catroid.ui.CapitalizedTextView
                 android:id="@+id/tv_title"
                 style="@style/DefaultDialog.TextView"
                 android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
             android:maxLines="1"
             android:selectAllOnFocus="true" />
 
-        <main.java.org.catrobat.catroid.ui.CapitalizedTextView
+        <org.catrobat.catroid.ui.CapitalizedTextView
             android:id="@+id/tv_description"
             style="@style/DefaultDialog.TextView"
             android:text="@string/upload_description" />

@@ -36,7 +36,7 @@
         android:gravity="center_vertical"
         android:visibility="gone" />
 
-    <main.java.org.catrobat.catroid.ui.BrickLayout
+    <org.catrobat.catroid.ui.BrickLayout
         android:id="@+id/brick_broadcast_layout"
         style="@style/BrickContainer.Control.Medium"
         android:layout_width="match_parent"
@@ -56,6 +56,6 @@
             android:layout_height="wrap_content"
             android:clickable="false"
             android:focusable="false" />
-    </main.java.org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout >
 
 </LinearLayout>

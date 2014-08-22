@@ -39,7 +39,7 @@
         android:layout_below="@id/formula_editor_brick_space"
         android:background="@color/white" >
 
-        <main.java.org.catrobat.catroid.formulaeditor.FormulaEditorEditText
+        <org.catrobat.catroid.formulaeditor.FormulaEditorEditText
             android:id="@+id/formula_editor_edit_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
