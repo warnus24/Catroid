@@ -47,10 +47,12 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BluetoothManager;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
+import org.catrobat.catroid.camera.CameraManager;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.drone.DroneInitializer;
+import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
 import org.catrobat.catroid.ui.BaseActivity;
@@ -68,11 +70,11 @@ import java.util.Locale;
 public class PreStageActivity extends BaseActivity {
 
 	private static final String TAG = PreStageActivity.class.getSimpleName();
+	public static final int REQUEST_NFC_ADAPTER = 10000;
 	private static final int REQUEST_ENABLE_BLUETOOTH = 2000;
 	private static final int REQUEST_CONNECT_DEVICE = 1000;
 	public static final int REQUEST_RESOURCES_INIT = 101;
 	public static final int REQUEST_TEXT_TO_SPEECH = 10;
-    public static final int REQUEST_NFC_ADAPTER = 10000;
 
 	private int resources = Brick.NO_RESOURCES;
 	private int requiredResourceCounter;
@@ -129,30 +131,30 @@ public class PreStageActivity extends BaseActivity {
 			droneInitializer.initialise();
 		}
 
-        if ((requiredResources & Brick.NFC_ADAPTER) > 0) {
-            NfcAdapter adapter = NfcAdapter.getDefaultAdapter(getApplicationContext());
-            if (adapter != null && !adapter.isEnabled())
-            {
-                Toast.makeText(getApplicationContext(), "Please activate NFC and press Back to return to the application!", Toast.LENGTH_LONG).show();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    Intent intent = new Intent(Settings.ACTION_NFC_SETTINGS);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-                    startActivity(intent);
-                }
-            }
-            resourceInitialized();
-        }
+		FaceDetectionHandler.resetFaceDedection();
+		if ((requiredResources & Brick.FACE_DETECTION) > 0) {
+			boolean success = FaceDetectionHandler.startFaceDetection(this);
+			if (success) {
+				resourceInitialized();
+			} else {
+				resourceFailed();
+			}
+		}
 
 		if ((requiredResources & Brick.CAMERA_LED ) > 0) {
-
-			if ( hasFlash() ) {
-				requiredResourceCounter--;
-				LedUtil.activateLedThread();
+			if (!CameraManager.getInstance().isFacingBack()) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage(getString(R.string.led_and_front_camera_warning)).setCancelable(false)
+						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								ledInitialize();
+							}
+						});
+				AlertDialog alert = builder.create();
+				alert.show();
 			} else {
-				Toast.makeText(PreStageActivity.this, R.string.no_flash_led_available, Toast.LENGTH_LONG).show();
-				resourceFailed();
+				ledInitialize();
 			}
 		}
 
@@ -166,6 +168,25 @@ public class PreStageActivity extends BaseActivity {
 				Toast.makeText(PreStageActivity.this, R.string.no_vibrator_available, Toast.LENGTH_LONG).show();
 				resourceFailed();
 			}
+		}
+
+		if ((requiredResources & Brick.NFC_ADAPTER) > 0) {
+			NfcAdapter adapter = NfcAdapter.getDefaultAdapter(getApplicationContext());
+			if (adapter != null && !adapter.isEnabled())
+			{
+				Toast.makeText(PreStageActivity.this, R.string.nfc_not_activated, Toast.LENGTH_LONG).show();
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+					Intent intent = new Intent(Settings.ACTION_NFC_SETTINGS);
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+					startActivity(intent);
+				}
+			} else if(adapter == null) {
+				Toast.makeText(PreStageActivity.this, R.string.no_nfc_available, Toast.LENGTH_LONG).show();
+				// TODO: resourceFailed() & startActivityForResult(), if behaviour needed
+			}
+			resourceInitialized();
 		}
 
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
@@ -188,12 +209,11 @@ public class PreStageActivity extends BaseActivity {
 			return false;
 		}
 
-		Camera camera = LedUtil.getCamera();
+		Camera camera = CameraManager.getInstance().getCamera();
 
 		try {
 			if (camera == null) {
-				LedUtil.openCamera();
-				camera = LedUtil.getCamera();
+				camera = CameraManager.getInstance().getCamera();
 			}
 		} catch (Exception exception) {
 			Log.e(getString(R.string.app_name), "failed to open Camera", exception);
@@ -257,6 +277,9 @@ public class PreStageActivity extends BaseActivity {
 		if (legoNXT != null) {
 			legoNXT.pauseCommunicator();
 		}
+        if (FaceDetectionHandler.isFaceDetectionRunning()) {
+            FaceDetectionHandler.stopFaceDetection();
+        }
 	}
 
 	//all resources that should not have to be reinitialized every stage start
@@ -451,5 +474,15 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 	};
+
+	private void ledInitialize() {
+		if ( hasFlash() ) {
+			resourceInitialized();
+			LedUtil.activateLedThread();
+		} else {
+			Toast.makeText(PreStageActivity.this, R.string.no_flash_led_available, Toast.LENGTH_LONG).show();
+			resourceFailed();
+		}
+	}
 
 }
