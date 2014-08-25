@@ -431,6 +431,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		Project currentProject = projectManagerLWP.getCurrentProject();
 		for (int position : adapter.getCheckedProjects()) {
 			ProjectData tempProjectData = (ProjectData) getListView().getItemAtPosition(position);
+			Log.d("LWP", "Current project: " + currentProject);
 			if (currentProject.getName().equalsIgnoreCase(tempProjectData.projectName)) {
 				currentProgramSelected = true;
 				break;

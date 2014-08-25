@@ -23,13 +23,22 @@
 
 package org.catrobat.catroid.test.livewallpaper;
 
+import android.test.ActivityInstrumentationTestCase2;
+import android.view.KeyEvent;
+
 import com.android.uiautomator.core.UiObject;
 import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
+import com.jayway.android.robotium.solo.Solo;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.StandardProjectHandler;
+import org.catrobat.catroid.content.Project;
+import org.catrobat.catroid.io.StorageHandler;
+import org.catrobat.catroid.livewallpaper.LiveWallpaper;
+import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
@@ -37,26 +46,55 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 /**
  * Created by Christian on 12.08.2014.
  */
-public class LiveWallpaperTest extends BaseActivityInstrumentationTestCase<SelectProgramActivity> {
+public class LiveWallpaperTest extends ActivityInstrumentationTestCase2<SelectProgramActivity> {
 
-	private static int timeout = 2000;
+	private Solo solo;
+	private final static String LWP_TEST_1 = "Test 1";
+
+	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.LWP);
 
 	public LiveWallpaperTest() { super(SelectProgramActivity.class); }
 
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+
+		solo = new Solo(getInstrumentation(), getActivity());
+
+		if(projectManager.getCurrentProject() == null || projectManager.getCurrentProject().getName()!= solo.getString(R.string.default_project_name)){
+			Project defaultProject;
+			try{
+				defaultProject = StandardProjectHandler.createAndSaveStandardProject(getActivity().getApplicationContext());
+			}
+			catch(IllegalArgumentException e){
+				defaultProject = StorageHandler.getInstance().loadProject(solo.getString(R.string.default_project_name));
+			}
+			ProjectManager.getInstance().setProject(defaultProject);
+		}
 	}
 
 	@Override
 	public void tearDown() throws Exception {
+		//solo.clickOnText(solo.getString(R.string.default_project_name));
+		//solo.clickOnButton(solo.getString(R.string.yes));
+
+		solo.clickOnView(solo.getView(R.id.delete));
+		solo.clickOnView(solo.getView(R.id.select_all));
+		UiTestUtils.acceptAndCloseActionMode(solo);
+		solo.clickOnButton(solo.getString(R.string.yes));
 		super.tearDown();
 	}
 
 
 	public void testCreateNewProject() throws Exception {
+		/*
 		solo.clickOnMenuItem(solo.getString(R.string.lwp_new));
-		solo.clickInList(1);
+
+		solo.enterText(solo.getEditText(solo.getString(R.string.new_project_dialog_hint)), LWP_TEST_1);
+		solo.clickOnButton("OK");
+		solo.goBack();
+		solo.clickOnText(LWP_TEST_1);
+*/
 	}
 
 }
