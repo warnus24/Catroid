@@ -55,6 +55,7 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.content.BroadcastHandler;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
@@ -245,11 +246,27 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		Log.d("LWP", "StageListener created!!!!!");
 	}
 
+<<<<<<< HEAD
 	public void menuResume() {
+=======
+	void activityResume() {
+		if (!paused) {
+			FaceDetectionHandler.resumeFaceDetection();
+		}
+
+	}
+
+	void activityPause() {
+		FaceDetectionHandler.pauseFaceDetection();
+	}
+
+	void menuResume() {
+>>>>>>> master
 		if (reloadProject) {
 			return;
 		}
 		paused = false;
+		FaceDetectionHandler.resumeFaceDetection();
 		SoundManager.getInstance().resume();
 		for (Sprite sprite : sprites) {
 			sprite.resume();
@@ -261,6 +278,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			return;
 		}
 		paused = true;
+		FaceDetectionHandler.pauseFaceDetection();
 		SoundManager.getInstance().pause();
 		for (Sprite sprite : sprites) {
 			sprite.pause();
@@ -297,6 +315,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	@Override
 	public void resume() {
 		if (!paused) {
+			FaceDetectionHandler.resumeFaceDetection();
 			SoundManager.getInstance().resume();
 			for (Sprite sprite : sprites) {
 				sprite.resume();
@@ -304,7 +323,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 
 		for (Sprite sprite : sprites) {
-			sprite.look.refreshTextures();
+            sprite.look.refreshTextures();
 		}
 
 	}
@@ -315,6 +334,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			return;
 		}
 		if (!paused) {
+			FaceDetectionHandler.pauseFaceDetection();
 			SoundManager.getInstance().pause();
 			for (Sprite sprite : sprites) {
 				sprite.pause();
