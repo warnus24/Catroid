@@ -258,12 +258,6 @@ public class Sprite implements Serializable, Cloneable {
 		look.addAction(whenParallelAction);
 	}
 
-	public void startScriptBroadcast(Script s, boolean overload) {
-		SequenceAction sequence = ExtendedActions.sequence();
-		s.run(sequence);
-		look.addAction(sequence);
-	}
-
 	public void pause() {
 		for (Script s : scriptList) {
 			s.setPaused(true);

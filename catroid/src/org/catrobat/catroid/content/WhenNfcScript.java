@@ -38,23 +38,23 @@ public class WhenNfcScript extends Script {
     private NfcTagData nfcTag;
 	private boolean matchAll = true;
 
-	public WhenNfcScript(Sprite sprite) {
-		super(sprite);
+	public WhenNfcScript() {
+		super();
         nfcTag = null;
 	}
 
-	public WhenNfcScript(Sprite sprite, NfcTagData nfcTag) {
-		super(sprite);
+	public WhenNfcScript(NfcTagData nfcTag) {
+		super();
 		this.nfcTag = nfcTag;
 	}
 
 	@Override
-	public Script copyScriptForSprite(Sprite copySprite) {
-		WhenNfcScript cloneScript = new WhenNfcScript(copySprite, nfcTag);
+	public Script copyScriptForSprite(Sprite sprite) {
+		WhenNfcScript cloneScript = new WhenNfcScript(nfcTag);
 		ArrayList<Brick> cloneBrickList = cloneScript.getBrickList();
 
 		for (Brick brick : getBrickList()) {
-			Brick copiedBrick = brick.copyBrickForSprite(copySprite, cloneScript);
+			Brick copiedBrick = brick.copyBrickForSprite(sprite);
 			if (copiedBrick instanceof IfLogicEndBrick) {
 				setIfBrickReferences((IfLogicEndBrick) copiedBrick, (IfLogicEndBrick) brick);
 			} else if (copiedBrick instanceof LoopEndBrick) {
@@ -68,7 +68,7 @@ public class WhenNfcScript extends Script {
 	@Override
 	public ScriptBrick getScriptBrick() {
 		if (brick == null) {
-			brick = new WhenNfcBrick(object, this);
+			brick = new WhenNfcBrick(this);
 		}
 		return brick;
 	}

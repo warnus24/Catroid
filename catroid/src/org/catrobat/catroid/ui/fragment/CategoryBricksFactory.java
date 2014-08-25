@@ -144,7 +144,7 @@ public class CategoryBricksFactory {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (sharedPreferences.getBoolean("setting_nfc_bricks", false) && BuildConfig.FEATURE_NFC_ENABLED) {
             //final String tagName = NfcTagContainer.getFirst(context);
-            controlBrickList.add(new WhenNfcBrick(sprite));
+            controlBrickList.add(new WhenNfcBrick());
         }
 
 		return controlBrickList;

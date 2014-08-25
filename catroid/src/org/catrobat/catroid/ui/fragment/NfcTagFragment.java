@@ -629,7 +629,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 			setActionModeActive(true);
 
 			actionModeTitle = getString(R.string.copy);
-			singleItemAppendixDeleteActionMode = getString(R.string.category_nfc);
+			singleItemAppendixDeleteActionMode = getString(R.string.nfctag);
 			multipleItemAppendixDeleteActionMode = getString(R.string.nfctags);
 
 			mode.setTitle(actionModeTitle);
@@ -663,7 +663,7 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 			setActionModeActive(true);
 
 			actionModeTitle = getString(R.string.delete);
-			singleItemAppendixDeleteActionMode = getString(R.string.category_nfc);
+			singleItemAppendixDeleteActionMode = getString(R.string.nfctag);
 			multipleItemAppendixDeleteActionMode = getString(R.string.nfctags);
 
 			mode.setTitle(R.string.delete);
