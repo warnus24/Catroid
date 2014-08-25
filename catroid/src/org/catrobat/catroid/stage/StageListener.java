@@ -246,9 +246,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		Log.d("LWP", "StageListener created!!!!!");
 	}
 
-<<<<<<< HEAD
-	public void menuResume() {
-=======
 	void activityResume() {
 		if (!paused) {
 			FaceDetectionHandler.resumeFaceDetection();
@@ -260,8 +257,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		FaceDetectionHandler.pauseFaceDetection();
 	}
 
-	void menuResume() {
->>>>>>> master
+	public void menuResume() {
 		if (reloadProject) {
 			return;
 		}
