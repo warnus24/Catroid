@@ -28,24 +28,35 @@ import com.android.uiautomator.core.UiObjectNotFoundException;
 import com.android.uiautomator.core.UiSelector;
 import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 
+import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.StandardProjectHandler;
+import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
+import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
+import org.catrobat.catroid.uitest.util.UiTestUtils;
+
 /**
  * Created by Christian on 12.08.2014.
  */
-public class LiveWallpaperTest extends UiAutomatorTestCase {
+public class LiveWallpaperTest extends BaseActivityInstrumentationTestCase<SelectProgramActivity> {
 
 	private static int timeout = 2000;
 
-	public void testSettingsActivity() throws UiObjectNotFoundException {
-		navigateToLiveWallpaper();
+	public LiveWallpaperTest() { super(SelectProgramActivity.class); }
+
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+	}
+
+	@Override
+	public void tearDown() throws Exception {
+		super.tearDown();
 	}
 
 
-	private void navigateToLiveWallpaper() throws UiObjectNotFoundException {
-
-		getUiDevice().pressHome();
-
-		UiObject screen = new UiObject(new UiSelector().description("Menü"));
-		screen.click();
+	public void testCreateNewProject() throws Exception {
+		solo.clickOnMenuItem(solo.getString(R.string.lwp_new));
+		solo.clickInList(1);
 	}
 
 }
