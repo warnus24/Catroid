@@ -58,11 +58,6 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<ProjectA
 	private final File speechFileHelloWorlText = new File(Constants.TEXT_TO_SPEECH_TMP_PATH,
 			Utils.md5Checksum(helloWorldText) + Constants.TEXT_TO_SPEECH_EXTENSION);
 
-	private final String nullText = "";
-	private final long byteLengthOfNullText = 44L;
-	private final File speechFileNullText = new File(Constants.TEXT_TO_SPEECH_TMP_PATH, Utils.md5Checksum(nullText)
-			+ Constants.TEXT_TO_SPEECH_EXTENSION);
-
 	private final String simultaneousText = "Speaking simultaneously";
 	private final long byteLengthOfSimultaneousText = 65196L;
 	private final File speechFileSimultaneousText = new File(Constants.TEXT_TO_SPEECH_TMP_PATH,
@@ -140,20 +135,6 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<ProjectA
 	}
 
 	@Device
-	public void testNullText() {
-		createNullTextProject();
-		prepareStageForTesting(UiTestUtils.PROJECTNAME2);
-
-		assertTrue("speechFileNullText does not exist", speechFileNullText.exists());
-		assertEquals("Length of speechFileNullText is different from original", byteLengthOfNullText,
-				speechFileNullText.length());
-
-		assertEquals("Wrong amount of soundfiles played", 1, soundManagerMock.playedSoundFiles.size());
-		assertTrue("Wrong soundfile played",
-				soundManagerMock.playedSoundFiles.contains(speechFileNullText.getAbsolutePath()));
-	}
-
-	@Device
 	public void testMultiSpeech() {
 		createMultiSpeechesProject();
 		prepareStageForTesting(UiTestUtils.PROJECTNAME3);
@@ -193,10 +174,10 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<ProjectA
 	private void createNormalBehaviourProject() {
 		Sprite spriteNormal = new Sprite("testNormalBehaviour");
 
-		Script startScriptNormal = new StartScript(spriteNormal);
-		startScriptNormal.addBrick(new SpeakBrick(spriteNormal, testText));
-		startScriptNormal.addBrick(new WaitBrick(spriteNormal, 1500));
-		startScriptNormal.addBrick(new SpeakBrick(spriteNormal, helloWorldText));
+		Script startScriptNormal = new StartScript();
+		startScriptNormal.addBrick(new SpeakBrick(testText));
+		startScriptNormal.addBrick(new WaitBrick(1500));
+		startScriptNormal.addBrick(new SpeakBrick(helloWorldText));
 
 		spriteNormal.addScript(startScriptNormal);
 
@@ -206,24 +187,11 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<ProjectA
 		UiTestUtils.createProject(UiTestUtils.PROJECTNAME1, spriteListNormal, getActivity().getApplicationContext());
 	}
 
-	private void createNullTextProject() {
-		Sprite spriteNull = new Sprite("testNullText");
-		Script startScriptNull = new StartScript(spriteNull);
-		startScriptNull.addBrick(new SpeakBrick(spriteNull, null));
-
-		spriteNull.addScript(startScriptNull);
-
-		ArrayList<Sprite> spriteListNull = new ArrayList<Sprite>();
-		spriteListNull.add(spriteNull);
-
-		UiTestUtils.createProject(UiTestUtils.PROJECTNAME2, spriteListNull, getActivity().getApplicationContext());
-	}
-
 	private void createMultiSpeechesProject() {
 		Sprite spriteMultiSpeech = new Sprite("testMultiSpeech");
-		Script startScriptMultiSpeech = new StartScript(spriteMultiSpeech);
-		startScriptMultiSpeech.addBrick(new SpeakBrick(spriteMultiSpeech, longText));
-		startScriptMultiSpeech.addBrick(new SpeakBrick(spriteMultiSpeech, simultaneousText));
+		Script startScriptMultiSpeech = new StartScript();
+		startScriptMultiSpeech.addBrick(new SpeakBrick(longText));
+		startScriptMultiSpeech.addBrick(new SpeakBrick(simultaneousText));
 
 		spriteMultiSpeech.addScript(startScriptMultiSpeech);
 

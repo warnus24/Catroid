@@ -26,6 +26,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -44,10 +45,12 @@ import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BluetoothManager;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
+import org.catrobat.catroid.camera.CameraManager;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.drone.DroneInitializer;
+import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
 import org.catrobat.catroid.ui.BaseActivity;
@@ -70,7 +73,7 @@ public class PreStageActivity extends BaseActivity {
 	public static final int REQUEST_RESOURCES_INIT = 101;
 	public static final int REQUEST_TEXT_TO_SPEECH = 10;
 
-	private int resources = Brick.NO_RESOURCES;
+	private static int resources = Brick.NO_RESOURCES;
 	private int requiredResourceCounter;
 
 	private static LegoNXT legoNXT;
@@ -125,14 +128,30 @@ public class PreStageActivity extends BaseActivity {
 			droneInitializer.initialise();
 		}
 
-		if ((requiredResources & Brick.CAMERA_LED ) > 0) {
-
-			if ( hasFlash() ) {
-				requiredResourceCounter--;
-				LedUtil.activateLedThread();
+		FaceDetectionHandler.resetFaceDedection();
+		if ((requiredResources & Brick.FACE_DETECTION) > 0) {
+			boolean success = FaceDetectionHandler.startFaceDetection(this);
+			if (success) {
+				resourceInitialized();
 			} else {
-				Toast.makeText(PreStageActivity.this, R.string.no_flash_led_available, Toast.LENGTH_LONG).show();
 				resourceFailed();
+			}
+		}
+
+		if ((requiredResources & Brick.CAMERA_LED ) > 0) {
+			if (!CameraManager.getInstance().isFacingBack()) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage(getString(R.string.led_and_front_camera_warning)).setCancelable(false)
+						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								ledInitialize();
+							}
+						});
+				AlertDialog alert = builder.create();
+				alert.show();
+			} else {
+				ledInitialize();
 			}
 		}
 
@@ -168,12 +187,11 @@ public class PreStageActivity extends BaseActivity {
 			return false;
 		}
 
-		Camera camera = LedUtil.getCamera();
+		Camera camera = CameraManager.getInstance().getCamera();
 
 		try {
 			if (camera == null) {
-				LedUtil.openCamera();
-				camera = LedUtil.getCamera();
+				camera = CameraManager.getInstance().getCamera();
 			}
 		} catch (Exception exception) {
 			Log.e(getString(R.string.app_name), "failed to open Camera", exception);
@@ -237,6 +255,9 @@ public class PreStageActivity extends BaseActivity {
 		if (legoNXT != null) {
 			legoNXT.pauseCommunicator();
 		}
+        if (FaceDetectionHandler.isFaceDetectionRunning()) {
+            FaceDetectionHandler.stopFaceDetection();
+        }
 	}
 
 	//all resources that should not have to be reinitialized every stage start
@@ -290,7 +311,7 @@ public class PreStageActivity extends BaseActivity {
 		this.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 	}
 
-	private int getRequiredRessources() {
+	private static int getRequiredRessources() {
 		ArrayList<Sprite> spriteList = (ArrayList<Sprite>) ProjectManager.getInstance().getCurrentProject()
 				.getSpriteList();
 
@@ -401,6 +422,31 @@ public class PreStageActivity extends BaseActivity {
 		}
 	}
 
+	public static int initTextToSpeechForLiveWallpaper(Context context) {
+		if (getRequiredRessources() == Brick.TEXT_TO_SPEECH && textToSpeech == null) {
+			textToSpeech = new TextToSpeech(context, new OnInitListener() {
+				@Override
+				public void onInit(int status) {
+					onUtteranceCompletedListenerContainer = new OnUtteranceCompletedListenerContainer();
+					textToSpeech.setOnUtteranceCompletedListener(onUtteranceCompletedListenerContainer);
+				}
+			});
+
+			if (textToSpeech.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_MISSING_DATA) {
+				return -1;
+			}
+		}
+		return 0;
+	}
+
+	public static void shutDownTextToSpeechForLiveWallpaper() {
+		if (textToSpeech != null) {
+			textToSpeech.stop();
+			textToSpeech.shutdown();
+			textToSpeech = null;
+		}
+	}
+
 	//messages from Lego NXT device can be handled here
 	// TODO should be fixed - could lead to problems
 	@SuppressLint("HandlerLeak")
@@ -431,5 +477,15 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 	};
+
+	private void ledInitialize() {
+		if ( hasFlash() ) {
+			resourceInitialized();
+			LedUtil.activateLedThread();
+		} else {
+			Toast.makeText(PreStageActivity.this, R.string.no_flash_led_available, Toast.LENGTH_LONG).show();
+			resourceFailed();
+		}
+	}
 
 }

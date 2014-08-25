@@ -96,6 +96,7 @@ public class StageActivity extends AndroidApplication {
 	@Override
 	public void onPause() {
 		SensorHandler.stopSensorListeners();
+		stageListener.activityPause();
 		stageAudioFocus.releaseAudioFocus();
 		LedUtil.pauseLed();
 		VibratorUtil.pauseVibrator();
@@ -110,6 +111,7 @@ public class StageActivity extends AndroidApplication {
 	public void onResume() {
 		Log.d(TAG, "StageActivity::onResume()");
 		SensorHandler.startSensorListener(this);
+		stageListener.activityResume();
 		stageAudioFocus.requestAudioFocus();
 		LedUtil.resumeLed();
 		VibratorUtil.resumeVibrator();

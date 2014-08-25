@@ -30,9 +30,9 @@ import android.hardware.SensorEventListener;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.bricks.Brick;
+import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
@@ -40,14 +40,8 @@ import org.catrobat.catroid.formulaeditor.SensorHandler;
 public class FormulaEditorComputeDialog extends AlertDialog implements SensorEventListener {
 
 	private Formula formulaToCompute = null;
-
 	private Context context;
-
 	private TextView computeTextView;
-
-	private int logicalFormulaResultIdentifier;
-
-	private float floatInterpretationResult;
 
 	public FormulaEditorComputeDialog(Context context) {
 		super(context);
@@ -58,12 +52,9 @@ public class FormulaEditorComputeDialog extends AlertDialog implements SensorEve
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_formulaeditor_compute);
-
 		setCanceledOnTouchOutside(true);
 		computeTextView = (TextView) findViewById(R.id.formula_editor_compute_dialog_textview);
-		computeTextView.setText("Hello 5");
 		showFormulaResult();
-
 	}
 
 	public void setFormula(Formula formula) {
@@ -73,12 +64,16 @@ public class FormulaEditorComputeDialog extends AlertDialog implements SensorEve
 			SensorHandler.startSensorListener(context);
 			SensorHandler.registerListener(this);
 		}
-
+		int resources = formula.getRequiredResources();
+		if ((resources & Brick.FACE_DETECTION) > 0) {
+			FaceDetectionHandler.startFaceDetection(getContext());
+		}
 	}
 
 	@Override
 	protected void onStop() {
 		SensorHandler.unregisterListener(this);
+		FaceDetectionHandler.stopFaceDetection();
 		super.onStop();
 	}
 
@@ -87,26 +82,8 @@ public class FormulaEditorComputeDialog extends AlertDialog implements SensorEve
 			return;
 		}
 
-		Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
-
-		if (formulaToCompute.isLogicalFormula()) {
-			boolean result = formulaToCompute.interpretBoolean(sprite);
-			logicalFormulaResultIdentifier = result ? R.string.formula_editor_true : R.string.formula_editor_false;
-			computeTextView.post(new Runnable() {
-				@Override
-				public void run() {
-					computeTextView.setText(context.getString(logicalFormulaResultIdentifier));
-				}
-			});
-		} else {
-			floatInterpretationResult = formulaToCompute.interpretFloat(sprite);
-			computeTextView.post(new Runnable() {
-				@Override
-				public void run() {
-					computeTextView.setText(floatInterpretationResult + "");
-				}
-			});
-		}
+		String result = formulaToCompute.getResultForComputeDialog(context);
+		setDialogTextView(result);
 
 	}
 
@@ -125,7 +102,14 @@ public class FormulaEditorComputeDialog extends AlertDialog implements SensorEve
 				showFormulaResult();
 				break;
 		}
-
 	}
 
+	private void setDialogTextView(final String newString) {
+		computeTextView.post(new Runnable() {
+			@Override
+			public void run() {
+				computeTextView.setText(newString);
+			}
+		});
+	}
 }

@@ -34,7 +34,7 @@ ext {
             "backpack"                          : false,
             "parrot_ar_drone"                   : false,
             "apk_generator"                     : false,
-            "computer_vision_enhancement"       : false,
+            "computer_vision_enhancement"       : true,
             "formula_editor_lists"              : false,
             "physics_engine_collision_filtering": false,
             "time_capsule"                      : false
@@ -44,17 +44,20 @@ ext {
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    //maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
 }
 
-configurations { natives }
+configurations {
+    natives
+    compile.exclude group: 'xpp3' //compile problem with xstream
+}
+
 dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:19.1.0'
-    compile files('libs/gdx.jar')
-    compile files('libs/gdx-backend-android.jar')
-    compile files('catroidTest/libs/uiautomator.jar')
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
     compile 'com.google.guava:guava:17.0'
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
@@ -267,4 +270,3 @@ def signing_config_file = file(System.getProperty("user.home") + "/.catrobat/cat
 if (signing_config_file.exists()) {
     apply from: signing_config_file.absolutePath
 }
-

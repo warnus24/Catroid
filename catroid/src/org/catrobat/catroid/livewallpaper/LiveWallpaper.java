@@ -25,10 +25,12 @@ package org.catrobat.catroid.livewallpaper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -46,6 +48,7 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.exceptions.CompatibilityProjectException;
 import org.catrobat.catroid.exceptions.LoadingProjectException;
 import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
+import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
 
@@ -145,12 +148,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public void onDestroy() {
-		Log.d("LWP", "Service wird zerstört");
+		Log.d("LWP", "Service wird beendet");
 		ProjectManager.changeState(ProjectManagerState.NORMAL);
 		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, oldProjectName);
 		INSTANCE = null;
 		super.onDestroy();
-		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
+		PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
 	}
 
 	public void changeWallpaperProgram() {
@@ -263,7 +266,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		public LiveWallpaperEngine() {
 			super();
-			//activateTextToSpeechIfNeeded();
+//			activateTextToSpeechIfNeeded();
 			//SensorHandler.startSensorListener(getApplicationContext());
 		}
 
@@ -326,6 +329,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			if (getLocalStageListener() == null) {
 				return;
 			}
+
 
 			//SensorHandler.startSensorListener(getApplicationContext());
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
@@ -421,11 +425,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 
 		private void activateTextToSpeechIfNeeded() {
-			//			if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
-			//				Intent installIntent = new Intent();
-			//				installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-			//				startActivity(installIntent);
-			//			}
+						if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
+							Intent installIntent = new Intent();
+							installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+							startActivity(installIntent);
+						}
 		}
 	}
 

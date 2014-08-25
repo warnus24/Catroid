@@ -34,9 +34,9 @@ import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.GlideToBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
-import org.catrobat.catroid.uitest.util.Reflection;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.List;
@@ -88,38 +88,52 @@ public class GlideToBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 		List<Brick> brickList = manager.getCurrentSprite().getScript(0).getBrickList();
 		GlideToBrick glideToBrick = (GlideToBrick) brickList.get(0);
 
-		Formula formula = (Formula) Reflection.getPrivateField(glideToBrick, "durationInSeconds");
-		float temp = formula.interpretFloat(sprite);
+		Formula formula = glideToBrick.getFormulaWithBrickField(Brick.BrickField.DURATION_IN_SECONDS);
+        try{
+            float temp = formula.interpretFloat(sprite);
+            assertEquals("Wrong duration input in Glide to brick", Math.round(duration * 1000), Math.round(temp * 1000));
+        }catch (InterpretationException interpretationException){
+            fail("Wrong duration input in Glide to brick");
+        }
 
-		assertEquals("Wrong duration input in Glide to brick", Math.round(duration * 1000), Math.round(temp * 1000));
-		formula = (Formula) Reflection.getPrivateField(glideToBrick, "xDestination");
-		int temp2 = formula.interpretInteger(sprite);
-		assertEquals("Wrong x input in Glide to brick", xPosition, temp2);
+		formula = glideToBrick.getFormulaWithBrickField(Brick.BrickField.X_DESTINATION);
+        try{
+            int temp = formula.interpretInteger(sprite);
+            assertEquals("Wrong x input in Glide to brick", xPosition, temp);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong xDestination input in Glide to brick");
+        }
 
-		formula = (Formula) Reflection.getPrivateField(glideToBrick, "yDestination");
-		temp2 = formula.interpretInteger(sprite);
-		assertEquals("Wrong y input in Glide to brick", yPosition, temp2);
+		formula = glideToBrick.getFormulaWithBrickField(Brick.BrickField.Y_DESTINATION);
+        try{
+            int temp = formula.interpretInteger(sprite);
+            assertEquals("Wrong y input in Glide to brick", yPosition, temp);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong yDestination input in Glide to brick");
+        }
 
 		UiTestUtils.insertValueViaFormulaEditor(solo, R.id.brick_glide_to_edit_text_duration, 1);
 		TextView secondsTextView = (TextView) solo.getView(R.id.brick_glide_to_seconds_text_view);
 		assertTrue(
 				"Specifier hasn't changed from plural to singular",
 				secondsTextView.getText().equals(
-						secondsTextView.getResources().getQuantityString(R.plurals.second_plural, 1)));
+						secondsTextView.getResources().getQuantityString(R.plurals.second_plural, 1))
+		);
 
 		UiTestUtils.insertValueViaFormulaEditor(solo, R.id.brick_glide_to_edit_text_duration, 5);
 		secondsTextView = (TextView) solo.getView(R.id.brick_glide_to_seconds_text_view);
 		assertTrue(
 				"Specifier hasn't changed from singular to plural",
 				secondsTextView.getText().equals(
-						secondsTextView.getResources().getQuantityString(R.plurals.second_plural, 5)));
+						secondsTextView.getResources().getQuantityString(R.plurals.second_plural, 5))
+		);
 	}
 
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
-		script.addBrick(new GlideToBrick(sprite, 0, 0, 0));
+		Script script = new StartScript();
+		script.addBrick(new GlideToBrick(0, 0, 0));
 
 		sprite.addScript(script);
 		project.addSprite(sprite);

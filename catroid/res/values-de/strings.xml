@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
   ~ Catroid: An on-device visual programming system for Android devices
   ~ Copyright (C) 2010-2014 The Catrobat Team
@@ -71,7 +71,11 @@
     <string name="preference_title">Einstellungen</string>
     <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorm Bausteine</string>
     <string name="preference_description_mindstorm_bricks">Erlaube Steuerung von Lego Mindstorm Robotern</string>
-    <string name="preference_title_enable_quadcopter_bricks">ARDrone 2.0 Bausteine</string>
+    <string name="preference_title_use_face_detection">Gesichtserkennung</string>
+    <string name="preference_description_use_face_detection">Erlaube das Erkennen von Gesichtern</string>
+    <string name="preference_title_select_camera">Auswahl der Kamera</string>
+    <string name="preference_description_select_camera">Wähle die zu verwendende Kamera</string>
+	<string name="preference_title_enable_quadcopter_bricks">ARDrone 2.0 Bausteine</string>
     <string name="preference_description_quadcopter_bricks">Erlaubt dir, die ARDrone 2.0 zu steuern.</string>
     <!--  -->
 
@@ -84,7 +88,7 @@
     <string name="dialog_new_object_name">Objekt Name</string>
     <string name="dialog_new_object_switch_title">Neues Objekt erstellt</string>
     <string name="dialog_new_object_switch_message">Zu neuem Objekt wechseln?</string>
-    <!--  -->
+    <!-- -->
 
 
     <!-- Terms of Use Dialog -->
@@ -238,8 +242,8 @@
     <string name="text_to_speech_engine_not_installed">Text-to-Speech Modul nicht installiert!\nJetzt installieren?</string>
     <string name="no_flash_led_available">Kein Blitzlicht gefunden</string>
     <string name="no_vibrator_available">Vibrationsfunktion nicht verfügbar</string>
-    <!--  -->
-
+    <string name="led_and_front_camera_warning">Led UND Front Kamera werden nicht unterstützt</string>
+    <!-- -->
 
     <!-- Brick context dialog -->
     <string name="brick_context_dialog_move_brick">Verschiebe Baustein</string>
@@ -377,9 +381,9 @@
     <string name="brick_clear_graphic_effect">Schalte Grafikeffekte aus</string>
     <string name="brick_next_look">Nächstes Aussehen</string>
     <string name="brick_next_background">Nächster Hintergrund</string>
-    <string name="brick_led_on">LED einschalten</string>
-    <string name="brick_led_off">LED ausschalten</string>
-    <string name="brick_vibration">vibrieren für</string>
+    <string name="brick_led_on">Schalte Blitzlicht an</string>
+    <string name="brick_led_off">Schalte Blitzlicht aus</string>
+    <string name="brick_vibration">Vibrieren für</string>
     <!--  -->
 
 
@@ -390,8 +394,6 @@
     <string name="brick_change_volume_by">Ändere Lautstärke um</string>
     <string name="brick_speak">Sprich</string>
     <string name="brick_speak_default_value">"Hallo!"</string>
-    <string name="dialog_edit_speak_title">Text bearbeiten</string>
-    <string name="dialog_edit_speak_text">Sprich:</string>
     <!--  -->
 
 
@@ -411,8 +413,6 @@
     <string name="brick_note">Notiz</string>
     <string name="brick_forever">Wiederhole fortlaufend</string>
     <string name="brick_repeat">Wiederhole</string>
-    <string name="dialog_edit_note_title">Notiz bearbeiten</string>
-    <string name="dialog_edit_note_text">Notiz:</string>
 
     <plurals name="time_plural">
         <item quantity="one">mal</item>
@@ -503,6 +503,8 @@
     <string name="error_copy_project">Beim kopieren des Programms ist ein Fehler aufgetreten.</string>
     <string name="error_upload_project_with_default_name">Das Programm mit dem Namen \'Mein erstes Programm\' kann nicht hochgeladen werden. Bitte das Programm umbenennen.</string>
     <string name="error_upload_default_project">Das Programm entspricht dem Programm \'Mein erstes Programm\'. Bitte ändere es und versuche es noch einmal.</string>
+    <string name="error_adding_brick">Beim Hinzufügen des Bricks ist ein Fehler aufgetreten</string>
+    <string name="error_copying_brick">Beim Kopieren des Bricks ist ein Fehler aufgetreten</string>
     <string name="error_no_drone_connected_title">Finde keine ARDrone</string>    
     <string name="error_no_drone_connected">Verbinde dich mit dem WLan der Drone und probier es nochmal.</string>
     <string name="error_drone_low_battery_title">Dronen Batterie fast leer: %d%%</string>
@@ -599,6 +601,29 @@
     <string name="formula_editor_function_min">min</string>
     <string name="formula_editor_function_true">WAHR</string>
     <string name="formula_editor_function_false">FALSCH</string>
+    <string name="formula_editor_function_length">länge</string>
+    <string name="formula_editor_function_letter">buchstabe</string>
+    <string name="formula_editor_function_join">verbinde</string>
+    <string name="formula_editor_function_sin_parameter">(0)</string>
+    <string name="formula_editor_function_cos_parameter">(0)</string>
+    <string name="formula_editor_function_tan_parameter">(0)</string>
+    <string name="formula_editor_function_ln_parameter">(0)</string>
+    <string name="formula_editor_function_log_parameter">(0)</string>
+    <string name="formula_editor_function_pi_parameter"></string>
+    <string name="formula_editor_function_sqrt_parameter">(0)</string>
+    <string name="formula_editor_function_rand_parameter">(0,1)</string>
+    <string name="formula_editor_function_abs_parameter">(0)</string>
+    <string name="formula_editor_function_round_parameter">(0)</string>
+    <string name="formula_editor_function_mod_parameter">(1,1)</string>
+    <string name="formula_editor_function_arcsin_parameter">(0)</string>
+    <string name="formula_editor_function_arccos_parameter">(0)</string>
+    <string name="formula_editor_function_arctan_parameter">(0)</string>
+    <string name="formula_editor_function_exp_parameter">(0)</string>
+    <string name="formula_editor_function_max_parameter">(0,1)</string>
+    <string name="formula_editor_function_min_parameter">(0,1)</string>
+    <string name="formula_editor_function_length_parameter">(\'hallo welt\')</string>
+    <string name="formula_editor_function_letter_parameter">(1,\'hallo welt\')</string>
+    <string name="formula_editor_function_join_parameter">(\'hallo\',\'welt\')</string>
     <string name="formula_editor_sensor_x_acceleration">Beschleunigung_x</string>
     <string name="formula_editor_sensor_y_acceleration">Beschleunigung_y</string>
     <string name="formula_editor_sensor_z_acceleration">Beschleunigung_z</string>
@@ -606,6 +631,10 @@
     <string name="formula_editor_sensor_x_inclination">Neigung_x</string>
     <string name="formula_editor_sensor_y_inclination">Neigung_y</string>
     <string name="formula_editor_sensor_loudness">Umgebungslautstärke</string>
+    <string name="formula_editor_sensor_face_detected">Gesicht_erkannt</string>
+    <string name="formula_editor_sensor_face_size">Gesichtsgröße</string>
+    <string name="formula_editor_sensor_face_x_position">Gesichtsposition_x</string>
+    <string name="formula_editor_sensor_face_y_position">Gesichtsposition_y</string>
     <string name="formula_editor_object_x">Position_x</string>
     <string name="formula_editor_object_y">Position_y</string>
     <string name="formula_editor_object_ghosteffect">Transparenz</string>
@@ -615,11 +644,11 @@
     <string name="formula_editor_object_layer">Ebene</string>
     <string name="formula_editor_compute">Berechnen</string>
     <string name="formula_editor_object">Objekt</string>
-    <string name="formula_editor_math">Funktionen</string>
+    <string name="formula_editor_function">Funktionen</string>
     <string name="formula_editor_logic">Logik</string>
     <string name="formula_editor_sensors">Sensoren</string>
     <string name="formula_editor_variables">Variablen</string>
-    <string name="formula_editor_random">Zufall</string>
+    <string name="formula_editor_string">Zeichenkette</string>
     <string name="formula_editor_logic_notequal">&#x2260;</string>
     <string name="formula_editor_logic_lesserthan">&lt;</string>
     <string name="formula_editor_logic_greaterthan">&gt;</string>
@@ -644,13 +673,14 @@
     <string name="formula_editor_discard_changes_dialog_message">Möchten Sie die Änderungen speichern?</string>
     <string name="formula_editor_discard_changes_dialog_title">Änderungen speichern?</string>
     <string name="variable_name">Variablenname:</string>
+    <string name="formula_editor_new_string_name">Neue Zeichenkette</string>
+    <string name="formula_editor_new_string_dialog_hint">Neue Zeichenkette hier eingeben!</string>
 
     <plurals name="formula_editor_variable_context_action_item_selected">
         <item quantity="one">Variable ausgewählt!</item>
         <item quantity="other">Variablen ausgewählt!</item>
     </plurals>
     <!--  -->
-
 
 	<!-- Live Wallpaper Strings -->
     <string name="lwp_general_information">General information</string>
@@ -678,4 +708,8 @@
  	<string name="lwp_enable_sound">Enable sounds</string>
  	<string name="lwp_disable_tinting">Disable tinting</string>
 	<!--  -->
+    <!-- Camera Strings -->
+    <string name="camera_facing_front">Vordere Kamera</string>
+    <string name="camera_facing_back">Hintere Kamera</string>
+    <!--  -->
 </resources>
