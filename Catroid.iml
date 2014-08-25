@@ -83,9 +83,7 @@
     <orderEntry type="library" exported="" name="actionbarsherlock-4.4.0" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.2.0" level="project" />
     <orderEntry type="library" exported="" name="dexmaker-mockito-1.1" level="project" />
-    <orderEntry type="library" exported="" name="gdx" level="project" />
     <orderEntry type="library" exported="" name="the-missing-android-xml-junit-test-runner-release-1.3_2" level="project" />
-    <orderEntry type="library" exported="" name="gdx-backend-android" level="project" />
     <orderEntry type="library" exported="" name="http-request-5.4.1" level="project" />
     <orderEntry type="library" exported="" name="mockito-all-1.9.5" level="project" />
     <orderEntry type="library" exported="" name="okhttp-1.2.1-jar-with-dependencies" level="project" />
