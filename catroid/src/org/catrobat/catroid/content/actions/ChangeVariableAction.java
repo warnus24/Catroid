@@ -26,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 
 public class ChangeVariableAction extends Action {
@@ -42,7 +43,7 @@ public class ChangeVariableAction extends Action {
 		Object originalValue = userVariable.getValue();
 		Object value = changeVariable == null ? 0d : changeVariable.interpretObject(sprite);
 
-		if (originalValue instanceof String || value instanceof String) {
+		if (originalValue instanceof String) {
 			return true;
 		}
 
