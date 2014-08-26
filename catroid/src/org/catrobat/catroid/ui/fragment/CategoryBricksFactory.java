@@ -114,8 +114,6 @@ public class CategoryBricksFactory {
 			return setupSoundCategoryList();
 		} else if (category.equals(context.getString(R.string.category_looks))) {
 			return setupLooksCategoryList();
-		} else if (category.equals(context.getString(R.string.category_variables))) {
-			return setupLooksCategoryList();
 		} else if (category.equals(context.getString(R.string.category_data))) {
 			return setupDataCategoryList(sprite);
 		} else if (category.equals(context.getString(R.string.category_lego_nxt))) {
