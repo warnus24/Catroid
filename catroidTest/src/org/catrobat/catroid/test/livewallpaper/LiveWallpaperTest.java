@@ -23,13 +23,9 @@
 
 package org.catrobat.catroid.test.livewallpaper;
 
+import android.service.wallpaper.WallpaperService;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.KeyEvent;
 
-import com.android.uiautomator.core.UiObject;
-import com.android.uiautomator.core.UiObjectNotFoundException;
-import com.android.uiautomator.core.UiSelector;
-import com.android.uiautomator.testrunner.UiAutomatorTestCase;
 import com.jayway.android.robotium.solo.Solo;
 
 import org.catrobat.catroid.ProjectManager;
@@ -40,7 +36,6 @@ import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
-import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 /**
@@ -51,15 +46,21 @@ public class LiveWallpaperTest extends ActivityInstrumentationTestCase2<SelectPr
 	private Solo solo;
 	private final static String LWP_TEST_1 = "Test 1";
 
-	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.LWP);
+	private ProjectManager projectManager;
+	private WallpaperService.Engine engine;
+	private LiveWallpaper lwp;
 
 	public LiveWallpaperTest() { super(SelectProgramActivity.class); }
 
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
+	private void setUpLivewallpaper() throws Exception {
+		lwp = new LiveWallpaper();
+		engine = lwp.onCreateEngine();
+		lwp.onCreateApplication();
+		lwp.onCreate();
+	}
 
-		solo = new Solo(getInstrumentation(), getActivity());
+	private void setUpProjectManager() throws Exception {
+		projectManager = ProjectManager.getInstance(ProjectManagerState.LWP);
 
 		if(projectManager.getCurrentProject() == null || projectManager.getCurrentProject().getName()!= solo.getString(R.string.default_project_name)){
 			Project defaultProject;
@@ -69,14 +70,24 @@ public class LiveWallpaperTest extends ActivityInstrumentationTestCase2<SelectPr
 			catch(IllegalArgumentException e){
 				defaultProject = StorageHandler.getInstance().loadProject(solo.getString(R.string.default_project_name));
 			}
-			ProjectManager.getInstance().setProject(defaultProject);
+			projectManager.setProject(defaultProject);
 		}
 	}
 
 	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+
+		solo = new Solo(getInstrumentation(), getActivity());
+
+		setUpProjectManager();
+		setUpLivewallpaper();
+	}
+
+	@Override
 	public void tearDown() throws Exception {
-		//solo.clickOnText(solo.getString(R.string.default_project_name));
-		//solo.clickOnButton(solo.getString(R.string.yes));
+		solo.clickOnText(solo.getString(R.string.default_project_name));
+		solo.clickOnButton(solo.getString(R.string.yes));
 
 		solo.clickOnView(solo.getView(R.id.delete));
 		solo.clickOnView(solo.getView(R.id.select_all));
