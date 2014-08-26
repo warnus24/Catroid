@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 buildscript {
     repositories {
         mavenCentral()
@@ -41,9 +43,9 @@ dependencies {
     compile 'com.google.guava:guava:17.0'
     compile fileTree(include: '*.jar', dir: 'libs')
     compile fileTree(include: '*.jar', dir: 'libs-natives')
-    androidTestCompile 'com.jayway.android.robotium:robotium-solo:4.3'
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
     androidTestCompile 'org.mockito:mockito-all:1.9.5'
-    androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
+    androidTestCompile fileTree(include: '*.jar', dir: 'src/androidTest/libs')
     pmd 'net.sourceforge.pmd:pmd:5.1.1'
 
 }
@@ -162,7 +164,7 @@ task featuresToBuildconfig << {
 }
 
 task testManifestHack << {
-    def origManifest = file('catroidTest/AndroidManifest.xml')
+    def origManifest = file('src/androidTest/AndroidManifest.xml')
     def generatedManifest = file("build/intermediates/manifests/test/debug/AndroidManifest.xml")
     def origContent = origManifest.getText()
     def generatedContent = generatedManifest.getText()
@@ -175,7 +177,7 @@ task testManifestHack << {
 }
 
 gradle.projectsEvaluated {
-    generateDebugTestBuildConfig.dependsOn testManifestHack
+   // generateDebugTestBuildConfig.dependsOn testManifestHack
 }
 
 preBuild.dependsOn featuresToBuildconfig
