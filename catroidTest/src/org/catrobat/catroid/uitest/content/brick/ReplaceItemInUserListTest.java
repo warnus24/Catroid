@@ -170,8 +170,8 @@ public class ReplaceItemInUserListTest extends BaseActivityInstrumentationTestCa
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
-		replaceItemInUserListBrick = new ReplaceItemInUserListBrick(sprite, 10, 1);
+		Script script = new StartScript();
+		replaceItemInUserListBrick = new ReplaceItemInUserListBrick(10, 1);
 		script.addBrick(replaceItemInUserListBrick);
 
 		sprite.addScript(script);
@@ -180,27 +180,5 @@ public class ReplaceItemInUserListTest extends BaseActivityInstrumentationTestCa
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(sprite);
 		ProjectManager.getInstance().setCurrentScript(script);
-	}
-
-	private void createUserListFromUserListFragment(String userListName, boolean forAllSprites) {
-		assertTrue("FormulaEditorUserListFragment not shown: ",
-				solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
-
-		solo.clickOnView(solo.getView(R.id.button_add));
-		assertTrue("Add UserList Dialog not shown",
-				solo.waitForText(solo.getString(R.string.formula_editor_data_dialog_title)));
-		solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_edit_text));
-		solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_is_list_checkbox));
-		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
-		solo.enterText(editText, userListName);
-
-		if (forAllSprites) {
-			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
-			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
-		} else {
-			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_local_variable_radio_button));
-			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_name_local_variable_radio_button));
-		}
-		solo.clickOnButton(solo.getString(R.string.ok));
 	}
 }

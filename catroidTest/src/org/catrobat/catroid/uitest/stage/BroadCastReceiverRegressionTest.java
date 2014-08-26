@@ -233,10 +233,7 @@ public class BroadCastReceiverRegressionTest extends BaseActivityInstrumentation
 		solo.waitForView(ListView.class);
 		solo.sleep(200);
 	}
-	ertTrue("ScriptFragment not visible", solo.waitForText(solo.getString(R.string.brick_set_variable)));
-	assertTrue("Created ProjectVariable not set on first position in spinner", solo.searchText(variableName));
-}
-}
+
 
 	private void createUserVariable(String variableName) {
 		solo.clickOnText(getInstrumentation().getTargetContext().getString(
@@ -246,4 +243,7 @@ public class BroadCastReceiverRegressionTest extends BaseActivityInstrumentation
 		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 		solo.enterText(editText, variableName);
 		solo.clickOnButton(solo.getString(R.string.ok));
-		ass
+		assertTrue("ScriptFragment not visible", solo.waitForText(solo.getString(R.string.brick_set_variable)));
+		assertTrue("Created ProjectVariable not set on first position in spinner", solo.searchText(variableName));
+	}
+}

@@ -558,27 +558,6 @@ public class FormulaEditorDataFragmentVariableTest extends BaseActivityInstrumen
 		startScript2.addBrick(glideToBrick);
 	}
 
-	private void createUserVariableFromVariableFragment(String variableName, boolean forAllSprites) {
-		assertTrue("FormulaEditorDataFragment not shown: ",
-				solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
-
-		solo.clickOnView(solo.getView(R.id.button_add));
-		assertTrue("Add Variable Dialog not shown",
-				solo.waitForText(solo.getString(R.string.formula_editor_variable_dialog_title)));
-		solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_edit_text));
-		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
-		solo.enterText(editText, variableName);
-
-		if (forAllSprites) {
-			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
-			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
-		} else {
-			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_local_variable_radio_button));
-			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_name_local_variable_radio_button));
-		}
-		solo.clickOnButton(solo.getString(R.string.ok));
-	}
-
 	private ListView getVariableListView() {
 		return solo.getCurrentViews(ListView.class).get(1);
 	}

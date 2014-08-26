@@ -170,8 +170,8 @@ public class AddItemToUserListTest extends BaseActivityInstrumentationTestCase<M
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
-		addItemToUserListBrick = new AddItemToUserListBrick(sprite, 10);
+		Script script = new StartScript();
+		addItemToUserListBrick = new AddItemToUserListBrick( 10);
 		script.addBrick(addItemToUserListBrick);
 
 		sprite.addScript(script);
@@ -182,25 +182,4 @@ public class AddItemToUserListTest extends BaseActivityInstrumentationTestCase<M
 		ProjectManager.getInstance().setCurrentScript(script);
 	}
 
-	private void createUserListFromUserListFragment(String userListName, boolean forAllSprites) {
-		assertTrue("FormulaEditorDataFragment not shown: ",
-				solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
-
-		solo.clickOnView(solo.getView(R.id.button_add));
-		assertTrue("Add Data Dialog not shown",
-				solo.waitForText(solo.getString(R.string.formula_editor_data_dialog_title)));
-		solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_edit_text));
-		solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_is_list_checkbox));
-		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
-		solo.enterText(editText, userListName);
-
-		if (forAllSprites) {
-			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
-			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_name_global_variable_radio_button));
-		} else {
-			solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_local_variable_radio_button));
-			solo.clickOnView(solo.getView(R.id.dialog_formula_editor_data_name_local_variable_radio_button));
-		}
-		solo.clickOnButton(solo.getString(R.string.ok));
-	}
 }

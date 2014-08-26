@@ -252,7 +252,6 @@
     <string name="category_looks">"Uiterlijk"</string>
     <string name="category_sound">"Geluid"</string>
     <string name="category_control">"Besturen"</string>
-    <string name="category_variables">"Variabelen"</string>
     <string name="category_lego_nxt">"Lego NXT"</string>
     <!--  -->
 
@@ -509,8 +508,6 @@
     <string name="formula_editor_operator_minus">"-"</string>
     <string name="formula_editor_operator_divide">"÷"</string>
     <string name="formula_editor_operator_power">"^"</string>
-    <string name="formula_editor_image_button_description_undo">"ongedaan maken"</string>
-    <string name="formula_editor_image_button_description_redo">"opnieuw"</string>
     <string name="formula_editor_image_button_description_delete">"verwijderen"</string>
     <string name="formula_editor_variable_dialog_title">"Nieuwe variabele"</string>
     <string name="formula_editor_dialog_for_all_sprites">"Voor alle objecten"</string>
