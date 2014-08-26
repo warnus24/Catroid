@@ -120,12 +120,12 @@ public class SetVariableTest extends BaseActivityInstrumentationTestCase<MainMen
 		solo.clickOnView(solo.getView(R.id.brick_set_variable_edit_text));
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_data));
-		assertTrue("Data Fragment not shown", solo.waitForFragmentByTag(FormulaEditorDataFragment.DATA_TAG));
+		assertTrue("Data Fragment not shown", solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
 		solo.clickLongOnText(secondUserVariableName);
 		assertTrue("Delete not shown", solo.waitForText(solo.getString(R.string.delete)));
 		solo.clickOnText(solo.getString(R.string.delete));
-		assertTrue("Data Fragment not shown", solo.waitForFragmentByTag(FormulaEditorDataFragment.DATA_TAG));
+		assertTrue("Data Fragment not shown", solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
 		solo.goBack();
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);

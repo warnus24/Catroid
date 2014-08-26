@@ -95,7 +95,7 @@ public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentati
 
 		Double listItemToAdd = Double.valueOf(ADD_VALUE_TO_LIST);
 
-		AddItemToUserListBrick addItemToUserListBrick = new AddItemToUserListBrick(firstSprite, new Formula(listItemToAdd),
+		AddItemToUserListBrick addItemToUserListBrick = new AddItemToUserListBrick(new Formula(listItemToAdd),
 				ProjectManager.getInstance().getCurrentProject().getDataContainer()
 						.getUserList(USER_LIST_NAME, firstSprite)
 		);
