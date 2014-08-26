@@ -184,7 +184,8 @@ public class CategoryBricksFactory {
 		float positiveDefaultValueChangeVolumeBy = Math.abs(BrickValues.CHANGE_VOLUME_BY);
 		FormulaElement defaultValueChangeVolumeBy = new FormulaElement(ElementType.OPERATOR, Operators.MINUS.name(),
 				null, null, new FormulaElement(ElementType.NUMBER, String.valueOf(positiveDefaultValueChangeVolumeBy),
-						null));
+				null)
+		);
 		soundBrickList.add(new ChangeVolumeByNBrick(new Formula(defaultValueChangeVolumeBy)));
 
 		soundBrickList.add(new SpeakBrick(BrickValues.SPEAK));
@@ -216,10 +217,10 @@ public class CategoryBricksFactory {
 		List<Brick> dataBrickList = new ArrayList<Brick>();
 		dataBrickList.add(new SetVariableBrick(0));
 		dataBrickList.add(new ChangeVariableBrick(0));
-		dataBrickList.add(new AddItemToUserListBrick(sprite, 0));
-		dataBrickList.add(new DeleteItemOfUserListBrick(sprite, 1));
-		dataBrickList.add(new InsertItemIntoUserListBrick(sprite, 0, 1));
-		dataBrickList.add(new ReplaceItemInUserListBrick(sprite, 0, 1));
+		dataBrickList.add(new AddItemToUserListBrick(0));
+		dataBrickList.add(new DeleteItemOfUserListBrick(1));
+		dataBrickList.add(new InsertItemIntoUserListBrick(0, 1));
+		dataBrickList.add(new ReplaceItemInUserListBrick(0, 1));
 		return dataBrickList;
 
 	}

@@ -227,7 +227,7 @@ public class StageListener implements ApplicationListener {
 		LedUtil.reset();
 		VibratorUtil.reset();
 
-		ProjectManager.getInstance().getCurrentProject().getUserLists().resetAllUserLists();
+		ProjectManager.getInstance().getCurrentProject().getDataContainer().resetAllDataObjects();
 
 
 		reloadProject = true;

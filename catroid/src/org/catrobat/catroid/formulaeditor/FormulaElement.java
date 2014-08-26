@@ -269,7 +269,7 @@ public class FormulaElement implements Serializable {
 
 		Object userVariableValue = userVariable.getValue();
 		if (userVariableValue instanceof String) {
-				return (String) userVariableValue;
+			return (String) userVariableValue;
 		} else {
 			return userVariableValue;
 		}
@@ -287,6 +287,9 @@ public class FormulaElement implements Serializable {
 	private Object interpretFunction(Functions function, Sprite sprite) {
 		Object left = null;
 		Object right = null;
+
+		Double doubleValueOfLeftChild = null;
+		Double doubleValueOfRightChild = null;
 
 		if (leftChild != null) {
 			left = leftChild.interpretRecursive(sprite);
@@ -657,52 +660,6 @@ public class FormulaElement implements Serializable {
 		return returnValue;
 	}
 
-	private Object interpretString(String value) {
-
-//		if (parent == null && type != ElementType.USER_VARIABLE) {
-//			Double anotherValue;
-//			try {
-//				anotherValue = Double.valueOf(value);
-//			} catch (NumberFormatException numberFormatException) {
-//				return value;
-//			}
-//			return anotherValue;
-//		}
-//
-//		if (parent != null) {
-//			boolean isParentAFunction = Functions.getFunctionByValue(parent.value) != null;
-//			if (isParentAFunction && Functions.getFunctionByValue(parent.value).returnType == ElementType.STRING) {
-//				if (Functions.getFunctionByValue(parent.value) == Functions.LETTER && parent.leftChild == this) {
-//					try {
-//						return Double.valueOf(value);
-//					} catch (NumberFormatException numberFormatexception) {
-//						return Double.valueOf(0);
-//					}
-//				}
-//				return value;
-//			}
-//
-//			if (isParentAFunction) {
-//				try {
-//					return Double.valueOf(value);
-//				} catch (NumberFormatException numberFormatexception) {
-//					return value;
-//				}
-//			}
-//
-//			boolean isParentAOperator = Operators.getOperatorByValue(parent.value) != null;
-//			if (isParentAOperator
-//					&& (Operators.getOperatorByValue(parent.value) == Operators.EQUAL || Operators
-//							.getOperatorByValue(parent.value) == Operators.NOT_EQUAL)) {
-//				return value;
-//			}
-//		}
-
-//		if (value.length() == 0) {
-//			return Double.valueOf(0.0);
-//		}
-	}
-
 	private Double interpretOperatorEqual(Object left, Object right) {
 
 		if (left instanceof String && right instanceof String) {
@@ -829,14 +786,6 @@ public class FormulaElement implements Serializable {
 			return Operators.getOperatorByValue(value).isLogicalOperator;
 		}
 		return false;
-	}
-
-	public boolean hasFunctionStringReturnType() {
-		Functions function = Functions.getFunctionByValue(value);
-		if (function == null) {
-			return false;
-		}
-		return function.returnType == ElementType.STRING;
 	}
 
 	public boolean containsElement(ElementType elementType) {

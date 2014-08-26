@@ -120,7 +120,7 @@ public class ChangeVariableBrick extends FormulaBrick implements OnClickListener
 
 		Spinner variableSpinner = (Spinner) view.findViewById(R.id.change_variable_spinner);
 		DataAdapter dataAdapter = ProjectManager.getInstance().getCurrentProject().getDataContainer()
-				.createDataAdapter(context, sprite);
+				.createDataAdapter(context, ProjectManager.getInstance().getCurrentSprite());
 
 		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
 				dataAdapter);
@@ -185,7 +185,7 @@ public class ChangeVariableBrick extends FormulaBrick implements OnClickListener
 		variableSpinner.setFocusableInTouchMode(false);
 		variableSpinner.setFocusable(false);
 		DataAdapter dataAdapter = ProjectManager.getInstance().getCurrentProject()
-				.getDataContainer().createDataAdapter(context, sprite);
+				.getDataContainer().createDataAdapter(context, ProjectManager.getInstance().getCurrentSprite());
 
 		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
 				dataAdapter);
