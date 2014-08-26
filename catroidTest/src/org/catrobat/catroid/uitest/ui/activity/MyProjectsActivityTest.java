@@ -663,7 +663,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		}
 	}
 
-	public void testDeleteAllProjects() {
+	public void Projects() {
 		unzip = true;
 		saveProjectsToZip();
 		createProjects();

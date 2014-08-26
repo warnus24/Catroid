@@ -399,6 +399,7 @@ public final class UiTestUtils {
 		}
 	}
 
+
 	/**
 	 * For bricks using the FormulaEditor. Tests starting the FE, entering a new number/formula and
 	 * ensures its set correctly to the brick´s edit text field
@@ -409,6 +410,8 @@ public final class UiTestUtils {
 		solo.clickOnView(solo.getView(editTextId));
 
 		insertDoubleIntoEditText(solo, newValue);
+
+		//insertValueViaFormulaEditor(solo, R.);
 
 		assertEquals(
 				"Text not updated within FormulaEditor",
