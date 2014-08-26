@@ -28,6 +28,8 @@ import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.utils.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,9 +37,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
-
-import org.catrobat.catroid.common.Constants;
-import org.catrobat.catroid.utils.Utils;
 
 //web status codes are on: https://github.com/Catrobat/Catroweb/blob/master/statusCodes.php
 
@@ -63,8 +62,7 @@ public final class ServerCalls {
 
 	private static final String FILE_UPLOAD_URL = Constants.BASE_URL_HTTPS + "api/upload/upload.json";
 	private static final String CHECK_TOKEN_URL = Constants.BASE_URL_HTTPS + "api/checkToken/check.json";
-	private static final String REGISTRATION_URL = Constants.BASE_URL_HTTPS
-			+ "api/loginOrRegister/loginOrRegister.json";
+	private static final String REGISTRATION_URL = Constants.BASE_URL_HTTPS + "api/loginOrRegister/loginOrRegister.json";
 
 	public static final String BASE_URL_TEST_HTTP = "https://catroid-test.catrob.at/";
 

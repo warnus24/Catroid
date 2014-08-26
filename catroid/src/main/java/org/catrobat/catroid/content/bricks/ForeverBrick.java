@@ -34,13 +34,12 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.actions.ExtendedActions;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.actions.ExtendedActions;
 
 public class ForeverBrick extends BrickBaseType implements LoopBeginBrick {
 	private static final long serialVersionUID = 1L;

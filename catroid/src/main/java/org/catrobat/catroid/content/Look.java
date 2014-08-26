@@ -36,10 +36,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
+import org.catrobat.catroid.common.LookData;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import org.catrobat.catroid.common.LookData;
 
 public class Look extends Image {
 	private static final float DEGREE_UI_OFFSET = 90.0f;

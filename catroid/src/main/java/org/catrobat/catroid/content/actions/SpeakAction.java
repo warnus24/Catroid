@@ -27,9 +27,6 @@ import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
-import java.io.File;
-import java.util.HashMap;
-
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.Formula;
@@ -37,6 +34,9 @@ import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.utils.Utils;
+
+import java.io.File;
+import java.util.HashMap;
 
 @SuppressWarnings("deprecation")
 public class SpeakAction extends TemporalAction {

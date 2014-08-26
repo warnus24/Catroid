@@ -26,13 +26,12 @@ import android.content.Context;
 import android.widget.ArrayAdapter;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.content.BroadcastScript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.catrobat.catroid.content.BroadcastScript;
 
 public final class MessageContainer {
 

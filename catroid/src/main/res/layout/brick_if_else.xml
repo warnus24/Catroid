@@ -48,6 +48,6 @@
             android:id="@+id/brick_if_else_label"
             style="@style/BrickText"
             android:text="@string/brick_if_else" />
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

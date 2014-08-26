@@ -26,10 +26,10 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.ui.fragment.LookFragment;
+
+import java.util.ArrayList;
 
 public class LookAdapter extends LookBaseAdapter implements ScriptActivityAdapterInterface {
 

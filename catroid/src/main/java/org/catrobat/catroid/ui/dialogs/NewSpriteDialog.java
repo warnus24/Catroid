@@ -42,12 +42,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import org.catrobat.catroid.R;
-
-import java.io.File;
-import java.io.IOException;
-
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.content.Sprite;
@@ -59,6 +55,9 @@ import org.catrobat.catroid.ui.controller.LookController;
 import org.catrobat.catroid.utils.ImageEditing;
 import org.catrobat.catroid.utils.UtilCamera;
 import org.catrobat.catroid.utils.Utils;
+
+import java.io.File;
+import java.io.IOException;
 
 public class NewSpriteDialog extends DialogFragment {
 

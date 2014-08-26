@@ -68,6 +68,6 @@
             android:maxLines="3"
             android:minLines="1"
             android:singleLine="false" />
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

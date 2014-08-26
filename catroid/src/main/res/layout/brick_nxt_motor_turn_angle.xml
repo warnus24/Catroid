@@ -94,6 +94,6 @@
                     android:clickable="false"
                     android:focusable="false" />
         -->
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

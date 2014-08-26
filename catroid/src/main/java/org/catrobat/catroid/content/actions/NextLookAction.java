@@ -24,10 +24,10 @@ package org.catrobat.catroid.content.actions;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
-import java.util.ArrayList;
-
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.content.Sprite;
+
+import java.util.ArrayList;
 
 public class NextLookAction extends TemporalAction {
 

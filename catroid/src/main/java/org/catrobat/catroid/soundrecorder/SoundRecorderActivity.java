@@ -34,12 +34,11 @@ import android.widget.Chronometer;
 import android.widget.Toast;
 
 import org.catrobat.catroid.R;
-
-import java.io.IOException;
-
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.ui.BaseActivity;
 import org.catrobat.catroid.utils.Utils;
+
+import java.io.IOException;
 
 public class SoundRecorderActivity extends BaseActivity implements OnClickListener {
 

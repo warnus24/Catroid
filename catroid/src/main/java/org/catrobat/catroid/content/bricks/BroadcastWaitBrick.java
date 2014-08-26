@@ -38,13 +38,12 @@ import android.widget.TextView;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
-
-import java.util.List;
-
 import org.catrobat.catroid.common.MessageContainer;
 import org.catrobat.catroid.content.BroadcastMessage;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
+
+import java.util.List;
 
 public class BroadcastWaitBrick extends BroadcastBrick implements BroadcastMessage {
 	private static final long serialVersionUID = 1L;

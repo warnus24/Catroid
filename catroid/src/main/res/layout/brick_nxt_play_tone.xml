@@ -109,6 +109,6 @@
             style="@style/BrickText.SingleLine"
             android:text="@string/nxt_tone_hundred_hz" >
         </TextView>
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

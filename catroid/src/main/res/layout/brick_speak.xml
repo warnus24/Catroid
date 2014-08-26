@@ -67,6 +67,6 @@
             app:layout_textField="true"
             android:gravity="left" >
         </TextView>
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

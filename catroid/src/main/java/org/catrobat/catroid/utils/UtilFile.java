@@ -25,7 +25,11 @@ package org.catrobat.catroid.utils;
 import android.content.Context;
 import android.util.Log;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.exceptions.ProjectException;
+import org.catrobat.catroid.soundrecorder.SoundRecorder;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -40,11 +44,6 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import org.catrobat.catroid.ProjectManager;
-import org.catrobat.catroid.common.Constants;
-import org.catrobat.catroid.exceptions.ProjectException;
-import org.catrobat.catroid.soundrecorder.SoundRecorder;
 
 public final class UtilFile {
 	private static final String TAG = UtilFile.class.getSimpleName();

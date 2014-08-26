@@ -52,13 +52,8 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 
 import org.catrobat.catroid.BuildConfig;
-import org.catrobat.catroid.R;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.SoundInfo;
@@ -75,6 +70,10 @@ import org.catrobat.catroid.ui.adapter.SpriteAdapter.OnSpriteEditListener;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import org.catrobat.catroid.ui.dialogs.RenameSpriteDialog;
 import org.catrobat.catroid.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 
 public class SpritesListFragment extends SherlockListFragment implements OnSpriteEditListener,
 		OnLoadProjectCompleteListener {

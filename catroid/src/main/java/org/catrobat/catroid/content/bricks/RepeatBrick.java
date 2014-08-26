@@ -33,13 +33,8 @@ import android.widget.TextView;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import org.catrobat.catroid.R;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
@@ -47,6 +42,10 @@ import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RepeatBrick extends FormulaBrick implements LoopBeginBrick, OnClickListener {
 	private static final long serialVersionUID = 1L;
@@ -66,6 +65,11 @@ public class RepeatBrick extends FormulaBrick implements LoopBeginBrick, OnClick
 		initializeBrickFields(new Formula(timesToRepeatValue));
 	}
 
+	@Override
+	public int getRequiredResources() {
+		return getFormulaWithBrickField(BrickField.TIMES_TO_REPEAT).getRequiredResources();
+	}
+	
 	public RepeatBrick(Formula timesToRepeat) {
 		initializeBrickFields(timesToRepeat);
 	}
@@ -73,11 +77,6 @@ public class RepeatBrick extends FormulaBrick implements LoopBeginBrick, OnClick
 	private void initializeBrickFields(Formula timesToRepeat) {
 		addAllowedBrickField(BrickField.TIMES_TO_REPEAT);
 		setFormulaWithBrickField(BrickField.TIMES_TO_REPEAT, timesToRepeat);
-	}
-
-	@Override
-	public int getRequiredResources() {
-		return NO_RESOURCES;
 	}
 
 	@Override

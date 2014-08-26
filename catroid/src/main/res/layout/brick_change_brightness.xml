@@ -71,6 +71,6 @@
             app:layout_textField="true"
             android:maxEms="10" >
         </TextView>
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

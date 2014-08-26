@@ -27,11 +27,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.io.StorageHandler;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public final class ImageEditing {
 

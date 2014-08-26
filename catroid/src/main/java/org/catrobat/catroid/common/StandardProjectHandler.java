@@ -25,12 +25,8 @@ package org.catrobat.catroid.common;
 import android.content.Context;
 import android.util.Log;
 
-import org.catrobat.catroid.R;
-
-import java.io.File;
-import java.io.IOException;
-
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
@@ -60,6 +56,9 @@ import org.catrobat.catroid.soundrecorder.SoundRecorder;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.ImageEditing;
 import org.catrobat.catroid.utils.UtilFile;
+
+import java.io.File;
+import java.io.IOException;
 
 public final class StandardProjectHandler {
 

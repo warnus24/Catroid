@@ -35,13 +35,13 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
 
-import java.util.List;
-
 import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
+
+import java.util.List;
 
 public class PlaceAtBrick extends FormulaBrick implements OnClickListener {
 	private static final long serialVersionUID = 1L;
@@ -78,7 +78,7 @@ public class PlaceAtBrick extends FormulaBrick implements OnClickListener {
 
 	@Override
 	public int getRequiredResources() {
-		return NO_RESOURCES;
+		return getFormulaWithBrickField(BrickField.Y_POSITION).getRequiredResources()|getFormulaWithBrickField(BrickField.X_POSITION).getRequiredResources();
 	}
 
 	@Override

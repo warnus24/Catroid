@@ -29,12 +29,8 @@ import android.os.ResultReceiver;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.catrobat.catroid.R;
-
-import java.io.File;
-import java.io.IOException;
-
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.utils.StatusBarNotificationManager;
@@ -43,6 +39,9 @@ import org.catrobat.catroid.utils.UtilZip;
 import org.catrobat.catroid.utils.Utils;
 import org.catrobat.catroid.web.ServerCalls;
 import org.catrobat.catroid.web.WebconnectionException;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ProjectUploadService extends IntentService {
 

@@ -24,10 +24,6 @@ package org.catrobat.catroid.content;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfLogicElseBrick;
@@ -36,6 +32,10 @@ import org.catrobat.catroid.content.bricks.LoopBeginBrick;
 import org.catrobat.catroid.content.bricks.LoopEndBrick;
 import org.catrobat.catroid.content.bricks.NestingBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Script implements Serializable {
 

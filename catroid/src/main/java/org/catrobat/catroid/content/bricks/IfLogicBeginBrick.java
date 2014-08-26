@@ -36,16 +36,15 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class IfLogicBeginBrick extends FormulaBrick implements NestingBrick, OnClickListener {
 	private static final long serialVersionUID = 1L;
@@ -74,7 +73,7 @@ public class IfLogicBeginBrick extends FormulaBrick implements NestingBrick, OnC
 
 	@Override
 	public int getRequiredResources() {
-		return NO_RESOURCES;
+		return getFormulaWithBrickField(BrickField.IF_CONDITION).getRequiredResources();
 	}
 
 	public IfLogicElseBrick getIfElseBrick() {

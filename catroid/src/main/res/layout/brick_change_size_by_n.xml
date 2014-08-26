@@ -63,6 +63,6 @@
             android:maxEms="5" >
         </TextView>
 
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

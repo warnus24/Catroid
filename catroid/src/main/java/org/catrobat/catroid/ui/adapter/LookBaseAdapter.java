@@ -27,11 +27,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.catrobat.catroid.common.LookData;
+
 import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.catrobat.catroid.common.LookData;
 
 public class LookBaseAdapter extends ArrayAdapter<LookData> implements ScriptActivityAdapterInterface {
 

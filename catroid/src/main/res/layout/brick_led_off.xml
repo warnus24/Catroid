@@ -51,6 +51,6 @@
             android:text="@string/brick_led_off" >
         </TextView>
 
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

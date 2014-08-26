@@ -22,10 +22,10 @@
  */
 package org.catrobat.catroid.ui.controller;
 
-import java.util.ArrayList;
-
 import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.ui.adapter.SoundBaseAdapter;
+
+import java.util.ArrayList;
 
 public final class BackPackListManager {
 	private static final BackPackListManager INSTANCE = new BackPackListManager();

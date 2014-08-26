@@ -29,10 +29,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import java.io.IOException;
-
 import org.catrobat.catroid.bluetooth.BTConnectable;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
+
+import java.io.IOException;
 
 public class LegoNXT implements BTConnectable {
 

@@ -34,9 +34,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.R;
-
-import java.util.Iterator;
-
 import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.ui.adapter.ScriptActivityAdapterInterface;
 import org.catrobat.catroid.ui.controller.BackPackListManager;
@@ -45,6 +42,8 @@ import org.catrobat.catroid.ui.fragment.BackPackActivityFragment;
 import org.catrobat.catroid.ui.fragment.BackPackLookFragment;
 import org.catrobat.catroid.ui.fragment.BackPackScriptFragment;
 import org.catrobat.catroid.ui.fragment.BackPackSoundFragment;
+
+import java.util.Iterator;
 
 public class BackPackActivity extends BaseActivity {
 	public static final int FRAGMENT_BACKPACK_SCRIPTS = 0;

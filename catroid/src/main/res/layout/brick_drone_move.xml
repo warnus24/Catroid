@@ -83,6 +83,6 @@
             android:id="@+id/brick_set_power_to_percent"
             style="@style/BrickText.SingleLine"
             android:text="@string/percent_symbol" />
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

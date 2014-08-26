@@ -27,12 +27,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.common.SoundInfo;
+
 import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.catrobat.catroid.common.Constants;
-import org.catrobat.catroid.common.SoundInfo;
 
 public class SoundBaseAdapter extends ArrayAdapter<SoundInfo> implements ScriptActivityAdapterInterface {
 

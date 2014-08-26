@@ -31,14 +31,13 @@ import android.widget.Button;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 
-import org.catrobat.catroid.R;
-
-import java.util.concurrent.locks.Lock;
-
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageActivity;
+
+import java.util.concurrent.locks.Lock;
 
 public class ProgramMenuActivity extends BaseActivity {
 

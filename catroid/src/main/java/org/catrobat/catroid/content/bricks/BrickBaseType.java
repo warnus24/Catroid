@@ -30,10 +30,10 @@ import android.widget.CheckBox;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import java.util.List;
-
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
+
+import java.util.List;
 
 public class BrickBaseType implements Brick {
 	private static final long serialVersionUID = 1L;

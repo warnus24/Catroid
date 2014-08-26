@@ -13,8 +13,8 @@ apply plugin: 'checkstyle'
 apply plugin: 'pmd'
 apply from: '../gradle/adb_tasks.gradle'
 
-check.dependsOn {tasks.find {'checkstyle'}}
-check.dependsOn {tasks.find {'pmd'}}
+check.dependsOn { tasks.find { 'checkstyle' } }
+check.dependsOn { tasks.find { 'pmd' } }
 
 ext {
     projectVersion = "0.9"
@@ -41,8 +41,11 @@ dependencies {
     compile 'com.google.guava:guava:17.0'
     compile fileTree(include: '*.jar', dir: 'libs')
     compile fileTree(include: '*.jar', dir: 'libs-natives')
-//    androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:4.3'
+    androidTestCompile 'org.mockito:mockito-all:1.9.5'
+    androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
     pmd 'net.sourceforge.pmd:pmd:5.1.1'
+
 }
 
 def getBuildNumberParameter = { ->
@@ -58,8 +61,8 @@ android {
         minSdkVersion 10
         targetSdkVersion 19
         applicationId "org.catrobat.catroid"
-//        testApplicationId "org.catrobat.catroid.test"
-//        testInstrumentationRunner 'pl.polidea.instrumentation.PolideaInstrumentationTestRunner'
+        testApplicationId "org.catrobat.catroid.test"
+        testInstrumentationRunner 'pl.polidea.instrumentation.PolideaInstrumentationTestRunner'
         versionCode getBuildNumberParameter()
         println "VersionCode is " + versionCode
         versionName generateVersionName(projectVersion, versionCode)
@@ -91,8 +94,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res', 'src/androidTest/res']
+            assets.srcDirs = ['src/main/assets', 'src/androidTest/assets']
+        }
+    }
 }
-
 
 
 def generateVersionName(version, buildNumber) {
@@ -121,7 +129,7 @@ def getCurrentGitBranch() {
     }
 }
 
-if(project.hasProperty('jenkins')) {
+if (project.hasProperty('jenkins')) {
     project.android.dexOptions.preDexLibraries = false
 //    android.buildTypes.each { type ->
 //        if (type.name == "debug") {

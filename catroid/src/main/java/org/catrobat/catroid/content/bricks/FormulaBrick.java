@@ -22,9 +22,9 @@
  */
 package org.catrobat.catroid.content.bricks;
 
-import java.util.Iterator;
-
 import org.catrobat.catroid.formulaeditor.Formula;
+
+import java.util.Iterator;
 
 public abstract class FormulaBrick extends BrickBaseType {
 

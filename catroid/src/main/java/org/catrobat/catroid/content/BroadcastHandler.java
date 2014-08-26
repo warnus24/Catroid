@@ -29,15 +29,15 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.BroadcastSequenceMap;
 import org.catrobat.catroid.common.BroadcastWaitSequenceMap;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.actions.BroadcastNotifyAction;
 import org.catrobat.catroid.content.actions.ExtendedActions;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public final class BroadcastHandler {
 

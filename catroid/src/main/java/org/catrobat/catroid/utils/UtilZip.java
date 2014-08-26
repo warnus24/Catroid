@@ -24,6 +24,8 @@ package org.catrobat.catroid.utils;
 
 import android.util.Log;
 
+import org.catrobat.catroid.common.Constants;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -34,8 +36,6 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-
-import org.catrobat.catroid.common.Constants;
 
 public final class UtilZip {
 	private static final int QUICKEST_COMPRESSION = 0;

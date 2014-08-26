@@ -28,6 +28,9 @@ import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.stage.StageListener;
+import org.catrobat.catroid.utils.ImageEditing;
+import org.catrobat.catroid.utils.Utils;
 
 import java.io.File;
 import java.util.Collections;
@@ -36,10 +39,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.catrobat.catroid.stage.StageListener;
-import org.catrobat.catroid.utils.ImageEditing;
-import org.catrobat.catroid.utils.Utils;
 
 public class ProjectScreenshotLoader {
 

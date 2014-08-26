@@ -49,6 +49,6 @@
             style="@style/BrickText.SingleLine"
             android:text="@string/brick_come_to_front" >
         </TextView>
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

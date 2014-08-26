@@ -32,9 +32,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.util.List;
-
 import org.catrobat.catroid.content.bricks.Brick;
+
+import java.util.List;
 
 public class PrototypeBrickAdapter extends BaseAdapter {
 

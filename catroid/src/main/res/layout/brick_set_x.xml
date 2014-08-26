@@ -62,6 +62,6 @@
             app:layout_inputType="number"
             app:layout_textField="true" >
         </TextView>
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

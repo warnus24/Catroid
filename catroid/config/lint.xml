@@ -23,42 +23,42 @@
   -->
 <lint >
     <issue id="ExtraTranslation" >
-        <ignore path="catroid/res/values-ko/strings.xml" />
-        <ignore path="catroid/res/values-pt/strings.xml" />
-        <ignore path="catroid/res/values-ro/strings.xml" />
-        <ignore path="catroid/res/values-ru/strings.xml" />
-        <ignore path="catroid/res/values-nl/strings.xml" />
+        <ignore path="catroid/src/main/res/values-ko/strings.xml" />
+        <ignore path="catroid/src/main/res/values-pt/strings.xml" />
+        <ignore path="catroid/src/main/res/values-ro/strings.xml" />
+        <ignore path="catroid/src/main/res/values-ru/strings.xml" />
+        <ignore path="catroid/src/main/res/values-nl/strings.xml" />
     </issue >
     <issue id="IconDensities" >
-        <ignore path="catroid/res/drawable-mdpi" />
-        <ignore path="catroid/res/drawable-hdpi" />
-        <ignore path="catroid/res/drawable-xhdpi" />
+        <ignore path="catroid/src/main/res/drawable-mdpi" />
+        <ignore path="catroid/src/main/res/drawable-hdpi" />
+        <ignore path="catroid/src/main/res/drawable-xhdpi" />
     </issue >
     <issue id="InflateParams" >
-        <ignore path="catroid/src/org/catrobat/catroid/content/bricks/**" />
-        <ignore path="catroid/src/org/catrobat/catroid/ui/dialogs/AboutDialogFragment.java" />
-        <ignore path="catroid/src/org/catrobat/catroid/ui/dialogs/AcceptTermsOfUseDialogFragment.java" />
-        <ignore path="catroid/src/org/catrobat/catroid/ui/dialogs/CustomAlertDialogBuilder.java" />
-        <ignore path="catroid/src/org/catrobat/catroid/ui/dialogs/NewLookDialog.java" />
-        <ignore path="catroid/src/org/catrobat/catroid/ui/dialogs/NewSpriteDialog.java" />
-        <ignore path="catroid/src/org/catrobat/catroid/ui/dialogs/TermsOfUseDialogFragment.java" />
-        <ignore path="catroid/src/org/catrobat/catroid/utils/Utils.java" />
-        <ignore path="catroid/src/org/catrobat/catroid/ui/fragment/ScriptFragment.java" />
+        <ignore path="catroid/src/main/java/org/catrobat/catroid/content/bricks/**" />
+        <ignore path="catroid/src/main/java/org/catrobat/catroid/ui/dialogs/AboutDialogFragment.java" />
+        <ignore path="catroid/src/main/java/org/catrobat/catroid/ui/dialogs/AcceptTermsOfUseDialogFragment.java" />
+        <ignore path="catroid/src/main/java/org/catrobat/catroid/ui/dialogs/CustomAlertDialogBuilder.java" />
+        <ignore path="catroid/src/main/java/org/catrobat/catroid/ui/dialogs/NewLookDialog.java" />
+        <ignore path="catroid/src/main/java/org/catrobat/catroid/ui/dialogs/NewSpriteDialog.java" />
+        <ignore path="catroid/src/main/java/org/catrobat/catroid/ui/dialogs/TermsOfUseDialogFragment.java" />
+        <ignore path="catroid/src/main/java/org/catrobat/catroid/utils/Utils.java" />
+        <ignore path="catroid/src/main/java/org/catrobat/catroid/ui/fragment/ScriptFragment.java" />
     </issue >
     <issue id="MissingTranslation" severity="ignore" >
-        <ignore path="catroid/res/values/strings-global.xml" />
-        <ignore path="catroid/res/values-ko/strings.xml" />
-        <ignore path="catroid/res/values-pt/strings.xml" />
-        <ignore path="catroid/res/values-ro/strings.xml" />
-        <ignore path="catroid/res/values-ru/strings.xml" />
-        <ignore path="catroid/res/values-nl/strings.xml" />
+        <ignore path="catroid/src/main/res/values/strings-global.xml" />
+        <ignore path="catroid/src/main/res/values-ko/strings.xml" />
+        <ignore path="catroid/src/main/res/values-pt/strings.xml" />
+        <ignore path="catroid/src/main/res/values-ro/strings.xml" />
+        <ignore path="catroid/src/main/res/values-ru/strings.xml" />
+        <ignore path="catroid/src/main/res/values-nl/strings.xml" />
     </issue >
     <issue id="UnusedResources" >
-        <ignore path="catroid/res/values-ko/strings.xml" />
-        <ignore path="catroid/res/values-pt/strings.xml" />
-        <ignore path="catroid/res/values-ro/strings.xml" />
-        <ignore path="catroid/res/values-ru/strings.xml" />
-        <ignore path="catroid/res/values-nl/strings.xml" />
-        <ignore path="catroid/res/drawable-nodpi/default_drone_project_orange_light_bulb.png" />
+        <ignore path="catroid/src/main/res/values-ko/strings.xml" />
+        <ignore path="catroid/src/main/res/values-pt/strings.xml" />
+        <ignore path="catroid/src/main/res/values-ro/strings.xml" />
+        <ignore path="catroid/src/main/res/values-ru/strings.xml" />
+        <ignore path="catroid/src/main/res/values-nl/strings.xml" />
+        <ignore path="catroid/src/main/res/drawable-nodpi/default_drone_project_orange_light_bulb.png" />
     </issue >
 </lint >

@@ -22,9 +22,9 @@
  */
 package org.catrobat.catroid.content.bricks;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.catrobat.catroid.formulaeditor.Formula;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ConcurrentFormulaHashMap extends ConcurrentHashMap<Brick.BrickField, Formula> implements Cloneable {
 

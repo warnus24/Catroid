@@ -28,13 +28,12 @@ import android.os.Handler;
 import android.util.Log;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.bluetooth.BluetoothConnection;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
-
-import org.catrobat.catroid.bluetooth.BluetoothConnection;
 
 /**
  * This class is for talking to a LEGO NXT robot via bluetooth.

@@ -30,14 +30,14 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.view.ActionMode;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.ui.BackPackActivity;
 import org.catrobat.catroid.ui.controller.BackPackListManager;
 import org.catrobat.catroid.ui.controller.SoundController;
 import org.catrobat.catroid.ui.fragment.SoundFragment;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class SoundAdapter extends SoundBaseAdapter implements ScriptActivityAdapterInterface {
 

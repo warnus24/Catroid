@@ -29,13 +29,13 @@ import com.thoughtworks.xstream.converters.reflection.FieldKey;
 import com.thoughtworks.xstream.converters.reflection.FieldKeySorter;
 import com.thoughtworks.xstream.core.util.OrderRetainingMap;
 
+import org.catrobat.catroid.content.Sprite;
+
 import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.catrobat.catroid.content.Sprite;
 
 public class CatroidFieldKeySorter implements FieldKeySorter {
 

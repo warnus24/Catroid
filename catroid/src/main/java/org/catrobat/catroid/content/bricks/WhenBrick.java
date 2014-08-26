@@ -30,12 +30,11 @@ import android.widget.BaseAdapter;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
-
-import java.util.List;
-
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.WhenScript;
+
+import java.util.List;
 
 public class WhenBrick extends ScriptBrick {
 	protected WhenScript whenScript;

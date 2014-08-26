@@ -24,12 +24,8 @@ package org.catrobat.catroid.ui.fragment;
 
 import android.content.Context;
 
-import org.catrobat.catroid.R;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.common.MessageContainer;
 import org.catrobat.catroid.content.Sprite;
@@ -99,6 +95,9 @@ import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 import org.catrobat.catroid.formulaeditor.Operators;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoryBricksFactory {
 

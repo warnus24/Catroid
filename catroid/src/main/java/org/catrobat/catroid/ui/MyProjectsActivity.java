@@ -32,12 +32,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.R;
-
-import java.util.concurrent.locks.Lock;
-
 import org.catrobat.catroid.ui.adapter.ProjectAdapter;
 import org.catrobat.catroid.ui.dialogs.NewProjectDialog;
 import org.catrobat.catroid.ui.fragment.ProjectsListFragment;
+
+import java.util.concurrent.locks.Lock;
 
 public class MyProjectsActivity extends BaseActivity {
 

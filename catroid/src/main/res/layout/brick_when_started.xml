@@ -48,6 +48,6 @@
             style="@style/BrickText.SingleLine"
             android:text="@string/brick_when_started" >
         </TextView>
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

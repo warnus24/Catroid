@@ -68,6 +68,6 @@
             android:id="@+id/brick_move_n_steps_step_text_view"
             style="@style/BrickText.SingleLine" >
         </TextView>
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

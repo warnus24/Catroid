@@ -39,6 +39,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.ProjectData;
+import org.catrobat.catroid.io.ProjectScreenshotLoader;
+import org.catrobat.catroid.utils.UtilFile;
+import org.catrobat.catroid.utils.Utils;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -47,11 +51,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.catrobat.catroid.common.ProjectData;
-import org.catrobat.catroid.io.ProjectScreenshotLoader;
-import org.catrobat.catroid.utils.UtilFile;
-import org.catrobat.catroid.utils.Utils;
 
 public class ProjectAdapter extends ArrayAdapter<ProjectData> {
 	private boolean showDetails;

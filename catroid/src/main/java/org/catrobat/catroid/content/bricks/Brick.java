@@ -29,11 +29,11 @@ import android.widget.CheckBox;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-import java.io.Serializable;
-import java.util.List;
-
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
+
+import java.io.Serializable;
+import java.util.List;
 
 public interface Brick extends Serializable, Cloneable {
 
@@ -58,6 +58,7 @@ public interface Brick extends Serializable, Cloneable {
 	int VIBRATOR = 0x200;
 
 	//	public static final int BLUETOOTH_ARDUINO = 0x8;
+	int FACE_DETECTION = 0x10;
 
 	List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence);
 

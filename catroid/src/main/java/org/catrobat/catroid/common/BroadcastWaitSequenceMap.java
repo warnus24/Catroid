@@ -24,10 +24,10 @@ package org.catrobat.catroid.common;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import org.catrobat.catroid.content.BroadcastEvent;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.catrobat.catroid.content.BroadcastEvent;
 
 public final class BroadcastWaitSequenceMap {
 	private static HashMap<String, ArrayList<SequenceAction>> broadcastWaitSequenceMap = new HashMap<String, ArrayList<SequenceAction>>();

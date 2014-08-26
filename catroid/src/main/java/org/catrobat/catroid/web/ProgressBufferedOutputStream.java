@@ -26,11 +26,11 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import org.catrobat.catroid.common.Constants;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import org.catrobat.catroid.common.Constants;
 
 public class ProgressBufferedOutputStream extends BufferedOutputStream {
 

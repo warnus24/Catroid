@@ -68,6 +68,6 @@
             android:id="@+id/brick_vibration_second_text_view"
             style="@style/BrickText.Multiple" >
         </TextView>
-    </org.catrobat.catroid.ui.BrickLayout >
+    </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

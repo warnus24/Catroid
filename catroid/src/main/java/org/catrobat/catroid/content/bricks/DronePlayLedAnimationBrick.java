@@ -32,11 +32,10 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
-
-import java.util.List;
-
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
+
+import java.util.List;
 
 public class DronePlayLedAnimationBrick extends BrickBaseType {
 	private static final long serialVersionUID = 1L;

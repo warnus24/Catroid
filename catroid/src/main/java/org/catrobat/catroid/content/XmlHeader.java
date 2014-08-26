@@ -24,9 +24,9 @@ package org.catrobat.catroid.content;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import java.io.Serializable;
-
 import org.catrobat.catroid.common.ScreenModes;
+
+import java.io.Serializable;
 
 public class XmlHeader implements Serializable {
 
