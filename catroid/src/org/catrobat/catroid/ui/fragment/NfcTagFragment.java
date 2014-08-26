@@ -152,15 +152,21 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 		super.onActivityCreated(savedInstanceState);
 
 		listView = getListView();
-		registerForContextMenu(listView);
+		if(listView != null)
+			registerForContextMenu(listView);
 
         if (savedInstanceState != null) {
             selectedNfcTag = (NfcTagData) savedInstanceState
                     .getSerializable(NfcTagController.BUNDLE_ARGUMENTS_SELECTED_NFCTAG);
         }
-        nfcTagDataList = ProjectManager.getInstance().getCurrentSprite().getNfcTagList();
 
-        adapter = new NfcTagAdapter(getActivity(), R.layout.fragment_nfctag_nfctaglist_item,
+		try {
+			nfcTagDataList = ProjectManager.getInstance().getCurrentSprite().getNfcTagList();
+		} catch (NullPointerException e) {
+			Log.e(TAG, e.getMessage());
+		}
+
+		adapter = new NfcTagAdapter(getActivity(), R.layout.fragment_nfctag_nfctaglist_item,
                 R.id.fragment_nfctag_item_title_text_view, nfcTagDataList, false);
 
         adapter.setOnNfcTagEditListener(this);
