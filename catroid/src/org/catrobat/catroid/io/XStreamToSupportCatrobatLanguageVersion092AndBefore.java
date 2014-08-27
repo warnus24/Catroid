@@ -421,9 +421,9 @@ public class XStreamToSupportCatrobatLanguageVersion092AndBefore extends XStream
 	}
 
 	private void modifyVariables(Document originalDocument) {
-		Node variableNode = originalDocument.getElementsByTagName("variables").item(0);
+		Node variableNode = findNodeByName(originalDocument.getParentNode(), "variables");
 		String variableNodeNamespaceURI = variableNode.getNamespaceURI();
-		originalDocument.renameNode(variableNode, variableNodeNamespaceURI, "data");
+		originalDocument.renameNode(variableNode, variableNodeNamespaceURI, "xdata");
 	}
 
 	private Document getDocument(File file) {
