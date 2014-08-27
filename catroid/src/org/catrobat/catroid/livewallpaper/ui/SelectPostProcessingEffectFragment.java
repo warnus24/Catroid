@@ -31,6 +31,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.livewallpaper.LiveWallpaper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,8 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 		effectList.add(PostProcessingEffectsEnum.VIGNETTE.toString());
 		effectList.add(PostProcessingEffectsEnum.CURVATURE.toString());
 		effectList.add(PostProcessingEffectsEnum.CRTMONITOR.toString());
+		effectList.add(PostProcessingEffectsEnum.EFFECT_1.toString());
+		effectList.add(PostProcessingEffectsEnum.EFFECT_2.toString());
 
 		String[] effectArray = effectList.toArray(new String[effectList.size()]);
 
@@ -75,6 +79,13 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		String item = (String) getListAdapter().getItem(position);
+
+		if(item.equals(PostProcessingEffectsEnum.EFFECT_1.toString())){
+			LiveWallpaper.getInstance().activateEffect1();
+		}
+		else if(item.equals(PostProcessingEffectsEnum.EFFECT_2.toString())){
+			LiveWallpaper.getInstance().activateEffect2();
+		}
 		Toast.makeText(getActivity(), item, Toast.LENGTH_LONG).show();
 	}
 }

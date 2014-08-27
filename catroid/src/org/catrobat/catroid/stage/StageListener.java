@@ -46,13 +46,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bitfire.postprocessing.PostProcessorEffect;
-import com.bitfire.postprocessing.effects.Zoomer;
 import com.bitfire.postprocessing.effects.Vignette;
 import com.bitfire.postprocessing.effects.CrtMonitor;
 import com.bitfire.postprocessing.effects.Curvature;
-import com.bitfire.postprocessing.effects.CameraMotion;
 import com.bitfire.postprocessing.filters.CrtScreen;
-import com.bitfire.postprocessing.filters.RadialBlur;
 import com.google.common.collect.Multimap;
 
 import org.catrobat.catroid.ProjectManager;
@@ -66,7 +63,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
-import org.catrobat.catroid.livewallpaper.PostProcessingEffectEnum;
+import org.catrobat.catroid.livewallpaper.ui.PostProcessingEffectsEnum;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.Utils;
@@ -169,7 +166,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private Curvature curvature;
 	private CrtMonitor crtMonitor;
 	private Vignette vignette;
-	private PostProcessingEffectEnum postProcessingEnum = PostProcessingEffectEnum.NONE;;
+	private PostProcessingEffectsEnum postProcessingEnum = PostProcessingEffectsEnum.NONE;;
 
 	public StageListener(boolean isLWP) {
 		super();
@@ -272,51 +269,51 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	public void activateEffect1()
 	{
 		synchronized (postProcessor) {
-			if (postProcessingEnum == PostProcessingEffectEnum.EFFECT_2) {
+			if (postProcessingEnum == PostProcessingEffectsEnum.EFFECT_2) {
 				postProcessor.removeEffect(crtMonitor);
 				postProcessor.removeEffect(curvature);
 			}
 
-			if (postProcessingEnum != PostProcessingEffectEnum.EFFECT_1) {
+			if (postProcessingEnum != PostProcessingEffectsEnum.EFFECT_1) {
 				postProcessor.addEffect(bloom);
 				postProcessor.addEffect(vignette);
 			}
 
-			postProcessingEnum = PostProcessingEffectEnum.EFFECT_1;
+			postProcessingEnum = PostProcessingEffectsEnum.EFFECT_1;
 		}
 	}
 
 	public void activateEffect2()
 	{
 		synchronized (postProcessor) {
-			if (postProcessingEnum == PostProcessingEffectEnum.EFFECT_1) {
+			if (postProcessingEnum == PostProcessingEffectsEnum.EFFECT_1) {
 				postProcessor.removeEffect(vignette);
 				postProcessor.removeEffect(bloom);
 			}
 
-			if (postProcessingEnum != PostProcessingEffectEnum.EFFECT_2) {
+			if (postProcessingEnum != PostProcessingEffectsEnum.EFFECT_2) {
 				postProcessor.addEffect(curvature);
 				postProcessor.addEffect(crtMonitor);
 			}
 
-			postProcessingEnum = PostProcessingEffectEnum.EFFECT_2;
+			postProcessingEnum = PostProcessingEffectsEnum.EFFECT_2;
 		}
 	}
 
 	public void disableEffects()
 	{
 		synchronized (postProcessor) {
-			if (postProcessingEnum == PostProcessingEffectEnum.EFFECT_1) {
+			if (postProcessingEnum == PostProcessingEffectsEnum.EFFECT_1) {
 				postProcessor.removeEffect(bloom);
 				postProcessor.removeEffect(vignette);
 			}
 
-			if (postProcessingEnum == PostProcessingEffectEnum.EFFECT_2) {
+			if (postProcessingEnum == PostProcessingEffectsEnum.EFFECT_2) {
 				postProcessor.removeEffect(curvature);
 				postProcessor.removeEffect(crtMonitor);
 			}
 
-			postProcessingEnum = PostProcessingEffectEnum.NONE;
+			postProcessingEnum = PostProcessingEffectsEnum.NONE;
 		}
 	}
 

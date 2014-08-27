@@ -50,24 +50,14 @@
         android:title="@string/lwp_disable_tinting"/>
 
     <item
-        android:id="@+id/lwp_effect1"
+        android:id="@+id/lwp_effects"
         android:showAsAction="never"
-        android:title="@string/lwp_effect1"/>
-
-    <item
-        android:id="@+id/lwp_effect2"
-        android:showAsAction="never"
-        android:title="@string/lwp_effect2"/>
+        android:title="@string/lwp_select_effects"/>
 
     <item
         android:id="@+id/lwp_disable_effect"
         android:showAsAction="never"
         android:title="@string/lwp_disable_effect"/>
-
-    <item
-        android:id="@+id/lwp_effects"
-        android:showAsAction="never"
-        android:title="@string/lwp_select_effects"/>
     
  
 </menu>
