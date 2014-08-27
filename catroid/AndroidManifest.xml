@@ -158,7 +158,7 @@
             </intent-filter>
         </activity>
         
-        <service android:name="org.catrobat.catroid.livewallpaper.LiveWallpaper" 
+        <service android:name="org.catrobat.catroid.livewallpaper.LiveWallpaper"
         	android:label="@string/lwp_app_name" 
         	android:permission="android.permission.BIND_WALLPAPER" 
         	android:enabled="true"> 
@@ -168,6 +168,11 @@
             <meta-data android:name="android.service.wallpaper" 
                 android:resource="@xml/livewallpaper"/> 
         </service>
+
+        <activity
+            android:name="org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectActivity" android:exported="true"
+            android:parentActivityName="org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity" >
+		</activity>
 		
 		<activity
      		 android:name="org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity" android:exported="true"

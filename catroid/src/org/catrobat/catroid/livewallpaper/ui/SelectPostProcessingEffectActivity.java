@@ -35,9 +35,7 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
 
-public class SelectPostProcessingEffectActivity extends BaseActivity implements ColorPickerDialog.OnColorChangedListener {
-
-	public static final String ACTION_PROJECT_LIST_INIT = "org.catroba Fragment.PROJECT_LIST_INIT";
+public class SelectPostProcessingEffectActivity extends BaseActivity {
 
 	private SelectPostProcessingEffectFragment selectPostProcessingEffectFragment;
 	private int tintingColor = 0;
@@ -45,102 +43,13 @@ public class SelectPostProcessingEffectActivity extends BaseActivity implements 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_my_projects_lwp);
+		setContentView(R.layout.activity_postprocessing_effects_lwp);
 		setUpActionBar();
 
 		selectPostProcessingEffectFragment = (SelectPostProcessingEffectFragment) getSupportFragmentManager().findFragmentById(
-				R.id.fragment_projects_list_lwp);
+				R.id.fragment_postprocessing_list_lwp);
 	}
 
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		super.onWindowFocusChanged(hasFocus);
-		if (hasFocus) {
-			sendBroadcast(new Intent(ACTION_PROJECT_LIST_INIT));
-		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.menu_selectprogram, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.delete: {
-				selectPostProcessingEffectFragment.startDeleteActionMode();
-				break;
-			}
-			case R.id.about: {
-				AboutPocketCodeDialog aboutPocketCodeDialog = new AboutPocketCodeDialog(this);
-				aboutPocketCodeDialog.show();
-				break;
-			}
-			case R.id.lwp_new: {
-				Intent pocketCodeIntent = new Intent("android.intent.action");
-				pocketCodeIntent.setComponent(new ComponentName(Constants.POCKET_CODE_PACKAGE_NAME,
-						Constants.POCKET_CODE_INTENT_ACTIVITY_NAME));
-				//				//boolean isInstalled = Utils.checkIfPocketCodeInstalled(pocketCodeIntent, this);
-				//				if (isInstalled) {
-				//
-				//					pocketCodeIntent.addCategory("android.intent.category.LAUNCHER");
-				//					startActivity(pocketCodeIntent);
-				//				} else {
-				//
-				//					displayDownloadPocketCodeDialog();
-				//				}
-
-				break;
-			}
-			case R.id.lwp_tinting: {
-				tinting();
-				break;
-			}
-			case R.id.lwp_disable_tinting: {
-				disableTinting();
-				break;
-			}
-
-			case R.id.lwp_effect1: {
-				activateEffect1();
-				break;
-			}
-			case R.id.lwp_effect2: {
-				activateEffect2();
-				break;
-			}
-			case R.id.lwp_disable_effect: {
-				disableEffects();
-				break;
-			}
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	public void disableTinting() {
-		selectPostProcessingEffectFragment.disableTinting();
-	}
-
-	public void tinting() {
-		Paint mPaint = new Paint();
-		ColorPickerDialog dialog = new ColorPickerDialog(SelectPostProcessingEffectActivity.this, SelectPostProcessingEffectActivity.this,
-				mPaint.getColor());
-		dialog.show();
-	}
-
-	public void activateEffect1() {
-		selectPostProcessingEffectFragment.activateEffect1();
-	}
-
-	public void activateEffect2() {
-		selectPostProcessingEffectFragment.activateEffect2();
-	}
-
-	public void disableEffects() {
-		selectPostProcessingEffectFragment.disableEffects();
-	}
 
 	private void setUpActionBar() {
 		final ActionBar actionBar = getSupportActionBar();
@@ -152,37 +61,4 @@ public class SelectPostProcessingEffectActivity extends BaseActivity implements 
 	public SelectPostProcessingEffectFragment getSelectPostProcessingEffectFragment() {
 		return selectPostProcessingEffectFragment;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.catrobat.catroid.livewallpaper.ColorPickerDialog.OnColorChangedListener#colorChanged(int)
-	 */
-	@Override
-	public void colorChanged(int color) {
-		selectPostProcessingEffectFragment.tinting(color);
-	}
-
-	//	private void displayDownloadPocketCodeDialog() {
-	//
-	//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	//		builder.setMessage(R.string.pocket_code_not_installed).setCancelable(false)
-	//				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-	//					@Override
-	//					public void onClick(DialogInterface dialog, int id) {
-	//
-	//						Intent downloadPocketPaintIntent = new Intent(Intent.ACTION_VIEW, Uri
-	//								.parse(Constants.POCKET_CODE_DOWNLOAD_LINK));
-	//						startActivity(downloadPocketPaintIntent);
-	//					}
-	//				}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-	//					@Override
-	//					public void onClick(DialogInterface dialog, int id) {
-	//						dialog.cancel();
-	//					}
-	//				});
-	//		AlertDialog alert = builder.create();
-	//		alert.show();
-	//	}
-
 }

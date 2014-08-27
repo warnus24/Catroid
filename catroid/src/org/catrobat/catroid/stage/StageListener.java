@@ -271,47 +271,53 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	public void activateEffect1()
 	{
-		if(postProcessingEnum == PostProcessingEffectEnum.EFFECT_2)	{
-			postProcessor.removeEffect(crtMonitor);
-			postProcessor.removeEffect(curvature);
-		}
+		synchronized (postProcessor) {
+			if (postProcessingEnum == PostProcessingEffectEnum.EFFECT_2) {
+				postProcessor.removeEffect(crtMonitor);
+				postProcessor.removeEffect(curvature);
+			}
 
-		if(postProcessingEnum != PostProcessingEffectEnum.EFFECT_1)	{
-			postProcessor.addEffect(bloom);
-			postProcessor.addEffect(vignette);
-		}
+			if (postProcessingEnum != PostProcessingEffectEnum.EFFECT_1) {
+				postProcessor.addEffect(bloom);
+				postProcessor.addEffect(vignette);
+			}
 
-		postProcessingEnum = PostProcessingEffectEnum.EFFECT_1;
+			postProcessingEnum = PostProcessingEffectEnum.EFFECT_1;
+		}
 	}
 
 	public void activateEffect2()
 	{
-		if(postProcessingEnum == PostProcessingEffectEnum.EFFECT_1)	{
-			postProcessor.removeEffect(vignette);
-			postProcessor.removeEffect(bloom);
-		}
+		synchronized (postProcessor) {
+			if (postProcessingEnum == PostProcessingEffectEnum.EFFECT_1) {
+				postProcessor.removeEffect(vignette);
+				postProcessor.removeEffect(bloom);
+			}
 
-		if(postProcessingEnum != PostProcessingEffectEnum.EFFECT_2)	{
-			postProcessor.addEffect(curvature);
-			postProcessor.addEffect(crtMonitor);
-		}
+			if (postProcessingEnum != PostProcessingEffectEnum.EFFECT_2) {
+				postProcessor.addEffect(curvature);
+				postProcessor.addEffect(crtMonitor);
+			}
 
-		postProcessingEnum = PostProcessingEffectEnum.EFFECT_2;
+			postProcessingEnum = PostProcessingEffectEnum.EFFECT_2;
+		}
 	}
 
 	public void disableEffects()
 	{
-		if(postProcessingEnum == PostProcessingEffectEnum.EFFECT_1)	{
-			postProcessor.removeEffect(bloom);
-			postProcessor.removeEffect(vignette);
-		}
+		synchronized (postProcessor) {
+			if (postProcessingEnum == PostProcessingEffectEnum.EFFECT_1) {
+				postProcessor.removeEffect(bloom);
+				postProcessor.removeEffect(vignette);
+			}
 
-		if(postProcessingEnum == PostProcessingEffectEnum.EFFECT_2)	{
-			postProcessor.removeEffect(curvature);
-			postProcessor.removeEffect(crtMonitor);
-		}
+			if (postProcessingEnum == PostProcessingEffectEnum.EFFECT_2) {
+				postProcessor.removeEffect(curvature);
+				postProcessor.removeEffect(crtMonitor);
+			}
 
-		postProcessingEnum = PostProcessingEffectEnum.NONE;
+			postProcessingEnum = PostProcessingEffectEnum.NONE;
+		}
 	}
 
 	public void initializePostProcessEffects()
@@ -403,7 +409,9 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 
 		if(postProcessor != null){
-			postProcessor.rebind();
+			synchronized (postProcessor) {
+				postProcessor.rebind();
+			}
 		}
 	}
 
@@ -429,7 +437,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void resetSprites() {
 		for (Sprite sprite : sprites) {
@@ -511,10 +519,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 			/*
 			 * Necessary for UiTests, when EMMA - code coverage is enabled.
-			 * 
+			 *
 			 * Without setting DYNAMIC_SAMPLING_RATE_FOR_ACTIONS to false(via reflection), before
 			 * the UiTest enters the stage, random segmentation faults(triggered by EMMA) will occur.
-			 * 
+			 *
 			 * Can be removed, when EMMA is replaced by an other code coverage tool, or when a
 			 * future EMMA - update will fix the bugs.
 			 */
@@ -540,14 +548,18 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 		if (!finished) {
 			if(postProcessor != null){
-				postProcessor.capture();
+				synchronized (postProcessor) {
+					postProcessor.capture();
+				}
 			}
 
 			tinting();
 			stage.draw();
 
 			if(postProcessor != null){
-				postProcessor.render();
+				synchronized (postProcessor) {
+					postProcessor.render();
+				}
 			}
 		}
 
@@ -702,7 +714,9 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		disposeTextures();
 
 		if(postProcessor != null){
-			postProcessor.dispose();
+			synchronized (postProcessor) {
+				postProcessor.dispose();
+			}
 		}
 	}
 
@@ -839,7 +853,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.badlogic.gdx.backends.android.AndroidWallpaperListener#offsetChange(float, float, float, float, int,
 	 * int)
 	 */
@@ -852,7 +866,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.badlogic.gdx.backends.android.AndroidWallpaperListener#previewStateChange(boolean)
 	 */
 	@Override

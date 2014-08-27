@@ -680,5 +680,6 @@
     <string name="lwp_effect1">Effect 1</string>
     <string name="lwp_effect2">Effect 2</string>
     <string name="lwp_disable_effect">Disable effects</string>
+    <string name="lwp_select_effects">Select effects</string>
 	<!--  -->
 </resources>

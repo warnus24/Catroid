@@ -62,7 +62,7 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.menu_selectprogram, menu);
+		getSupportMenuInflater().inflate(R.menu.menu_selectprogram_lwp, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -115,8 +115,21 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 				disableEffects();
 				break;
 			}
+			case R.id.lwp_effects:
+			{
+				goToSelectPostProcessingEffects();
+				break;
+			}
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void goToSelectPostProcessingEffects()
+	{
+		Intent intent = new Intent(this, SelectPostProcessingEffectActivity.class);
+		//String message = editText.getText().toString();
+		//intent.putExtra(EXTRA_MESSAGE, message);
+		startActivity(intent);
 	}
 
 	public void disableTinting() {

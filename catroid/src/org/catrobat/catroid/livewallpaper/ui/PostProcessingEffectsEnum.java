@@ -27,7 +27,7 @@ package org.catrobat.catroid.livewallpaper.ui;
  * Created by White on 10.08.2014.
  */
 public enum PostProcessingEffectsEnum {
-	EFFECT_1("Effect 1"), EFFECT_2("Effect 2"), NONE("No effect");
+	BLOOM("Bloom"), CURVATURE("Curvature"), CRTMONITOR("Crt-Monitor"), VIGNETTE("Vignette");
 
 	/**
 	 * @param text

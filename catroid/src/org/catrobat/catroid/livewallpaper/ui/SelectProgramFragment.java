@@ -24,6 +24,7 @@ package org.catrobat.catroid.livewallpaper.ui;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -185,8 +186,11 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 			boolean preview_loadable = true;
 			try {
-				projectManagerLWP.loadProject(selectedProject, LiveWallpaper.getInstance()
-						.getContext());
+				Context context = LiveWallpaper.getInstance().getContext();
+				synchronized (LiveWallpaper.getInstance())
+				{
+					projectManagerLWP.loadProject(selectedProject, context);
+				}
 			} catch (LoadingProjectException e) {
 				preview_loadable = false;
 				e.printStackTrace();

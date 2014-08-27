@@ -38,31 +38,5 @@
         android:id="@+id/lwp_new"
         android:showAsAction="never"
         android:title="@string/lwp_new"/>
-    
-    <item
-        android:id="@+id/lwp_tinting"
-        android:showAsAction="never"
-        android:title="@string/lwp_tinting"/>
-    
-    <item
-        android:id="@+id/lwp_disable_tinting"
-        android:showAsAction="never"
-        android:title="@string/lwp_disable_tinting"/>
-
-    <item
-        android:id="@+id/lwp_effect1"
-        android:showAsAction="never"
-        android:title="@string/lwp_effect1"/>
-
-    <item
-        android:id="@+id/lwp_effect2"
-        android:showAsAction="never"
-        android:title="@string/lwp_effect2"/>
-
-    <item
-        android:id="@+id/lwp_disable_effect"
-        android:showAsAction="never"
-        android:title="@string/lwp_disable_effect"/>
-    
 
 </menu>

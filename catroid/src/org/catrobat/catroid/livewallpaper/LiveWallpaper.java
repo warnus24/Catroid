@@ -66,12 +66,17 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	public LiveWallpaper() {
 		super();
-		INSTANCE = this;
+		if(INSTANCE == null)
+		{
+			INSTANCE = this;
+		}
+
+		Log.e("Error", "new LiveWallpaper");
 	}
 
 	private static LiveWallpaper INSTANCE = null;
 
-	public static LiveWallpaper getInstance() {
+	public static synchronized LiveWallpaper getInstance() {
 		return INSTANCE;
 	}
 
@@ -150,10 +155,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, oldProjectName);
 		INSTANCE = null;
 		super.onDestroy();
+		Log.e("Error", "destroy LiveWallpaper");
 		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
 	}
 
-	public void changeWallpaperProgram() {
+	public synchronized void  changeWallpaperProgram() {
 		if (previewEngine != null) {
 			previewEngine.changeWallpaperProgram();
 		}
@@ -413,7 +419,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			super.onDestroy();
 		}
 
-		public void changeWallpaperProgram() {
+		public synchronized void changeWallpaperProgram() {
 
 			if (getLocalStageListener() == null) {
 				Log.d("LWP", "StageListener, Fehler bei changeWallpaper " + name);
@@ -425,12 +431,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			//onPause();
 			LiveWallpaperEngine engine = this;
 			getLocalStageListener().create();
+			getLocalStageListener().reloadProjectLWP(engine);
 			Log.d("LWP", "StageListener, changeWallpaper Engine: " + name);
 
 			synchronized (engine) {
 				try {
 					Log.d("LWP", "StageListener, changeWallpaper wait... ANFANG");
-					getLocalStageListener().reloadProjectLWP(engine);
 					onResume();
 					engine.wait();
 				} catch (InterruptedException e) {
