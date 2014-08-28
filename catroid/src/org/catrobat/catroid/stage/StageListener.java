@@ -544,17 +544,13 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 
 		if (!finished) {
-			if(postProcessor != null){
-				synchronized (postProcessor) {
+			if(postProcessor != null)
+			{
+				synchronized (postProcessor)
+				{
 					postProcessor.capture();
-				}
-			}
-
-			tinting();
-			stage.draw();
-
-			if(postProcessor != null){
-				synchronized (postProcessor) {
+					tinting();
+					stage.draw();
 					postProcessor.render();
 				}
 			}

@@ -159,7 +159,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
 	}
 
-	public synchronized void  changeWallpaperProgram() {
+	public void  changeWallpaperProgram() {
 		if (previewEngine != null) {
 			previewEngine.changeWallpaperProgram();
 		}

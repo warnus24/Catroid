@@ -187,10 +187,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			boolean preview_loadable = true;
 			try {
 				Context context = LiveWallpaper.getInstance().getContext();
-				synchronized (LiveWallpaper.getInstance())
-				{
-					projectManagerLWP.loadProject(selectedProject, context);
-				}
+				projectManagerLWP.loadProject(selectedProject, context);
 			} catch (LoadingProjectException e) {
 				preview_loadable = false;
 				e.printStackTrace();
