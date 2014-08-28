@@ -381,8 +381,9 @@
     <string name="brick_clear_graphic_effect">Schalte Grafikeffekte aus</string>
     <string name="brick_next_look">Nächstes Aussehen</string>
     <string name="brick_next_background">Nächster Hintergrund</string>
-    <string name="brick_led_on">Schalte Blitzlicht an</string>
-    <string name="brick_led_off">Schalte Blitzlicht aus</string>
+    <string name="brick_led">Schalte Blitzlicht</string>
+    <string name="brick_led_on">ein</string>
+    <string name="brick_led_off">aus</string>
     <string name="brick_vibration">Vibrieren für</string>
     <!--  -->
 
