@@ -22,10 +22,6 @@
  */
 package org.catrobat.catroid.uitest.util;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Instrumentation;
@@ -66,6 +62,9 @@ import com.actionbarsherlock.internal.ActionBarSherlockCompat;
 import com.actionbarsherlock.internal.view.menu.ActionMenuItem;
 import com.jayway.android.robotium.solo.Solo;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 import junit.framework.AssertionFailedError;
 
 import org.catrobat.catroid.ProjectManager;
