@@ -154,6 +154,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		ProjectManager.changeState(ProjectManagerState.NORMAL);
 		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, oldProjectName);
 		INSTANCE = null;
+		homeEngine = null;
+		previewEngine = null;
 		super.onDestroy();
 		Log.e("Error", "destroy LiveWallpaper");
 		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
@@ -302,6 +304,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			super();
 			//activateTextToSpeechIfNeeded();
 			//SensorHandler.startSensorListener(getApplicationContext());
+			Log.e("Error", "Erzeuge LiveWallpaperEngine");
 		}
 
 		@Override

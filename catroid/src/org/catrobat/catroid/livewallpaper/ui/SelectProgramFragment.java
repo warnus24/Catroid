@@ -177,40 +177,43 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			//}
 			String str_loadable = ProjectLoadableEnum.IS_ALREADY_LOADED.toString();
 
-			if (projectManagerLWP.getCurrentProject() != null
-					&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
-				//getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-				//getFragmentManager().popBackStack();
-				return str_loadable;
-			}
+			synchronized (LiveWallpaper.getInstance()) {
 
-			boolean preview_loadable = true;
-			try {
-				Context context = LiveWallpaper.getInstance().getContext();
-				projectManagerLWP.loadProject(selectedProject, context);
-			} catch (LoadingProjectException e) {
-				preview_loadable = false;
-				e.printStackTrace();
-			} catch (OutdatedVersionProjectException e) {
-				preview_loadable = false;
-				e.printStackTrace();
-			} catch (CompatibilityProjectException e) {
-				preview_loadable = false;
-				e.printStackTrace();
-			}
+				if (projectManagerLWP.getCurrentProject() != null
+						&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
+					//getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
+					//getFragmentManager().popBackStack();
+					return str_loadable;
+				}
 
-			if (!preview_loadable) {
-				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-				getFragmentManager().popBackStack();
-				str_loadable = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
-				return str_loadable;
-			}
+				boolean preview_loadable = true;
+				try {
+					Context context = LiveWallpaper.getInstance().getContext();
+					projectManagerLWP.loadProject(selectedProject, context);
+				} catch (LoadingProjectException e) {
+					preview_loadable = false;
+					e.printStackTrace();
+				} catch (OutdatedVersionProjectException e) {
+					preview_loadable = false;
+					e.printStackTrace();
+				} catch (CompatibilityProjectException e) {
+					preview_loadable = false;
+					e.printStackTrace();
+				}
 
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-			Editor editor = sharedPreferences.edit();
-			editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, selectedProject);
-			editor.commit();
-			str_loadable = ProjectLoadableEnum.IS_LOADABLE.toString();
+				if (!preview_loadable) {
+					getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
+					getFragmentManager().popBackStack();
+					str_loadable = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
+					return str_loadable;
+				}
+
+				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+				Editor editor = sharedPreferences.edit();
+				editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, selectedProject);
+				editor.commit();
+				str_loadable = ProjectLoadableEnum.IS_LOADABLE.toString();
+			}
 
 			return str_loadable;
 
