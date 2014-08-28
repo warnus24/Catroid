@@ -50,6 +50,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 import org.catrobat.catroid.utils.Utils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,13 +58,15 @@ import java.util.Locale;
 public class SelectProgramActivityTest extends
 		SingleLaunchActivityTestCase<SelectProgramActivity> {
 
-	private static final String TEST_PROJECT_NAME = "Test project";
+	private static final String TEST_PROJECT_NAME = "Test 1";
 	private static final String PACKAGE = "org.catrobat.catroid";
 	private Solo solo;
-	private Project testProject;
 	private LiveWallpaper lwp = LiveWallpaper.getInstance();
 	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.LWP);
 	private File lookFile;
+
+	private static final int MAX_PROJECTS = 5;
+	private ArrayList<Project> projectArrayList;
 
 	public SelectProgramActivityTest() {
 		super(PACKAGE,SelectProgramActivity.class);
@@ -73,6 +76,8 @@ public class SelectProgramActivityTest extends
 	protected void setUp() throws Exception {
 		super.setUp();
 		UiTestUtils.prepareStageForTest();
+
+		projectArrayList = new ArrayList<Project>();
 
 		solo = new Solo(getInstrumentation(),getActivity());
 		DisplayMetrics disp = new DisplayMetrics();
@@ -93,6 +98,21 @@ public class SelectProgramActivityTest extends
 			}
 			ProjectManager.getInstance(ProjectManagerState.LWP).setProject(defaultProject);
 		}
+
+		// add some more projects
+		for(int i = 0; i < MAX_PROJECTS; i++) {
+			Project testProject = null;
+			if(StorageHandler.getInstance().projectExists("Test " + i)) {
+				testProject = StorageHandler.getInstance().loadProject("Test " + i);
+			} else {
+				testProject = StandardProjectHandler.createAndSaveEmptyProject("Test " + i, getActivity().getApplicationContext());
+			}
+
+			StorageHandler.getInstance().saveProject(testProject);
+
+			projectArrayList.add(testProject);
+		}
+
 		TestUtils.restartActivity(getActivity());
 	//	testProject = TestUtils.createEmptyProjectWithoutSettingIt(getActivity().getApplicationContext(), TEST_PROJECT_NAME);
 
@@ -103,6 +123,10 @@ public class SelectProgramActivityTest extends
 
 	protected void tearDown() throws Exception {
 		//StorageHandler.getInstance().deleteProject(testProject);
+		for(int i = 0; i < MAX_PROJECTS; i++) {
+			StorageHandler.getInstance().deleteProject(projectArrayList.get(i));
+		}
+		projectArrayList.clear();
 		super.tearDown();
 	}
 
@@ -211,7 +235,6 @@ public class SelectProgramActivityTest extends
 
 		assertTrue("The sound should have been disabled but it's not", sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
 	}
-
 }
 
 
