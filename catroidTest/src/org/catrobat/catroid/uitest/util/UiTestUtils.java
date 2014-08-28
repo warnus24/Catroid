@@ -412,7 +412,7 @@ public final class UiTestUtils {
 
 		solo.clickOnView(solo.getView(R.id.button_add));
 		assertTrue("Add Data Dialog not shown",
-				solo.waitForText(solo.getString(R.string.formula_editor_variable_dialog_title)));
+				solo.waitForText(solo.getString(R.string.formula_editor_data_dialog_title)));
 		solo.waitForView(solo.getView(R.id.dialog_formula_editor_data_name_edit_text));
 		EditText editText = (EditText) solo.getView(R.id.dialog_formula_editor_data_name_edit_text);
 		solo.enterText(editText, variableName);
