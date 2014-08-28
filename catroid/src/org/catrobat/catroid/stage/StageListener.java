@@ -22,27 +22,29 @@
  */
 package org.catrobat.catroid.stage;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.Color;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.backends.android.AndroidWallpaperListener;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.google.common.collect.Multimap;
 
 import org.catrobat.catroid.ProjectManager;
@@ -55,6 +57,8 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.io.SoundManager;
+import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
+import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.Utils;
@@ -68,7 +72,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StageListener implements ApplicationListener {
+
+public class StageListener implements ApplicationListener, AndroidWallpaperListener {
 
 	private static final int AXIS_WIDTH = 4;
 	private static final float DELTA_ACTIONS_DIVIDER_MAXIMUM = 50f;
@@ -102,6 +107,7 @@ public class StageListener implements ApplicationListener {
 	private int screenshotX;
 	private int screenshotY;
 	private byte[] screenshot = null;
+	private LiveWallpaperEngine lwpEngine = null;
 	// in first frame, framebuffer could be empty and screenshot
 	// would be white
 	private boolean skipFirstFrameForAutomaticScreenshot;
@@ -109,7 +115,7 @@ public class StageListener implements ApplicationListener {
 	private Project project;
 
 	private OrthographicCamera camera;
-	private SpriteBatch batch;
+	private Batch batch;
 	private BitmapFont font;
 	private Passepartout passepartout;
 
@@ -140,7 +146,44 @@ public class StageListener implements ApplicationListener {
 
 	private byte[] thumbnail;
 
-	StageListener() {
+	private boolean isPreview = true;
+	private boolean isLWP = false;
+	private boolean isTinting = false;
+	private com.badlogic.gdx.graphics.Color tintingColor = null;
+
+	public StageListener(boolean isLWP) {
+		super();
+		this.isLWP = isLWP;
+	}
+
+	public StageListener() {
+		super();
+		isLWP = false;
+	}
+
+	public void setTintingColor(int c) {
+		float a = Color.alpha(c);
+		float r = Color.red(c);
+		float g = Color.green(c);
+		float b = Color.blue(c);
+		Log.d("LWP", "Color(" + r + ", " + g + ", " + b + ", " + a + ")");
+		tintingColor = new com.badlogic.gdx.graphics.Color(r / 255, g / 255, b / 255, a / 255);
+	}
+
+	public void tinting() {
+		if (isTinting) {
+			for (Sprite sprite : sprites) {
+				sprite.look.setColor(tintingColor);
+			}
+		} else {
+			for (Sprite sprite : sprites) {
+				sprite.look.setColor(1, 1, 1, 1);
+			}
+		}
+	}
+
+	public void setTinting(boolean isTinting) {
+		this.isTinting = isTinting;
 	}
 
 	@Override
@@ -149,7 +192,13 @@ public class StageListener implements ApplicationListener {
 		font.setColor(1f, 0f, 0.05f, 1f);
 		font.setScale(1.2f);
 
-		project = ProjectManager.getInstance().getCurrentProject();
+		project = null;
+		if (isLWP) {
+			project = ProjectManager.getInstance(ProjectManagerState.LWP).getCurrentProject();
+		} else {
+			project = ProjectManager.getInstance(ProjectManagerState.NORMAL).getCurrentProject();
+		}
+		Log.d("LWP", "current project name is"+project.getName());
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";
 
 		virtualWidth = project.getXmlHeader().virtualScreenWidth;
@@ -158,8 +207,10 @@ public class StageListener implements ApplicationListener {
 		virtualWidthHalf = virtualWidth / 2;
 		virtualHeightHalf = virtualHeight / 2;
 
-		stage = new Stage(virtualWidth, virtualHeight, true);
-		batch = stage.getSpriteBatch();
+		stage = new Stage(new StretchViewport(virtualWidth, virtualHeight));
+
+		stage.getViewport().setWorldSize(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
+		batch = stage.getBatch();
 
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 		initScreenMode();
@@ -192,7 +243,7 @@ public class StageListener implements ApplicationListener {
 		if (checkIfAutomaticScreenshotShouldBeTaken) {
 			makeAutomaticScreenshot = project.manualScreenshotExists(SCREENSHOT_MANUAL_FILE_NAME);
 		}
-
+		Log.d("LWP", "StageListener created!!!!!");
 	}
 
 	void activityResume() {
@@ -206,7 +257,7 @@ public class StageListener implements ApplicationListener {
 		FaceDetectionHandler.pauseFaceDetection();
 	}
 
-	void menuResume() {
+	public void menuResume() {
 		if (reloadProject) {
 			return;
 		}
@@ -218,7 +269,7 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
-	void menuPause() {
+	public void menuPause() {
 		if (finished || reloadProject) {
 			return;
 		}
@@ -230,7 +281,7 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
-	public void reloadProject(Context context, StageDialog stageDialog) {
+	public void reloadProject(StageActivity stageActivity, StageDialog stageDialog) {
 		if (reloadProject) {
 			return;
 		}
@@ -241,6 +292,20 @@ public class StageListener implements ApplicationListener {
 		VibratorUtil.reset();
 
 		reloadProject = true;
+		//this.firstStart = true;
+	}
+
+	public void reloadProjectLWP(LiveWallpaperEngine engine) {
+		if (reloadProject) {
+			return;
+		}
+		this.lwpEngine = engine;
+
+		project.getUserVariables().resetAllUserVariables();
+
+		reloadProject = true;
+		this.firstStart = true;
+		Log.d("LWP", "StageListener reloadProject!!!!!");
 	}
 
 	@Override
@@ -281,6 +346,18 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
+	/**
+	 * 
+	 */
+	public void resetSprites() {
+		for (Sprite sprite : sprites) {
+			sprite.resetSprite();
+			sprite.look.createBrightnessContrastShader();
+			stage.addActor(sprite.look);
+			sprite.pause();
+		}
+	}
+
 	@Override
 	public void render() {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
@@ -309,8 +386,16 @@ public class StageListener implements ApplicationListener {
 			paused = true;
 			firstStart = true;
 			reloadProject = false;
-			synchronized (stageDialog) {
-				stageDialog.notify();
+			if (stageDialog != null) {
+				synchronized (stageDialog) {
+					stageDialog.notify();
+				}
+			}
+
+			if (lwpEngine != null) {
+				synchronized (lwpEngine) {
+					lwpEngine.notifyAll();
+				}
 			}
 		}
 
@@ -331,12 +416,12 @@ public class StageListener implements ApplicationListener {
 			}
 
 			if (scriptActions.get(Constants.BROADCAST_SCRIPT) != null && !scriptActions.get(Constants.BROADCAST_SCRIPT).isEmpty()) {
-				List<String> broadcastWaitNotifyActions = reconstructNotifyActions(scriptActions);
-				Map<String, List<String>> notifyMap = new HashMap<String, List<String>>();
-				notifyMap.put(Constants.BROADCAST_NOTIFY_ACTION, broadcastWaitNotifyActions);
-				scriptActions.putAll(notifyMap);
+				//List<String> broadcastWaitNotifyActions = reconstructNotifyActions(scriptActions);
+				//Map<String, List<String>> notifyMap = new HashMap<String, List<String>>();
+				//notifyMap.put(Constants.BROADCAST_NOTIFY_ACTION, broadcastWaitNotifyActions);
+				//scriptActions.putAll(notifyMap);
 			}
-			precomputeActionsForBroadcastEvents(scriptActions);
+			//precomputeActionsForBroadcastEvents(scriptActions);
 			firstStart = false;
 		}
 		if (!paused) {
@@ -372,6 +457,7 @@ public class StageListener implements ApplicationListener {
 		}
 
 		if (!finished) {
+			tinting();
 			stage.draw();
 		}
 
@@ -581,7 +667,7 @@ public class StageListener implements ApplicationListener {
 	private void initScreenMode() {
 		switch (project.getScreenMode()) {
 			case STRETCH:
-				stage.setViewport(virtualWidth, virtualHeight, false);
+				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = ScreenValues.SCREEN_WIDTH;
 				screenshotHeight = ScreenValues.SCREEN_HEIGHT;
 				screenshotX = 0;
@@ -589,7 +675,7 @@ public class StageListener implements ApplicationListener {
 				break;
 
 			case MAXIMIZE:
-				stage.setViewport(virtualWidth, virtualHeight, true);
+				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
 				screenshotX = maximizeViewPortX;
@@ -627,5 +713,29 @@ public class StageListener implements ApplicationListener {
 				lookData.getTextureRegion().getTexture().dispose();
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.badlogic.gdx.backends.android.AndroidWallpaperListener#offsetChange(float, float, float, float, int,
+	 * int)
+	 */
+	@Override
+	public void offsetChange(float xOffset, float yOffset, float xOffsetStep, float yOffsetStep, int xPixelOffset,
+			int yPixelOffset) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.badlogic.gdx.backends.android.AndroidWallpaperListener#previewStateChange(boolean)
+	 */
+	@Override
+	public void previewStateChange(boolean isPreview) {
+		this.isPreview = isPreview;
+		Log.d("LWP", "StageListener previewState changed(" + isPreview + ")");
 	}
 }

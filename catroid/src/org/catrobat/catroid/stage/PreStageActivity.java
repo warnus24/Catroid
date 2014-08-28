@@ -26,6 +26,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -72,7 +73,7 @@ public class PreStageActivity extends BaseActivity {
 	public static final int REQUEST_RESOURCES_INIT = 101;
 	public static final int REQUEST_TEXT_TO_SPEECH = 10;
 
-	private int resources = Brick.NO_RESOURCES;
+	private static int resources = Brick.NO_RESOURCES;
 	private int requiredResourceCounter;
 
 	private static LegoNXT legoNXT;
@@ -310,7 +311,7 @@ public class PreStageActivity extends BaseActivity {
 		this.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 	}
 
-	private int getRequiredRessources() {
+	private static int getRequiredRessources() {
 		ArrayList<Sprite> spriteList = (ArrayList<Sprite>) ProjectManager.getInstance().getCurrentProject()
 				.getSpriteList();
 
@@ -418,6 +419,31 @@ public class PreStageActivity extends BaseActivity {
 			if (status == TextToSpeech.ERROR) {
 				Log.e(TAG, "File synthesizing failed");
 			}
+		}
+	}
+
+	public static int initTextToSpeechForLiveWallpaper(Context context) {
+		if (getRequiredRessources() == Brick.TEXT_TO_SPEECH && textToSpeech == null) {
+			textToSpeech = new TextToSpeech(context, new OnInitListener() {
+				@Override
+				public void onInit(int status) {
+					onUtteranceCompletedListenerContainer = new OnUtteranceCompletedListenerContainer();
+					textToSpeech.setOnUtteranceCompletedListener(onUtteranceCompletedListenerContainer);
+				}
+			});
+
+			if (textToSpeech.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_MISSING_DATA) {
+				return -1;
+			}
+		}
+		return 0;
+	}
+
+	public static void shutDownTextToSpeechForLiveWallpaper() {
+		if (textToSpeech != null) {
+			textToSpeech.stop();
+			textToSpeech.shutdown();
+			textToSpeech = null;
 		}
 	}
 
