@@ -139,7 +139,7 @@ public class SelectProgramActivityTest extends
 		solo.clickOnActionBarItem(R.id.delete);
 		solo.clickOnText(TEST_PROJECT_NAME);
 
-		clickOnOkayActionBarItem(solo);
+		UiTestUtils.acceptAndCloseActionMode(solo);
 
 		solo.clickOnText(solo.getString(R.string.yes));
 		assertFalse("The project was not deleted", solo.searchText(TEST_PROJECT_NAME));
@@ -153,7 +153,7 @@ public class SelectProgramActivityTest extends
 		assertEquals("The current project should be set to the standard project", solo.getString(R.string.default_project_name), projectManager.getCurrentProject().getName());
 		solo.clickOnActionBarItem(R.id.delete);
 		solo.clickOnText(solo.getString(R.string.default_project_name));
-		clickOnOkayActionBarItem(solo);
+		UiTestUtils.acceptAndCloseActionMode(solo);
 		assertTrue("The error dialog was not shown", solo.searchText(solo.getString(R.string.lwp_error_delete_current_program)));
 	}
 
@@ -165,7 +165,7 @@ public class SelectProgramActivityTest extends
 		solo.clickOnActionBarItem(R.id.delete);
 		String selectAll = solo.getString(R.string.select_all).toUpperCase(Locale.getDefault());
 		solo.clickOnText(selectAll);
-		clickOnOkayActionBarItem(solo);
+		UiTestUtils.acceptAndCloseActionMode(solo);
 
 		assertTrue("The error dialog for deleting all projects but the current one was not shown",
 				solo.searchText(solo.getString(R.string.lwp_error_delete_multiple_program)));
@@ -182,7 +182,7 @@ public class SelectProgramActivityTest extends
 
 		solo.clickOnActionBarItem(R.id.delete);
 		solo.clickOnText(selectAll);
-		clickOnOkayActionBarItem(solo);
+		UiTestUtils.acceptAndCloseActionMode(solo);
 		solo.clickOnText(solo.getString(R.string.yes));
 		solo.clickOnText(solo.getString(R.string.yes));
 
@@ -210,14 +210,6 @@ public class SelectProgramActivityTest extends
 		solo.clickOnText(solo.getString(R.string.lwp_enable_sound));
 
 		assertTrue("The sound should have been disabled but it's not", sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
-	}
-
-	private void clickOnOkayActionBarItem(Solo solo){
-
-		float width = (9.0f * (float)ScreenValues.SCREEN_WIDTH)/100.0f;
-		float height = (7.0f * (float)ScreenValues.SCREEN_HEIGHT)/100.0f;
-
-		solo.clickOnScreen(width, height);
 	}
 
 }
