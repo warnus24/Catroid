@@ -22,6 +22,7 @@
  */
 package org.catrobat.catroid.livewallpaper.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -76,6 +77,14 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 		setListAdapter(adapter);
 	}
 
+	public void goToSelectPostProcessingEffects()
+	{
+		Intent intent = new Intent(this.getActivity(), SelectBloomEffectActivity.class);
+		//String message = editText.getText().toString();
+		//intent.putExtra(EXTRA_MESSAGE, message);
+		startActivity(intent);
+	}
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		String item = (String) getListAdapter().getItem(position);
@@ -86,6 +95,12 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 		else if(item.equals(PostProcessingEffectsEnum.EFFECT_2.toString())){
 			LiveWallpaper.getInstance().activateEffect2();
 		}
+		else if(item.equals(PostProcessingEffectsEnum.BLOOM.toString())){
+			goToSelectPostProcessingEffects();
+		}
+
+
+
 		Toast.makeText(getActivity(), item, Toast.LENGTH_LONG).show();
 	}
 }
