@@ -55,13 +55,16 @@ public interface Brick extends Serializable, Cloneable {
 	//	public static final int SOUND_MANAGER = 0x1;
 	int TEXT_TO_SPEECH = 0x2;
 	int BLUETOOTH_LEGO_NXT = 0x4;
-	int BLUETOOTH_SENSORS_ARDUINO = 0x10;
 	int ARDRONE_SUPPORT = 0x20;
+	int BLUETOOTH_SENSORS_ARDUINO = 0x40;
 	int CAMERA_LED = 0x100;
 	int VIBRATOR = 0x200;
+<<<<<<< HEAD
 	int BLUETOOTH_KODEY = 0x400;
 
 	//	public static final int BLUETOOTH_ARDUINO = 0x8;
+=======
+>>>>>>> rebased branch on the actual master + fixed all bugs (Brick + Functions are running as usual again)
 	int FACE_DETECTION = 0x10;
 
 	List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence);
