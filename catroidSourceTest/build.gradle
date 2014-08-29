@@ -1,0 +1,28 @@
+repositories{
+    mavenCentral()
+}
+
+apply plugin: 'java'
+
+dependencies {
+    testCompile 'junit:junit:4.10'
+    testCompile files( project(":").buildDir.getPath() + '/intermediates/classes/debug' )
+}
+
+sourceSets {
+    test {
+        java {
+            srcDir 'src/java'
+        }
+        resources {
+            srcDir 'res'
+        }
+    }
+}
+
+test {
+    testLogging {
+        events "standardOut", "standardError", "failed", "passed", "skipped"
+    }
+}
+

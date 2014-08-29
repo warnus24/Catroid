@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/catroid" />
+            <option value="$PROJECT_DIR$/catroidSourceTest" />
           </set>
         </option>
       </GradleProjectSettings>
