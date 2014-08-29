@@ -55,7 +55,7 @@ public final class StandardProjectHandler {
 		if (BuildConfig.BUILD_TYPE == BuildConfig.BUILD_TYPE_PHYSICS) {
 			setStandardProjectCreator(StandardProjectCreatorType.STANDARD_PROJECT_CREATOR_PHYSICS);
 		} else {
-			setStandardProjectCreator(StandardProjectCreatorType.STANDARD_PROJECT_CREATOR_DEFAULT);
+			setStandardProjectCreator(StandardProjectCreatorType.STANDARD_PROJECT_CREATOR_PHYSICS);
 		}
 	}
 
