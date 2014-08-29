@@ -431,7 +431,7 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		StorageHandler.getInstance().saveProject(standardProject);
 
 		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
-		solo.sleep(300);
+
 		solo.clickOnButton(solo.getString(R.string.main_menu_programs));
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
 
@@ -448,7 +448,7 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 
 		UiTestUtils.goBackToHome(getInstrumentation());
 		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
-		solo.sleep(300);
+
 		SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getInstrumentation()
 				.getTargetContext());
 		assertEquals("Standard project was not set in shared preferences", standardProjectName,
