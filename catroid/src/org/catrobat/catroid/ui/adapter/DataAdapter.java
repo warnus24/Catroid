@@ -65,7 +65,6 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 	private int linearLayoutUserVariablesId;
 	private int spinnerUserListValuesId;
 
-
 	private static class ViewHolder {
 		private CheckBox checkbox;
 		private TextView text1;
@@ -232,7 +231,6 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 			}
 		}
 
-
 		if (holder.localHeadline != null && holder.globalHeadline != null && holder.userListsHeadline != null && holder.userVariablesHeadline != null) {
 			holder.localHeadline.setVisibility(View.GONE);
 			holder.globalHeadline.setVisibility(View.GONE);
@@ -268,11 +266,11 @@ public class DataAdapter extends BaseAdapter implements ScriptActivityAdapterInt
 				UserList userList = (UserList) currentDataItem;
 				holder.userListValuesSpinner.setVisibility(view.VISIBLE);
 				List<String> userListEntries = new ArrayList<String>();
-				userListEntries.add(view.getContext().getString(R.string.formula_editor_fragment_data_current_items));
 				for (Object userListItem : userList.getList()) {
 					userListEntries.add(userListItem.toString());
 				}
-				ArrayAdapter<String> userListValuesAdapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, userListEntries);
+
+				UserListValuesAdapter userListValuesAdapter = new UserListValuesAdapter(view.getContext(), userListEntries);
 
 				holder.userListValuesSpinner.setAdapter(userListValuesAdapter);
 			} else {

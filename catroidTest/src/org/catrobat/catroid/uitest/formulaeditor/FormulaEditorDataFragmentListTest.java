@@ -105,6 +105,7 @@ public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentati
 
 	public void testAddUserListAfterStage() throws InterruptedException {
 		String userListName = "userList1";
+		String userListName2 = "userList2";
 
 		solo.goBack();
 		createProjectAndAddAddItemToListBrick("testProject");
@@ -132,6 +133,9 @@ public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentati
 				solo.waitForFragmentByTag(FormulaEditorDataFragment.USER_DATA_TAG));
 
 		UiTestUtils.createUserListFromDataFragment(solo, userListName, false);
+		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
+
+		UiTestUtils.createUserListFromDataFragment(solo, userListName2, false);
 		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 
 		ListView listView = getDataListListView();
@@ -164,7 +168,7 @@ public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentati
 
 		solo.clickOnView(solo.getView(R.id.fragment_formula_editor_data_list_item_spinner));
 		ListView currentItemsListView = solo.getCurrentViews(ListView.class).get(0);
-		assertEquals("Wrong number of list items in List after stage!", 2, currentItemsListView.getAdapter().getCount());
+		assertEquals("Wrong number of list items in List after stage!", 1, currentItemsListView.getAdapter().getCount());
 		solo.goBack();
 
 		ListView listView = getDataListListView();
