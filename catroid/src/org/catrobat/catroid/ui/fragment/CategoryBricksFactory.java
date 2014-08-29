@@ -57,6 +57,7 @@ import org.catrobat.catroid.content.bricks.ForeverBrick;
 import org.catrobat.catroid.content.bricks.GlideToBrick;
 import org.catrobat.catroid.content.bricks.GoNStepsBackBrick;
 import org.catrobat.catroid.content.bricks.HideBrick;
+import org.catrobat.catroid.content.bricks.HideVariableBrick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfOnEdgeBounceBrick;
 import org.catrobat.catroid.content.bricks.LedOffBrick;
@@ -83,6 +84,7 @@ import org.catrobat.catroid.content.bricks.SetVolumeToBrick;
 import org.catrobat.catroid.content.bricks.SetXBrick;
 import org.catrobat.catroid.content.bricks.SetYBrick;
 import org.catrobat.catroid.content.bricks.ShowBrick;
+import org.catrobat.catroid.content.bricks.ShowVariableBrick;
 import org.catrobat.catroid.content.bricks.SpeakBrick;
 import org.catrobat.catroid.content.bricks.StopAllSoundsBrick;
 import org.catrobat.catroid.content.bricks.TurnLeftBrick;
@@ -210,6 +212,8 @@ public class CategoryBricksFactory {
 		List<Brick> userVariablesBrickList = new ArrayList<Brick>();
 		userVariablesBrickList.add(new SetVariableBrick(0));
 		userVariablesBrickList.add(new ChangeVariableBrick(0));
+		userVariablesBrickList.add(new ShowVariableBrick(0, 0));
+		userVariablesBrickList.add(new HideVariableBrick());
 		return userVariablesBrickList;
 	}
 

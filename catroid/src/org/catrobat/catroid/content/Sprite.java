@@ -325,4 +325,5 @@ public class Sprite implements Serializable, Cloneable {
 	public String toString() {
 		return name;
 	}
+
 }

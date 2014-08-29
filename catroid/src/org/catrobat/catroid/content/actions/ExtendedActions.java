@@ -305,9 +305,18 @@ public class ExtendedActions extends Actions {
 	}
 
 	public static Action changeVariable(Sprite sprite, Formula variableFormula, UserVariable userVariable) {
+
 		ChangeVariableAction action = action(ChangeVariableAction.class);
 		action.setSprite(sprite);
 		action.setChangeVariable(variableFormula);
+		action.setUserVariable(userVariable);
+		return action;
+	}
+
+	public static Action hideVariable(Sprite sprite, UserVariable userVariable) {
+
+		HideVariableAction action = action(HideVariableAction.class);
+		action.setSprite(sprite);
 		action.setUserVariable(userVariable);
 		return action;
 	}
@@ -317,6 +326,15 @@ public class ExtendedActions extends Actions {
 		SetVariableAction action = action(SetVariableAction.class);
 		action.setSprite(sprite);
 		action.setChangeVariable(variableFormula);
+		action.setUserVariable(userVariable);
+		return action;
+	}
+
+	public static Action showVariable(Sprite sprite, Formula variableFormulaX, Formula variableFormulaY, UserVariable userVariable) {
+
+		ShowVariableAction action = action(ShowVariableAction.class);
+		action.setSprite(sprite);
+		action.setPositionOfVariable(variableFormulaX, variableFormulaY);
 		action.setUserVariable(userVariable);
 		return action;
 	}
@@ -345,7 +363,7 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static RepeatAction forever(Sprite sprite, SequenceAction foreverSequence) {
+	public static Action forever(Sprite sprite, SequenceAction foreverSequence) {
 		RepeatAction action = action(RepeatAction.class);
 		action.setIsForeverRepeat(true);
 		action.setAction(foreverSequence);
