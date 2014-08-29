@@ -115,7 +115,7 @@ public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentati
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 
 		solo.clickOnView(solo.getView(R.id.button_play));
-		solo.sleep(5000);
+		solo.sleep(500);
 		assertTrue("StageActivity not shown: ", solo.waitForActivity(StageActivity.class.getSimpleName()));
 
 		solo.goBack();
@@ -123,7 +123,7 @@ public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentati
 		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
 		assertTrue("ScriptActivity not shown: ", solo.waitForActivity(ScriptActivity.class.getSimpleName()));
 
-		solo.sleep(5000);
+		solo.sleep(500);
 		solo.clickOnView(solo.getView(ADD_ITEM_TO_USERLIST_EDIT_TEXT_RID));
 		assertTrue("FormulaEditorFragment not shown: ",
 				solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG));
