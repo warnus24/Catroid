@@ -31,8 +31,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.badlogic.gdx.Gdx;
+import com.bitfire.postprocessing.PostProcessor;
+import com.bitfire.postprocessing.effects.Bloom;
+import com.bitfire.postprocessing.effects.CrtMonitor;
+import com.bitfire.postprocessing.effects.Curvature;
+import com.bitfire.postprocessing.effects.Vignette;
+import com.bitfire.postprocessing.filters.CrtScreen;
+
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
+import org.catrobat.catroid.livewallpaper.postprocessing.BloomAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.CrtMonitorAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.CurvatureAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.VignetteAttributeContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,17 +102,26 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		String item = (String) getListAdapter().getItem(position);
 
-		if(item.equals(PostProcessingEffectsEnum.EFFECT_1.toString())){
-			LiveWallpaper.getInstance().activateEffect1();
+		if(item.equals(PostProcessingEffectsEnum.BLOOM.toString())
+				|| item.equals(PostProcessingEffectsEnum.EFFECT_1.toString())){
+			BloomAttributeContainer bloomAttributes = new BloomAttributeContainer();
+			LiveWallpaper.getInstance().activatePostProcessingEffect(bloomAttributes);
 		}
-		else if(item.equals(PostProcessingEffectsEnum.EFFECT_2.toString())){
-			LiveWallpaper.getInstance().activateEffect2();
+		if(item.equals(PostProcessingEffectsEnum.VIGNETTE.toString())
+				|| item.equals(PostProcessingEffectsEnum.EFFECT_1.toString())){
+			VignetteAttributeContainer vignetteAttributes = new VignetteAttributeContainer();
+			LiveWallpaper.getInstance().activatePostProcessingEffect(vignetteAttributes);
 		}
-		else if(item.equals(PostProcessingEffectsEnum.BLOOM.toString())){
-			goToSelectPostProcessingEffects();
+		if(item.equals(PostProcessingEffectsEnum.CURVATURE.toString())
+				|| item.equals(PostProcessingEffectsEnum.EFFECT_2.toString())){
+			CurvatureAttributeContainer curvatureAttributes = new CurvatureAttributeContainer();
+			LiveWallpaper.getInstance().activatePostProcessingEffect(curvatureAttributes);
 		}
-
-
+		if(item.equals(PostProcessingEffectsEnum.CRTMONITOR.toString())
+				|| item.equals(PostProcessingEffectsEnum.EFFECT_2.toString())){
+			CrtMonitorAttributeContainer crtMonitorAttributes = new CrtMonitorAttributeContainer();
+			LiveWallpaper.getInstance().activatePostProcessingEffect(crtMonitorAttributes);
+		}
 
 		Toast.makeText(getActivity(), item, Toast.LENGTH_LONG).show();
 	}

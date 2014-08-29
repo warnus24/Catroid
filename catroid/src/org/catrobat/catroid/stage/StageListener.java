@@ -63,6 +63,8 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessorWrapper;
 import org.catrobat.catroid.livewallpaper.ui.PostProcessingEffectsEnum;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
@@ -78,7 +80,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class StageListener implements ApplicationListener, AndroidWallpaperListener {
@@ -159,14 +163,15 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private boolean isLWP = false;
 	private boolean isTinting = false;
 	private com.badlogic.gdx.graphics.Color tintingColor = null;
-	PostProcessor postProcessor;
+	PostProcessorWrapper postProcessorWrapper;
 	List<PostProcessorEffect> effects = new ArrayList<PostProcessorEffect>();
 	private static final boolean isDesktop = false;
 	private Bloom bloom;
 	private Curvature curvature;
 	private CrtMonitor crtMonitor;
 	private Vignette vignette;
-	private PostProcessingEffectsEnum postProcessingEnum = PostProcessingEffectsEnum.NONE;;
+	private PostProcessingEffectsEnum postProcessingEnum = PostProcessingEffectsEnum.NONE;
+	private Map<PostProcessingEffectsEnum, PostProcessorEffect> effectsMap = new ConcurrentHashMap<PostProcessingEffectsEnum, PostProcessorEffect>();
 
 	public StageListener(boolean isLWP) {
 		super();
@@ -266,8 +271,15 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		Log.d("LWP", "StageListener created!!!!!");
 	}
 
+	public void activatePostProcessingEffects(PostProcessingEffectAttributContainer effectAttributes)
+	{
+		PostProcessorEffect effect = effectsMap.get(effectAttributes.getType());
+		postProcessorWrapper.add(effectAttributes.getType(), effect , effectAttributes);
+	}
+
 	public void activateEffect1()
 	{
+		/*
 		synchronized (postProcessor) {
 			if (postProcessingEnum == PostProcessingEffectsEnum.EFFECT_2) {
 				postProcessor.removeEffect(crtMonitor);
@@ -281,10 +293,12 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 			postProcessingEnum = PostProcessingEffectsEnum.EFFECT_1;
 		}
+		*/
 	}
 
 	public void activateEffect2()
 	{
+		/*
 		synchronized (postProcessor) {
 			if (postProcessingEnum == PostProcessingEffectsEnum.EFFECT_1) {
 				postProcessor.removeEffect(vignette);
@@ -298,46 +312,34 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 			postProcessingEnum = PostProcessingEffectsEnum.EFFECT_2;
 		}
+		*/
 	}
 
 	public void disableEffects()
 	{
-		synchronized (postProcessor) {
-			if (postProcessingEnum == PostProcessingEffectsEnum.EFFECT_1) {
-				postProcessor.removeEffect(bloom);
-				postProcessor.removeEffect(vignette);
-			}
-
-			if (postProcessingEnum == PostProcessingEffectsEnum.EFFECT_2) {
-				postProcessor.removeEffect(curvature);
-				postProcessor.removeEffect(crtMonitor);
-			}
-
-			postProcessingEnum = PostProcessingEffectsEnum.NONE;
-		}
+		postProcessorWrapper.removeAll();
 	}
 
 	public void initializePostProcessEffects()
 	{
 		ShaderLoader.BasePath = "data/shaders/";
 
-		if(postProcessor == null)
+		if(postProcessorWrapper == null)
 		{
-			postProcessor = new PostProcessor(false, false, isDesktop);
+			postProcessorWrapper = new PostProcessorWrapper();
 			bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
-			//postProcessor.addEffect(bloom);
 			vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
-			//postProcessor.addEffect(vignette);
-
 			curvature = new Curvature();
-			//postProcessor.addEffect(curvature);
-
 			//Zoomer zoomer = new Zoomer((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f),RadialBlur.Quality.Low);
-			//postProcessor.addEffect(zoomer);
 
-			int effects = CrtScreen.Effect.TweakContrast.v | CrtScreen.Effect.PhosphorVibrance.v | CrtScreen.Effect.Scanlines.v | CrtScreen.Effect.Tint.v;
-			crtMonitor = new CrtMonitor( (int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false, false, CrtScreen.RgbMode.ChromaticAberrations, effects );
-			//postProcessor.addEffect(crt);
+			int effectsForCrt = CrtScreen.Effect.TweakContrast.v | CrtScreen.Effect.PhosphorVibrance.v | CrtScreen.Effect.Scanlines.v | CrtScreen.Effect.Tint.v;
+			crtMonitor = new CrtMonitor( (int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false, false, CrtScreen.RgbMode.ChromaticAberrations, effectsForCrt );
+
+
+			effectsMap.put(PostProcessingEffectsEnum.BLOOM, bloom);
+			effectsMap.put(PostProcessingEffectsEnum.CURVATURE, curvature);
+			effectsMap.put(PostProcessingEffectsEnum.VIGNETTE, vignette);
+			effectsMap.put(PostProcessingEffectsEnum.CRTMONITOR, crtMonitor);
 		}
 	}
 
@@ -405,10 +407,8 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			sprite.look.refreshTextures();
 		}
 
-		if(postProcessor != null){
-			synchronized (postProcessor) {
-				postProcessor.rebind();
-			}
+		if(postProcessorWrapper != null){
+			postProcessorWrapper.rebind();
 		}
 	}
 
@@ -544,14 +544,14 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 
 		if (!finished) {
-			if(postProcessor != null)
+			if(postProcessorWrapper != null)
 			{
-				synchronized (postProcessor)
+				synchronized (postProcessorWrapper.getPostProcessor())
 				{
-					postProcessor.capture();
+					postProcessorWrapper.getPostProcessor().capture();
 					tinting();
 					stage.draw();
-					postProcessor.render();
+					postProcessorWrapper.getPostProcessor().render();
 				}
 			}
 		}
@@ -706,11 +706,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		axes.dispose();
 		disposeTextures();
 
-		if(postProcessor != null){
-			synchronized (postProcessor) {
-				postProcessor.dispose();
-			}
-		}
+		postProcessorWrapper.dispose();
 	}
 
 	public boolean makeManualScreenshot() {

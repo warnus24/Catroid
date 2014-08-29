@@ -38,6 +38,8 @@ import android.widget.Toast;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
+import com.bitfire.postprocessing.PostProcessorEffect;
+import com.bitfire.postprocessing.effects.Bloom;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -46,8 +48,14 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.exceptions.CompatibilityProjectException;
 import org.catrobat.catroid.exceptions.LoadingProjectException;
 import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
+import org.catrobat.catroid.livewallpaper.ui.PostProcessingEffectsEnum;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressLint("NewApi")
 //eventuell unnötig 10 intern 15 vorraussetzen Fehlerfall abfangen API Level vorraussetzen  prüfen mit 10
@@ -61,7 +69,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	private LiveWallpaperEngine previewEngine;
 	private LiveWallpaperEngine homeEngine;
-
 	private ApplicationListener stageListener = null;
 
 	public LiveWallpaper() {
@@ -253,23 +260,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 	}
 
-	public void activateEffect1()
+	public void activatePostProcessingEffect(PostProcessingEffectAttributContainer effectAttributes)
 	{
+		//effectsAttributContainer.put(effectAttributes.getType(), effectAttributes);
 		if (previewEngine != null) {
-			previewEngine.activateEffect1();
+			previewEngine.activatePostProcessingEffect(effectAttributes);
 		}
 		if (homeEngine != null) {
-			homeEngine.activateEffect1();
-		}
-	}
-
-	public void activateEffect2()
-	{
-		if (previewEngine != null) {
-			previewEngine.activateEffect2();
-		}
-		if (homeEngine != null) {
-			homeEngine.activateEffect2();
+			homeEngine.activatePostProcessingEffect(effectAttributes);
 		}
 	}
 
@@ -461,14 +459,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 
 
-		public void activateEffect1()
+		public void activatePostProcessingEffect(PostProcessingEffectAttributContainer effectAttributes)
 		{
-			getLocalStageListener().activateEffect1();
-		}
-
-		public void activateEffect2()
-		{
-			getLocalStageListener().activateEffect2();
+			getLocalStageListener().activatePostProcessingEffects(effectAttributes);
 		}
 
 		public void disableEffects()
