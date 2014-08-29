@@ -105,7 +105,6 @@ public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentati
 
 	public void testAddUserListAfterStage() throws InterruptedException {
 		String userListName = "userList1";
-		String userListName2 = "userList2";
 
 		solo.goBack();
 		createProjectAndAddAddItemToListBrick("testProject");
@@ -116,7 +115,7 @@ public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentati
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 
 		solo.clickOnView(solo.getView(R.id.button_play));
-		solo.sleep(500);
+		solo.sleep(5000);
 		assertTrue("StageActivity not shown: ", solo.waitForActivity(StageActivity.class.getSimpleName()));
 
 		solo.goBack();
@@ -124,7 +123,7 @@ public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentati
 		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
 		assertTrue("ScriptActivity not shown: ", solo.waitForActivity(ScriptActivity.class.getSimpleName()));
 
-		solo.sleep(500);
+		solo.sleep(5000);
 		solo.clickOnView(solo.getView(ADD_ITEM_TO_USERLIST_EDIT_TEXT_RID));
 		assertTrue("FormulaEditorFragment not shown: ",
 				solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG));
@@ -135,11 +134,8 @@ public class FormulaEditorDataFragmentListTest extends BaseActivityInstrumentati
 		UiTestUtils.createUserListFromDataFragment(solo, userListName, false);
 		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
 
-		UiTestUtils.createUserListFromDataFragment(solo, userListName2, false);
-		assertTrue("Data Fragment not shown", solo.waitForText(solo.getString(R.string.formula_editor_data)));
-
 		ListView listView = getDataListListView();
-		assertTrue("UserList not added!", listView.getCount() == 2);
+		assertEquals("UserList not added!", 2, listView.getCount());
 	}
 
 	public void testModifyUserListValuesInStage() throws InterruptedException {
