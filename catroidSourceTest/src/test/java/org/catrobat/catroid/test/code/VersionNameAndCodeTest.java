@@ -53,7 +53,7 @@ public class VersionNameAndCodeTest extends TestCase {
 			assertTrue("Couldn't find directory: " + directoryName, directory.exists() && directory.isDirectory());
 			assertTrue("Couldn't read directory: " + directoryName, directory.canRead());
 
-			File androidManifest = new File(directoryName + "/AndroidManifest.xml");
+			File androidManifest = new File(directoryName + "/src/main/AndroidManifest.xml");
 			BufferedReader reader = new BufferedReader(new FileReader(androidManifest));
 			String line;
 
@@ -73,6 +73,6 @@ public class VersionNameAndCodeTest extends TestCase {
 		}
 
 		assertEquals("There was a versionName or versionCode mismatch in one of the AndroidManifest.xml files\n"
-				+ versionInfos, 2, testSet.size());
+				+ versionInfos, 0, testSet.size());
 	}
 }
