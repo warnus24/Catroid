@@ -150,7 +150,11 @@ public class NewProjectDialog extends DialogFragment {
 					landscapeProjectCheckBox.setVisibility(View.VISIBLE);
 				} else {
 					landscapeProjectCheckBox.setChecked(false);
+<<<<<<< HEAD
 					landscapeProjectCheckBox.setVisibility(View.GONE);
+=======
+					landscapeProjectCheckBox.setVisibility(View.INVISIBLE);
+>>>>>>> 8c8c2773c0394a1723cfbef0e9bd331eb7d21922
 				}
 			}
 		});
