@@ -23,29 +23,42 @@
 
 package org.catrobat.catroid.livewallpaper.ui;
 
-/**
- * Created by White on 10.08.2014.
- */
-public enum PostProcessingEffectsEnum {
-	BLOOM("Bloom"), CURVATURE("Curvature"), CRTMONITOR("Crt-Monitor"), VIGNETTE("Vignette"),
-	EFFECT_1("Combined Effect 1"), EFFECT_2("Combined Effect 2"), NONE("No effect");
+import android.widget.SeekBar;
 
-	/**
-	 * @param text
-	 */
-	private PostProcessingEffectsEnum(final String text) {
-		this.text = text;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
+
+/**
+ * Created by White on 30.08.2014.
+ */
+public class CustomOnSeekbarListener implements SeekBar.OnSeekBarChangeListener
+{
+	private float attribute;
+	private float factor;
+
+	public CustomOnSeekbarListener(float factor)
+	{
+		super();
+		this.factor = factor;
 	}
 
-	private final String text;
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Enum#toString()
-	 */
 	@Override
-	public String toString() {
-		return text;
+	public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+		float progress = i;
+		attribute = progress / factor;
+	}
+
+	public float getAttribute()
+	{
+		return attribute;
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+
 	}
 }

@@ -29,7 +29,8 @@ import com.bitfire.postprocessing.PostProcessor;
 import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.effects.Bloom;
 
-import org.catrobat.catroid.livewallpaper.ui.PostProcessingEffectsEnum;
+import org.catrobat.catroid.livewallpaper.LiveWallpaper;
+import org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectFragment;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,32 +46,41 @@ public class PostProcessorWrapper
 	private Map<PostProcessingEffectsEnum,PostProcessorEffect> map = new HashMap<PostProcessingEffectsEnum,PostProcessorEffect>();
 	private Map<PostProcessingEffectsEnum,PostProcessorEffect> effects = Collections.synchronizedMap(map);
 	PostProcessor postProcessor = new PostProcessor(false, false, false);
+	EffectsContainer effectsContainer = new EffectsContainer();
 
 
-	public void add(PostProcessingEffectsEnum type, PostProcessorEffect effect, PostProcessingEffectAttributContainer attributes)
+	public void add(PostProcessingEffectsEnum type, PostProcessingEffectAttributContainer attributes)
 	{
 		synchronized (postProcessor) {
+			PostProcessorEffect effect = effectsContainer.get(type);
 			if (effects.containsKey(type)) {
 				PostProcessorEffect activeEffect = effects.get(type);
 				setAttributes(type, activeEffect, attributes);
 				Log.e("Error", "Effekt in die Liste NICHT hinzugefügt");
 			} else {
 				Log.e("Error", "Effekt in die Liste hinzugefügt");
+				setAttributes(type, effect, attributes);
 				postProcessor.addEffect(effect);
 				effects.put(type, effect);
 			}
+			SelectPostProcessingEffectFragment.setActivated(type, true);
+			LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
 		}
 	}
 
-	public void remove(PostProcessingEffectsEnum type, PostProcessorEffect effect)
+	public void remove(PostProcessingEffectsEnum type, PostProcessingEffectAttributContainer attributes)
 	{
 		synchronized (postProcessor) {
+			PostProcessorEffect effect = effectsContainer.get(type);
 			if (effects.containsKey(type)) {
-				PostProcessorEffect activeEffect = effects.get(type);
-				postProcessor.removeEffect(activeEffect);
+				setAttributes(type, effect, attributes);
+				postProcessor.removeEffect(effect);
 				effects.remove(type);
 			}
+			SelectPostProcessingEffectFragment.setActivated(type, false);
+			LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
 		}
+
 	}
 
 	public void removeAll()
@@ -99,6 +109,11 @@ public class PostProcessorWrapper
 			bloom.setBaseSaturation(bloomAttributes.getBaseSat());
 			bloom.setBloomIntesity(bloomAttributes.getBloomInt());
 			bloom.setBloomSaturation(bloomAttributes.getBloomSat());
+
+			Log.e("Error", "Base Int: "+bloom.getBaseIntensity());
+			Log.e("Error", "Base Sat: "+bloom.getBaseSaturation());
+			Log.e("Error", "Bloom Int: "+bloom.getBloomIntensity());
+			Log.e("Error", "Bloom Sat: "+bloom.getBloomSaturation());
 		}
 
 		else if(type.equals(PostProcessingEffectsEnum.VIGNETTE))
@@ -112,8 +127,6 @@ public class PostProcessorWrapper
 		else if(type.equals(PostProcessingEffectsEnum.CRTMONITOR))
 		{
 		}
-
-
 	}
 
 	public PostProcessor getPostProcessor()
@@ -135,5 +148,4 @@ public class PostProcessorWrapper
 			postProcessor.rebind();
 		}
 	}
-
 }

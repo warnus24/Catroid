@@ -23,32 +23,14 @@
 
 package org.catrobat.catroid.livewallpaper.postprocessing;
 
-import java.io.Serializable;
-
 /**
- * Created by White on 29.08.2014.
+ * Created by White on 30.08.2014.
  */
-public abstract class PostProcessingEffectAttributContainer implements Serializable{
-	private PostProcessingEffectsEnum type;
-	private boolean enabled;
+public class ZoomerAttributeContainer extends PostProcessingEffectAttributContainer {
 
-	public PostProcessingEffectAttributContainer()
+	public ZoomerAttributeContainer()
 	{
-	}
-
-	public PostProcessingEffectsEnum getType() {
-		return type;
-	}
-
-	public void setType(PostProcessingEffectsEnum type) {
-		this.type = type;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+		super();
+		this.setType(PostProcessingEffectsEnum.ZOOMER);
 	}
 }

@@ -45,11 +45,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.bitfire.postprocessing.PostProcessorEffect;
-import com.bitfire.postprocessing.effects.Vignette;
-import com.bitfire.postprocessing.effects.CrtMonitor;
-import com.bitfire.postprocessing.effects.Curvature;
-import com.bitfire.postprocessing.filters.CrtScreen;
 import com.google.common.collect.Multimap;
 
 import org.catrobat.catroid.ProjectManager;
@@ -65,14 +60,11 @@ import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessorWrapper;
-import org.catrobat.catroid.livewallpaper.ui.PostProcessingEffectsEnum;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.Utils;
 import org.catrobat.catroid.utils.VibratorUtil;
 import com.bitfire.utils.ShaderLoader;
-import com.bitfire.postprocessing.PostProcessor;
-import com.bitfire.postprocessing.effects.Bloom;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,9 +72,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 public class StageListener implements ApplicationListener, AndroidWallpaperListener {
@@ -164,14 +154,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private boolean isTinting = false;
 	private com.badlogic.gdx.graphics.Color tintingColor = null;
 	PostProcessorWrapper postProcessorWrapper;
-	List<PostProcessorEffect> effects = new ArrayList<PostProcessorEffect>();
-	private static final boolean isDesktop = false;
-	private Bloom bloom;
-	private Curvature curvature;
-	private CrtMonitor crtMonitor;
-	private Vignette vignette;
-	private PostProcessingEffectsEnum postProcessingEnum = PostProcessingEffectsEnum.NONE;
-	private Map<PostProcessingEffectsEnum, PostProcessorEffect> effectsMap = new ConcurrentHashMap<PostProcessingEffectsEnum, PostProcessorEffect>();
 
 	public StageListener(boolean isLWP) {
 		super();
@@ -273,46 +255,12 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	public void activatePostProcessingEffects(PostProcessingEffectAttributContainer effectAttributes)
 	{
-		PostProcessorEffect effect = effectsMap.get(effectAttributes.getType());
-		postProcessorWrapper.add(effectAttributes.getType(), effect , effectAttributes);
+		postProcessorWrapper.add(effectAttributes.getType(), effectAttributes);
 	}
 
-	public void activateEffect1()
+	public void deactivatePostProcessingEffects(PostProcessingEffectAttributContainer effectAttributes)
 	{
-		/*
-		synchronized (postProcessor) {
-			if (postProcessingEnum == PostProcessingEffectsEnum.EFFECT_2) {
-				postProcessor.removeEffect(crtMonitor);
-				postProcessor.removeEffect(curvature);
-			}
-
-			if (postProcessingEnum != PostProcessingEffectsEnum.EFFECT_1) {
-				postProcessor.addEffect(bloom);
-				postProcessor.addEffect(vignette);
-			}
-
-			postProcessingEnum = PostProcessingEffectsEnum.EFFECT_1;
-		}
-		*/
-	}
-
-	public void activateEffect2()
-	{
-		/*
-		synchronized (postProcessor) {
-			if (postProcessingEnum == PostProcessingEffectsEnum.EFFECT_1) {
-				postProcessor.removeEffect(vignette);
-				postProcessor.removeEffect(bloom);
-			}
-
-			if (postProcessingEnum != PostProcessingEffectsEnum.EFFECT_2) {
-				postProcessor.addEffect(curvature);
-				postProcessor.addEffect(crtMonitor);
-			}
-
-			postProcessingEnum = PostProcessingEffectsEnum.EFFECT_2;
-		}
-		*/
+		postProcessorWrapper.remove(effectAttributes.getType(), effectAttributes);
 	}
 
 	public void disableEffects()
@@ -327,19 +275,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		if(postProcessorWrapper == null)
 		{
 			postProcessorWrapper = new PostProcessorWrapper();
-			bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
-			vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
-			curvature = new Curvature();
-			//Zoomer zoomer = new Zoomer((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f),RadialBlur.Quality.Low);
-
-			int effectsForCrt = CrtScreen.Effect.TweakContrast.v | CrtScreen.Effect.PhosphorVibrance.v | CrtScreen.Effect.Scanlines.v | CrtScreen.Effect.Tint.v;
-			crtMonitor = new CrtMonitor( (int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false, false, CrtScreen.RgbMode.ChromaticAberrations, effectsForCrt );
-
-
-			effectsMap.put(PostProcessingEffectsEnum.BLOOM, bloom);
-			effectsMap.put(PostProcessingEffectsEnum.CURVATURE, curvature);
-			effectsMap.put(PostProcessingEffectsEnum.VIGNETTE, vignette);
-			effectsMap.put(PostProcessingEffectsEnum.CRTMONITOR, crtMonitor);
 		}
 	}
 

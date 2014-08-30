@@ -39,7 +39,6 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 import com.bitfire.postprocessing.PostProcessorEffect;
-import com.bitfire.postprocessing.effects.Bloom;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -49,7 +48,7 @@ import org.catrobat.catroid.exceptions.CompatibilityProjectException;
 import org.catrobat.catroid.exceptions.LoadingProjectException;
 import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
-import org.catrobat.catroid.livewallpaper.ui.PostProcessingEffectsEnum;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
 
@@ -70,6 +69,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private LiveWallpaperEngine previewEngine;
 	private LiveWallpaperEngine homeEngine;
 	private ApplicationListener stageListener = null;
+	private Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> map = new HashMap<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>();
+	private Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> effectAttributes = Collections.synchronizedMap(map);
 
 	public LiveWallpaper() {
 		super();
@@ -224,6 +225,16 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		editor.commit();
 	}
 
+	public void setPostProcessingEffectAttributes(PostProcessingEffectAttributContainer attributes)
+	{
+		effectAttributes.put(attributes.getType(), attributes);
+	}
+
+	public PostProcessingEffectAttributContainer getPostProcessingEffectAttributes(PostProcessingEffectsEnum effectType)
+	{
+		return effectAttributes.get(effectType);
+	}
+
 	@Override
 	public Engine onCreateEngine() {
 		Log.d("LWP", "Eine neue Engine wurde erstellt!!!");
@@ -268,6 +279,17 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 		if (homeEngine != null) {
 			homeEngine.activatePostProcessingEffect(effectAttributes);
+		}
+	}
+
+	public void deactivatePostProcessingEffect(PostProcessingEffectAttributContainer effectAttributes)
+	{
+		//effectsAttributContainer.put(effectAttributes.getType(), effectAttributes);
+		if (previewEngine != null) {
+			previewEngine.deactivatePostProcessingEffect(effectAttributes);
+		}
+		if (homeEngine != null) {
+			homeEngine.deactivatePostProcessingEffect(effectAttributes);
 		}
 	}
 
@@ -462,6 +484,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		public void activatePostProcessingEffect(PostProcessingEffectAttributContainer effectAttributes)
 		{
 			getLocalStageListener().activatePostProcessingEffects(effectAttributes);
+		}
+
+		public void deactivatePostProcessingEffect(PostProcessingEffectAttributContainer effectAttributes)
+		{
+			getLocalStageListener().deactivatePostProcessingEffects(effectAttributes);
 		}
 
 		public void disableEffects()

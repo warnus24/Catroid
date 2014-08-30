@@ -23,8 +23,6 @@
 
 package org.catrobat.catroid.livewallpaper.postprocessing;
 
-import org.catrobat.catroid.livewallpaper.ui.PostProcessingEffectsEnum;
-
 /**
  * Created by White on 29.08.2014.
  */
