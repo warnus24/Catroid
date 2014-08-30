@@ -140,12 +140,17 @@ public class NewProjectDialog extends DialogFragment {
 		emptyProjectCheckBox = (CheckBox) dialogView.findViewById(R.id.project_empty_checkbox);
 		emptyProjectCheckBox.setChecked(shouldBeEmpty);
 
+
+
 		emptyProjectCheckBox.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
 				if (emptyProjectCheckBox.isChecked()) {
 					landscapeProjectCheckBox.setChecked(sharedPreferences.getBoolean(SHARED_PREFERENCES_LANDSCAPE_PROJECT, false));
 					landscapeProjectCheckBox.setVisibility(View.VISIBLE);
+				} else {
+					landscapeProjectCheckBox.setChecked(false);
+					landscapeProjectCheckBox.setVisibility(View.GONE);
 				}
 			}
 		});
