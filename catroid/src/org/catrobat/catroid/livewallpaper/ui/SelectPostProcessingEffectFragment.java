@@ -22,8 +22,10 @@
  */
 package org.catrobat.catroid.livewallpaper.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -62,9 +64,14 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	private SelectPostProcessingEffectFragment selectPostProcessingEffectFragment;
 
 	private String selectedEffect;
-	private ArrayAdapter<PostProcessingEffectAttributContainer> adapter;
+	private static ArrayAdapter<PostProcessingEffectAttributContainer> adapter;
 	private static PostProcessingEffectAttributContainer[] effectArray;
 	private final int EFFECT_ARRAY_SIZE = 4;
+	private static Activity activity;
+	private static BloomAttributeContainer bloom = new BloomAttributeContainer();
+	private static VignetteAttributeContainer vignette = new VignetteAttributeContainer();
+	private static CurvatureAttributeContainer curvature = new CurvatureAttributeContainer();
+	private static CrtMonitorAttributeContainer crtMonitor = new CrtMonitorAttributeContainer();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,6 +83,7 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		initListeners();
+		activity = getActivity();
 	}
 
 	public static void setActivated(PostProcessingEffectsEnum type, boolean active)
@@ -96,20 +104,27 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 				}
 			}
 		}
+		adapter.notifyDataSetChanged();
+		adapter = new CustomArrayAdapter(activity, activity,
+				R.layout.activity_postprocessing_list_item_enabled,
+				R.id.activity_postprocessing_text1,
+				effectArray);
+
+		//ToDo Refresh erst ab Android 3.0 möglich
+		int version_code = Integer.valueOf(android.os.Build.VERSION.SDK);
+		if(version_code >= 11)
+		{
+			activity.recreate();
+		}
+
 	}
 
 	private void initListeners() {
-		BloomAttributeContainer bloom = new BloomAttributeContainer();
-		VignetteAttributeContainer vignette = new VignetteAttributeContainer();
-		CurvatureAttributeContainer curvature = new CurvatureAttributeContainer();
-		CrtMonitorAttributeContainer crtMonitor = new CrtMonitorAttributeContainer();
-
 		effectArray = new PostProcessingEffectAttributContainer[EFFECT_ARRAY_SIZE];
 		effectArray[0] = bloom;
 		effectArray[1] = vignette;
 		effectArray[2] = curvature;
 		effectArray[3] = crtMonitor;
-
 
 		//adapter = new ArrayAdapter<String>(
 		//		getActivity(), getActivity(),
@@ -123,6 +138,7 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 				effectArray);
 
 		setListAdapter(adapter);
+		adapter.notifyDataSetChanged();
 	}
 
 	public void goToSelectPostProcessingEffectGUI(Class<? extends BaseActivity> activityClass)
@@ -134,10 +150,9 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
+		adapter.notifyDataSetChanged();
 		PostProcessingEffectAttributContainer item = (PostProcessingEffectAttributContainer) getListAdapter().getItem(position);
 		chooseEffectAndInsertAttributes(item.getType().toString());
-
-		Toast.makeText(getActivity(), item.getType().toString(), Toast.LENGTH_LONG).show();
 	}
 
 	public void chooseEffectAndInsertAttributes(String item)

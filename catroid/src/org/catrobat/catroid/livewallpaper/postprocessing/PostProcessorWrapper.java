@@ -93,6 +93,7 @@ public class PostProcessorWrapper
 				PostProcessingEffectsEnum effectType = iterator.next();
 				PostProcessorEffect effect = effects.get(effectType);
 				postProcessor.removeEffect(effect);
+				SelectPostProcessingEffectFragment.setActivated(effectType, false);
 			}
 
 			effects.clear();

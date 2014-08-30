@@ -26,7 +26,7 @@
               style="@style/BrickCategory" >
 
     <TextView
-        style="@style/BrickCategoryText.Variables"
+        style="@style/BrickCategoryText.Control"
         android:text="@string/category_looks"
         android:id="@+id/activity_postprocessing_text1"
     />
