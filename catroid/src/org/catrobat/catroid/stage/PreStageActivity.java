@@ -203,7 +203,6 @@ public class PreStageActivity extends BaseActivity {
 				supportedFlashModes.size() == 1 && supportedFlashModes.get(0).equals(Camera.Parameters.FLASH_MODE_OFF)) {
 			return false;
 		}
-
 		return true;
 	}
 
@@ -377,7 +376,6 @@ public class PreStageActivity extends BaseActivity {
 		if (text == null) {
 			text = "";
 		}
-
 		if (onUtteranceCompletedListenerContainer.addOnUtteranceCompletedListener(speechFile, listener,
 				speakParameter.get(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID))) {
 			int status = textToSpeech.synthesizeToFile(text, speakParameter, speechFile.getAbsolutePath());
