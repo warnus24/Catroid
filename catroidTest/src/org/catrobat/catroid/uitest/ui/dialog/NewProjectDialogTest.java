@@ -91,16 +91,31 @@ public class NewProjectDialogTest extends BaseActivityInstrumentationTestCase<Ma
 
 	public void testLandscapeCheckbox() {
 		String buttonOkText = solo.getString(R.string.ok);
-		boolean emptyProject = true;
 		boolean landscapeProject = true;
 		solo.clickOnButton(solo.getString(R.string.main_menu_new));
 		assertTrue("dialog not loaded in 5 seconds",
 				solo.waitForText(solo.getString(R.string.new_project_dialog_title), 0, 5000));
 		EditText newProject = (EditText) solo.getView(R.id.project_name_edittext);
-		assertFalse("Landscape checkbox found, although empty was not ticked", solo.searchText("Landscape screen orientation",true));
+		if(solo.isCheckBoxChecked(0)) {
+			assertTrue("Landscape Checkbox not found", solo.searchText("Landscape screen orientation"));
+			solo.clickOnCheckBox(0);
+			assertFalse("Clicking does not uncheck empty_project_checkbox", solo.isCheckBoxChecked(0));
+			//assertFalse("Landscape checkbox does not disappear, when empty project is unchecked", solo.searchText("Landscape screen orientation"));
+		} else {
+			solo.clickOnCheckBox(0);
+			assertTrue("Landscape checkbox not found", solo.searchText("Landscape screen orientation",true));
+			solo.clickOnCheckBox(0);
+			assertFalse("Clicking does not uncheck empty_project_checkbox", solo.isCheckBoxChecked(0));
+			//assertFalse("Landscape checkbox does not disappear, when empty project is unchecked", solo.searchText("Landscape screen orientation"));
+		}
 		solo.clickOnCheckBox(0);
-		assertTrue("Landscape Checkbox not found", solo.searchText("Landscape screen orientation",true));
+		assertTrue("Landscape checkbox not found", solo.searchText("Landscape screen orientation",true));
+		if (solo.isCheckBoxChecked(1)) {
+			solo.clickOnCheckBox(1);
+			assertFalse("Clicking does not uncheck landscape_project_checkbox", solo.isCheckBoxChecked(1));
+		}
 		solo.clickOnCheckBox(1);
+		assertTrue("Landscape Checkbox cannot be checked", solo.isCheckBoxChecked(1));
 		solo.enterText(0, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		solo.clickOnButton(buttonOkText);
 		solo.waitForActivity(ProjectActivity.class.getSimpleName());
