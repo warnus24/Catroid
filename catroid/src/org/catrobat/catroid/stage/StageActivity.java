@@ -141,8 +141,9 @@ public class StageActivity extends AndroidApplication {
 	}
 
 	private void calculateScreenSizes() {
-		boolean is_landscape = ProjectManager.getInstance().getCurrentProject().getLandscape();
-		if(!is_landscape) {
+		boolean isLandscape = ProjectManager.getInstance().getCurrentProject().getLandscape();
+
+		if (!isLandscape) {
 			ifLandscapeSwitchWidthAndHeight();
 		} else {
 			ifPortraitSwitchWidthAndHeight();

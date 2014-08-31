@@ -36,7 +36,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
-import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.LookData;
 
 import java.util.ArrayList;

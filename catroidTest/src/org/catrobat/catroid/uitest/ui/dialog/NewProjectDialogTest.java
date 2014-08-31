@@ -95,8 +95,7 @@ public class NewProjectDialogTest extends BaseActivityInstrumentationTestCase<Ma
 		solo.clickOnButton(solo.getString(R.string.main_menu_new));
 		assertTrue("dialog not loaded in 5 seconds",
 				solo.waitForText(solo.getString(R.string.new_project_dialog_title), 0, 5000));
-		EditText newProject = (EditText) solo.getView(R.id.project_name_edittext);
-		if(solo.isCheckBoxChecked(0)) {
+		if (solo.isCheckBoxChecked(0)) {
 			assertTrue("Landscape Checkbox not found", solo.searchText("Landscape screen orientation"));
 			solo.clickOnCheckBox(0);
 			assertFalse("Clicking does not uncheck empty_project_checkbox", solo.isCheckBoxChecked(0));

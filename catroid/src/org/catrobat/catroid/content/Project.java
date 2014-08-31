@@ -53,15 +53,15 @@ public class Project implements Serializable {
 	@XStreamAlias("variables")
 	private UserVariablesContainer userVariables = null;
 
-	private boolean is_landscape = false;
+	private boolean isLandscape = false;
 
 	public Project(Context context, String name, boolean landscape) {
 		xmlHeader.setProgramName(name);
 		xmlHeader.setDescription("");
 
-		is_landscape = landscape;
+		isLandscape = landscape;
 
-		if (!is_landscape) {
+		if (!isLandscape) {
 			ifLandscapeSwitchWidthAndHeight();
 		} else {
 			ifPortraitSwitchWidthAndHeight();
@@ -177,7 +177,7 @@ public class Project implements Serializable {
 		return this.xmlHeader;
 	}
 
-	public boolean getLandscape() { return is_landscape; }
+	public boolean getLandscape() { return isLandscape; }
 
 	// this method should be removed by the nex refactoring
 	// (used only in tests)
