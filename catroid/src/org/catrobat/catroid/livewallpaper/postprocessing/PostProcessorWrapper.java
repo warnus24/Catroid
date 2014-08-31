@@ -63,8 +63,8 @@ public class PostProcessorWrapper
 				postProcessor.addEffect(effect);
 				effects.put(type, effect);
 			}
-			SelectPostProcessingEffectFragment.setActivated(type, true);
 			LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
+			SelectPostProcessingEffectFragment.refresh();
 		}
 	}
 
@@ -77,8 +77,8 @@ public class PostProcessorWrapper
 				postProcessor.removeEffect(effect);
 				effects.remove(type);
 			}
-			SelectPostProcessingEffectFragment.setActivated(type, false);
 			LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
+			SelectPostProcessingEffectFragment.refresh();
 		}
 
 	}
@@ -93,9 +93,11 @@ public class PostProcessorWrapper
 				PostProcessingEffectsEnum effectType = iterator.next();
 				PostProcessorEffect effect = effects.get(effectType);
 				postProcessor.removeEffect(effect);
-				SelectPostProcessingEffectFragment.setActivated(effectType, false);
+				PostProcessingEffectAttributContainer attributes = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(effectType);
+				attributes.setEnabled(false);
+				LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
 			}
-
+			SelectPostProcessingEffectFragment.refresh();
 			effects.clear();
 		}
 	}

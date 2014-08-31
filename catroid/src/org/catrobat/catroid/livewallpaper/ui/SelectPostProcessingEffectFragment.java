@@ -64,14 +64,10 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	private SelectPostProcessingEffectFragment selectPostProcessingEffectFragment;
 
 	private String selectedEffect;
-	private static ArrayAdapter<PostProcessingEffectAttributContainer> adapter;
-	private static PostProcessingEffectAttributContainer[] effectArray;
+	private static ArrayAdapter<PostProcessingEffectsEnum> adapter;
+	private static PostProcessingEffectsEnum[] effectArray;
 	private final int EFFECT_ARRAY_SIZE = 4;
 	private static Activity activity;
-	private static BloomAttributeContainer bloom = new BloomAttributeContainer();
-	private static VignetteAttributeContainer vignette = new VignetteAttributeContainer();
-	private static CurvatureAttributeContainer curvature = new CurvatureAttributeContainer();
-	private static CrtMonitorAttributeContainer crtMonitor = new CrtMonitorAttributeContainer();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,45 +82,23 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 		activity = getActivity();
 	}
 
-	public static void setActivated(PostProcessingEffectsEnum type, boolean active)
+	public static void refresh()
 	{
-		for(int i = 0; i < effectArray.length; i++)
-		{
-			PostProcessingEffectAttributContainer attributes = effectArray[i];
-			if(attributes.getType().equals(type))
-			{
-				attributes.setEnabled(active);
-				if(active)
-				{
-					Log.e("Error", "Effekt für " + type.toString() + " enabled: ");
-				}
-				else
-				{
-					Log.e("Error", "Effekt für " + type.toString() + " disabled: ");
-				}
-			}
-		}
 		adapter.notifyDataSetChanged();
-		adapter = new CustomArrayAdapter(activity, activity,
-				R.layout.activity_postprocessing_list_item_enabled,
-				R.id.activity_postprocessing_text1,
-				effectArray);
-
 		//ToDo Refresh erst ab Android 3.0 möglich
 		int version_code = Integer.valueOf(android.os.Build.VERSION.SDK);
 		if(version_code >= 11)
 		{
 			activity.recreate();
 		}
-
 	}
 
 	private void initListeners() {
-		effectArray = new PostProcessingEffectAttributContainer[EFFECT_ARRAY_SIZE];
-		effectArray[0] = bloom;
-		effectArray[1] = vignette;
-		effectArray[2] = curvature;
-		effectArray[3] = crtMonitor;
+		effectArray = new PostProcessingEffectsEnum[EFFECT_ARRAY_SIZE];
+		effectArray[0] = PostProcessingEffectsEnum.BLOOM;
+		effectArray[1] = PostProcessingEffectsEnum.VIGNETTE;
+		effectArray[2] = PostProcessingEffectsEnum.CURVATURE;
+		effectArray[3] = PostProcessingEffectsEnum.CRTMONITOR;
 
 		//adapter = new ArrayAdapter<String>(
 		//		getActivity(), getActivity(),
@@ -138,7 +112,6 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 				effectArray);
 
 		setListAdapter(adapter);
-		adapter.notifyDataSetChanged();
 	}
 
 	public void goToSelectPostProcessingEffectGUI(Class<? extends BaseActivity> activityClass)
@@ -150,9 +123,28 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		adapter.notifyDataSetChanged();
-		PostProcessingEffectAttributContainer item = (PostProcessingEffectAttributContainer) getListAdapter().getItem(position);
-		chooseEffectAndInsertAttributes(item.getType().toString());
+		PostProcessingEffectsEnum item = (PostProcessingEffectsEnum) getListAdapter().getItem(position);
+		chooseEffectAndInsertAttributes(item.toString());
+	}
+
+	public void changeEffectState(PostProcessingEffectAttributContainer attributes)
+	{
+		PostProcessingEffectAttributContainer activeEffectAttributes = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(attributes.getType());
+		if(activeEffectAttributes == null)
+		{
+			attributes.setEnabled(true);
+			LiveWallpaper.getInstance().activatePostProcessingEffect(attributes);
+		}
+		else if(LiveWallpaper.getInstance().getPostProcessingEffectAttributes(attributes.getType()).isEnabled())
+		{
+			attributes.setEnabled(false);
+			LiveWallpaper.getInstance().deactivatePostProcessingEffect(attributes);
+		}
+		else
+		{
+			attributes.setEnabled(true);
+			LiveWallpaper.getInstance().activatePostProcessingEffect(attributes);
+		}
 	}
 
 	public void chooseEffectAndInsertAttributes(String item)
@@ -167,26 +159,27 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 		if(item.equals(PostProcessingEffectsEnum.VIGNETTE.toString())
 				|| item.equals(PostProcessingEffectsEnum.EFFECT_1.toString())){
 			VignetteAttributeContainer vignetteAttributes = new VignetteAttributeContainer();
-			LiveWallpaper.getInstance().activatePostProcessingEffect(vignetteAttributes);
+			changeEffectState(vignetteAttributes);
 		}
 
 		//CURVATURE
 		if(item.equals(PostProcessingEffectsEnum.CURVATURE.toString())
 				|| item.equals(PostProcessingEffectsEnum.EFFECT_2.toString())){
 			CurvatureAttributeContainer curvatureAttributes = new CurvatureAttributeContainer();
-			LiveWallpaper.getInstance().activatePostProcessingEffect(curvatureAttributes);
+			changeEffectState(curvatureAttributes);
 		}
 
 		//CRT-MONITOR
 		if(item.equals(PostProcessingEffectsEnum.CRTMONITOR.toString())
 				|| item.equals(PostProcessingEffectsEnum.EFFECT_2.toString())){
 			CrtMonitorAttributeContainer crtMonitorAttributes = new CrtMonitorAttributeContainer();
-			LiveWallpaper.getInstance().activatePostProcessingEffect(crtMonitorAttributes);
+			changeEffectState(crtMonitorAttributes);
 		}
 
 		//ZOOMER
 		if(item.equals(PostProcessingEffectsEnum.ZOOMER.toString())){
 			ZoomerAttributeContainer zommerAttributes = new ZoomerAttributeContainer();
+			zommerAttributes.setEnabled(true);
 			LiveWallpaper.getInstance().activatePostProcessingEffect(zommerAttributes);
 		}
 	}

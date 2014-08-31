@@ -32,15 +32,17 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
 
 /**
  * Created by White on 30.08.2014.
  */
-public class CustomArrayAdapter extends ArrayAdapter<PostProcessingEffectAttributContainer>
+public class CustomArrayAdapter extends ArrayAdapter<PostProcessingEffectsEnum>
 {
 	Activity activity;
-	public CustomArrayAdapter(Activity activity, android.content.Context context, int resource, int textViewResourceId, PostProcessingEffectAttributContainer[] objects)
+	public CustomArrayAdapter(Activity activity, android.content.Context context, int resource, int textViewResourceId, PostProcessingEffectsEnum[] objects)
 	{
 		super(context, resource, textViewResourceId, objects);
 		this.activity = activity;
@@ -49,11 +51,16 @@ public class CustomArrayAdapter extends ArrayAdapter<PostProcessingEffectAttribu
 
 	@Override
 	public View getView (int position, View convertView, ViewGroup parent){
-		PostProcessingEffectAttributContainer item = getItem (position);
+		PostProcessingEffectsEnum item = getItem (position);
+		PostProcessingEffectAttributContainer attributes = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(item);
 		LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View rowView;
-		if(item.isEnabled())
+		if(attributes == null)
+		{
+			rowView = inflater.inflate(R.layout.activity_postprocessing_list_item_disabled, null);
+		}
+		else if(attributes.isEnabled())
 		{
 			rowView = inflater.inflate(R.layout.activity_postprocessing_list_item_enabled, null);
 		}
@@ -64,7 +71,7 @@ public class CustomArrayAdapter extends ArrayAdapter<PostProcessingEffectAttribu
 
 
 		TextView effectDescription = (TextView)rowView.findViewById(R.id.activity_postprocessing_text1);
-		effectDescription.setText(item.getType().toString());
+		effectDescription.setText(item.toString());
 
 
 
