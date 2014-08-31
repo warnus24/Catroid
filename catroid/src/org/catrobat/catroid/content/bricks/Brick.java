@@ -59,12 +59,7 @@ public interface Brick extends Serializable, Cloneable {
 	int BLUETOOTH_SENSORS_ARDUINO = 0x40;
 	int CAMERA_LED = 0x100;
 	int VIBRATOR = 0x200;
-<<<<<<< HEAD
 	int BLUETOOTH_KODEY = 0x400;
-
-	//	public static final int BLUETOOTH_ARDUINO = 0x8;
-=======
->>>>>>> rebased branch on the actual master + fixed all bugs (Brick + Functions are running as usual again)
 	int FACE_DETECTION = 0x10;
 
 	List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence);
