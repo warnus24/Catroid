@@ -137,9 +137,19 @@ public class NewProjectDialog extends DialogFragment {
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		boolean shouldBeEmpty = sharedPreferences.getBoolean(SHARED_PREFERENCES_EMPTY_PROJECT, false);
 
+
 		emptyProjectCheckBox = (CheckBox) dialogView.findViewById(R.id.project_empty_checkbox);
 		emptyProjectCheckBox.setChecked(shouldBeEmpty);
 
+		landscapeProjectCheckBox = (CheckBox) dialogView.findViewById(R.id.project_landscape_checkbox);
+		if (shouldBeEmpty) {
+			landscapeProjectCheckBox.setVisibility(View.VISIBLE);
+			boolean shouldBeLandscape = sharedPreferences.getBoolean(SHARED_PREFERENCES_LANDSCAPE_PROJECT, false);
+			landscapeProjectCheckBox.setChecked(shouldBeLandscape);
+		} else {
+			boolean shouldBeLandscape =  false;
+			landscapeProjectCheckBox.setChecked(shouldBeLandscape);
+		}
 
 
 		emptyProjectCheckBox.setOnClickListener(new OnClickListener() {
@@ -154,11 +164,6 @@ public class NewProjectDialog extends DialogFragment {
 				}
 			}
 		});
-
-		boolean shouldBeLandscape = sharedPreferences.getBoolean(SHARED_PREFERENCES_LANDSCAPE_PROJECT, false);
-
-		landscapeProjectCheckBox = (CheckBox) dialogView.findViewById(R.id.project_landscape_checkbox);
-		landscapeProjectCheckBox.setChecked(shouldBeLandscape);
 
 		return newProjectDialog;
 	}
