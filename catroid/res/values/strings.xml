@@ -530,7 +530,7 @@
     <string name="button_scan">Search Bluetooth devices</string>
     <!--<string name="pairing_message">After pairing, connect.</string>-->
     <!--<string name="problem_at_closing">Problem while closing the connection!</string>-->
-    <string name="select_device">Select your Lego Mindstorms NXT</string>
+    <string name="select_device">Select your Bluetooth device</string>
     <string name="select_device_arduino">Select your Arduino Board</string>
     <string name="scanning">Scanning</string>
     <string name="connecting_please_wait">Connecting to your device.\nPlease wait…</string>
