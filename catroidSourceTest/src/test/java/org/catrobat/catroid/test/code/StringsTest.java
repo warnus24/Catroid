@@ -54,7 +54,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class StringsTest extends TestCase {
 	private static final String[] LANGUAGES = { "English", "German" }; //, "Russian", "Romanian" };
 	private static final String[] LANGUAGE_SUFFIXES = { "", "-de" }; //, "-ru", "-ro" };
-	private static final String SOURCE_DIRECTORY = "../catroid/src/main/java";
+	private static final String SOURCE_DIRECTORY = "../catroid/src";
 	private static final String RESOURCES_DIRECTORY = "../catroid/src/main/res";
 	private static final String ANDROID_MANIFEST = "../catroid/src/main/AndroidManifest.xml";
 	private static final String XML_STRING_PREFIX = "@string/";
@@ -221,7 +221,7 @@ public class StringsTest extends TestCase {
 	private List<File> getLayoutXmlFiles() {
 		List<File> layoutFiles = new ArrayList<File>();
 
-		File layoutDir = new File("../catroid/res/layout/");
+		File layoutDir = new File("../catroid/src/main/res/layout/");
 		File[] fileArray = layoutDir.listFiles();
 		if (fileArray != null) {
 			for (File file : fileArray) {
@@ -271,7 +271,7 @@ public class StringsTest extends TestCase {
 		boolean missingStringsFound = false;
 
 		StringBuilder stringXmlSourceCodeBuilder = new StringBuilder();
-		File defaultResDirectory = new File("../catroid/res/values/");
+		File defaultResDirectory = new File("../catroid/src/main/res/values/");
 		File[] fileArray = defaultResDirectory.listFiles();
 		if (fileArray != null) {
 			for (File defaultStringFile : fileArray) {
