@@ -6,7 +6,7 @@ apply plugin: 'java'
 
 dependencies {
     testCompile 'junit:junit:4.10'
-    testCompile files( project(":").buildDir.getPath() + '/intermediates/classes/debug' )
+    testCompile files( project(":catroid").buildDir.getPath() + '/intermediates/classes/debug' )
 }
 
 sourceSets {
