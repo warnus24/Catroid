@@ -24,41 +24,28 @@
 package org.catrobat.catroid.livewallpaper.postprocessing;
 
 /**
- * Created by White on 29.08.2014.
+ * Created by White on 10.08.2014.
  */
-public class VignetteAttributeContainer extends PostProcessingEffectAttributContainer {
+public enum VignetteGradientEnum {
+	NONE("None"), CROSSPROCESSING("Cross-processing"), SUNSET("Sunset"), MARS("Mars"), VIVID("Vivid"), GREENLAND("Greenland"),
+	CLOUDY("Cloudy"), MUDDY("Muddy"), ;
 
-	private float intensity;
-	private VignetteGradientEnum gradientType;
-	private int gradientPosition;
-
-	public VignetteAttributeContainer()
-	{
-		super();
-		this.setType(PostProcessingEffectsEnum.VIGNETTE);
+	/**
+	 * @param text
+	 */
+	private VignetteGradientEnum(final String text) {
+		this.text = text;
 	}
 
-	public float getIntensity() {
-		return intensity;
-	}
+	private final String text;
 
-	public void setIntensity(float intensity) {
-		this.intensity = intensity;
-	}
-
-	public VignetteGradientEnum getGradientType() {
-		return gradientType;
-	}
-
-	public void setGradientType(VignetteGradientEnum gradientType) {
-		this.gradientType = gradientType;
-	}
-
-	public int getGradientPosition() {
-		return gradientPosition;
-	}
-
-	public void setGradientPosition(int gradientPosition) {
-		this.gradientPosition = gradientPosition;
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
+		return text;
 	}
 }

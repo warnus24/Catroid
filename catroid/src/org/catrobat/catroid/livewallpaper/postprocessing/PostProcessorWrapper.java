@@ -25,9 +25,18 @@ package org.catrobat.catroid.livewallpaper.postprocessing;
 
 import android.util.Log;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.bitfire.postprocessing.PostProcessor;
 import com.bitfire.postprocessing.PostProcessorEffect;
+import com.bitfire.postprocessing.demo.ResourceFactory;
 import com.bitfire.postprocessing.effects.Bloom;
+import com.bitfire.postprocessing.effects.Vignette;
 
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectFragment;
@@ -45,7 +54,7 @@ public class PostProcessorWrapper
 {
 	private Map<PostProcessingEffectsEnum,PostProcessorEffect> map = new HashMap<PostProcessingEffectsEnum,PostProcessorEffect>();
 	private Map<PostProcessingEffectsEnum,PostProcessorEffect> effects = Collections.synchronizedMap(map);
-	PostProcessor postProcessor = new PostProcessor(false, false, false);
+	PostProcessor postProcessor = new PostProcessor(false, true, false);
 	EffectsContainer effectsContainer = new EffectsContainer();
 
 
@@ -56,6 +65,7 @@ public class PostProcessorWrapper
 			if (effects.containsKey(type)) {
 				PostProcessorEffect activeEffect = effects.get(type);
 				setAttributes(type, activeEffect, attributes);
+				activeEffect.setEnabled(true);
 				Log.e("Error", "Effekt in die Liste NICHT hinzugefügt");
 			} else {
 				Log.e("Error", "Effekt in die Liste hinzugefügt");
@@ -74,8 +84,9 @@ public class PostProcessorWrapper
 			PostProcessorEffect effect = effectsContainer.get(type);
 			if (effects.containsKey(type)) {
 				setAttributes(type, effect, attributes);
-				postProcessor.removeEffect(effect);
-				effects.remove(type);
+				//postProcessor.removeEffect(effect);
+				//effects.remove(type);
+				effect.setEnabled(false);
 			}
 			LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
 			SelectPostProcessingEffectFragment.refresh();
@@ -92,13 +103,14 @@ public class PostProcessorWrapper
 			{
 				PostProcessingEffectsEnum effectType = iterator.next();
 				PostProcessorEffect effect = effects.get(effectType);
-				postProcessor.removeEffect(effect);
+				//postProcessor.removeEffect(effect);
+				effect.setEnabled(false);
 				PostProcessingEffectAttributContainer attributes = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(effectType);
 				attributes.setEnabled(false);
 				LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
 			}
 			SelectPostProcessingEffectFragment.refresh();
-			effects.clear();
+			//effects.clear();
 		}
 	}
 
@@ -112,15 +124,34 @@ public class PostProcessorWrapper
 			bloom.setBaseSaturation(bloomAttributes.getBaseSat());
 			bloom.setBloomIntesity(bloomAttributes.getBloomInt());
 			bloom.setBloomSaturation(bloomAttributes.getBloomSat());
+			bloom.setThreshold(bloomAttributes.getThreshold());
 
 			Log.e("Error", "Base Int: "+bloom.getBaseIntensity());
 			Log.e("Error", "Base Sat: "+bloom.getBaseSaturation());
 			Log.e("Error", "Bloom Int: "+bloom.getBloomIntensity());
 			Log.e("Error", "Bloom Sat: "+bloom.getBloomSaturation());
+			Log.e("Error", "Bloom Threshold: "+bloom.getThreshold());
 		}
 
 		else if(type.equals(PostProcessingEffectsEnum.VIGNETTE))
 		{
+			VignetteAttributeContainer vignetteAttributes = (VignetteAttributeContainer) attributes;
+			Vignette vignette = (Vignette) effect;
+			vignette.setIntensity(vignetteAttributes.getIntensity());
+
+			boolean gradientActive = setGradientAndReturnActive(vignetteAttributes.getGradientType(), vignette);
+			Log.e("Error", "Vignette intensity: "+vignette.getIntensity());
+			Log.e("Error", "Gradient Type: "+vignetteAttributes.getGradientType().toString());
+			if(gradientActive){
+				//Texture t = new Texture( Gdx.files.internal( "data/" + "gradient-mapping.png" ), Pixmap.Format.RGBA4444, false );
+				//t.setFilter( Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest );
+				//vignette.setLutTexture( t);
+				vignette.setLutTexture( ResourceFactory.newTexture( "gradient-mapping.png", false ));
+				Log.e("Error", "Yeah Vignette Gradient");
+			}
+			else{
+				vignette.setLutTexture( null );
+			}
 		}
 
 		else if(type.equals(PostProcessingEffectsEnum.CURVATURE))
@@ -150,5 +181,37 @@ public class PostProcessorWrapper
 		synchronized (postProcessor) {
 			postProcessor.rebind();
 		}
+	}
+
+	private boolean setGradientAndReturnActive(VignetteGradientEnum gradientType, Vignette vignette)
+	{
+			switch (gradientType) {
+				case CROSSPROCESSING:
+					vignette.setLutIndexVal(0, 16);
+					return true;
+				case SUNSET:
+					vignette.setLutIndexVal(0, 5);
+					return true;
+				case MARS:
+					vignette.setLutIndexVal(0, 7);
+					return true;
+				case VIVID:
+					vignette.setLutIndexVal(0, 6);
+					return true;
+				case GREENLAND:
+					vignette.setLutIndexVal(0, 8);
+					return true;
+				case CLOUDY:
+					vignette.setLutIndexVal(0, 3);
+					return true;
+				case MUDDY:
+					vignette.setLutIndexVal(0, 0);
+					return true;
+				case NONE:
+					vignette.setLutIndexVal(0, -1 );
+					return false;
+			}
+
+		return false;
 	}
 }

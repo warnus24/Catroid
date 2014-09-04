@@ -32,6 +32,7 @@ public class BloomAttributeContainer extends PostProcessingEffectAttributContain
 	private float baseSat = .85f;
 	private float bloomInt = 1.1f;
 	private float bloomSat = .85f;
+	private float threshold = .277f;
 
 	public BloomAttributeContainer()
 	{
@@ -69,5 +70,13 @@ public class BloomAttributeContainer extends PostProcessingEffectAttributContain
 
 	public void setBloomSat(float bloomSat) {
 		this.bloomSat = bloomSat;
+	}
+
+	public float getThreshold() {
+		return threshold;
+	}
+
+	public void setThreshold(float threshold) {
+		this.threshold = threshold;
 	}
 }

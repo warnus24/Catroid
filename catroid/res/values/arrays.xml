@@ -38,5 +38,15 @@
         <item>@string/nxt_motor_all</item>
     </string-array>
 
+    <string-array name="vignette_gradients_array">
+        <item>None</item>
+        <item>Cross-processing</item>
+        <item>Sunset</item>
+        <item>Mars</item>
+        <item>Vivid</item>
+        <item>Greenland</item>
+        <item>Cloudy</item>
+        <item>Muddy</item>
+    </string-array>
 
 </resources>

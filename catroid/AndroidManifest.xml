@@ -175,10 +175,15 @@
 		</activity>
 
         <activity
-            android:name="org.catrobat.catroid.livewallpaper.ui.SelectBloomEffectActivity" android:exported="true"
+        android:name="org.catrobat.catroid.livewallpaper.ui.SelectBloomEffectActivity" android:exported="true"
+        android:parentActivityName="org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectActivity" >
+		</activity>
+
+        <activity
+            android:name="org.catrobat.catroid.livewallpaper.ui.SelectVignetteEffectActivity" android:exported="true"
             android:parentActivityName="org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectActivity" >
 		</activity>
-		
+
 		<activity
      		 android:name="org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity" android:exported="true"
      		 android:parentActivityName="org.catrobat.catroid.livewallpaper.ui.LiveWallpaperSettings" > 

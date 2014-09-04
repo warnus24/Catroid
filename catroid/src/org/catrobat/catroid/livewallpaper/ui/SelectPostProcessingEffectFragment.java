@@ -158,8 +158,9 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 		//VIGNETTE
 		if(item.equals(PostProcessingEffectsEnum.VIGNETTE.toString())
 				|| item.equals(PostProcessingEffectsEnum.EFFECT_1.toString())){
-			VignetteAttributeContainer vignetteAttributes = new VignetteAttributeContainer();
-			changeEffectState(vignetteAttributes);
+			//VignetteAttributeContainer vignetteAttributes = new VignetteAttributeContainer();
+			//changeEffectState(vignetteAttributes);
+			goToSelectPostProcessingEffectGUI(SelectVignetteEffectActivity.class);
 		}
 
 		//CURVATURE

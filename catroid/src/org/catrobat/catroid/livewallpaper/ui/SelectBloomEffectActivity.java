@@ -43,16 +43,19 @@ public class SelectBloomEffectActivity extends BaseActivity {
 	private SeekBar seekBar2;
 	private SeekBar seekBar3;
 	private SeekBar seekBar4;
+	private SeekBar seekBar5;
 	private Switch mySwitch;
 	private CustomOnSeekbarListener baseIntListener;
 	private CustomOnSeekbarListener baseSatListener;
 	private CustomOnSeekbarListener bloomIntListener;
 	private CustomOnSeekbarListener bloomSatListener;
+	private CustomOnSeekbarListener bloomThresholdListener;
 
 	private final float BASE_INT_FACTOR = 50.0F;
 	private final float BASE_SAT_FACTOR = 58.8F;
 	private final float BLOOM_INT_FACTOR = 45.4F;
 	private final float BLOOM_SAT_FACTOR = 58.8F;
+	private final float BLOOM_THRESHOLD_FACTOR = 180.51F;
 	public SelectBloomEffectActivity INSTANCE;
 
 	@Override
@@ -62,7 +65,6 @@ public class SelectBloomEffectActivity extends BaseActivity {
 		setUpActionBar();
 		initializeControlElements();
 		setUpActualContext();
-		this.moveTaskToBack(true);
 		INSTANCE = this;
 	}
 
@@ -91,6 +93,9 @@ public class SelectBloomEffectActivity extends BaseActivity {
 		int progress4 = (int) (attributes.getBloomSat() * BLOOM_SAT_FACTOR);
 		seekBar4.setProgress(progress4);
 
+		int progress5 = (int) (attributes.getThreshold() * BLOOM_THRESHOLD_FACTOR);
+		seekBar5.setProgress(progress5);
+
 	}
 
 	private void initializeControlElements()
@@ -100,6 +105,7 @@ public class SelectBloomEffectActivity extends BaseActivity {
 
 		//Switch
 		mySwitch = (Switch) findViewById(R.id.switch1);
+
 		//Base Int
 		seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
 		baseIntListener = new CustomOnSeekbarListener(BASE_INT_FACTOR);
@@ -119,6 +125,11 @@ public class SelectBloomEffectActivity extends BaseActivity {
 		seekBar4 = (SeekBar) findViewById(R.id.seekBar4);
 		bloomSatListener = new CustomOnSeekbarListener(BLOOM_SAT_FACTOR);
 		seekBar4.setOnSeekBarChangeListener(bloomSatListener);
+
+		//Bloom Threshold
+		seekBar5 = (SeekBar) findViewById(R.id.seekBar5);
+		bloomThresholdListener = new CustomOnSeekbarListener(BLOOM_THRESHOLD_FACTOR);
+		seekBar5.setOnSeekBarChangeListener(bloomThresholdListener);
 	}
 
 	private void setUpActionBar() {
@@ -137,6 +148,7 @@ public class SelectBloomEffectActivity extends BaseActivity {
 			bloomAttributes.setBaseSat(baseSatListener.getAttribute());
 			bloomAttributes.setBloomInt(bloomIntListener.getAttribute());
 			bloomAttributes.setBloomSat(bloomSatListener.getAttribute());
+			bloomAttributes.setThreshold(bloomThresholdListener.getAttribute());
 
 			if(mySwitch.isChecked())
 			{
