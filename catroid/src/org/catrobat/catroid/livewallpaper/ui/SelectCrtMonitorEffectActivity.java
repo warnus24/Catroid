@@ -33,6 +33,7 @@ import com.actionbarsherlock.app.ActionBar;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.postprocessing.BloomAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.CrtMonitorAttributeContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
 
@@ -42,26 +43,20 @@ public class SelectCrtMonitorEffectActivity extends BaseActivity {
 	private SeekBar seekBar1;
 	private SeekBar seekBar2;
 	private SeekBar seekBar3;
-	private SeekBar seekBar4;
-	private SeekBar seekBar5;
 	private Switch mySwitch;
-	private CustomOnSeekbarListener baseIntListener;
-	private CustomOnSeekbarListener baseSatListener;
-	private CustomOnSeekbarListener bloomIntListener;
-	private CustomOnSeekbarListener bloomSatListener;
-	private CustomOnSeekbarListener bloomThresholdListener;
+	private CustomOnSeekbarListener chromaticDispersionRCListener;
+	private CustomOnSeekbarListener chromaticDispersionBYListener;
+	private CustomOnSeekbarListener timeListener;
 
-	private final float BASE_INT_FACTOR = 50.0F;
-	private final float BASE_SAT_FACTOR = 58.8F;
-	private final float BLOOM_INT_FACTOR = 45.4F;
-	private final float BLOOM_SAT_FACTOR = 58.8F;
-	private final float BLOOM_THRESHOLD_FACTOR = 180.51F;
+	private final float CHROMATIC_DISPERSION_RC_FACTOR = -150.0F;
+	private final float CHROMATIC_DISPERSION_BY_FACTOR = -150.0F;
+	private final float TIME_FACTOR = .2F;
 	public SelectCrtMonitorEffectActivity INSTANCE;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_select_bloom_effect);
+		setContentView(R.layout.activity_select_crt_monitor_effect);
 		setUpActionBar();
 		initializeControlElements();
 		setUpActualContext();
@@ -70,32 +65,25 @@ public class SelectCrtMonitorEffectActivity extends BaseActivity {
 
 	public void setUpActualContext()
 	{
-		PostProcessingEffectAttributContainer attributesContainer = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(PostProcessingEffectsEnum.BLOOM);
+		PostProcessingEffectAttributContainer attributesContainer = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(PostProcessingEffectsEnum.CRTMONITOR);
 
 		if(attributesContainer == null)
 		{
 			return;
 		}
 
-		BloomAttributeContainer attributes = (BloomAttributeContainer) LiveWallpaper.getInstance().getPostProcessingEffectAttributes(
-																						PostProcessingEffectsEnum.BLOOM);
+		CrtMonitorAttributeContainer attributes = (CrtMonitorAttributeContainer) LiveWallpaper.getInstance().getPostProcessingEffectAttributes(
+																						PostProcessingEffectsEnum.CRTMONITOR);
 		mySwitch.setChecked(attributes.isEnabled());
 
-		int progress1 = (int) (attributes.getBaseInt() * BASE_INT_FACTOR);
+		int progress1 = (int) (attributes.getChromaticDispersionBY() * CHROMATIC_DISPERSION_BY_FACTOR);
 		seekBar1.setProgress(progress1);
 
-		int progress2 = (int) (attributes.getBaseSat() * BASE_SAT_FACTOR);
+		int progress2 = (int) (attributes.getChromaticDispersionRC() * CHROMATIC_DISPERSION_RC_FACTOR);
 		seekBar2.setProgress(progress2);
 
-		int progress3 = (int) (attributes.getBloomInt() * BLOOM_INT_FACTOR);
+		int progress3 = (int) (attributes.getTime() * TIME_FACTOR);
 		seekBar3.setProgress(progress3);
-
-		int progress4 = (int) (attributes.getBloomSat() * BLOOM_SAT_FACTOR);
-		seekBar4.setProgress(progress4);
-
-		int progress5 = (int) (attributes.getThreshold() * BLOOM_THRESHOLD_FACTOR);
-		seekBar5.setProgress(progress5);
-
 	}
 
 	private void initializeControlElements()
@@ -106,30 +94,20 @@ public class SelectCrtMonitorEffectActivity extends BaseActivity {
 		//Switch
 		mySwitch = (Switch) findViewById(R.id.switch1);
 
-		//Base Int
+		//ChromaticDispersionBY
 		seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
-		baseIntListener = new CustomOnSeekbarListener(BASE_INT_FACTOR);
-		seekBar1.setOnSeekBarChangeListener(baseIntListener);
+		chromaticDispersionBYListener = new CustomOnSeekbarListener(CHROMATIC_DISPERSION_BY_FACTOR);
+		seekBar1.setOnSeekBarChangeListener(chromaticDispersionBYListener);
 
-		//Base Sat
+		//ChromaticDispersionRC
 		seekBar2 = (SeekBar) findViewById(R.id.seekBar2);
-		baseSatListener = new CustomOnSeekbarListener(BASE_SAT_FACTOR);
-		seekBar2.setOnSeekBarChangeListener(baseSatListener);
+		chromaticDispersionRCListener = new CustomOnSeekbarListener(CHROMATIC_DISPERSION_RC_FACTOR);
+		seekBar2.setOnSeekBarChangeListener(chromaticDispersionRCListener);
 
-		//Bloom Int
+		//Time
 		seekBar3 = (SeekBar) findViewById(R.id.seekBar3);
-		bloomIntListener = new CustomOnSeekbarListener(BLOOM_INT_FACTOR);
-		seekBar3.setOnSeekBarChangeListener(bloomIntListener);
-
-		//Bloom Sat
-		seekBar4 = (SeekBar) findViewById(R.id.seekBar4);
-		bloomSatListener = new CustomOnSeekbarListener(BLOOM_SAT_FACTOR);
-		seekBar4.setOnSeekBarChangeListener(bloomSatListener);
-
-		//Bloom Threshold
-		seekBar5 = (SeekBar) findViewById(R.id.seekBar5);
-		bloomThresholdListener = new CustomOnSeekbarListener(BLOOM_THRESHOLD_FACTOR);
-		seekBar5.setOnSeekBarChangeListener(bloomThresholdListener);
+		timeListener = new CustomOnSeekbarListener(TIME_FACTOR);
+		seekBar3.setOnSeekBarChangeListener(timeListener);
 	}
 
 	private void setUpActionBar() {
@@ -143,22 +121,20 @@ public class SelectCrtMonitorEffectActivity extends BaseActivity {
 	private View.OnClickListener myButtonListener = new View.OnClickListener() {
 		public void onClick(View v) {
 
-			BloomAttributeContainer bloomAttributes = new BloomAttributeContainer();
-			bloomAttributes.setBaseInt(baseIntListener.getAttribute());
-			bloomAttributes.setBaseSat(baseSatListener.getAttribute());
-			bloomAttributes.setBloomInt(bloomIntListener.getAttribute());
-			bloomAttributes.setBloomSat(bloomSatListener.getAttribute());
-			bloomAttributes.setThreshold(bloomThresholdListener.getAttribute());
+			CrtMonitorAttributeContainer crtMonitorAttributeContainer = new CrtMonitorAttributeContainer();
+			crtMonitorAttributeContainer.setChromaticDispersionBY(chromaticDispersionBYListener.getAttribute());
+			crtMonitorAttributeContainer.setChromaticDispersionRC(chromaticDispersionRCListener.getAttribute());
+			crtMonitorAttributeContainer.setTime(timeListener.getAttribute());
 
 			if(mySwitch.isChecked())
 			{
-				bloomAttributes.setEnabled(true);
-				LiveWallpaper.getInstance().activatePostProcessingEffect(bloomAttributes);
+				crtMonitorAttributeContainer.setEnabled(true);
+				LiveWallpaper.getInstance().activatePostProcessingEffect(crtMonitorAttributeContainer);
 			}
 			else
 			{
-				bloomAttributes.setEnabled(false);
-				LiveWallpaper.getInstance().deactivatePostProcessingEffect(bloomAttributes);
+				crtMonitorAttributeContainer.setEnabled(false);
+				LiveWallpaper.getInstance().deactivatePostProcessingEffect(crtMonitorAttributeContainer);
 			}
 			INSTANCE.onBackPressed();
 		}

@@ -100,12 +100,6 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 		effectArray[2] = PostProcessingEffectsEnum.CURVATURE;
 		effectArray[3] = PostProcessingEffectsEnum.CRTMONITOR;
 
-		//adapter = new ArrayAdapter<String>(
-		//		getActivity(), getActivity(),
-		//		R.layout.activity_postprocessing_list_item_enabled,
-		//		R.id.activity_postprocessing_text1,
-		//		effectArray);
-
 		adapter = new CustomArrayAdapter(getActivity(), getActivity(),
 				R.layout.activity_postprocessing_list_item_enabled,
 				R.id.activity_postprocessing_text1,
@@ -166,13 +160,31 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 		//CURVATURE
 		if(item.equals(PostProcessingEffectsEnum.CURVATURE.toString())
 				|| item.equals(PostProcessingEffectsEnum.EFFECT_2.toString())){
-			CurvatureAttributeContainer curvatureAttributes = new CurvatureAttributeContainer();
-			changeEffectState(curvatureAttributes);
+			//CurvatureAttributeContainer curvatureAttributes = new CurvatureAttributeContainer();
+			//changeEffectState(curvatureAttributes);
+			goToSelectPostProcessingEffectGUI(SelectCurvatureEffectActivity.class);
 		}
 
 		//CRT-MONITOR
 		if(item.equals(PostProcessingEffectsEnum.CRTMONITOR.toString())
 				|| item.equals(PostProcessingEffectsEnum.EFFECT_2.toString())){
+			//CrtMonitorAttributeContainer crtMonitorAttributes = new CrtMonitorAttributeContainer();
+			//changeEffectState(crtMonitorAttributes);
+			goToSelectPostProcessingEffectGUI(SelectCrtMonitorEffectActivity.class);
+		}
+
+		//EFFECT-1
+		if(item.equals(PostProcessingEffectsEnum.EFFECT_1.toString())){
+			VignetteAttributeContainer vignetteAttributes = new VignetteAttributeContainer();
+			changeEffectState(vignetteAttributes);
+			BloomAttributeContainer bloomAttributes = new BloomAttributeContainer();
+			changeEffectState(bloomAttributes);
+		}
+
+		//EFFECT-2
+		if(item.equals(PostProcessingEffectsEnum.EFFECT_2.toString())){
+			CurvatureAttributeContainer curvatureAttributes = new CurvatureAttributeContainer();
+			changeEffectState(curvatureAttributes);
 			CrtMonitorAttributeContainer crtMonitorAttributes = new CrtMonitorAttributeContainer();
 			changeEffectState(crtMonitorAttributes);
 		}

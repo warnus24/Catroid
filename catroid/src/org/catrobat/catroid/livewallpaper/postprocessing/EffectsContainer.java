@@ -45,6 +45,7 @@ public class EffectsContainer
 	private Curvature curvature;
 	private CrtMonitor crtMonitor;
 	private Vignette vignette;
+	private Zoomer zoomer;
 	private PostProcessingEffectsEnum postProcessingEnum = PostProcessingEffectsEnum.NONE;
 	private Map<PostProcessingEffectsEnum, PostProcessorEffect> effectsMap = new ConcurrentHashMap<PostProcessingEffectsEnum, PostProcessorEffect>();
 
@@ -54,12 +55,10 @@ public class EffectsContainer
 		vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
 		curvature = new Curvature();
 
-
-		Zoomer zoomer = new Zoomer((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), RadialBlur.Quality.Low);
+		zoomer = new Zoomer((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), RadialBlur.Quality.Low);
 
 		int effectsForCrt = CrtScreen.Effect.TweakContrast.v | CrtScreen.Effect.PhosphorVibrance.v | CrtScreen.Effect.Scanlines.v | CrtScreen.Effect.Tint.v;
 		crtMonitor = new CrtMonitor( (int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false, false, CrtScreen.RgbMode.ChromaticAberrations, effectsForCrt );
-
 
 		effectsMap.put(PostProcessingEffectsEnum.BLOOM, bloom);
 		effectsMap.put(PostProcessingEffectsEnum.CURVATURE, curvature);
@@ -72,6 +71,4 @@ public class EffectsContainer
 	{
 		return effectsMap.get(effectType);
 	}
-
-
 }

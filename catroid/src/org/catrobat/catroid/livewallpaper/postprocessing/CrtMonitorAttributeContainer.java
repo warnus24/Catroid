@@ -28,9 +28,37 @@ package org.catrobat.catroid.livewallpaper.postprocessing;
  */
 public class CrtMonitorAttributeContainer extends PostProcessingEffectAttributContainer {
 
+	private float chromaticDispersionRC;
+	private float chromaticDispersionBY;
+	private float time;
+
 	public CrtMonitorAttributeContainer()
 	{
 		super();
 		this.setType(PostProcessingEffectsEnum.CRTMONITOR);
+	}
+
+	public float getChromaticDispersionRC() {
+		return chromaticDispersionRC;
+	}
+
+	public void setChromaticDispersionRC(float chromaticDispersionRC) {
+		this.chromaticDispersionRC = chromaticDispersionRC;
+	}
+
+	public float getChromaticDispersionBY() {
+		return chromaticDispersionBY;
+	}
+
+	public void setChromaticDispersionBY(float chromaticDispersionBY) {
+		this.chromaticDispersionBY = chromaticDispersionBY;
+	}
+
+	public float getTime() {
+		return time;
+	}
+
+	public void setTime(float time) {
+		this.time = time;
 	}
 }

@@ -36,6 +36,8 @@ import com.bitfire.postprocessing.PostProcessor;
 import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.demo.ResourceFactory;
 import com.bitfire.postprocessing.effects.Bloom;
+import com.bitfire.postprocessing.effects.CrtMonitor;
+import com.bitfire.postprocessing.effects.Curvature;
 import com.bitfire.postprocessing.effects.Vignette;
 
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
@@ -84,14 +86,11 @@ public class PostProcessorWrapper
 			PostProcessorEffect effect = effectsContainer.get(type);
 			if (effects.containsKey(type)) {
 				setAttributes(type, effect, attributes);
-				//postProcessor.removeEffect(effect);
-				//effects.remove(type);
 				effect.setEnabled(false);
 			}
 			LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
 			SelectPostProcessingEffectFragment.refresh();
 		}
-
 	}
 
 	public void removeAll()
@@ -156,11 +155,20 @@ public class PostProcessorWrapper
 
 		else if(type.equals(PostProcessingEffectsEnum.CURVATURE))
 		{
+			CurvatureAttributeContainer curvatureAttributes = (CurvatureAttributeContainer) attributes;
+			Curvature curvature = (Curvature) effect;
+			curvature.setDistortion(curvatureAttributes.getDistortion());
 		}
 
 		else if(type.equals(PostProcessingEffectsEnum.CRTMONITOR))
 		{
+			CrtMonitorAttributeContainer crtMonitorAttributeContainer = (CrtMonitorAttributeContainer) attributes;
+			CrtMonitor crtMonitor = (CrtMonitor) effect;
+			crtMonitor.setChromaticDispersion(crtMonitorAttributeContainer.getChromaticDispersionRC(),
+																crtMonitorAttributeContainer.getChromaticDispersionBY());
+		 	crtMonitor.setTime(crtMonitorAttributeContainer.getTime());
 		}
+
 	}
 
 	public PostProcessor getPostProcessor()

@@ -33,6 +33,7 @@ import com.actionbarsherlock.app.ActionBar;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.postprocessing.BloomAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.CurvatureAttributeContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
 
@@ -40,28 +41,16 @@ public class SelectCurvatureEffectActivity extends BaseActivity {
 
 	private BloomAttributeContainer attributes;
 	private SeekBar seekBar1;
-	private SeekBar seekBar2;
-	private SeekBar seekBar3;
-	private SeekBar seekBar4;
-	private SeekBar seekBar5;
 	private Switch mySwitch;
-	private CustomOnSeekbarListener baseIntListener;
-	private CustomOnSeekbarListener baseSatListener;
-	private CustomOnSeekbarListener bloomIntListener;
-	private CustomOnSeekbarListener bloomSatListener;
-	private CustomOnSeekbarListener bloomThresholdListener;
+	private CustomOnSeekbarListener distortionListener;
 
-	private final float BASE_INT_FACTOR = 50.0F;
-	private final float BASE_SAT_FACTOR = 58.8F;
-	private final float BLOOM_INT_FACTOR = 45.4F;
-	private final float BLOOM_SAT_FACTOR = 58.8F;
-	private final float BLOOM_THRESHOLD_FACTOR = 180.51F;
+	private final float DISTORTION_FACTOR = 100.0F;
 	public SelectCurvatureEffectActivity INSTANCE;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_select_bloom_effect);
+		setContentView(R.layout.activity_select_curvature_effect);
 		setUpActionBar();
 		initializeControlElements();
 		setUpActualContext();
@@ -70,32 +59,19 @@ public class SelectCurvatureEffectActivity extends BaseActivity {
 
 	public void setUpActualContext()
 	{
-		PostProcessingEffectAttributContainer attributesContainer = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(PostProcessingEffectsEnum.BLOOM);
+		PostProcessingEffectAttributContainer attributesContainer = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(PostProcessingEffectsEnum.CURVATURE);
 
 		if(attributesContainer == null)
 		{
 			return;
 		}
 
-		BloomAttributeContainer attributes = (BloomAttributeContainer) LiveWallpaper.getInstance().getPostProcessingEffectAttributes(
-																						PostProcessingEffectsEnum.BLOOM);
+		CurvatureAttributeContainer attributes = (CurvatureAttributeContainer) LiveWallpaper.getInstance().getPostProcessingEffectAttributes(
+																						PostProcessingEffectsEnum.CURVATURE);
 		mySwitch.setChecked(attributes.isEnabled());
 
-		int progress1 = (int) (attributes.getBaseInt() * BASE_INT_FACTOR);
+		int progress1 = (int) (attributes.getDistortion() * DISTORTION_FACTOR);
 		seekBar1.setProgress(progress1);
-
-		int progress2 = (int) (attributes.getBaseSat() * BASE_SAT_FACTOR);
-		seekBar2.setProgress(progress2);
-
-		int progress3 = (int) (attributes.getBloomInt() * BLOOM_INT_FACTOR);
-		seekBar3.setProgress(progress3);
-
-		int progress4 = (int) (attributes.getBloomSat() * BLOOM_SAT_FACTOR);
-		seekBar4.setProgress(progress4);
-
-		int progress5 = (int) (attributes.getThreshold() * BLOOM_THRESHOLD_FACTOR);
-		seekBar5.setProgress(progress5);
-
 	}
 
 	private void initializeControlElements()
@@ -106,30 +82,10 @@ public class SelectCurvatureEffectActivity extends BaseActivity {
 		//Switch
 		mySwitch = (Switch) findViewById(R.id.switch1);
 
-		//Base Int
+		//Distoration
 		seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
-		baseIntListener = new CustomOnSeekbarListener(BASE_INT_FACTOR);
-		seekBar1.setOnSeekBarChangeListener(baseIntListener);
-
-		//Base Sat
-		seekBar2 = (SeekBar) findViewById(R.id.seekBar2);
-		baseSatListener = new CustomOnSeekbarListener(BASE_SAT_FACTOR);
-		seekBar2.setOnSeekBarChangeListener(baseSatListener);
-
-		//Bloom Int
-		seekBar3 = (SeekBar) findViewById(R.id.seekBar3);
-		bloomIntListener = new CustomOnSeekbarListener(BLOOM_INT_FACTOR);
-		seekBar3.setOnSeekBarChangeListener(bloomIntListener);
-
-		//Bloom Sat
-		seekBar4 = (SeekBar) findViewById(R.id.seekBar4);
-		bloomSatListener = new CustomOnSeekbarListener(BLOOM_SAT_FACTOR);
-		seekBar4.setOnSeekBarChangeListener(bloomSatListener);
-
-		//Bloom Threshold
-		seekBar5 = (SeekBar) findViewById(R.id.seekBar5);
-		bloomThresholdListener = new CustomOnSeekbarListener(BLOOM_THRESHOLD_FACTOR);
-		seekBar5.setOnSeekBarChangeListener(bloomThresholdListener);
+		distortionListener = new CustomOnSeekbarListener(DISTORTION_FACTOR);
+		seekBar1.setOnSeekBarChangeListener(distortionListener);
 	}
 
 	private void setUpActionBar() {
@@ -143,22 +99,18 @@ public class SelectCurvatureEffectActivity extends BaseActivity {
 	private View.OnClickListener myButtonListener = new View.OnClickListener() {
 		public void onClick(View v) {
 
-			BloomAttributeContainer bloomAttributes = new BloomAttributeContainer();
-			bloomAttributes.setBaseInt(baseIntListener.getAttribute());
-			bloomAttributes.setBaseSat(baseSatListener.getAttribute());
-			bloomAttributes.setBloomInt(bloomIntListener.getAttribute());
-			bloomAttributes.setBloomSat(bloomSatListener.getAttribute());
-			bloomAttributes.setThreshold(bloomThresholdListener.getAttribute());
+			CurvatureAttributeContainer curvatureAttributes = new CurvatureAttributeContainer();
+			curvatureAttributes.setDistortion(distortionListener.getAttribute());
 
 			if(mySwitch.isChecked())
 			{
-				bloomAttributes.setEnabled(true);
-				LiveWallpaper.getInstance().activatePostProcessingEffect(bloomAttributes);
+				curvatureAttributes.setEnabled(true);
+				LiveWallpaper.getInstance().activatePostProcessingEffect(curvatureAttributes);
 			}
 			else
 			{
-				bloomAttributes.setEnabled(false);
-				LiveWallpaper.getInstance().deactivatePostProcessingEffect(bloomAttributes);
+				curvatureAttributes.setEnabled(false);
+				LiveWallpaper.getInstance().deactivatePostProcessingEffect(curvatureAttributes);
 			}
 			INSTANCE.onBackPressed();
 		}

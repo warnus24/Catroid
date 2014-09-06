@@ -184,6 +184,16 @@
             android:parentActivityName="org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectActivity" >
 		</activity>
 
+        <activity
+            android:name="org.catrobat.catroid.livewallpaper.ui.SelectCurvatureEffectActivity" android:exported="true"
+            android:parentActivityName="org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectActivity" >
+		</activity>
+
+         <activity
+             android:name="org.catrobat.catroid.livewallpaper.ui.SelectCrtMonitorEffectActivity" android:exported="true"
+             android:parentActivityName="org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectActivity" >
+		</activity>
+
 		<activity
      		 android:name="org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity" android:exported="true"
      		 android:parentActivityName="org.catrobat.catroid.livewallpaper.ui.LiveWallpaperSettings" > 

@@ -28,9 +28,19 @@ package org.catrobat.catroid.livewallpaper.postprocessing;
  */
 public class CurvatureAttributeContainer extends PostProcessingEffectAttributContainer {
 
+	private float distortion;
+
 	public CurvatureAttributeContainer()
 	{
 		super();
 		this.setType(PostProcessingEffectsEnum.CURVATURE);
+	}
+
+	public float getDistortion() {
+		return distortion;
+	}
+
+	public void setDistortion(float distortion) {
+		this.distortion = distortion;
 	}
 }
