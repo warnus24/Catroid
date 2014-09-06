@@ -96,6 +96,7 @@ import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 import org.catrobat.catroid.formulaeditor.Operators;
 import org.catrobat.catroid.physics.content.bricks.CollisionReceiverBrick;
+import org.catrobat.catroid.physics.content.bricks.SeparatorBrick;
 import org.catrobat.catroid.physics.content.bricks.SetBounceBrick;
 import org.catrobat.catroid.physics.content.bricks.SetFrictionBrick;
 import org.catrobat.catroid.physics.content.bricks.SetGravityBrick;
@@ -178,6 +179,7 @@ public class CategoryBricksFactory {
 		}
 
 		// TODO[physics]
+		motionBrickList.add(new SeparatorBrick());
 		motionBrickList.add(new SetPhysicsObjectTypeBrick(BrickValues.PHYSIC_TYPE));
 		motionBrickList.add(new SetVelocityBrick(BrickValues.PHYSIC_VELOCITY));
 		motionBrickList.add(new TurnLeftSpeedBrick(BrickValues.PHYSIC_TURN_DEGREES));

@@ -133,6 +133,7 @@ public class AddBrickFragment extends SherlockListFragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				try {
 					Brick brickToBeAdded = adapter.getItem(position).clone();
+					if (brickToBeAdded == null) return; // Physics-Separator-Brick
 					scriptFragment.updateAdapterAfterAddNewBrick(brickToBeAdded);
 
 					if (brickToBeAdded instanceof ScriptBrick) {
