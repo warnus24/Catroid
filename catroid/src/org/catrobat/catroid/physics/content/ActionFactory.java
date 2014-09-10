@@ -349,9 +349,10 @@ public class ActionFactory extends Actions {
 		return action;
 	}
 
-	public Action createSpeakAction(String text) {
-		SpeakAction action = Actions.action(SpeakAction.class);
-		action.setText(new Formula(text));
+	public static SpeakAction createSpeakAction(Sprite sprite, Formula text) {
+		SpeakAction action = action(SpeakAction.class);
+		action.setSprite(sprite);
+		action.setText(text);
 		return action;
 	}
 
