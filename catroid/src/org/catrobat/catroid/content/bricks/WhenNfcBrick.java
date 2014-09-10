@@ -95,7 +95,7 @@ public class WhenNfcBrick extends ScriptBrick implements NfcTagFragment.OnNfcTag
 	}
 
 	@Override
-	public Script initScript() {
+	public Script getScriptSafe() {
 		if (whenNfcScript == null) {
 			setWhenNfcScript(new WhenNfcScript(nfcTag));
 		}

@@ -24,6 +24,7 @@ package org.catrobat.catroid.content;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfLogicElseBrick;
@@ -32,16 +33,19 @@ import org.catrobat.catroid.content.bricks.LoopBeginBrick;
 import org.catrobat.catroid.content.bricks.LoopEndBrick;
 import org.catrobat.catroid.content.bricks.NestingBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
+import org.catrobat.catroid.content.bricks.UserBrick;
+import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrick;
 
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Script implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Brick> brickList;
+	protected ArrayList<Brick> brickList;
 
 	protected transient ScriptBrick brick;
 
@@ -52,7 +56,47 @@ public abstract class Script implements Serializable {
 		init();
 	}
 
-	public abstract Script copyScriptForSprite(Sprite sprite);
+	public abstract Script copyScriptForSprite(Sprite copySprite, List<UserBrick> preCopiedUserBricks);
+
+	public void doCopy(Sprite copySprite, Script cloneScript, List<UserBrick> preCopiedUserBricks) {
+		ArrayList<Brick> cloneBrickList = cloneScript.getBrickList();
+		for (Brick brick : getBrickList()) {
+			Brick copiedBrick = null;
+			if (brick instanceof UserBrick) {
+				UserBrick original = ((UserBrick) brick);
+				UserBrick precopiedRootBrick = findBrickWithId(preCopiedUserBricks, original.getUserBrickId());
+				ProjectManager.getInstance().setCurrentUserBrick(precopiedRootBrick);
+				UserBrick copiedUserBrick = precopiedRootBrick.copyBrickForSprite(copySprite);
+				copiedUserBrick
+						.copyFormulasMatchingNames(original.getUserBrickParameters(), copiedUserBrick.getUserBrickParameters());
+
+				copiedBrick = precopiedRootBrick;
+			}
+			else if (brick instanceof UserScriptDefinitionBrick) {
+					UserScriptDefinitionBrick preCopiedDefinitionBrick = findBrickWithId(preCopiedUserBricks,((UserScriptDefinitionBrick) brick).getUserBrickId()).getDefinitionBrick();
+					cloneScript.addBrick(preCopiedDefinitionBrick);
+			}
+			else {
+				copiedBrick = brick.copyBrickForSprite(copySprite);
+			}
+
+			if (copiedBrick instanceof IfLogicEndBrick) {
+				setIfBrickReferences((IfLogicEndBrick) copiedBrick, (IfLogicEndBrick) brick);
+			} else if (copiedBrick instanceof LoopEndBrick) {
+				setLoopBrickReferences((LoopEndBrick) copiedBrick, (LoopEndBrick) brick);
+			}
+			cloneBrickList.add(copiedBrick);
+		}
+	}
+
+	protected UserBrick findBrickWithId(List<UserBrick> list, int id) {
+		for (UserBrick brick : list) {
+			if (brick.getUserBrickId() == id) {
+				return brick;
+			}
+		}
+		return null;
+	}
 
 	protected Object readResolve() {
 		init();
@@ -95,6 +139,24 @@ public abstract class Script implements Serializable {
 		}
 	}
 
+	public void removeInstancesOfUserBrick(UserBrick userBrickToRemove) {
+
+		LinkedList<Brick> toRemove = new LinkedList<Brick>();
+
+		for (Brick brick : brickList) {
+			if (brick instanceof UserBrick) {
+				UserBrick userBrick = (UserBrick) brick;
+				if (userBrick.getDefinitionBrick() == userBrickToRemove.getDefinitionBrick()) {
+					toRemove.add(brick);
+				}
+			}
+		}
+
+		for (Brick brick : toRemove) {
+			brickList.remove(brick);
+		}
+	}
+
 	public void removeBrick(Brick brick) {
 		brickList.remove(brick);
 	}
@@ -112,12 +174,14 @@ public abstract class Script implements Serializable {
 	}
 
 	public int getRequiredResources() {
-		int ressources = Brick.NO_RESOURCES;
+		int resources = Brick.NO_RESOURCES;
 
 		for (Brick brick : brickList) {
-			ressources |= brick.getRequiredResources();
+			if (brick instanceof UserBrick) {
+				resources |= brick.getRequiredResources();
+			}
 		}
-		return ressources;
+		return resources;
 	}
 
 	public boolean containsBrickOfType(Class<?> type) {
@@ -159,6 +223,10 @@ public abstract class Script implements Serializable {
 		}
 
 		return brickList.get(index);
+	}
+
+	public void setBrick(ScriptBrick brick) {
+		this.brick = brick;
 	}
 
 	protected void setIfBrickReferences(IfLogicEndBrick copiedIfEndBrick, IfLogicEndBrick originalIfEndBrick) {

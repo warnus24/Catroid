@@ -41,7 +41,7 @@ public interface Brick extends Serializable, Cloneable {
 		BRIGHTNESS, BRIGHTNESS_CHANGE, X_POSITION, Y_POSITION, X_POSITION_CHANGE, Y_POSITION_CHANGE, TRANSPARENCY,
 		TRANSPARENCY_CHANGE, SIZE, SIZE_CHANGE, VOLUME, VOLUME_CHANGE, X_DESTINATION, Y_DESTINATION, STEPS,
 		DURATION_IN_SECONDS, DEGREES, TURN_RIGHT_DEGREES, TURN_LEFT_DEGREES, TIME_TO_WAIT_IN_SECONDS, VARIABLE,
-		VARIABLE_CHANGE, IF_CONDITION, TIMES_TO_REPEAT, VIBRATE_DURATION_IN_SECONDS, NOTE, SPEAK,
+		VARIABLE_CHANGE, IF_CONDITION, TIMES_TO_REPEAT, VIBRATE_DURATION_IN_SECONDS, USER_BRICK, NOTE, SPEAK,
 
 		LEGO_NXT_SPEED, LEGO_NXT_DEGREES, LEGO_NXT_FREQUENCY, LEGO_NXT_DURATION_IN_SECONDS,
 
@@ -53,13 +53,13 @@ public interface Brick extends Serializable, Cloneable {
 	//	public static final int SOUND_MANAGER = 0x1;
 	int TEXT_TO_SPEECH = 0x2;
 	int BLUETOOTH_LEGO_NXT = 0x4;
-    int NFC_ADAPTER = 0x10;
+	int FACE_DETECTION = 0x10;
+    int NFC_ADAPTER = 0x40;
 	int ARDRONE_SUPPORT = 0x20;
 	int CAMERA_LED = 0x100;
 	int VIBRATOR = 0x200;
 
 	//	public static final int BLUETOOTH_ARDUINO = 0x8;
-	int FACE_DETECTION = 0x10;
 
 	List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence);
 
@@ -88,7 +88,11 @@ public interface Brick extends Serializable, Cloneable {
 
 	void setCheckboxView(int id);
 
+	void setCheckboxView(int id, View view);
+
 	View getViewWithAlpha(int alphaValue);
 
 	void setAnimationState(boolean animationState);
+
+	void setAlpha(int alphaFull);
 }

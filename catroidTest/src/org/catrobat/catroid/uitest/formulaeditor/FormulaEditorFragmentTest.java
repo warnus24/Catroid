@@ -26,7 +26,7 @@ import android.graphics.Rect;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.robotium.solo.Solo;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -133,7 +133,7 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 				.toString());
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
-		solo.sleep(50);
+		solo.sleep(200);
 		assertEquals("Wrong text in X EditText", "12 ", ((TextView) solo.getView(X_POS_EDIT_TEXT_RID)).getText()
 				.toString());
 	}
@@ -178,7 +178,7 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 
-		solo.sleep(50);
+		solo.sleep(200);
 		assertEquals("Undo did something wrong", "1 - 2 ", ((TextView) solo.getView(X_POS_EDIT_TEXT_RID)).getText()
 				.toString());
 
