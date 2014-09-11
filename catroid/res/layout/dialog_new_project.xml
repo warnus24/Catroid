@@ -56,7 +56,8 @@
             android:layout_height="48dp"
             android:layout_below="@+id/project_name_edittext"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" >
+            android:layout_marginRight="16dp"
+            android:orientation="vertical" >
 
             <CheckBox
                 android:id="@+id/project_empty_checkbox"
@@ -66,6 +67,16 @@
                 android:checked="false"
                 android:text="@string/new_project_empty"
                 android:textColor="@color/spritelist_details_text_color" />
+
+            <CheckBox
+                android:id="@+id/project_landscape_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:checked="false"
+                android:text="@string/new_project_landscape"
+                android:textColor="@color/spritelist_details_text_color"
+                android:visibility="gone"/>
         </LinearLayout >
     </RelativeLayout >
 
