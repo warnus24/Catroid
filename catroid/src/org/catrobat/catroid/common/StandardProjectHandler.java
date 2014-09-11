@@ -517,11 +517,11 @@ public final class StandardProjectHandler {
 		return defaultProject;
 	}
 
-	public static Project createAndSaveEmptyProject(String projectName, Context context) {
+	public static Project createAndSaveEmptyProject(String projectName, Context context, boolean landscape) {
 		if (StorageHandler.getInstance().projectExists(projectName)) {
 			throw new IllegalArgumentException("Project with name '" + projectName + "' already exists!");
 		}
-		Project emptyProject = new Project(context, projectName);
+		Project emptyProject = new Project(context, projectName, landscape);
 		emptyProject.setDeviceData(context);
 		StorageHandler.getInstance().saveProject(emptyProject);
 		ProjectManager.getInstance().setProject(emptyProject);
