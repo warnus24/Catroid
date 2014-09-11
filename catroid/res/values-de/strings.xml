@@ -272,6 +272,7 @@
     <string name="new_project_description_dialog_hint">Meine Beschreibung</string>
     <string name="new_project_name">Programmname:</string>
     <string name="new_project_empty">Erstelle leeres Programm</string>
+    <string name="new_project_landscape">Erstelle Programm im Querformat</string>
     <!--  -->
 
 
