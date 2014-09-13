@@ -137,12 +137,14 @@ public class UserBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		UiTestUtils.dragFloatingBrick(solo, -1);
 		solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.button_add));
 		UiTestUtils.clickOnBrickCategory(solo, solo.getCurrentActivity().getString(R.string.category_user_bricks));
+		solo.sleep(500);
 		solo.clickInList(2);
 		solo.waitForText(stringOnShowAddButton);
 		solo.clickOnText(stringOnShowAddButton);
 		UiTestUtils.dragFloatingBrick(solo, -1);
 		solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.button_add));
 		UiTestUtils.clickOnBrickCategory(solo, solo.getCurrentActivity().getString(R.string.category_user_bricks));
+		solo.sleep(500);
 		solo.waitForText("New Brick 2");
 		solo.clickOnText("New Brick 2");
 		solo.waitForText(stringOnShowAddButton);
@@ -150,6 +152,7 @@ public class UserBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		UiTestUtils.dragFloatingBrick(solo, -1);
 		solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.button_add));
 		UiTestUtils.clickOnBrickCategory(solo, solo.getCurrentActivity().getString(R.string.category_user_bricks));
+		solo.sleep(500);
 		solo.clickInList(2);
 		solo.waitForText(stringOnShowAddButton);
 		solo.clickOnText(stringOnShowAddButton);
@@ -411,7 +414,7 @@ public class UserBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 	}
 
 	public void testUserBrickEditInstanceScriptChangesOtherInstanceScript() throws InterruptedException {
-		UiTestUtils.addNewBrick(solo, R.string.category_user_bricks, UiTestUtils.TEST_USER_BRICK_NAME, 0);
+		UiTestUtils.addNewBrick(solo, R.string.category_user_bricks, UiTestUtils.TEST_USER_BRICK_NAME);
 
 		solo.sleep(1000);
 		// click on position x brick-heights above/below the place where the brick currently is
@@ -443,7 +446,7 @@ public class UserBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		solo.goBack();
 		solo.sleep(2000);
 
-		UiTestUtils.addNewBrick(solo, R.string.category_user_bricks, UiTestUtils.TEST_USER_BRICK_NAME, 0);
+		UiTestUtils.addNewBrick(solo, R.string.category_user_bricks, UiTestUtils.TEST_USER_BRICK_NAME);
 
 		location = UiTestUtils.dragFloatingBrick(solo, 1);
 		assertTrue("was not able to find the brick we just added: second user brick", location != null);

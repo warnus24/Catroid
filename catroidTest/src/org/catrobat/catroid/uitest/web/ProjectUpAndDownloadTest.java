@@ -103,6 +103,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		});
 	}
 
+	@Device
 	public void testUploadProjectSuccessAndTokenReplacementAfterUpload() throws Throwable {
 		setServerURLToTestUrl();
 		UiTestUtils.createTestProject(testProject);
@@ -122,6 +123,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		downloadProject(newTestProject, testProject);
 	}
 
+	@Device
 	public void testUploadProjectOldCatrobatLanguageVersion() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -165,6 +167,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		UiTestUtils.clearAllUtilTestProjects();
 	}
 
+	@Device
 	public void testUploadProjectOffensiveLanguageUsed() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -204,6 +207,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		UiTestUtils.clearAllUtilTestProjects();
 	}
 
+	@Device
 	public void testRenameProjectNameAndDescriptionWhenUploading() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -243,6 +247,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 				serverProjectDescription.equalsIgnoreCase(projectDescriptionSetWhenUploading));
 	}
 
+	@Device
 	public void testRenameProjectDescriptionWhenUploading() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -258,6 +263,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		checkProjectNameAndDescriptionBeforAndAfterDownload(testProject, newTestDescription);
 	}
 
+	@Device
 	public void testUploadingFromProgrammList() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -272,6 +278,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		checkProjectNameAndDescriptionBeforAndAfterDownload(testProject, newTestDescription);
 	}
 
+	@Device
 	public void testUploadFromProgramm() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -286,6 +293,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		checkProjectNameAndDescriptionBeforAndAfterDownload(testProject, newTestDescription);
 	}
 
+	@Device
 	public void testUpAndDownloadJapaneseUnicodeProject() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -313,6 +321,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		assertTrue("Project name on server was changed", serverProjectName.equalsIgnoreCase(testProject));
 	}
 
+	@Device
 	public void testDownload() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -353,6 +362,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		assertTrue("Project was successfully downloaded", serverProjectName.equalsIgnoreCase(projectName));
 	}
 
+	@Device
 	public void testUploadStandardProject() throws Throwable {
 		deleteOldAndCreateAndSaveCleanStandardProject();
 
@@ -425,6 +435,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 				solo.waitForText(solo.getString(R.string.notification_upload_finished), 0, 10000));
 	}
 
+	@Device
 	public void testDownloadProjectAfterModification() throws Throwable {
 		setServerURLToTestUrl();
 

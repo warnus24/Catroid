@@ -33,7 +33,6 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.ChangeBrightnessByNBrick;
 import org.catrobat.catroid.content.bricks.ChangeYByNBrick;
 import org.catrobat.catroid.content.bricks.ClearGraphicEffectBrick;
 import org.catrobat.catroid.content.bricks.ForeverBrick;
@@ -173,14 +172,14 @@ public class LoopBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		assertEquals("Wrong LoopEnd-Brick instance",
 				((NestingBrick) projectBrickList.get(2)).getAllNestingBrickParts(false).get(1), projectBrickList.get(4));
 
-		UiTestUtils.addNewBrick(solo, R.string.brick_change_brightness);
-		solo.sleep(500);
+		UiTestUtils.addNewBrick(solo, R.string.category_looks, R.string.brick_clear_graphic_effect);
+		solo.sleep(5000);
 		UiTestUtils.dragFloatingBrick(solo, 1.25f);
+		solo.sleep(1000);
 
 		assertEquals("Incorrect number of bricks.", 8, projectBrickList.size());
-		assertTrue("Wrong Brick instance. expected 4=ChangeBrightnessByNBrick, bricklist: " +
-						projectBrickList.toString(), projectBrickList.get(4) instanceof ChangeBrightnessByNBrick);
-
+		assertTrue("Wrong Brick instance. expected 4=ClearGraphicEffectBrick, bricklist: " +
+						projectBrickList.toString(), projectBrickList.get(3) instanceof ClearGraphicEffectBrick);
 	}
 
 	public void testNestedForeverBricks() {
@@ -197,7 +196,7 @@ public class LoopBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 
 		UiTestUtils.addNewBrick(solo, R.string.category_looks, R.string.brick_clear_graphic_effect);
 
-		yPosition = UiTestUtils.getListItemYPositions(solo, 0);
+		UiTestUtils.getListItemYPositions(solo, 0);
 		addedYPosition = UiTestUtils.getAddedListItemYPosition(solo);
 
 		solo.drag(20, 20, addedYPosition, 0, 20);
@@ -208,6 +207,7 @@ public class LoopBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		addedYPosition = UiTestUtils.getAddedListItemYPosition(solo);
 
 		solo.drag(20, 20, addedYPosition, yPosition.get(0), 20);
+		solo.sleep(1000);
 
 		UiTestUtils.addNewBrick(solo, R.string.category_control, R.string.brick_forever);
 
@@ -269,7 +269,7 @@ public class LoopBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		deleteAllBricks();
 
 		UiTestUtils.addNewBrick(solo, R.string.category_control, R.string.brick_forever);
-		UiTestUtils.dragFloatingBrickDownwards(solo, 0);
+		UiTestUtils.tapFloatingBrick(solo);
 
 		ArrayList<Brick> projectBrickList = project.getSpriteList().get(0).getScript(0).getBrickList();
 		assertEquals("Incorrect number of bricks.", 2, projectBrickList.size());
@@ -279,6 +279,7 @@ public class LoopBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		UiTestUtils.openActionMode(solo, solo.getString(R.string.copy), R.id.copy, getActivity());
 		UiTestUtils.clickOnCheckBox(solo, 1);
 		UiTestUtils.acceptAndCloseActionMode(solo);
+		solo.sleep(500);
 
 		assertEquals("Incorrect number of bricks.", 4, projectBrickList.size());
 		assertTrue("Wrong Brick instance.", projectBrickList.get(0) instanceof ForeverBrick);
@@ -445,6 +446,8 @@ public class LoopBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, getActivity());
 		UiTestUtils.clickOnText(solo, solo.getString(R.string.select_all).toUpperCase(Locale.getDefault()));
 		UiTestUtils.acceptAndCloseActionMode(solo);
+		solo.waitForDialogToOpen();
 		UiTestUtils.clickOnText(solo, solo.getString(R.string.yes));
+		solo.waitForDialogToClose();
 	}
 }

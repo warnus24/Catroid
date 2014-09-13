@@ -44,6 +44,7 @@ import org.catrobat.catroid.formulaeditor.Sensors;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
+import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
@@ -69,6 +70,7 @@ public class FaceDetectionSettingTest extends BaseActivityInstrumentationTestCas
 		solo.sleep(300);
 	}
 
+	@Device
 	public void testFaceDetectionDefaultPreference() {
 		clearFaceDetectionPreference();
 
@@ -84,6 +86,7 @@ public class FaceDetectionSettingTest extends BaseActivityInstrumentationTestCas
 		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
 	}
 
+	@Device
 	public void testReadFaceDetectionPreference() {
 		writeFaceDetectionPreference(false);
 
@@ -111,6 +114,7 @@ public class FaceDetectionSettingTest extends BaseActivityInstrumentationTestCas
 		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
 	}
 
+	@Device
 	public void testWriteFaceDetectionPreference() {
 		clearFaceDetectionPreference();
 
@@ -132,6 +136,7 @@ public class FaceDetectionSettingTest extends BaseActivityInstrumentationTestCas
 
 	}
 
+	@Device
 	public void testCameraSettingsList() {
 		solo.clickOnMenuItem(solo.getString(R.string.settings));
 
@@ -154,6 +159,7 @@ public class FaceDetectionSettingTest extends BaseActivityInstrumentationTestCas
 		assertTrue("No list with camera choices available in Settings", listFound);
 	}
 
+	@Device
 	public void testWriteCameraSettings() {
 		assertTrue("Device must have at least 2 cameras for this test", Camera.getNumberOfCameras() >= 2);
 
@@ -181,6 +187,7 @@ public class FaceDetectionSettingTest extends BaseActivityInstrumentationTestCas
 
 	}
 
+	@Device
 	public void testReadCameraSettings() {
 		assertTrue("Device must have at least 2 cameras for this test", Camera.getNumberOfCameras() >= 2);
 

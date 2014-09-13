@@ -126,7 +126,7 @@ public class WhenBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 
 		solo.sleep(200);
 
-		UiTestUtils.addNewBrick(solo, UiTestUtils.getBrickCategory(solo, R.string.brick_when), R.string.brick_when, 1);
+		UiTestUtils.addNewBrick(solo, UiTestUtils.getBrickCategory(solo, R.string.brick_when), R.string.brick_when);
 
 		yPosition = UiTestUtils.getListItemYPositions(solo, 0);
 		addedYPosition = UiTestUtils.getAddedListItemYPosition(solo);

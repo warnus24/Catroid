@@ -576,15 +576,11 @@ public final class UiTestUtils {
 	}
 
 	public static void addNewBrick(Solo solo, int categoryStringId, int brickStringId) {
-		addNewBrick(solo, categoryStringId, brickStringId, 0);
-	}
-
-	public static void addNewBrick(Solo solo, int categoryStringId, int brickStringId, int nThElement) {
 		String brickName = solo.getCurrentActivity().getString(brickStringId);
-		addNewBrick(solo, categoryStringId, brickName, nThElement);
+		addNewBrick(solo, categoryStringId, brickName);
 	}
 
-	public static void addNewBrick(Solo solo, int categoryStringId, String brickName, int nThElement) {
+	public static void addNewBrick(Solo solo, int categoryStringId, String brickName) {
 		clickOnBottomBar(solo, R.id.button_add);
 		solo.sleep(1000);
 		clickOnBrickCategory(solo, solo.getCurrentActivity().getString(categoryStringId));
@@ -598,7 +594,7 @@ public final class UiTestUtils {
 			clickOnBottomBar(solo, R.id.button_add);
 		}
 		solo.sleep(600);
-		boolean succeeded = clickOnBrickInAddBrickFragment(solo, brickName, false);
+		boolean succeeded = clickOnBrickInAddBrickFragment(solo, brickName);
 		if (!succeeded) {
 			fail(brickName + " should appear. Failed to scroll to find it.");
 		}
@@ -633,8 +629,10 @@ public final class UiTestUtils {
 	public static void clickOnBrickCategory(Solo solo, String category) {
 		if (!solo.waitForText(category, 0, 300)) {
 			solo.drag(40, 40, 300, 40, DRAG_FRAMES);
+			solo.sleep(1000);
 		}
 		solo.clickOnText(category);
+		solo.sleep(500);
 	}
 
 	public static void showSourceAndEditBrick(String brickName, Solo solo) {
@@ -661,7 +659,7 @@ public final class UiTestUtils {
 //		if (brickName.equals(UiTestUtils.TEST_USER_BRICK_NAME)) {
 //			clickOnBottomBar(solo, R.id.button_add);
 //		}
-		boolean clicked = UiTestUtils.clickOnBrickInAddBrickFragment(solo, brickName, false);
+		boolean clicked = UiTestUtils.clickOnBrickInAddBrickFragment(solo, brickName);
 		if (!clicked) {
 			fail("was unable to click on " + brickName + "!");
 		}
@@ -683,7 +681,7 @@ public final class UiTestUtils {
 		solo.sleep(50);
 	}
 
-	public static boolean clickOnBrickInAddBrickFragment(Solo solo, String brickName, boolean addToScript) {
+	public static boolean clickOnBrickInAddBrickFragment(Solo solo, String brickName) {
 		boolean success = false;
 		int lowestIdTimeBeforeLast = -2;
 		int lowestIdLastTime = -1;
@@ -717,6 +715,7 @@ public final class UiTestUtils {
 			if (!success) {
 				int difference = farthestDownThisTime - highestUpThisTime;
 				solo.drag(40, 40, difference * 0.75f, 40, DRAG_FRAMES);
+				solo.sleep(500);
 			}
 		}
 
@@ -783,7 +782,7 @@ public final class UiTestUtils {
 		int destinationY = Math.round(originY + height * offsetY);
 
 		solo.drag(originX, destinationX, originY, destinationY, DRAG_FRAMES);
-		solo.sleep(1000);
+		solo.sleep(2000);
 
 		location[0] = destinationX;
 		location[1] = destinationY;

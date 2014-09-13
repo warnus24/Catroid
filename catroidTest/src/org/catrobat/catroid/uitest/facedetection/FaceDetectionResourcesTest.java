@@ -41,6 +41,7 @@ import org.catrobat.catroid.formulaeditor.Sensors;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
+import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
@@ -56,6 +57,7 @@ public class FaceDetectionResourcesTest extends BaseActivityInstrumentationTestC
 		super(MainMenuActivity.class);
 	}
 
+	@Device
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public void testResourceNeeded() throws Exception {
 		createProject(true);
@@ -73,6 +75,7 @@ public class FaceDetectionResourcesTest extends BaseActivityInstrumentationTestC
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 	}
 
+	@Device
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public void testResourceNotNeeded() throws Exception {
 		createProject(false);
@@ -88,6 +91,7 @@ public class FaceDetectionResourcesTest extends BaseActivityInstrumentationTestC
 
 	}
 
+	@Device
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public void testResourceChanged() throws Exception {
 		createProject(true);

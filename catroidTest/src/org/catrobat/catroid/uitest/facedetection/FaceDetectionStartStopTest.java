@@ -40,6 +40,7 @@ import org.catrobat.catroid.formulaeditor.Sensors;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
+import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
@@ -66,6 +67,7 @@ public class FaceDetectionStartStopTest extends BaseActivityInstrumentationTestC
 		solo.sleep(SLEEP_TIME);
 	}
 
+	@Device
 	public void testGoingBack() {
 		assertTrue("Face detection was not started", FaceDetectionHandler.isFaceDetectionRunning());
 
@@ -76,6 +78,7 @@ public class FaceDetectionStartStopTest extends BaseActivityInstrumentationTestC
 		solo.sleep(SLEEP_TIME);
 	}
 
+	@Device
 	public void testOtherActivityStarts() {
 		assertTrue("Face detection was not started", FaceDetectionHandler.isFaceDetectionRunning());
 		getInstrumentation().getContext().startActivity(
@@ -94,6 +97,7 @@ public class FaceDetectionStartStopTest extends BaseActivityInstrumentationTestC
 				FaceDetectionHandler.isFaceDetectionRunning());
 	}
 
+	@Device
 	public void testStageMenu() throws Exception {
 		assertTrue("Face detection was not started", FaceDetectionHandler.isFaceDetectionRunning());
 
