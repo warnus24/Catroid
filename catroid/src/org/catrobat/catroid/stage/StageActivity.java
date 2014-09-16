@@ -95,10 +95,10 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onPause() {
-		SensorHandler.stopSensorListeners();
+		// SensorHandler.stopSensorListeners(); Todo
 		stageAudioFocus.releaseAudioFocus();
 		LedUtil.pauseLed();
-		VibratorUtil.pauseVibrator();
+		// VibratorUtil.pauseVibrator(); Todo
 		super.onPause();
 
 		if (droneConnection != null) {
@@ -109,10 +109,10 @@ public class StageActivity extends AndroidApplication {
 	@Override
 	public void onResume() {
 		Log.d(TAG, "StageActivity::onResume()");
-		SensorHandler.startSensorListener(this);
+		// SensorHandler.startSensorListener(this); Todo
 		stageAudioFocus.requestAudioFocus();
 		LedUtil.resumeLed();
-		VibratorUtil.resumeVibrator();
+		// VibratorUtil.resumeVibrator(); Todo
 		super.onResume();
 
 		if (droneConnection != null) {
@@ -121,16 +121,16 @@ public class StageActivity extends AndroidApplication {
 	}
 
 	public void pause() {
-		SensorHandler.stopSensorListeners();
+		//SensorHandler.stopSensorListeners(); Todo
 		stageListener.menuPause();
 		LedUtil.pauseLed();
-		VibratorUtil.pauseVibrator();
+		//VibratorUtil.pauseVibrator(); Todo
 	}
 
 	public void resume() {
 		stageListener.menuResume();
 		LedUtil.resumeLed();
-		VibratorUtil.resumeVibrator();
+		// VibratorUtil.resumeVibrator(); Todo
 		SensorHandler.startSensorListener(this);
 	}
 
@@ -188,7 +188,7 @@ public class StageActivity extends AndroidApplication {
 		}
 		Log.d(TAG, "Destroy");
 		LedUtil.destroy();
-		VibratorUtil.destroy();
+		// VibratorUtil.destroy(); Todo
 		super.onDestroy();
 	}
 

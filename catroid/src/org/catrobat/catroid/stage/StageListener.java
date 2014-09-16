@@ -45,6 +45,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.common.collect.Multimap;
 
 import org.catrobat.catroid.ProjectManager;
@@ -211,9 +213,9 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		virtualWidthHalf = virtualWidth / 2;
 		virtualHeightHalf = virtualHeight / 2;
 
-		stage = new Stage(new StretchViewport(virtualWidth, virtualHeight));
+		stage = new Stage(new ExtendViewport(virtualWidth, virtualHeight));
 
-		stage.getViewport().setWorldSize(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
+		//stage.getViewport().setWorldSize(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 		batch = stage.getBatch();
 
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
@@ -232,6 +234,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		stage.addActor(passepartout);
 
 		if (DEBUG) {
+			camera = (OrthographicCamera) stage.getViewport().getCamera();
 			OrthoCamController camController = new OrthoCamController(camera);
 			InputMultiplexer multiplexer = new InputMultiplexer();
 			multiplexer.addProcessor(camController);
@@ -421,6 +424,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			}
 		}
 
+		camera = (OrthographicCamera) stage.getViewport().getCamera();
 		batch.setProjectionMatrix(camera.combined);
 
 		if (firstStart) {
@@ -612,6 +616,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	}
 
 	private void drawAxes() {
+		camera = (OrthographicCamera) stage.getViewport().getCamera();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		batch.draw(axes, -virtualWidthHalf, -AXIS_WIDTH / 2, virtualWidth, AXIS_WIDTH);
@@ -727,7 +732,9 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private void initScreenMode() {
 		switch (project.getScreenMode()) {
 			case STRETCH:
-				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
+				stage.setViewport(new StretchViewport(virtualWidth, virtualHeight));
+				stage.getViewport().update(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, true);
+				//stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = ScreenValues.SCREEN_WIDTH;
 				screenshotHeight = ScreenValues.SCREEN_HEIGHT;
 				screenshotX = 0;
@@ -735,7 +742,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 				break;
 
 			case MAXIMIZE:
-				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
+				stage.setViewport(new ExtendViewport(virtualWidth, virtualHeight));
+				//stage.getViewport().apply(true);
+				//stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
+				stage.getViewport().update(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, true);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
 				screenshotX = maximizeViewPortX;
@@ -746,7 +756,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 				break;
 
 		}
-		camera = (OrthographicCamera) stage.getCamera();
+		camera = (OrthographicCamera) stage.getViewport().getCamera();
 		camera.position.set(0, 0, 0);
 		camera.update();
 	}
