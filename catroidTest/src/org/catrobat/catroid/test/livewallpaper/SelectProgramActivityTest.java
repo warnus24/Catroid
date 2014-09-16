@@ -229,7 +229,7 @@ public class SelectProgramActivityTest extends
 
 		solo.clickOnText(solo.getString(R.string.lwp_enable_sound));
 
-		assertFalse("The sound should have been enabled but it's not", sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, true));
+		assertTrue("The sound should have been enabled but it's not", sharedPreferences.getBoolean(Constants.PREF_SOUND_ENABLED, true));
 
 		solo.clickOnText(solo.getString(R.string.lwp_enable_sound));
 
