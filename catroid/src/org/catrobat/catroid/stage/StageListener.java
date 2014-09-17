@@ -745,7 +745,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 				stage.setViewport(new ExtendViewport(virtualWidth, virtualHeight));
 				//stage.getViewport().apply(true);
 				//stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
-				stage.getViewport().update(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, true);
+				stage.getViewport().update(maximizeViewPortWidth, maximizeViewPortHeight, true);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
 				screenshotX = maximizeViewPortX;
