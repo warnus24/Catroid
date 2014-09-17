@@ -44,6 +44,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -234,7 +235,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		stage.addActor(passepartout);
 
 		if (DEBUG) {
-			camera = (OrthographicCamera) stage.getViewport().getCamera();
 			OrthoCamController camController = new OrthoCamController(camera);
 			InputMultiplexer multiplexer = new InputMultiplexer();
 			multiplexer.addProcessor(camController);
@@ -424,7 +424,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			}
 		}
 
-		camera = (OrthographicCamera) stage.getViewport().getCamera();
 		batch.setProjectionMatrix(camera.combined);
 
 		if (firstStart) {
@@ -616,7 +615,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	}
 
 	private void drawAxes() {
-		camera = (OrthographicCamera) stage.getViewport().getCamera();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		batch.draw(axes, -virtualWidthHalf, -AXIS_WIDTH / 2, virtualWidth, AXIS_WIDTH);
@@ -745,7 +743,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 				stage.setViewport(new ExtendViewport(virtualWidth, virtualHeight));
 				//stage.getViewport().apply(true);
 				//stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
-				stage.getViewport().update(maximizeViewPortWidth, maximizeViewPortHeight, true);
+				stage.getViewport().update(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, true);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
 				screenshotX = maximizeViewPortX;
@@ -756,7 +754,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 				break;
 
 		}
-		camera = (OrthographicCamera) stage.getViewport().getCamera();
+		camera = (OrthographicCamera) stage.getCamera();
 		camera.position.set(0, 0, 0);
 		camera.update();
 	}
