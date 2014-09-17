@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.stage;
 
@@ -133,9 +133,9 @@ public class SingleExecutionWhenBrickTest extends BaseActivityInstrumentationTes
 		// yellow Sprite
 		yellowSprite = new Sprite("yellowSprite");
 
-		StartScript yellowStartScript = new StartScript(yellowSprite);
-		SetLookBrick yellowLookBrick = new SetLookBrick(yellowSprite);
-		SetSizeToBrick yellowSetSizeToBrick = new SetSizeToBrick(yellowSprite, 200d);
+		StartScript yellowStartScript = new StartScript();
+		SetLookBrick yellowLookBrick = new SetLookBrick();
+		SetSizeToBrick yellowSetSizeToBrick = new SetSizeToBrick(200d);
 		LookData yellowLookData = new LookData();
 		String yellowImageName = "yellow_image.bmp";
 		yellowLookData.setLookName(yellowImageName);
@@ -145,19 +145,19 @@ public class SingleExecutionWhenBrickTest extends BaseActivityInstrumentationTes
 		yellowStartScript.addBrick(yellowSetSizeToBrick);
 		yellowSprite.addScript(yellowStartScript);
 
-		yellowWhenScript = new WhenScript(yellowSprite);
-		WaitBrick yellowWaitBrick = new WaitBrick(yellowSprite, 2000);
-		SetGhostEffectBrick yellowSetGhostEffectBrick = new SetGhostEffectBrick(yellowSprite, 50d);
+		yellowWhenScript = new WhenScript();
+		WaitBrick yellowWaitBrick = new WaitBrick(2000);
+		SetGhostEffectBrick yellowSetGhostEffectBrick = new SetGhostEffectBrick(50d);
 		yellowWhenScript.addBrick(yellowWaitBrick);
 		yellowWhenScript.addBrick(yellowSetGhostEffectBrick);
 		yellowSprite.addScript(yellowWhenScript);
 
 		// blue Sprite
 		Sprite blueSprite = new Sprite("blueSprite");
-		StartScript blueStartScript = new StartScript(blueSprite);
-		SetLookBrick blueLookBrick = new SetLookBrick(blueSprite);
-		SetSizeToBrick blueSetSizeToBrick = new SetSizeToBrick(blueSprite, 200d);
-		BroadcastWaitBrick broadcastWaitBrick = new BroadcastWaitBrick(blueSprite, broadcastMessage);
+		StartScript blueStartScript = new StartScript();
+		SetLookBrick blueLookBrick = new SetLookBrick();
+		SetSizeToBrick blueSetSizeToBrick = new SetSizeToBrick(200d);
+		BroadcastWaitBrick broadcastWaitBrick = new BroadcastWaitBrick(broadcastMessage);
 		LookData blueLookData = new LookData();
 		String blueImageName = "blue_image.bmp";
 
@@ -168,19 +168,19 @@ public class SingleExecutionWhenBrickTest extends BaseActivityInstrumentationTes
 		blueLookBrick.setLook(blueLookData);
 		blueStartScript.addBrick(blueLookBrick);
 		blueStartScript.addBrick(blueSetSizeToBrick);
-		blueStartScript.addBrick(new PlaceAtBrick(blueSprite, 100, 200));
+		blueStartScript.addBrick(new PlaceAtBrick(100, 200));
 
 		blueSprite.addScript(blueStartScript);
 
-		WhenScript blueWhenScript = new WhenScript(blueSprite);
+		WhenScript blueWhenScript = new WhenScript();
 		blueWhenScript.addBrick(broadcastWaitBrick);
 		blueSprite.addScript(blueWhenScript);
 
 		// green Sprite
 		greenSprite = new Sprite("greenSprite");
-		StartScript greenStartScript = new StartScript(greenSprite);
-		SetLookBrick greenLookBrick = new SetLookBrick(greenSprite);
-		SetSizeToBrick greenSetSizeToBrick = new SetSizeToBrick(greenSprite, 200d);
+		StartScript greenStartScript = new StartScript();
+		SetLookBrick greenLookBrick = new SetLookBrick();
+		SetSizeToBrick greenSetSizeToBrick = new SetSizeToBrick(200d);
 		LookData greenLookData = new LookData();
 		String greenImageName = "green_image.bmp";
 
@@ -191,14 +191,14 @@ public class SingleExecutionWhenBrickTest extends BaseActivityInstrumentationTes
 		greenLookBrick.setLook(greenLookData);
 		greenStartScript.addBrick(greenLookBrick);
 		greenStartScript.addBrick(greenSetSizeToBrick);
-		greenStartScript.addBrick(new PlaceAtBrick(greenSprite, -100, 200));
+		greenStartScript.addBrick(new PlaceAtBrick(-100, 200));
 
 		greenSprite.addScript(greenStartScript);
 
-		greenBroadcastScript = new BroadcastScript(greenSprite, broadcastMessage);
-		WaitBrick waitBrick = new WaitBrick(greenSprite, 2000);
+		greenBroadcastScript = new BroadcastScript(broadcastMessage);
+		WaitBrick waitBrick = new WaitBrick(2000);
 
-		SetGhostEffectBrick greenSetGhostEffectBrick2 = new SetGhostEffectBrick(greenSprite, 100d);
+		SetGhostEffectBrick greenSetGhostEffectBrick2 = new SetGhostEffectBrick(100d);
 		greenBroadcastScript.addBrick(waitBrick);
 		greenBroadcastScript.addBrick(greenSetGhostEffectBrick2);
 		greenSprite.addScript(greenBroadcastScript);

@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.formulaeditor;
 
@@ -93,16 +93,17 @@ public class InternFormula {
 						.isFunctionParameterBracketOpen())
 				&& ((cursorPositionInternToken.isFunctionName())
 						|| (cursorPositionInternToken.isFunctionParameterBracketOpen() && cursorTokenPosition == CursorTokenPosition.LEFT)
-						|| (cursorPositionInternToken.isSensor()) || (cursorPositionInternToken.isUserVariable()))) {
+						|| (cursorPositionInternToken.isSensor()) || (cursorPositionInternToken.isUserVariable()) || (cursorPositionInternToken
+							.isString()))) {
 			selectCursorPositionInternToken(TokenSelectionType.USER_SELECTION);
 		}
 
 	}
 
-	public void handleKeyInput(int resourceId, Context context, String userVariableName) {
+	public void handleKeyInput(int resourceId, Context context, String name) {
 
 		List<InternToken> keyInputInternTokenList = new InternFormulaKeyboardAdapter()
-				.createInternTokenListByResourceId(resourceId, userVariableName);
+				.createInternTokenListByResourceId(resourceId, name);
 
 		CursorTokenPropertiesAfterModification cursorTokenPropertiesAfterInput = CursorTokenPropertiesAfterModification.DO_NOT_MODIFY;
 
@@ -136,6 +137,26 @@ public class InternFormula {
 		updateExternCursorPosition(cursorTokenPropertiesAfterInput);
 		updateInternCursorPosition();
 
+	}
+
+	public void updateVariableReferences(String oldName, String newName, Context context) {
+		for (InternToken internToken : internTokenFormulaList) {
+			internToken.updateVariableReferences(oldName, newName);
+		}
+		generateExternFormulaStringAndInternExternMapping(context);
+	}
+
+	public void removeVariableReferences(String name, Context context) {
+		LinkedList<InternToken> toRemove = new LinkedList<InternToken>();
+		for (InternToken internToken : internTokenFormulaList) {
+			if (internToken.isUserVariable(name)) {
+				toRemove.add(internToken);
+			}
+		}
+		for (InternToken internToken : toRemove) {
+			internTokenFormulaList.remove(internToken);
+		}
+		generateExternFormulaStringAndInternExternMapping(context);
 	}
 
 	public void updateInternCursorPosition() {

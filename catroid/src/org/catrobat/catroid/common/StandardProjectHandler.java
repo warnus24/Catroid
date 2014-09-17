@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.common;
 
@@ -109,9 +109,9 @@ public final class StandardProjectHandler {
 
 		// Background sprite
 		backgroundSprite.getLookDataList().add(backgroundLookData);
-		Script backgroundStartScript = new StartScript(backgroundSprite);
+		Script backgroundStartScript = new StartScript();
 
-		SetLookBrick setLookBrick = new SetLookBrick(backgroundSprite);
+		SetLookBrick setLookBrick = new SetLookBrick();
 		setLookBrick.setLook(backgroundLookData);
 		backgroundStartScript.addBrick(setLookBrick);
 
@@ -262,14 +262,14 @@ public final class StandardProjectHandler {
 		Sprite sprite = new Sprite(spriteName);
 		//defaultDroneProject.addSprite(takeOffSprite);
 
-		Script whenSpriteTappedScript = new WhenScript(sprite);
+		Script whenSpriteTappedScript = new WhenScript();
 		BrickBaseType brick = DroneBrickFactory.getInstanceOfDroneBrick(brickName, sprite, timeInMilliseconds, powerInPercent);
 		whenSpriteTappedScript.addBrick(brick);
 
-		Script whenProjectStartsScript = new StartScript(sprite);
-		PlaceAtBrick placeAtBrick = new PlaceAtBrick(sprite, calculateValueRelativeToScaledBackground(xPostition),
+		Script whenProjectStartsScript = new StartScript();
+		PlaceAtBrick placeAtBrick = new PlaceAtBrick(calculateValueRelativeToScaledBackground(xPostition),
 				calculateValueRelativeToScaledBackground(yPosition));
-		SetSizeToBrick setSizeBrick = new SetSizeToBrick(sprite, 50.0);
+		SetSizeToBrick setSizeBrick = new SetSizeToBrick(50.0);
 
 		whenProjectStartsScript.addBrick(placeAtBrick);
 		whenProjectStartsScript.addBrick(setSizeBrick);
@@ -368,16 +368,16 @@ public final class StandardProjectHandler {
 
 			// Background sprite
 			backgroundSprite.getLookDataList().add(backgroundLookData);
-			Script backgroundStartScript = new StartScript(backgroundSprite);
+			Script backgroundStartScript = new StartScript();
 
-			SetLookBrick setLookBrick = new SetLookBrick(backgroundSprite);
+			SetLookBrick setLookBrick = new SetLookBrick();
 			setLookBrick.setLook(backgroundLookData);
 			backgroundStartScript.addBrick(setLookBrick);
 
-			SetVariableBrick setVariableBrick = new SetVariableBrick(backgroundSprite, new Formula(1), randomFrom);
+			SetVariableBrick setVariableBrick = new SetVariableBrick(new Formula(1), randomFrom);
 			backgroundStartScript.addBrick(setVariableBrick);
 
-			setVariableBrick = new SetVariableBrick(backgroundSprite, new Formula(5), randomTo);
+			setVariableBrick = new SetVariableBrick(new Formula(5), randomTo);
 			backgroundStartScript.addBrick(setVariableBrick);
 
 			backgroundSprite.addScript(backgroundStartScript);
@@ -399,63 +399,63 @@ public final class StandardProjectHandler {
 			mole1Sprite.getLookDataList().add(whackedMoleLookData);
 			mole1Sprite.getSoundList().add(soundInfo);
 
-			Script mole1StartScript = new StartScript(mole1Sprite);
-			Script mole1WhenScript = new WhenScript(mole1Sprite);
+			Script mole1StartScript = new StartScript();
+			Script mole1WhenScript = new WhenScript();
 
 			// start script
-			SetSizeToBrick setSizeToBrick = new SetSizeToBrick(mole1Sprite, new Formula(30));
+			SetSizeToBrick setSizeToBrick = new SetSizeToBrick(new Formula(30));
 			mole1StartScript.addBrick(setSizeToBrick);
 
-			ForeverBrick foreverBrick = new ForeverBrick(mole1Sprite);
+			ForeverBrick foreverBrick = new ForeverBrick();
 			mole1StartScript.addBrick(foreverBrick);
 
-			PlaceAtBrick placeAtBrick = new PlaceAtBrick(mole1Sprite, calculateValueRelativeToScaledBackground(-160),
+			PlaceAtBrick placeAtBrick = new PlaceAtBrick(calculateValueRelativeToScaledBackground(-160),
 					calculateValueRelativeToScaledBackground(-110));
 			mole1StartScript.addBrick(placeAtBrick);
 
-			WaitBrick waitBrick = new WaitBrick(mole1Sprite, new Formula(waitOneOrTwoSeconds));
+			WaitBrick waitBrick = new WaitBrick(new Formula(waitOneOrTwoSeconds));
 			mole1StartScript.addBrick(waitBrick);
 
-			ShowBrick showBrick = new ShowBrick(mole1Sprite);
+			ShowBrick showBrick = new ShowBrick();
 			mole1StartScript.addBrick(showBrick);
 
-			setLookBrick = new SetLookBrick(mole1Sprite);
+			setLookBrick = new SetLookBrick();
 			setLookBrick.setLook(movingMoleLookData);
 			mole1StartScript.addBrick(setLookBrick);
 
-			GlideToBrick glideToBrick = new GlideToBrick(mole1Sprite, calculateValueRelativeToScaledBackground(-160),
+			GlideToBrick glideToBrick = new GlideToBrick(calculateValueRelativeToScaledBackground(-160),
 					calculateValueRelativeToScaledBackground(-95), 100);
 			mole1StartScript.addBrick(glideToBrick);
 
-			setLookBrick = new SetLookBrick(mole1Sprite);
+			setLookBrick = new SetLookBrick();
 			setLookBrick.setLook(diggedOutMoleLookData);
 			mole1StartScript.addBrick(setLookBrick);
 
-			waitBrick = new WaitBrick(mole1Sprite, randomWait.clone());
+			waitBrick = new WaitBrick(randomWait.clone());
 			mole1StartScript.addBrick(waitBrick);
 
-			HideBrick hideBrick = new HideBrick(mole1Sprite);
+			HideBrick hideBrick = new HideBrick();
 			mole1StartScript.addBrick(hideBrick);
 
-			waitBrick = new WaitBrick(mole1Sprite, randomWait.clone());
+			waitBrick = new WaitBrick(randomWait.clone());
 			mole1StartScript.addBrick(waitBrick);
 
-			LoopEndlessBrick loopEndlessBrick = new LoopEndlessBrick(mole1Sprite, foreverBrick);
+			LoopEndlessBrick loopEndlessBrick = new LoopEndlessBrick(foreverBrick);
 			mole1StartScript.addBrick(loopEndlessBrick);
 
 			// when script
-			PlaySoundBrick playSoundBrick = new PlaySoundBrick(mole1Sprite);
+			PlaySoundBrick playSoundBrick = new PlaySoundBrick();
 			playSoundBrick.setSoundInfo(soundInfo);
 			mole1WhenScript.addBrick(playSoundBrick);
 
-			setLookBrick = new SetLookBrick(mole1Sprite);
+			setLookBrick = new SetLookBrick();
 			setLookBrick.setLook(whackedMoleLookData);
 			mole1WhenScript.addBrick(setLookBrick);
 
-			waitBrick = new WaitBrick(mole1Sprite, 1500);
+			waitBrick = new WaitBrick(1500);
 			mole1WhenScript.addBrick(waitBrick);
 
-			hideBrick = new HideBrick(mole1Sprite);
+			hideBrick = new HideBrick();
 			mole1WhenScript.addBrick(hideBrick);
 
 			mole1Sprite.addScript(mole1StartScript);

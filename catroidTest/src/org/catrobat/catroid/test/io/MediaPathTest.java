@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.test.io;
 
@@ -276,13 +276,13 @@ public class MediaPathTest extends InstrumentationTestCase {
 
 	private void fillProjectWithAllBricksAndMediaFiles() throws IOException {
 		Sprite sprite = new Sprite("testSprite");
-		Script script = new StartScript(sprite);
-		Script whenScript = new WhenScript(sprite);
+		Script script = new StartScript();
+		Script whenScript = new WhenScript();
 		sprite.addScript(script);
 		sprite.addScript(whenScript);
 		project.addSprite(sprite);
 
-		SetLookBrick lookBrick2 = new SetLookBrick(sprite);
+		SetLookBrick lookBrick2 = new SetLookBrick();
 		LookData lookData = new LookData();
 		lookData.setLookFilename(testImageCopy2.getName());
 		lookData.setLookName("testImageCopy2");
@@ -291,36 +291,36 @@ public class MediaPathTest extends InstrumentationTestCase {
 
 		ArrayList<Brick> brickList1 = new ArrayList<Brick>();
 		ArrayList<Brick> brickList2 = new ArrayList<Brick>();
-		brickList1.add(new ChangeXByNBrick(sprite, 4));
-		brickList1.add(new ChangeYByNBrick(sprite, 5));
-		brickList1.add(new ComeToFrontBrick(sprite));
-		brickList1.add(new GoNStepsBackBrick(sprite, 5));
-		brickList1.add(new HideBrick(sprite));
-		brickList1.add(new WhenStartedBrick(sprite, script));
+		brickList1.add(new ChangeXByNBrick(4));
+		brickList1.add(new ChangeYByNBrick(5));
+		brickList1.add(new ComeToFrontBrick());
+		brickList1.add(new GoNStepsBackBrick(5));
+		brickList1.add(new HideBrick());
+		brickList1.add(new WhenStartedBrick(script));
 		brickList1.add(lookBrick2);
 
-		SetLookBrick lookBrick = new SetLookBrick(sprite);
+		SetLookBrick lookBrick = new SetLookBrick();
 		lookData = new LookData();
 		lookData.setLookFilename(testImageCopy.getName());
 		lookData.setLookName("testImageCopy");
 		lookBrick.setLook(lookData);
 		sprite.getLookDataList().add(lookData);
 
-		PlaySoundBrick soundBrick = new PlaySoundBrick(sprite);
+		PlaySoundBrick soundBrick = new PlaySoundBrick();
 		SoundInfo soundInfo = new SoundInfo();
 		soundInfo.setSoundFileName(testSoundCopy.getName());
 		soundInfo.setTitle("title");
 		soundBrick.setSoundInfo(soundInfo);
 		sprite.getSoundList().add(soundInfo);
 
-		brickList2.add(new PlaceAtBrick(sprite, 50, 50));
+		brickList2.add(new PlaceAtBrick(50, 50));
 		brickList2.add(soundBrick);
-		brickList2.add(new SetSizeToBrick(sprite, 50));
+		brickList2.add(new SetSizeToBrick(50));
 		brickList2.add(lookBrick);
-		brickList2.add(new SetXBrick(sprite, 50));
-		brickList2.add(new SetYBrick(sprite, 50));
-		brickList2.add(new ShowBrick(sprite));
-		brickList2.add(new WaitBrick(sprite, 1000));
+		brickList2.add(new SetXBrick(50));
+		brickList2.add(new SetYBrick(50));
+		brickList2.add(new ShowBrick());
+		brickList2.add(new WaitBrick(1000));
 
 		for (Brick brick : brickList1) {
 			script.addBrick(brick);

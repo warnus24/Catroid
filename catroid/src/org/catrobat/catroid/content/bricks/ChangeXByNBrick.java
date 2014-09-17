@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content.bricks;
 
@@ -34,7 +34,9 @@ import android.widget.TextView;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.Script;
+
+import org.catrobat.catroid.common.BrickValues;
+
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
@@ -42,43 +44,31 @@ import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class ChangeXByNBrick extends BrickBaseType implements OnClickListener, FormulaBrick {
+public class ChangeXByNBrick extends FormulaBrick implements OnClickListener {
 	private static final long serialVersionUID = 1L;
-	private Formula xMovement;
 
 	private transient View prototypeView;
 
 	public ChangeXByNBrick() {
-
+		addAllowedBrickField(BrickField.X_POSITION_CHANGE);
 	}
 
-	public ChangeXByNBrick(Sprite sprite, int xMovementValue) {
-		this.sprite = sprite;
-
-		xMovement = new Formula(xMovementValue);
+	public ChangeXByNBrick(int xMovementValue) {
+		initializeBrickFields(new Formula(xMovementValue));
 	}
 
-	public ChangeXByNBrick(Sprite sprite, Formula xMovement) {
-		this.sprite = sprite;
-
-		this.xMovement = xMovement;
+	public ChangeXByNBrick(Formula xMovement) {
+		initializeBrickFields(xMovement);
 	}
 
-	@Override
-	public Formula getFormula() {
-		return xMovement;
+	private void initializeBrickFields(Formula xMovement) {
+		addAllowedBrickField(BrickField.X_POSITION_CHANGE);
+		setFormulaWithBrickField(BrickField.X_POSITION_CHANGE, xMovement);
 	}
 
 	@Override
 	public int getRequiredResources() {
-		return NO_RESOURCES;
-	}
-
-	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
-		ChangeXByNBrick copyBrick = (ChangeXByNBrick) clone();
-		copyBrick.sprite = sprite;
-		return copyBrick;
+		return getFormulaWithBrickField(BrickField.X_POSITION_CHANGE).getRequiredResources();
 	}
 
 	@Override
@@ -102,8 +92,8 @@ public class ChangeXByNBrick extends BrickBaseType implements OnClickListener, F
 		});
 		TextView textX = (TextView) view.findViewById(R.id.brick_change_x_prototype_text_view);
 		TextView editX = (TextView) view.findViewById(R.id.brick_change_x_edit_text);
-		xMovement.setTextFieldId(R.id.brick_change_x_edit_text);
-		xMovement.refreshTextField(view);
+		getFormulaWithBrickField(BrickField.X_POSITION_CHANGE).setTextFieldId(R.id.brick_change_x_edit_text);
+		getFormulaWithBrickField(BrickField.X_POSITION_CHANGE).refreshTextField(view);
 
 		textX.setVisibility(View.GONE);
 		editX.setVisibility(View.VISIBLE);
@@ -115,13 +105,8 @@ public class ChangeXByNBrick extends BrickBaseType implements OnClickListener, F
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_change_x, null);
 		TextView textXMovement = (TextView) prototypeView.findViewById(R.id.brick_change_x_prototype_text_view);
-		textXMovement.setText(String.valueOf(xMovement.interpretInteger(sprite)));
+        textXMovement.setText(String.valueOf(BrickValues.CHANGE_X_BY));
 		return prototypeView;
-	}
-
-	@Override
-	public Brick clone() {
-		return new ChangeXByNBrick(getSprite(), xMovement.clone());
 	}
 
 	@Override
@@ -151,12 +136,12 @@ public class ChangeXByNBrick extends BrickBaseType implements OnClickListener, F
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, xMovement);
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.X_POSITION_CHANGE));
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.changeXByN(sprite, xMovement));
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
+		sequence.addAction(ExtendedActions.changeXByN(sprite, getFormulaWithBrickField(BrickField.X_POSITION_CHANGE)));
 		return null;
 	}
 }

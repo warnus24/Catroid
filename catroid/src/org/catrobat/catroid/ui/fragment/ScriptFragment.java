@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.ui.fragment;
 
@@ -34,11 +34,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
@@ -54,6 +56,7 @@ import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.DeadEndBrick;
 import org.catrobat.catroid.content.bricks.NestingBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
+import org.catrobat.catroid.content.bricks.UserBrick;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.ViewSwitchLock;
@@ -135,6 +138,7 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 	@Override
 	public void onStart() {
 		super.onStart();
+		BottomBar.showBottomBar(getActivity());
 		initListeners();
 	}
 
@@ -153,7 +157,11 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 		IntentFilter filterBrickListChanged = new IntentFilter(ScriptActivity.ACTION_BRICK_LIST_CHANGED);
 		getActivity().registerReceiver(brickListChangedReceiver, filterBrickListChanged);
 
+		BottomBar.showBottomBar(getActivity());
+		BottomBar.showPlayButton(getActivity());
+		BottomBar.showAddButton(getActivity());
 		initListeners();
+		adapter.resetAlphas();
 	}
 
 	@Override
@@ -196,8 +204,21 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 		int lastVisibleBrick = listView.getLastVisiblePosition();
 		int position = ((1 + lastVisibleBrick - firstVisibleBrick) / 2);
 		position += firstVisibleBrick;
-		adapter.addNewBrick(position, brickToBeAdded, true);
-		adapter.notifyDataSetChanged();
+
+		//TODO: allow recursive userbricks if its possible
+		if (adapter.getUserBrick() != null && brickToBeAdded instanceof UserBrick) {// && ((UserBrick) brickToBeAdded).getDefinitionBrick().equals(ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick())) {
+			Toast toast = null;
+			if (toast == null || toast.getView().getWindowVisibility() != View.VISIBLE) {
+				toast = Toast.makeText(getActivity().getApplicationContext(), R.string.recursive_user_brick_forbidden, Toast.LENGTH_LONG);
+			} else {
+				toast.setText(R.string.recursive_user_brick_forbidden);
+			}
+			toast.show();
+		}
+		else {
+			adapter.addNewBrick(position, brickToBeAdded, true);
+			adapter.notifyDataSetChanged();
+		}
 	}
 
 	private void initListeners() {
@@ -216,9 +237,11 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 
 		adapter = new BrickAdapter(getActivity(), sprite, listView);
 		adapter.setOnBrickCheckedListener(this);
+		ScriptActivity activity = (ScriptActivity) getActivity();
+		activity.setupBrickAdapter(adapter);
 
 		if (ProjectManager.getInstance().getCurrentSprite().getNumberOfScripts() > 0) {
-			ProjectManager.getInstance().setCurrentScript(((ScriptBrick) adapter.getItem(0)).initScript(sprite));
+			ProjectManager.getInstance().setCurrentScript(((ScriptBrick) adapter.getItem(0)).getScriptSafe());
 		}
 
 		listView.setOnCreateContextMenuListener(this);
@@ -229,6 +252,7 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 
 	private void showCategoryFragment() {
 		BrickCategoryFragment brickCategoryFragment = new BrickCategoryFragment();
+		brickCategoryFragment.setBrickAdapter(adapter);
 		brickCategoryFragment.setOnCategorySelectedListener(this);
 		FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -290,6 +314,12 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 	@Override
 	public void handleAddButton() {
 		if (!viewSwitchLock.tryLock()) {
+			return;
+		}
+
+		// addButtonHandler != null when the user brick category is open in the AddBrickFragment
+		if (AddBrickFragment.addButtonHandler != null) {
+			AddBrickFragment.addButtonHandler.handleAddButton();
 			return;
 		}
 
@@ -423,9 +453,9 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 		}
 
 		if (brick instanceof ScriptBrick) {
-			scriptToEdit = ((ScriptBrick) brick).initScript(ProjectManager.getInstance().getCurrentSprite());
+			scriptToEdit = ((ScriptBrick) brick).getScriptSafe();
 
-			Script clonedScript = scriptToEdit.copyScriptForSprite(sprite);
+			Script clonedScript = scriptToEdit.copyScriptForSprite(sprite, sprite.getUserBrickList());
 
 			sprite.addScript(clonedScript);
 			adapter.initBrickList();
@@ -440,31 +470,43 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 		}
 
 		int newPosition = adapter.getCount();
-		Brick copy = brick.clone();
-		Script scriptList = ProjectManager.getInstance().getCurrentScript();
 
-		if (brick instanceof NestingBrick) {
-			NestingBrick nestingBrickCopy = (NestingBrick) copy;
-			nestingBrickCopy.initialize();
+		try {
+			Brick copiedBrick = brick.clone();
 
-			for (Brick nestingBrick : nestingBrickCopy.getAllNestingBrickParts(true)) {
-				scriptList.addBrick(nestingBrick);
+			Script scriptList = null;
+			if (adapter.getUserBrick() != null) {
+				scriptList = ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick().getUserScript();
 			}
-		} else {
-			scriptList.addBrick(copy);
+			else {
+				scriptList = ProjectManager.getInstance().getCurrentScript();
+			}
+			if (brick instanceof NestingBrick) {
+				NestingBrick nestingBrickCopy = (NestingBrick) copiedBrick;
+				nestingBrickCopy.initialize();
+
+				for (NestingBrick nestingBrick : nestingBrickCopy.getAllNestingBrickParts(true)) {
+					scriptList.addBrick((Brick) nestingBrick);
+				}
+			} else {
+				scriptList.addBrick(copiedBrick);
+			}
+
+			adapter.addNewBrick(newPosition, copiedBrick, false);
+			adapter.initBrickList();
+
+			ProjectManager.getInstance().saveProject();
+			adapter.notifyDataSetChanged();
+		} catch (CloneNotSupportedException exception) {
+			Log.e(getTag(), "Copying a Brick failed", exception);
+			Toast.makeText(getActivity(), R.string.error_copying_brick, Toast.LENGTH_SHORT).show();
 		}
-
-		adapter.addNewBrick(newPosition, copy, false);
-		adapter.initBrickList();
-
-		ProjectManager.getInstance().saveProject();
-		adapter.notifyDataSetChanged();
 	}
 
 	private void deleteBrick(Brick brick) {
 
 		if (brick instanceof ScriptBrick) {
-			scriptToEdit = ((ScriptBrick) brick).initScript(ProjectManager.getInstance().getCurrentSprite());
+			scriptToEdit = ((ScriptBrick) brick).getScriptSafe();
 			adapter.handleScriptDelete(sprite, scriptToEdit);
 			return;
 		}

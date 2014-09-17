@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.test.content.actions;
 
@@ -37,7 +37,31 @@ import java.util.List;
 
 public class GoNStepsBackActionTest extends AndroidTestCase {
 
-	private final Formula steps = new Formula(17);
+	private static final int STEPS = 13;
+	private static final String NOT_NUMERICAL_STRING = "NOT_NUMERICAL_STRING";
+	private final Formula steps = new Formula(STEPS);
+	private Project project;
+	private Sprite background;
+	private Sprite sprite;
+	private Sprite sprite2;
+
+	@Override
+	protected void setUp() throws Exception {
+		project = new Project(getContext(), "testProject");
+		Group parentGroup = new Group();
+
+		background = new Sprite("background");
+		parentGroup.addActor(background.look);
+		sprite = new Sprite("testSprite");
+		parentGroup.addActor(sprite.look);
+		project.addSprite(sprite);
+		sprite2 = new Sprite("testSprite2");
+		parentGroup.addActor(sprite2.look);
+		project.addSprite(sprite2);
+
+		ProjectManager.getInstance().setProject(project);
+		super.setUp();
+	}
 
 	public void testSteps() {
 		Project project = new Project(getContext(), "testProject");
@@ -57,20 +81,16 @@ public class GoNStepsBackActionTest extends AndroidTestCase {
 
 		int oldPosition = sprite.look.getZIndex();
 
-		GoNStepsBackAction action = ExtendedActions.goNStepsBack(sprite, steps);
-		sprite.look.addAction(action);
-		action.act(1.0f);
+		ExtendedActions.goNStepsBack(sprite, steps).act(1.0f);
 		assertEquals("Incorrect sprite Z position after GoNStepsBackBrick executed",
-				(oldPosition - steps.interpretInteger(sprite)), sprite.look.getZIndex());
+				(oldPosition - STEPS), sprite.look.getZIndex());
 
 		checkIfEveryZIndexUsedOnlyOnceFromZeroToNMinus1(project.getSpriteList());
 		oldPosition = sprite.look.getZIndex();
 
-		action = ExtendedActions.goNStepsBack(sprite, new Formula(-steps.interpretInteger(sprite)));
-		sprite.look.addAction(action);
-		action.act(1.0f);
+		ExtendedActions.goNStepsBack(sprite, new Formula(-STEPS)).act(1.0f);
 		assertEquals("Incorrect sprite Z position after GoNStepsBackBrick executed",
-				(oldPosition + steps.interpretInteger(sprite)), sprite.look.getZIndex());
+				(oldPosition + STEPS), sprite.look.getZIndex());
 		checkIfEveryZIndexUsedOnlyOnceFromZeroToNMinus1(project.getSpriteList());
 	}
 
@@ -87,14 +107,10 @@ public class GoNStepsBackActionTest extends AndroidTestCase {
 				if (actualZIndex == zIndex) {
 					zIndexFound = true;
 					break;
-
 				}
-
 			}
 			assertTrue("z-indexing not correct. z-index have to be from 0 to n-1 each value only once", zIndexFound);
 		}
-
-
 	}
 
 
@@ -109,7 +125,6 @@ public class GoNStepsBackActionTest extends AndroidTestCase {
 	}
 
 	public void testBoundarySteps() {
-		Project project = new Project(getContext(), "testProject");
 		Group parentGroup = new Group();
 
 		Sprite background = new Sprite("background");
@@ -124,23 +139,39 @@ public class GoNStepsBackActionTest extends AndroidTestCase {
 		parentGroup.addActor(sprite2.look);
 		assertEquals("Unexpected initial sprite Z position", 2, sprite2.look.getZIndex());
 
-
-		project.addSprite(sprite);
-		project.addSprite(sprite2);
-		ProjectManager.getInstance().setProject(project);
-
-
-		GoNStepsBackAction action = ExtendedActions.goNStepsBack(sprite, new Formula(Integer.MAX_VALUE));
-		sprite.look.addAction(action);
-		action.act(1.0f);
+		ExtendedActions.goNStepsBack(sprite, new Formula(Integer.MAX_VALUE)).act(1.0f);
 		assertEquals("GoNStepsBackBrick execution failed. Z position should be zero.", 1, sprite.look.getZIndex());
 		assertEquals("Unexpected sprite Z position", 2, sprite2.look.getZIndex());
 
-		action = ExtendedActions.goNStepsBack(sprite, new Formula(Integer.MIN_VALUE));
-		sprite.look.addAction(action);
-		action.act(1.0f);
+		ExtendedActions.goNStepsBack(sprite, new Formula(Integer.MIN_VALUE)).act(1.0f);
 		assertEquals("An unwanted Integer overflow occured during GoNStepsBackBrick execution.", 2,
 				sprite.look.getZIndex());
+	}
+
+	public void testBrickWithStringFormula() {
+		ExtendedActions.goNStepsBack(sprite2, new Formula(String.valueOf(STEPS))).act(1.0f);
+		assertEquals("Unexpected initial sprite Z position", 0, background.look.getZIndex());
+		assertEquals("Unexpected sprite Z position", 1, sprite2.look.getZIndex());
+		assertEquals("Unexpected sprite Z position", 2, sprite.look.getZIndex());
+
+		ExtendedActions.goNStepsBack(sprite, new Formula(String.valueOf(NOT_NUMERICAL_STRING))).act(1.0f);
+		assertEquals("Unexpected initial sprite Z position", 0, background.look.getZIndex());
+		assertEquals("Unexpected sprite Z position", 1, sprite2.look.getZIndex());
+		assertEquals("Unexpected sprite Z position", 2, sprite.look.getZIndex());
+	}
+
+	public void testNullFormula() {
+		ExtendedActions.goNStepsBack(sprite2, null).act(1.0f);
+		assertEquals("Unexpected initial sprite Z position", 0, background.look.getZIndex());
+		assertEquals("Unexpected sprite Z position", 1, sprite.look.getZIndex());
+		assertEquals("Unexpected sprite Z position", 2, sprite2.look.getZIndex());
+	}
+
+	public void testNotANumberFormula() {
+		ExtendedActions.goNStepsBack(sprite2, new Formula(Double.NaN)).act(1.0f);
+		assertEquals("Unexpected initial sprite Z position", 0, background.look.getZIndex());
+		assertEquals("Unexpected sprite Z position", 1, sprite.look.getZIndex());
+		assertEquals("Unexpected sprite Z position", 2, sprite2.look.getZIndex());
 	}
 
 }

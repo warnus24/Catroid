@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.content.interaction;
 
@@ -81,20 +81,20 @@ public class MoveBrickAcrossScriptTest extends BaseActivityInstrumentationTestCa
 		Project project = new Project(null, projectName);
 		firstSprite = new Sprite("cat");
 
-		Script startScript1 = new StartScript(firstSprite);
-		Script whenScript1 = new WhenScript(firstSprite);
-		Script whenScript2 = new WhenScript(firstSprite);
+		Script startScript1 = new StartScript();
+		Script whenScript1 = new WhenScript();
+		Script whenScript2 = new WhenScript();
 
 		brickListToCheck = new ArrayList<Brick>();
-		brickListToCheck.add(new SetSizeToBrick(firstSprite, size));
-		brickListToCheck.add(new WaitBrick(firstSprite, 100));
+		brickListToCheck.add(new SetSizeToBrick(size));
+		brickListToCheck.add(new WaitBrick(100));
 
 		secondBrickListForMoving = new ArrayList<Brick>();
-		secondBrickListForMoving.add(new ShowBrick(firstSprite));
-		secondBrickListForMoving.add(new WaitBrick(firstSprite, 200));
-		secondBrickListForMoving.add(new SetBrightnessBrick(firstSprite, 2.0));
-		secondBrickListForMoving.add(new SetXBrick(firstSprite, 100));
-		secondBrickListForMoving.add(new SetSizeToBrick(firstSprite, size));
+		secondBrickListForMoving.add(new ShowBrick());
+		secondBrickListForMoving.add(new WaitBrick(200));
+		secondBrickListForMoving.add(new SetBrightnessBrick(2.0));
+		secondBrickListForMoving.add(new SetXBrick(100));
+		secondBrickListForMoving.add(new SetSizeToBrick(size));
 
 		// adding Bricks: ----------------
 		for (Brick brick : brickListToCheck) {
@@ -105,8 +105,8 @@ public class MoveBrickAcrossScriptTest extends BaseActivityInstrumentationTestCa
 			whenScript1.addBrick(brick);
 		}
 
-		whenScript2.addBrick(new WaitBrick(firstSprite, 300));
-		whenScript2.addBrick(new ShowBrick(firstSprite));
+		whenScript2.addBrick(new WaitBrick(300));
+		whenScript2.addBrick(new ShowBrick());
 		// -------------------------------
 
 		firstSprite.addScript(startScript1);

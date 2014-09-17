@@ -1,34 +1,32 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content;
 
-import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.IfLogicEndBrick;
-import org.catrobat.catroid.content.bricks.LoopEndBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
+import org.catrobat.catroid.content.bricks.UserBrick;
 import org.catrobat.catroid.content.bricks.WhenBrick;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class WhenScript extends Script {
 
@@ -46,17 +44,12 @@ public class WhenScript extends Script {
 	private transient int position;
 
 	public WhenScript() {
-
-	}
-
-	public WhenScript(Sprite sprite) {
-		super(sprite);
+		super();
 		this.position = 0;
 		this.action = TAPPED;
 	}
 
-	public WhenScript(Sprite sprite, WhenBrick brick) {
-		this(sprite);
+	public WhenScript(WhenBrick brick) {
 		this.brick = brick;
 	}
 
@@ -82,28 +75,16 @@ public class WhenScript extends Script {
 	@Override
 	public ScriptBrick getScriptBrick() {
 		if (brick == null) {
-			brick = new WhenBrick(object, this);
+			brick = new WhenBrick(this);
 		}
 
 		return brick;
 	}
 
 	@Override
-	public Script copyScriptForSprite(Sprite copySprite) {
-		WhenScript cloneScript = new WhenScript(copySprite);
-		ArrayList<Brick> cloneBrickList = cloneScript.getBrickList();
-
-		cloneScript.action = getAction();
-
-		for (Brick brick : getBrickList()) {
-			Brick copiedBrick = brick.copyBrickForSprite(copySprite, cloneScript);
-			if (copiedBrick instanceof IfLogicEndBrick) {
-				setIfBrickReferences((IfLogicEndBrick) copiedBrick, (IfLogicEndBrick) brick);
-			} else if (copiedBrick instanceof LoopEndBrick) {
-				setLoopBrickReferences((LoopEndBrick) copiedBrick, (LoopEndBrick) brick);
-			}
-			cloneBrickList.add(copiedBrick);
-		}
+	public Script copyScriptForSprite(Sprite copySprite, List<UserBrick> preCopiedUserBricks) {
+		WhenScript cloneScript = new WhenScript();
+		doCopy(copySprite, cloneScript, preCopiedUserBricks);
 
 		return cloneScript;
 	}

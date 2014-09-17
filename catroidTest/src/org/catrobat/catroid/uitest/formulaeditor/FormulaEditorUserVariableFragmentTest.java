@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.formulaeditor;
 
@@ -94,11 +94,11 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 
 		Double setVariableToValue = Double.valueOf(SET_USERVARIABLE_TO_BRICK_VALUE);
 
-		SetVariableBrick setVariableBrick = new SetVariableBrick(firstSprite, new Formula(setVariableToValue),
+		SetVariableBrick setVariableBrick = new SetVariableBrick(new Formula(setVariableToValue),
 				ProjectManager.getInstance().getCurrentProject().getUserVariables()
 						.getUserVariable(USER_VARIABLE_NAME_UNDERLINE_PREFIX, firstSprite));
 
-		Script startScript1 = new StartScript(firstSprite);
+		Script startScript1 = new StartScript();
 		firstSprite.addScript(startScript1);
 		startScript1.addBrick(setVariableBrick);
 	}
@@ -167,7 +167,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		UserVariable userVariable = (UserVariable) listView.getItemAtPosition(0);
 		Double setVariableToValue = Double.valueOf(SET_USERVARIABLE_TO_BRICK_VALUE);
 		assertTrue("Value of UserVariable not saved after stage1!",
-				userVariable.getValue().compareTo(setVariableToValue) == 0);
+				((Double) userVariable.getValue()).compareTo(setVariableToValue) == 0);
 
 		solo.goBack();
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
@@ -194,7 +194,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		userVariable = (UserVariable) listView.getItemAtPosition(0);
 		setVariableToValue = Double.valueOf(SET_USERVARIABLE_TO_BRICK_VALUE);
 		assertTrue("Value of UserVariable not saved after stage2!",
-				userVariable.getValue().compareTo(setVariableToValue) == 0);
+				((Double) userVariable.getValue()).compareTo(setVariableToValue) == 0);
 
 		solo.goBack();
 		solo.waitForFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
@@ -227,7 +227,7 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		userVariable = (UserVariable) listView.getItemAtPosition(0);
 		setVariableToValue = Double.valueOf(SET_USERVARIABLE_TO_BRICK_VALUE);
 		assertTrue("Value of UserVariable not saved after stage3!",
-				userVariable.getValue().compareTo(setVariableToValue) == 0);
+				((Double) userVariable.getValue()).compareTo(setVariableToValue) == 0);
 	}
 
 	public void testCreateUserVariable() {
@@ -519,16 +519,17 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
 
 		solo.clickOnText(selectAll);
+		solo.sleep(100);
 		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
 
-		solo.clickOnCheckBox(0);
+		UiTestUtils.clickOnCheckBox(solo, 0);
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
 
-		solo.clickOnCheckBox(1);
+		UiTestUtils.clickOnCheckBox(solo, 1);
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
 
-		solo.clickOnCheckBox(0);
-		solo.clickOnCheckBox(1);
+		UiTestUtils.clickOnCheckBox(solo, 0);
+		UiTestUtils.clickOnCheckBox(solo, 1);
 		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
 	}
 
@@ -543,10 +544,10 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
-		Script startScript1 = new StartScript(firstSprite);
-		Script startScript2 = new StartScript(secondSprite);
-		changeBrick = new ChangeSizeByNBrick(firstSprite, 0);
-		glideToBrick = new GlideToBrick(secondSprite, 0, 0, 0);
+		Script startScript1 = new StartScript();
+		Script startScript2 = new StartScript();
+		changeBrick = new ChangeSizeByNBrick(0);
+		glideToBrick = new GlideToBrick(0, 0, 0);
 
 		firstSprite.addScript(startScript1);
 		secondSprite.addScript(startScript2);

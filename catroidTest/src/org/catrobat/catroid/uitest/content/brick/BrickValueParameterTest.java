@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.content.brick;
 
@@ -283,17 +283,23 @@ public class BrickValueParameterTest extends BaseActivityInstrumentationTestCase
 		assertEquals("Value in Brick Speak is not correct", defaultSpeakValue, speakPrototypeValue);
 
 		solo.clickOnText(solo.getString(R.string.brick_speak));
-		solo.clickOnScreen(200, 200);
+		solo.sleep(300);
+		
+		UiTestUtils.dragFloatingBrickDownwards(solo);
+		
+		solo.sleep(300);
 
-		TextView speakEditText = (TextView) solo.getView(R.id.brick_speak_edit_text);
-		String speakEditTextValue = speakEditText.getText().toString();
-		assertEquals("Value in Selected Brick Speak is not correct", defaultSpeakValue, speakEditTextValue);
+		String speakEditTextValue = ((TextView) solo.getView(R.id.brick_speak_edit_text)).getText().toString();
+		assertEquals("Value in Selected Brick Speak is not correct", "\'" + defaultSpeakValue + "\'",
+				speakEditTextValue.substring(0, speakEditTextValue.length() - 1));
 
 		solo.sleep(500);
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_add);
 		solo.clickOnText(categorySoundText);
 		solo.clickOnText(solo.getString(R.string.brick_change_volume_by));
-		solo.clickOnScreen(200, 200);
+		solo.sleep(300);
+		UiTestUtils.dragFloatingBrickDownwards(solo);
+		solo.sleep(300);
 
 		TextView changeVolumeByEditText = (TextView) solo.getView(R.id.brick_change_volume_by_edit_text);
 		// Formula appends a blank after the value, so last character has to be deleted
@@ -457,8 +463,8 @@ public class BrickValueParameterTest extends BaseActivityInstrumentationTestCase
 		Project project = new Project(null, UiTestUtils.PROJECTNAME1);
 		Sprite sprite = new Sprite("Dog");
 		Sprite sprite1 = new Sprite("Cat");
-		Script script = new StartScript(sprite);
-		Script script1 = new StartScript(sprite1);
+		Script script = new StartScript();
+		Script script1 = new StartScript();
 		sprite.addScript(script);
 		sprite.addScript(script1);
 		project.addSprite(sprite);

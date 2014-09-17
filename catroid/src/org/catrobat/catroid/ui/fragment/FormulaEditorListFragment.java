@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.ui.fragment;
 
@@ -46,14 +46,14 @@ import org.catrobat.catroid.R;
 public class FormulaEditorListFragment extends SherlockListFragment implements Dialog.OnKeyListener {
 
 	public static final String OBJECT_TAG = "objectFragment";
-	public static final String MATH_TAG = "mathFragment";
+	public static final String FUNCTION_TAG = "functionFragment";
 	public static final String LOGIC_TAG = "logicFragment";
 	public static final String SENSOR_TAG = "sensorFragment";
 
 	public static final String ACTION_BAR_TITLE_BUNDLE_ARGUMENT = "actionBarTitle";
 	public static final String FRAGMENT_TAG_BUNDLE_ARGUMENT = "fragmentTag";
 
-	public static final String[] TAGS = { OBJECT_TAG, MATH_TAG, LOGIC_TAG, SENSOR_TAG };
+	public static final String[] TAGS = { OBJECT_TAG, FUNCTION_TAG, LOGIC_TAG, SENSOR_TAG };
 
 	private static final int[] OBJECT_ITEMS = { R.string.formula_editor_object_x, R.string.formula_editor_object_y,
 			R.string.formula_editor_object_ghosteffect, R.string.formula_editor_object_brightness,
@@ -67,7 +67,7 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_logic_or, R.string.formula_editor_logic_not, R.string.formula_editor_function_true,
 			R.string.formula_editor_function_false };
 
-	private static final int[] MATH_ITEMS = { R.string.formula_editor_function_sin,
+	private static final int[] FUNCTIONS_ITEMS = { R.string.formula_editor_function_sin,
 			R.string.formula_editor_function_cos, R.string.formula_editor_function_tan,
 			R.string.formula_editor_function_ln, R.string.formula_editor_function_log,
 			R.string.formula_editor_function_pi, R.string.formula_editor_function_sqrt,
@@ -75,12 +75,28 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_function_round, R.string.formula_editor_function_mod,
 			R.string.formula_editor_function_arcsin, R.string.formula_editor_function_arccos,
 			R.string.formula_editor_function_arctan, R.string.formula_editor_function_exp,
-			R.string.formula_editor_function_max, R.string.formula_editor_function_min };
+			R.string.formula_editor_function_max, R.string.formula_editor_function_min,
+			R.string.formula_editor_function_length, R.string.formula_editor_function_letter,
+			R.string.formula_editor_function_join };
+
+	private static final int[] FUNCTIONS_PARAMETERS = { R.string.formula_editor_function_sin_parameter,
+			R.string.formula_editor_function_cos_parameter, R.string.formula_editor_function_tan_parameter,
+			R.string.formula_editor_function_ln_parameter, R.string.formula_editor_function_log_parameter,
+			R.string.formula_editor_function_pi_parameter, R.string.formula_editor_function_sqrt_parameter,
+			R.string.formula_editor_function_rand_parameter, R.string.formula_editor_function_abs_parameter,
+			R.string.formula_editor_function_round_parameter, R.string.formula_editor_function_mod_parameter,
+			R.string.formula_editor_function_arcsin_parameter, R.string.formula_editor_function_arccos_parameter,
+			R.string.formula_editor_function_arctan_parameter, R.string.formula_editor_function_exp_parameter,
+			R.string.formula_editor_function_max_parameter, R.string.formula_editor_function_min_parameter,
+			R.string.formula_editor_function_length_parameter, R.string.formula_editor_function_letter_parameter,
+			R.string.formula_editor_function_join_parameter };
 
 	private static final int[] SENSOR_ITEMS = { R.string.formula_editor_sensor_x_acceleration,
 			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
 			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
-			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness };
+			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
+			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
+			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position };
 
 	private String tag;
 	private String[] items;
@@ -114,8 +130,8 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 
 		if (tag == OBJECT_TAG) {
 			itemsIds = OBJECT_ITEMS;
-		} else if (tag == MATH_TAG) {
-			itemsIds = MATH_ITEMS;
+		} else if (tag == FUNCTION_TAG) {
+			itemsIds = FUNCTIONS_ITEMS;
 		} else if (tag == LOGIC_TAG) {
 			itemsIds = LOGIC_ITEMS;
 		} else if (tag == SENSOR_TAG) {
@@ -123,10 +139,10 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 		}
 
 		items = new String[itemsIds.length];
-		int index = 0;
-		for (Integer item : itemsIds) {
-			items[index] = getString(item);
-			index++;
+
+		for (int index = 0; index < items.length; index++) {
+			items[index] = tag == FUNCTION_TAG ? getString(itemsIds[index]) + getString(FUNCTIONS_PARAMETERS[index])
+					: getString(itemsIds[index]);
 		}
 
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),

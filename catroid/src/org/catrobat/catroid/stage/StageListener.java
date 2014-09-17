@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.stage;
 
@@ -58,6 +58,7 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.content.BroadcastHandler;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
@@ -281,11 +282,23 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 	}
 
-	public void menuResume() {
+	void activityResume() {
+		if (!paused) {
+			FaceDetectionHandler.resumeFaceDetection();
+		}
+
+	}
+
+	void activityPause() {
+		FaceDetectionHandler.pauseFaceDetection();
+	}
+
+	void menuResume() {
 		if (reloadProject) {
 			return;
 		}
 		paused = false;
+		FaceDetectionHandler.resumeFaceDetection();
 		SoundManager.getInstance().resume();
 		for (Sprite sprite : sprites) {
 			sprite.resume();
@@ -297,6 +310,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			return;
 		}
 		paused = true;
+		FaceDetectionHandler.pauseFaceDetection();
 		SoundManager.getInstance().pause();
 		for (Sprite sprite : sprites) {
 			sprite.pause();
@@ -335,6 +349,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	@Override
 	public void resume() {
 		if (!paused) {
+			FaceDetectionHandler.resumeFaceDetection();
 			SoundManager.getInstance().resume();
 			for (Sprite sprite : sprites) {
 				sprite.resume();
@@ -342,7 +357,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 
 		for (Sprite sprite : sprites) {
-			sprite.look.refreshTextures();
+            sprite.look.refreshTextures();
 		}
 
 		if(postProcessorWrapper != null){
@@ -356,6 +371,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			return;
 		}
 		if (!paused) {
+			FaceDetectionHandler.pauseFaceDetection();
 			SoundManager.getInstance().pause();
 			for (Sprite sprite : sprites) {
 				sprite.pause();
@@ -550,7 +566,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 		for (String action : actions) {
 			for (String actionOfLook : actions) {
-				if (action.equals(actionOfLook) || bothSequenceActionsAndEqual(actionOfLook, action)
+				if (action.equals(actionOfLook)
 						|| isFirstSequenceActionAndEqualsSecond(action, actionOfLook)
 						|| isFirstSequenceActionAndEqualsSecond(actionOfLook, action)) {
 					if (!actionsToRestartMap.containsKey(action)) {
@@ -584,34 +600,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			return true;
 		}
 		return false;
-	}
-
-	private static boolean bothSequenceActionsAndEqual(String action1, String action2) {
-		String spriteOfAction1 = action1.substring(action1.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
-		String spriteOfAction2 = action2.substring(action2.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
-
-		if (!spriteOfAction1.equals(spriteOfAction2)) {
-			return false;
-		}
-
-		if (!(action1.startsWith(SEQUENCE) && action2.startsWith(SEQUENCE))) {
-			return false;
-		}
-
-		int startIndex1 = action1.indexOf(Constants.OPENING_BRACE);
-		int endIndex1 = action1.lastIndexOf(Constants.CLOSING_BRACE) + 1;
-
-		int startIndex2 = action2.indexOf(Constants.OPENING_BRACE);
-		int endIndex2 = action2.lastIndexOf(Constants.CLOSING_BRACE) + 1;
-
-		String sequenceOfAction1 = action1.substring(startIndex1, endIndex1);
-		String sequenceOfAction2 = action2.substring(startIndex2, endIndex2);
-
-		if (sequenceOfAction1.equals(sequenceOfAction2)) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	private void drawAxes() {

@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.ui;
 
@@ -54,6 +54,7 @@ import org.catrobat.catroid.ui.fragment.LookFragment;
 import org.catrobat.catroid.ui.fragment.ScriptActivityFragment;
 import org.catrobat.catroid.ui.fragment.ScriptFragment;
 import org.catrobat.catroid.ui.fragment.SoundFragment;
+import org.catrobat.catroid.ui.fragment.UserBrickDataEditorFragment;
 
 import java.util.concurrent.locks.Lock;
 
@@ -82,6 +83,7 @@ public class ScriptActivity extends BaseActivity {
 	private LookFragment lookFragment = null;
 	private SoundFragment soundFragment = null;
 	private ScriptActivityFragment currentFragment = null;
+	private DeleteModeListener deleteModeListener;
 	private String currentFragmentTag;
 
 	private Lock viewSwitchLock = new ViewSwitchLock();
@@ -113,14 +115,34 @@ public class ScriptActivity extends BaseActivity {
 		updateCurrentFragment(currentFragmentPosition, fragmentTransaction);
 		fragmentTransaction.commit();
 
+		setupActionBar();
+		setupBottomBar();
+
+		buttonAdd = (ImageButton) findViewById(R.id.button_add);
+		updateHandleAddButtonClickListener();
+	}
+
+	private void setupBottomBar() {
+		BottomBar.showBottomBar(this);
+		BottomBar.showAddButton(this);
+		BottomBar.showPlayButton(this);
+		updateHandleAddButtonClickListener();
+
+	}
+
+	public void setupActionBar() {
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
 		String currentSprite = ProjectManager.getInstance().getCurrentSprite().getName();
 		actionBar.setTitle(currentSprite);
+	}
 
-		buttonAdd = (ImageButton) findViewById(R.id.button_add);
-		updateHandleAddButtonClickListener();
+	@Override
+	public void onResume() {
+		super.onResume();
+		setupActionBar();
+		setupBottomBar();
 	}
 
 	public void updateHandleAddButtonClickListener() {
@@ -245,7 +267,11 @@ public class ScriptActivity extends BaseActivity {
 				break;
 
 			case R.id.delete:
-				currentFragment.startDeleteActionMode();
+				if (deleteModeListener != null) {
+					deleteModeListener.startDeleteActionMode();
+				} else {
+					currentFragment.startDeleteActionMode();
+				}
 				break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -274,6 +300,12 @@ public class ScriptActivity extends BaseActivity {
 				return fragment.onKey(null, keyCode, event);
 			}
 
+		}
+
+		String tag1 = UserBrickDataEditorFragment.BRICK_DATA_EDITOR_FRAGMENT_TAG;
+		UserBrickDataEditorFragment fragment = (UserBrickDataEditorFragment) fragmentManager.findFragmentByTag(tag1);
+		if (fragment != null && fragment.isVisible()) {
+				return fragment.onKey(null, keyCode, event);
 		}
 
 		FormulaEditorVariableListFragment formulaEditorVariableListFragment = (FormulaEditorVariableListFragment) getSupportFragmentManager()
@@ -410,6 +442,10 @@ public class ScriptActivity extends BaseActivity {
 		item.setTitle(showDetails ? R.string.hide_details : R.string.show_details);
 	}
 
+	public void setDeleteModeListener(DeleteModeListener listener) {
+		deleteModeListener = listener;
+	}
+
 	public ScriptActivityFragment getFragment(int fragmentPosition) {
 		ScriptActivityFragment fragment = null;
 
@@ -482,6 +518,21 @@ public class ScriptActivity extends BaseActivity {
 
 	public void setIsLookFragmentHandleAddButtonHandled(boolean isLookFragmentHandleAddButtonHandled) {
 		this.isLookFragmentHandleAddButtonHandled = isLookFragmentHandleAddButtonHandled;
+	}
+
+	public void setupBrickAdapter(BrickAdapter adapter) {
+	}
+
+	public ScriptFragment getScriptFragment() {
+		return scriptFragment;
+	}
+
+	public void setScriptFragment(ScriptFragment scriptFragment) {
+		this.scriptFragment = scriptFragment;
+	}
+
+	public void redrawBricks() {
+		scriptFragment.getAdapter().notifyDataSetInvalidated();
 	}
 
 	public void switchToFragmentFromScriptFragment(int fragmentPosition) {

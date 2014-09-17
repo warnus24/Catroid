@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.test.utils;
 
@@ -41,6 +41,8 @@ import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfLogicElseBrick;
 import org.catrobat.catroid.content.bricks.IfLogicEndBrick;
 import org.catrobat.catroid.content.bricks.ShowBrick;
+import org.catrobat.catroid.content.bricks.UserBrick;
+import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrick;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.utils.NotificationData;
 import org.catrobat.catroid.utils.StatusBarNotificationManager;
@@ -189,7 +191,7 @@ public final class TestUtils {
 		project.setCatrobatLanguageVersion(catrobatLanguageVersion);
 
 		Sprite firstSprite = new Sprite("cat");
-		Script testScript = new StartScript(firstSprite);
+		Script testScript = new StartScript();
 		Brick testBrick = new HideBrick();
 		testScript.addBrick(testBrick);
 
@@ -205,33 +207,33 @@ public final class TestUtils {
 		Project project = new Project(null, CORRUPT_PROJECT_NAME);
 		Sprite firstSprite = new Sprite("corruptReferences");
 
-		Script testScript = new StartScript(firstSprite);
+		Script testScript = new StartScript();
 
 		ArrayList<Brick> brickList = new ArrayList<Brick>();
 
-		IfLogicBeginBrick ifBeginBrick = new IfLogicBeginBrick(firstSprite, 0);
-		IfLogicElseBrick ifElseBrick = new IfLogicElseBrick(firstSprite, ifBeginBrick);
+		IfLogicBeginBrick ifBeginBrick = new IfLogicBeginBrick(0);
+		IfLogicElseBrick ifElseBrick = new IfLogicElseBrick(ifBeginBrick);
 		ifElseBrick.setIfBeginBrick(null);
 
-		IfLogicBeginBrick ifBeginBrickNested = new IfLogicBeginBrick(firstSprite, 0);
+		IfLogicBeginBrick ifBeginBrickNested = new IfLogicBeginBrick(0);
 		//reference shouldn't be null:
-		IfLogicElseBrick ifElseBrickNested = new IfLogicElseBrick(firstSprite, ifBeginBrickNested);
+		IfLogicElseBrick ifElseBrickNested = new IfLogicElseBrick(ifBeginBrickNested);
 		ifElseBrickNested.setIfBeginBrick(null);
 		//reference shouldn't be null + wrong ifElseBrickReference:
-		IfLogicEndBrick ifEndBrickNested = new IfLogicEndBrick(firstSprite, ifElseBrick, ifBeginBrickNested);
+		IfLogicEndBrick ifEndBrickNested = new IfLogicEndBrick(ifElseBrick, ifBeginBrickNested);
 		ifEndBrickNested.setIfBeginBrick(null);
 
 		//reference to wrong ifBegin and ifEnd-Bricks:
-		IfLogicEndBrick ifEndBrick = new IfLogicEndBrick(firstSprite, ifElseBrickNested, ifBeginBrickNested);
+		IfLogicEndBrick ifEndBrick = new IfLogicEndBrick(ifElseBrickNested, ifBeginBrickNested);
 
 		brickList.add(ifBeginBrick);
-		brickList.add(new ShowBrick(firstSprite));
+		brickList.add(new ShowBrick());
 		brickList.add(ifElseBrick);
-		brickList.add(new ComeToFrontBrick(firstSprite));
+		brickList.add(new ComeToFrontBrick());
 		brickList.add(ifBeginBrickNested);
-		brickList.add(new ComeToFrontBrick(firstSprite));
+		brickList.add(new ComeToFrontBrick());
 		brickList.add(ifElseBrickNested);
-		brickList.add(new ShowBrick(firstSprite));
+		brickList.add(new ShowBrick());
 		brickList.add(ifEndBrickNested);
 		brickList.add(ifEndBrick);
 
@@ -288,4 +290,11 @@ public final class TestUtils {
 
 		notificationMap.clear();
 	}
+	
+	public static Script addUserBrickToSpriteAndGetUserScript(UserBrick userBrick, Sprite sprite) {
+		 UserScriptDefinitionBrick definitionBrick = (UserScriptDefinitionBrick) Reflection.getPrivateField(userBrick,
+		 "definitionBrick");
+		 sprite.addUserBrick(userBrick);
+		 return definitionBrick.getScriptSafe();
+		 }	
 }

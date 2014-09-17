@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content.bricks;
 
@@ -42,9 +42,9 @@ import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.LookData;
-import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.ui.ScriptActivity;
@@ -60,11 +60,6 @@ public class SetLookBrick extends BrickBaseType implements OnLookDataListChanged
 	private transient LookData oldSelectedLook;
 	private transient AdapterView<?> adapterView;
 
-	public SetLookBrick(Sprite sprite) {
-		this.sprite = sprite;
-		this.oldSelectedLook = null;
-	}
-
 	public SetLookBrick() {
 
 	}
@@ -78,9 +73,8 @@ public class SetLookBrick extends BrickBaseType implements OnLookDataListChanged
 	}
 
 	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
+	public Brick copyBrickForSprite(Sprite sprite) {
 		SetLookBrick copyBrick = (SetLookBrick) clone();
-		copyBrick.sprite = sprite;
 
 		for (LookData data : sprite.getLookDataList()) {
 			if (data.getAbsolutePath().equals(look.getAbsolutePath())) {
@@ -150,7 +144,7 @@ public class SetLookBrick extends BrickBaseType implements OnLookDataListChanged
 
 		setSpinnerSelection(lookbrickSpinner);
 
-		if (sprite.getName().equals(context.getString(R.string.background))) {
+		if (ProjectManager.getInstance().getCurrentSprite().getName().equals(context.getString(R.string.background))) {
 			TextView textField = (TextView) view.findViewById(R.id.brick_set_look_prototype_text_view);
 			textField.setText(R.string.brick_set_background);
 		}
@@ -167,12 +161,12 @@ public class SetLookBrick extends BrickBaseType implements OnLookDataListChanged
 			Drawable background = layout.getBackground();
 			background.setAlpha(alphaValue);
 
-			Spinner lookbrickSpinner = (Spinner) view.findViewById(R.id.brick_set_look_spinner);
-			TextView lookbrickTextView = (TextView) view.findViewById(R.id.brick_set_look_prototype_text_view);
+			Spinner lookBrickSpinner = (Spinner) view.findViewById(R.id.brick_set_look_spinner);
+			TextView lookBrickTextView = (TextView) view.findViewById(R.id.brick_set_look_prototype_text_view);
 
-			ColorStateList color = lookbrickTextView.getTextColors().withAlpha(alphaValue);
-			lookbrickTextView.setTextColor(color);
-			lookbrickSpinner.getBackground().setAlpha(alphaValue);
+			ColorStateList color = lookBrickTextView.getTextColors().withAlpha(alphaValue);
+			lookBrickTextView.setTextColor(color);
+			lookBrickSpinner.getBackground().setAlpha(alphaValue);
 			if (adapterView != null) {
 				((TextView) adapterView.getChildAt(0)).setTextColor(color);
 			}
@@ -190,7 +184,7 @@ public class SetLookBrick extends BrickBaseType implements OnLookDataListChanged
 		LookData dummyLookData = new LookData();
 		dummyLookData.setLookName(context.getString(R.string.new_broadcast_message));
 		arrayAdapter.add(dummyLookData);
-		for (LookData lookData : sprite.getLookDataList()) {
+		for (LookData lookData : ProjectManager.getInstance().getCurrentSprite().getLookDataList()) {
 			arrayAdapter.add(lookData);
 		}
 		return arrayAdapter;
@@ -199,7 +193,7 @@ public class SetLookBrick extends BrickBaseType implements OnLookDataListChanged
 	@Override
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_set_look, null);
-		if (sprite.getName().equals(context.getString(R.string.background))) {
+		if (ProjectManager.getInstance().getCurrentSprite().getName().equals(context.getString(R.string.background))) {
 			TextView textField = (TextView) prototypeView.findViewById(R.id.brick_set_look_prototype_text_view);
 			textField.setText(R.string.brick_set_background);
 		}
@@ -214,29 +208,27 @@ public class SetLookBrick extends BrickBaseType implements OnLookDataListChanged
 
 	@Override
 	public Brick clone() {
-		SetLookBrick clonedBrick = new SetLookBrick(getSprite());
-		if (sprite.look != null) {
-			clonedBrick.setLook(null);
-		}
-
+		SetLookBrick clonedBrick = new SetLookBrick();
+		clonedBrick.setLook(look);
 		return clonedBrick;
 		//test
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
 		sequence.addAction(ExtendedActions.setLook(sprite, look));
 		return null;
 	}
 
 	private void setSpinnerSelection(Spinner spinner) {
-		if (sprite.getLookDataList().contains(look)) {
+		if (ProjectManager.getInstance().getCurrentSprite().getLookDataList().contains(look)) {
 			oldSelectedLook = look;
-			spinner.setSelection(sprite.getLookDataList().indexOf(look) + 1, true);
+			spinner.setSelection(ProjectManager.getInstance().getCurrentSprite().getLookDataList().indexOf(look) + 1, true);
 		} else {
 			if (spinner.getAdapter() != null && spinner.getAdapter().getCount() > 1) {
-				if (sprite.getLookDataList().indexOf(oldSelectedLook) >= 0) {
-					spinner.setSelection(sprite.getLookDataList().indexOf(oldSelectedLook) + 1, true);
+				if (ProjectManager.getInstance().getCurrentSprite().getLookDataList().indexOf(oldSelectedLook) >= 0) {
+					spinner.setSelection(ProjectManager.getInstance().getCurrentSprite().getLookDataList()
+							.indexOf(oldSelectedLook) + 1, true);
 				} else {
 					spinner.setSelection(1, true);
 				}

@@ -17,6 +17,13 @@ apply plugin: 'com.android.application'
 //apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
 apply plugin: 'pmd'
+<<<<<<< HEAD
+=======
+apply from: 'gradle/adb_tasks.gradle'
+apply from: 'gradle/code_quality_tasks.gradle'
+apply from: 'gradle/intellij_config_tasks.gradle'
+
+>>>>>>> master
 check.dependsOn 'checkstyle'
 check.dependsOn 'pmd'
 
@@ -29,13 +36,15 @@ ext {
             "backpack"                          : false,
             "parrot_ar_drone"                   : false,
             "apk_generator"                     : false,
-            "computer_vision_enhancement"       : false,
+            "computer_vision_enhancement"       : true,
             "formula_editor_lists"              : false,
             "physics_engine_collision_filtering": false,
-            "time_capsule"                      : false
+            "time_capsule"                      : false,
+            "userbricks"                        : false
     ]
 }
 
+<<<<<<< HEAD
 repositories {
     mavenLocal()
     mavenCentral()
@@ -44,18 +53,31 @@ repositories {
 }
 
 configurations { natives }
+=======
+configurations {
+    compile.exclude group: 'xpp3' //compile problem with xstream
+}
+
+>>>>>>> master
 dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:19.1.0'
     compile files('libs/gdx.jar')
     compile files('libs/gdx-backend-android.jar')
     compile 'com.google.guava:guava:17.0'
+<<<<<<< HEAD
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
     compile fileTree(dir: 'catroid/libs', include: '*.jar')
     compile fileTree(dir: 'catroid/libs-natives', include: '*.jar')
     compile fileTree(dir: 'catroidTest/libs', include: '*.jar')
+=======
+    compile fileTree(include: '*.jar', dir: 'catroid/libs')
+    compile fileTree(include: '*.jar', dir: 'catroid/libs-natives')
+    androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
+>>>>>>> master
     pmd 'net.sourceforge.pmd:pmd:5.1.1'
 }
 
@@ -206,56 +228,8 @@ task run(type: Exec) {
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'org.catrobat.catroid.android/org.catrobat.catroid.android.AndroidLauncher'
 }
 
-// Doesn't work atm. Maybe if the pmd plugin gets updated.
-//task findbugs(type: FindBugs) {
-//    classes = fileTree('build/classes/debug/')
-//    source = fileTree(android.sourceSets.main.java.srcDirs)
-//    classpath = files( project.configurations.compile.asPath )
-//    effort = 'max'
-//    reports.xml.enabled = false
-//    reports.html.enabled = true
-//}
 
-task checkstyle(type: Checkstyle) {
-    configFile file('config/checkstyle.xml')
-    source '.'
-    include '**/*.java'
-    exclude '**/gen/**', '**/build/**', '**/res/**', 'libraryProjects/**'
-
-    classpath = files()
-
-    // needed for console output of warnings/errors
-    showViolations true
-    ignoreFailures false
-
-    reports {
-        xml.destination "build/reports/checkstyle.xml"
-    }
-}
-
-task pmd(type: Pmd) {
-    // current plugin has pmd 4.3 as default
-    // gradle 2.0 should support pmd 5.1.1 out of the box; deprecated toolVersion property should be removed then
-    toolVersion = '5.1.1'
-
-    // complete rulesets can be used with the abbrevation
-    // rulesets with specific excludes are moved to a config file containing just a single ruleset with exclude(s)
-    ruleSets = ['java-android', 'java-braces', 'java-empty', 'java-sunsecure', 'java-unusedcode', 'config/pmd_basic.xml',
-                'config/pmd_strings.xml', 'config/pmd_unnecessary.xml']
-    source '.'
-    include '**/*.java'
-    exclude '**/gen/**', '**/build/**', '**/res/**', 'libraryProjects/**', '**/catroidCucumberTest/**'
-
-    ignoreFailures false
-
-    reports {
-        xml.enabled = true
-        html.enabled = false
-        xml.destination "build/reports/pmd.xml"
-    }
-}
-
-if(project.hasProperty('jenkins')) {
+if (project.hasProperty('jenkins')) {
     project.android.dexOptions.preDexLibraries = false
 //    android.buildTypes.each { type ->
 //        if (type.name == "debug") {
@@ -263,6 +237,19 @@ if(project.hasProperty('jenkins')) {
 //            type.versionNameSuffix = "-jenkins-$type.name"
 //        }
 //    }
+} else {
+    //not a jenkins build, remove animation scale permission
+    android.applicationVariants.all { variant ->
+        println "Removing the SET_ANIMATION_SCALE permission for $variant.name"
+        variant.processManifest.doLast {
+            def generatedContent = manifestOutputFile.getText()
+            generatedContent = generatedContent.replace('<uses-permission android:name="android.permission.SET_ANIMATION_SCALE" />', '')
+            if (generatedContent.contains('SET_ANIMATION_SCALE')) {
+                throw new RuntimeException("Error in removing animation scale permission!")
+            }
+            manifestOutputFile.write(generatedContent)
+        }
+    }
 }
 
 task featuresToBuildconfig << {
@@ -310,6 +297,7 @@ if (signing_config_file.exists()) {
     apply from: signing_config_file.absolutePath
 }
 
+<<<<<<< HEAD
 task gitSkipWorktreeForIntellijConfigFiles << {
     try {
         'git update-index --skip-worktree .idea/misc.xml'.execute().text.trim()
@@ -351,3 +339,5 @@ task gitApplyStashSwitchingToOldBranch << {
         throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
     }
 }
+=======
+>>>>>>> master

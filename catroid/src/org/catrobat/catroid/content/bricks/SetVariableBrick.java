@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content.bricks;
 
@@ -41,8 +41,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Project;
-import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
@@ -55,37 +55,40 @@ import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class SetVariableBrick extends BrickBaseType implements OnClickListener, NewVariableDialogListener, FormulaBrick {
+public class SetVariableBrick extends FormulaBrick implements OnClickListener, NewVariableDialogListener {
 	private static final long serialVersionUID = 1L;
 	private UserVariable userVariable;
-	private Formula variableFormula;
 	private transient AdapterView<?> adapterView;
+	public boolean inUserBrick = false;
 
-	public SetVariableBrick(Sprite sprite, Formula variableFormula, UserVariable userVariable) {
-		this.sprite = sprite;
-		this.variableFormula = variableFormula;
+	public SetVariableBrick() {
+		addAllowedBrickField(BrickField.VARIABLE);
+	}
+
+	public SetVariableBrick(Formula variableFormula, UserVariable userVariable) {
 		this.userVariable = userVariable;
+		initializeBrickFields(variableFormula);
 	}
 
-	public SetVariableBrick(Sprite sprite, double value) {
-		this.sprite = sprite;
-		this.variableFormula = new Formula(value);
+	public SetVariableBrick(double value) {
 		this.userVariable = null;
+		initializeBrickFields(new Formula(value));
 	}
 
-	@Override
-	public Formula getFormula() {
-		return variableFormula;
+	private void initializeBrickFields(Formula variableFormula) {
+		addAllowedBrickField(BrickField.VARIABLE);
+		setFormulaWithBrickField(BrickField.VARIABLE, variableFormula);
 	}
 
 	@Override
 	public int getRequiredResources() {
-		return NO_RESOURCES;
+		return getFormulaWithBrickField(BrickField.VARIABLE).getRequiredResources();
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.setVariable(sprite, variableFormula, userVariable));
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
+		sequence.addAction(ExtendedActions.setVariable(sprite, getFormulaWithBrickField(BrickField.VARIABLE),
+				userVariable));
 		return null;
 	}
 
@@ -114,14 +117,18 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 		TextView prototypeText = (TextView) view.findViewById(R.id.brick_set_variable_prototype_view);
 		TextView textField = (TextView) view.findViewById(R.id.brick_set_variable_edit_text);
 		prototypeText.setVisibility(View.GONE);
-		variableFormula.setTextFieldId(R.id.brick_set_variable_edit_text);
-		variableFormula.refreshTextField(view);
+		getFormulaWithBrickField(BrickField.VARIABLE).setTextFieldId(R.id.brick_set_variable_edit_text);
+		getFormulaWithBrickField(BrickField.VARIABLE).refreshTextField(view);
 		textField.setVisibility(View.VISIBLE);
 		textField.setOnClickListener(this);
 
 		Spinner variableSpinner = (Spinner) view.findViewById(R.id.set_variable_spinner);
+
+		UserBrick currentBrick = ProjectManager.getInstance().getCurrentUserBrick();
+		int userBrickId = (currentBrick == null ? -1 : currentBrick.getUserBrickId());
+
 		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
-				.createUserVariableAdapter(context, sprite);
+				.createUserVariableAdapter(context, userBrickId, ProjectManager.getInstance().getCurrentSprite(), inUserBrick);
 		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
 				userVariableAdapter);
 		userVariableAdapterWrapper.setItemLayout(android.R.layout.simple_spinner_item, android.R.id.text1);
@@ -143,8 +150,7 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 			@Override
 			public boolean onTouch(View view, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP
-						&& (((Spinner) view).getSelectedItemPosition() == 0
-						&& ((Spinner) view).getAdapter().getCount() == 1)) {
+						&& (((Spinner) view).getSelectedItemPosition() == 0 && ((Spinner) view).getAdapter().getCount() == 1)) {
 					NewVariableDialog dialog = new NewVariableDialog((Spinner) view);
 					dialog.addVariableDialogListener(SetVariableBrick.this);
 					dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
@@ -182,10 +188,13 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 	public View getPrototypeView(Context context) {
 		View prototypeView = View.inflate(context, R.layout.brick_set_variable, null);
 		Spinner variableSpinner = (Spinner) prototypeView.findViewById(R.id.set_variable_spinner);
+		UserBrick currentBrick = ProjectManager.getInstance().getCurrentUserBrick();
+		int userBrickId = (currentBrick == null ? -1 : currentBrick.getDefinitionBrick().getUserBrickId());
+
 		variableSpinner.setFocusableInTouchMode(false);
 		variableSpinner.setFocusable(false);
 		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
-				.createUserVariableAdapter(context, sprite);
+				.createUserVariableAdapter(context, userBrickId, ProjectManager.getInstance().getCurrentSprite(), inUserBrick);
 
 		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
 				userVariableAdapter);
@@ -195,8 +204,7 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 		setSpinnerSelection(variableSpinner, null);
 
 		TextView textSetVariable = (TextView) prototypeView.findViewById(R.id.brick_set_variable_prototype_view);
-		textSetVariable.setText(String.valueOf(variableFormula.interpretDouble(sprite)));
-
+		textSetVariable.setText(String.valueOf(BrickValues.SET_VARIABLE));
 		return prototypeView;
 	}
 
@@ -229,7 +237,8 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 
 	@Override
 	public Brick clone() {
-		SetVariableBrick clonedBrick = new SetVariableBrick(getSprite(), variableFormula.clone(), userVariable);
+		SetVariableBrick clonedBrick = new SetVariableBrick(getFormulaWithBrickField(BrickField.VARIABLE)
+				.clone(), userVariable);
 		return clonedBrick;
 	}
 
@@ -238,25 +247,23 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, variableFormula);
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.VARIABLE));
 	}
 
 	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
+	public Brick copyBrickForSprite(Sprite cloneSprite) {
 		Project currentProject = ProjectManager.getInstance().getCurrentProject();
-		if (!currentProject.getSpriteList().contains(this.sprite)) {
-			throw new RuntimeException("this is not the current project");
+		if (currentProject == null) {
+			throw new RuntimeException("The current project must be set before cloning it");
 		}
 
 		SetVariableBrick copyBrick = (SetVariableBrick) clone();
-		copyBrick.sprite = sprite;
-		copyBrick.userVariable = currentProject.getUserVariables().getUserVariable(userVariable.getName(), sprite);
+		copyBrick.userVariable = currentProject.getUserVariables().getUserVariable(userVariable.getName(), cloneSprite);
 		return copyBrick;
 	}
 
 	private void updateUserVariableIfDeleted(UserVariableAdapterWrapper userVariableAdapterWrapper) {
-		if (userVariable != null
-				&& (userVariableAdapterWrapper.getPositionOfItem(userVariable) == 0)) {
+		if (userVariable != null && (userVariableAdapterWrapper.getPositionOfItem(userVariable) == 0)) {
 			userVariable = null;
 		}
 
@@ -287,4 +294,7 @@ public class SetVariableBrick extends BrickBaseType implements OnClickListener, 
 		setSpinnerSelection(spinnerToUpdate, newUserVariable);
 	}
 
+	public void setInUserBrick(boolean inUserBrick) {
+		this.inUserBrick = inUserBrick;
+	}
 }

@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.ui.dialogs;
 
@@ -86,7 +86,7 @@ public class NewSpriteDialog extends DialogFragment {
 	}
 
 	private NewSpriteDialog(DialogWizardStep wizardStep, Uri lookUri, String newObjectName,
-							ActionAfterFinished requestedAction, SpinnerAdapterWrapper spinnerAdapter) {
+			ActionAfterFinished requestedAction, SpinnerAdapterWrapper spinnerAdapter) {
 		this.requestedAction = requestedAction;
 		this.wizardStep = wizardStep;
 		this.lookUri = lookUri;
@@ -185,25 +185,30 @@ public class NewSpriteDialog extends DialogFragment {
 				lookUri = UtilCamera.getDefaultLookFromCameraUri(getString(R.string.default_look_name));
 			}
 
-			switch (requestCode) {
-				case REQUEST_CREATE_POCKET_PAINT_IMAGE:
-					lookUri = Uri.parse(data.getExtras().getString(Constants.EXTRA_PICTURE_PATH_POCKET_PAINT));
-					break;
-				case REQUEST_SELECT_IMAGE:
-					lookUri = decodeUri(data.getData());
-					newObjectName = new File(lookUri.toString()).getName();
-					break;
-				case REQUEST_TAKE_PICTURE:
-					lookUri = UtilCamera.rotatePictureIfNecessary(lookUri, getString(R.string.default_look_name));
-					break;
-				default:
-					return;
-			}
+			try {
+				switch (requestCode) {
+					case REQUEST_CREATE_POCKET_PAINT_IMAGE:
+						lookUri = Uri.parse(data.getExtras().getString(Constants.EXTRA_PICTURE_PATH_POCKET_PAINT));
+						break;
+					case REQUEST_SELECT_IMAGE:
+						lookUri = decodeUri(data.getData());
+						newObjectName = new File(lookUri.toString()).getName();
+						break;
+					case REQUEST_TAKE_PICTURE:
+						lookUri = UtilCamera.rotatePictureIfNecessary(lookUri, getString(R.string.default_look_name));
+						break;
+					default:
+						return;
+				}
 
-			NewSpriteDialog dialog = new NewSpriteDialog(DialogWizardStep.STEP_2, lookUri, newObjectName,
-					requestedAction, spinnerAdapter);
-			dialog.show(getActivity().getSupportFragmentManager(), NewSpriteDialog.DIALOG_FRAGMENT_TAG);
-			dismiss();
+				NewSpriteDialog dialog = new NewSpriteDialog(DialogWizardStep.STEP_2, lookUri, newObjectName,
+						requestedAction, spinnerAdapter);
+				dialog.show(getActivity().getSupportFragmentManager(), NewSpriteDialog.DIALOG_FRAGMENT_TAG);
+				dismiss();
+			} catch (NullPointerException e) {
+				Utils.showErrorDialog(getActivity(), R.string.error_load_image);
+				Log.e(TAG, Log.getStackTraceString(e));
+			}
 		}
 	}
 
@@ -215,7 +220,7 @@ public class NewSpriteDialog extends DialogFragment {
 		}
 	}
 
-	private Uri decodeUri(Uri uri) {
+	private Uri decodeUri(Uri uri) throws NullPointerException {
 		String[] filePathColumn = {MediaStore.Images.Media.DATA};
 		Cursor cursor = getActivity().getContentResolver().query(uri, filePathColumn, null, null, null);
 		cursor.moveToFirst();
@@ -330,6 +335,11 @@ public class NewSpriteDialog extends DialogFragment {
 		} catch (IOException ioException) {
 			Utils.showErrorDialog(getActivity(), R.string.error_load_image);
 			Log.e(TAG, Log.getStackTraceString(ioException));
+			return false;
+		} catch (NullPointerException e) {
+			Utils.showErrorDialog(getActivity(), R.string.error_load_image);
+			Log.e(TAG, "somebody might have selected an image and deleted it before it was added");
+			Log.e(TAG, Log.getStackTraceString(e));
 			return false;
 		}
 

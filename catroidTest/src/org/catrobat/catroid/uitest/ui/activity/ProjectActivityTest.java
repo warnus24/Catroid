@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.ui.activity;
 
@@ -35,7 +35,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.robotium.solo.Solo;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -49,12 +49,12 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.ChangeVariableBrick;
+import org.catrobat.catroid.content.bricks.FormulaBrick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfLogicElseBrick;
 import org.catrobat.catroid.content.bricks.IfLogicEndBrick;
 import org.catrobat.catroid.content.bricks.LoopBeginBrick;
 import org.catrobat.catroid.content.bricks.LoopEndBrick;
-import org.catrobat.catroid.content.bricks.RepeatBrick;
 import org.catrobat.catroid.content.bricks.SetVariableBrick;
 import org.catrobat.catroid.content.bricks.SetXBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
@@ -151,13 +151,13 @@ public class ProjectActivityTest extends BaseActivityInstrumentationTestCase<Mai
 		Double setVariable1ToValue = Double.valueOf(3d);
 		Double setVariable2ToValue = Double.valueOf(8d);
 
-		SetVariableBrick setVariableBrick1 = new SetVariableBrick(secondSprite, new Formula(setVariable1ToValue),
+		SetVariableBrick setVariableBrick1 = new SetVariableBrick(new Formula(setVariable1ToValue),
 				ProjectManager.getInstance().getCurrentProject().getUserVariables().getUserVariable("p", secondSprite));
 
-		SetVariableBrick setVariableBrick2 = new SetVariableBrick(secondSprite, new Formula(setVariable2ToValue),
+		SetVariableBrick setVariableBrick2 = new SetVariableBrick(new Formula(setVariable2ToValue),
 				ProjectManager.getInstance().getCurrentProject().getUserVariables().getUserVariable("q", secondSprite));
 
-		Script startScript1 = new StartScript(secondSprite);
+		Script startScript1 = new StartScript();
 		secondSprite.addScript(startScript1);
 		startScript1.addBrick(setVariableBrick1);
 		startScript1.addBrick(setVariableBrick2);
@@ -173,10 +173,10 @@ public class ProjectActivityTest extends BaseActivityInstrumentationTestCase<Mai
 		Sprite copiedSprite = project.getSpriteList().get(2);
 		ProjectManager.getInstance().setCurrentSprite(copiedSprite);
 
-		double q = ProjectManager.getInstance().getCurrentProject().getUserVariables()
+		double q = (Double) ProjectManager.getInstance().getCurrentProject().getUserVariables()
 				.getUserVariable("q", copiedSprite).getValue();
 
-		double p = ProjectManager.getInstance().getCurrentProject().getUserVariables()
+		double p = (Double) ProjectManager.getInstance().getCurrentProject().getUserVariables()
 				.getUserVariable("p", copiedSprite).getValue();
 
 		Log.e("CATROID", "q hat den Wert: " + q);
@@ -207,23 +207,25 @@ public class ProjectActivityTest extends BaseActivityInstrumentationTestCase<Mai
 		Double setVariable1ToValue = Double.valueOf(3d);
 		Double setVariable2ToValue = Double.valueOf(8d);
 
-		SetVariableBrick setVariableBrick1 = new SetVariableBrick(secondSprite, new Formula(setVariable1ToValue),
+		SetVariableBrick setVariableBrick1 = new SetVariableBrick(new Formula(setVariable1ToValue),
 				ProjectManager.getInstance().getCurrentProject().getUserVariables()
-						.getUserVariable(firstUserVariableName, secondSprite));
+						.getUserVariable(firstUserVariableName, secondSprite)
+		);
 
-		SetVariableBrick setVariableBrick2 = new SetVariableBrick(secondSprite, new Formula(setVariable2ToValue),
+		SetVariableBrick setVariableBrick2 = new SetVariableBrick(new Formula(setVariable2ToValue),
 				ProjectManager.getInstance().getCurrentProject().getUserVariables()
-						.getUserVariable(secondUserVariableName, secondSprite));
+						.getUserVariable(secondUserVariableName, secondSprite)
+		);
 
-		ChangeVariableBrick changeVariableBrick1 = new ChangeVariableBrick(secondSprite, new Formula(
+		ChangeVariableBrick changeVariableBrick1 = new ChangeVariableBrick(new Formula(
 				setVariable1ToValue), ProjectManager.getInstance().getCurrentProject().getUserVariables()
 				.getUserVariable(firstUserVariableName, secondSprite));
 
-		ChangeVariableBrick changeVariableBrick2 = new ChangeVariableBrick(secondSprite, new Formula(
+		ChangeVariableBrick changeVariableBrick2 = new ChangeVariableBrick(new Formula(
 				setVariable2ToValue), ProjectManager.getInstance().getCurrentProject().getUserVariables()
 				.getUserVariable(secondUserVariableName, secondSprite));
 
-		Script startScript1 = new StartScript(secondSprite);
+		Script startScript1 = new StartScript();
 		secondSprite.addScript(startScript1);
 		startScript1.addBrick(setVariableBrick1);
 		startScript1.addBrick(setVariableBrick2);
@@ -266,8 +268,7 @@ public class ProjectActivityTest extends BaseActivityInstrumentationTestCase<Mai
 	public void testCopySpriteWithNameTaken() {
 		String directoryPath = Utils.buildProjectPath(solo.getString(R.string.default_project_name));
 		File directory = new File(directoryPath);
-		if (directory.exists() && directory.isDirectory())
-		{
+		if (directory.exists() && directory.isDirectory()) {
 			UtilFile.deleteDirectory(directory);
 		}
 		try {
@@ -339,7 +340,7 @@ public class ProjectActivityTest extends BaseActivityInstrumentationTestCase<Mai
 		int currentNumberOfSprites = getCurrentNumberOfSprites() - 1;
 		UiTestUtils.openActionMode(solo, solo.getString(R.string.copy), R.id.copy, getActivity());
 		String selectAll = solo.getString(R.string.select_all).toUpperCase(Locale.getDefault());
-		solo.clickOnText(selectAll);
+		UiTestUtils.clickOnText(solo, selectAll);
 
 		for (CheckBox checkBox : solo.getCurrentViews(CheckBox.class)) {
 			if (checkBox.isShown()) {
@@ -1316,10 +1317,10 @@ public class ProjectActivityTest extends BaseActivityInstrumentationTestCase<Mai
 		copiedLoopBrick = (LoopBeginBrick) brickListCopiedSprite.get(34);
 		copiedEndBrick = (LoopEndBrick) brickListCopiedSprite.get(35);
 
-		Formula firstCondition = (Formula) Reflection.getPrivateField(RepeatBrick.class, firstLoopBrick,
-				"timesToRepeat");
-		Formula copiedCondition = (Formula) Reflection.getPrivateField(RepeatBrick.class, copiedLoopBrick,
-				"timesToRepeat");
+		Formula firstCondition = ((FormulaBrick) firstLoopBrick)
+				.getFormulaWithBrickField(Brick.BrickField.TIMES_TO_REPEAT);
+		Formula copiedCondition = ((FormulaBrick) copiedLoopBrick)
+				.getFormulaWithBrickField(Brick.BrickField.TIMES_TO_REPEAT);
 
 		assertNotSame("Loop Brick is not copied right!", firstLoopBrick, copiedLoopBrick);
 		assertNotSame("Loop Brick is not copied right!", firstEndBrick, copiedEndBrick);
@@ -1340,10 +1341,8 @@ public class ProjectActivityTest extends BaseActivityInstrumentationTestCase<Mai
 		IfLogicElseBrick copiedIfElseBrick = (IfLogicElseBrick) brickListCopiedSprite.get(39);
 		IfLogicEndBrick copiedIfEndBrick = (IfLogicEndBrick) brickListCopiedSprite.get(41);
 
-		firstCondition = (Formula) Reflection
-				.getPrivateField(IfLogicBeginBrick.class, firstIfBeginBrick, "ifCondition");
-		copiedCondition = (Formula) Reflection.getPrivateField(IfLogicBeginBrick.class, copiedIfBeginBrick,
-				"ifCondition");
+		firstCondition = firstIfBeginBrick.getFormulaWithBrickField(Brick.BrickField.IF_CONDITION);
+		copiedCondition = copiedIfBeginBrick.getFormulaWithBrickField(Brick.BrickField.IF_CONDITION);
 
 		assertNotSame("If Brick is not copied right!", firstIfBeginBrick, copiedIfBeginBrick);
 		assertNotSame("If Brick is not copied right!", firstIfElseBrick, copiedIfElseBrick);
@@ -1429,11 +1428,11 @@ public class ProjectActivityTest extends BaseActivityInstrumentationTestCase<Mai
 
 		Script scriptOriginal = ProjectManager.getInstance().getCurrentProject().getSpriteList().get(1).getScript(0);
 
-		scriptCopied.addBrick(new SetXBrick(currentSprite, 10));
+		scriptCopied.addBrick(new SetXBrick(10));
 		assertEquals("The number of Bricks differs!", scriptCopied.getBrickList().size() - 1, scriptOriginal
 				.getBrickList().size());
 
-		scriptOriginal.addBrick(new SetXBrick(currentSprite, 10));
+		scriptOriginal.addBrick(new SetXBrick(10));
 		assertEquals("The number of Bricks differs!", scriptCopied.getBrickList().size(), scriptOriginal.getBrickList()
 				.size());
 

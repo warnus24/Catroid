@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.test.content;
 
@@ -123,12 +123,12 @@ public class MessageContainerTest extends AndroidTestCase {
 		Project project1 = new Project(getContext(), projectName1);
 
 		Sprite sprite1 = new Sprite("cat");
-		Script script1 = new StartScript(sprite1);
-		BroadcastBrick brick1 = new BroadcastBrick(sprite1, broadcastMessage1);
+		Script script1 = new StartScript();
+		BroadcastBrick brick1 = new BroadcastBrick(broadcastMessage1);
 		script1.addBrick(brick1);
 		sprite1.addScript(script1);
 
-		BroadcastScript broadcastScript1 = new BroadcastScript(sprite1, broadcastMessage1);
+		BroadcastScript broadcastScript1 = new BroadcastScript(broadcastMessage1);
 		sprite1.addScript(broadcastScript1);
 
 		project1.addSprite(sprite1);
@@ -138,12 +138,12 @@ public class MessageContainerTest extends AndroidTestCase {
 		Project project2 = new Project(getContext(), projectName2);
 
 		Sprite sprite2 = new Sprite("cat");
-		Script script2 = new StartScript(sprite2);
-		BroadcastBrick brick2 = new BroadcastBrick(sprite2, broadcastMessage2);
+		Script script2 = new StartScript();
+		BroadcastBrick brick2 = new BroadcastBrick(broadcastMessage2);
 		script2.addBrick(brick2);
 		sprite2.addScript(script2);
 
-		BroadcastScript broadcastScript2 = new BroadcastScript(sprite2, broadcastMessage2);
+		BroadcastScript broadcastScript2 = new BroadcastScript(broadcastMessage2);
 		sprite2.addScript(broadcastScript2);
 
 		project2.addSprite(sprite2);

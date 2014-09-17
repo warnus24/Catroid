@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid;
 
@@ -43,6 +43,7 @@ import org.catrobat.catroid.content.bricks.IfLogicElseBrick;
 import org.catrobat.catroid.content.bricks.IfLogicEndBrick;
 import org.catrobat.catroid.content.bricks.LoopBeginBrick;
 import org.catrobat.catroid.content.bricks.LoopEndBrick;
+import org.catrobat.catroid.content.bricks.UserBrick;
 import org.catrobat.catroid.exceptions.CompatibilityProjectException;
 import org.catrobat.catroid.exceptions.LoadingProjectException;
 import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
@@ -69,6 +70,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	private Project project;
 	private Script currentScript;
 	private Sprite currentSprite;
+	private UserBrick currentUserBrick;
 	private boolean asynchronTask = true;
 	private static ProjectManagerState currentProjectManagerState = ProjectManagerState.NORMAL;
 
@@ -162,10 +164,15 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 			if (project.getCatrobatLanguageVersion() == 0.91f) {
 				project.setCatrobatLanguageVersion(0.92f);
 				project.setScreenMode(ScreenModes.STRETCH);
-				checkNestingBrickReferences();
+				checkNestingBrickReferences(false);
 			}
-			//insert further convertions here
+			if (project.getCatrobatLanguageVersion() == 0.92f) {
+				project.setCatrobatLanguageVersion(0.93f);
+			}
 
+			//insert further conversions here
+
+			checkNestingBrickReferences(true);
 			if (project.getCatrobatLanguageVersion() == Constants.CURRENT_CATROBAT_LANGUAGE_VERSION) {
 				//project seems to be converted now and can be loaded
 				localizeBackgroundSprite(context);
@@ -343,6 +350,14 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		}
 	}
 
+	public UserBrick getCurrentUserBrick() {
+		return currentUserBrick;
+	}
+
+	public void setCurrentUserBrick(UserBrick brick) {
+		currentUserBrick = brick;
+	}
+
 	public void addSprite(Sprite sprite) {
 		project.addSprite(sprite);
 	}
@@ -427,9 +442,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 
 	}
 
-
-
-	public void checkNestingBrickReferences() {
+	public void checkNestingBrickReferences(boolean assumeWrong) {
 		Project currentProject = ProjectManager.getInstance().getCurrentProject();
 		if (currentProject != null) {
 			for (Sprite currentSprite : currentProject.getSpriteList()) {
@@ -437,61 +450,75 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 				for (int pos = 0; pos < numberOfScripts; pos++) {
 					Script script = currentSprite.getScript(pos);
 					boolean scriptCorrect = true;
+					if (assumeWrong) {
+						scriptCorrect = false;
+					}
 					for (Brick currentBrick : script.getBrickList()) {
-						if (currentBrick instanceof IfLogicBeginBrick) {
-							IfLogicElseBrick elseBrick = ((IfLogicBeginBrick) currentBrick).getIfElseBrick();
-							IfLogicEndBrick endBrick = ((IfLogicBeginBrick) currentBrick).getIfEndBrick();
-							if (elseBrick == null || endBrick == null || elseBrick.getIfBeginBrick() == null
-									|| elseBrick.getIfEndBrick() == null || endBrick.getIfBeginBrick() == null
-									|| endBrick.getIfElseBrick() == null
-									|| !elseBrick.getIfBeginBrick().equals(currentBrick)
-									|| !elseBrick.getIfEndBrick().equals(endBrick)
-									|| !endBrick.getIfBeginBrick().equals(currentBrick)
-									|| !endBrick.getIfElseBrick().equals(elseBrick)) {
-								scriptCorrect = false;
-								Log.d("REFERENCE ERROR!!", "Brick has wrong reference:" + currentSprite + " "
-										+ currentBrick);
-							}
-						} else if (currentBrick instanceof LoopBeginBrick) {
-							LoopEndBrick endBrick = ((LoopBeginBrick) currentBrick).getLoopEndBrick();
-							if (endBrick == null || endBrick.getLoopBeginBrick() == null
-									|| !endBrick.getLoopBeginBrick().equals(currentBrick)) {
-								scriptCorrect = false;
-								Log.d("REFERENCE ERROR!!", "Brick has wrong reference:" + currentSprite + " "
-										+ currentBrick);
-							}
+						if (!scriptCorrect) {
+							continue;
 						}
+						scriptCorrect = checkReferencesOfCurrentBrick(currentBrick);
 					}
 					if (!scriptCorrect) {
-						//correct references
-						ArrayList<IfLogicBeginBrick> ifBeginList = new ArrayList<IfLogicBeginBrick>();
-						ArrayList<LoopBeginBrick> loopBeginList = new ArrayList<LoopBeginBrick>();
-						for (Brick currentBrick : script.getBrickList()) {
-							if (currentBrick instanceof IfLogicBeginBrick) {
-								ifBeginList.add((IfLogicBeginBrick) currentBrick);
-							} else if (currentBrick instanceof LoopBeginBrick) {
-								loopBeginList.add((LoopBeginBrick) currentBrick);
-							} else if (currentBrick instanceof LoopEndBrick) {
-								LoopBeginBrick loopBeginBrick = loopBeginList.get(loopBeginList.size() - 1);
-								loopBeginBrick.setLoopEndBrick((LoopEndBrick) currentBrick);
-								((LoopEndBrick) currentBrick).setLoopBeginBrick(loopBeginBrick);
-								loopBeginList.remove(loopBeginBrick);
-							} else if (currentBrick instanceof IfLogicElseBrick) {
-								IfLogicBeginBrick ifBeginBrick = ifBeginList.get(ifBeginList.size() - 1);
-								ifBeginBrick.setIfElseBrick((IfLogicElseBrick) currentBrick);
-								((IfLogicElseBrick) currentBrick).setIfBeginBrick(ifBeginBrick);
-							} else if (currentBrick instanceof IfLogicEndBrick) {
-								IfLogicBeginBrick ifBeginBrick = ifBeginList.get(ifBeginList.size() - 1);
-								IfLogicElseBrick elseBrick = ifBeginBrick.getIfElseBrick();
-								ifBeginBrick.setIfEndBrick((IfLogicEndBrick) currentBrick);
-								elseBrick.setIfEndBrick((IfLogicEndBrick) currentBrick);
-								((IfLogicEndBrick) currentBrick).setIfBeginBrick(ifBeginBrick);
-								((IfLogicEndBrick) currentBrick).setIfElseBrick(elseBrick);
-								ifBeginList.remove(ifBeginBrick);
-							}
-						}
+						correctAllNestedReferences(script);
 					}
 				}
+			}
+		}
+	}
+
+	private boolean checkReferencesOfCurrentBrick(Brick currentBrick) {
+		if (currentBrick instanceof IfLogicBeginBrick) {
+			IfLogicElseBrick elseBrick = ((IfLogicBeginBrick) currentBrick).getIfElseBrick();
+			IfLogicEndBrick endBrick = ((IfLogicBeginBrick) currentBrick).getIfEndBrick();
+			if (elseBrick == null || endBrick == null || elseBrick.getIfBeginBrick() == null
+					|| elseBrick.getIfEndBrick() == null || endBrick.getIfBeginBrick() == null
+					|| endBrick.getIfElseBrick() == null
+					|| !elseBrick.getIfBeginBrick().equals(currentBrick)
+					|| !elseBrick.getIfEndBrick().equals(endBrick)
+					|| !endBrick.getIfBeginBrick().equals(currentBrick)
+					|| !endBrick.getIfElseBrick().equals(elseBrick)) {
+				Log.d("REFERENCE ERROR!!", "Brick has wrong reference:" + currentSprite + " "
+						+ currentBrick);
+				return false;
+			}
+		} else if (currentBrick instanceof LoopBeginBrick) {
+			LoopEndBrick endBrick = ((LoopBeginBrick) currentBrick).getLoopEndBrick();
+			if (endBrick == null || endBrick.getLoopBeginBrick() == null
+					|| !endBrick.getLoopBeginBrick().equals(currentBrick)) {
+				Log.d("REFERENCE ERROR!!", "Brick has wrong reference:" + currentSprite + " "
+						+ currentBrick);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void correctAllNestedReferences(Script script) {
+		ArrayList<IfLogicBeginBrick> ifBeginList = new ArrayList<IfLogicBeginBrick>();
+		ArrayList<LoopBeginBrick> loopBeginList = new ArrayList<LoopBeginBrick>();
+		for (Brick currentBrick : script.getBrickList()) {
+			if (currentBrick instanceof IfLogicBeginBrick) {
+				ifBeginList.add((IfLogicBeginBrick) currentBrick);
+			} else if (currentBrick instanceof LoopBeginBrick) {
+				loopBeginList.add((LoopBeginBrick) currentBrick);
+			} else if (currentBrick instanceof LoopEndBrick) {
+				LoopBeginBrick loopBeginBrick = loopBeginList.get(loopBeginList.size() - 1);
+				loopBeginBrick.setLoopEndBrick((LoopEndBrick) currentBrick);
+				((LoopEndBrick) currentBrick).setLoopBeginBrick(loopBeginBrick);
+				loopBeginList.remove(loopBeginBrick);
+			} else if (currentBrick instanceof IfLogicElseBrick) {
+				IfLogicBeginBrick ifBeginBrick = ifBeginList.get(ifBeginList.size() - 1);
+				ifBeginBrick.setIfElseBrick((IfLogicElseBrick) currentBrick);
+				((IfLogicElseBrick) currentBrick).setIfBeginBrick(ifBeginBrick);
+			} else if (currentBrick instanceof IfLogicEndBrick) {
+				IfLogicBeginBrick ifBeginBrick = ifBeginList.get(ifBeginList.size() - 1);
+				IfLogicElseBrick elseBrick = ifBeginBrick.getIfElseBrick();
+				ifBeginBrick.setIfEndBrick((IfLogicEndBrick) currentBrick);
+				elseBrick.setIfEndBrick((IfLogicEndBrick) currentBrick);
+				((IfLogicEndBrick) currentBrick).setIfBeginBrick(ifBeginBrick);
+				((IfLogicEndBrick) currentBrick).setIfElseBrick(elseBrick);
+				ifBeginList.remove(ifBeginBrick);
 			}
 		}
 	}

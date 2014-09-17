@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.test.code;
 
@@ -105,46 +105,28 @@ public class AssertionErrorMessageTest extends TestCase {
 		assertMethods.add(new AssertMethod("assertTrue", 2));
 		assertMethods.add(new AssertMethod("fail", 1));
 
-
 		StringBuilder regexIsAssertMethodBuilder = new StringBuilder();
 		StringBuilder regexAssertContainsErrorMessageBuilder = new StringBuilder();
 		StringBuilder regexAssertDoesntStartWithNumberBuilder = new StringBuilder();
 		for (int i = 0; i < assertMethods.size(); i++) {
 
 			// Build regular expressions to check if a String is an assert method
-			regexIsAssertMethodBuilder
-					.append('(')
-					.append(WHITESPACES)
-					.append(assertMethods.get(i).getCommandName())
+			regexIsAssertMethodBuilder.append('(').append(WHITESPACES).append(assertMethods.get(i).getCommandName())
 					.append(ANYTHING).append(')');
 
 			// Build regular expression to check if an assert method contains an valid error message
-			regexAssertContainsErrorMessageBuilder
-					.append('(')
-					.append(WHITESPACES)
-					.append(assertMethods.get(i).getCommandName())
-					.append(OPENING_BRACKET)
-					.append(ASSERT_MESSAGE);
+			regexAssertContainsErrorMessageBuilder.append('(').append(WHITESPACES)
+					.append(assertMethods.get(i).getCommandName()).append(OPENING_BRACKET).append(ASSERT_MESSAGE);
 
 			for (int parameterCount = 1; parameterCount < assertMethods.get(i).getNumberOfParameters(); parameterCount++) {
-				regexAssertContainsErrorMessageBuilder
-						.append(COMMA)
-						.append(PARAMETER);
+				regexAssertContainsErrorMessageBuilder.append(COMMA).append(PARAMETER);
 			}
-			regexAssertContainsErrorMessageBuilder
-					.append(CLOSING_BRACKET)
-					.append(ANYTHING)
-					.append(')');
+			regexAssertContainsErrorMessageBuilder.append(CLOSING_BRACKET).append(ANYTHING).append(')');
 
 			// Build regular expression to check if an assert message starts with a number
-			regexAssertDoesntStartWithNumberBuilder
-					.append('(')
-					.append(WHITESPACES)
-					.append(assertMethods.get(i).getCommandName())
-					.append(OPENING_BRACKET)
-					.append(NOT_A_NUMBER)
-					.append(ANYTHING)
-					.append(')');
+			regexAssertDoesntStartWithNumberBuilder.append('(').append(WHITESPACES)
+					.append(assertMethods.get(i).getCommandName()).append(OPENING_BRACKET).append(NOT_A_NUMBER)
+					.append(ANYTHING).append(')');
 
 			if (i < assertMethods.size() - 1) {
 				regexIsAssertMethodBuilder.append('|');
@@ -237,7 +219,7 @@ public class AssertionErrorMessageTest extends TestCase {
 		while ((currentLine = reader.readLine()) != null) {
 			lineNumber++;
 			if (regexIsAssertMethodMatcher.reset(currentLine).matches()) {
-				while (! regexIsCompleteCommandMatcher.reset(currentLine).matches()) {
+				while (!regexIsCompleteCommandMatcher.reset(currentLine).matches()) {
 					currentLine += reader.readLine();
 					lineNumber++;
 				}
@@ -245,10 +227,7 @@ public class AssertionErrorMessageTest extends TestCase {
 				if (!regexAssertContainsErrorMessageMatcher.reset(currentLine).matches()
 						|| !regexAssertDoesntStartWithNumberMatcher.reset(currentLine).matches()) {
 					errorFound = true;
-					errorMessageBuilder
-							.append(file.getCanonicalPath())
-							.append(" in line ")
-							.append(lineNumber)
+					errorMessageBuilder.append(file.getCanonicalPath()).append(" in line ").append(lineNumber)
 							.append('\n');
 				}
 			}

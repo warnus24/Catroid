@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content.bricks;
 
@@ -40,9 +40,8 @@ public class WhenBrick extends ScriptBrick {
 	protected WhenScript whenScript;
 	private static final long serialVersionUID = 1L;
 
-	public WhenBrick(Sprite sprite, WhenScript whenScript) {
+	public WhenBrick(WhenScript whenScript) {
 		this.whenScript = whenScript;
-		this.sprite = sprite;
 	}
 
 	public WhenBrick() {
@@ -55,10 +54,9 @@ public class WhenBrick extends ScriptBrick {
 	}
 
 	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
+	public Brick copyBrickForSprite(Sprite sprite) {
 		WhenBrick copyBrick = (WhenBrick) clone();
-		copyBrick.sprite = sprite;
-		copyBrick.whenScript = (WhenScript) script;
+		copyBrick.whenScript = whenScript;
 		return copyBrick;
 	}
 
@@ -153,20 +151,20 @@ public class WhenBrick extends ScriptBrick {
 
 	@Override
 	public Brick clone() {
-		return new WhenBrick(getSprite(), null);
+		return new WhenBrick(null);
 	}
 
 	@Override
-	public Script initScript(Sprite sprite) {
+	public Script getScriptSafe() {
 		if (whenScript == null) {
-			whenScript = new WhenScript(sprite);
+			whenScript = new WhenScript();
 		}
 
 		return whenScript;
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
 		return null;
 
 	}

@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.io;
 
@@ -27,9 +27,13 @@ import android.util.Log;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.converters.reflection.FieldKey;
 import com.thoughtworks.xstream.converters.reflection.FieldKeySorter;
+import com.thoughtworks.xstream.core.util.OrderRetainingMap;
+
+import org.catrobat.catroid.content.Sprite;
 
 import java.lang.reflect.Field;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -40,6 +44,10 @@ public class CatroidFieldKeySorter implements FieldKeySorter {
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Map sort(final Class type, final Map keyedByFieldKey) {
+		if (type.equals(Sprite.class)) {
+			return sortSpriteFields(keyedByFieldKey);
+		}
+
 		final Map map = new TreeMap(new Comparator() {
 
 			@Override
@@ -77,6 +85,40 @@ public class CatroidFieldKeySorter implements FieldKeySorter {
 			Log.e(TAG, Log.getStackTraceString(noSuchFieldException));
 		}
 		return fieldName;
+	}
+
+	private Map sortSpriteFields(Map map) {
+		Map orderedMap = new OrderRetainingMap();
+		FieldKey[] fieldKeyOrder = new FieldKey[map.size()];
+		Iterator<FieldKey> iterator = map.keySet().iterator();
+		while (iterator.hasNext()) {
+			FieldKey fieldKey = iterator.next();
+			if (fieldKey.getFieldName().equals("TAG")) {
+				fieldKeyOrder[0] = fieldKey;
+			} else if (fieldKey.getFieldName().equals("serialVersionUID")) {
+				fieldKeyOrder[1] = fieldKey;
+			} else if (fieldKey.getFieldName().equals("look")) {
+				fieldKeyOrder[2] = fieldKey;
+			} else if (fieldKey.getFieldName().equals("name")) {
+				fieldKeyOrder[3] = fieldKey;
+			} else if (fieldKey.getFieldName().equals("isPaused")) {
+				fieldKeyOrder[4] = fieldKey;
+			} else if (fieldKey.getFieldName().equals("lookList")) {
+				fieldKeyOrder[5] = fieldKey;
+			} else if (fieldKey.getFieldName().equals("soundList")) {
+				fieldKeyOrder[6] = fieldKey;
+			} else if (fieldKey.getFieldName().equals("scriptList")) {
+				fieldKeyOrder[7] = fieldKey;
+			} else if (fieldKey.getFieldName().equals("userBricks")) {
+				fieldKeyOrder[8] = fieldKey;
+			} else if (fieldKey.getFieldName().equals("newUserBrickNext")) {
+				fieldKeyOrder[9] = fieldKey;
+			}
+		}
+		for (FieldKey fieldKey : fieldKeyOrder) {
+			orderedMap.put(fieldKey, map.get(fieldKey));
+		}
+		return orderedMap;
 	}
 
 }

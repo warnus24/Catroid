@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.stage;
 
@@ -276,28 +276,28 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 
 	private void createTestproject(String projectName) {
 		Sprite firstSprite = new Sprite(spriteName);
-		Script startScript = new StartScript(firstSprite);
-		Script whenScript = new WhenScript(firstSprite);
-		SetLookBrick setLookBrick = new SetLookBrick(firstSprite);
+		Script startScript = new StartScript();
+		Script whenScript = new WhenScript();
+		SetLookBrick setLookBrick = new SetLookBrick();
 
-		LegoNxtMotorActionBrick legoMotorActionBrick = new LegoNxtMotorActionBrick(firstSprite,
+		LegoNxtMotorActionBrick legoMotorActionBrick = new LegoNxtMotorActionBrick(
 				LegoNxtMotorActionBrick.Motor.MOTOR_A_C, 100);
 		commands.add(new int[] { MOTOR_ACTION, 0, 100 }); //motor = 3 means brick will move motors A and C.
 		commands.add(new int[] { MOTOR_ACTION, 2, 100 });
-		WaitBrick firstWaitBrick = new WaitBrick(firstSprite, 500);
+		WaitBrick firstWaitBrick = new WaitBrick(500);
 
-		LegoNxtMotorStopBrick legoMotorStopBrick = new LegoNxtMotorStopBrick(firstSprite,
+		LegoNxtMotorStopBrick legoMotorStopBrick = new LegoNxtMotorStopBrick(
 				LegoNxtMotorStopBrick.Motor.MOTOR_A_C);
 		commands.add(new int[] { MOTOR_STOP, 0 });
 		commands.add(new int[] { MOTOR_STOP, 2 });
-		WaitBrick secondWaitBrick = new WaitBrick(firstSprite, 500);
+		WaitBrick secondWaitBrick = new WaitBrick(500);
 
-		LegoNxtMotorTurnAngleBrick legoMotorTurnAngleBrick = new LegoNxtMotorTurnAngleBrick(firstSprite,
+		LegoNxtMotorTurnAngleBrick legoMotorTurnAngleBrick = new LegoNxtMotorTurnAngleBrick(
 				LegoNxtMotorTurnAngleBrick.Motor.MOTOR_C, 515);
 		commands.add(new int[] { MOTOR_TURN, 2, 515 });
 
-		WaitBrick thirdWaitBrick = new WaitBrick(firstSprite, 500);
-		LegoNxtPlayToneBrick legoPlayToneBrick = new LegoNxtPlayToneBrick(firstSprite, 5000, 1000);
+		WaitBrick thirdWaitBrick = new WaitBrick(500);
+		LegoNxtPlayToneBrick legoPlayToneBrick = new LegoNxtPlayToneBrick(5000, 1000);
 		//Tone does not return a command
 
 		whenScript.addBrick(legoMotorActionBrick);

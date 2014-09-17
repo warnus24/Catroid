@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.ui.activity;
 
@@ -33,7 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.robotium.solo.Solo;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -273,8 +273,7 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		// Robotium can _force_ the activity to be in landscape mode (and so could we, programmatically)
 		solo.setActivityOrientation(Solo.LANDSCAPE);
 
-		assertEquals(
-				MainMenuActivity.class.getSimpleName() + " not set to be in portrait mode in AndroidManifest.xml!",
+		assertEquals(MainMenuActivity.class.getSimpleName() + " not set to be in portrait mode in AndroidManifest.xml!",
 				ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, activityInfo.screenOrientation);
 	}
 
@@ -320,7 +319,8 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		assertTrue("MyProjectsActivity not shown", solo.waitForActivity(MyProjectsActivity.class.getSimpleName()));
 		solo.clickOnText(testProject3);
 		assertTrue("ProjectActivity not shown", solo.waitForActivity(ProjectActivity.class.getSimpleName()));
-		solo.sleep(200);
+		solo.goBack();
+		assertTrue("MyProjectsActivity not shown", solo.waitForActivity(MyProjectsActivity.class.getSimpleName()));
 		solo.goBack();
 		assertTrue("MainMenuActivity not shown", solo.waitForActivity(MainMenuActivity.class.getSimpleName()));
 		solo.clickOnText(solo.getString(R.string.main_menu_continue));
@@ -378,13 +378,13 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		Sprite secondSprite = new Sprite("dog");
 		Sprite thirdSprite = new Sprite("horse");
 		Sprite fourthSprite = new Sprite("pig");
-		Script testScript = new StartScript(firstSprite);
-		Script otherScript = new StartScript(secondSprite);
-		HideBrick hideBrick = new HideBrick(firstSprite);
-		ShowBrick showBrick = new ShowBrick(firstSprite);
-		SetSizeToBrick setSizeToBrick = new SetSizeToBrick(secondSprite, size);
-		ComeToFrontBrick comeToFrontBrick = new ComeToFrontBrick(firstSprite);
-		PlaceAtBrick placeAtBrick = new PlaceAtBrick(secondSprite, xPosition, yPosition);
+		Script testScript = new StartScript();
+		Script otherScript = new StartScript();
+		HideBrick hideBrick = new HideBrick();
+		ShowBrick showBrick = new ShowBrick();
+		SetSizeToBrick setSizeToBrick = new SetSizeToBrick(size);
+		ComeToFrontBrick comeToFrontBrick = new ComeToFrontBrick();
+		PlaceAtBrick placeAtBrick = new PlaceAtBrick(xPosition, yPosition);
 
 		// adding Bricks: ----------------
 		testScript.addBrick(hideBrick);
@@ -438,9 +438,9 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		Sprite backgroundSprite = standardProject.getSpriteList().get(0);
 		Script startingScript = backgroundSprite.getScript(0);
 		assertEquals("Number of bricks in background sprite was wrong", 3, backgroundSprite.getNumberOfBricks());
-		startingScript.addBrick(new SetLookBrick(backgroundSprite));
-		startingScript.addBrick(new SetLookBrick(backgroundSprite));
-		startingScript.addBrick(new SetLookBrick(backgroundSprite));
+		startingScript.addBrick(new SetLookBrick());
+		startingScript.addBrick(new SetLookBrick());
+		startingScript.addBrick(new SetLookBrick());
 		assertEquals("Number of bricks in background sprite was wrong", 6, backgroundSprite.getNumberOfBricks());
 		ProjectManager.getInstance().setCurrentSprite(backgroundSprite);
 		ProjectManager.getInstance().setCurrentScript(startingScript);
@@ -477,18 +477,25 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		UiTestUtils.clickOnExactText(solo, testProject);
 		solo.waitForFragmentById(R.id.fragment_sprites_list);
 
-		solo.goBackToActivity("MainMenuActivity");
-		solo.sleep(400);
-		assertTrue("The name of the current testProject is not displayed on the continue button", solo.searchText(testProject));
+		solo.goBack();
+		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
+		solo.goBack();
+		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
+		assertTrue("The name of the current testProject is not displayed on the continue button", solo.getButton(0)
+				.getText().toString().endsWith(testProject));
 
 		solo.clickOnText(solo.getString(R.string.main_menu_programs));
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
-		UiTestUtils.clickOnExactText(solo, testProject2);
+
+		solo.clickOnText(testProject2, 1, true);
 		solo.waitForFragmentById(R.id.fragment_sprites_list);
 
 		solo.goBack();
-		solo.sleep(400);
-		assertTrue("The name of the current testProject2 is not displayed on the continue button", solo.searchText(testProject2));
+		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
+		solo.goBack();
+		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
+		assertTrue("The name of the current testProject2 is not displayed on the continue button", solo.getButton(0)
+				.getText().toString().endsWith(testProject2));
 
 	}
 
@@ -502,7 +509,11 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		solo.waitForFragmentById(R.id.fragment_sprites_list);
 
 		solo.goBack();
-		solo.sleep(400);
+		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
+		solo.goBack();
+		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
+		assertTrue("The name of the current projectNameJustSpecialChars is not displayed on the continue button", solo
+				.getButton(0).getText().toString().endsWith(projectNameJustSpecialChars));
 
 		assertTrue("The name of the current projectNameJustSpecialChars is not displayed on the continue button", solo.searchText(projectNameJustSpecialChars));
 
@@ -512,9 +523,12 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		solo.waitForFragmentById(R.id.fragment_sprites_list);
 
 		solo.goBack();
-		solo.sleep(400);
-
-		assertTrue("The name of the current projectNameWithNormalAndSpecialChars2 is not displayed on the continue button", solo.searchText(projectNameWithNormalAndSpecialChars2));
+		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
+		solo.goBack();
+		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
+		assertTrue(
+				"The name of the current projectNameWithNormalAndSpecialChars2 is not displayed on the continue button",
+				solo.getButton(0).getText().toString().endsWith(projectNameWithNormalAndSpecialChars2));
 	}
 
 	public void testProjectNameWithDotsVisible() {
@@ -527,6 +541,12 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		solo.waitForFragmentById(R.id.fragment_sprites_list);
 
 		solo.goBack();
+		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
+		solo.goBack();
+		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
+		solo.sleep(800);
+		assertTrue("The name of the current projectNameJustOneDot is not displayed on the continue button", solo
+				.getButton(0).getText().toString().endsWith(projectNameJustOneDot));
 
 		solo.sleep(400);
 		assertTrue("The name of the current projectNameJustOneDot is not displayed on the continue button", solo.searchText(projectNameJustOneDot));
@@ -537,8 +557,11 @@ public class MainMenuActivityTest extends BaseActivityInstrumentationTestCase<Ma
 		solo.waitForFragmentById(R.id.fragment_sprites_list);
 
 		solo.goBack();
-
-		solo.sleep(400);
-		assertTrue("The name of the current projectNameJustTwoDots is not displayed on the continue button", solo.searchText(projectNameJustTwoDots));
+		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
+		solo.goBack();
+		solo.waitForActivity(MainMenuActivity.class.getSimpleName());
+		solo.sleep(800);
+		assertTrue("The name of the current projectNameJustTwoDots is not displayed on the continue button", solo
+				.getButton(0).getText().toString().endsWith(projectNameJustTwoDots));
 	}
 }

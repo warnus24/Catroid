@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.content.brick;
 
@@ -33,12 +33,13 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.MoveNStepsBrick;
-import org.catrobat.catroid.formulaeditor.Formula;
+
+import org.catrobat.catroid.formulaeditor.InterpretationException;
+
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.ui.fragment.ScriptFragment;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
-import org.catrobat.catroid.uitest.util.Reflection;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 import org.catrobat.catroid.utils.Utils;
 
@@ -67,8 +68,8 @@ public class MoveNStepsBrickTest extends BaseActivityInstrumentationTestCase<Scr
 
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
-		moveNStepsBrick = new MoveNStepsBrick(sprite, 0);
+		Script script = new StartScript();
+		moveNStepsBrick = new MoveNStepsBrick(0);
 		script.addBrick(moveNStepsBrick);
 
 		sprite.addScript(script);
@@ -97,14 +98,19 @@ public class MoveNStepsBrickTest extends BaseActivityInstrumentationTestCase<Scr
 		assertEquals("Wrong Brick instance.", projectBrickList.get(0), adapter.getChild(groupCount - 1, 0));
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.brick_move)));
 
-		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.brick_move_n_steps_edit_text, STEPS_TO_MOVE, "steps",
-				moveNStepsBrick);
+		UiTestUtils.testBrickWithFormulaEditor(solo, ProjectManager.getInstance().getCurrentSprite(),
+				R.id.brick_move_n_steps_edit_text, STEPS_TO_MOVE, Brick.BrickField.STEPS, moveNStepsBrick);
 
 		UiTestUtils.insertValueViaFormulaEditor(solo, R.id.brick_move_n_steps_edit_text, STEPS_TO_MOVE);
 
-		assertEquals("Wrong text in field.", STEPS_TO_MOVE,
-				((Formula) Reflection.getPrivateField(moveNStepsBrick, "steps")).interpretDouble(null));
-		assertEquals(
+        try{
+            assertEquals("Wrong text in field.", STEPS_TO_MOVE,
+					(moveNStepsBrick.getFormulaWithBrickField(Brick.BrickField.STEPS)).interpretDouble(null));
+        }catch (InterpretationException interpretationException){
+            fail("Wrong text in field.");
+        }
+
+        assertEquals(
 				"Value in Brick is not updated.",
 				STEPS_TO_MOVE,
 				Double.valueOf(((TextView) solo.getView(R.id.brick_move_n_steps_edit_text)).getText().toString()

@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.content.brick;
 
@@ -34,10 +34,10 @@ import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.ChangeSizeByNBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
-import org.catrobat.catroid.uitest.util.Reflection;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
@@ -78,8 +78,14 @@ public class ChangeSizeByNBrickTest extends BaseActivityInstrumentationTestCase<
 
 		UiTestUtils.insertValueViaFormulaEditor(solo, R.id.brick_change_size_by_edit_text, SIZE_TO_CHANGE);
 
-		Formula currentSize = (Formula) Reflection.getPrivateField(changeSizeByNBrick, "size");
-		assertEquals("Wrong text in field", SIZE_TO_CHANGE, currentSize.interpretDouble(null));
+		Formula currentSize = changeSizeByNBrick.getFormulaWithBrickField(Brick.BrickField.SIZE_CHANGE);
+
+        try{
+            assertEquals("Wrong text in field", SIZE_TO_CHANGE, currentSize.interpretDouble(null));
+        }catch (InterpretationException interpretationException){
+            fail("Wrong text in field");
+        }
+
 		TextView textView = ((TextView) solo.getView(R.id.brick_change_size_by_edit_text));
 		assertEquals("Text not updated", SIZE_TO_CHANGE,
 				Double.parseDouble(textView.getText().toString().replace(',', '.')));
@@ -89,8 +95,8 @@ public class ChangeSizeByNBrickTest extends BaseActivityInstrumentationTestCase<
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
-		changeSizeByNBrick = new ChangeSizeByNBrick(sprite, 20);
+		Script script = new StartScript();
+		changeSizeByNBrick = new ChangeSizeByNBrick(20);
 		script.addBrick(changeSizeByNBrick);
 
 		sprite.addScript(script);

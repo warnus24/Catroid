@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content.bricks;
 
@@ -51,27 +51,24 @@ public class BroadcastReceiverBrick extends ScriptBrick implements BroadcastMess
 	private BroadcastScript receiveScript;
 	private transient String broadcastMessage;
 
-	public BroadcastReceiverBrick(Sprite sprite, String broadcastMessage) {
-		this.sprite = sprite;
+	public BroadcastReceiverBrick(String broadcastMessage) {
 		this.broadcastMessage = broadcastMessage;
 	}
 
-	public BroadcastReceiverBrick(Sprite sprite, BroadcastScript receiveScript) {
-		this.sprite = sprite;
+	public BroadcastReceiverBrick(BroadcastScript receiveScript) {
 		this.receiveScript = receiveScript;
 	}
 
 	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
+	public Brick copyBrickForSprite(Sprite sprite) {
 		BroadcastReceiverBrick copyBrick = (BroadcastReceiverBrick) clone();
-		copyBrick.sprite = sprite;
-		copyBrick.receiveScript = (BroadcastScript) script;
+		copyBrick.receiveScript = receiveScript;
 		return copyBrick;
 	}
 
 	@Override
 	public Brick clone() {
-		return new BroadcastReceiverBrick(sprite, new BroadcastScript(sprite, getBroadcastMessage()));
+		return new BroadcastReceiverBrick(new BroadcastScript(getBroadcastMessage()));
 	}
 
 	@Override
@@ -96,7 +93,7 @@ public class BroadcastReceiverBrick extends ScriptBrick implements BroadcastMess
 			alphaValue = 255;
 		}
 		if (receiveScript == null) {
-			receiveScript = new BroadcastScript(sprite, broadcastMessage);
+			receiveScript = new BroadcastScript(broadcastMessage);
 			MessageContainer.addMessage(getBroadcastMessage());
 		}
 
@@ -180,7 +177,7 @@ public class BroadcastReceiverBrick extends ScriptBrick implements BroadcastMess
 	}
 
 	@Override
-	public Script initScript(Sprite sprite) {
+	public Script getScriptSafe() {
 		return receiveScript;
 	}
 
@@ -230,7 +227,7 @@ public class BroadcastReceiverBrick extends ScriptBrick implements BroadcastMess
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
 		return null;
 	}
 }

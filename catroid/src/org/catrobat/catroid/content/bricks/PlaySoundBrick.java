@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content.bricks;
 
@@ -42,9 +42,9 @@ import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.SoundInfo;
-import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.ui.ScriptActivity;
@@ -61,11 +61,6 @@ public class PlaySoundBrick extends BrickBaseType implements OnItemSelectedListe
 	private transient SoundInfo oldSelectedSound;
 	private transient AdapterView<?> adapterView;
 
-	public PlaySoundBrick(Sprite sprite) {
-		this.sprite = sprite;
-		this.oldSelectedSound = null;
-	}
-
 	public PlaySoundBrick() {
 
 	}
@@ -76,9 +71,8 @@ public class PlaySoundBrick extends BrickBaseType implements OnItemSelectedListe
 	}
 
 	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
+	public Brick copyBrickForSprite(Sprite sprite) {
 		PlaySoundBrick copyBrick = (PlaySoundBrick) clone();
-		copyBrick.sprite = sprite;
 		for (SoundInfo soundInfo : sprite.getSoundList()) {
 			if (soundInfo.getAbsolutePath().equals(sound.getAbsolutePath())) {
 				copyBrick.sound = soundInfo;
@@ -166,7 +160,7 @@ public class PlaySoundBrick extends BrickBaseType implements OnItemSelectedListe
 		SoundInfo dummySoundInfo = new SoundInfo();
 		dummySoundInfo.setTitle(context.getString(R.string.new_broadcast_message));
 		arrayAdapter.add(dummySoundInfo);
-		for (SoundInfo soundInfo : sprite.getSoundList()) {
+		for (SoundInfo soundInfo : ProjectManager.getInstance().getCurrentSprite().getSoundList()) {
 			arrayAdapter.add(soundInfo);
 		}
 		return arrayAdapter;
@@ -186,7 +180,7 @@ public class PlaySoundBrick extends BrickBaseType implements OnItemSelectedListe
 
 	@Override
 	public Brick clone() {
-		return new PlaySoundBrick(getSprite());
+		return new PlaySoundBrick();
 	}
 
 	//for testing purposes:
@@ -210,19 +204,20 @@ public class PlaySoundBrick extends BrickBaseType implements OnItemSelectedListe
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
 		sequence.addAction(ExtendedActions.playSound(sprite, sound));
 		return null;
 	}
 
 	private void setSpinnerSelection(Spinner spinner) {
-		if (sprite.getSoundList().contains(sound)) {
+		if (ProjectManager.getInstance().getCurrentSprite().getSoundList().contains(sound)) {
 			oldSelectedSound = sound;
-			spinner.setSelection(sprite.getSoundList().indexOf(sound) + 1, true);
+			spinner.setSelection(ProjectManager.getInstance().getCurrentSprite().getSoundList().indexOf(sound) + 1, true);
 		} else {
 			if (spinner.getAdapter() != null && spinner.getAdapter().getCount() > 1) {
-				if (sprite.getSoundList().indexOf(oldSelectedSound) >= 0) {
-					spinner.setSelection(sprite.getSoundList().indexOf(oldSelectedSound) + 1, true);
+				if (ProjectManager.getInstance().getCurrentSprite().getSoundList().indexOf(oldSelectedSound) >= 0) {
+					spinner.setSelection(ProjectManager.getInstance().getCurrentSprite().getSoundList()
+							.indexOf(oldSelectedSound) + 1, true);
 				} else {
 					spinner.setSelection(1, true);
 				}

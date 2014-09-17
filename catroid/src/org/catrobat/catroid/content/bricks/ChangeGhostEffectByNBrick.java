@@ -1,24 +1,24 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content.bricks;
 
@@ -34,7 +34,9 @@ import android.widget.TextView;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.Script;
+
+import org.catrobat.catroid.common.BrickValues;
+
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
@@ -42,39 +44,32 @@ import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class ChangeGhostEffectByNBrick extends BrickBaseType implements OnClickListener, FormulaBrick {
+public class ChangeGhostEffectByNBrick extends FormulaBrick implements OnClickListener {
 
 	private static final long serialVersionUID = 1L;
-	private Formula changeGhostEffect;
 
 	private transient View prototypeView;
 
 	public ChangeGhostEffectByNBrick() {
-
+		addAllowedBrickField(BrickField.TRANSPARENCY_CHANGE);
 	}
 
-	public ChangeGhostEffectByNBrick(Sprite sprite, double changeGhostEffectValue) {
-		this.sprite = sprite;
-
-		changeGhostEffect = new Formula(changeGhostEffectValue);
+	public ChangeGhostEffectByNBrick(double changeGhostEffectValue) {
+		initializeBrickFields(new Formula(changeGhostEffectValue));
 	}
 
-	public ChangeGhostEffectByNBrick(Sprite sprite, Formula changeGhostEffect) {
-		this.sprite = sprite;
+	public ChangeGhostEffectByNBrick(Formula changeGhostEffect) {
+		initializeBrickFields(changeGhostEffect);
+	}
 
-		this.changeGhostEffect = changeGhostEffect;
+	private void initializeBrickFields(Formula changeGhostEffect) {
+		addAllowedBrickField(BrickField.TRANSPARENCY_CHANGE);
+		setFormulaWithBrickField(BrickField.TRANSPARENCY_CHANGE, changeGhostEffect);
 	}
 
 	@Override
 	public int getRequiredResources() {
-		return NO_RESOURCES;
-	}
-
-	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
-		ChangeGhostEffectByNBrick copyBrick = (ChangeGhostEffectByNBrick) clone();
-		copyBrick.sprite = sprite;
-		return copyBrick;
+		return getFormulaWithBrickField(BrickField.TRANSPARENCY_CHANGE).getRequiredResources();
 	}
 
 	@Override
@@ -98,8 +93,9 @@ public class ChangeGhostEffectByNBrick extends BrickBaseType implements OnClickL
 		});
 		TextView textX = (TextView) view.findViewById(R.id.brick_change_ghost_effect_prototype_text_view);
 		TextView editX = (TextView) view.findViewById(R.id.brick_change_ghost_effect_edit_text);
-		changeGhostEffect.setTextFieldId(R.id.brick_change_ghost_effect_edit_text);
-		changeGhostEffect.refreshTextField(view);
+		getFormulaWithBrickField(BrickField.TRANSPARENCY_CHANGE)
+				.setTextFieldId(R.id.brick_change_ghost_effect_edit_text);
+		getFormulaWithBrickField(BrickField.TRANSPARENCY_CHANGE).refreshTextField(view);
 
 		textX.setVisibility(View.GONE);
 		editX.setVisibility(View.VISIBLE);
@@ -112,13 +108,8 @@ public class ChangeGhostEffectByNBrick extends BrickBaseType implements OnClickL
 		prototypeView = View.inflate(context, R.layout.brick_change_ghost_effect, null);
 		TextView textChangeGhostEffect = (TextView) prototypeView
 				.findViewById(R.id.brick_change_ghost_effect_prototype_text_view);
-		textChangeGhostEffect.setText(String.valueOf(changeGhostEffect.interpretDouble(sprite)));
+        textChangeGhostEffect.setText(String.valueOf(BrickValues.CHANGE_GHOST_EFFECT));
 		return prototypeView;
-	}
-
-	@Override
-	public Brick clone() {
-		return new ChangeGhostEffectByNBrick(getSprite(), changeGhostEffect.clone());
 	}
 
 	@Override
@@ -150,18 +141,14 @@ public class ChangeGhostEffectByNBrick extends BrickBaseType implements OnClickL
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, changeGhostEffect);
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.TRANSPARENCY_CHANGE));
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-
-		sequence.addAction(ExtendedActions.changeGhostEffectByN(sprite, changeGhostEffect));
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
+		sequence.addAction(ExtendedActions.changeGhostEffectByN(sprite,
+				getFormulaWithBrickField(BrickField.TRANSPARENCY_CHANGE)));
 		return null;
 	}
 
-	@Override
-	public Formula getFormula() {
-		return changeGhostEffect;
-	}
 }

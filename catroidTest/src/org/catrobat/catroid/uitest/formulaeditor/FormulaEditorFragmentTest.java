@@ -1,33 +1,32 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.uitest.formulaeditor;
 
 import android.graphics.Rect;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.robotium.solo.Solo;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -35,10 +34,12 @@ import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
+import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.PlaceAtBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaEditorEditText;
 import org.catrobat.catroid.formulaeditor.FormulaEditorHistory;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.Reflection;
@@ -69,8 +70,8 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
-		placeAtBrick = new PlaceAtBrick(sprite, INITIAL_X, INITIAL_Y);
+		Script script = new StartScript();
+		placeAtBrick = new PlaceAtBrick(INITIAL_X, INITIAL_Y);
 		script.addBrick(placeAtBrick);
 
 		sprite.addScript(script);
@@ -132,7 +133,7 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 				.toString());
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
-		solo.sleep(50);
+		solo.sleep(200);
 		assertEquals("Wrong text in X EditText", "12 ", ((TextView) solo.getView(X_POS_EDIT_TEXT_RID)).getText()
 				.toString());
 	}
@@ -145,11 +146,11 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_minus));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_2));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_mult));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_cos));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_sin));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_tan));
 
 		assertEquals("Wrong text in field", "1 - 2 × cos( sin( tan( 0 ) ) ) ",
@@ -177,7 +178,7 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 
-		solo.sleep(50);
+		solo.sleep(200);
 		assertEquals("Undo did something wrong", "1 - 2 ", ((TextView) solo.getView(X_POS_EDIT_TEXT_RID)).getText()
 				.toString());
 
@@ -293,11 +294,12 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 				solo.searchText(solo.getString(R.string.formula_editor_changes_saved)));
 
 		solo.clickOnView(solo.getView(Y_POS_EDIT_TEXT_RID));
-
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
-		solo.sleep(400);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
+		solo.clickOnText(solo.getString(R.string.formula_editor_function_rand));
+		solo.waitForText(solo.getString(R.string.formula_editor_title));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_cos));
+		solo.waitForText(solo.getString(R.string.formula_editor_title));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_9));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_minus));
@@ -321,14 +323,21 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 		solo.sleep(300);
 
 		//Interpretation test
-		Formula formula = (Formula) Reflection.getPrivateField(placeAtBrick, "xPosition");
-		assertEquals("Wrong text in field", newXValue, formula.interpretInteger(sprite));
 
-		formula = (Formula) Reflection.getPrivateField(placeAtBrick, "yPosition");
+		Formula formula = placeAtBrick.getFormulaWithBrickField(Brick.BrickField.X_POSITION);
+        try{
+            assertEquals("Wrong text in field", newXValue, formula.interpretInteger(sprite).intValue());
+        }catch (InterpretationException interpretationException){
+            fail("Wrong text in field.");
+        }
 
-		float newYValue = formula.interpretFloat(sprite);
-		assertTrue("Wrong text in field", newYValue >= -0.5f && newYValue <= 1f);
-
+		formula = placeAtBrick.getFormulaWithBrickField(Brick.BrickField.Y_POSITION);
+        try{
+            float newYValue = formula.interpretFloat(sprite);
+            assertTrue("Wrong text in field", newYValue >= -0.5f && newYValue <= 1f);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong text in field.");
+        }
 	}
 
 	public void testRandomInterpretationWithFloatParameters() {
@@ -337,7 +346,9 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 
 		solo.clickOnView(solo.getView(X_POS_EDIT_TEXT_RID));
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
+		solo.clickOnText(solo.getString(R.string.formula_editor_function_rand));
+		solo.waitForText(solo.getString(R.string.formula_editor_title));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_9));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_decimal_mark));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_9));
@@ -345,19 +356,22 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 		solo.sleep(300);
 
-		Formula formula = (Formula) Reflection.getPrivateField(placeAtBrick, "xPosition");
-		float value = formula.interpretFloat(sprite);
-
-		Log.i("info", "value: " + value);
-
-		assertTrue("random() interpretation of float parameter is wrong: " + newXFormula + " value=" + value,
-				1 <= value && value <= 9.9f && (Math.abs(value) - (int) Math.abs(value)) > 0);
+		Formula formula = placeAtBrick.getFormulaWithBrickField(Brick.BrickField.X_POSITION);
+        try{
+            float value = formula.interpretFloat(sprite);
+            assertTrue("random() interpretation of float parameter is wrong: " + newXFormula + " value=" + value,
+                    1 <= value && value <= 9.9f && (Math.abs(value) - (int) Math.abs(value)) > 0);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong text in field.");
+        }
 
 		String newYFormula = "random(7.0,1)";
 
 		solo.clickOnView(solo.getView(Y_POS_EDIT_TEXT_RID));
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
+		solo.clickOnText(solo.getString(R.string.formula_editor_function_rand));
+		solo.waitForText(solo.getString(R.string.formula_editor_title));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_7));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_decimal_mark));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
@@ -365,16 +379,17 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 		solo.sleep(300);
 
-		Formula anotherFormula = (Formula) Reflection.getPrivateField(placeAtBrick, "yPosition");
-		float anotherValue = anotherFormula.interpretFloat(sprite);
+		Formula anotherFormula = placeAtBrick.getFormulaWithBrickField(Brick.BrickField.Y_POSITION);
 
-		Log.i("info", "value: " + value);
-
-		assertTrue("random() interpretation of float parameter is wrong: " + newYFormula + " anotherValue="
-				+ anotherValue,
-				1 <= anotherValue && anotherValue <= 7.0f
-						&& (Math.abs(anotherValue) - (int) Math.abs(anotherValue)) > 0);
-
+        try{
+            float anotherValue = anotherFormula.interpretFloat(sprite);
+            assertTrue("random() interpretation of float parameter is wrong: " + newYFormula + " anotherValue="
+                            + anotherValue,
+                    1 <= anotherValue && anotherValue <= 7.0f
+                            && (Math.abs(anotherValue) - (int) Math.abs(anotherValue)) > 0);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong text in field.");
+        }
 	}
 
 	public void testRandomInterpretationWithIntegerParameters() {
@@ -383,43 +398,51 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 
 		solo.clickOnView(solo.getView(X_POS_EDIT_TEXT_RID));
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
+		solo.clickOnText(solo.getString(R.string.formula_editor_function_rand));
+		solo.waitForText(solo.getString(R.string.formula_editor_title));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
+		solo.clickOnText(solo.getString(R.string.formula_editor_function_rand));
+		solo.waitForText(solo.getString(R.string.formula_editor_title));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 		solo.sleep(300);
 
-		Formula formula = (Formula) Reflection.getPrivateField(placeAtBrick, "xPosition");
-		float value = formula.interpretFloat(sprite);
+		Formula formula = placeAtBrick.getFormulaWithBrickField(Brick.BrickField.X_POSITION);
 
-		Log.i("info", "value: " + value);
-
-		assertTrue("random() interpretation of integer parameters is wrong: " + newXFormula + " anotherValue=" + value,
-				(value == 1 || value == 2 || value == 3));
-		assertEquals("random() interpretation of integer parameters is wrong: " + newXFormula + " anotherValue="
-				+ value, 0, Math.abs(value) - (int) Math.abs(value), 0);
+        try{
+            float value = formula.interpretFloat(sprite);
+            assertTrue("random() interpretation of integer parameters is wrong: " + newXFormula + " anotherValue=" + value,
+                    (value == 1 || value == 2 || value == 3));
+            assertEquals("random() interpretation of integer parameters is wrong: " + newXFormula + " anotherValue="
+                    + value, 0, Math.abs(value) - (int) Math.abs(value), 0);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong text in field.");
+        }
 
 		String newYFormula = "rand(4,1)";
 
 		solo.clickOnView(solo.getView(Y_POS_EDIT_TEXT_RID));
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
+		solo.clickOnText(solo.getString(R.string.formula_editor_function_rand));
+		solo.waitForText(solo.getString(R.string.formula_editor_title));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_4));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_ok));
 		solo.sleep(300);
 
-		Formula anotherFormula = (Formula) Reflection.getPrivateField(placeAtBrick, "yPosition");
-		float anotherValue = anotherFormula.interpretFloat(sprite);
-
-		Log.i("info", "anotherValue: " + anotherValue);
-
-		assertTrue("random() interpretation of integer parameters is wrong: " + newYFormula + " anotherValue="
-				+ anotherValue, (anotherValue == 1 || anotherValue == 2 || anotherValue == 3 || anotherValue == 4));
-		assertEquals("random() interpretation of integer parameters is wrong: " + newYFormula + " anotherValue="
-				+ anotherValue, 0, Math.abs(anotherValue) - (int) Math.abs(anotherValue), 0);
-
+		Formula anotherFormula = placeAtBrick.getFormulaWithBrickField(Brick.BrickField.Y_POSITION);
+        try{
+            float anotherValue = anotherFormula.interpretFloat(sprite);
+            assertTrue("random() interpretation of integer parameters is wrong: " + newYFormula + " anotherValue="
+                    + anotherValue, (anotherValue == 1 || anotherValue == 2 || anotherValue == 3 || anotherValue == 4));
+            assertEquals("random() interpretation of integer parameters is wrong: " + newYFormula + " anotherValue="
+                    + anotherValue, 0, Math.abs(anotherValue) - (int) Math.abs(anotherValue), 0);
+        }catch (InterpretationException interpretationException){
+            fail("Wrong text in field.");
+        }
 	}
 
 	public void testIfLandscapeOrientationIsDeactivated() {
@@ -510,7 +533,9 @@ public class FormulaEditorFragmentTest extends BaseActivityInstrumentationTestCa
 		solo.clickOnView(solo.getView(R.id.formula_editor_edit_field_clear));
 		assertTrue("Delete Button not inactive!", !delete.isEnabled());
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_function));
+		solo.clickOnText(solo.getString(R.string.formula_editor_function_rand));
+		solo.waitForText(solo.getString(R.string.formula_editor_title));
 		assertTrue("Delete Button not active!", delete.isEnabled());
 
 		setAbsoluteCursorPosition(0);

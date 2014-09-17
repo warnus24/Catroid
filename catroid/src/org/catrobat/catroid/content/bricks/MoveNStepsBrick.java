@@ -1,29 +1,30 @@
-/**
- *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
- *  (<http://developer.catrobat.org/credits>)
- *  
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or (at your option) any later version.
- *  
- *  An additional term exception under section 7 of the GNU Affero
- *  General Public License, version 3, is available at
- *  http://developer.catrobat.org/license_additional_term
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU Affero General Public License for more details.
- *  
- *  You should have received a copy of the GNU Affero General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+ * Catroid: An on-device visual programming system for Android devices
+ * Copyright (C) 2010-2014 The Catrobat Team
+ * (<http://developer.catrobat.org/credits>)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * An additional term exception under section 7 of the GNU Affero
+ * General Public License, version 3, is available at
+ * http://developer.catrobat.org/license_additional_term
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,53 +35,46 @@ import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.Script;
+
+import org.catrobat.catroid.common.BrickValues;
+
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.utils.Utils;
 
 import java.util.List;
 
-public class MoveNStepsBrick extends BrickBaseType implements OnClickListener, FormulaBrick {
+public class MoveNStepsBrick extends FormulaBrick implements OnClickListener {
 
 	private static final long serialVersionUID = 1L;
-	private Formula steps;
 
 	private transient View prototypeView;
 
 	public MoveNStepsBrick() {
-
+		addAllowedBrickField(BrickField.STEPS);
 	}
 
-	public MoveNStepsBrick(Sprite sprite, double stepsValue) {
-		this.sprite = sprite;
-		steps = new Formula(stepsValue);
+	public MoveNStepsBrick(double stepsValue) {
+		initializeBrickFields(new Formula(stepsValue));
 	}
 
-	public MoveNStepsBrick(Sprite sprite, Formula steps) {
-		this.sprite = sprite;
-
-		this.steps = steps;
+	public MoveNStepsBrick(Formula steps) {
+		initializeBrickFields(steps);
 	}
 
-	@Override
-	public Formula getFormula() {
-		return steps;
+	private void initializeBrickFields(Formula steps) {
+		addAllowedBrickField(BrickField.STEPS);
+		setFormulaWithBrickField(BrickField.STEPS, steps);
 	}
 
 	@Override
 	public int getRequiredResources() {
-		return NO_RESOURCES;
-	}
-
-	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
-		MoveNStepsBrick copyBrick = (MoveNStepsBrick) clone();
-		copyBrick.sprite = sprite;
-		return copyBrick;
+		return getFormulaWithBrickField(BrickField.STEPS).getRequiredResources();
 	}
 
 	@Override
@@ -105,14 +99,21 @@ public class MoveNStepsBrick extends BrickBaseType implements OnClickListener, F
 		TextView text = (TextView) view.findViewById(R.id.brick_move_n_steps_prototype_text_view);
 		TextView edit = (TextView) view.findViewById(R.id.brick_move_n_steps_edit_text);
 
-		steps.setTextFieldId(R.id.brick_move_n_steps_edit_text);
-		steps.refreshTextField(view);
+		getFormulaWithBrickField(BrickField.STEPS).setTextFieldId(R.id.brick_move_n_steps_edit_text);
+		getFormulaWithBrickField(BrickField.STEPS).refreshTextField(view);
 
 		TextView times = (TextView) view.findViewById(R.id.brick_move_n_steps_step_text_view);
 
-		if (steps.isSingleNumberFormula()) {
-			times.setText(view.getResources().getQuantityString(R.plurals.brick_move_n_step_plural,
-					Utils.convertDoubleToPluralInteger(steps.interpretDouble(sprite))));
+		if (getFormulaWithBrickField(BrickField.STEPS).isSingleNumberFormula()) {
+            try{
+				times.setText(view.getResources().getQuantityString(
+						R.plurals.brick_move_n_step_plural,
+						Utils.convertDoubleToPluralInteger(getFormulaWithBrickField(BrickField.STEPS).interpretDouble(
+								ProjectManager.getInstance().getCurrentSprite()))
+				));
+            }catch(InterpretationException interpretationException){
+                Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+            }
 		} else {
 
 			// Random Number to get into the "other" keyword for values like 0.99 or 2.001 seconds or degrees
@@ -132,16 +133,11 @@ public class MoveNStepsBrick extends BrickBaseType implements OnClickListener, F
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		prototypeView = inflater.inflate(R.layout.brick_move_n_steps, null);
 		TextView textSteps = (TextView) prototypeView.findViewById(R.id.brick_move_n_steps_prototype_text_view);
-		textSteps.setText(String.valueOf(steps.interpretDouble(sprite)));
+		textSteps.setText(String.valueOf(BrickValues.MOVE_STEPS));
 		TextView times = (TextView) prototypeView.findViewById(R.id.brick_move_n_steps_step_text_view);
-		times.setText(context.getResources().getQuantityString(R.plurals.brick_move_n_step_plural,
-				Utils.convertDoubleToPluralInteger(steps.interpretDouble(sprite))));
+        times.setText(context.getResources().getQuantityString(R.plurals.brick_move_n_step_plural,
+                Utils.convertDoubleToPluralInteger(BrickValues.MOVE_STEPS)));
 		return prototypeView;
-	}
-
-	@Override
-	public Brick clone() {
-		return new MoveNStepsBrick(getSprite(), steps.clone());
 	}
 
 	@Override
@@ -173,12 +169,12 @@ public class MoveNStepsBrick extends BrickBaseType implements OnClickListener, F
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, steps);
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.STEPS));
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.moveNSteps(sprite, steps));
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
+		sequence.addAction(ExtendedActions.moveNSteps(sprite, getFormulaWithBrickField(BrickField.STEPS)));
 		return null;
 	}
 }
