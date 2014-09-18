@@ -91,6 +91,7 @@
     <orderEntry type="library" exported="" name="guava-17.0" level="project" />
     <orderEntry type="library" exported="" name="xstream-1.4.7" level="project" />
     <orderEntry type="library" exported="" name="dexmaker-1.0" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="robotium-solo-5.2.1" level="project" />
   </component>
 </module>
 
