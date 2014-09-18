@@ -1206,21 +1206,19 @@ public class SoundFragmentTest extends BaseActivityInstrumentationTestCase<MainM
 	}
 
 	public void testOpenDeleteDialogAndGoBack() {
+		solo.sleep(1000);
 		int viewAmountBeforeDeleteMode = solo.getCurrentViews().size();
 		UiTestUtils.openActionMode(solo, delete, R.id.delete, getActivity());
 
 		assertTrue("Bottom bar is visible", solo.getView(R.id.bottom_bar).getVisibility() == View.GONE);
+		solo.sleep(300);
 
-		int[] checkboxIndicesToCheck = {solo.getCurrentViews(CheckBox.class).size() - 1, 0, 2};
-
-		solo.scrollDown();
-		solo.clickOnCheckBox(checkboxIndicesToCheck[0]);
-		solo.scrollToTop();
+		solo.clickOnCheckBox(0);
 
 		UiTestUtils.acceptAndCloseActionMode(solo);
 		solo.clickOnButton(solo.getString(R.string.no));
 
-		solo.sleep(300);
+		solo.sleep(1000);
 		int viewAmountAfterDeleteMode = solo.getCurrentViews().size();
 
 		assertTrue("checkboxes or other delete elements are still visible", viewAmountBeforeDeleteMode == viewAmountAfterDeleteMode);
