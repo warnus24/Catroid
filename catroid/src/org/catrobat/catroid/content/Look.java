@@ -167,9 +167,9 @@ public class Look extends Image {
 			iterator.remove();
 		}
 
-		for (int i = 0, n = actions.size; i < n; i++) {
+		for (int i = 0; i < actions.size ; i++) {
 			Action action = actions.get(i);
-			if (action.act(delta)) {
+			if ((action.act(delta) && i < actions.size)) {
 				finishedCount++;
 			}
 		}

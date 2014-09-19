@@ -44,6 +44,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.google.common.collect.Multimap;
 
@@ -207,7 +208,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		virtualWidthHalf = virtualWidth / 2;
 		virtualHeightHalf = virtualHeight / 2;
 
-		stage = new Stage(new StretchViewport(virtualWidth, virtualHeight));
+		stage = new Stage(new ExtendViewport(virtualWidth, virtualHeight));
 
 		stage.getViewport().setWorldSize(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 		batch = stage.getBatch();
@@ -667,7 +668,8 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private void initScreenMode() {
 		switch (project.getScreenMode()) {
 			case STRETCH:
-				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
+				stage.setViewport(new StretchViewport(virtualWidth, virtualHeight));
+				stage.getViewport().update(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, true);
 				screenshotWidth = ScreenValues.SCREEN_WIDTH;
 				screenshotHeight = ScreenValues.SCREEN_HEIGHT;
 				screenshotX = 0;
@@ -675,7 +677,8 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 				break;
 
 			case MAXIMIZE:
-				stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
+				stage.setViewport(new ExtendViewport(virtualWidth, virtualHeight));
+				stage.getViewport().update(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, true);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
 				screenshotX = maximizeViewPortX;

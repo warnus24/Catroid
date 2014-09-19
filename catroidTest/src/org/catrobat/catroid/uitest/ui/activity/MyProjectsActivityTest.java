@@ -38,7 +38,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.robotium.solo.Solo;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -1854,6 +1854,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		assertEquals("There should no text be set", "", addNewProjectEditText.getText().toString());
 
 		solo.enterText(0, longProjectName);
+		solo.waitForDialogToOpen(2000);
 		solo.clickOnButton(solo.getString(R.string.ok));
 		solo.waitForText(solo.getString(R.string.sprites));
 		solo.goBack();
@@ -1938,13 +1939,13 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 		UiTestUtils.openActionMode(solo, solo.getString(R.string.delete), R.id.delete, getActivity());
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
 
-		solo.clickOnText(selectAll);
+		UiTestUtils.clickOnText(solo, selectAll);
 		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
 
-		solo.clickOnCheckBox(0);
+		UiTestUtils.clickOnCheckBox(solo, 0);
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
 
-		solo.clickOnCheckBox(0);
+		UiTestUtils.clickOnCheckBox(solo, 0);
 		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
 	}
 

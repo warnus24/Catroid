@@ -28,7 +28,7 @@ import android.preference.PreferenceManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.robotium.solo.Solo;
 
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.stage.StageListener;
@@ -42,6 +42,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 	private static final String TAG = "BaseActivityInstrumentationTestCase";
 
 	private Class clazz;
+	private SystemAnimations systemAnimations;
 
 	public BaseActivityInstrumentationTestCase(Class<T> clazz) {
 		super(clazz);
@@ -52,12 +53,15 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 	protected void setUp() throws Exception {
 		Log.v(TAG, "setUp");
 		super.setUp();
+		systemAnimations = new SystemAnimations(getInstrumentation().getContext());
+		systemAnimations.disableAll();
 		UiTestUtils.clearAllUtilTestProjects();
 		if (clazz.getSimpleName().equalsIgnoreCase(MainMenuActivity.class.getSimpleName())) {
 			UiTestUtils.createEmptyProject();
 		}
 		solo = new Solo(getInstrumentation(), getActivity());
 		Reflection.setPrivateField(StageListener.class, "checkIfAutomaticScreenshotShouldBeTaken", false);
+		solo.unlockScreen();
 	}
 
 	@Override
@@ -72,6 +76,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		solo.finishOpenedActivities();
 		UiTestUtils.clearAllUtilTestProjects();
 		super.tearDown();
+		systemAnimations.enableAll();
 		solo = null;
 	}
 
