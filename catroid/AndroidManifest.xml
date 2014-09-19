@@ -186,8 +186,8 @@
 
 		</activity>
 
-        <service android:name=".stage.transfers.ProjectUploadService" />
-        <service android:name=".stage.transfers.ProjectDownloadService" />
+        <service android:name=".transfers.ProjectUploadService" />
+        <service android:name=".transfers.ProjectDownloadService" />
         <service android:name="com.parrot.freeflight.service.DroneControlService"/>
     </application>
 </manifest>
