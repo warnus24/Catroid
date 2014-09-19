@@ -48,6 +48,7 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.exceptions.CompatibilityProjectException;
 import org.catrobat.catroid.exceptions.LoadingProjectException;
 import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
+import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
@@ -132,11 +133,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public void onCreateApplication() {
 		super.onCreateApplication();
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		config.getTouchEventsForLiveWallpaper = true;
+		//config.getTouchEventsForLiveWallpaper = true;
 
 		setScreenSize(false);
-		loadProject();
 		ProjectManager.changeState(ProjectManagerState.LWP);
+		loadProject();
+
 		stageListener = new StageListener(true);
 		initialize(stageListener, config);
 		Log.d("LWP", "Preview was initialized");
@@ -267,7 +269,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		public LiveWallpaperEngine() {
 			super();
 //			activateTextToSpeechIfNeeded();
-			//SensorHandler.startSensorListener(getApplicationContext());
+			SensorHandler.startSensorListener(getApplicationContext());
 		}
 
 		@Override
@@ -331,7 +333,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 
 
-			//SensorHandler.startSensorListener(getApplicationContext());
+			SensorHandler.startSensorListener(getApplicationContext());
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 			super.onResume();
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ENDE");
@@ -344,7 +346,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 
 			mHandler.removeCallbacks(mUpdateDisplay);
-			//SensorHandler.stopSensorListeners();
+			SensorHandler.stopSensorListeners();
 			super.onPause();
 			Log.d("LWP", "Pausing " + name + ": " + " SL-" + getLocalStageListener().hashCode());
 
