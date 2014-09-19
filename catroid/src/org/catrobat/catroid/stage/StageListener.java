@@ -44,10 +44,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.google.common.collect.Multimap;
 
 import org.catrobat.catroid.ProjectManager;
@@ -216,8 +214,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		virtualHeightHalf = virtualHeight / 2;
 
 		stage = new Stage(new ExtendViewport(virtualWidth, virtualHeight));
-
-		//stage.getViewport().setWorldSize(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
+		stage.getViewport().setWorldSize(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 		batch = stage.getBatch();
 
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
@@ -387,6 +384,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 	}
 
+
 	/**
 	 *
 	 */
@@ -398,6 +396,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			sprite.pause();
 		}
 	}
+
 
 	@Override
 	public void render() {
@@ -720,7 +719,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			case STRETCH:
 				stage.setViewport(new StretchViewport(virtualWidth, virtualHeight));
 				stage.getViewport().update(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, true);
-				//stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				screenshotWidth = ScreenValues.SCREEN_WIDTH;
 				screenshotHeight = ScreenValues.SCREEN_HEIGHT;
 				screenshotX = 0;
@@ -729,8 +727,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 			case MAXIMIZE:
 				stage.setViewport(new ExtendViewport(virtualWidth, virtualHeight));
-				//stage.getViewport().apply(true);
-				//stage.getViewport().setWorldSize(virtualWidth, virtualHeight);
 				stage.getViewport().update(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, true);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
