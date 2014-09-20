@@ -28,7 +28,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Binder;
 import android.os.Handler;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
@@ -442,5 +444,19 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		if (previewEngine != null) {
 			previewEngine.getLocalStageListener().resetSprites();
 		}
+	}
+
+	public void sayHelloInLog()
+	{
+		Log.e("LiveWallpaperBinder","Hello :-)");
+	}
+
+	public class LiveWallpaperBinder extends Binder {
+
+		public LiveWallpaper getService() {
+			return LiveWallpaper.getInstance();
+		}
+
+
 	}
 }
