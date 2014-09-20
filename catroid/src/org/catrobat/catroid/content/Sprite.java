@@ -25,6 +25,7 @@ package org.catrobat.catroid.content;
 import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -143,7 +144,12 @@ public class Sprite implements Serializable, Cloneable {
 		return userBricks;
 	}
 
-	public void createStartScriptActionSequenceAndPutToMap(Map<String, List<String>> scriptActions) {
+	public void createStartScriptActionSequenceAndPutToMap(Map<String, List<String>> scriptActions)
+	{
+		createStartScriptActionSequenceAndPutToMap(scriptActions, false);
+	}
+
+	public void createStartScriptActionSequenceAndPutToMap(Map<String, List<String>> scriptActions, boolean test) {
 		for (int scriptCounter = 0; scriptCounter < scriptList.size(); scriptCounter++) {
 			Script script = scriptList.get(scriptCounter);
 			if (script instanceof StartScript) {
@@ -165,7 +171,9 @@ public class Sprite implements Serializable, Cloneable {
 			if (script instanceof BroadcastScript) {
 				BroadcastScript broadcastScript = (BroadcastScript) script;
 				SequenceAction action = createActionSequence(broadcastScript);
-				look.addAction(action);
+				if(test){
+					look.addAction(action);
+				}
 				BroadcastHandler.getActionScriptMap().put(action, script);
 				BroadcastHandler.getScriptSpriteMapMap().put(script, this);
 				putBroadcastSequenceAction(broadcastScript.getBroadcastMessage(), action);
