@@ -23,6 +23,7 @@
 
 package org.catrobat.catroid.test.livewallpaper;
 
+import android.content.Intent;
 import android.service.wallpaper.WallpaperService;
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -53,13 +54,12 @@ public class LiveWallpaperTest extends ActivityInstrumentationTestCase2<SelectPr
 	public LiveWallpaperTest() { super(SelectProgramActivity.class); }
 
 	private void setUpLivewallpaper() throws Exception {
-		lwp = new LiveWallpaper();
-		engine = lwp.onCreateEngine();
-		lwp.onCreateApplication();
-		lwp.onCreate();
+		Intent intent = new Intent(getActivity(), LiveWallpaper.class);
+		getActivity().startService(intent);
 	}
 
 	private void setUpProjectManager() throws Exception {
+		ProjectManager.changeState(ProjectManagerState.LWP);
 		projectManager = ProjectManager.getInstance(ProjectManagerState.LWP);
 
 		if(projectManager.getCurrentProject() == null || projectManager.getCurrentProject().getName()!= solo.getString(R.string.default_project_name)){
@@ -98,14 +98,15 @@ public class LiveWallpaperTest extends ActivityInstrumentationTestCase2<SelectPr
 
 
 	public void testCreateNewProject() throws Exception {
-		/*
-		solo.clickOnMenuItem(solo.getString(R.string.lwp_new));
+		if(!StorageHandler.getInstance().projectExists(LWP_TEST_1)) {
+			solo.clickOnMenuItem(solo.getString(R.string.lwp_new));
+			solo.enterText(solo.getEditText(solo.getString(R.string.new_project_dialog_hint)), LWP_TEST_1);
+			solo.clickOnButton("OK");
+		}
 
-		solo.enterText(solo.getEditText(solo.getString(R.string.new_project_dialog_hint)), LWP_TEST_1);
-		solo.clickOnButton("OK");
-		solo.goBack();
+		//solo.goBack();
 		solo.clickOnText(LWP_TEST_1);
-*/
+		solo.clickOnText("Ja");
 	}
 
 }

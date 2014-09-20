@@ -23,16 +23,11 @@
 
 package org.catrobat.catroid.test.livewallpaper;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.service.wallpaper.WallpaperService;
-import android.test.ServiceTestCase;
 import android.test.SingleLaunchActivityTestCase;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -155,6 +150,7 @@ public class SelectProgramActivityTest extends
 		solo.sleep(2000);
 
 		String currentProjectName = projectManager.getCurrentProject().getName();
+
 		assertTrue("The project was not successfully changed", currentProjectName.equals(TEST_PROJECT_NAME));
 	}
 
