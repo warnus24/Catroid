@@ -269,7 +269,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		public LiveWallpaperEngine() {
 			super();
 //			activateTextToSpeechIfNeeded();
-			SensorHandler.startSensorListener(getApplicationContext());
+			//SensorHandler.startSensorListener(getApplicationContext());
 		}
 
 		@Override
@@ -333,7 +333,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 
 
-			SensorHandler.startSensorListener(getApplicationContext());
+			//SensorHandler.startSensorListener(getApplicationContext());
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 			super.onResume();
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ENDE");
@@ -346,7 +346,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 
 			mHandler.removeCallbacks(mUpdateDisplay);
-			SensorHandler.stopSensorListeners();
+			//SensorHandler.stopSensorListeners();
 			super.onPause();
 			Log.d("LWP", "Pausing " + name + ": " + " SL-" + getLocalStageListener().hashCode());
 
