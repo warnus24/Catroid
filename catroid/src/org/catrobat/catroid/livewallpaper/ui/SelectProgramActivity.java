@@ -22,7 +22,6 @@
  */
 package org.catrobat.catroid.livewallpaper.ui;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -32,12 +31,12 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
+import org.catrobat.catroid.ui.dialogs.NewProjectDialog;
 
 public class SelectProgramActivity extends BaseActivity implements ColorPickerDialog.OnColorChangedListener {
 
-	public static final String ACTION_PROJECT_LIST_INIT = "org.catroba Fragment.PROJECT_LIST_INIT";
+	public static final String ACTION_PROJECT_LIST_INIT = "org.catrobat.catroid.livewallpaper.PROJECT_LIST_INIT";
 
 	private SelectProgramFragment selectProgramFragment;
 	private int tintingColor = 0;
@@ -79,19 +78,8 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 				break;
 			}
 			case R.id.lwp_new: {
-				Intent pocketCodeIntent = new Intent("android.intent.action");
-				pocketCodeIntent.setComponent(new ComponentName(Constants.POCKET_CODE_PACKAGE_NAME,
-						Constants.POCKET_CODE_INTENT_ACTIVITY_NAME));
-				//				//boolean isInstalled = Utils.checkIfPocketCodeInstalled(pocketCodeIntent, this);
-				//				if (isInstalled) {
-				//
-				//					pocketCodeIntent.addCategory("android.intent.category.LAUNCHER");
-				//					startActivity(pocketCodeIntent);
-				//				} else {
-				//
-				//					displayDownloadPocketCodeDialog();
-				//				}
-
+				NewProjectDialog dialog = new NewProjectDialog();
+				dialog.show(getSupportFragmentManager(), NewProjectDialog.DIALOG_FRAGMENT_TAG);
 				break;
 			}
 			case R.id.lwp_tinting: {
@@ -158,27 +146,5 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 	public void colorChanged(int color) {
 		selectProgramFragment.tinting(color);
 	}
-
-	//	private void displayDownloadPocketCodeDialog() {
-	//
-	//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	//		builder.setMessage(R.string.pocket_code_not_installed).setCancelable(false)
-	//				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-	//					@Override
-	//					public void onClick(DialogInterface dialog, int id) {
-	//
-	//						Intent downloadPocketPaintIntent = new Intent(Intent.ACTION_VIEW, Uri
-	//								.parse(Constants.POCKET_CODE_DOWNLOAD_LINK));
-	//						startActivity(downloadPocketPaintIntent);
-	//					}
-	//				}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-	//					@Override
-	//					public void onClick(DialogInterface dialog, int id) {
-	//						dialog.cancel();
-	//					}
-	//				});
-	//		AlertDialog alert = builder.create();
-	//		alert.show();
-	//	}
 
 }

@@ -25,10 +25,12 @@ package org.catrobat.catroid.livewallpaper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -50,6 +52,7 @@ import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
+import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
 
@@ -146,8 +149,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		//config.getTouchEventsForLiveWallpaper = true;
 
 		setScreenSize(false);
-		loadProject();
 		ProjectManager.changeState(ProjectManagerState.LWP);
+		loadProject();
+
 		stageListener = new StageListener(true);
 		initialize(stageListener, config);
 		Log.d("LWP", "Preview was initialized");
@@ -159,15 +163,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public void onDestroy() {
-		Log.d("LWP", "Service wird zerstört");
+		Log.d("LWP", "Service wird beendet");
 		ProjectManager.changeState(ProjectManagerState.NORMAL);
 		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, oldProjectName);
 		INSTANCE = null;
 		homeEngine = null;
 		previewEngine = null;
 		super.onDestroy();
-		Log.e("Error", "destroy LiveWallpaper");
-		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
+		PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
 	}
 
 	public void  changeWallpaperProgram() {
@@ -323,9 +326,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		public LiveWallpaperEngine() {
 			super();
-			//activateTextToSpeechIfNeeded();
+//			activateTextToSpeechIfNeeded();
 			SensorHandler.startSensorListener(getApplicationContext());
-			Log.e("Error", "Erzeuge LiveWallpaperEngine");
 		}
 
 		@Override
@@ -498,11 +500,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 
 		private void activateTextToSpeechIfNeeded() {
-			//			if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
-			//				Intent installIntent = new Intent();
-			//				installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-			//				startActivity(installIntent);
-			//			}
+						if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
+							Intent installIntent = new Intent();
+							installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+							startActivity(installIntent);
+						}
 		}
 	}
 

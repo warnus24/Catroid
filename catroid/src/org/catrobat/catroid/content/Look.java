@@ -169,7 +169,7 @@ public class Look extends Image {
 
 		for (int i = 0; i < actions.size ; i++) {
 			Action action = actions.get(i);
-			if ((action.act(delta) && i < actions.size)) {
+			if (action.act(delta)) {
 				finishedCount++;
 			}
 		}

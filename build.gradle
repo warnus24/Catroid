@@ -20,6 +20,8 @@ apply plugin: 'pmd'
 apply from: 'gradle/adb_tasks.gradle'
 apply from: 'gradle/code_quality_tasks.gradle'
 apply from: 'gradle/intellij_config_tasks.gradle'
+
+
 check.dependsOn 'checkstyle'
 check.dependsOn 'pmd'
 

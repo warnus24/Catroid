@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--
   ~ Catroid: An on-device visual programming system for Android devices
   ~ Copyright (C) 2010-2014 The Catrobat Team
@@ -686,7 +686,27 @@
         <item quantity="other">Variablen ausgewählt!</item>
     </plurals>
     <!--  -->
+    
+    <!-- Brick Data Editor Strings -->
+    <string name="brick_data_editor_title">Bausteineditor</string>
+    <string name="separator">|</string>
+    <string name="add_text">Text hinzufügen</string>
+    <string name="edit_text">Text bearbeiten</string>
+    <string name="text_hint">Baustein Text</string>
+    <string name="add_variable">Variable hinzufügen</string>
+    <string name="add_line_break">Zeilenumbruch hinzufügen</string>
+    <string name="edit_variable">Variable bearbeiten</string>
+    <string name="variable_hint">Variablenname</string>
+    <!--  -->
 
+    <!-- User Bricks strings  -->
+    <string name="define">definiere</string>
+    <string name="new_user_brick">Neuer Baustein</string>
+    <string name="new_user_brick_variable">Variable 1</string>
+    <string name="recursive_user_brick_forbidden">Hinzufügen eines Userbricks in einem Userbrick ist noch nicht erlaubt!</string>
+    <string name="brick_single">Baustein</string>
+ 	<string name="brick_multiple">Bausteine</string>
+    <!--  -->    
 
 	<!-- Live Wallpaper Strings -->
     <string name="lwp_general_information">General information</string>
@@ -718,32 +738,9 @@
     <string name="lwp_disable_effect">Disable effects</string>
     <string name="lwp_select_effects">Select effects</string>
 	<!--  -->
-    
-    <!-- Brick Data Editor Strings -->
-    <string name="brick_data_editor_title">Bausteineditor</string>
-    <string name="separator">|</string>
-    <string name="add_text">Text hinzufügen</string>
-    <string name="edit_text">Text bearbeiten</string>
-    <string name="text_hint">Baustein Text</string>
-    <string name="add_variable">Variable hinzufügen</string>
-    <string name="add_line_break">Zeilenumbruch hinzufügen</string>
-    <string name="edit_variable">Variable bearbeiten</string>
-    <string name="variable_hint">Variablenname</string>
-    <!--  -->
-
-    <!-- User Bricks strings  -->
-    <string name="define">definiere</string>
-    <string name="new_user_brick">Neuer Baustein</string>
-    <string name="new_user_brick_variable">Variable 1</string>
-    <string name="recursive_user_brick_forbidden">Hinzufügen eines Userbricks in einem Userbrick ist noch nicht erlaubt!</string>
-    <string name="brick_single">Baustein</string>
- 	<string name="brick_multiple">Bausteine</string>
-    <!--  -->    
-
 
     <!-- Camera Strings -->
     <string name="camera_facing_front">Vordere Kamera</string>
     <string name="camera_facing_back">Hintere Kamera</string>
     <!--  -->
-
 </resources>

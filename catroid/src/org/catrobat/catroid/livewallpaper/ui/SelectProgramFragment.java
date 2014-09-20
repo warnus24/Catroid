@@ -22,24 +22,29 @@
  */
 package org.catrobat.catroid.livewallpaper.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -59,6 +64,7 @@ import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.ProjectLoadableEnum;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
+import org.catrobat.catroid.ui.MyProjectsActivity;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectEditListener;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
@@ -71,8 +77,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-
-//import org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectClickedListener;
 
 public class SelectProgramFragment extends SherlockListFragment implements OnProjectEditListener {
 	private String selectedProject;
@@ -89,12 +93,15 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.NORMAL);
 
 	private View selectAllActionModeButton;
-
+	private ProjectListInitReceiver ListInitReceiver;
+	private static final String SHARED_PREFERENCE_NAME = "showDetailsMyProjects";
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		selectProgramFragment = this;
 		return inflater.inflate(R.layout.fragment_lwp_select_program, container, false);
 	}
+
+
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -102,6 +109,47 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		initListeners();
 	}
 
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		if (ListInitReceiver != null) {
+			getActivity().unregisterReceiver(ListInitReceiver);
+		}
+
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (actionMode != null) {
+			actionMode.finish();
+			actionMode = null;
+		}
+
+		if (ListInitReceiver == null) {
+			ListInitReceiver = new ProjectListInitReceiver();
+		}
+
+		IntentFilter intentFilterSpriteListInit = new IntentFilter(MyProjectsActivity.ACTION_PROJECT_LIST_INIT);
+		getActivity().registerReceiver(ListInitReceiver, intentFilterSpriteListInit);
+
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity()
+				.getApplicationContext());
+
+		setShowDetails(settings.getBoolean(SHARED_PREFERENCE_NAME, false));
+
+		initAdapter();
+	}
+
+
+
+	public void setShowDetails(boolean showDetails) {
+		adapter.setShowDetails(showDetails);
+		adapter.notifyDataSetChanged();
+	}
 	public void disableTinting() {
 		LiveWallpaper.getInstance().disableTinting();
 	}
@@ -178,6 +226,12 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			String str_loadable = ProjectLoadableEnum.IS_ALREADY_LOADED.toString();
 
 			synchronized (LiveWallpaper.getInstance()) {
+			/*if (projectManagerLWP.getCurrentProject() != null
+					&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
+				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
+				getFragmentManager().popBackStack();
+				return str_loadable;
+			}*/
 
 				if (projectManagerLWP.getCurrentProject() != null
 						&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
@@ -246,36 +300,54 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		selectedProject = projectList.get(position).projectName;
 		CheckBox checkBox = new CheckBox(getActivity());
 		checkBox.setText(R.string.lwp_enable_sound);
+		SeekBar seekBar = new SeekBar(getActivity());
+		seekBar.setMax(100);
 
-		final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		checkBox.setChecked(!sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
+		seekBar.setProgress(1);
+		seekBar.setVisibility(View.VISIBLE);
+		seekBar.setProgress((int)SoundManager.getInstance().getVolume());
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(500,100);
+		seekBar.setLayoutParams(lp);
 
-		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
-				//SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-				Editor editor = sharedPreferences.edit();
-
-				if (isChecked) {
-					SoundManager.getInstance().pause();
-					editor.putBoolean(Constants.PREF_SOUND_DISABLED, false);
-				} else {
-					SoundManager.getInstance().resume();
-					editor.putBoolean(Constants.PREF_SOUND_DISABLED, true);
-				}
-
-				editor.commit();
-
+			public void onStopTrackingTouch(SeekBar arg0) {
+				// TODO Auto-generated method stub
 			}
 
+			public void onStartTrackingTouch(SeekBar arg0) {
+				// TODO Auto-generated method stub
+			}
+
+			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+				// TODO Auto-generated method stub
+				SoundManager.getInstance().setVolume(arg1);
+			}
+		});
+
+
+
+			final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		checkBox.setChecked(!sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
+		SoundManager.getInstance().setVolume(50);
+		checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isChecked) {
+					SoundManager.getInstance().setVolume(50);
+					Log.d("LWP", "Enable Sound Volume is :" +SoundManager.getInstance().getVolume()+" CHECK!");
+				} else {
+					SoundManager.getInstance().setVolume(0);
+					Log.d("LWP", "Enable Sound Volume is :" +SoundManager.getInstance().getVolume()+"  UNCHECK!");
+				}
+			}
 		});
 
 		LinearLayout linearLayout = new LinearLayout(getActivity());
 		linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT));
 		linearLayout.addView(checkBox);
-
+		linearLayout.addView(seekBar);
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setView(linearLayout);
 		builder.setTitle(selectedProject);
@@ -289,10 +361,11 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		});
 
 		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+			@SuppressLint("NewApi")
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				LoadProject Loader = new LoadProject();
-				Loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				Loader.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 			}
 		});
 		AlertDialog alertDialog = builder.create();
@@ -526,4 +599,15 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	public void tinting(int tintingColor) {
 		LiveWallpaper.getInstance().tinting(tintingColor);
 	}
+
+	private class ProjectListInitReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(SelectProgramActivity.ACTION_PROJECT_LIST_INIT)) {
+				adapter.notifyDataSetChanged();
+			}
+		}
+	}
 }
+
