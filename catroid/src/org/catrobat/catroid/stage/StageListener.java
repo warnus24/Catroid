@@ -160,8 +160,6 @@ public class StageListener implements ApplicationListener {
 		virtualHeightHalf = virtualHeight / 2;
 
 		stage = new Stage(new ExtendViewport(virtualWidth, virtualHeight));
-
-		stage.getViewport().setWorldSize(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 		batch = stage.getBatch();
 
 		Gdx.gl.glViewport(0, 0, ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
@@ -597,7 +595,7 @@ public class StageListener implements ApplicationListener {
 		switch (project.getScreenMode()) {
 			case STRETCH:
 				stage.setViewport(new StretchViewport(virtualWidth, virtualHeight));
-				stage.getViewport().update(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, true);
+				stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 				screenshotWidth = ScreenValues.SCREEN_WIDTH;
 				screenshotHeight = ScreenValues.SCREEN_HEIGHT;
 				screenshotX = 0;
@@ -606,7 +604,7 @@ public class StageListener implements ApplicationListener {
 
 			case MAXIMIZE:
 				stage.setViewport(new ExtendViewport(virtualWidth, virtualHeight));
-				stage.getViewport().update(ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT, true);
+				stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 				screenshotWidth = maximizeViewPortWidth;
 				screenshotHeight = maximizeViewPortHeight;
 				screenshotX = maximizeViewPortX;
