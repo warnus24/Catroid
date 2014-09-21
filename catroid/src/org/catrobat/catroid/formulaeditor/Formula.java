@@ -264,8 +264,8 @@ public class Formula implements Serializable {
             }catch (InterpretationException interpretationException){
                 return "ERROR";
             }
-			interpretationResult *= 100;
-			interpretationResult = (double) (Math.round(interpretationResult) / 100f);
+			// interpretationResult *= 100;
+			// interpretationResult = (double) (Math.round(interpretationResult) / 100f);
 			return String.valueOf(interpretationResult);
 		}
 	}
