@@ -132,7 +132,7 @@ public class SelectProgramActivityTest extends
 
 	public void testAboutDialog()
 	{
-		solo.clickOnActionBarItem(R.id.about);
+		solo.clickOnMenuItem(solo.getString(R.string.lwp_about));
 		assertTrue("About pocket code text not found", solo.searchText(solo.getString(R.string.dialog_about_license_info)));
 		assertTrue("About pocket code link not found", solo.searchText(solo.getString(R.string.dialog_about_catrobat_link_text)));
 		assertTrue("About pocket code version not found", solo.searchText(Utils.getVersionName(getActivity().getApplicationContext())));
@@ -161,7 +161,7 @@ public class SelectProgramActivityTest extends
 		List<ProjectData> projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
 		int initialProgramCount = projectList.size();
 
-		solo.clickOnActionBarItem(R.id.delete);
+		solo.clickOnActionBarItem(R.id.delete_lwp);
 		solo.clickOnText(TEST_PROJECT_NAME);
 
 		UiTestUtils.acceptAndCloseActionMode(solo);
@@ -176,7 +176,7 @@ public class SelectProgramActivityTest extends
 
 	public void testDeleteCurrentProject(){
 		assertEquals("The current project should be set to the standard project", solo.getString(R.string.default_project_name), projectManager.getCurrentProject().getName());
-		solo.clickOnActionBarItem(R.id.delete);
+		solo.clickOnActionBarItem(R.id.delete_lwp);
 		solo.clickOnText(solo.getString(R.string.default_project_name));
 		UiTestUtils.acceptAndCloseActionMode(solo);
 		assertTrue("The error dialog was not shown", solo.searchText(solo.getString(R.string.lwp_error_delete_current_program)));
@@ -187,7 +187,7 @@ public class SelectProgramActivityTest extends
 		List<ProjectData> projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
 		int initialProgramCount = projectList.size();
 
-		solo.clickOnActionBarItem(R.id.delete);
+		solo.clickOnActionBarItem(R.id.delete_lwp);
 		String selectAll = solo.getString(R.string.select_all).toUpperCase(Locale.getDefault());
 		solo.clickOnText(selectAll);
 		UiTestUtils.acceptAndCloseActionMode(solo);
@@ -205,7 +205,7 @@ public class SelectProgramActivityTest extends
 		solo.clickOnButton(solo.getString(R.string.no));
 		assertTrue("The program count is not equal to program count before clicking on delete", projectList.size() == initialProgramCount);
 
-		solo.clickOnActionBarItem(R.id.delete);
+		solo.clickOnActionBarItem(R.id.delete_lwp);
 		solo.clickOnText(selectAll);
 		UiTestUtils.acceptAndCloseActionMode(solo);
 		solo.clickOnText(solo.getString(R.string.yes));
