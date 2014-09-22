@@ -178,6 +178,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	public void startDeleteActionMode() {
 		if (actionMode == null) {
 			actionMode = getSherlockActivity().startActionMode(deleteModeCallBack);
+			Log.d("LWP","delete Action Mode started!");
 		}
 	}
 

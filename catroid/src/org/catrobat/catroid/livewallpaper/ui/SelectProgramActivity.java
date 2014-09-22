@@ -33,7 +33,6 @@ import com.actionbarsherlock.view.MenuItem;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
 import org.catrobat.catroid.ui.MainMenuActivity;
-import org.catrobat.catroid.ui.dialogs.NewProjectDialog;
 
 public class SelectProgramActivity extends BaseActivity implements ColorPickerDialog.OnColorChangedListener {
 
@@ -70,11 +69,11 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.delete: {
+			case R.id.delete_lwp: {
 				selectProgramFragment.startDeleteActionMode();
 				break;
 			}
-			case R.id.about: {
+			case R.id.about_lwp: {
 				AboutPocketCodeDialog aboutPocketCodeDialog = new AboutPocketCodeDialog(this);
 				aboutPocketCodeDialog.show();
 				break;
