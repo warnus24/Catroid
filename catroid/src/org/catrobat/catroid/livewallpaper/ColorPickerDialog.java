@@ -32,6 +32,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.SweepGradient;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -83,6 +84,8 @@ public class ColorPickerDialog extends Dialog {
 
 		@Override
 		protected void onDraw(Canvas canvas) {
+			Log.d("ColorPickerView", "Canvas/View Width: " + String.valueOf(canvas.getWidth()) + "/" + String.valueOf(this.getWidth()));
+			Log.d("ColorPickerView", "Canvas Height: " + String.valueOf(canvas.getHeight()) + "/" + String.valueOf(this.getHeight()));
 			int center_min = Math.min(canvas.getWidth(), canvas.getHeight());
 			int center_x = canvas.getWidth();
 			int center_y = canvas.getHeight();
@@ -92,9 +95,6 @@ public class ColorPickerDialog extends Dialog {
 			float r = CENTER_X - (mPaint.getStrokeWidth()*2);
 
 			canvas.translate(CENTER_X, CENTER_Y);
-
-			float x_translate = CENTER_X * (-0.1f);
-			canvas.translate(Math.round(x_translate), 0);
 
 			canvas.drawOval(new RectF(-r, -r, r, r), mPaint);
 			canvas.drawCircle(0, 0, CENTER_RADIUS, mCenterPaint);
@@ -120,7 +120,13 @@ public class ColorPickerDialog extends Dialog {
 
 		@Override
 		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-			setMeasuredDimension(CENTER_X * 2, CENTER_Y * 2);
+			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+			int width = getMeasuredWidth();
+			int height = getMeasuredHeight();
+
+			int size = width < height ? width : height;
+			setMeasuredDimension(size, size);
 		}
 
 
