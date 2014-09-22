@@ -225,12 +225,14 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			//}
 			String str_loadable = ProjectLoadableEnum.IS_ALREADY_LOADED.toString();
 
-			/*if (projectManagerLWP.getCurrentProject() != null
-					&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
-				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-				getFragmentManager().popBackStack();
-				return str_loadable;
-			}*/
+			synchronized (LiveWallpaper.getInstance()) {
+
+				if (projectManagerLWP.getCurrentProject() != null
+						&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
+					//getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
+					//getFragmentManager().popBackStack();
+					return str_loadable;
+				}
 
 			boolean preview_loadable = true;
 			try {
@@ -259,6 +261,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, selectedProject);
 			editor.commit();
 			str_loadable = ProjectLoadableEnum.IS_LOADABLE.toString();
+			}
 
 			return str_loadable;
 

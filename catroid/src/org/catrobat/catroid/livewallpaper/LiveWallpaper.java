@@ -30,7 +30,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Binder;
 import android.os.Handler;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
@@ -50,7 +49,6 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.exceptions.CompatibilityProjectException;
 import org.catrobat.catroid.exceptions.LoadingProjectException;
 import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
-import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
@@ -72,12 +70,17 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	public LiveWallpaper() {
 		super();
-		INSTANCE = this;
+		if(INSTANCE == null)
+		{
+			INSTANCE = this;
+		}
+
+		Log.e("Error", "new LiveWallpaper");
 	}
 
 	private static LiveWallpaper INSTANCE = null;
 
-	public static LiveWallpaper getInstance() {
+	public static synchronized LiveWallpaper getInstance() {
 		return INSTANCE;
 	}
 
@@ -390,7 +393,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			super.onDestroy();
 		}
 
-		public void changeWallpaperProgram() {
+		public synchronized void changeWallpaperProgram() {
 
 			if (getLocalStageListener() == null) {
 				Log.d("LWP", "StageListener, Fehler bei changeWallpaper " + name);
@@ -402,12 +405,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			//onPause();
 			LiveWallpaperEngine engine = this;
 			getLocalStageListener().create();
+			getLocalStageListener().reloadProjectLWP(engine);
 			Log.d("LWP", "StageListener, changeWallpaper Engine: " + name);
 
 			synchronized (engine) {
 				try {
 					Log.d("LWP", "StageListener, changeWallpaper wait... ANFANG");
-					getLocalStageListener().reloadProjectLWP(engine);
 					onResume();
 					engine.wait();
 				} catch (InterruptedException e) {
