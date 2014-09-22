@@ -39,6 +39,7 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 	public static final String ACTION_PROJECT_LIST_INIT = "org.catrobat.catroid.livewallpaper.PROJECT_LIST_INIT";
 
 	private SelectProgramFragment selectProgramFragment;
+	private ColorPickerDialog colorPickerDialog;
 	private int tintingColor = 0;
 
 	@Override
@@ -100,16 +101,28 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 
 	public void tinting() {
 		Paint mPaint = new Paint();
-		ColorPickerDialog dialog = new ColorPickerDialog(SelectProgramActivity.this, SelectProgramActivity.this,
+		colorPickerDialog = new ColorPickerDialog(SelectProgramActivity.this, SelectProgramActivity.this,
 				mPaint.getColor());
-		dialog.show();
+		colorPickerDialog.show();
 	}
+
+
 
 	private void setUpActionBar() {
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setTitle(R.string.lwp_select_program);
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setHomeButtonEnabled(false);
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		if(colorPickerDialog != null){
+			colorPickerDialog.dismiss();
+		}
+
 	}
 
 	public SelectProgramFragment getSelectProgramFragment() {
