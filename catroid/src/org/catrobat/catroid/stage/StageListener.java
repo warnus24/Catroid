@@ -199,7 +199,11 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		} else {
 			project = ProjectManager.getInstance(ProjectManagerState.NORMAL).getCurrentProject();
 		}
+<<<<<<< HEAD
  		Log.d("LWP", "current project name is"+project.getName());
+=======
+//		Log.d("LWP", "current project name is"+project.getName());
+>>>>>>> ddde1068927d5ded5588a29e8d8aaf3e7e658645
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";
 
 		virtualWidth = project.getXmlHeader().virtualScreenWidth;

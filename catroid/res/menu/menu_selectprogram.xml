@@ -33,21 +33,5 @@
         android:id="@+id/about"
         android:showAsAction="never"
         android:title="@string/lwp_about"/>
-    
-    <item
-        android:id="@+id/lwp_new"
-        android:showAsAction="never"
-        android:title="@string/lwp_new"/>
-    
-    <item
-        android:id="@+id/lwp_tinting"
-        android:showAsAction="never"
-        android:title="@string/lwp_tinting"/>
-    
-    <item
-        android:id="@+id/lwp_disable_tinting"
-        android:showAsAction="never"
-        android:title="@string/lwp_disable_tinting"/>
-    
 
 </menu>

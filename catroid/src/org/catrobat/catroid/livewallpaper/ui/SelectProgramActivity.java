@@ -32,6 +32,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
+import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.dialogs.NewProjectDialog;
 
 public class SelectProgramActivity extends BaseActivity implements ColorPickerDialog.OnColorChangedListener {
@@ -62,7 +63,7 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.menu_selectprogram, menu);
+		getSupportMenuInflater().inflate(R.menu.menu_selectprogram_lwp, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -78,13 +79,13 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 				aboutPocketCodeDialog.show();
 				break;
 			}
-			case R.id.lwp_new: {
-				NewProjectDialog dialog = new NewProjectDialog();
-				dialog.show(getSupportFragmentManager(), NewProjectDialog.DIALOG_FRAGMENT_TAG);
-				break;
-			}
 			case R.id.lwp_tinting: {
 				tinting();
+				break;
+			}
+			case R.id.lwp_pocket_code: {
+				Intent intent = new Intent(this, MainMenuActivity.class);
+				this.startActivity(intent);
 				break;
 			}
 			case R.id.lwp_disable_tinting: {
