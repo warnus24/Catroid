@@ -35,6 +35,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.badlogic.gdx.Gdx;
+
 import org.catrobat.catroid.common.ScreenValues;
 
 /**
@@ -55,6 +57,10 @@ public class ColorPickerDialog extends Dialog {
 		private Paint mCenterPaint;
 		private final int[] mColors;
 		private OnColorChangedListener mListener;
+
+		private static int CENTER_X = 250;
+		private static int CENTER_Y = 250;
+		private static int CENTER_RADIUS = 80;
 
 		ColorPickerView(Context c, OnColorChangedListener l, int color) {
 			super(c);
@@ -77,12 +83,23 @@ public class ColorPickerDialog extends Dialog {
 
 		@Override
 		protected void onDraw(Canvas canvas) {
-			float r = CENTER_X - mPaint.getStrokeWidth() * 0.5f;
+			int center_min = Math.min(canvas.getWidth(), canvas.getHeight());
+			int center_x = canvas.getWidth();
+			int center_y = canvas.getHeight();
+			CENTER_X = Math.round(center_x * 0.5f);
+			CENTER_Y = Math.round(center_y * 0.5f);
+			CENTER_RADIUS = center_min / 6;
+			float r = CENTER_X - (mPaint.getStrokeWidth()*2);
 
-			canvas.translate(CENTER_X, CENTER_X);
+			canvas.translate(CENTER_X, CENTER_Y);
+
+			float x_translate = CENTER_X * (-0.1f);
+			canvas.translate(Math.round(x_translate), 0);
 
 			canvas.drawOval(new RectF(-r, -r, r, r), mPaint);
 			canvas.drawCircle(0, 0, CENTER_RADIUS, mCenterPaint);
+
+
 
 			if (mTrackingCenter) {
 				int c = mCenterPaint.getColor();
@@ -106,9 +123,6 @@ public class ColorPickerDialog extends Dialog {
 			setMeasuredDimension(CENTER_X * 2, CENTER_Y * 2);
 		}
 
-		private static final int CENTER_X = 250;
-		private static final int CENTER_Y = 250;
-		private static final int CENTER_RADIUS = 80;
 
 		private int floatToByte(float x) {
 			int n = java.lang.Math.round(x);
