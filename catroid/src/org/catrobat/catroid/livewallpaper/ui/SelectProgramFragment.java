@@ -297,7 +297,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		seekBar.setProgress(1);
 		seekBar.setVisibility(View.VISIBLE);
 		seekBar.setProgress((int)SoundManager.getInstance().getVolume());
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(500,100);
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
 		seekBar.setLayoutParams(lp);
 
 		seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
