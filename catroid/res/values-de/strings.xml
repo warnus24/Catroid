@@ -731,8 +731,8 @@
  	<string name="lwp_pocket_code">Pocket Code</string>
  	<string name="lwp_tinting">Tinting</string>
  	<string name="lwp_about">About</string>
- 	<string name="lwp_enable_sound">Enable sounds</string>
- 	<string name="lwp_disable_tinting">Disable tinting</string>
+ 	<string name="lwp_enable_sound">Aktiviere sounds</string>
+ 	<string name="lwp_disable_tinting">Deaktiviere tinting</string>
 	<!--  -->
     <!-- Camera Strings -->
     <string name="camera_facing_front">Vordere Kamera</string>
