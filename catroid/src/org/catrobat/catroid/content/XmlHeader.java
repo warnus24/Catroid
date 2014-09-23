@@ -42,6 +42,9 @@ public class XmlHeader implements Serializable {
 	@XStreamAlias("screenMode")
 	public ScreenModes screenMode = ScreenModes.STRETCH;
 
+	private boolean isArudinoProject = false;
+	private boolean isLegoProject = false;
+
 	private float catrobatLanguageVersion;
 
 	// fields only used on the catrobat.org website so far
@@ -55,7 +58,7 @@ public class XmlHeader implements Serializable {
 	@SuppressWarnings("unused")
 	private String mediaLicense = "";
 	private String platform = "";
-	private int platformVersion = 0;
+	private double platformVersion = 0;
 	@SuppressWarnings("unused")
 	private String programLicense = "";
 	@SuppressWarnings("unused")
@@ -142,11 +145,11 @@ public class XmlHeader implements Serializable {
 		this.deviceName = deviceName;
 	}
 
-	int getPlatformVersion() {
+	double getPlatformVersion() {
 		return platformVersion;
 	}
 
-	void setPlatformVersion(int platformVersion) {
+	void setPlatformVersion(double platformVersion) {
 		this.platformVersion = platformVersion;
 	}
 
@@ -156,5 +159,21 @@ public class XmlHeader implements Serializable {
 
 	ScreenModes getScreenMode() {
 		return this.screenMode;
+	}
+
+	boolean isArduinoProject() {
+		return isArudinoProject;
+	}
+
+	void setArduinoProject(boolean isArudinoProject) {
+		this.isArudinoProject = isArudinoProject;
+	}
+
+	boolean isLegoProject() {
+		return isLegoProject;
+	}
+
+	void setLegoProject(boolean isLegoProject) {
+		this.isLegoProject = isLegoProject;
 	}
 }

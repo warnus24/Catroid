@@ -145,7 +145,7 @@ public class Project implements Serializable {
 	public void setDeviceData(Context context) {
 		// TODO add other header values
 		xmlHeader.setPlatform(Constants.PLATFORM_NAME);
-		xmlHeader.setPlatformVersion(Build.VERSION.SDK_INT);
+		xmlHeader.setPlatformVersion((double)Build.VERSION.SDK_INT);
 		xmlHeader.setDeviceName(Build.MODEL);
 
 		xmlHeader.setCatrobatLanguageVersion(Constants.CURRENT_CATROBAT_LANGUAGE_VERSION);
@@ -204,5 +204,34 @@ public class Project implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean checkIfArduinoProject() {
+		return xmlHeader.isArduinoProject();
+	}
+
+	public void setIsArduinoProject(boolean isArduinoProject) {
+		xmlHeader.setArduinoProject(isArduinoProject);
+	}
+
+	public boolean checkIfLegoProject() {
+		return xmlHeader.isLegoProject();
+	}
+
+	public void setIsLegoProject(boolean isLegoProject) {
+		xmlHeader.setLegoProject(isLegoProject);
+	}
+
+	public boolean containsArduinoBricks() {
+		boolean isArduinoProject = false;
+		for (Sprite currentSprite : spriteList) {
+			for (int scriptIndex = 0; scriptIndex < currentSprite.getNumberOfScripts(); scriptIndex++) {
+				Script currentScript = currentSprite.getScript(scriptIndex);
+				if (currentScript.containsBluetoothArduinoBrick()) {
+					isArduinoProject = true;
+				}
+			}
+		}
+		return isArduinoProject;
 	}
 }
