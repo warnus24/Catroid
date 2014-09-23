@@ -53,22 +53,22 @@ public class EffectsContainer
 	{
 		bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
 		vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
-		curvature = new Curvature();
 
 		zoomer = new Zoomer((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), RadialBlur.Quality.Low);
 
 		effectsMap.put(PostProcessingEffectsEnum.BLOOM, bloom);
-		effectsMap.put(PostProcessingEffectsEnum.CURVATURE, curvature);
+
 		effectsMap.put(PostProcessingEffectsEnum.VIGNETTE, vignette);
 		effectsMap.put(PostProcessingEffectsEnum.ZOOMER, zoomer);
 
 
 		int version_code = Integer.valueOf(android.os.Build.VERSION.SDK);
-		if(version_code >= 19)
-		{
+		if(version_code >= 19){
 			int effectsForCrt = CrtScreen.Effect.TweakContrast.v | CrtScreen.Effect.PhosphorVibrance.v | CrtScreen.Effect.Scanlines.v | CrtScreen.Effect.Tint.v;
 			crtMonitor = new CrtMonitor( (int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false, false, CrtScreen.RgbMode.ChromaticAberrations, effectsForCrt );
+			curvature = new Curvature();
 			effectsMap.put(PostProcessingEffectsEnum.CRTMONITOR, crtMonitor);
+			effectsMap.put(PostProcessingEffectsEnum.CURVATURE, curvature);
 		}
 	}
 

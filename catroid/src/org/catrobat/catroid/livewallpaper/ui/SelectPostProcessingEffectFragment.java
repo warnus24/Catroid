@@ -96,14 +96,15 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	private void initListeners() {
 		int version_code = Integer.valueOf(android.os.Build.VERSION.SDK);
 		if(version_code < 19){
-			EFFECT_ARRAY_SIZE = EFFECT_ARRAY_SIZE - 1;
+			EFFECT_ARRAY_SIZE = EFFECT_ARRAY_SIZE - 2;
 		}
 		effectArray = new PostProcessingEffectsEnum[EFFECT_ARRAY_SIZE];
 		effectArray[0] = PostProcessingEffectsEnum.BLOOM;
 		effectArray[1] = PostProcessingEffectsEnum.VIGNETTE;
-		effectArray[2] = PostProcessingEffectsEnum.CURVATURE;
+
 
 		if(version_code >= 19) {
+			effectArray[2] = PostProcessingEffectsEnum.CURVATURE;
 			effectArray[3] = PostProcessingEffectsEnum.CRTMONITOR;
 		}
 
