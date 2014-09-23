@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Binder;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
@@ -456,13 +457,13 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 			//onPause();
 			LiveWallpaperEngine engine = this;
-			getLocalStageListener().create();
-			getLocalStageListener().reloadProjectLWP(engine);
 			Log.d("LWP", "StageListener, changeWallpaper Engine: " + name);
 
 			synchronized (engine) {
 				try {
 					Log.d("LWP", "StageListener, changeWallpaper wait... ANFANG");
+					getLocalStageListener().create();
+					getLocalStageListener().reloadProjectLWP(engine);
 					onResume();
 					engine.wait();
 				} catch (InterruptedException e) {

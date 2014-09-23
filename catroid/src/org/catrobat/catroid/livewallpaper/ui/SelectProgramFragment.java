@@ -92,6 +92,8 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	private ProjectManager projectManagerLWP = ProjectManager.getInstance(ProjectManagerState.LWP);
 	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.NORMAL);
 
+	private int soundSeekBarVolume;
+
 	private View selectAllActionModeButton;
 	private ProjectListInitReceiver ListInitReceiver;
 	private static final String SHARED_PREFERENCE_NAME = "showDetailsMyProjects";
@@ -178,6 +180,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	public void startDeleteActionMode() {
 		if (actionMode == null) {
 			actionMode = getSherlockActivity().startActionMode(deleteModeCallBack);
+			Log.d("LWP","delete Action Mode started!");
 		}
 	}
 
@@ -226,13 +229,6 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			String str_loadable = ProjectLoadableEnum.IS_ALREADY_LOADED.toString();
 
 			synchronized (LiveWallpaper.getInstance()) {
-			/*if (projectManagerLWP.getCurrentProject() != null
-					&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
-				getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-				getFragmentManager().popBackStack();
-				return str_loadable;
-			}*/
-
 				if (projectManagerLWP.getCurrentProject() != null
 						&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
 					//getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
@@ -306,7 +302,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		seekBar.setProgress(1);
 		seekBar.setVisibility(View.VISIBLE);
 		seekBar.setProgress((int)SoundManager.getInstance().getVolume());
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(500,100);
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
 		seekBar.setLayoutParams(lp);
 
 		seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -321,7 +317,9 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
 				// TODO Auto-generated method stub
+				Log.d("SelectProgramFragment", "SeekBar Changelistener progress changed to " + String.valueOf(arg1));
 				SoundManager.getInstance().setVolume(arg1);
+				soundSeekBarVolume = arg1;
 			}
 		});
 
@@ -410,6 +408,10 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		}
 
 	};
+
+	public int getSeekbarProgress() {
+		return soundSeekBarVolume;
+	}
 
 	private void addSelectAllActionModeButton(ActionMode mode, Menu menu) {
 		selectAllActionModeButton = Utils.addSelectAllActionModeButton(getLayoutInflater(null), mode, menu);

@@ -728,15 +728,14 @@
  	<string name="pocket_code_not_installed">Pocket Code is not installed. Do you want to install it?</string>
  	
  	<string name="lwp_delete">Delete</string>
- 	<string name="lwp_new">New</string>
- 	<string name="lwp_tinting">Tinting</string>
+ 	<string name="lwp_pocket_code">Pocket Code</string>
+ 	<string name="lwp_tinting">Aktiviere Tinting</string>
  	<string name="lwp_about">About</string>
- 	<string name="lwp_enable_sound">Enable sounds</string>
- 	<string name="lwp_disable_tinting">Disable tinting</string>
-    <string name="lwp_effect1">Effect 1</string>
-    <string name="lwp_effect2">Effect 2</string>
-    <string name="lwp_disable_effect">Disable effects</string>
-    <string name="lwp_select_effects">Select effects</string>
+ 	<string name="lwp_enable_sound">Aktiviere Sounds</string>
+ 	<string name="lwp_disable_tinting">Deaktiviere Tinting</string>
+    <string name="lwp_disable_effect">Deaktiviere Effekte</string>
+    <string name="lwp_select_effects">Waehle Effekt</string>
+
 	<!--  -->
 
     <!-- Camera Strings -->

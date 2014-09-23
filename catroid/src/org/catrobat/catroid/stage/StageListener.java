@@ -204,7 +204,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		} else {
 			project = ProjectManager.getInstance(ProjectManagerState.NORMAL).getCurrentProject();
 		}
-		Log.d("LWP", "current project name is"+project.getName());
+
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";
 
 		virtualWidth = project.getXmlHeader().virtualScreenWidth;
@@ -453,10 +453,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			}
 
 			if (scriptActions.get(Constants.BROADCAST_SCRIPT) != null && !scriptActions.get(Constants.BROADCAST_SCRIPT).isEmpty()) {
-				//List<String> broadcastWaitNotifyActions = reconstructNotifyActions(scriptActions);
-				//Map<String, List<String>> notifyMap = new HashMap<String, List<String>>();
-				//notifyMap.put(Constants.BROADCAST_NOTIFY_ACTION, broadcastWaitNotifyActions);
-				//scriptActions.putAll(notifyMap);
+				List<String> broadcastWaitNotifyActions = reconstructNotifyActions(scriptActions);
+				Map<String, List<String>> notifyMap = new HashMap<String, List<String>>();
+				notifyMap.put(Constants.BROADCAST_NOTIFY_ACTION, broadcastWaitNotifyActions);
+				scriptActions.putAll(notifyMap);
 			}
 			//precomputeActionsForBroadcastEvents(scriptActions);
 			firstStart = false;

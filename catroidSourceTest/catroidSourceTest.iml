@@ -21,10 +21,13 @@
 >>>>>>> LiveWallpaper_Master
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+<<<<<<< HEAD
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+=======
+>>>>>>> c5a8fd7365f9468c59dcd0f9d4e2acfda295179e
       <sourceFolder url="file://$MODULE_DIR$/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
@@ -33,7 +36,11 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.10" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="C__Users_White_Documents_GitHub_Catroid_build_intermediates_classes_debug" level="project" />
+<<<<<<< HEAD
+    <orderEntry type="library" exported="" scope="TEST" name="D__Files_Projects_Catroid_build_intermediates_classes_debug" level="project" />
+=======
+    <orderEntry type="library" exported="" scope="TEST" name="D__Catrobat_Catroid_build_intermediates_classes_debug" level="project" />
+>>>>>>> c5a8fd7365f9468c59dcd0f9d4e2acfda295179e
   </component>
 </module>
 

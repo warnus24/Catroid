@@ -103,6 +103,7 @@ public final class Constants {
 
 	//Livewallpaper
 	public static final String PREF_SOUND_DISABLED = "Sound disabled";
+	public static final String PREF_SOUND_ENABLED = "Sound enabled";
 	public static final String POCKET_CODE_PACKAGE_NAME = "org.catrobat.catroid.livewallpaper";
 	public static final String POCKET_CODE_INTENT_ACTIVITY_NAME = "org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity";
 	public static final String POCKET_CODE_DOWNLOAD_LINK = "market://details?id=" + POCKET_CODE_PACKAGE_NAME;

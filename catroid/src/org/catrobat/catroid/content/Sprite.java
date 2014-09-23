@@ -171,6 +171,7 @@ public class Sprite implements Serializable, Cloneable {
 			if (script instanceof BroadcastScript) {
 				BroadcastScript broadcastScript = (BroadcastScript) script;
 				SequenceAction action = createActionSequence(broadcastScript);
+				//The test testWhenScriptRestartingItself fails if there is no Actor with the new libgdx update
 				if(test){
 					look.addAction(action);
 				}

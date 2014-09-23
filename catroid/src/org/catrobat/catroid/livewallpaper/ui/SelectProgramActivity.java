@@ -32,13 +32,14 @@ import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
-import org.catrobat.catroid.ui.dialogs.NewProjectDialog;
+import org.catrobat.catroid.ui.MainMenuActivity;
 
 public class SelectProgramActivity extends BaseActivity implements ColorPickerDialog.OnColorChangedListener {
 
 	public static final String ACTION_PROJECT_LIST_INIT = "org.catrobat.catroid.livewallpaper.PROJECT_LIST_INIT";
 
 	private SelectProgramFragment selectProgramFragment;
+	private ColorPickerDialog colorPickerDialog;
 	private int tintingColor = 0;
 
 	@Override
@@ -68,22 +69,22 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.delete: {
+			case R.id.lwp_delete: {
 				selectProgramFragment.startDeleteActionMode();
 				break;
 			}
-			case R.id.about: {
+			case R.id.lwp_about: {
 				AboutPocketCodeDialog aboutPocketCodeDialog = new AboutPocketCodeDialog(this);
 				aboutPocketCodeDialog.show();
 				break;
 			}
-			case R.id.lwp_new: {
-				NewProjectDialog dialog = new NewProjectDialog();
-				dialog.show(getSupportFragmentManager(), NewProjectDialog.DIALOG_FRAGMENT_TAG);
-				break;
-			}
 			case R.id.lwp_tinting: {
 				tinting();
+				break;
+			}
+			case R.id.lwp_pocket_code: {
+				Intent intent = new Intent(this, MainMenuActivity.class);
+				this.startActivity(intent);
 				break;
 			}
 			case R.id.lwp_disable_tinting: {
@@ -117,9 +118,9 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 
 	public void tinting() {
 		Paint mPaint = new Paint();
-		ColorPickerDialog dialog = new ColorPickerDialog(SelectProgramActivity.this, SelectProgramActivity.this,
+		colorPickerDialog = new ColorPickerDialog(SelectProgramActivity.this, SelectProgramActivity.this,
 				mPaint.getColor());
-		dialog.show();
+		colorPickerDialog.show();
 	}
 
 	public void disableEffects() {
@@ -131,6 +132,16 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 		actionBar.setTitle(R.string.lwp_select_program);
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setHomeButtonEnabled(false);
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		if(colorPickerDialog != null){
+			colorPickerDialog.dismiss();
+		}
+
 	}
 
 	public SelectProgramFragment getSelectProgramFragment() {
