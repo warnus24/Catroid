@@ -66,7 +66,7 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	private String selectedEffect;
 	private static ArrayAdapter<PostProcessingEffectsEnum> adapter;
 	private static PostProcessingEffectsEnum[] effectArray;
-	private final int EFFECT_ARRAY_SIZE = 4;
+	private int EFFECT_ARRAY_SIZE = 4;
 	private static Activity activity;
 
 	@Override
@@ -94,11 +94,18 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	}
 
 	private void initListeners() {
+		int version_code = Integer.valueOf(android.os.Build.VERSION.SDK);
+		if(version_code < 19){
+			EFFECT_ARRAY_SIZE = EFFECT_ARRAY_SIZE - 1;
+		}
 		effectArray = new PostProcessingEffectsEnum[EFFECT_ARRAY_SIZE];
 		effectArray[0] = PostProcessingEffectsEnum.BLOOM;
 		effectArray[1] = PostProcessingEffectsEnum.VIGNETTE;
 		effectArray[2] = PostProcessingEffectsEnum.CURVATURE;
-		effectArray[3] = PostProcessingEffectsEnum.CRTMONITOR;
+
+		if(version_code >= 19) {
+			effectArray[3] = PostProcessingEffectsEnum.CRTMONITOR;
+		}
 
 		adapter = new CustomArrayAdapter(getActivity(), getActivity(),
 				R.layout.activity_postprocessing_list_item_enabled,
