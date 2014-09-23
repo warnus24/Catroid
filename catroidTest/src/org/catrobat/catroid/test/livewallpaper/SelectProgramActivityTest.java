@@ -156,7 +156,7 @@ public class SelectProgramActivityTest extends
 		solo.clickOnText(solo.getString(R.string.yes));
 		solo.sleep(2000);
 
-		String currentProjectName = projectManager.getCurrentProject().getName();
+		String currentProjectName = ProjectManager.getInstance().getCurrentProject().getName();
 
 		assertTrue("The project was not successfully changed", currentProjectName.equals(TEST_PROJECT_NAME));
 	}
