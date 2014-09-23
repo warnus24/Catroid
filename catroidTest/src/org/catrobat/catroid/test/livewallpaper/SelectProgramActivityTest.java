@@ -59,6 +59,8 @@ import java.util.Locale;
 public class SelectProgramActivityTest extends
 		SingleLaunchActivityTestCase<SelectProgramActivity> {
 
+	private static final int DEFAULT_VOLUME = 50;
+	private static final int VOLUME_TEST = 25;
 	private static final String TEST_PROJECT_NAME = "Test 1";
 	private static final String PACKAGE = "org.catrobat.catroid";
 	private Solo solo;
