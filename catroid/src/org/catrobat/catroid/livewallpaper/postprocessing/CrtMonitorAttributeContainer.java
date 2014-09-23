@@ -53,12 +53,4 @@ public class CrtMonitorAttributeContainer extends PostProcessingEffectAttributCo
 	public void setChromaticDispersionBY(float chromaticDispersionBY) {
 		this.chromaticDispersionBY = chromaticDispersionBY;
 	}
-
-	public float getTime() {
-		return time;
-	}
-
-	public void setTime(float time) {
-		this.time = time;
-	}
 }

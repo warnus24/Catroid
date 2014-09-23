@@ -503,6 +503,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 				{
 					postProcessorWrapper.getPostProcessor().capture();
 					tinting();
+					postProcessorWrapper.updateEffects();
 					stage.draw();
 					postProcessorWrapper.getPostProcessor().render();
 				}

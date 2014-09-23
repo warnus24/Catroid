@@ -50,7 +50,6 @@ public class SelectCrtMonitorEffectActivity extends BaseActivity {
 
 	private final float CHROMATIC_DISPERSION_RC_FACTOR = -150.0F;
 	private final float CHROMATIC_DISPERSION_BY_FACTOR = -150.0F;
-	private final float TIME_FACTOR = .2F;
 	public SelectCrtMonitorEffectActivity INSTANCE;
 
 	@Override
@@ -81,9 +80,6 @@ public class SelectCrtMonitorEffectActivity extends BaseActivity {
 
 		int progress2 = (int) (attributes.getChromaticDispersionRC() * CHROMATIC_DISPERSION_RC_FACTOR);
 		seekBar2.setProgress(progress2);
-
-		int progress3 = (int) (attributes.getTime() * TIME_FACTOR);
-		seekBar3.setProgress(progress3);
 	}
 
 	private void initializeControlElements()
@@ -103,11 +99,6 @@ public class SelectCrtMonitorEffectActivity extends BaseActivity {
 		seekBar2 = (SeekBar) findViewById(R.id.seekBar2);
 		chromaticDispersionRCListener = new CustomOnSeekbarListener(CHROMATIC_DISPERSION_RC_FACTOR);
 		seekBar2.setOnSeekBarChangeListener(chromaticDispersionRCListener);
-
-		//Time
-		seekBar3 = (SeekBar) findViewById(R.id.seekBar3);
-		timeListener = new CustomOnSeekbarListener(TIME_FACTOR);
-		seekBar3.setOnSeekBarChangeListener(timeListener);
 	}
 
 	private void setUpActionBar() {
@@ -124,7 +115,6 @@ public class SelectCrtMonitorEffectActivity extends BaseActivity {
 			CrtMonitorAttributeContainer crtMonitorAttributeContainer = new CrtMonitorAttributeContainer();
 			crtMonitorAttributeContainer.setChromaticDispersionBY(chromaticDispersionBYListener.getAttribute());
 			crtMonitorAttributeContainer.setChromaticDispersionRC(chromaticDispersionRCListener.getAttribute());
-			crtMonitorAttributeContainer.setTime(timeListener.getAttribute());
 
 			if(mySwitch.isChecked())
 			{

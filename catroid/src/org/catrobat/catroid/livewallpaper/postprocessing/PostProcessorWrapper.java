@@ -32,6 +32,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.bitfire.postprocessing.PostProcessor;
 import com.bitfire.postprocessing.PostProcessorEffect;
 import com.bitfire.postprocessing.demo.ResourceFactory;
@@ -58,6 +59,7 @@ public class PostProcessorWrapper
 	private Map<PostProcessingEffectsEnum,PostProcessorEffect> effects = Collections.synchronizedMap(map);
 	PostProcessor postProcessor = new PostProcessor(false, true, false);
 	EffectsContainer effectsContainer = new EffectsContainer();
+	long startTime = TimeUtils.millis();
 
 
 	public void add(PostProcessingEffectsEnum type, PostProcessingEffectAttributContainer attributes)
@@ -75,8 +77,25 @@ public class PostProcessorWrapper
 				postProcessor.addEffect(effect);
 				effects.put(type, effect);
 			}
+			initializeTimeForCrtMonitor(type);
 			LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
 			SelectPostProcessingEffectFragment.refresh();
+		}
+	}
+
+	private void initializeTimeForCrtMonitor(PostProcessingEffectsEnum type)
+	{
+		if(type.equals(PostProcessingEffectsEnum.CRTMONITOR)){
+			startTime = TimeUtils.millis();
+		}
+	}
+
+	public void updateEffects()
+	{
+		float elapsedSecs = (float)(TimeUtils.millis() - startTime) / 1000;
+		CrtMonitor crtMonitor = (CrtMonitor) effects.get(PostProcessingEffectsEnum.CRTMONITOR);
+		if(crtMonitor != null){
+			crtMonitor.setTime(elapsedSecs);
 		}
 	}
 
@@ -166,7 +185,6 @@ public class PostProcessorWrapper
 			CrtMonitor crtMonitor = (CrtMonitor) effect;
 			crtMonitor.setChromaticDispersion(crtMonitorAttributeContainer.getChromaticDispersionRC(),
 																crtMonitorAttributeContainer.getChromaticDispersionBY());
-		 	crtMonitor.setTime(crtMonitorAttributeContainer.getTime());
 		}
 
 	}
