@@ -462,7 +462,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			synchronized (engine) {
 				try {
 					Log.d("LWP", "StageListener, changeWallpaper wait... ANFANG");
+					ProjectManager.changeState(ProjectManagerState.LWP);
 					getLocalStageListener().create();
+					ProjectManager.changeState(ProjectManagerState.NORMAL);
 					getLocalStageListener().reloadProjectLWP(engine);
 					onResume();
 					engine.wait();
