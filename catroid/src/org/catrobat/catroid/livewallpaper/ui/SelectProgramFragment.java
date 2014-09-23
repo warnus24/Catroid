@@ -92,6 +92,8 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	private ProjectManager projectManagerLWP = ProjectManager.getInstance(ProjectManagerState.LWP);
 	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.NORMAL);
 
+	private int soundSeekBarVolume;
+
 	private View selectAllActionModeButton;
 	private ProjectListInitReceiver ListInitReceiver;
 	private static final String SHARED_PREFERENCE_NAME = "showDetailsMyProjects";
@@ -316,7 +318,9 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
 				// TODO Auto-generated method stub
+				Log.d("SelectProgramFragment", "SeekBar Changelistener progress changed to " + String.valueOf(arg1));
 				SoundManager.getInstance().setVolume(arg1);
+				soundSeekBarVolume = arg1;
 			}
 		});
 
@@ -405,6 +409,10 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		}
 
 	};
+
+	public int getSeekbarProgress() {
+		return soundSeekBarVolume;
+	}
 
 	private void addSelectAllActionModeButton(ActionMode mode, Menu menu) {
 		selectAllActionModeButton = Utils.addSelectAllActionModeButton(getLayoutInflater(null), mode, menu);
