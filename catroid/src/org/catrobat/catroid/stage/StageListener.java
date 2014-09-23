@@ -89,6 +89,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	// needed for UiTests - is disabled to fix crashes with EMMA coverage
 	// CHECKSTYLE DISABLE StaticVariableNameCheck FOR 1 LINES
 	private static boolean DYNAMIC_SAMPLING_RATE_FOR_ACTIONS = true;
+	private int StageID = 0;
 
 	private float deltaActionTimeDivisor = 10f;
 	public static final String SCREENSHOT_AUTOMATIC_FILE_NAME = "automatic_screenshot"
@@ -159,11 +160,13 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	public StageListener(boolean isLWP) {
 		super();
+		BroadcastHandler.setStageID(StageID++);
 		this.isLWP = isLWP;
 	}
 
 	public StageListener() {
 		super();
+		BroadcastHandler.setStageID(StageID++);
 		isLWP = false;
 	}
 
@@ -453,12 +456,12 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 			}
 
 			if (scriptActions.get(Constants.BROADCAST_SCRIPT) != null && !scriptActions.get(Constants.BROADCAST_SCRIPT).isEmpty()) {
-			//	List<String> broadcastWaitNotifyActions = reconstructNotifyActions(scriptActions);
-			//	Map<String, List<String>> notifyMap = new HashMap<String, List<String>>();
-			//	notifyMap.put(Constants.BROADCAST_NOTIFY_ACTION, broadcastWaitNotifyActions);
-			//	scriptActions.putAll(notifyMap);
+				List<String> broadcastWaitNotifyActions = reconstructNotifyActions(scriptActions);
+				Map<String, List<String>> notifyMap = new HashMap<String, List<String>>();
+				notifyMap.put(Constants.BROADCAST_NOTIFY_ACTION, broadcastWaitNotifyActions);
+				scriptActions.putAll(notifyMap);
 			}
-			//precomputeActionsForBroadcastEvents(scriptActions);
+			precomputeActionsForBroadcastEvents(scriptActions);
 			firstStart = false;
 		}
 		if (!paused) {
@@ -539,7 +542,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private List<String> reconstructNotifyActions(Map<String, List<String>> actions) {
 		List<String> broadcastWaitNotifyActions = new ArrayList<String>();
 		for (String actionString : actions.get(Constants.BROADCAST_SCRIPT)) {
-			String broadcastNotifyString = SEQUENCE + actionString.substring(0, actionString.indexOf(Constants.ACTION_SPRITE_SEPARATOR)) + BROADCAST_NOTIFY + actionString.substring(actionString.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
+			String broadcastNotifyString = SEQUENCE + actionString.substring(0, actionString.indexOf(Constants.ACTION_SEPARATOR)) + BROADCAST_NOTIFY + actionString.substring(actionString.indexOf(Constants.ACTION_SEPARATOR));
 			broadcastWaitNotifyActions.add(broadcastNotifyString);
 		}
 		return broadcastWaitNotifyActions;
@@ -576,8 +579,8 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	}
 
 	private static boolean isFirstSequenceActionAndEqualsSecond(String action1, String action2) {
-		String spriteOfAction1 = action1.substring(action1.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
-		String spriteOfAction2 = action2.substring(action2.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
+		String spriteOfAction1 = action1.substring(action1.indexOf(Constants.ACTION_SEPARATOR));
+		String spriteOfAction2 = action2.substring(action2.indexOf(Constants.ACTION_SEPARATOR));
 
 		if (!spriteOfAction1.equals(spriteOfAction2)) {
 			return false;
@@ -591,7 +594,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		int endIndex1 = action1.indexOf(BROADCAST_NOTIFY);
 		String innerAction1 = action1.substring(startIndex1, endIndex1);
 
-		String action2Sub = action2.substring(0, action2.indexOf(Constants.ACTION_SPRITE_SEPARATOR));
+		String action2Sub = action2.substring(0, action2.indexOf(Constants.ACTION_SEPARATOR));
 		if (innerAction1.equals(action2Sub)) {
 			return true;
 		}

@@ -25,7 +25,6 @@ package org.catrobat.catroid.content;
 import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -157,7 +156,7 @@ public class Sprite implements Serializable, Cloneable {
 				look.addAction(sequenceAction);
 				BroadcastHandler.getActionScriptMap().put(sequenceAction, script);
 				BroadcastHandler.getScriptSpriteMapMap().put(script, this);
-				String actionName = sequenceAction.toString() + Constants.ACTION_SPRITE_SEPARATOR + name + scriptCounter;
+				String actionName = sequenceAction.toString() + Constants.ACTION_SEPARATOR + name + scriptCounter;
 				if (scriptActions.containsKey(Constants.START_SCRIPT)) {
 					scriptActions.get(Constants.START_SCRIPT).add(actionName);
 					BroadcastHandler.getStringActionMap().put(actionName, sequenceAction);
@@ -178,7 +177,7 @@ public class Sprite implements Serializable, Cloneable {
 				BroadcastHandler.getActionScriptMap().put(action, script);
 				BroadcastHandler.getScriptSpriteMapMap().put(script, this);
 				putBroadcastSequenceAction(broadcastScript.getBroadcastMessage(), action);
-				String actionName = action.toString() + Constants.ACTION_SPRITE_SEPARATOR + name + scriptCounter;
+				String actionName = action.toString() + Constants.ACTION_SEPARATOR + name + scriptCounter;
 
 				if (scriptActions.containsKey(Constants.BROADCAST_SCRIPT)) {
 					scriptActions.get(Constants.BROADCAST_SCRIPT).add(actionName);

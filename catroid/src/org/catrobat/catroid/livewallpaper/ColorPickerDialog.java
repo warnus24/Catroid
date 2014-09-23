@@ -38,6 +38,7 @@ import android.view.View;
 
 import com.badlogic.gdx.Gdx;
 
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
 
 /**
@@ -84,8 +85,6 @@ public class ColorPickerDialog extends Dialog {
 
 		@Override
 		protected void onDraw(Canvas canvas) {
-			Log.d("ColorPickerView", "Canvas/View Width: " + String.valueOf(canvas.getWidth()) + "/" + String.valueOf(this.getWidth()));
-			Log.d("ColorPickerView", "Canvas Height: " + String.valueOf(canvas.getHeight()) + "/" + String.valueOf(this.getHeight()));
 			int center_min = Math.min(canvas.getWidth(), canvas.getHeight());
 			int center_x = canvas.getWidth();
 			int center_y = canvas.getHeight();
@@ -201,6 +200,9 @@ public class ColorPickerDialog extends Dialog {
 		public boolean onTouchEvent(MotionEvent event) {
 			float x = event.getX() - CENTER_X;
 			float y = event.getY() - CENTER_Y;
+
+			Log.d("ColorPickerView", "width = " + String.valueOf(this.getWidth()));
+
 			boolean inCenter = java.lang.Math.sqrt(x * x + y * y) <= CENTER_RADIUS;
 
 			switch (event.getAction()) {
@@ -261,6 +263,6 @@ public class ColorPickerDialog extends Dialog {
 		};
 
 		setContentView(new ColorPickerView(getContext(), l, mInitialColor));
-		setTitle("Pick a Color");
+		setTitle(R.string.lwp_color_dialog_title);
 	}
 }

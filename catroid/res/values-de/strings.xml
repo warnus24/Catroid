@@ -735,7 +735,7 @@
  	<string name="lwp_disable_tinting">Deaktiviere Tinting</string>
     <string name="lwp_disable_effect">Deaktiviere Effekte</string>
     <string name="lwp_select_effects">Waehle Effekt</string>
-
+    <string name="lwp_color_dialog_title">Wähle eine Farbe</string>
 	<!--  -->
 
     <!-- Camera Strings -->
