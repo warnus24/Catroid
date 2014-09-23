@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Point;
 import android.preference.PreferenceManager;
 import android.test.SingleLaunchActivityTestCase;
 import android.util.DisplayMetrics;
@@ -45,6 +46,7 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.common.StandardProjectHandler;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.StorageHandler;
+import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
@@ -258,8 +260,19 @@ public class SelectProgramActivityTest extends
 		solo.sleep(2000);
 		SelectProgramActivity spa = (SelectProgramActivity)solo.getCurrentActivity();
 
-
 		assertEquals("Sound SeekBar value wrong", 20, spa.getSelectProgramFragment().getSeekbarProgress());
+	}
+
+	public void testTintingColorPicker() {
+		solo.clickOnMenuItem(solo.getString(R.string.lwp_tinting));
+		solo.sleep(2000);
+
+		Point size = new Point();
+		getActivity().getWindowManager().getDefaultDisplay().getSize(size);
+		int width = size.x;
+		int height = size.y;
+
+		solo.clickOnScreen(width * 0.75f, height * 0.5f);
 	}
 }
 
