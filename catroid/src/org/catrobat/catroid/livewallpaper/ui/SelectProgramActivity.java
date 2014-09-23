@@ -69,11 +69,11 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.delete_lwp: {
+			case R.id.lwp_delete: {
 				selectProgramFragment.startDeleteActionMode();
 				break;
 			}
-			case R.id.about_lwp: {
+			case R.id.lwp_about: {
 				AboutPocketCodeDialog aboutPocketCodeDialog = new AboutPocketCodeDialog(this);
 				aboutPocketCodeDialog.show();
 				break;

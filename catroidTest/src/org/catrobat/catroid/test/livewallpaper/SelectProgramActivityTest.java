@@ -47,6 +47,7 @@ import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
 import org.catrobat.catroid.test.livewallpaper.utils.TestUtils;
+import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 import org.catrobat.catroid.utils.Utils;
 
@@ -163,7 +164,7 @@ public class SelectProgramActivityTest extends
 		List<ProjectData> projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
 		int initialProgramCount = projectList.size();
 
-		solo.clickOnActionBarItem(R.id.delete_lwp);
+		solo.clickOnActionBarItem(R.id.lwp_delete);
 		solo.clickOnText(TEST_PROJECT_NAME);
 
 		UiTestUtils.acceptAndCloseActionMode(solo);
@@ -178,7 +179,7 @@ public class SelectProgramActivityTest extends
 
 	public void testDeleteCurrentProject(){
 		assertEquals("The current project should be set to the standard project", solo.getString(R.string.default_project_name), projectManager.getCurrentProject().getName());
-		solo.clickOnActionBarItem(R.id.delete_lwp);
+		solo.clickOnActionBarItem(R.id.lwp_delete);
 		solo.clickOnText(solo.getString(R.string.default_project_name));
 		UiTestUtils.acceptAndCloseActionMode(solo);
 		assertTrue("The error dialog was not shown", solo.searchText(solo.getString(R.string.lwp_error_delete_current_program)));
@@ -189,7 +190,7 @@ public class SelectProgramActivityTest extends
 		List<ProjectData> projectList = selectProgramActvity.getSelectProgramFragment().getProjectList();
 		int initialProgramCount = projectList.size();
 
-		solo.clickOnActionBarItem(R.id.delete_lwp);
+		solo.clickOnActionBarItem(R.id.lwp_delete);
 		String selectAll = solo.getString(R.string.select_all).toUpperCase(Locale.getDefault());
 		solo.clickOnText(selectAll);
 		UiTestUtils.acceptAndCloseActionMode(solo);
@@ -207,7 +208,7 @@ public class SelectProgramActivityTest extends
 		solo.clickOnButton(solo.getString(R.string.no));
 		assertTrue("The program count is not equal to program count before clicking on delete", projectList.size() == initialProgramCount);
 
-		solo.clickOnActionBarItem(R.id.delete_lwp);
+		solo.clickOnActionBarItem(R.id.lwp_delete);
 		solo.clickOnText(selectAll);
 		UiTestUtils.acceptAndCloseActionMode(solo);
 		solo.clickOnText(solo.getString(R.string.yes));
@@ -237,6 +238,13 @@ public class SelectProgramActivityTest extends
 		solo.clickOnText(solo.getString(R.string.lwp_enable_sound));
 
 		assertTrue("The sound should have been disabled but it's not", sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
+	}
+
+	public void testLaunchPocketCode(){
+		solo.clickOnMenuItem(solo.getString(R.string.lwp_pocket_code));
+		solo.sleep(2000);
+		boolean isPocketCode = solo.getCurrentActivity().getClass().equals(MainMenuActivity.class) ?  true : false;
+		assertTrue("Pocket Code was not started", isPocketCode);
 	}
 }
 

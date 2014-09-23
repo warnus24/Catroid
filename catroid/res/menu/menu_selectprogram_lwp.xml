@@ -24,13 +24,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/delete_lwp"
+        android:id="@+id/lwp_delete"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_menu_delete"
         android:title="@string/delete"/>
     
     <item
-        android:id="@+id/about_lwp"
+        android:id="@+id/lwp_about"
         android:showAsAction="never"
         android:title="@string/lwp_about"/>
 
