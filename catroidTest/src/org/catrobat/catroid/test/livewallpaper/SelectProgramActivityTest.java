@@ -32,7 +32,9 @@ import android.test.SingleLaunchActivityTestCase;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.SeekBar;
 
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.robotium.solo.Solo;
 
 import org.catrobat.catroid.ProjectManager;
@@ -237,6 +239,19 @@ public class SelectProgramActivityTest extends
 		solo.clickOnText(solo.getString(R.string.lwp_enable_sound));
 
 		assertTrue("The sound should have been disabled but it's not", sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
+	}
+
+	public void testSoundSeekBarValue() {
+		solo.clickOnText(TEST_PROJECT_NAME);
+		assertTrue("The set program dialog was not found", solo.searchText(solo.getString(R.string.lwp_confirm_set_program_message)));
+		assertTrue("The enable sound text was not found", solo.searchText(solo.getString(R.string.lwp_enable_sound)));
+
+		solo.setProgressBar(0, 20);
+		solo.sleep(2000);
+		SelectProgramActivity spa = (SelectProgramActivity)solo.getCurrentActivity();
+
+
+		assertEquals("Sound SeekBar value wrong", 20, spa.getSelectProgramFragment().getSeekbarProgress());
 	}
 }
 
