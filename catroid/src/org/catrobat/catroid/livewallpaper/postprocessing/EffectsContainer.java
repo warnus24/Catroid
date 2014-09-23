@@ -53,11 +53,9 @@ public class EffectsContainer
 	{
 		bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
 		vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
-
 		zoomer = new Zoomer((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), RadialBlur.Quality.Low);
 
 		effectsMap.put(PostProcessingEffectsEnum.BLOOM, bloom);
-
 		effectsMap.put(PostProcessingEffectsEnum.VIGNETTE, vignette);
 		effectsMap.put(PostProcessingEffectsEnum.ZOOMER, zoomer);
 
