@@ -171,6 +171,14 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		tintingColor = util.convertIntColorToColor(c);
 	}
 
+	public boolean isTinting(){
+		return isTinting;
+	}
+
+	public com.badlogic.gdx.graphics.Color getTintingColor(){
+		return tintingColor;
+	}
+
 	public void tinting() {
 		if (isTinting) {
 			for (Sprite sprite : sprites) {
