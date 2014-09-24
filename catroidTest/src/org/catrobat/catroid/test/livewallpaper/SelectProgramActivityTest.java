@@ -34,6 +34,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.SeekBar;
+import com.badlogic.gdx.graphics.Color;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.robotium.solo.Solo;
@@ -264,15 +265,18 @@ public class SelectProgramActivityTest extends
 	}
 
 	public void testTintingColorPicker() {
-		solo.clickOnMenuItem(solo.getString(R.string.lwp_tinting));
+		solo.clickOnMenuItem(solo.getString(R.string.lwp_sepia));
 		solo.sleep(2000);
+		SelectProgramActivity spa = (SelectProgramActivity)solo.getCurrentActivity();
+		spa.getTintingColor();
+		Color color = new Color(255.0f / 255.0f, 50.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
+		boolean sameColor = false;
 
-		Point size = new Point();
-		getActivity().getWindowManager().getDefaultDisplay().getSize(size);
-		int width = size.x;
-		int height = size.y;
+		if(color.equals(spa.getTintingColor())){
+			sameColor = true;
+		}
 
-		solo.clickOnScreen(width * 0.75f, height * 0.5f);
+		assertTrue("Color is not the same", sameColor);
 	}
 }
 

@@ -33,6 +33,7 @@ import com.actionbarsherlock.view.MenuItem;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
 import org.catrobat.catroid.ui.MainMenuActivity;
+import org.catrobat.catroid.utils.PostProcessingUtil;
 
 public class SelectProgramActivity extends BaseActivity implements ColorPickerDialog.OnColorChangedListener {
 
@@ -82,6 +83,10 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 				tinting();
 				break;
 			}
+			case R.id.lwp_sepia: {
+				sepia();
+				break;
+			}
 			case R.id.lwp_pocket_code: {
 				Intent intent = new Intent(this, MainMenuActivity.class);
 				this.startActivity(intent);
@@ -99,14 +104,17 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 		selectProgramFragment.disableTinting();
 	}
 
+	public void sepia(){
+		tinting();
+		colorPickerDialog.simulateSepiaTouchEvent();
+	}
+
 	public void tinting() {
 		Paint mPaint = new Paint();
 		colorPickerDialog = new ColorPickerDialog(SelectProgramActivity.this, SelectProgramActivity.this,
 				mPaint.getColor());
 		colorPickerDialog.show();
 	}
-
-
 
 	private void setUpActionBar() {
 		final ActionBar actionBar = getSupportActionBar();
@@ -136,7 +144,13 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 	 */
 	@Override
 	public void colorChanged(int color) {
+		tintingColor = color;
 		selectProgramFragment.tinting(color);
+	}
+
+	public com.badlogic.gdx.graphics.Color getTintingColor() {
+		PostProcessingUtil util = new PostProcessingUtil();
+		return util.convertIntColorToColor(tintingColor);
 	}
 
 }
