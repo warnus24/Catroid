@@ -43,6 +43,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
+import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.ui.BrickLayout;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
@@ -62,8 +63,8 @@ public class UserBrick extends BrickBaseType implements OnClickListener {
 	@XStreamAlias("userBrickParameters")
 	private ArrayList<UserBrickParameter> userBrickParameters;
 
-	@XStreamAlias("userBrickPositionToParameter")
-	private ArrayList<Pair<Integer,Integer>> userBrickPositionToParameter;
+	//@XStreamAlias("userBrickPositionToParameter")
+	private transient ArrayList<Pair<Integer,Integer>> userBrickPositionToParameter;
 
 	// belonging to stored brick
 	private transient int lastDataVersion = 0;
@@ -184,7 +185,6 @@ public class UserBrick extends BrickBaseType implements OnClickListener {
 			}
 		});
 		onLayoutChanged(view);
-
 		return view;
 	}
 
@@ -239,11 +239,11 @@ public class UserBrick extends BrickBaseType implements OnClickListener {
 		int id = 0;
 		for (UserBrickParameter parameter : userBrickParameters) {
 			TextView currentTextView;
-			UserScriptDefinitionBrickElement uiData = getUserScriptDefinitionBrickElements().getUserScriptDefinitionBrickElementList().get(parameter.parameterIndex);
-			if (uiData.isEditModeLineBreak) {
+			UserScriptDefinitionBrickElement element = getUserScriptDefinitionBrickElements().getUserScriptDefinitionBrickElementList().get(parameter.parameterIndex);
+			if (element.isEditModeLineBreak) {
 				continue;
 			}
-			if (uiData.isVariable) {
+			if (element.isVariable) {
 				currentTextView = new EditText(context);
 
 				if (prototype) {
@@ -271,11 +271,12 @@ public class UserBrick extends BrickBaseType implements OnClickListener {
 					currentTextView.setOnClickListener(this);
 				}
 				currentTextView.setVisibility(View.VISIBLE);
+				updateUserVariableValue(parameter.variableName, currentTextView.getText().toString());
 			} else {
 				currentTextView = new TextView(context);
 				currentTextView.setTextAppearance(context, R.style.BrickText_Multiple);
 
-				currentTextView.setText(uiData.name);
+				currentTextView.setText(element.name);
 			}
 
 			// This stuff isn't being included by the style when I use setTextAppearance.
@@ -287,7 +288,7 @@ public class UserBrick extends BrickBaseType implements OnClickListener {
 
 			layout.addView(currentTextView);
 
-			if (uiData.newLineHint) {
+			if (element.newLineHint) {
 				BrickLayout.LayoutParams params = (BrickLayout.LayoutParams) currentTextView.getLayoutParams();
 				params.setNewLine(true);
 				currentTextView.setLayoutParams(params);
@@ -313,6 +314,15 @@ public class UserBrick extends BrickBaseType implements OnClickListener {
 
 			if (userBrickElement.isVariable && userBrickParameter.textView.getId() == eventOrigin.getId()) {
 				FormulaEditorFragment.showFragment(view, this, userBrickParameter.getFormulaWithBrickField(BrickField.USER_BRICK));
+			}
+		}
+	}
+
+	private void updateUserVariableValue(String variableName, String value) {
+		List<UserVariable> variables = ProjectManager.getInstance().getCurrentProject().getUserVariables().getOrCreateVariableListForUserBrick(userBrickId);
+		for (UserVariable userVariable : variables) {
+			if (userVariable.getName().equals(variableName)) {
+				userVariable.setValue(Double.parseDouble(value));
 			}
 		}
 	}
@@ -370,4 +380,5 @@ public class UserBrick extends BrickBaseType implements OnClickListener {
 	public int getUserBrickIndexInScript(Pair<Integer, Integer> userBrickPositionToParameterPair) {
 		return userBrickPositionToParameter.indexOf(userBrickPositionToParameterPair);
 	}
+
 }

@@ -302,9 +302,9 @@ public class Sprite implements Serializable, Cloneable {
 		look.addAction(whenParallelAction);
 	}
 
-	private SequenceAction createActionSequence(Script s) {
+	private SequenceAction createActionSequence(Script script) {
 		SequenceAction sequence = ExtendedActions.sequence();
-		s.run(this, sequence);
+		script.run(this, sequence);
 		return sequence;
 	}
 
