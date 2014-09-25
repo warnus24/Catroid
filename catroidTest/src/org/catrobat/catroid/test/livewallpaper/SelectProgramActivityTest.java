@@ -27,20 +27,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Point;
 import android.preference.PreferenceManager;
-import android.service.wallpaper.WallpaperService;
 import android.test.SingleLaunchActivityTestCase;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.SurfaceHolder;
 import android.view.WindowManager;
-import android.widget.SeekBar;
 
-import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 import com.badlogic.gdx.graphics.Color;
-
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.robotium.solo.Solo;
 
 import org.catrobat.catroid.ProjectManager;
@@ -51,12 +44,10 @@ import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.common.StandardProjectHandler;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.StorageHandler;
-import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
 import org.catrobat.catroid.stage.StageListener;
-import org.catrobat.catroid.test.livewallpaper.utils.MySurfaceHolder;
 import org.catrobat.catroid.test.livewallpaper.utils.TestUtils;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
@@ -269,7 +260,7 @@ public class SelectProgramActivityTest extends
 		assertTrue("The enable sound text was not found", solo.searchText(solo.getString(R.string.lwp_enable_sound)));
 
 		solo.setProgressBar(0, 20);
-		solo.sleep(2000);
+		solo.sleep(1000);
 		SelectProgramActivity spa = (SelectProgramActivity)solo.getCurrentActivity();
 
 		assertEquals("Sound SeekBar value wrong", 20, spa.getSelectProgramFragment().getSeekbarProgress());
@@ -303,6 +294,42 @@ public class SelectProgramActivityTest extends
 
 		assertTrue("Color of the Sprites in StageListener is not the same", sameColor);
 		assertTrue("isTinting is not set in StageListener", isTinting);
+	}
+
+	public void testRememberVolume()
+	{
+		solo.clickOnText(TEST_PROJECT_NAME);
+		assertTrue("The set program dialog was not found", solo.searchText(solo.getString(R.string.lwp_confirm_set_program_message)));
+		assertTrue("The enable sound text was not found", solo.searchText(solo.getString(R.string.lwp_enable_sound)));
+		assertEquals("Remember value wrong", DEFAULT_VOLUME, LiveWallpaper.getInstance().getRememberVolume());
+		solo.setProgressBar(0, VOLUME_TEST);
+		solo.sleep(500);
+		SelectProgramActivity spa = (SelectProgramActivity)solo.getCurrentActivity();
+
+		assertEquals("Sound value wrong", VOLUME_TEST, spa.getSelectProgramFragment().getSeekbarProgress());
+		solo.clickOnText(solo.getString(R.string.lwp_enable_sound));
+		assertEquals("Remember value wrong", VOLUME_TEST, LiveWallpaper.getInstance().getRememberVolume());
+		solo.clickOnText(solo.getString(R.string.lwp_enable_sound));
+		assertEquals("Remember value wrong", VOLUME_TEST, LiveWallpaper.getInstance().getRememberVolume());
+		assertEquals("Sound value wrong", 0, spa.getSelectProgramFragment().getSeekbarProgress());
+		solo.clickOnButton(solo.getString(R.string.yes));
+		solo.goBack();
+		TestUtils.restartActivity(spa);
+		solo.clickOnText(TEST_PROJECT_NAME);
+		assertEquals("Remember value wrong", VOLUME_TEST, LiveWallpaper.getInstance().getRememberVolume());
+		assertEquals("Sound value wrong", VOLUME_TEST, spa.getSelectProgramFragment().getSeekbarProgress());
+		solo.clickOnText(solo.getString(R.string.lwp_enable_sound));
+		solo.clickOnButton(solo.getString(R.string.yes));
+		solo.goBack();
+		TestUtils.restartActivity(spa);
+		solo.clickOnText(TEST_PROJECT_NAME);
+		assertEquals("Remember value wrong", VOLUME_TEST, LiveWallpaper.getInstance().getRememberVolume());
+		assertEquals("Sound value wrong", VOLUME_TEST, spa.getSelectProgramFragment().getSeekbarProgress());
+		solo.clickOnButton(solo.getString(R.string.no));
+		solo.goBack();
+		TestUtils.restartActivity(spa);
+		solo.clickOnText(TEST_PROJECT_NAME);
+		assertEquals("Sound value wrong", VOLUME_TEST, spa.getSelectProgramFragment().getSeekbarProgress());
 	}
 }
 

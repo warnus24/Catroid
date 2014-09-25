@@ -56,7 +56,7 @@ import org.catrobat.catroid.utils.Utils;
 @SuppressLint("NewApi")
 //eventuell unnötig 10 intern 15 vorraussetzen Fehlerfall abfangen API Level vorraussetzen  prüfen mit 10
 public class LiveWallpaper extends AndroidLiveWallpaperService {
-
+	private int rememberVolume=50;
 	private AndroidApplicationConfiguration cfg;
 	private Context context;
 	private boolean previewEnginePaused;
@@ -102,6 +102,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		return homeEngine;
 	}
 
+
+	public int getRememberVolume() {
+		return rememberVolume;
+	}
+
+	public void setRememberVolume(int rememberVolume) {
+		this.rememberVolume = rememberVolume;
+	}
 	/**
 	 * @param previewEngine
 	 *            the previewEngine to set

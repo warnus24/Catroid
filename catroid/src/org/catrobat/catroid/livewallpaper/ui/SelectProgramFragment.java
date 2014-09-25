@@ -295,14 +295,13 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 	public void onProjectClicked(int position) {
 		selectedProject = projectList.get(position).projectName;
-		CheckBox checkBox = new CheckBox(getActivity());
+		final CheckBox checkBox = new CheckBox(getActivity());
 		checkBox.setText(R.string.lwp_enable_sound);
-		SeekBar seekBar = new SeekBar(getActivity());
+		final SeekBar seekBar = new SeekBar(getActivity());
 		seekBar.setMax(100);
 
-		seekBar.setProgress(1);
 		seekBar.setVisibility(View.VISIBLE);
-		seekBar.setProgress((int)SoundManager.getInstance().getVolume());
+		seekBar.setProgress(LiveWallpaper.getInstance().getRememberVolume());
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
 		seekBar.setLayoutParams(lp);
 
@@ -320,23 +319,29 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 				// TODO Auto-generated method stub
 				Log.d("SelectProgramFragment", "SeekBar Changelistener progress changed to " + String.valueOf(arg1));
 				SoundManager.getInstance().setVolume(arg1);
+				LiveWallpaper.getInstance().setRememberVolume(arg1);
+				checkBox.setChecked(true);
 				soundSeekBarVolume = arg1;
 			}
+
 		});
 
 
 
-			final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		checkBox.setChecked(!sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
-		SoundManager.getInstance().setVolume(50);
+		final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		checkBox.setChecked(SoundManager.getInstance().getVolume()>0);
+		if(checkBox.isChecked())
+			soundSeekBarVolume = LiveWallpaper.getInstance().getRememberVolume();
+		seekBar.setProgress(LiveWallpaper.getInstance().getRememberVolume());
+		SoundManager.getInstance().setVolume(LiveWallpaper.getInstance().getRememberVolume());
 		checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked) {
-					SoundManager.getInstance().setVolume(50);
+					soundSeekBarVolume = LiveWallpaper.getInstance().getRememberVolume();
 					Log.d("LWP", "Enable Sound Volume is :" +SoundManager.getInstance().getVolume()+" CHECK!");
 				} else {
-					SoundManager.getInstance().setVolume(0);
+					soundSeekBarVolume = 0;
 					Log.d("LWP", "Enable Sound Volume is :" +SoundManager.getInstance().getVolume()+"  UNCHECK!");
 				}
 			}
@@ -363,6 +368,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			@SuppressLint("NewApi")
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				SoundManager.getInstance().setVolume(soundSeekBarVolume);
 				LoadProject Loader = new LoadProject();
 				Loader.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 			}
