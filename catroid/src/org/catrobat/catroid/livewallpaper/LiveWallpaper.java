@@ -67,11 +67,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private LiveWallpaperEngine homeEngine;
 
 	private ApplicationListener stageListener = null;
+	private boolean isTest = false;
 
 	public LiveWallpaper() {
 		super();
-		if(INSTANCE == null)
-		{
+		if(INSTANCE == null){
 			INSTANCE = this;
 		}
 
@@ -153,6 +153,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		loadProject();
 		stageListener = new StageListener(true);
 		previewEngine = new LiveWallpaperEngine();
+		isTest = true;
 	}
 
 	public Context getContext() {
@@ -406,7 +407,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		public synchronized void changeWallpaperProgram() {
 
-			if (getLocalStageListener() == null) {
+			if (getLocalStageListener() == null || isTest) {
 				Log.d("LWP", "StageListener, Fehler bei changeWallpaper " + name);
 				return;
 			}

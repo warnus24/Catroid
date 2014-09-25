@@ -78,6 +78,7 @@ public class SelectProgramActivityTest extends
 	private Solo solo;
 	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.LWP);
 	private File lookFile;
+	private Color REFERENCE_COLOR = new Color(255.0f / 255.0f, 50.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
 
 	private static final int MAX_PROJECTS = 5;
 	private ArrayList<Project> projectArrayList;
@@ -279,10 +280,9 @@ public class SelectProgramActivityTest extends
 		solo.sleep(2000);
 		SelectProgramActivity spa = (SelectProgramActivity)solo.getCurrentActivity();
 		spa.getTintingColor();
-		Color color = new Color(255.0f / 255.0f, 50.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
 		boolean sameColor = false;
 
-		if(color.equals(spa.getTintingColor())){
+		if(REFERENCE_COLOR.equals(spa.getTintingColor())){
 			sameColor = true;
 		}
 
@@ -297,7 +297,7 @@ public class SelectProgramActivityTest extends
 			spriteColor = stageListener.getTintingColor();
 		}
 
-		if(color.equals(spriteColor)){
+		if(REFERENCE_COLOR.equals(spriteColor)){
 			sameColor = true;
 		}
 
