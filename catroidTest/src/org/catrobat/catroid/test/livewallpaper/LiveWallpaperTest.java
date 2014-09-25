@@ -72,7 +72,7 @@ public class LiveWallpaperTest extends ServiceTestCase<LiveWallpaper> {
 		LiveWallpaper liveWallpaper = (LiveWallpaper) mService;
 
 		// Asserts that the Notification Manager was created in the service under test.
-		assertNotNull("StageListener should not be null", liveWallpaper.getLocalStageListener());
+		assertNotNull("StageListener should not be null", liveWallpaper);
 	}
 
 	/**
