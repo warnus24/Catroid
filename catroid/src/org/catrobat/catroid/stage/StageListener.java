@@ -64,6 +64,7 @@ import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAtt
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessorWrapper;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
+import org.catrobat.catroid.utils.PostProcessingUtil;
 import org.catrobat.catroid.utils.Utils;
 import org.catrobat.catroid.utils.VibratorUtil;
 import com.bitfire.utils.ShaderLoader;
@@ -171,12 +172,16 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	}
 
 	public void setTintingColor(int c) {
-		float a = Color.alpha(c);
-		float r = Color.red(c);
-		float g = Color.green(c);
-		float b = Color.blue(c);
-		Log.d("LWP", "Color(" + r + ", " + g + ", " + b + ", " + a + ")");
-		tintingColor = new com.badlogic.gdx.graphics.Color(r / 255, g / 255, b / 255, a / 255);
+		PostProcessingUtil util = new PostProcessingUtil();
+		tintingColor = util.convertIntColorToColor(c);
+	}
+
+	public boolean isTinting(){
+		return isTinting;
+	}
+
+	public com.badlogic.gdx.graphics.Color getTintingColor(){
+		return tintingColor;
 	}
 
 	public void tinting() {

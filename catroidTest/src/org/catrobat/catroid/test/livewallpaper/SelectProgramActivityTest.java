@@ -29,11 +29,16 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Point;
 import android.preference.PreferenceManager;
+import android.service.wallpaper.WallpaperService;
 import android.test.SingleLaunchActivityTestCase;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.SurfaceHolder;
 import android.view.WindowManager;
 import android.widget.SeekBar;
+
+import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
+import com.badlogic.gdx.graphics.Color;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.robotium.solo.Solo;
@@ -50,6 +55,8 @@ import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
+import org.catrobat.catroid.stage.StageListener;
+import org.catrobat.catroid.test.livewallpaper.utils.MySurfaceHolder;
 import org.catrobat.catroid.test.livewallpaper.utils.TestUtils;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
@@ -71,6 +78,7 @@ public class SelectProgramActivityTest extends
 	private Solo solo;
 	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.LWP);
 	private File lookFile;
+	private Color REFERENCE_COLOR = new Color(255.0f / 255.0f, 50.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
 
 	private static final int MAX_PROJECTS = 5;
 	private ArrayList<Project> projectArrayList;
@@ -89,6 +97,10 @@ public class SelectProgramActivityTest extends
 		projectArrayList = new ArrayList<Project>();
 
 		solo = new Solo(getInstrumentation(),getActivity());
+
+		solo.sleep(2000);
+		LiveWallpaper.getInstance().initializeForTest();
+
 		DisplayMetrics disp = new DisplayMetrics();
 		getActivity().getApplicationContext();
 		((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(disp);
@@ -264,15 +276,33 @@ public class SelectProgramActivityTest extends
 	}
 
 	public void testTintingColorPicker() {
-		solo.clickOnMenuItem(solo.getString(R.string.lwp_tinting));
+		solo.clickOnMenuItem(solo.getString(R.string.lwp_sepia));
 		solo.sleep(2000);
+		SelectProgramActivity spa = (SelectProgramActivity)solo.getCurrentActivity();
+		spa.getTintingColor();
+		boolean sameColor = false;
 
-		Point size = new Point();
-		getActivity().getWindowManager().getDefaultDisplay().getSize(size);
-		int width = size.x;
-		int height = size.y;
+		if(REFERENCE_COLOR.equals(spa.getTintingColor())){
+			sameColor = true;
+		}
 
-		solo.clickOnScreen(width * 0.75f, height * 0.5f);
+		assertTrue("Color in the ColorPicker is not the same", sameColor);
+
+		LiveWallpaper liveWallpaper = LiveWallpaper.getInstance();
+		boolean isTinting = false;
+		Color spriteColor = null;
+		synchronized (liveWallpaper){
+			StageListener stageListener = liveWallpaper.getLocalStageListener();
+			isTinting = stageListener.isTinting();
+			spriteColor = stageListener.getTintingColor();
+		}
+
+		if(REFERENCE_COLOR.equals(spriteColor)){
+			sameColor = true;
+		}
+
+		assertTrue("Color of the Sprites in StageListener is not the same", sameColor);
+		assertTrue("isTinting is not set in StageListener", isTinting);
 	}
 }
 

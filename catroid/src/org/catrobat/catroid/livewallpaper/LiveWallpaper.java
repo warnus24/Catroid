@@ -76,11 +76,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private ApplicationListener stageListener = null;
 	private Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> map = new HashMap<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>();
 	private Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> effectAttributes = Collections.synchronizedMap(map);
+	private boolean isTest = false;
 
 	public LiveWallpaper() {
 		super();
-		if(INSTANCE == null)
-		{
+		if(INSTANCE == null){
 			INSTANCE = this;
 		}
 
@@ -158,8 +158,19 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		Log.d("LWP", "Preview was initialized");
 	}
 
+	public void initializeForTest(){
+		loadProject();
+		stageListener = new StageListener(true);
+		previewEngine = new LiveWallpaperEngine();
+		isTest = true;
+	}
+
 	public Context getContext() {
 		return context;
+	}
+
+	public StageListener getLocalStageListener() {
+		return (StageListener) stageListener;
 	}
 
 	@Override
@@ -333,6 +344,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		@Override
 		public void onSurfaceCreated(final SurfaceHolder holder) {
+			Log.d("LWP", "onSurfaceCreated");
 			if (!isPreview() && homeEngine != null && previewEngine != null) {
 				Log.d("LWP", "Home Engine erstellt (nicht zum ersten Mal)");
 			} else if (!isPreview() && previewEngine != null) {
@@ -352,7 +364,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			super.onSurfaceCreated(holder);
 		}
 
-		private StageListener getLocalStageListener() {
+		public StageListener getLocalStageListener() {
 			return (StageListener) stageListener;
 		}
 
@@ -448,7 +460,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		public synchronized void changeWallpaperProgram() {
 
-			if (getLocalStageListener() == null) {
+			if (getLocalStageListener() == null || isTest) {
 				Log.d("LWP", "StageListener, Fehler bei changeWallpaper " + name);
 				return;
 			}
@@ -503,11 +515,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 
 		private void activateTextToSpeechIfNeeded() {
-						if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
-							Intent installIntent = new Intent();
-							installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-							startActivity(installIntent);
-						}
+			if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
+				Intent installIntent = new Intent();
+				installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+				startActivity(installIntent);
+			}
 		}
 	}
 

@@ -58,6 +58,11 @@
         android:id="@+id/lwp_disable_effect"
         android:showAsAction="never"
         android:title="@string/lwp_disable_effect"/>
+
+    <item
+        android:id="@+id/lwp_sepia"
+        android:showAsAction="never"
+        android:title="@string/lwp_sepia"/>
     
  
 </menu>
