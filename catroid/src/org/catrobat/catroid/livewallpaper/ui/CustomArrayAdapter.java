@@ -33,8 +33,10 @@ import android.widget.TextView;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
+import org.catrobat.catroid.livewallpaper.postprocessing.DefaultPostProcessingEffectAttributeContainers;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingUtil;
 
 /**
  * Created by White on 30.08.2014.
@@ -52,7 +54,14 @@ public class CustomArrayAdapter extends ArrayAdapter<PostProcessingEffectsEnum>
 	@Override
 	public View getView (int position, View convertView, ViewGroup parent){
 		PostProcessingEffectsEnum item = getItem (position);
-		PostProcessingEffectAttributContainer attributes = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(item);
+		PostProcessingEffectAttributContainer attributes;
+		if(LiveWallpaper.getInstance() != null){
+			attributes = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(item);
+		}
+		else{
+			attributes = PostProcessingUtil.getDefaultPostProcessingEffectAttributeContainers(item);
+		}
+
 		LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View rowView;
