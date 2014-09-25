@@ -51,8 +51,12 @@ import org.catrobat.catroid.exceptions.CompatibilityProjectException;
 import org.catrobat.catroid.exceptions.LoadingProjectException;
 import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
+import org.catrobat.catroid.livewallpaper.postprocessing.BloomAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.CrtMonitorAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.CurvatureAttributeContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
+import org.catrobat.catroid.livewallpaper.postprocessing.VignetteAttributeContainer;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
@@ -95,6 +99,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	public void saveOldProjectName(String name) {
 		this.oldProjectName = name;
+	}
+
+	public Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>getEffectMap()
+	{
+		 return effectAttributes;
 	}
 
 	/**

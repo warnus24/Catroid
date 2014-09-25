@@ -263,12 +263,17 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	public void activatePostProcessingEffects(PostProcessingEffectAttributContainer effectAttributes)
 	{
-		postProcessorWrapper.add(effectAttributes.getType(), effectAttributes);
+		if(postProcessorWrapper != null){
+			postProcessorWrapper.add(effectAttributes.getType(), effectAttributes);
+		}
+
 	}
 
 	public void deactivatePostProcessingEffects(PostProcessingEffectAttributContainer effectAttributes)
 	{
-		postProcessorWrapper.remove(effectAttributes.getType(), effectAttributes);
+		if(postProcessorWrapper != null) {
+			postProcessorWrapper.remove(effectAttributes.getType(), effectAttributes);
+		}
 	}
 
 	public void disableEffects()

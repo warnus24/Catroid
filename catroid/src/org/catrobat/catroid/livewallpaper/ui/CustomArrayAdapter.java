@@ -54,12 +54,9 @@ public class CustomArrayAdapter extends ArrayAdapter<PostProcessingEffectsEnum>
 	@Override
 	public View getView (int position, View convertView, ViewGroup parent){
 		PostProcessingEffectsEnum item = getItem (position);
-		PostProcessingEffectAttributContainer attributes;
+		PostProcessingEffectAttributContainer attributes = null;
 		if(LiveWallpaper.getInstance() != null){
 			attributes = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(item);
-		}
-		else{
-			attributes = PostProcessingUtil.getDefaultPostProcessingEffectAttributeContainers(item);
 		}
 
 		LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

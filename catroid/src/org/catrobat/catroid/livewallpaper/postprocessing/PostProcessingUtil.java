@@ -23,6 +23,8 @@
 
 package org.catrobat.catroid.livewallpaper.postprocessing;
 
+import java.util.Map;
+
 /**
  * Created by White on 25.09.2014.
  */
@@ -32,4 +34,5 @@ public class PostProcessingUtil {
 	public static PostProcessingEffectAttributContainer getDefaultPostProcessingEffectAttributeContainers(PostProcessingEffectsEnum type){
 			return attributeContainers.getAttributes(type);
 	}
+
 }

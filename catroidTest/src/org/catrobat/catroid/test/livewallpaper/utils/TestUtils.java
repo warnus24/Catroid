@@ -27,10 +27,29 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.badlogic.gdx.utils.Select;
+
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.StorageHandler;
+import org.catrobat.catroid.livewallpaper.postprocessing.BloomAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.CrtMonitorAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.CurvatureAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
+import org.catrobat.catroid.livewallpaper.postprocessing.VignetteAttributeContainer;
+import org.catrobat.catroid.livewallpaper.ui.SelectBloomEffectActivity;
+
+import java.util.Map;
 
 public class TestUtils {
+
+	//Bloom
+	public static float BASE_INT = 10.0f;
+	public static float BASE_SAT = 11.0f;
+	public static float BLOOM_INT = 12.0f;
+	public static float BLOOM_SAT = 13.0f;
+	public static float BLOOM_THRESHOLD = 14.0f;
+	public static boolean BLOOM_IS_ENABLED = false;
 
 	
 	public static Project createEmptyProjectWithoutSettingIt(Context context, String projectName) {
@@ -53,6 +72,33 @@ public class TestUtils {
 		myIntent.addCategory(Intent.CATEGORY_LAUNCHER); 
 		myIntent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY); 
 		myActivity.startActivity(myIntent); 	
+	}
+
+	public static void initializePostProcessingGUISForTest(Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> map)
+	{
+		BloomAttributeContainer bloom = new BloomAttributeContainer();
+		bloom.setBaseInt(BASE_INT / SelectBloomEffectActivity.BASE_INT_FACTOR);
+		bloom.setBaseSat(BASE_SAT / SelectBloomEffectActivity.BASE_SAT_FACTOR);
+		bloom.setBloomSat(BLOOM_SAT / SelectBloomEffectActivity.BLOOM_SAT_FACTOR);
+		bloom.setBloomInt(BLOOM_INT / SelectBloomEffectActivity.BLOOM_INT_FACTOR);
+		bloom.setThreshold(BLOOM_THRESHOLD / SelectBloomEffectActivity.BLOOM_THRESHOLD_FACTOR);
+		bloom.setEnabled(BLOOM_IS_ENABLED);
+		map.put(PostProcessingEffectsEnum.BLOOM, bloom);
+
+
+		VignetteAttributeContainer vignette = new VignetteAttributeContainer();
+		vignette.setEnabled(true);
+
+		CurvatureAttributeContainer curvature = new CurvatureAttributeContainer();
+		curvature.setEnabled(true);
+
+		CrtMonitorAttributeContainer crtMonitor = new CrtMonitorAttributeContainer();
+		crtMonitor.setEnabled(false);
+
+		map.put(PostProcessingEffectsEnum.VIGNETTE, vignette);
+		map.put(PostProcessingEffectsEnum.CURVATURE, curvature);
+
+		map.put(PostProcessingEffectsEnum.CRTMONITOR, crtMonitor);
 	}
 	
 }

@@ -51,11 +51,11 @@ public class SelectBloomEffectActivity extends BaseActivity {
 	private CustomOnSeekbarListener bloomSatListener;
 	private CustomOnSeekbarListener bloomThresholdListener;
 
-	private final float BASE_INT_FACTOR = 50.0F;
-	private final float BASE_SAT_FACTOR = 58.8F;
-	private final float BLOOM_INT_FACTOR = 45.4F;
-	private final float BLOOM_SAT_FACTOR = 58.8F;
-	private final float BLOOM_THRESHOLD_FACTOR = 180.51F;
+	public static final float BASE_INT_FACTOR = 50.0F;
+	public static final float BASE_SAT_FACTOR = 58.8F;
+	public static final float BLOOM_INT_FACTOR = 45.4F;
+	public static final float BLOOM_SAT_FACTOR = 58.8F;
+	public static final float BLOOM_THRESHOLD_FACTOR = 180.51F;
 	public SelectBloomEffectActivity INSTANCE;
 
 	@Override
