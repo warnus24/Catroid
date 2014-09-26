@@ -731,5 +731,7 @@
     <string name="lwp_select_effects">Select effects</string>
     <string name="lwp_color_dialog_title">Pick a color</string>
     <string name="lwp_sepia">Sepia</string>
+    <string name="lwp_postprocessing_disabled_color">Orange</string>
+    <string name="lwp_postprocessing_enabled_color">Green</string>
 
 </resources>

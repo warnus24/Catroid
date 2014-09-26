@@ -23,7 +23,8 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/BrickCategory" >
+              style="@style/BrickCategory"
+                android:tag="@string/lwp_postprocessing_enabled_color" >
 
     <TextView
         style="@style/BrickCategoryText.Looks"

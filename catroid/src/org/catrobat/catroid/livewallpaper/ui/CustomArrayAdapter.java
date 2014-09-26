@@ -36,7 +36,7 @@ import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.postprocessing.DefaultPostProcessingEffectAttributeContainers;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
-import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingUtil;
+import org.catrobat.catroid.utils.PostProcessingUtil;
 
 /**
  * Created by White on 30.08.2014.
@@ -62,24 +62,23 @@ public class CustomArrayAdapter extends ArrayAdapter<PostProcessingEffectsEnum>
 		LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		View rowView;
-		if(attributes == null)
-		{
+		if(attributes == null) {
 			rowView = inflater.inflate(R.layout.activity_postprocessing_list_item_disabled, null);
+			PostProcessingUtil.setBloomPostProcessingEffectLayoutEnabled(false);
 		}
-		else if(attributes.isEnabled())
-		{
+		else if(attributes.isEnabled()) {
 			rowView = inflater.inflate(R.layout.activity_postprocessing_list_item_enabled, null);
+			PostProcessingUtil.setBloomPostProcessingEffectLayoutEnabled(true);
 		}
-		else
-		{
+		else {
 			rowView = inflater.inflate(R.layout.activity_postprocessing_list_item_disabled, null);
+			PostProcessingUtil.setBloomPostProcessingEffectLayoutEnabled(false);
 		}
 
+		rowView.setId(position);
 
 		TextView effectDescription = (TextView)rowView.findViewById(R.id.activity_postprocessing_text1);
 		effectDescription.setText(item.toString());
-
-
 
 		return rowView;
 	}

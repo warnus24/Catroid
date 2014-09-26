@@ -737,6 +737,8 @@
     <string name="lwp_select_effects">Waehle Effekt</string>
     <string name="lwp_color_dialog_title">Wähle eine Farbe</string>
     <string name="lwp_sepia">Sepia</string>
+     <string name="lwp_postprocessing_disabled_color">Orange</string>
+    <string name="lwp_postprocessing_enabled_color">Gruen</string>
 	<!--  -->
 
     <!-- Camera Strings -->

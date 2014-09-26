@@ -26,12 +26,18 @@ package org.catrobat.catroid.utils;
 import android.graphics.Color;
 import android.util.Log;
 
+import org.catrobat.catroid.livewallpaper.postprocessing.DefaultPostProcessingEffectAttributeContainers;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
+
 /**
  * Created by White on 24.09.2014.
  */
 public class PostProcessingUtil {
+	private static DefaultPostProcessingEffectAttributeContainers attributeContainers = new DefaultPostProcessingEffectAttributeContainers();
+	private static boolean bloomInLayoutIsEnabled = false;
 
-	public com.badlogic.gdx.graphics.Color convertIntColorToColor(int c)
+	public static com.badlogic.gdx.graphics.Color convertIntColorToColor(int c)
 	{
 		float a = Color.alpha(c);
 		float r = Color.red(c);
@@ -39,6 +45,18 @@ public class PostProcessingUtil {
 		float b = Color.blue(c);
 		Log.d("LWP", "Color(" + r + ", " + g + ", " + b + ", " + a + ")");
 		return new com.badlogic.gdx.graphics.Color(r / 255, g / 255, b / 255, a / 255);
+	}
+
+	public static PostProcessingEffectAttributContainer getDefaultPostProcessingEffectAttributeContainers(PostProcessingEffectsEnum type){
+		return attributeContainers.getAttributes(type);
+	}
+
+	public static void setBloomPostProcessingEffectLayoutEnabled(boolean isEnabled) {
+		bloomInLayoutIsEnabled = isEnabled;
+	}
+
+	public static boolean isBloomPostProcessinginLayoutEnabled() {
+		return bloomInLayoutIsEnabled;
 	}
 
 }

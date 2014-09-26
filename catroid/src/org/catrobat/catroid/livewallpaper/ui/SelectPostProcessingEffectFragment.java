@@ -66,7 +66,7 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	private String selectedEffect;
 	private static ArrayAdapter<PostProcessingEffectsEnum> adapter;
 	private static PostProcessingEffectsEnum[] effectArray;
-	private int EFFECT_ARRAY_SIZE = 4;
+	public static int EFFECT_ARRAY_SIZE = 4;
 	private static Activity activity;
 
 	@Override

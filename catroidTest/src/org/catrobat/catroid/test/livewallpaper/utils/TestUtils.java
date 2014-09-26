@@ -24,8 +24,12 @@
 package org.catrobat.catroid.test.livewallpaper.utils;
 
 import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.ListView;
 
 import com.badlogic.gdx.utils.Select;
 
@@ -49,7 +53,7 @@ public class TestUtils {
 	public static float BLOOM_INT = 12.0f;
 	public static float BLOOM_SAT = 13.0f;
 	public static float BLOOM_THRESHOLD = 14.0f;
-	public static boolean BLOOM_IS_ENABLED = false;
+	public static boolean BLOOM_IS_ENABLED = true;
 
 	
 	public static Project createEmptyProjectWithoutSettingIt(Context context, String projectName) {
@@ -100,5 +104,10 @@ public class TestUtils {
 
 		map.put(PostProcessingEffectsEnum.CRTMONITOR, crtMonitor);
 	}
-	
+
+	public static void setBloomEffectDisabled(Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> map){
+		BloomAttributeContainer bloom = new BloomAttributeContainer();
+		bloom.setEnabled(false);
+		map.put(PostProcessingEffectsEnum.BLOOM, bloom);
+	}
 }

@@ -30,9 +30,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 
+import com.badlogic.gdx.graphics.Color;
 import com.robotium.solo.Solo;
 
 import org.catrobat.catroid.ProjectManager;
@@ -46,8 +48,11 @@ import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
 import org.catrobat.catroid.livewallpaper.ui.SelectBloomEffectActivity;
 import org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectActivity;
+import org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectFragment;
 import org.catrobat.catroid.test.livewallpaper.utils.TestUtils;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
+import org.catrobat.catroid.utils.PostProcessingUtil;
+
 import com.badlogic.gdx.*;
 
 /**
@@ -101,7 +106,7 @@ public class SelectPostProcessingEffectActivityTest extends
 		super.tearDown();
 	}
 
-	public void testBloomActivity() {
+	public void testBloomActivityEnabled() {
 		solo.clickOnText(PostProcessingEffectsEnum.BLOOM.toString());
 		solo.waitForActivity(SelectBloomEffectActivity.class);
 		assertTrue("Current activity is not Bloom Activity", solo.getCurrentActivity().getClass().equals(SelectBloomEffectActivity.class));
@@ -109,27 +114,27 @@ public class SelectPostProcessingEffectActivityTest extends
 		Switch switch1 = (Switch) solo.getCurrentActivity().findViewById(R.id.switch1);
 		assertNotNull("Switch shouldn't be null", switch1);
 
-		assertEquals("Switch has false state", switch1.isActivated(), TestUtils.BLOOM_IS_ENABLED);
+		assertEquals("Switch has false state", TestUtils.BLOOM_IS_ENABLED, switch1.isChecked());
 
 		SeekBar seekBar1 = (SeekBar) solo.getCurrentActivity().findViewById(R.id.seekBar1);
 		assertNotNull("Seekbar shouldn't be null", seekBar1);
-		assertEquals("Seekbar1 has false state", seekBar1.getProgress(), TestUtils.BASE_INT);
+		assertEquals("Seekbar1 has false state", seekBar1.getProgress(), Math.round(TestUtils.BASE_INT));
 
 		SeekBar seekBar2 = (SeekBar) solo.getCurrentActivity().findViewById(R.id.seekBar2);
 		assertNotNull("Seekbar shouldn't be null", seekBar2);
-		assertEquals("Seekbar2 has false state", seekBar2.getProgress(), TestUtils.BASE_SAT);
+		assertEquals("Seekbar2 has false state", seekBar2.getProgress(), Math.round(TestUtils.BASE_SAT));
 
 		SeekBar seekBar3 = (SeekBar) solo.getCurrentActivity().findViewById(R.id.seekBar3);
 		assertNotNull("Seekbar shouldn't be null", seekBar3);
-		assertEquals("Seekbar3 has false state", seekBar3.getProgress(), TestUtils.BLOOM_INT);
+		assertEquals("Seekbar3 has false state", seekBar3.getProgress(), Math.round(TestUtils.BLOOM_INT));
 
 		SeekBar seekBar4 = (SeekBar) solo.getCurrentActivity().findViewById(R.id.seekBar4);
 		assertNotNull("Seekbar shouldn't be null", seekBar4);
-		assertEquals("Seekbar4 has false state", seekBar4.getProgress(), TestUtils.BLOOM_SAT);
+		assertEquals("Seekbar4 has false state", seekBar4.getProgress(), Math.round(TestUtils.BLOOM_SAT));
 
 		SeekBar seekBar5 = (SeekBar) solo.getCurrentActivity().findViewById(R.id.seekBar5);
 		assertNotNull("Seekbar shouldn't be null", seekBar5);
-		assertEquals("Seekbar5 has false state", seekBar5.getProgress(), TestUtils.BLOOM_THRESHOLD);
+		assertEquals("Seekbar5 has false state", seekBar5.getProgress(), Math.round(TestUtils.BLOOM_THRESHOLD));
 
 		solo.clickOnView(switch1);
 
@@ -140,8 +145,34 @@ public class SelectPostProcessingEffectActivityTest extends
 		solo.setProgressBar(4, 100);
 		solo.clickOnButton("OK!");
 
-
 		solo.waitForActivity(SelectPostProcessingEffectActivity.class);
+
+		int effectsSize = SelectPostProcessingEffectFragment.EFFECT_ARRAY_SIZE;
+		View view = null;
+		for(int i = 0; i < effectsSize; i++){
+			view = solo.getCurrentActivity().findViewById(i);
+			assertNotNull("View should not be null", view);
+
+			if (i == 0) {
+				String referenceEffectColor = getActivity().getResources().getString(R.string.lwp_postprocessing_enabled_color);
+				assertEquals("Bloom effect has not the same color", referenceEffectColor, view.getTag());
+			}
+		}
+
+		solo.sleep(4000);
+	}
+
+	public void testBloomActivityDisabled() {
+		solo.waitForActivity(getActivity().getClass());
+		TestUtils.restartActivity(getActivity());
+		TestUtils.setBloomEffectDisabled(LiveWallpaper.getInstance().getEffectMap());
+
+		View view = solo.getCurrentActivity().findViewById(0);
+		assertNotNull("View should not be null", view);
+
+		String referenceEffectColor = getActivity().getResources().getString(R.string.lwp_postprocessing_disabled_color);
+		assertEquals("Bloom effect has not the same color", referenceEffectColor, view.getTag());
+
 		solo.sleep(4000);
 	}
 }
