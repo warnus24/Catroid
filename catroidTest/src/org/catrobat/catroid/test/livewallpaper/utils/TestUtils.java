@@ -46,6 +46,7 @@ import org.catrobat.catroid.livewallpaper.ui.SelectCrtMonitorEffectActivity;
 import org.catrobat.catroid.livewallpaper.ui.SelectCurvatureEffectActivity;
 import org.catrobat.catroid.livewallpaper.ui.SelectVignetteEffectActivity;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class TestUtils {
@@ -59,16 +60,16 @@ public class TestUtils {
 	public static boolean BLOOM_IS_ENABLED = true;
 
 	//Vignette
-	public static float INTENSITY_FACTOR = 40.0f;
+	public static float INTENSITY = 40.0f;
 	public static boolean VIGNETTE_IS_ENABLED = true;
 
 	//Curvature
-	public static float DISTORTION_FACTOR = 50.0f;
+	public static float DISTORTION = 50.0f;
 	public static boolean CURVATURE_IS_ENABLED = true;
 
 	//Crt-Monitor
-	public static float CHROMATIC_DISPERSION_RC_FACTOR = 60.0f;
-	public static float CHROMATIC_DISPERSION_BY_FACTOR = 65.0f;
+	public static float CHROMATIC_DISPERSION_RC = 60.0f;
+	public static float CHROMATIC_DISPERSION_BY = 65.0f;
 	public static boolean CRTMONITOR_IS_ENABLED = true;
 
 	
@@ -107,22 +108,56 @@ public class TestUtils {
 
 
 		VignetteAttributeContainer vignette = new VignetteAttributeContainer();
-		vignette.setIntensity(INTENSITY_FACTOR / SelectVignetteEffectActivity.INTENSITY_FACTOR);
+		vignette.setIntensity(INTENSITY / SelectVignetteEffectActivity.INTENSITY_FACTOR);
 		vignette.setEnabled(VIGNETTE_IS_ENABLED);
 		map.put(PostProcessingEffectsEnum.VIGNETTE, vignette);
 
 
 		CurvatureAttributeContainer curvature = new CurvatureAttributeContainer();
-		curvature.setDistortion(DISTORTION_FACTOR / SelectCurvatureEffectActivity.DISTORTION_FACTOR);
+		curvature.setDistortion(DISTORTION / SelectCurvatureEffectActivity.DISTORTION_FACTOR);
 		curvature.setEnabled(CURVATURE_IS_ENABLED);
 		map.put(PostProcessingEffectsEnum.CURVATURE, curvature);
 
 
 		CrtMonitorAttributeContainer crtMonitor = new CrtMonitorAttributeContainer();
-		crtMonitor.setChromaticDispersionRC(CHROMATIC_DISPERSION_RC_FACTOR / SelectCrtMonitorEffectActivity.CHROMATIC_DISPERSION_RC_FACTOR);
-		crtMonitor.setChromaticDispersionBY(CHROMATIC_DISPERSION_BY_FACTOR / SelectCrtMonitorEffectActivity.CHROMATIC_DISPERSION_BY_FACTOR);
+		crtMonitor.setChromaticDispersionRC(CHROMATIC_DISPERSION_RC / SelectCrtMonitorEffectActivity.CHROMATIC_DISPERSION_RC_FACTOR);
+		crtMonitor.setChromaticDispersionBY(CHROMATIC_DISPERSION_BY / SelectCrtMonitorEffectActivity.CHROMATIC_DISPERSION_BY_FACTOR);
 		crtMonitor.setEnabled(CRTMONITOR_IS_ENABLED);
 		map.put(PostProcessingEffectsEnum.CRTMONITOR, crtMonitor);
+	}
+
+	public static Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>  initializePostProcessingEffectsWithoutFactorization()
+	{
+		Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> map = new HashMap<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>();
+		BloomAttributeContainer bloom = new BloomAttributeContainer();
+		bloom.setBaseInt(BASE_INT);
+		bloom.setBaseSat(BASE_SAT);
+		bloom.setBloomSat(BLOOM_SAT);
+		bloom.setBloomInt(BLOOM_INT);
+		bloom.setThreshold(BLOOM_THRESHOLD);
+		bloom.setEnabled(BLOOM_IS_ENABLED);
+		map.put(PostProcessingEffectsEnum.BLOOM, bloom);
+
+
+		VignetteAttributeContainer vignette = new VignetteAttributeContainer();
+		vignette.setIntensity(INTENSITY);
+		vignette.setEnabled(VIGNETTE_IS_ENABLED);
+		map.put(PostProcessingEffectsEnum.VIGNETTE, vignette);
+
+
+		CurvatureAttributeContainer curvature = new CurvatureAttributeContainer();
+		curvature.setDistortion(DISTORTION);
+		curvature.setEnabled(CURVATURE_IS_ENABLED);
+		map.put(PostProcessingEffectsEnum.CURVATURE, curvature);
+
+
+		CrtMonitorAttributeContainer crtMonitor = new CrtMonitorAttributeContainer();
+		crtMonitor.setChromaticDispersionRC(CHROMATIC_DISPERSION_RC);
+		crtMonitor.setChromaticDispersionBY(CHROMATIC_DISPERSION_BY);
+		crtMonitor.setEnabled(CRTMONITOR_IS_ENABLED);
+		map.put(PostProcessingEffectsEnum.CRTMONITOR, crtMonitor);
+
+		return map;
 	}
 
 	public static void setBloomEffectDisabled(Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> map){

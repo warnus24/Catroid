@@ -56,7 +56,7 @@ import java.util.Set;
 public class PostProcessorWrapper
 {
 	private Map<PostProcessingEffectsEnum,PostProcessorEffect> map = new HashMap<PostProcessingEffectsEnum,PostProcessorEffect>();
-	private Map<PostProcessingEffectsEnum,PostProcessorEffect> effects = Collections.synchronizedMap(map);
+	private Map<PostProcessingEffectsEnum,PostProcessorEffect> activeEffects = Collections.synchronizedMap(map);
 	PostProcessor postProcessor = new PostProcessor(false, true, false);
 	EffectsContainer effectsContainer = new EffectsContainer();
 	long startTime = TimeUtils.millis();
@@ -66,8 +66,8 @@ public class PostProcessorWrapper
 	{
 		synchronized (postProcessor) {
 			PostProcessorEffect effect = effectsContainer.get(type);
-			if (effects.containsKey(type)) {
-				PostProcessorEffect activeEffect = effects.get(type);
+			if (activeEffects.containsKey(type)) {
+				PostProcessorEffect activeEffect = activeEffects.get(type);
 				setAttributes(type, activeEffect, attributes);
 				activeEffect.setEnabled(true);
 				Log.e("Error", "Effekt in die Liste NICHT hinzugefügt");
@@ -75,12 +75,16 @@ public class PostProcessorWrapper
 				Log.e("Error", "Effekt in die Liste hinzugefügt");
 				setAttributes(type, effect, attributes);
 				postProcessor.addEffect(effect);
-				effects.put(type, effect);
+				activeEffects.put(type, effect);
 			}
 			initializeTimeForCrtMonitor(type);
 			LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
 			SelectPostProcessingEffectFragment.refresh();
 		}
+	}
+
+	public Map<PostProcessingEffectsEnum,PostProcessorEffect> getActiveEffects(){
+		return activeEffects;
 	}
 
 	private void initializeTimeForCrtMonitor(PostProcessingEffectsEnum type)
@@ -93,7 +97,7 @@ public class PostProcessorWrapper
 	public void updateEffects()
 	{
 		float elapsedSecs = (float)(TimeUtils.millis() - startTime) / 1000;
-		CrtMonitor crtMonitor = (CrtMonitor) effects.get(PostProcessingEffectsEnum.CRTMONITOR);
+		CrtMonitor crtMonitor = (CrtMonitor) activeEffects.get(PostProcessingEffectsEnum.CRTMONITOR);
 		if(crtMonitor != null){
 			crtMonitor.setTime(elapsedSecs);
 		}
@@ -103,7 +107,7 @@ public class PostProcessorWrapper
 	{
 		synchronized (postProcessor) {
 			PostProcessorEffect effect = effectsContainer.get(type);
-			if (effects.containsKey(type)) {
+			if (activeEffects.containsKey(type)) {
 				setAttributes(type, effect, attributes);
 				effect.setEnabled(false);
 			}
@@ -115,12 +119,12 @@ public class PostProcessorWrapper
 	public void removeAll()
 	{
 		synchronized (postProcessor) {
-			Set<PostProcessingEffectsEnum> keys = effects.keySet();
+			Set<PostProcessingEffectsEnum> keys = activeEffects.keySet();
 			Iterator<PostProcessingEffectsEnum> iterator = keys.iterator();
 			while(iterator.hasNext())
 			{
 				PostProcessingEffectsEnum effectType = iterator.next();
-				PostProcessorEffect effect = effects.get(effectType);
+				PostProcessorEffect effect = activeEffects.get(effectType);
 				//postProcessor.removeEffect(effect);
 				effect.setEnabled(false);
 				PostProcessingEffectAttributContainer attributes = LiveWallpaper.getInstance().getPostProcessingEffectAttributes(effectType);
