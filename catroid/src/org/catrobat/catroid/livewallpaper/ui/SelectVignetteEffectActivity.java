@@ -57,7 +57,7 @@ public class SelectVignetteEffectActivity extends BaseActivity implements Adapte
 	VignetteGradientEnum gradientType;
 	int gradientPosition;
 
-	private final float INTENSITY_FACTOR = 50.0F;
+	public static final float INTENSITY_FACTOR = 50.0F;
 	public SelectVignetteEffectActivity INSTANCE;
 
 	@Override

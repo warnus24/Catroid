@@ -48,8 +48,8 @@ public class SelectCrtMonitorEffectActivity extends BaseActivity {
 	private CustomOnSeekbarListener chromaticDispersionBYListener;
 	private CustomOnSeekbarListener timeListener;
 
-	private final float CHROMATIC_DISPERSION_RC_FACTOR = -150.0F;
-	private final float CHROMATIC_DISPERSION_BY_FACTOR = -150.0F;
+	public static final float CHROMATIC_DISPERSION_RC_FACTOR = -150.0F;
+	public static final float CHROMATIC_DISPERSION_BY_FACTOR = -150.0F;
 	public SelectCrtMonitorEffectActivity INSTANCE;
 
 	@Override

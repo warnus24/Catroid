@@ -80,7 +80,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private ApplicationListener stageListener = null;
 	private Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> map = new HashMap<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>();
 	private Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> effectAttributes = Collections.synchronizedMap(map);
-	private boolean isTest = false;
 
 	public LiveWallpaper() {
 		super();
@@ -171,7 +170,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		loadProject();
 		stageListener = new StageListener(true);
 		previewEngine = new LiveWallpaperEngine();
-		isTest = true;
 	}
 
 	public Context getContext() {
@@ -469,7 +467,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		public synchronized void changeWallpaperProgram() {
 
-			if (getLocalStageListener() == null || isTest) {
+			if (getLocalStageListener() == null) {
 				Log.d("LWP", "StageListener, Fehler bei changeWallpaper " + name);
 				return;
 			}

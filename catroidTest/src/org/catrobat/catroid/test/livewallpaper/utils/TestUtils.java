@@ -42,6 +42,9 @@ import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAtt
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
 import org.catrobat.catroid.livewallpaper.postprocessing.VignetteAttributeContainer;
 import org.catrobat.catroid.livewallpaper.ui.SelectBloomEffectActivity;
+import org.catrobat.catroid.livewallpaper.ui.SelectCrtMonitorEffectActivity;
+import org.catrobat.catroid.livewallpaper.ui.SelectCurvatureEffectActivity;
+import org.catrobat.catroid.livewallpaper.ui.SelectVignetteEffectActivity;
 
 import java.util.Map;
 
@@ -54,6 +57,19 @@ public class TestUtils {
 	public static float BLOOM_SAT = 13.0f;
 	public static float BLOOM_THRESHOLD = 14.0f;
 	public static boolean BLOOM_IS_ENABLED = true;
+
+	//Vignette
+	public static float INTENSITY_FACTOR = 40.0f;
+	public static boolean VIGNETTE_IS_ENABLED = true;
+
+	//Curvature
+	public static float DISTORTION_FACTOR = 50.0f;
+	public static boolean CURVATURE_IS_ENABLED = true;
+
+	//Crt-Monitor
+	public static float CHROMATIC_DISPERSION_RC_FACTOR = 60.0f;
+	public static float CHROMATIC_DISPERSION_BY_FACTOR = 65.0f;
+	public static boolean CRTMONITOR_IS_ENABLED = true;
 
 	
 	public static Project createEmptyProjectWithoutSettingIt(Context context, String projectName) {
@@ -91,17 +107,21 @@ public class TestUtils {
 
 
 		VignetteAttributeContainer vignette = new VignetteAttributeContainer();
-		vignette.setEnabled(true);
+		vignette.setIntensity(INTENSITY_FACTOR / SelectVignetteEffectActivity.INTENSITY_FACTOR);
+		vignette.setEnabled(VIGNETTE_IS_ENABLED);
+		map.put(PostProcessingEffectsEnum.VIGNETTE, vignette);
+
 
 		CurvatureAttributeContainer curvature = new CurvatureAttributeContainer();
-		curvature.setEnabled(true);
-
-		CrtMonitorAttributeContainer crtMonitor = new CrtMonitorAttributeContainer();
-		crtMonitor.setEnabled(false);
-
-		map.put(PostProcessingEffectsEnum.VIGNETTE, vignette);
+		curvature.setDistortion(DISTORTION_FACTOR / SelectCurvatureEffectActivity.DISTORTION_FACTOR);
+		curvature.setEnabled(CURVATURE_IS_ENABLED);
 		map.put(PostProcessingEffectsEnum.CURVATURE, curvature);
 
+
+		CrtMonitorAttributeContainer crtMonitor = new CrtMonitorAttributeContainer();
+		crtMonitor.setChromaticDispersionRC(CHROMATIC_DISPERSION_RC_FACTOR / SelectCrtMonitorEffectActivity.CHROMATIC_DISPERSION_RC_FACTOR);
+		crtMonitor.setChromaticDispersionBY(CHROMATIC_DISPERSION_BY_FACTOR / SelectCrtMonitorEffectActivity.CHROMATIC_DISPERSION_BY_FACTOR);
+		crtMonitor.setEnabled(CRTMONITOR_IS_ENABLED);
 		map.put(PostProcessingEffectsEnum.CRTMONITOR, crtMonitor);
 	}
 

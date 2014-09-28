@@ -44,7 +44,7 @@ public class SelectCurvatureEffectActivity extends BaseActivity {
 	private Switch mySwitch;
 	private CustomOnSeekbarListener distortionListener;
 
-	private final float DISTORTION_FACTOR = 100.0F;
+	public static final float DISTORTION_FACTOR = 100.0F;
 	public SelectCurvatureEffectActivity INSTANCE;
 
 	@Override
