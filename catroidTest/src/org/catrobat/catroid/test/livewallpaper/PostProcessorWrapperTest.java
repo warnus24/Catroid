@@ -66,7 +66,6 @@ public class PostProcessorWrapperTest extends InstrumentationTestCase {
 		}
 
 		PostProcessor postProcessor = postProcessorWrapper.getPostProcessor();
-		postProcessor.
 	}
 }
 
