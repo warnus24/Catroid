@@ -64,6 +64,7 @@ import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.ProjectLoadableEnum;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
+import org.catrobat.catroid.livewallpaper.TempHandler;
 import org.catrobat.catroid.ui.MyProjectsActivity;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectEditListener;
@@ -206,6 +207,8 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		@Override
 		protected void onPreExecute() {
 			//LiveWallpaper.getInstance().presetSprites();
+			if(selectedProject != null)
+				new TempHandler().execute(selectedProject);
 			progress.show();
 			super.onPreExecute();
 		}
@@ -239,7 +242,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 
 			boolean preview_loadable = true;
 			try {
-				projectManagerLWP.loadProject(selectedProject, LiveWallpaper.getInstance()
+				projectManagerLWP.loadWallpaper(selectedProject, LiveWallpaper.getInstance()
 						.getContext());
 			} catch (LoadingProjectException e) {
 				preview_loadable = false;

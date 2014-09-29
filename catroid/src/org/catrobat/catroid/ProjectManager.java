@@ -51,10 +51,12 @@ import org.catrobat.catroid.io.LoadProjectTask;
 import org.catrobat.catroid.io.LoadProjectTask.OnLoadProjectCompleteListener;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
+import org.catrobat.catroid.livewallpaper.TempHandler;
 import org.catrobat.catroid.transfers.CheckTokenTask;
 import org.catrobat.catroid.transfers.CheckTokenTask.OnCheckTokenCompleteListener;
 import org.catrobat.catroid.ui.dialogs.LoginRegisterDialog;
 import org.catrobat.catroid.ui.dialogs.UploadProjectDialog;
+import org.catrobat.catroid.utils.CopyProjectTask;
 import org.catrobat.catroid.utils.Utils;
 import org.catrobat.catroid.web.ServerCalls;
 
@@ -123,6 +125,68 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 			checkTokenTask.setOnCheckTokenCompleteListener(this);
 			checkTokenTask.execute();
 		}
+	}
+
+	public void loadWallpaper(String projectName, Context context)throws LoadingProjectException,
+			OutdatedVersionProjectException, CompatibilityProjectException{
+		fileChecksumContainer = new FileChecksumContainer();
+		Project oldProject = project;
+		MessageContainer.createBackup();
+		project = StorageHandler.getInstance().loadTempProject(projectName);
+
+		if (project == null) {
+			if (oldProject != null) {
+				project = oldProject;
+				MessageContainer.restoreBackup();
+			} else {
+				project = Utils.findValidProject();
+				if (project == null) {
+					try {
+						project = StandardProjectHandler.createAndSaveStandardProject(context);
+						new TempHandler().execute(project.getName());
+						MessageContainer.clearBackup();
+					} catch (IOException ioException) {
+						Log.e(TAG, "Cannot load project.", ioException);
+						throw new LoadingProjectException(context.getString(R.string.error_load_project));
+					}
+				}
+			}
+			throw new LoadingProjectException(context.getString(R.string.error_load_project));
+		} else if (project.getCatrobatLanguageVersion() > Constants.CURRENT_CATROBAT_LANGUAGE_VERSION) {
+			project = oldProject;
+			throw new OutdatedVersionProjectException(context.getString(R.string.error_outdated_pocketcode_version));
+		} else {
+			if (project.getCatrobatLanguageVersion() == 0.8f) {
+				//TODO insert in every "When project starts" script list a "show" brick
+				project.setCatrobatLanguageVersion(0.9f);
+			}
+			if (project.getCatrobatLanguageVersion() == 0.9f) {
+				project.setCatrobatLanguageVersion(0.91f);
+				//no convertion needed - only change to white background
+			}
+			if (project.getCatrobatLanguageVersion() == 0.91f) {
+				project.setCatrobatLanguageVersion(0.92f);
+				project.setScreenMode(ScreenModes.STRETCH);
+				checkNestingBrickReferences(false);
+			}
+			if (project.getCatrobatLanguageVersion() == 0.92f) {
+				project.setCatrobatLanguageVersion(0.93f);
+			}
+
+			//insert further conversions here
+
+			checkNestingBrickReferences(true);
+			if (project.getCatrobatLanguageVersion() == Constants.CURRENT_CATROBAT_LANGUAGE_VERSION) {
+				//project seems to be converted now and can be loaded
+				localizeBackgroundSprite(context);
+			} else {
+				//project cannot be converted
+				project = oldProject;
+				throw new CompatibilityProjectException(context.getString(R.string.error_project_compatability));
+			}
+		}
+
+
 	}
 
 	public void loadProject(String projectName, Context context) throws LoadingProjectException,

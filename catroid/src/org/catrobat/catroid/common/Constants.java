@@ -42,6 +42,9 @@ public final class Constants {
 
 	public static final String DEFAULT_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath()
 			+ "/Pocket Code";
+	public static final String LWP_TEMP = Environment.getExternalStorageDirectory().getAbsolutePath()
+			+ "/Pocket Code/LWP_temp";
+
 	public static final String TMP_PATH = DEFAULT_ROOT + "/tmp";
 	public static final String TMP_IMAGE_PATH = TMP_PATH + "/PocketPaintImage.tmp";
 	public static final String TEXT_TO_SPEECH_TMP_PATH = TMP_PATH + "/textToSpeech";

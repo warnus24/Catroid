@@ -164,6 +164,10 @@ public final class Utils {
 		return buildPath(Constants.DEFAULT_ROOT, UtilFile.encodeSpecialCharsForFileSystem(projectName));
 	}
 
+	public static String buildTempPath(String projectName){
+		return buildPath(Constants.LWP_TEMP, UtilFile.encodeSpecialCharsForFileSystem(projectName));
+	}
+
 	public static void showErrorDialog(Context context, int errorMessageId) {
 		Builder builder = new CustomAlertDialogBuilder(context);
 		builder.setTitle(R.string.error);

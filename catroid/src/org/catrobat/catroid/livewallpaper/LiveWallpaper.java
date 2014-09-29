@@ -50,6 +50,10 @@ import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
 
+import java.io.File;
+
+import static org.catrobat.catroid.common.Constants.LWP_TEMP;
+
 @SuppressLint("NewApi")
 //eventuell unnötig 10 intern 15 vorraussetzen Fehlerfall abfangen API Level vorraussetzen  prüfen mit 10
 public class LiveWallpaper extends AndroidLiveWallpaperService {
@@ -111,7 +115,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			context = this;
 
 		oldProjectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
-		Log.d("LWP", "Neuer Service wurde geladen");
+		Log.d("LWP", "New LiveWallpaper Service loaded.");
 	}
 
 	@Override
@@ -122,14 +126,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		ProjectManager.changeState(ProjectManagerState.LWP);
 		loadProject();
 
-		stageListener = new StageListener(true);
+		stageListener = new StageListener(true,"LWP");
 		initialize(stageListener, config);
 		Log.d("LWP", "Preview was initialized");
 	}
 
 	public void initializeForTest(){
 		loadProject();
-		stageListener = new StageListener(true);
+		stageListener = new StageListener(true,"LWP_test");
 		previewEngine = new LiveWallpaperEngine();
 		isTest = true;
 	}
@@ -144,7 +148,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public void onDestroy() {
-		Log.d("LWP", "Service wird beendet");
+		Log.d("LWP", "Service tears down ");
+		File temp = new File(LWP_TEMP);
+		//TODO Delete everything in temp directory!
+		temp.delete();
 		ProjectManager.changeState(ProjectManagerState.NORMAL);
 		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, oldProjectName);
 		INSTANCE = null;
@@ -177,7 +184,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		String result = "";
 
 		try {
-			projectManagerLWP.loadProject(projectName, context);
+			projectManagerLWP.loadWallpaper(projectName, context);
 		} catch (LoadingProjectException e) {
 			loadable = false;
 			e.printStackTrace();
@@ -257,8 +264,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				}
 			}
 		};
-
-		private boolean change = false;
 
 		public LiveWallpaperEngine() {
 			super();

@@ -61,7 +61,7 @@ public class StageActivity extends AndroidApplication {
 		if (getIntent().getBooleanExtra(DroneInitializer.INIT_DRONE_STRING_EXTRA, false)) {
 			droneConnection = new DroneConnection(this);
 		}
-		stageListener = new StageListener();
+		stageListener = new StageListener("PocketCode");
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		calculateScreenSizes();
 

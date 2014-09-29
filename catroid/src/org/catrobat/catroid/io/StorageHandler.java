@@ -138,12 +138,14 @@ import static org.catrobat.catroid.common.Constants.BACKPACK_IMAGE_DIRECTORY;
 import static org.catrobat.catroid.common.Constants.BACKPACK_SOUND_DIRECTORY;
 import static org.catrobat.catroid.common.Constants.DEFAULT_ROOT;
 import static org.catrobat.catroid.common.Constants.IMAGE_DIRECTORY;
+import static org.catrobat.catroid.common.Constants.LWP_TEMP;
 import static org.catrobat.catroid.common.Constants.NO_MEDIA_FILE;
 import static org.catrobat.catroid.common.Constants.PROJECTCODE_NAME;
 import static org.catrobat.catroid.common.Constants.PROJECTCODE_NAME_TMP;
 import static org.catrobat.catroid.common.Constants.SOUND_DIRECTORY;
 import static org.catrobat.catroid.utils.Utils.buildPath;
 import static org.catrobat.catroid.utils.Utils.buildProjectPath;
+import static org.catrobat.catroid.utils.Utils.buildTempPath;
 
 public final class StorageHandler {
 	private static final StorageHandler INSTANCE;
@@ -295,8 +297,12 @@ public final class StorageHandler {
 
 	private void createCatroidRoot() {
 		File catroidRoot = new File(DEFAULT_ROOT);
+		File temp = new File(LWP_TEMP);
 		if (!catroidRoot.exists()) {
 			catroidRoot.mkdirs();
+		}
+		if(!temp.exists()){
+			temp.mkdirs();
 		}
 	}
 
@@ -312,6 +318,32 @@ public final class StorageHandler {
 		loadSaveLock.lock();
 		try {
 			File projectCodeFile = new File(buildProjectPath(projectName), PROJECTCODE_NAME);
+			Log.d(TAG, "path: " + projectCodeFile.getAbsolutePath());
+			fileInputStream = new FileInputStream(projectCodeFile);
+			return (Project) xstream.getProjectFromXML(projectCodeFile);
+		} catch (Exception exception) {
+			Log.e(TAG, "Loading project " + projectName + " failed.", exception);
+			return null;
+		} finally {
+			if (fileInputStream != null) {
+				try {
+					fileInputStream.close();
+				} catch (IOException ioException) {
+					Log.e(TAG, "can't close fileStream.", ioException);
+				}
+			}
+			loadSaveLock.unlock();
+		}
+	}
+
+	public Project loadTempProject(String projectName) {
+		codeFileSanityCheck(projectName);
+
+		Log.d(TAG, "loadProject " + projectName);
+
+		loadSaveLock.lock();
+		try {
+			File projectCodeFile = new File(buildTempPath(projectName), PROJECTCODE_NAME);
 			Log.d(TAG, "path: " + projectCodeFile.getAbsolutePath());
 			fileInputStream = new FileInputStream(projectCodeFile);
 			return (Project) xstream.getProjectFromXML(projectCodeFile);

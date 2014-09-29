@@ -87,7 +87,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	// needed for UiTests - is disabled to fix crashes with EMMA coverage
 	// CHECKSTYLE DISABLE StaticVariableNameCheck FOR 1 LINES
 	private static boolean DYNAMIC_SAMPLING_RATE_FOR_ACTIONS = true;
-	private int StageID = 0;
+	private String StageName;
 
 	private float deltaActionTimeDivisor = 10f;
 	public static final String SCREENSHOT_AUTOMATIC_FILE_NAME = "automatic_screenshot"
@@ -154,18 +154,21 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private boolean isTinting = false;
 	private com.badlogic.gdx.graphics.Color tintingColor = null;
 
-	public StageListener(boolean isLWP) {
+	public StageListener(boolean isLWP,String name) {
 		super();
-		BroadcastHandler.setStageID(StageID++);
 		this.isLWP = isLWP;
+		StageName=name;
 	}
 
-	public StageListener() {
+	public StageListener(String name) {
 		super();
-		BroadcastHandler.setStageID(StageID++);
+		StageName = name;
 		isLWP = false;
 	}
 
+	public String getStageName(){
+		return StageName;
+	}
 	public void setTintingColor(int c) {
 		PostProcessingUtil util = new PostProcessingUtil();
 		tintingColor = util.convertIntColorToColor(c);
@@ -200,7 +203,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		font = new BitmapFont();
 		font.setColor(1f, 0f, 0.05f, 1f);
 		font.setScale(1.2f);
-
+		BroadcastHandler.setActiveStage(StageName);
 		project = null;
 		if (isLWP) {
 			project = ProjectManager.getInstance(ProjectManagerState.LWP).getCurrentProject();
@@ -317,6 +320,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	@Override
 	public void resume() {
+		BroadcastHandler.setActiveStage(StageName);
 		if (!paused) {
 			FaceDetectionHandler.resumeFaceDetection();
 			SoundManager.getInstance().resume();
@@ -346,6 +350,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	}
 
 	public void finish() {
+		BroadcastHandler.setActiveStage("");
 		finished = true;
 		SoundManager.getInstance().clear();
 		if (thumbnail != null && !makeAutomaticScreenshot) {

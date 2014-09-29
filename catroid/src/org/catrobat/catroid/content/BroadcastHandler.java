@@ -46,7 +46,7 @@ public final class BroadcastHandler {
 	private static HashMap<Script, Sprite> scriptSpriteMap = new HashMap<Script, Sprite>();
 	private static HashMap<String, Action> stringActionMap = new HashMap<String, Action>();
 	private static final String TAG = "BroadcastHandler";
-	private static int StageID;
+	private static String activeStage;
 	private BroadcastHandler() {
 		throw new AssertionError();
 	}
@@ -117,7 +117,8 @@ public final class BroadcastHandler {
 			Script receiverScript = actionScriptMap.get(action);
 			actionScriptMap.put(broadcastWaitAction, receiverScript);
 			Sprite receiverSprite = scriptSpriteMap.get(receiverScript);
-			String actionName = broadcastWaitAction.toString() + Constants.ACTION_SEPARATOR + receiverSprite.getName() + receiverSprite.getScriptIndex(receiverScript)+ Constants.ACTION_SEPARATOR + StageID;
+			String actionName = broadcastWaitAction.toString() + Constants.ACTION_SEPARATOR + receiverSprite.getName() + receiverSprite.getScriptIndex(receiverScript)+ Constants.ACTION_SEPARATOR + activeStage;
+			//Log.d(TAG,"WAIT ActionName is:"+actionName);
 			stringActionMap.put(actionName, broadcastWaitAction);
 			if (!handleActionFromBroadcastWait(look, broadcastWaitAction)) {
 				event.raiseNumberOfReceivers();
@@ -132,8 +133,8 @@ public final class BroadcastHandler {
 
 	private static boolean handleAction(Action action, Script scriptOfAction) {
 		Sprite spriteOfAction = scriptSpriteMap.get(scriptOfAction);
-		String actionToHandle = action.toString() + Constants.ACTION_SEPARATOR + spriteOfAction.getName() + spriteOfAction.getScriptIndex(scriptOfAction)+ Constants.ACTION_SEPARATOR + StageID;
-
+		String actionToHandle = action.toString() + Constants.ACTION_SEPARATOR + spriteOfAction.getName() + spriteOfAction.getScriptIndex(scriptOfAction)+ Constants.ACTION_SEPARATOR + activeStage;
+		//Log.d(TAG,"ActionTiHandle is: "+actionToHandle);
 		if (!actionsToRestartMap.containsKey(actionToHandle)) {
 			return false;
 		}
@@ -188,9 +189,9 @@ public final class BroadcastHandler {
 		stringActionMap.clear();
 	}
 
-	public static void setStageID(int ID)
+	public static void setActiveStage(String name)
 	{
-		StageID = ID;
+		activeStage = name;
 	}
 
 	public static Multimap<String, String> getActionsToRestartMap() {
