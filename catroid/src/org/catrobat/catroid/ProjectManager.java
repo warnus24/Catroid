@@ -56,7 +56,6 @@ import org.catrobat.catroid.transfers.CheckTokenTask;
 import org.catrobat.catroid.transfers.CheckTokenTask.OnCheckTokenCompleteListener;
 import org.catrobat.catroid.ui.dialogs.LoginRegisterDialog;
 import org.catrobat.catroid.ui.dialogs.UploadProjectDialog;
-import org.catrobat.catroid.utils.CopyProjectTask;
 import org.catrobat.catroid.utils.Utils;
 import org.catrobat.catroid.web.ServerCalls;
 
@@ -66,18 +65,24 @@ import java.util.ArrayList;
 
 public final class ProjectManager implements OnLoadProjectCompleteListener, OnCheckTokenCompleteListener {
 	private static final ProjectManager INSTANCE = new ProjectManager();
-    private static final ProjectManager INSTANCE_LWP = new ProjectManager();
 	private static final String TAG = ProjectManager.class.getSimpleName();
 
 	private Project project;
+	private Project wallpaper;
 	private Script currentScript;
 	private Sprite currentSprite;
 	private UserBrick currentUserBrick;
 	private boolean asynchronTask = true;
+
+	public static ProjectManagerState getCurrentProjectManagerState() {
+		return currentProjectManagerState;
+	}
+
 	private static ProjectManagerState currentProjectManagerState = ProjectManagerState.NORMAL;
 
 	public static void changeState(ProjectManagerState state) {
 		currentProjectManagerState = state;
+		Log.d(TAG,"changing State to " + state);
 	}
 
 	private FileChecksumContainer fileChecksumContainer = new FileChecksumContainer();
@@ -86,17 +91,18 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	}
 
 	public static ProjectManager getInstance() {
-		switch (currentProjectManagerState) {
+		return INSTANCE;
+		/*switch (currentProjectManagerState) {
 			case LWP:
 				return INSTANCE_LWP;
 			case NORMAL:
 				return INSTANCE;
 			default:
 				return INSTANCE;
-		}
+		}*/
 	}
 
-	public static ProjectManager getInstance(ProjectManagerState projectManagerType) {
+	/*public static ProjectManager getInstance(ProjectManagerState projectManagerType) {
 		switch (projectManagerType) {
 			case LWP:
 				return INSTANCE_LWP;
@@ -105,7 +111,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 			default:
 				return INSTANCE;
 		}
-	}
+	}*/
 
 	public void uploadProject(String projectName, FragmentActivity fragmentActivity) {
 		if (getCurrentProject() == null || !getCurrentProject().getName().equals(projectName)) {
@@ -130,20 +136,19 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	public void loadWallpaper(String projectName, Context context)throws LoadingProjectException,
 			OutdatedVersionProjectException, CompatibilityProjectException{
 		fileChecksumContainer = new FileChecksumContainer();
-		Project oldProject = project;
+		Project oldProject = wallpaper;
 		MessageContainer.createBackup();
-		project = StorageHandler.getInstance().loadTempProject(projectName);
-
-		if (project == null) {
+		wallpaper = StorageHandler.getInstance().loadTempProject(projectName);
+		if (wallpaper == null) {
 			if (oldProject != null) {
-				project = oldProject;
+				wallpaper = oldProject;
 				MessageContainer.restoreBackup();
 			} else {
-				project = Utils.findValidProject();
-				if (project == null) {
+				wallpaper = Utils.findValidProject();
+				if (wallpaper == null) {
 					try {
-						project = StandardProjectHandler.createAndSaveStandardProject(context);
-						new TempHandler().execute(project.getName());
+						wallpaper = StandardProjectHandler.createAndSaveStandardProject(context);
+						new TempHandler().execute(wallpaper.getName());
 						MessageContainer.clearBackup();
 					} catch (IOException ioException) {
 						Log.e(TAG, "Cannot load project.", ioException);
@@ -152,36 +157,36 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 				}
 			}
 			throw new LoadingProjectException(context.getString(R.string.error_load_project));
-		} else if (project.getCatrobatLanguageVersion() > Constants.CURRENT_CATROBAT_LANGUAGE_VERSION) {
-			project = oldProject;
+		} else if (wallpaper.getCatrobatLanguageVersion() > Constants.CURRENT_CATROBAT_LANGUAGE_VERSION) {
+			wallpaper = oldProject;
 			throw new OutdatedVersionProjectException(context.getString(R.string.error_outdated_pocketcode_version));
 		} else {
-			if (project.getCatrobatLanguageVersion() == 0.8f) {
+			if (wallpaper.getCatrobatLanguageVersion() == 0.8f) {
 				//TODO insert in every "When project starts" script list a "show" brick
-				project.setCatrobatLanguageVersion(0.9f);
+				wallpaper.setCatrobatLanguageVersion(0.9f);
 			}
-			if (project.getCatrobatLanguageVersion() == 0.9f) {
-				project.setCatrobatLanguageVersion(0.91f);
+			if (wallpaper.getCatrobatLanguageVersion() == 0.9f) {
+				wallpaper.setCatrobatLanguageVersion(0.91f);
 				//no convertion needed - only change to white background
 			}
-			if (project.getCatrobatLanguageVersion() == 0.91f) {
-				project.setCatrobatLanguageVersion(0.92f);
-				project.setScreenMode(ScreenModes.STRETCH);
+			if (wallpaper.getCatrobatLanguageVersion() == 0.91f) {
+				wallpaper.setCatrobatLanguageVersion(0.92f);
+				wallpaper.setScreenMode(ScreenModes.STRETCH);
 				checkNestingBrickReferences(false);
 			}
-			if (project.getCatrobatLanguageVersion() == 0.92f) {
-				project.setCatrobatLanguageVersion(0.93f);
+			if (wallpaper.getCatrobatLanguageVersion() == 0.92f) {
+				wallpaper.setCatrobatLanguageVersion(0.93f);
 			}
 
 			//insert further conversions here
 
 			checkNestingBrickReferences(true);
-			if (project.getCatrobatLanguageVersion() == Constants.CURRENT_CATROBAT_LANGUAGE_VERSION) {
+			if (wallpaper.getCatrobatLanguageVersion() == Constants.CURRENT_CATROBAT_LANGUAGE_VERSION) {
 				//project seems to be converted now and can be loaded
 				localizeBackgroundSprite(context);
 			} else {
 				//project cannot be converted
-				project = oldProject;
+				wallpaper = oldProject;
 				throw new CompatibilityProjectException(context.getString(R.string.error_project_compatability));
 			}
 		}
@@ -251,18 +256,22 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 
 	private void localizeBackgroundSprite(Context context) {
 		// Set generic localized name on background sprite and move it to the back.
-		if (project.getSpriteList().size() > 0) {
-			project.getSpriteList().get(0).setName(context.getString(R.string.background));
-			project.getSpriteList().get(0).look.setZIndex(0);
+		Project temp_project;
+	    temp_project = getCurrentProject();
+		
+		if (temp_project.getSpriteList().size() > 0) {
+			temp_project.getSpriteList().get(0).setName(context.getString(R.string.background));
+			temp_project.getSpriteList().get(0).look.setZIndex(0);
 		}
 		MessageContainer.clearBackup();
 		currentSprite = null;
 		currentScript = null;
-		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
+		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, temp_project.getName());
 	}
 
 	private void saveProjectNameToPreferences(Context context) {
-		switch (currentProjectManagerState) {
+		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
+		/*switch (currentProjectManagerState) {
 			case LWP:
 				Utils.saveToPreferences(context, Constants.PREF_LWP_PROJECTNAME_KEY, project.getName());
 				break;
@@ -272,7 +281,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 			default:
 				Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
 				break;
-		}
+		}*/
 	}
 
 
@@ -342,7 +351,14 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	}
 
 	public Project getCurrentProject() {
-		return project;
+		switch (currentProjectManagerState) {
+			case LWP:
+				return wallpaper;
+			case NORMAL:
+				return project;
+			default:
+				return project;
+		}
 	}
 
 	public void setProject(Project project) {

@@ -90,9 +90,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	private static String deleteActionModeTitle;
 	private ProjectData projectToEdit;
 
-	private ProjectManager projectManagerLWP = ProjectManager.getInstance(ProjectManagerState.LWP);
-	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.NORMAL);
-
+	private ProjectManager projectManagerLWP = ProjectManager.getInstance();
 	private int soundSeekBarVolume;
 
 	private View selectAllActionModeButton;

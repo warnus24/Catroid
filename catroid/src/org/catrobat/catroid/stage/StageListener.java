@@ -59,7 +59,6 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
-import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.PostProcessingUtil;
@@ -150,6 +149,11 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private byte[] thumbnail;
 
 	private boolean isPreview = true;
+
+	public void setLWP(boolean isLWP) {
+		this.isLWP = isLWP;
+	}
+
 	private boolean isLWP = false;
 	private boolean isTinting = false;
 	private com.badlogic.gdx.graphics.Color tintingColor = null;
@@ -203,13 +207,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		font = new BitmapFont();
 		font.setColor(1f, 0f, 0.05f, 1f);
 		font.setScale(1.2f);
-		BroadcastHandler.setActiveStage(StageName);
+		//BroadcastHandler.setActiveStage(StageName);
 		project = null;
-		if (isLWP) {
-			project = ProjectManager.getInstance(ProjectManagerState.LWP).getCurrentProject();
-		} else {
-			project = ProjectManager.getInstance(ProjectManagerState.NORMAL).getCurrentProject();
-		}
+		project = ProjectManager.getInstance().getCurrentProject();
+
 
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";
 
@@ -320,7 +321,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	@Override
 	public void resume() {
-		BroadcastHandler.setActiveStage(StageName);
+		//BroadcastHandler.setActiveStage(StageName);
 		if (!paused) {
 			FaceDetectionHandler.resumeFaceDetection();
 			SoundManager.getInstance().resume();
@@ -350,7 +351,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	}
 
 	public void finish() {
-		BroadcastHandler.setActiveStage("");
+		//BroadcastHandler.setActiveStage("");
 		finished = true;
 		SoundManager.getInstance().clear();
 		if (thumbnail != null && !makeAutomaticScreenshot) {

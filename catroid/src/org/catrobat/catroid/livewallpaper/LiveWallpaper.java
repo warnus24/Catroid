@@ -169,7 +169,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String projectName = "";
 		boolean loadable = true;
-		ProjectManager projectManagerLWP = ProjectManager.getInstance(ProjectManagerState.LWP);
+		ProjectManager projectManagerLWP = ProjectManager.getInstance();
 
 		projectName = sharedPreferences.getString(Constants.PREF_LWP_PROJECTNAME_KEY, null);
 		if (projectName == null) {
@@ -178,6 +178,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		if (projectManagerLWP.getCurrentProject() != null
 				&& projectManagerLWP.getCurrentProject().getName().equals(projectName)) {
+			new TempHandler().execute(projectManagerLWP.getCurrentProject().getName());
 			return;
 		}
 
@@ -217,7 +218,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public Engine onCreateEngine() {
-		Log.d("LWP", "Eine neue Engine wurde erstellt!!!");
+		Log.d("LWP", "Engine created!!!");
 		return new LiveWallpaperEngine();
 	}
 
@@ -307,14 +308,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		@Override
 		public void onResume() {
-
+			ProjectManager.changeState(ProjectManagerState.LWP);
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ANFANG");
 			if (getLocalStageListener() == null) {
 				return;
 			}
-
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 			super.onResume();
+
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ENDE");
 		}
 

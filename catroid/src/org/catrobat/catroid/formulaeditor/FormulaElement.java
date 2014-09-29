@@ -185,6 +185,7 @@ public class FormulaElement implements Serializable {
 	}
 
 	private Object interpretUserVariable(Sprite sprite) {
+
 		UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 		UserVariable userVariable = userVariables.getUserVariable(value, sprite);
 		if (userVariable == null) {
