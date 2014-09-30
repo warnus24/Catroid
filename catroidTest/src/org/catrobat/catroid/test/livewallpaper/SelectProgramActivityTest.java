@@ -274,6 +274,16 @@ public class SelectProgramActivityTest extends
 
 		solo.clickOnScreen(width * 0.75f, height * 0.5f);
 	}
+
+	public void testCheckLWPAlsoChangedInMainMenu() {
+		solo.clickOnText(TEST_PROJECT_NAME);
+		solo.clickOnButton(solo.getString(R.string.yes));
+
+		solo.clickOnMenuItem(solo.getString(R.string.lwp_pocket_code));
+		solo.sleep(2000);
+
+		assertTrue("Pocket Code was not started", solo.getCurrentActivity().getClass().equals(MainMenuActivity.class));
+	}
 }
 
 
