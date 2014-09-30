@@ -48,6 +48,11 @@
         android:id="@+id/lwp_disable_tinting"
         android:showAsAction="never"
         android:title="@string/lwp_disable_tinting"/>
+
+    <item
+        android:id="@+id/lwp_sepia"
+        android:showAsAction="never"
+        android:title="@string/lwp_sepia"/>
     
  
 </menu>

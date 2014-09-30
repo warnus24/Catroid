@@ -734,6 +734,7 @@
  	<string name="lwp_enable_sound">Aktiviere sounds</string>
  	<string name="lwp_disable_tinting">Deaktiviere Tinting</string>
     <string name="lwp_color_dialog_title">Wähle eine Farbe</string>
+    <string name="lwp_sepia">Sepia</string>
 	<!--  -->
     <!-- Camera Strings -->
     <string name="camera_facing_front">Vordere Kamera</string>

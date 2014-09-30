@@ -726,5 +726,6 @@
  	<string name="lwp_enable_sound">Enable sounds</string>
  	<string name="lwp_disable_tinting">Disable tinting</string>
     <string name="lwp_color_dialog_title">Pick a color</string>
+    <string name="lwp_sepia">Sepia</string>
 
 </resources>

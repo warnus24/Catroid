@@ -58,7 +58,7 @@ public final class Constants {
 	public static final int NO_POSITION = -1;
 
 	//Broadcast system:
-	public static final String ACTION_SPRITE_SEPARATOR = "#";
+	public static final String ACTION_SEPARATOR = "#";
 	public static final String BROADCAST_NOTIFY_ACTION = "broadcast_notify";
 	public static final String START_SCRIPT = "start_script";
 	public static final String BROADCAST_SCRIPT = "broadcast_script";

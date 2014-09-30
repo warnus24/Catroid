@@ -32,6 +32,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.SweepGradient;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,14 +48,43 @@ import org.catrobat.catroid.common.ScreenValues;
  */
 public class ColorPickerDialog extends Dialog {
 
+	private OnColorChangedListener mListener;
+	private int mInitialColor;
+	private ColorPickerView view;
+
 	public interface OnColorChangedListener {
 		void colorChanged(int color);
 	}
 
-	private OnColorChangedListener mListener;
-	private int mInitialColor;
+	public ColorPickerDialog(Context context, OnColorChangedListener listener, int initialColor) {
+		super(context);
 
-	private static class ColorPickerView extends View {
+		mListener = listener;
+		mInitialColor = initialColor;
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		OnColorChangedListener l = new OnColorChangedListener() {
+			@Override
+			public void colorChanged(int color) {
+				mListener.colorChanged(color);
+				dismiss();
+			}
+		};
+
+		view = new ColorPickerView(getContext(), l, mInitialColor);
+		setContentView(view);
+		setTitle(R.string.lwp_color_dialog_title);
+	}
+
+	public void simulateSepiaTouchEvent()
+	{
+		view.simulateSepiaTouchEvent();
+	}
+
+	public static class ColorPickerView extends View {
 		private Paint mPaint;
 		private Paint mCenterPaint;
 		private final int[] mColors;
@@ -196,6 +226,57 @@ public class ColorPickerDialog extends Dialog {
 
 		private static final float PI = 3.1415926f;
 
+		public void simulateSepiaTouchEvent()
+		{
+			// Click on Color
+			float x = CENTER_X + (CENTER_X - (mPaint.getStrokeWidth()*2));
+			float y = CENTER_Y + (CENTER_Y*0.1f - (mPaint.getStrokeWidth()*2));
+			long downTime = SystemClock.uptimeMillis();
+			long eventTime = SystemClock.uptimeMillis() + 100;
+			int metaState = 0;
+			MotionEvent motionEvent = MotionEvent.obtain(
+					downTime,
+					eventTime,
+					MotionEvent.ACTION_MOVE,
+					x,
+					y,
+					metaState
+			);
+
+			onTouchEvent(motionEvent);
+
+
+			//Click on Middle
+			float x_1 = CENTER_X;
+			float y_1 = CENTER_Y;
+			long downTime_1 = SystemClock.uptimeMillis();
+			long eventTime_1 = SystemClock.uptimeMillis() + 100;
+			int metaState_1 = 0;
+
+
+			MotionEvent motionEvent_2 = MotionEvent.obtain(
+					downTime_1,
+					eventTime_1,
+					MotionEvent.ACTION_DOWN,
+					x_1,
+					y_1,
+					metaState_1
+			);
+
+			onTouchEvent(motionEvent_2);
+
+			MotionEvent motionEvent_1 = MotionEvent.obtain(
+					downTime_1,
+					eventTime_1,
+					MotionEvent.ACTION_UP,
+					x_1,
+					y_1,
+					metaState_1
+			);
+
+			onTouchEvent(motionEvent_1);
+		}
+
 		@Override
 		public boolean onTouchEvent(MotionEvent event) {
 			float x = event.getX() - CENTER_X;
@@ -244,25 +325,4 @@ public class ColorPickerDialog extends Dialog {
 		}
 	}
 
-	public ColorPickerDialog(Context context, OnColorChangedListener listener, int initialColor) {
-		super(context);
-
-		mListener = listener;
-		mInitialColor = initialColor;
-	}
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		OnColorChangedListener l = new OnColorChangedListener() {
-			@Override
-			public void colorChanged(int color) {
-				mListener.colorChanged(color);
-				dismiss();
-			}
-		};
-
-		setContentView(new ColorPickerView(getContext(), l, mInitialColor));
-		setTitle(R.string.lwp_color_dialog_title);
-	}
 }
