@@ -208,7 +208,7 @@ public class SelectPostProcessingEffectActivityTest extends
 
 		SeekBar seekBar1 = (SeekBar) solo.getCurrentActivity().findViewById(R.id.seekBar1);
 		assertNotNull("Seekbar shouldn't be null", seekBar1);
-		assertEquals("Seekbar1 has false state", seekBar1.getProgress(), Math.round(TestUtils.INTENSITY_FACTOR));
+		assertEquals("Seekbar1 has false state", seekBar1.getProgress(), Math.round(TestUtils.INTENSITY));
 
 		solo.clickOnView(switch1);
 
@@ -231,7 +231,7 @@ public class SelectPostProcessingEffectActivityTest extends
 
 		SeekBar seekBar1 = (SeekBar) solo.getCurrentActivity().findViewById(R.id.seekBar1);
 		assertNotNull("Seekbar shouldn't be null", seekBar1);
-		assertEquals("Seekbar1 has false state", seekBar1.getProgress(), Math.round(TestUtils.DISTORTION_FACTOR));
+		assertEquals("Seekbar1 has false state", seekBar1.getProgress(), Math.round(TestUtils.DISTORTION));
 
 		solo.clickOnView(switch1);
 
@@ -254,11 +254,11 @@ public class SelectPostProcessingEffectActivityTest extends
 
 		SeekBar seekBar1 = (SeekBar) solo.getCurrentActivity().findViewById(R.id.seekBar1);
 		assertNotNull("Seekbar shouldn't be null", seekBar1);
-		assertEquals("Seekbar1 has false state", seekBar1.getProgress(), Math.round(TestUtils.CHROMATIC_DISPERSION_BY_FACTOR));
+		assertEquals("Seekbar1 has false state", seekBar1.getProgress(), Math.round(TestUtils.CHROMATIC_DISPERSION_BY));
 
 		SeekBar seekBar2 = (SeekBar) solo.getCurrentActivity().findViewById(R.id.seekBar2);
 		assertNotNull("Seekbar shouldn't be null", seekBar2);
-		assertEquals("Seekbar1 has false state", seekBar2.getProgress(), Math.round(TestUtils.CHROMATIC_DISPERSION_RC_FACTOR));
+		assertEquals("Seekbar1 has false state", seekBar2.getProgress(), Math.round(TestUtils.CHROMATIC_DISPERSION_RC));
 
 		solo.clickOnView(switch1);
 

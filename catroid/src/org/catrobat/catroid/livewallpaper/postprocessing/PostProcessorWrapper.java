@@ -57,9 +57,23 @@ public class PostProcessorWrapper
 {
 	private Map<PostProcessingEffectsEnum,PostProcessorEffect> map = new HashMap<PostProcessingEffectsEnum,PostProcessorEffect>();
 	private Map<PostProcessingEffectsEnum,PostProcessorEffect> activeEffects = Collections.synchronizedMap(map);
-	PostProcessor postProcessor = new PostProcessor(false, true, false);
-	EffectsContainer effectsContainer = new EffectsContainer();
+	PostProcessor postProcessor = null;
+	EffectsContainer effectsContainer = null;
+	//PostProcessor postProcessor = new PostProcessor(false, true, false);
+	//EffectsContainer effectsContainer = new EffectsContainer();
 	long startTime = TimeUtils.millis();
+
+	public PostProcessorWrapper(PostProcessor postProcessor, EffectsContainer effectsContainer){
+		this.postProcessor = postProcessor;
+		this.effectsContainer = effectsContainer;
+		if(this.postProcessor == null){
+			this.postProcessor = new PostProcessor(false, true, false);
+		}
+		if(this.effectsContainer == null){
+			this.effectsContainer = new EffectsContainer();
+		}
+
+	}
 
 
 	public void add(PostProcessingEffectsEnum type, PostProcessingEffectAttributContainer attributes)
@@ -161,19 +175,20 @@ public class PostProcessorWrapper
 			Vignette vignette = (Vignette) effect;
 			vignette.setIntensity(vignetteAttributes.getIntensity());
 
-			boolean gradientActive = setGradientAndReturnActive(vignetteAttributes.getGradientType(), vignette);
-			Log.e("Error", "Vignette intensity: "+vignette.getIntensity());
-			Log.e("Error", "Gradient Type: "+vignetteAttributes.getGradientType().toString());
-			if(gradientActive){
-				//Texture t = new Texture( Gdx.files.internal( "data/" + "gradient-mapping.png" ), Pixmap.Format.RGBA4444, false );
-				//t.setFilter( Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest );
-				//vignette.setLutTexture( t);
-				vignette.setLutTexture( ResourceFactory.newTexture( "gradient-mapping.png", false ));
-				Log.e("Error", "Yeah Vignette Gradient");
-			}
-			else{
-				vignette.setLutTexture( null );
-			}
+			//boolean gradientActive = setGradientAndReturnActive(vignetteAttributes.getGradientType(), vignette);
+			//Log.e("Error", "Vignette intensity: "+vignette.getIntensity());
+			//Log.e("Error", "Gradient Type: "+vignetteAttributes.getGradientType().toString());
+			//if(gradientActive){
+			//	//Texture t = new Texture( Gdx.files.internal( "data/" + "gradient-mapping.png" ), Pixmap.Format.RGBA4444, false );
+			//	//t.setFilter( Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest );
+			//	//vignette.setLutTexture( t);
+			//	vignette.setLutTexture( ResourceFactory.newTexture( "gradient-mapping.png", false ));
+			//	Log.e("Error", "Yeah Vignette Gradient");
+			////}
+			//else{
+			//	vignette.setLutTexture( null );
+			//}
+
 		}
 
 		else if(type.equals(PostProcessingEffectsEnum.CURVATURE))

@@ -67,6 +67,7 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	private static ArrayAdapter<PostProcessingEffectsEnum> adapter;
 	private static PostProcessingEffectsEnum[] effectArray;
 	public static int EFFECT_ARRAY_SIZE = 4;
+	public static final int DEFAULT_EFFECT_ARRAY_SIZE = 4;
 	private static Activity activity;
 
 	@Override
@@ -96,7 +97,7 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 	private void initListeners() {
 		int version_code = Integer.valueOf(android.os.Build.VERSION.SDK);
 		if(version_code < 19){
-			EFFECT_ARRAY_SIZE = EFFECT_ARRAY_SIZE - 2;
+			EFFECT_ARRAY_SIZE = DEFAULT_EFFECT_ARRAY_SIZE - 2;
 		}
 		effectArray = new PostProcessingEffectsEnum[EFFECT_ARRAY_SIZE];
 		effectArray[0] = PostProcessingEffectsEnum.BLOOM;

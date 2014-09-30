@@ -28,7 +28,8 @@ import com.bitfire.postprocessing.filters.Combine;
 import com.bitfire.postprocessing.filters.Threshold;
 import com.bitfire.postprocessing.utils.PingPongBuffer;
 
-public final class Bloom extends PostProcessorEffect {
+// was final
+public class Bloom extends PostProcessorEffect {
 	public static class Settings {
 		public final String name;
 

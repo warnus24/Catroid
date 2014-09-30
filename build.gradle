@@ -66,16 +66,13 @@ dependencies {
     compile fileTree(dir: 'catroid/libs', include: '*.jar')
     compile fileTree(dir: 'catroid/libs-natives', include: '*.jar')
     compile fileTree(dir: 'catroidTest/libs', include: '*.jar')
-    compile fileTree(include: '*.jar', dir: 'catroid/libs')
-    compile fileTree(include: '*.jar', dir: 'catroid/libs-natives')
-    androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
+    compile fileTree(dir: 'catroid/libs', include: '*.jar')
+    compile fileTree(dir: 'catroid/libs-natives', include: '*.jar')
+    androidTestCompile fileTree(dir: 'catroidTest/libs', include: '*.jar')
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
     natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
-    compile fileTree(dir: 'catroid/libs', include: '*.jar')
-    compile fileTree(dir: 'catroid/libs-natives', include: '*.jar')
-    compile fileTree(dir: 'catroidTest/libs', include: '*.jar')
     pmd 'net.sourceforge.pmd:pmd:5.1.1'
 }
 
@@ -156,7 +153,14 @@ android {
                 exclude 'lib/armeabi/libgdx.so'
                 exclude 'lib/armeabi-v7a/libgdx.so'
                 exclude 'lib/x86/libgdx.so'
+                exclude 'META-INF/LICENSE.txt'
+                exclude 'LICENSE.txt'
             }
+        }
+
+        packagingOptions {
+            exclude 'META-INF/LICENSE.txt'
+            exclude 'LICENSE.txt'
         }
     }
     lintOptions {

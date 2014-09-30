@@ -60,5 +60,14 @@
         android:showAsAction="never"
         android:title="@string/upload_button">
     </item>
+    <item
+        android:id="@+id/lwp_effects"
+        android:showAsAction="never"
+        android:title="@string/lwp_select_effects"/>
+
+    <item
+        android:id="@+id/lwp_disable_effect"
+        android:showAsAction="never"
+        android:title="@string/lwp_disable_effect"/>
 
 </menu>

@@ -34,7 +34,9 @@ import com.bitfire.utils.ItemsManager;
  * Effects can be added or removed via {@link #addEffect(PostProcessorEffect)} and {@link #removeEffect(PostProcessorEffect)}.
  * 
  * @author bmanuel */
-public final class PostProcessor implements Disposable {
+
+// class was final!
+ public class PostProcessor implements Disposable {
 	/** Enable pipeline state queries: beware the pipeline can stall! */
 	public static boolean EnableQueryStates = false;
 

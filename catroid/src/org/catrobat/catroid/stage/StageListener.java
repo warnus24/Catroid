@@ -46,6 +46,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.bitfire.postprocessing.PostProcessor;
 import com.google.common.collect.Multimap;
 
 import org.catrobat.catroid.ProjectManager;
@@ -60,6 +61,7 @@ import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
 import org.catrobat.catroid.livewallpaper.ProjectManagerState;
+import org.catrobat.catroid.livewallpaper.postprocessing.EffectsContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessorWrapper;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
@@ -285,9 +287,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	{
 		ShaderLoader.BasePath = "data/shaders/";
 
-		if(postProcessorWrapper == null)
-		{
-			postProcessorWrapper = new PostProcessorWrapper();
+		if(postProcessorWrapper == null){
+			PostProcessor postProcessor = new PostProcessor(false, true, false);
+			EffectsContainer effectsContainer = new EffectsContainer();
+			postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer);
 		}
 	}
 

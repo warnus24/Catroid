@@ -32,12 +32,19 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.badlogic.gdx.utils.Select;
+import com.bitfire.postprocessing.PostProcessorEffect;
+import com.bitfire.postprocessing.effects.Bloom;
+import com.bitfire.postprocessing.effects.CrtMonitor;
+import com.bitfire.postprocessing.effects.Curvature;
+import com.bitfire.postprocessing.effects.Vignette;
+import com.bitfire.postprocessing.filters.CrtScreen;
 
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.postprocessing.BloomAttributeContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.CrtMonitorAttributeContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.CurvatureAttributeContainer;
+import org.catrobat.catroid.livewallpaper.postprocessing.EffectsContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
 import org.catrobat.catroid.livewallpaper.postprocessing.VignetteAttributeContainer;
@@ -51,6 +58,8 @@ import java.util.Map;
 
 public class TestUtils {
 
+	public static final int DEFAULT_SCREEN_WIDTH = 480;
+	public static final int DEFAULT_SCREEN_HEIGHT = 640;
 	//Bloom
 	public static float BASE_INT = 10.0f;
 	public static float BASE_SAT = 11.0f;
@@ -126,7 +135,7 @@ public class TestUtils {
 		map.put(PostProcessingEffectsEnum.CRTMONITOR, crtMonitor);
 	}
 
-	public static Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>  initializePostProcessingEffectsWithoutFactorization()
+	public static Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>  initializePostProcessingEffectsAttributesWithoutFactorization()
 	{
 		Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> map = new HashMap<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>();
 		BloomAttributeContainer bloom = new BloomAttributeContainer();
@@ -152,6 +161,41 @@ public class TestUtils {
 
 
 		CrtMonitorAttributeContainer crtMonitor = new CrtMonitorAttributeContainer();
+		crtMonitor.setChromaticDispersionRC(CHROMATIC_DISPERSION_RC);
+		crtMonitor.setChromaticDispersionBY(CHROMATIC_DISPERSION_BY);
+		crtMonitor.setEnabled(CRTMONITOR_IS_ENABLED);
+		map.put(PostProcessingEffectsEnum.CRTMONITOR, crtMonitor);
+
+		return map;
+	}
+
+	public static Map<PostProcessingEffectsEnum,PostProcessorEffect>  initializePostProcessingEffects()
+	{
+		Map<PostProcessingEffectsEnum,PostProcessorEffect> map = new HashMap<PostProcessingEffectsEnum,PostProcessorEffect>();
+
+		Bloom bloom = new Bloom(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
+		bloom.setBaseIntesity(BASE_INT);
+		bloom.setBaseSaturation(BASE_SAT);
+		bloom.setBloomSaturation(BLOOM_SAT);
+		bloom.setBloomIntesity(BLOOM_INT);
+		bloom.setThreshold(BLOOM_THRESHOLD);
+		bloom.setEnabled(BLOOM_IS_ENABLED);
+		map.put(PostProcessingEffectsEnum.BLOOM, bloom);
+
+
+		Vignette vignette = new Vignette(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, false);
+		vignette.setIntensity(INTENSITY);
+		vignette.setEnabled(VIGNETTE_IS_ENABLED);
+		map.put(PostProcessingEffectsEnum.VIGNETTE, vignette);
+
+
+		Curvature curvature = new Curvature();
+		curvature.setDistortion(DISTORTION);
+		curvature.setEnabled(CURVATURE_IS_ENABLED);
+		map.put(PostProcessingEffectsEnum.CURVATURE, curvature);
+
+		int effectsForCrt = CrtScreen.Effect.TweakContrast.v | CrtScreen.Effect.PhosphorVibrance.v | CrtScreen.Effect.Scanlines.v | CrtScreen.Effect.Tint.v;
+		CrtMonitor crtMonitor = new CrtMonitor(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, false, false, CrtScreen.RgbMode.ChromaticAberrations, effectsForCrt );
 		crtMonitor.setChromaticDispersionRC(CHROMATIC_DISPERSION_RC);
 		crtMonitor.setChromaticDispersionBY(CHROMATIC_DISPERSION_BY);
 		crtMonitor.setEnabled(CRTMONITOR_IS_ENABLED);

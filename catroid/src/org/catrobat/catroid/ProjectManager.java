@@ -127,6 +127,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 
 	public void loadProject(String projectName, Context context) throws LoadingProjectException,
 			OutdatedVersionProjectException, CompatibilityProjectException {
+
 		fileChecksumContainer = new FileChecksumContainer();
 		Project oldProject = project;
 		MessageContainer.createBackup();
