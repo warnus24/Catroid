@@ -40,6 +40,7 @@ import org.catrobat.catroid.content.bricks.PlaySoundBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.content.bricks.WhenNfcBrick;
 import org.catrobat.catroid.io.SoundManager;
+import org.catrobat.catroid.nfc.NfcHandler;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProgramMenuActivity;
@@ -204,13 +205,10 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 
 		UiTestUtils.fakeNfcTag(solo, "123", null, null);
 
-		solo.sleep(1000);
-		/*MediaPlayer mediaPlayer = getMediaPlayers().get(0);
+		solo.sleep(2000);
+		MediaPlayer mediaPlayer = getMediaPlayers().get(0);
 		assertTrue("mediaPlayer is not playing", mediaPlayer.isPlaying());
-		assertEquals("wrong file playing", 7592, mediaPlayer.getDuration());*/
-		solo.goBack();
-		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
-		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
+		assertEquals("wrong file playing", 7592, mediaPlayer.getDuration());
 	}
 
 	public void testPlayTriggerOne() {
@@ -220,23 +218,23 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 		solo.sleep(2000);
 
+		WhenNfcScript script = (WhenNfcScript)ProjectManager.getInstance().getCurrentSprite().getScript(0);
+		assertEquals("Wrong tag used in stage --> Problem with Adapter update in Script", script.isMatchAll(), false);
 		String tagName = ProjectManager.getInstance().getCurrentSprite().getNfcTagList().get(0).getNfcTagName();
 		assertEquals("Wrong tag name set in stage", tagName, tagDataList.get(0).getNfcTagName());
 		assertEquals("Wrong tag name set in stage", tagName, FIRST_TEST_TAG_NAME);
 
 		UiTestUtils.fakeNfcTag(solo, SECOND_TEST_TAG_ID, null, null);
-		/*MediaPlayer mediaPlayer = getMediaPlayers().get(0);
-		assertFalse("mediaPlayer is playing", mediaPlayer.isPlaying());*/
-		solo.sleep(3000);
+		solo.sleep(2000);
+		MediaPlayer mediaPlayer = getMediaPlayers().get(0);
+		assertFalse("mediaPlayer is playing", mediaPlayer.isPlaying());
+		solo.sleep(1000);
 
 		UiTestUtils.fakeNfcTag(solo, FIRST_TEST_TAG_ID, null, null);
-
-		/*mediaPlayer = getMediaPlayers().get(0);
+		solo.sleep(2000);
+		mediaPlayer = getMediaPlayers().get(0);
 		assertTrue("mediaPlayer is not playing", mediaPlayer.isPlaying());
-		assertEquals("wrong file playing", 7592, mediaPlayer.getDuration());*/
-		solo.goBack();
-		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
-		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
+		assertEquals("wrong file playing", 7592, mediaPlayer.getDuration());
 	}
 
     @Device
@@ -300,12 +298,12 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 
         NfcTagData tagData = new NfcTagData();
         tagData.setNfcTagName(FIRST_TEST_TAG_NAME);
-        tagData.setNfcTagUid(FIRST_TEST_TAG_ID);
+        tagData.setNfcTagUid(NfcHandler.byteArrayToHex(FIRST_TEST_TAG_ID.getBytes()));
         tagDataList.add(tagData);
 
         NfcTagData tagData2 = new NfcTagData();
         tagData2.setNfcTagName(SECOND_TEST_TAG_NAME);
-        tagData2.setNfcTagUid(SECOND_TEST_TAG_ID);
+        tagData2.setNfcTagUid(NfcHandler.byteArrayToHex(SECOND_TEST_TAG_ID.getBytes()));
         tagDataList.add(tagData2);
 
 		soundInfoList = projectManager.getCurrentSprite().getSoundList();
