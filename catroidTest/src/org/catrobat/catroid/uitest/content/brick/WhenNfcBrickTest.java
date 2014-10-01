@@ -224,7 +224,7 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
         ProjectManager projectManager = ProjectManager.getInstance();
         Project project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
         Sprite firstSprite = new Sprite("cat");
-        Script testScript = new WhenNfcScript(firstSprite);
+        Script testScript = new WhenNfcScript();
 
         firstSprite.addScript(testScript);
         project.addSprite(firstSprite);

@@ -125,15 +125,13 @@ public class NfcTagFragment extends ScriptActivityFragment implements NfcTagBase
 				handleAddButton();
 			}
 		});
-
+		BottomBar.hideAddButton(getActivity());
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-
-        BottomBar.hideAddButton(getActivity());
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
         pendingIntent = PendingIntent.getActivity(getActivity(), 0,
