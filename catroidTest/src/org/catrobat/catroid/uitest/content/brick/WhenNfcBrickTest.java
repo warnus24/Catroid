@@ -23,19 +23,23 @@
 package org.catrobat.catroid.uitest.content.brick;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.nfc.NfcAdapter;
 import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.NfcTagData;
+import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.WhenNfcScript;
+import org.catrobat.catroid.content.bricks.PlaySoundBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.content.bricks.WhenNfcBrick;
+import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProgramMenuActivity;
@@ -43,9 +47,12 @@ import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.fragment.NfcTagFragment;
 import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
+import org.catrobat.catroid.uitest.util.Reflection;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
@@ -58,6 +65,12 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
     private static final String SECOND_TEST_TAG_ID = "222";
 
     private String all;
+
+	private static final int RESOURCE_SOUND = org.catrobat.catroid.test.R.raw.longsound;
+
+	private String soundName = "testSound";
+	private File soundFile;
+	private ArrayList<SoundInfo> soundInfoList;
 
     public WhenNfcBrickTest() {
         super(MainMenuActivity.class);
@@ -75,6 +88,9 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 
     @Override
     public void tearDown() throws Exception {
+		if (soundFile.exists()) {
+			soundFile.delete();
+		}
         super.tearDown();
     }
 
@@ -178,6 +194,51 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
         }
     }
 
+	public void testPlayTriggerAll() {
+		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
+		solo.waitForActivity(StageActivity.class.getSimpleName());
+		solo.sleep(2000);
+
+		WhenNfcScript script = (WhenNfcScript)ProjectManager.getInstance().getCurrentSprite().getScript(0);
+		assertEquals("Wrong tag used in stage --> Problem with Adapter update in Script", script.isMatchAll(), true);
+
+		UiTestUtils.fakeNfcTag(solo, "123", null, null);
+
+		solo.sleep(1000);
+		/*MediaPlayer mediaPlayer = getMediaPlayers().get(0);
+		assertTrue("mediaPlayer is not playing", mediaPlayer.isPlaying());
+		assertEquals("wrong file playing", 7592, mediaPlayer.getDuration());*/
+		solo.goBack();
+		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
+		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
+	}
+
+	public void testPlayTriggerOne() {
+		solo.clickOnText(all);
+		solo.clickOnText(FIRST_TEST_TAG_NAME);
+		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
+		solo.waitForActivity(StageActivity.class.getSimpleName());
+		solo.sleep(2000);
+
+		String tagName = ProjectManager.getInstance().getCurrentSprite().getNfcTagList().get(0).getNfcTagName();
+		assertEquals("Wrong tag name set in stage", tagName, tagDataList.get(0).getNfcTagName());
+		assertEquals("Wrong tag name set in stage", tagName, FIRST_TEST_TAG_NAME);
+
+		UiTestUtils.fakeNfcTag(solo, SECOND_TEST_TAG_ID, null, null);
+		/*MediaPlayer mediaPlayer = getMediaPlayers().get(0);
+		assertFalse("mediaPlayer is playing", mediaPlayer.isPlaying());*/
+		solo.sleep(3000);
+
+		UiTestUtils.fakeNfcTag(solo, FIRST_TEST_TAG_ID, null, null);
+
+		/*mediaPlayer = getMediaPlayers().get(0);
+		assertTrue("mediaPlayer is not playing", mediaPlayer.isPlaying());
+		assertEquals("wrong file playing", 7592, mediaPlayer.getDuration());*/
+		solo.goBack();
+		solo.waitForView(solo.getView(R.id.stage_dialog_button_back));
+		solo.clickOnView(solo.getView(R.id.stage_dialog_button_back));
+	}
+
     @Device
     public void testAddNewTag() {
         String newText = solo.getString(R.string.new_nfc_tag);
@@ -226,6 +287,9 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
         Sprite firstSprite = new Sprite("cat");
         Script testScript = new WhenNfcScript();
 
+		PlaySoundBrick playSoundBrick = new PlaySoundBrick();
+		testScript.addBrick(playSoundBrick);
+
         firstSprite.addScript(testScript);
         project.addSprite(firstSprite);
 
@@ -243,6 +307,18 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
         tagData2.setNfcTagName(SECOND_TEST_TAG_NAME);
         tagData2.setNfcTagUid(SECOND_TEST_TAG_ID);
         tagDataList.add(tagData2);
+
+		soundInfoList = projectManager.getCurrentSprite().getSoundList();
+
+		soundFile = UiTestUtils.saveFileToProject(UiTestUtils.DEFAULT_TEST_PROJECT_NAME, "longsound.mp3",
+				RESOURCE_SOUND, getInstrumentation().getContext(), UiTestUtils.FileTypes.SOUND);
+		SoundInfo soundInfo = new SoundInfo();
+		soundInfo.setSoundFileName(soundFile.getName());
+		soundInfo.setTitle(soundName);
+
+		soundInfoList.add(soundInfo);
+		ProjectManager.getInstance().getFileChecksumContainer()
+				.addChecksum(soundInfo.getChecksum(), soundInfo.getAbsolutePath());
     }
 
     private void clickOnContextMenuItem(String tagName, String menuItemName) {
@@ -250,4 +326,9 @@ public class WhenNfcBrickTest extends BaseActivityInstrumentationTestCase<MainMe
         solo.waitForText(menuItemName);
         solo.clickOnText(menuItemName);
     }
+
+	@SuppressWarnings("unchecked")
+	private List<MediaPlayer> getMediaPlayers() {
+		return (List<MediaPlayer>) Reflection.getPrivateField(SoundManager.getInstance(), "mediaPlayers");
+	}
 }
