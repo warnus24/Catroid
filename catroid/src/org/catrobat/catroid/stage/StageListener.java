@@ -59,7 +59,6 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper.LiveWallpaperEngine;
-import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.PostProcessingUtil;
@@ -203,9 +202,9 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 		project = null;
 		if (isLWP) {
-			project = ProjectManager.getInstance(ProjectManagerState.LWP).getCurrentProject();
+			project = ProjectManager.getInstance().getCurrentProject();
 		} else {
-			project = ProjectManager.getInstance(ProjectManagerState.NORMAL).getCurrentProject();
+			project = ProjectManager.getInstance().getCurrentProject();
 		}
 
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";

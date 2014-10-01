@@ -26,7 +26,6 @@ package org.catrobat.catroid.livewallpaper;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -39,13 +38,10 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 
-import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ScreenValues;
-import org.catrobat.catroid.exceptions.CompatibilityProjectException;
-import org.catrobat.catroid.exceptions.LoadingProjectException;
-import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
@@ -62,6 +58,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	private ApplicationListener stageListener = null;
 	private boolean isTest = false;
+	private SurfaceHolder defaultSurface;
 
 	public LiveWallpaper() {
 		super();
@@ -109,7 +106,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			SharedPreferences sharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(getApplicationContext());
 			context = this;
-
 		oldProjectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
 		Log.d("LWP", "Neuer Service wurde geladen");
 	}
@@ -119,16 +115,15 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		super.onCreateApplication();
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		setScreenSize(false);
-		ProjectManager.changeState(ProjectManagerState.LWP);
-		loadProject();
-
+		Utils.loadWallpaperIfNeeded(context);
+		ProjectHandler.getInstance().changeToLiveWallpaper();
 		stageListener = new StageListener(true);
 		initialize(stageListener, config);
 		Log.d("LWP", "Preview was initialized");
 	}
 
 	public void initializeForTest(){
-		loadProject();
+		Utils.loadWallpaperIfNeeded(context);
 		stageListener = new StageListener(true);
 		previewEngine = new LiveWallpaperEngine();
 		isTest = true;
@@ -145,7 +140,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	@Override
 	public void onDestroy() {
 		Log.d("LWP", "Service wird beendet");
-		ProjectManager.changeState(ProjectManagerState.NORMAL);
+		ProjectHandler.getInstance().changeToPocketCode();
 		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, oldProjectName);
 		INSTANCE = null;
 		super.onDestroy();
@@ -158,55 +153,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 	}
 
-	public void loadProject() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		String projectName = "";
-		boolean loadable = true;
-		ProjectManager projectManagerLWP = ProjectManager.getInstance(ProjectManagerState.LWP);
-
-		projectName = sharedPreferences.getString(Constants.PREF_LWP_PROJECTNAME_KEY, null);
-		if (projectName == null) {
-			projectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
-		}
-
-		if (projectManagerLWP.getCurrentProject() != null
-				&& projectManagerLWP.getCurrentProject().getName().equals(projectName)) {
-			return;
-		}
-
-		String result = "";
-
-		try {
-			projectManagerLWP.loadProject(projectName, context);
-		} catch (LoadingProjectException e) {
-			loadable = false;
-			e.printStackTrace();
-		} catch (OutdatedVersionProjectException e) {
-			loadable = false;
-			e.printStackTrace();
-		} catch (CompatibilityProjectException e) {
-			loadable = false;
-			e.printStackTrace();
-		}
-
-		if(!loadable)
-		{
-			result = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
-			Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
-			toast.show();
-			Log.d("LWP", "Project is not loadable");
-			return;
-		}
-
-		result = ProjectLoadableEnum.IS_LOADABLE.toString();
-		Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
-		toast.show();
-		Log.d("LWP", "Project is loadable");
-
-		Editor editor = sharedPreferences.edit();
-		editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, projectName);
-		editor.commit();
-	}
 
 	@Override
 	public Engine onCreateEngine() {
@@ -258,15 +204,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 		};
 
-		private boolean change = false;
-
 		public LiveWallpaperEngine() {
 			super();
 		}
 
 		@Override
 		public void onSurfaceCreated(final SurfaceHolder holder) {
-			ProjectManager.changeState(ProjectManagerState.LWP);
 			if (!isPreview() && homeEngine != null && previewEngine != null) {
 				Log.d("LWP", "Home Engine erstellt (nicht zum ersten Mal)");
 			} else if (!isPreview() && previewEngine != null) {
@@ -302,12 +245,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		@Override
 		public void onResume() {
-
+			ProjectHandler.getInstance().changeToLiveWallpaper();
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ANFANG");
 			if (getLocalStageListener() == null) {
 				return;
 			}
-
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 			super.onResume();
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ENDE");
