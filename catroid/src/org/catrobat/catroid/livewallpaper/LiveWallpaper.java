@@ -246,13 +246,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 			mVisible = visible;
 			super.onVisibilityChanged(visible);
-			if(visible && resumeFromPocketCode) {
-				onPause();
-				LiveWallpaper.getInstance().changeWallpaperProgram();
-				Log.d("LWP", "RELOAD" + resumeFromPocketCode);
-				resumeFromPocketCode = false;
-			}
-			Log.d("LWP", "RELOAD FINISH" + resumeFromPocketCode);
 			Log.d("LWP", "Visibility changed: isPreview(" + isPreview() + ") is visible: " + visible);
 		}
 
