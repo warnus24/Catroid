@@ -24,7 +24,6 @@
 package org.catrobat.catroid.livewallpaper;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -46,21 +45,23 @@ import org.catrobat.catroid.livewallpaper.ui.SelectProgramFragment;
 public class LoadWallpaperTask extends AsyncTask<String, String, String> {
 		private ProgressDialog progress;
 		private String selectedProject;
-		Context context = LiveWallpaper.getInstance().getContext();
+		FragmentActivity activity;
 		SelectProgramFragment fragment;
 		public LoadWallpaperTask(FragmentActivity activity,String name,SelectProgramFragment fragment) {
-			progress = new ProgressDialog(context);
-			progress.setTitle(context.getString(R.string.please_wait));
-			progress.setMessage(context.getString(R.string.loading));
-			progress.setCancelable(false);
+			if(activity != null){
+			progress = new ProgressDialog(activity);
+			progress.setTitle(activity.getString(R.string.please_wait));
+			progress.setMessage(activity.getString(R.string.loading));
+			progress.setCancelable(false);}
 			selectedProject = name;
+			this.activity = activity;
 			this.fragment = fragment;
 		}
 
 		@Override
 		protected void onPreExecute() {
 			//LiveWallpaper.getInstance().presetSprites();
-			if(context != null)
+			if(activity != null)
 				progress.show();
 			super.onPreExecute();
 		}
@@ -108,15 +109,12 @@ public class LoadWallpaperTask extends AsyncTask<String, String, String> {
 				}
 
 				if (!preview_loadable) {
-					if(fragment != null)
-					{
 					fragment.getFragmentManager().beginTransaction().remove(fragment).commit();
 					fragment.getFragmentManager().popBackStack();
 					str_loadable = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
-					}
 					return str_loadable;
 				}
-				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
 				SharedPreferences.Editor editor = sharedPreferences.edit();
 				editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, selectedProject);
 				editor.commit();

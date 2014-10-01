@@ -52,13 +52,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	private int rememberVolume=50;
 	private Context context;
 	private String oldProjectName;
-
+	boolean resumeFromPocketCode = false;
 	private LiveWallpaperEngine previewEngine;
 	private LiveWallpaperEngine homeEngine;
 
 	private ApplicationListener stageListener = null;
 	private boolean isTest = false;
-	private SurfaceHolder defaultSurface;
 
 	public LiveWallpaper() {
 		super();
@@ -70,6 +69,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	}
 
 	private static LiveWallpaper INSTANCE = null;
+
+	public void setResumeFromPocketCode(boolean resumeFromPocketCode) {
+		this.resumeFromPocketCode = resumeFromPocketCode;
+	}
+
+	public boolean isResumeFromPocketCode() {
+		return resumeFromPocketCode;
+	}
 
 	public static synchronized LiveWallpaper getInstance() {
 		return INSTANCE;
@@ -239,7 +246,13 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 			mVisible = visible;
 			super.onVisibilityChanged(visible);
-
+			if(visible && resumeFromPocketCode) {
+				onPause();
+				LiveWallpaper.getInstance().changeWallpaperProgram();
+				Log.d("LWP", "RELOAD" + resumeFromPocketCode);
+				resumeFromPocketCode = false;
+			}
+			Log.d("LWP", "RELOAD FINISH" + resumeFromPocketCode);
 			Log.d("LWP", "Visibility changed: isPreview(" + isPreview() + ") is visible: " + visible);
 		}
 

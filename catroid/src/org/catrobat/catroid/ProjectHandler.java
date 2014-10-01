@@ -26,6 +26,7 @@ package org.catrobat.catroid;
 import android.util.Log;
 
 import org.catrobat.catroid.content.Project;
+import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 
 /**
  * Created by Tom on 30.09.2014.
@@ -71,6 +72,8 @@ public final class ProjectHandler {
 
 	public void setPocketCodeProject(Project pocketCodeProject) {
 		Log.d(TAG,"set Pocketcode Project!!!");
+		if (LiveWallpaper.getInstance() != null)
+			LiveWallpaper.getInstance().setResumeFromPocketCode(true);
 		this.pocketCodeProject = pocketCodeProject;
 	}
 
