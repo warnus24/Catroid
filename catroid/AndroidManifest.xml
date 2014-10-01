@@ -38,7 +38,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-permission android:name="android.permission.CAMERA" />
     
@@ -167,8 +167,8 @@
         
         <service android:name="org.catrobat.catroid.livewallpaper.LiveWallpaper" 
         	android:label="@string/lwp_app_name" 
-        	android:permission="android.permission.BIND_WALLPAPER" 
-        	android:enabled="true"> 
+        	android:permission="android.permission.BIND_WALLPAPER"
+            android:enabled="true">
         <intent-filter> 
             <action android:name="android.service.wallpaper.WallpaperService"/> 
             </intent-filter> 

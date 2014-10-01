@@ -48,7 +48,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.google.common.collect.Multimap;
 
-import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenModes;
@@ -201,10 +201,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		font.setScale(1.2f);
 
 		project = null;
-		if (isLWP) {
-			project = ProjectManager.getInstance().getCurrentProject();
+		if (!isLWP) {
+			project = ProjectHandler.getInstance().getPocketCodeProject();
 		} else {
-			project = ProjectManager.getInstance().getCurrentProject();
+			project = ProjectHandler.getInstance().getLiveWallpaperProject();
 		}
 
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";

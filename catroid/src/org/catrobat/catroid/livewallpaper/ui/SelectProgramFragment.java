@@ -471,6 +471,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		adapter.notifyDataSetChanged();
 	}
 
+
 	public List<ProjectData> getProjectList() {
 		return projectList;
 	}

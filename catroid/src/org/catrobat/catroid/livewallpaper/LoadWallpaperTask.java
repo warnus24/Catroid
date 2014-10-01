@@ -37,6 +37,7 @@ import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.exceptions.CompatibilityProjectException;
 import org.catrobat.catroid.exceptions.LoadingProjectException;
 import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
+import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
 import org.catrobat.catroid.livewallpaper.ui.SelectProgramFragment;
 
 /**
@@ -86,12 +87,11 @@ public class LoadWallpaperTask extends AsyncTask<String, String, String> {
 
 			synchronized (LiveWallpaper.getInstance()) {
 
-				if (ProjectManager.getInstance().getCurrentProject() != null
-						&& ProjectManager.getInstance().getCurrentProject().getName().equals(selectedProject)) {
+				/*if (ProjectManager.getInstance().getCurrentProject() != null) {
 					//getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
 					//getFragmentManager().popBackStack();
 					return str_loadable;
-				}
+				}*/
 
 				boolean preview_loadable = true;
 				try {
@@ -145,5 +145,6 @@ public class LoadWallpaperTask extends AsyncTask<String, String, String> {
 				progress.dismiss();
 			}
 			super.onPostExecute(result);
+			((SelectProgramActivity)activity).goBack();
 		}
 	}

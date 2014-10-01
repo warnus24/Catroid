@@ -113,7 +113,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			SharedPreferences sharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(getApplicationContext());
 			context = this;
-		oldProjectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
+		oldProjectName = sharedPreferences.getString(Constants.PREF_LWP_PROJECTNAME_KEY, null);
 		Log.d("LWP", "Neuer Service wurde geladen");
 	}
 
@@ -148,7 +148,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public void onDestroy() {
 		Log.d("LWP", "Service wird beendet");
 		ProjectHandler.getInstance().changeToPocketCode();
-		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, oldProjectName);
+		Utils.saveToPreferences(context, Constants.PREF_LWP_PROJECTNAME_KEY, oldProjectName);
 		INSTANCE = null;
 		super.onDestroy();
 		PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
@@ -251,11 +251,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		@Override
 		public void onResume() {
-			ProjectHandler.getInstance().changeToLiveWallpaper();
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ANFANG");
 			if (getLocalStageListener() == null) {
 				return;
 			}
+			ProjectHandler.getInstance().changeToLiveWallpaper();
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 			super.onResume();
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ENDE");
@@ -298,6 +298,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			Log.d("LWP", "destroying surface: " + name);
 			mVisible = false;
 			mHandler.removeCallbacks(mUpdateDisplay);
+			stopSelf();
 			super.onSurfaceDestroyed(holder);
 		}
 
