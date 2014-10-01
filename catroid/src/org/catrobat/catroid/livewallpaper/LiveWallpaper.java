@@ -39,6 +39,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 import com.bitfire.postprocessing.PostProcessorEffect;
@@ -441,6 +442,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				mHandler.removeCallbacks(mUpdateDisplay);
 				return;
 			}
+
 
 			if (mVisible) {
 				mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
