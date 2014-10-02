@@ -24,7 +24,9 @@
 package org.catrobat.catroid.livewallpaper;
 
 import android.annotation.SuppressLint;
+import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -42,9 +44,12 @@ import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ScreenValues;
+import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.utils.Utils;
+
+import java.io.IOException;
 
 @SuppressLint("NewApi")
 //eventuell unnötig 10 intern 15 vorraussetzen Fehlerfall abfangen API Level vorraussetzen  prüfen mit 10
@@ -81,7 +86,15 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public static synchronized LiveWallpaper getInstance() {
 		return INSTANCE;
 	}
-
+	public void resetWallpaper()
+	{
+		try {
+			WallpaperManager.getInstance(getContext()).clear();
+		} catch (IOException e) {
+			Log.e("LWP", "Something somewhere went wrong :-P ");
+			e.printStackTrace();
+		}
+	}
 	public int getRememberVolume() {
 		return rememberVolume;
 	}
@@ -109,17 +122,23 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public void onCreate() {
-			super.onCreate();
+			//super.onCreate();
 			SharedPreferences sharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(getApplicationContext());
 			context = this;
 		oldProjectName = sharedPreferences.getString(Constants.PREF_LWP_PROJECTNAME_KEY, null);
+
+		try {
+			getApplication().clearWallpaper();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		Log.d("LWP", "Neuer Service wurde geladen");
 	}
 
 	@Override
 	public void onCreateApplication() {
-		super.onCreateApplication();
+		//super.onCreateApplication();
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		setScreenSize(false);
 		Utils.loadWallpaperIfNeeded(context);
@@ -234,6 +253,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 
 			super.onSurfaceCreated(holder);
+
+			if (isPreview())
+			{
+				Intent intent;
+				intent = new Intent(getContext(), SelectProgramActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+			}
 		}
 
 		public StageListener getLocalStageListener() {
@@ -344,6 +371,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		public void setTinting(boolean isTinting) {
 			getLocalStageListener().setTinting(isTinting);
 		}
+
 
 	}
 }

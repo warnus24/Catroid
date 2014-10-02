@@ -24,14 +24,12 @@ package org.catrobat.catroid.livewallpaper.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -45,26 +43,21 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ProjectData;
 import org.catrobat.catroid.content.Project;
-import org.catrobat.catroid.exceptions.CompatibilityProjectException;
-import org.catrobat.catroid.exceptions.LoadingProjectException;
-import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.LoadWallpaperTask;
-import org.catrobat.catroid.livewallpaper.ProjectLoadableEnum;
-import org.catrobat.catroid.livewallpaper.ProjectManagerState;
 import org.catrobat.catroid.ui.MyProjectsActivity;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectEditListener;
@@ -269,6 +262,9 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				SoundManager.getInstance().setVolume(soundSeekBarVolume);
+				if(ProjectHandler.getInstance().getPocketCodeStageActivity()!= null){
+					ProjectHandler.getInstance().getPocketCodeStageActivity().finishActivity(0);
+				}
 				LoadWallpaperTask loader = new LoadWallpaperTask(getActivity(),selectedProject, selectProgramFragment);
 				//loader.execute();
 				loader.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);

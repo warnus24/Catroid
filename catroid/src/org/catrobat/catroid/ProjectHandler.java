@@ -23,6 +23,7 @@
 
 package org.catrobat.catroid;
 
+import android.app.Activity;
 import android.util.Log;
 
 import org.catrobat.catroid.content.Project;
@@ -36,6 +37,7 @@ public final class ProjectHandler {
 	private String TAG = getClass().getSimpleName();
 	private Project liveWallpaperProject;
 	private Project pocketCodeProject;
+	private Activity pocketCodeStageActivity;
 
 	private static ProjectHandler INSTANCE = new ProjectHandler();
 
@@ -77,5 +79,11 @@ public final class ProjectHandler {
 		this.pocketCodeProject = pocketCodeProject;
 	}
 
+	public Activity getPocketCodeStageActivity() {
+		return pocketCodeStageActivity;
+	}
 
+	public void setPocketCodeStageActivity(Activity pocketCodeStageActivity) {
+		this.pocketCodeStageActivity = pocketCodeStageActivity;
+	}
 }

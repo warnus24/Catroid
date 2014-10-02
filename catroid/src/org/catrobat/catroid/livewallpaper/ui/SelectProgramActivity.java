@@ -22,11 +22,9 @@
  */
 package org.catrobat.catroid.livewallpaper.ui;
 
-import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
@@ -37,8 +35,6 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.utils.PostProcessingUtil;
-
-import java.io.IOException;
 
 public class SelectProgramActivity extends BaseActivity implements ColorPickerDialog.OnColorChangedListener {
 
@@ -94,12 +90,6 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 			}
 			case R.id.lwp_pocket_code: {
 				ProjectHandler.getInstance().changeToPocketCode();
-				try {
-					WallpaperManager.getInstance(this).clear();
-				} catch (IOException e) {
-					Log.e("LWP", "Something somewhere went wrong :-P ");
-					e.printStackTrace();
-				}
 				Intent intent = new Intent(this, MainMenuActivity.class);
 				this.startActivity(intent);
 				break;
