@@ -42,8 +42,11 @@ import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 
 import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BroadcastSequenceMap;
+import org.catrobat.catroid.common.BroadcastWaitSequenceMap;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ScreenValues;
+import org.catrobat.catroid.content.BroadcastHandler;
 import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
@@ -254,13 +257,17 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 			super.onSurfaceCreated(holder);
 
-			if (isPreview())
-			{
-				Intent intent;
-				intent = new Intent(getContext(), SelectProgramActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(intent);
+			if (isPreview()){
+				startSettingsActivity();
 			}
+		}
+
+		public void startSettingsActivity(){
+			this.onPause();
+			Intent intent;
+			intent = new Intent(getContext(), SelectProgramActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
 		}
 
 		public StageListener getLocalStageListener() {
@@ -273,6 +280,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 			mVisible = visible;
 			super.onVisibilityChanged(visible);
+
 			Log.d("LWP", "Visibility changed: isPreview(" + isPreview() + ") is visible: " + visible);
 		}
 
@@ -337,6 +345,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			super.onDestroy();
 		}
 
+		private void clearBroadcastMaps() {
+			BroadcastSequenceMap.clear();
+			BroadcastWaitSequenceMap.clear();
+			BroadcastWaitSequenceMap.clearCurrentBroadcastEvent();
+		}
+
 		public synchronized void changeWallpaperProgram() {
 
 			if (getLocalStageListener() == null || isTest) {
@@ -347,13 +361,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				return;
 			}
 			LiveWallpaperEngine engine = this;
+			clearBroadcastMaps();
 			getLocalStageListener().create();
+			getLocalStageListener().reloadProjectLWP(engine);
+			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 
 			synchronized (engine) {
 				try {
 					Log.d("LWP", "StageListener, changeWallpaper wait... ANFANG");
-					getLocalStageListener().reloadProjectLWP(engine);
-					onResume();
 					engine.wait();
 				} catch (InterruptedException e) {
 					Log.d("LWP", "StageListener, Fehler bei changeWallpaper wait...");
