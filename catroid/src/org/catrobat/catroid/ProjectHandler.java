@@ -51,12 +51,14 @@ public final class ProjectHandler {
 
 	public void changeToPocketCode(){
 		Log.d(TAG,"changing to Pocketcode!!!");
-		ProjectManager.getInstance().setProject(pocketCodeProject);
+		if(pocketCodeProject != null)
+		  ProjectManager.getInstance().setProject(pocketCodeProject);
 	}
 
 	public void changeToLiveWallpaper(){
 		Log.d(TAG,"changing to LiveWallpaper!!!");
-		ProjectManager.getInstance().setProject(liveWallpaperProject);
+		if(liveWallpaperProject != null)
+		  ProjectManager.getInstance().setProject(liveWallpaperProject);
 	}
 
 	public Project getLiveWallpaperProject() {
