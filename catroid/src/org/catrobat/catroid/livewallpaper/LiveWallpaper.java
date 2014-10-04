@@ -46,11 +46,13 @@ import org.catrobat.catroid.common.BroadcastSequenceMap;
 import org.catrobat.catroid.common.BroadcastWaitSequenceMap;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ScreenValues;
-import org.catrobat.catroid.content.BroadcastHandler;
+import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
+import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.Utils;
+import org.catrobat.catroid.utils.VibratorUtil;
 
 import java.io.IOException;
 
@@ -145,7 +147,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		setScreenSize(false);
 		Utils.loadWallpaperIfNeeded(context);
-		ProjectHandler.getInstance().changeToLiveWallpaper();
+		ProjectHandler.getInstance().changeToLiveWallpaper(this);
 		stageListener = new StageListener(true);
 		initialize(stageListener, config);
 		Log.d("LWP", "Preview was initialized");
@@ -169,7 +171,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	@Override
 	public void onDestroy() {
 		Log.d("LWP", "Service wird beendet");
-		ProjectHandler.getInstance().changeToPocketCode();
+		ProjectHandler.getInstance().changeToPocketCode(this);
 		Utils.saveToPreferences(context, Constants.PREF_LWP_PROJECTNAME_KEY, oldProjectName);
 		INSTANCE = null;
 		super.onDestroy();
@@ -290,7 +292,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			if (getLocalStageListener() == null) {
 				return;
 			}
-			ProjectHandler.getInstance().changeToLiveWallpaper();
+			ProjectHandler.getInstance().changeToLiveWallpaper(getContext());
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 			super.onResume();
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ENDE");
@@ -376,6 +378,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 
 			getLocalStageListener().menuResume();
+			LedUtil.resumeLed();
+			VibratorUtil.resumeVibrator();
+			SensorHandler.startSensorListener(context);
 		}
 
 		public void tinting(int c) {

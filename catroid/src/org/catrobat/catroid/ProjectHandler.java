@@ -24,10 +24,13 @@
 package org.catrobat.catroid;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
+import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
+import org.catrobat.catroid.utils.Utils;
 
 /**
  * Created by Tom on 30.09.2014.
@@ -49,16 +52,20 @@ public final class ProjectHandler {
 		return INSTANCE;
 	}
 
-	public void changeToPocketCode(){
+	public void changeToPocketCode(Context context){
 		Log.d(TAG,"changing to Pocketcode!!!");
-		if(pocketCodeProject != null)
-		  ProjectManager.getInstance().setProject(pocketCodeProject);
+		if(pocketCodeProject != null){
+		 	ProjectManager.getInstance().setProject(pocketCodeProject);
+			Utils.saveToPreferences(context,Constants.PREF_PROJECTNAME_KEY, pocketCodeProject.getName());
+		}
 	}
 
-	public void changeToLiveWallpaper(){
-		Log.d(TAG,"changing to LiveWallpaper!!!");
-		if(liveWallpaperProject != null)
-		  ProjectManager.getInstance().setProject(liveWallpaperProject);
+	public void changeToLiveWallpaper(Context context) {
+		Log.d(TAG, "changing to LiveWallpaper!!!");
+		if (liveWallpaperProject != null) {
+			ProjectManager.getInstance().setProject(liveWallpaperProject);
+			Utils.saveToPreferences(context,Constants.PREF_LWP_PROJECTNAME_KEY, liveWallpaperProject.getName());
+		}
 	}
 
 	public Project getLiveWallpaperProject() {

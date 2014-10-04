@@ -104,7 +104,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 	@Override
 	protected void onResume() {
 		super.onResume();
-		ProjectHandler.getInstance().changeToPocketCode();
+		ProjectHandler.getInstance().changeToPocketCode(this);
 		if (!Utils.checkForExternalStorageAvailableAndDisplayErrorIfNot(this)) {
 			return;
 		}

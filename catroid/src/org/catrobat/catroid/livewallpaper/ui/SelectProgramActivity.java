@@ -89,7 +89,7 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 				break;
 			}
 			case R.id.lwp_pocket_code: {
-				ProjectHandler.getInstance().changeToPocketCode();
+				ProjectHandler.getInstance().changeToPocketCode(this);
 				Intent intent = new Intent(this, MainMenuActivity.class);
 				this.startActivity(intent);
 				break;

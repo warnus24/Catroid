@@ -141,7 +141,7 @@ public class LoadWallpaperTask extends AsyncTask<String, String, String> {
 			Toast toast = Toast.makeText(LiveWallpaper.getInstance().getContext(), result, Toast.LENGTH_LONG);
 			toast.show();
 			if (progress.isShowing()) {
-				ProjectHandler.getInstance().changeToLiveWallpaper();
+				ProjectHandler.getInstance().changeToLiveWallpaper(activity);
 				LiveWallpaper.getInstance().changeWallpaperProgram();
 				progress.dismiss();
 			}
