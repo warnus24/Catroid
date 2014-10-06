@@ -310,7 +310,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		project.getUserVariables().resetAllUserVariables();
 
 		reloadProject = true;
-		this.firstStart = true;
 		Log.d("LWP", "StageListener reloadProject!!!!!");
 	}
 

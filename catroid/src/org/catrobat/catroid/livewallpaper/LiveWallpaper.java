@@ -145,7 +145,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public void onCreateApplication() {
 		super.onCreateApplication();
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		//config.getTouchEventsForLiveWallpaper = true;
+
 		setScreenSize(false);
 		Utils.loadWallpaperIfNeeded(context);
 		ProjectHandler.getInstance().changeToLiveWallpaper(this);
@@ -360,17 +360,18 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				Log.d("LWP", "StageListener, Fehler bei changeWallpaper " + name);
 				return;
 			}
-			if (!isPreview()) {
-				return;
-			}
+			//if (!isPreview()) {
+			//	return;
+			//}
 			LiveWallpaperEngine engine = this;
 			clearBroadcastMaps();
 			getLocalStageListener().create();
 			getLocalStageListener().reloadProjectLWP(engine);
-			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
+
 
 			synchronized (engine) {
 				try {
+					mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 					Log.d("LWP", "StageListener, changeWallpaper wait... ANFANG");
 					engine.wait();
 				} catch (InterruptedException e) {
