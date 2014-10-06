@@ -23,15 +23,22 @@
 
 package org.catrobat.catroid.test.livewallpaper;
 
+import android.content.Intent;
 import android.test.InstrumentationTestCase;
 
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.bitfire.postprocessing.PostProcessor;
+import com.bitfire.postprocessing.effects.Bloom;
+import com.robotium.solo.Solo;
+
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.postprocessing.EffectsContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessorWrapper;
+import org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectFragment;
+import org.catrobat.catroid.test.livewallpaper.utils.TestUtils;
+import org.mockito.Mockito;
 
 import java.util.Map;
 
@@ -41,10 +48,13 @@ import java.util.Map;
 
 public class PostProcessorWrapperTest extends InstrumentationTestCase{
 	private Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> effectsMap;
-	private PostProcessor postProcessor;
+	//private PostProcessor postProcessor = new PostProcessor(false, true, false);
 	//private EffectsContainer effectsContainer = new EffectsContainer();
-	//private PostProcessorWrapper postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer);
-	//private LiveWallpaper liveWallpaper = new LiveWallpaper();
+	//private PostProcessorWrapper postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer, true);
+	private PostProcessor postProcessor;
+	private EffectsContainer effectsContainer;
+	private PostProcessorWrapper postProcessorWrapper;
+	private final int DEFAULT_SLEEP = 3100;
 
 	static {
 		GdxNativesLoader.load();
@@ -52,27 +62,28 @@ public class PostProcessorWrapperTest extends InstrumentationTestCase{
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		//postProcessor = new PostProcessor(false, true, false);
+		LiveWallpaper liveWallpaper = new LiveWallpaper();
+		liveWallpaper.onCreate();
+		Intent intent = new Intent(liveWallpaper.getContext(), LiveWallpaper.class);
+		Thread.sleep(DEFAULT_SLEEP);
+		liveWallpaper.startService(intent);
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
 
-	/*public void initMocks(){
+	public void initMocks(){
 		Bloom bloom = Mockito.mock(Bloom.class);
 		Mockito.when(effectsContainer.get(PostProcessingEffectsEnum.BLOOM)).thenReturn(bloom);
 		effectsMap = TestUtils.initializePostProcessingEffectsAttributesWithoutFactorization();
 		postProcessor = Mockito.mock(PostProcessor.class);
 		effectsContainer = Mockito.mock(EffectsContainer.class);
-		postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer);
-		PowerMockito.mockStatic(SelectPostProcessingEffectFragment.class);
-		PowerMockito.doNothing().when(SelectPostProcessingEffectFragment.class);
-
-	}*/
+		postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer, true);
+	}
 
 	public void testAddEffectsFirstTime() {
-		//postProcessorWrapper.add(PostProcessingEffectsEnum.BLOOM, effectsMap.get(PostProcessingEffectsEnum.BLOOM));
+		postProcessorWrapper.add(PostProcessingEffectsEnum.BLOOM, effectsMap.get(PostProcessingEffectsEnum.BLOOM));
 
 		//assertTrue("Yes", true);
 

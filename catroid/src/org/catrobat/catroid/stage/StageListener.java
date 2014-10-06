@@ -160,17 +160,27 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	private boolean isTinting = false;
 	private com.badlogic.gdx.graphics.Color tintingColor = null;
 	PostProcessorWrapper postProcessorWrapper;
+	private boolean isTest = false;
+
+	public StageListener(boolean isLWP, boolean isTest) {
+		super();
+		BroadcastHandler.setStageID(StageID++);
+		this.isLWP = isLWP;
+		this.isTest = isTest;
+	}
 
 	public StageListener(boolean isLWP) {
 		super();
 		BroadcastHandler.setStageID(StageID++);
 		this.isLWP = isLWP;
+		isTest = false;
 	}
 
 	public StageListener() {
 		super();
 		BroadcastHandler.setStageID(StageID++);
 		isLWP = false;
+		isTest = false;
 	}
 
 	public void setTintingColor(int c) {
@@ -290,7 +300,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		if(postProcessorWrapper == null){
 			PostProcessor postProcessor = new PostProcessor(false, true, false);
 			EffectsContainer effectsContainer = new EffectsContainer();
-			postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer);
+			postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer, isTest);
 		}
 	}
 

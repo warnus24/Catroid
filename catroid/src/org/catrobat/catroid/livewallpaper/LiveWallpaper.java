@@ -169,7 +169,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	public void initializeForTest(){
 		loadProject();
-		stageListener = new StageListener(true);
+		stageListener = new StageListener(true, true);
 		previewEngine = new LiveWallpaperEngine();
 	}
 

@@ -62,8 +62,9 @@ public class PostProcessorWrapper
 	//PostProcessor postProcessor = new PostProcessor(false, true, false);
 	//EffectsContainer effectsContainer = new EffectsContainer();
 	long startTime = TimeUtils.millis();
+	boolean isTest = false;
 
-	public PostProcessorWrapper(PostProcessor postProcessor, EffectsContainer effectsContainer){
+	public PostProcessorWrapper(PostProcessor postProcessor, EffectsContainer effectsContainer, boolean isTest){
 		this.postProcessor = postProcessor;
 		this.effectsContainer = effectsContainer;
 		if(this.postProcessor == null){
@@ -72,7 +73,7 @@ public class PostProcessorWrapper
 		if(this.effectsContainer == null){
 			this.effectsContainer = new EffectsContainer();
 		}
-
+		this.isTest = isTest;
 	}
 
 
@@ -126,6 +127,12 @@ public class PostProcessorWrapper
 				effect.setEnabled(false);
 			}
 			LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
+			refreshGUI();
+		}
+	}
+
+	private void refreshGUI(){
+		if(!isTest){
 			SelectPostProcessingEffectFragment.refresh();
 		}
 	}
@@ -145,7 +152,7 @@ public class PostProcessorWrapper
 				attributes.setEnabled(false);
 				LiveWallpaper.getInstance().setPostProcessingEffectAttributes(attributes);
 			}
-			SelectPostProcessingEffectFragment.refresh();
+			refreshGUI();
 			//effects.clear();
 		}
 	}
