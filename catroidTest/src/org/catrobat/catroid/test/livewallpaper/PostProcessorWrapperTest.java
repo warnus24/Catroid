@@ -32,7 +32,6 @@ import org.catrobat.catroid.livewallpaper.postprocessing.EffectsContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessorWrapper;
-import org.junit.*;
 
 import java.util.Map;
 
@@ -42,10 +41,10 @@ import java.util.Map;
 
 public class PostProcessorWrapperTest extends InstrumentationTestCase{
 	private Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> effectsMap;
-	private PostProcessor postProcessor = new PostProcessor(true, false, true);
-	private EffectsContainer effectsContainer = new EffectsContainer();
-	private PostProcessorWrapper postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer);
-	private LiveWallpaper liveWallpaper = new LiveWallpaper();
+	private PostProcessor postProcessor;
+	//private EffectsContainer effectsContainer = new EffectsContainer();
+	//private PostProcessorWrapper postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer);
+	//private LiveWallpaper liveWallpaper = new LiveWallpaper();
 
 	static {
 		GdxNativesLoader.load();
@@ -53,14 +52,15 @@ public class PostProcessorWrapperTest extends InstrumentationTestCase{
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		//postProcessor = new PostProcessor(false, true, false);
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
 
-	public void initMocks(){
-		/*Bloom bloom = Mockito.mock(Bloom.class);
+	/*public void initMocks(){
+		Bloom bloom = Mockito.mock(Bloom.class);
 		Mockito.when(effectsContainer.get(PostProcessingEffectsEnum.BLOOM)).thenReturn(bloom);
 		effectsMap = TestUtils.initializePostProcessingEffectsAttributesWithoutFactorization();
 		postProcessor = Mockito.mock(PostProcessor.class);
@@ -68,13 +68,13 @@ public class PostProcessorWrapperTest extends InstrumentationTestCase{
 		postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer);
 		PowerMockito.mockStatic(SelectPostProcessingEffectFragment.class);
 		PowerMockito.doNothing().when(SelectPostProcessingEffectFragment.class);
-		*/
-	}
+
+	}*/
 
 	public void testAddEffectsFirstTime() {
-		postProcessorWrapper.add(PostProcessingEffectsEnum.BLOOM, effectsMap.get(PostProcessingEffectsEnum.BLOOM));
+		//postProcessorWrapper.add(PostProcessingEffectsEnum.BLOOM, effectsMap.get(PostProcessingEffectsEnum.BLOOM));
 
-		Assert.assertTrue("Yes", true);
+		//assertTrue("Yes", true);
 
 		//Iterator it = effectsMap.entrySet().iterator();
 		//while (it.hasNext()) {
