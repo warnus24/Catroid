@@ -127,7 +127,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public void onCreate() {
-			//super.onCreate();
+			super.onCreate();
 			SharedPreferences sharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(getApplicationContext());
 			context = this;
@@ -143,8 +143,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	@Override
 	public void onCreateApplication() {
-		//super.onCreateApplication();
+		super.onCreateApplication();
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+		//config.getTouchEventsForLiveWallpaper = true;
 		setScreenSize(false);
 		Utils.loadWallpaperIfNeeded(context);
 		ProjectHandler.getInstance().changeToLiveWallpaper(this);
@@ -229,9 +230,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		private final Runnable mUpdateDisplay = new Runnable() {
 			@Override
 			public void run() {
-				if (mVisible) {
+				//if (mVisible) {
 					mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
-				}
+				//}
 			}
 		};
 
