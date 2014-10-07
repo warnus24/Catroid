@@ -88,7 +88,6 @@ public final class SensorTestServerConnection {
 	public static void emulateNfcTag(boolean writable, String tag_id, String ndef_msg) {
 		try {
 			String response = "";
-			clientSocket.close();
 			Thread.sleep(NETWORK_DELAY_MS);
 			connectToArduinoServer();
 			Log.d(TAG, "requesting sensor value: ");
@@ -110,7 +109,7 @@ public final class SensorTestServerConnection {
 			Log.d(TAG, "response received! " + response);
 
 			//assertTrue("Emulation timed out!", response.contains("TIMEDOUT"));
-
+			clientSocket.close();
 		} catch (IOException ioException) {
 			Log.e(TAG, "Data exchange failed! Check server connection!");
 		} catch (InterruptedException e) {
