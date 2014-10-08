@@ -316,11 +316,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		Log.d("LWP", "StageListener reloadProject!!!!!");
 	}
 
-	public void startLWPSettings(Thread startLWPSettingsThread){
-		this.startLWPSettingsThread = startLWPSettingsThread;
-		startLWPSettings = true;
-	}
-
 	@Override
 	public void resume() {
 		if (!paused) {
