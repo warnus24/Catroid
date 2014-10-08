@@ -309,8 +309,16 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 		project.getUserVariables().resetAllUserVariables();
 
-		reloadProject = true;
+		if(lwpEngine != null){
+			Log.d("LWP", "Engine is not null! RELOAD");
+			reloadProject = true;
+		}
 		Log.d("LWP", "StageListener reloadProject!!!!!");
+	}
+
+	public void startLWPSettings(Thread startLWPSettingsThread){
+		this.startLWPSettingsThread = startLWPSettingsThread;
+		startLWPSettings = true;
 	}
 
 	@Override
@@ -368,6 +376,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		if (reloadProject) {
+			Log.d("LWP", "RELOAD!!");
 			int spriteSize = sprites.size();
 			for (int i = 0; i < spriteSize; i++) {
 				sprites.get(i).pause();
@@ -399,7 +408,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 			if (lwpEngine != null) {
 				synchronized (lwpEngine) {
-					lwpEngine.notifyAll();
+					lwpEngine.notify();
 				}
 			}
 		}

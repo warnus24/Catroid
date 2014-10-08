@@ -37,6 +37,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 
@@ -65,9 +66,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	boolean resumeFromPocketCode = false;
 	private LiveWallpaperEngine previewEngine;
 	private LiveWallpaperEngine homeEngine;
+	private StartLiveWallpaperSettingsThread startSettingsThread = null;
 
 	private ApplicationListener stageListener = null;
 	private boolean isTest = false;
+	private boolean firstStart = true;
 
 	public LiveWallpaper() {
 		super();
@@ -123,6 +126,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public void setHomeEngine(LiveWallpaperEngine homeEngine) {
 		this.homeEngine = homeEngine;
 		this.homeEngine.name = "HOME";
+		this.firstStart = false;
 	}
 
 	@Override
@@ -267,10 +271,17 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 		public void startSettingsActivity(){
 			this.onPause();
-			Intent intent;
-			intent = new Intent(getContext(), SelectProgramActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
+
+			if(firstStart){
+				Intent intent = new Intent(LiveWallpaper.getInstance().getContext(), SelectProgramActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				LiveWallpaper.getInstance().getContext().startActivity(intent);
+			}
+			else{
+				startSettingsThread = new StartLiveWallpaperSettingsThread();
+				startSettingsThread.start();
+			}
+
 		}
 
 		public StageListener getLocalStageListener() {
@@ -324,10 +335,17 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				return;
 			}
 
+			Log.d("LWP", "Surface changed");
 			if (mVisible) {
 				mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 			} else {
 				mHandler.removeCallbacks(mUpdateDisplay);
+			}
+
+			if(startSettingsThread != null){
+				synchronized (startSettingsThread) {
+					startSettingsThread.notify();
+				}
 			}
 		}
 
@@ -336,7 +354,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			Log.d("LWP", "destroying surface: " + name);
 			mVisible = false;
 			mHandler.removeCallbacks(mUpdateDisplay);
-			stopSelf();
 			super.onSurfaceDestroyed(holder);
 		}
 
@@ -354,25 +371,34 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			BroadcastWaitSequenceMap.clearCurrentBroadcastEvent();
 		}
 
-		public synchronized void changeWallpaperProgram() {
+		public void changeWallpaperProgram() {
 
 			if (getLocalStageListener() == null || isTest) {
 				Log.d("LWP", "StageListener, Fehler bei changeWallpaper " + name);
 				return;
 			}
-			//if (!isPreview()) {
-			//	return;
-			//}
+			if (!isPreview()) {
+				return;
+			}
 			LiveWallpaperEngine engine = this;
 			clearBroadcastMaps();
 			getLocalStageListener().create();
-			getLocalStageListener().reloadProjectLWP(engine);
 
+			if(Gdx.graphics.isContinuousRendering()){
+				Log.d("LWP", "Is continous rendering");
+			}
+
+			if(!Gdx.graphics.isContinuousRendering()){
+				Log.d("LWP", "Is NOT continous rendering");
+				Gdx.graphics.setContinuousRendering(true);
+			}
 
 			synchronized (engine) {
 				try {
-					mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 					Log.d("LWP", "StageListener, changeWallpaper wait... ANFANG");
+					getLocalStageListener().reloadProjectLWP(engine);
+					mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
+					//getLocalStageListener().render();
 					engine.wait();
 				} catch (InterruptedException e) {
 					Log.d("LWP", "StageListener, Fehler bei changeWallpaper wait...");
