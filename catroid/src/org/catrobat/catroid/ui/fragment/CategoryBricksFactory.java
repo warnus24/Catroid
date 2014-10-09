@@ -29,6 +29,7 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.common.MessageContainer;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.bricks.ArduinoIrBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.ArduinoSendBrick;
 import org.catrobat.catroid.content.bricks.BroadcastBrick;
@@ -131,7 +132,7 @@ public class CategoryBricksFactory {
 		} else if (category.equals(context.getString(R.string.category_lego_nxt))) {
 			tempList = setupLegoNxtCategoryList();
 		} else if (category.equals(context.getString(R.string.category_arduino))) {
-			tempList = setupArduinoCategoryList();
+			tempList = setupArduinoCategoryList(context);
 		} else if (category.equals(context.getString(R.string.category_drone))) {
 			tempList = setupDroneCategoryList();
 		}
@@ -291,9 +292,10 @@ public class CategoryBricksFactory {
 		return legoNXTBrickList;
 	}
 
-	private List<Brick> setupArduinoCategoryList() {
+	private List<Brick> setupArduinoCategoryList(Context context) {
 		List<Brick> arduinoBrickList = new ArrayList<Brick>();
 		arduinoBrickList.add(new ArduinoSendBrick());
+		arduinoBrickList.add(new ArduinoIrBrick(context.getString(R.string.brick_arduino_ir_default_value)));
 		return arduinoBrickList;
 	}
 
