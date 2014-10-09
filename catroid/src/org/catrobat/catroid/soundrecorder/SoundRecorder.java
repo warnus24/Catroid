@@ -24,6 +24,7 @@ package org.catrobat.catroid.soundrecorder;
 
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,9 +63,15 @@ public class SoundRecorder {
 	}
 
 	public void stop() throws IOException {
-        recorder.stop();
-        recorder.reset();
-        recorder.release();
+        //quick fix for rapidly scanning nfc tags
+        try {
+            recorder.stop();
+        }
+        catch (Exception e){
+            Log.d("SoundRecorder", e.getMessage());
+        }
+		recorder.reset();
+		recorder.release();
 		isRecording = false;
 	}
 
