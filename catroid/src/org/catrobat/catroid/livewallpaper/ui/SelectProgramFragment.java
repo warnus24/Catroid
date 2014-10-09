@@ -24,15 +24,20 @@ package org.catrobat.catroid.livewallpaper.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.service.wallpaper.WallpaperService;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +63,7 @@ import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.livewallpaper.LoadWallpaperTask;
+import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.MyProjectsActivity;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectEditListener;
@@ -113,6 +119,13 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			getActivity().unregisterReceiver(ListInitReceiver);
 		}
 
+	}
+
+	private void createLiveWallpaper(){
+		Intent intent = new Intent();
+		LiveWallpaper lwp = new LiveWallpaper();
+		lwp.onCreate();
+		lwp.onCreateApplication();
 	}
 
 	@Override
@@ -496,7 +509,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	}
 
 	/**
-	 * @param tintingColor2
+	 * @param tintingColor
 	 */
 	public void tinting(int tintingColor) {
 		LiveWallpaper.getInstance().tinting(tintingColor);

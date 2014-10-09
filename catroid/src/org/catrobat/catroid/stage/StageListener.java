@@ -194,6 +194,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		this.isTinting = isTinting;
 	}
 
+	public void setLWP(boolean isLWP){
+		this.isLWP = isLWP;
+	}
+
 	@Override
 	public void create() {
 		font = new BitmapFont();

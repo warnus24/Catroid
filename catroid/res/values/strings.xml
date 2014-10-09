@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Catroid: An on-device visual programming system for Android devices
   ~ Copyright (C) 2010-2014 The Catrobat Team
@@ -20,7 +20,7 @@
   ~
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
+-->
 <resources>
 
     <!-- General terms -->
@@ -73,8 +73,8 @@
     <string name="preference_description_use_face_detection">Allow to detect faces</string>
     <string name="preference_title_select_camera">Choose Camera</string>
     <string name="preference_description_select_camera">Select camera which is used for face detection</string>
-	<string name="preference_title_enable_quadcopter_bricks">ARDrone 2.0 bricks</string>
-    <string name="preference_description_quadcopter_bricks">Allow to control the ARDrone 2.0 quadcopter</string>    
+    <string name="preference_title_enable_quadcopter_bricks">ARDrone 2.0 bricks</string>
+    <string name="preference_description_quadcopter_bricks">Allow to control the ARDrone 2.0 quadcopter</string>
     <!--  -->
 
 
@@ -250,7 +250,7 @@
     <string name="brick_context_dialog_copy_brick">Copy Brick</string>
     <string name="brick_context_dialog_animate_bricks">Animate Brick-Parts</string>
     <string name="brick_context_dialog_add_to_script">Add To Script</string>
-	<string name="brick_context_dialog_edit_brick">Edit Brick</string>
+    <string name="brick_context_dialog_edit_brick">Edit Brick</string>
     <string name="brick_context_dialog_formula_edit_brick">Edit Formula</string>
     <string name="brick_context_dialog_delete_script">Delete Script</string>
     <!--  -->
@@ -512,9 +512,9 @@
     <string name="error_drone_low_battery">Insert a charged battery and try again.</string>
     <string name="error_drone_wrong_platform_title">No ARDrone support</string>
     <string name="error_drone_wrong_platform">We can not run a ARDrone project on your device.</string>
-	<string name="error_rename_incompatible_project">Renaming an incompatible project isn\'t possible.</string>
+    <string name="error_rename_incompatible_project">Renaming an incompatible project isn\'t possible.</string>
     <string name="error_changing_description_of_incompatible_project">Changing the description of an incompatible project isn\'t possible.</string>
-	<!--  -->
+    <!--  -->
 
 
     <!-- Bluetooth Connection Strings -->
@@ -656,14 +656,14 @@
     <string name="formula_editor_sensors">Sensors</string>
     <string name="formula_editor_variables">Variables</string>
     <string name="formula_editor_string">Abc</string>
-    <string name="formula_editor_logic_notequal">&#x2260;</string>
+    <string name="formula_editor_logic_notequal">≠</string>
     <string name="formula_editor_logic_lesserthan">&lt;</string>
-    <string name="formula_editor_logic_greaterthan">&gt;</string>
+    <string name="formula_editor_logic_greaterthan">></string>
     <string name="formula_editor_logic_and">AND</string>
     <string name="formula_editor_logic_or">OR</string>
     <string name="formula_editor_logic_not">NOT</string>
-    <string name="formula_editor_logic_greaterequal">&#x2265;</string>
-    <string name="formula_editor_logic_leserequal">&#x2264;</string>
+    <string name="formula_editor_logic_greaterequal">≥</string>
+    <string name="formula_editor_logic_leserequal">≤</string>
     <string name="formula_editor_logic_equal">=</string>
     <string name="formula_editor_operator_mult">×</string>
     <string name="formula_editor_operator_plus">+</string>
@@ -674,7 +674,7 @@
     <string name="formula_editor_image_button_description_redo">redo</string>
     <string name="formula_editor_image_button_description_delete">delete</string>
     <string name="formula_editor_variable_dialog_title">New Variable</string>
-    <string name="formula_editor_variable_dialog_for_this_brick">For this brick</string> 
+    <string name="formula_editor_variable_dialog_for_this_brick">For this brick</string>
     <string name="formula_editor_variable_dialog_for_all_sprites">For all objects</string>
     <string name="formula_editor_variable_dialog_for_this_sprite_only">For this object only</string>
     <string name="formula_editor_variable_dialog_hint">Enter variable name</string>
@@ -689,43 +689,50 @@
         <item quantity="other">Variables selected!</item>
     </plurals>
     <!--  -->
-    
+
 
     <!-- Camera Strings -->
     <string name="camera_facing_front">Front Camera</string>
     <string name="camera_facing_back">Back Camera</string>
     <!--  -->
-    
- 	<!-- Brick Data Editor Strings -->
- 	<string name="brick_data_editor_title">Brick Editor</string>
- 	<string name="separator">|</string>
- 	<string name="add_text">Add Text</string>
- 	<string name="edit_text">Edit Text</string>
- 	<string name="text_hint">Brick Text</string>
- 	<string name="add_variable">Add Variable</string>
- 	<string name="add_line_break">Add Line Break</string>
- 	<string name="edit_variable">Edit Variable</string>
- 	<string name="variable_hint">Variable Name</string>
- 	<!-- -->
 
- 	<!-- User Bricks strings -->
- 	<string name="define">define</string>
- 	<string name="new_user_brick">New Brick</string>
- 	<string name="new_user_brick_variable">Variable 1</string>
+
+    <!-- Brick Data Editor Strings -->
+    <string name="brick_data_editor_title">Brick Editor</string>
+    <string name="separator">|</string>
+    <string name="add_text">Add Text</string>
+    <string name="edit_text">Edit Text</string>
+    <string name="text_hint">Brick Text</string>
+    <string name="add_variable">Add Variable</string>
+    <string name="add_line_break">Add Line Break</string>
+    <string name="edit_variable">Edit Variable</string>
+    <string name="variable_hint">Variable Name</string>
+    <!--  -->
+
+
+    <!-- User Bricks strings -->
+    <string name="define">define</string>
+    <string name="new_user_brick">New Brick</string>
+    <string name="new_user_brick_variable">Variable 1</string>
     <string name="recursive_user_brick_forbidden">Adding UserBrick to UserBrick is not allowed yet!</string>
- 	<string name="brick_single">Brick</string>
- 	<string name="brick_multiple">Bricks</string>
- 	
- 	<!-- -->
+    <string name="brick_single">Brick</string>
+    <string name="brick_multiple">Bricks</string>
+
+    <!--  -->
+
 
     <!-- LiveWallpaper -->
     <string name="lwp_delete">Delete</string>
- 	<string name="lwp_pocket_code">Pocket Code</string>
- 	<string name="lwp_tinting">Tinting</string>
- 	<string name="lwp_about">About</string>
- 	<string name="lwp_enable_sound">Enable sounds</string>
- 	<string name="lwp_disable_tinting">Disable tinting</string>
+    <string name="lwp_pocket_code">Pocket Code</string>
+    <string name="lwp_tinting">Tinting</string>
+    <string name="lwp_about">About</string>
+    <string name="lwp_enable_sound">Enable sounds</string>
+    <string name="lwp_disable_tinting">Disable tinting</string>
     <string name="lwp_color_dialog_title">Pick a color</string>
     <string name="lwp_sepia">Sepia</string>
+    <string name="live_wallpaper_active_notification_title_template">Live wallpaper active: %1$s</string>
+    <string name="live_wallpaper_active_notification_placeholder_text_template">You said %1$s and lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam non enim magna. Morbi dictum, velit vel semper venenatis, magna odio volutpat velit, at ullamcorper nulla lacus sed turpis. Pellentesque vitae metus elit, nec tincidunt tellus. Integer sed nisl sem, ullamcorper ornare lacus. Duis ac mauris sed massa congue volutpat. Donec sed erat sit amet turpis viverra rhoncus sit amet nec magna. Donec lacinia ligula at libero volutpat volutpat nec nec tortor.</string>
+    <string name="action_share">Share</string>
+    <string name="action_reply">Reply</string>
 
 </resources>

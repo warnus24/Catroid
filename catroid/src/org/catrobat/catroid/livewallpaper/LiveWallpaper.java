@@ -81,6 +81,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		Log.e("Error", "new LiveWallpaper");
 	}
 
+
+
 	private static LiveWallpaper INSTANCE = null;
 
 	public void setResumeFromPocketCode(boolean resumeFromPocketCode) {
@@ -178,9 +180,18 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		Log.d("LWP", "Service wird beendet");
 		ProjectHandler.getInstance().changeToPocketCode(this);
 		Utils.saveToPreferences(context, Constants.PREF_LWP_PROJECTNAME_KEY, oldProjectName);
-		INSTANCE = null;
 		super.onDestroy();
-		PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
+		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
+	}
+
+	@Override
+	public void finalize(){
+		try {
+			super.finalize();
+			INSTANCE = null;
+		} catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
 	}
 
 	public void changeWallpaperProgram() {
@@ -269,6 +280,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 		}
 
+
 		public void startSettingsActivity(){
 			this.onPause();
 
@@ -292,7 +304,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		public void onVisibilityChanged(boolean visible) {
 			Log.d("LWP", "Engine: " + name + " the engine is visible: " + visible);
 
-			mVisible = visible;
 			super.onVisibilityChanged(visible);
 
 			Log.d("LWP", "Visibility changed: isPreview(" + isPreview() + ") is visible: " + visible);
@@ -336,11 +347,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 
 			Log.d("LWP", "Surface changed");
-			if (mVisible) {
-				mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
-			} else {
-				mHandler.removeCallbacks(mUpdateDisplay);
-			}
+			//if (mVisible) {
+			//	mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
+			//} else {
+			//	mHandler.removeCallbacks(mUpdateDisplay);
+			//}
 
 			if(startSettingsThread != null){
 				synchronized (startSettingsThread) {
@@ -352,14 +363,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		@Override
 		public void onSurfaceDestroyed(SurfaceHolder holder) {
 			Log.d("LWP", "destroying surface: " + name);
-			mVisible = false;
+			//mVisible = false;
 			mHandler.removeCallbacks(mUpdateDisplay);
 			super.onSurfaceDestroyed(holder);
 		}
 
 		@Override
 		public void onDestroy() {
-			mVisible = false;
+			//mVisible = false;
 			Log.d("LWP", "destroying engine: " + name);
 			mHandler.removeCallbacks(mUpdateDisplay);
 			super.onDestroy();

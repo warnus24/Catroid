@@ -99,6 +99,8 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		//	UtilFile.loadExistingOrCreateStandardDroneProject(this);
 		//}
 		//SettingsActivity.setTermsOfServiceAgreedPermanently(this, false);
+
+
 	}
 
 	@Override

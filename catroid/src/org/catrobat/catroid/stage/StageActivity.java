@@ -33,11 +33,16 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BroadcastSequenceMap;
+import org.catrobat.catroid.common.BroadcastWaitSequenceMap;
 import org.catrobat.catroid.common.ScreenValues;
+import org.catrobat.catroid.content.BroadcastHandler;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.io.StageAudioFocus;
+import org.catrobat.catroid.livewallpaper.ClearLiveWallpaper;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
+import org.catrobat.catroid.livewallpaper.ui.LiveWallpaperAlertDialogBuilder;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.VibratorUtil;
@@ -56,9 +61,7 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		if(LiveWallpaper.getInstance()!= null) {
-			LiveWallpaper.getInstance().resetWallpaper();
-		}
+		ClearLiveWallpaper.clearLWP();
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -66,10 +69,11 @@ public class StageActivity extends AndroidApplication {
 		if (getIntent().getBooleanExtra(DroneInitializer.INIT_DRONE_STRING_EXTRA, false)) {
 			droneConnection = new DroneConnection(this);
 		}
+
 		stageListener = new StageListener();
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
-		calculateScreenSizes();
 
+		calculateScreenSizes();
 		initialize(stageListener);
 		if (droneConnection != null) {
 			try {
@@ -114,9 +118,7 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onResume() {
-		if(LiveWallpaper.getInstance()!= null) {
-			LiveWallpaper.getInstance().resetWallpaper();
-		}
+		ClearLiveWallpaper.clearLWP();
 		Log.d(TAG, "StageActivity::onResume()");
 		SensorHandler.startSensorListener(this);
 		stageListener.activityResume();
