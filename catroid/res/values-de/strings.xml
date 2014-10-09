@@ -71,6 +71,8 @@
     <string name="preference_title">Einstellungen</string>
     <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorm Bausteine</string>
     <string name="preference_description_mindstorm_bricks">Erlaube Steuerung von Lego Mindstorm Robotern</string>
+    <string name="preference_title_enable_arduino_bricks">Arduino Bausteine</string>
+    <string name="preference_description_arduino_bricks">Erlaube die Steuerung von Arduino Platinen</string>
     <string name="preference_title_use_face_detection">Gesichtserkennung</string>
     <string name="preference_description_use_face_detection">Erlaube das Erkennen von Gesichtern</string>
     <string name="preference_title_select_camera">Auswahl der Kamera</string>
@@ -332,6 +334,7 @@
     <string name="category_variables">Variablen</string>
     <string name="category_user_bricks">Meine Bausteine</string>
     <string name="category_lego_nxt">Lego NXT</string>
+    <string name="category_arduino">Arduino</string>
     <string name="category_drone">ARDrone</string>
     <!--  -->
 
@@ -433,6 +436,7 @@
     <string name="brick_variable_spinner_create_new_variable">Neu…</string>
     <string name="brick_note_default_value">"Anmerkung hier hinzufügen…" </string>
     <string name="brick_broadcast_default_value">"Nachricht 1"</string>
+    <string name="brick_arduino_send">Sende an Arduino</string>
     <!--  -->
 
 
@@ -525,6 +529,7 @@
     <string name="title_other_devices">Neue Geräte</string>
     <string name="button_scan">Suche Bluetooth Geräte</string>
     <string name="select_device">Wähle dein Lego Mindstorms NXT</string>
+    <string name="select_device_arduino">Wähle deine Arduino Platine</string>
     <string name="scanning">Suche</string>
     <string name="connecting_please_wait">Verbinde zum Lego NXT.\nBitte warten…</string>
     <!-- <string name="pairing_message">Verbinde nach dem Pairing.</string> -->
@@ -551,6 +556,26 @@
     <string name="nxt_motor_c">C</string>
     <string name="nxt_motor_a_and_c">A+C</string>
     <string name="nxt_motor_all">Alle</string>
+    <!--  -->
+
+    <!-- Arduino Bricks -->
+    <string name="brick_arduino_select_value">Setze Arduino Anschluss</string>
+    <!--  -->
+
+    <!-- Arduino Strings -->
+    <string name="digital_arduino_pin_1">1</string> <!-- serial Tx -->
+    <string name="digital_arduino_pin_3">3</string> <!-- PWM -->
+    <string name="digital_arduino_pin_4">4</string> <!-- digital I/O -->
+    <string name="digital_arduino_pin_5">5</string> <!-- PWM -->
+    <string name="digital_arduino_pin_6">6</string> <!-- PWM -->
+    <string name="digital_arduino_pin_8">8</string> <!-- digital I/O -->
+    <string name="digital_arduino_pin_9">9</string> <!-- PWM -->
+    <string name="digital_arduino_pin_10">10</string> <!-- PWM -->
+    <string name="digital_arduino_pin_11">11</string> <!-- PWM -->
+    <string name="digital_arduino_pin_12">12</string> <!-- digital I/O -->
+    <string name="digital_arduino_pin_13">13</string> <!-- built-in LED pin -->
+    <string name="arduino_pin_value_high">logisch 1</string>
+	<string name="arduino_pin_value_low">logisch 0</string>
     <!--  -->
     
     <!-- Drone Bricks -->
@@ -632,6 +657,8 @@
     <string name="formula_editor_sensor_y_acceleration">Beschleunigung_y</string>
     <string name="formula_editor_sensor_z_acceleration">Beschleunigung_z</string>
     <string name="formula_editor_sensor_compass_direction">Kompass_Richtung</string>
+    <string name="formula_editor_function_arduino_read_pin_value_digital">Arduino_digitaler_Anschluss</string>
+    <string name="formula_editor_function_arduino_read_pin_value_analog">Arduino_analoger_Anschluss</string>
     <string name="formula_editor_sensor_x_inclination">Neigung_x</string>
     <string name="formula_editor_sensor_y_inclination">Neigung_y</string>
     <string name="formula_editor_sensor_loudness">Umgebungslautstärke</string>
