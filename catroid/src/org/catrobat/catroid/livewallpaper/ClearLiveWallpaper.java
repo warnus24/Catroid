@@ -36,13 +36,16 @@ public class ClearLiveWallpaper {
 
 	public static void clearLWP(){
 		if(LiveWallpaper.getInstance()!= null) {
+			LiveWallpaper.getInstance().pause();
+			LiveWallpaper.getInstance().getLocalStageListener().dispose();
 			LiveWallpaper.getInstance().resetWallpaper();
 			LiveWallpaper.getInstance().onDeepPauseApplication();
 			LiveWallpaper.getInstance().onDestroy();
+
 			if(LiveWallpaper.getInstance()!= null){
+				LiveWallpaper.getInstance().stopSelf();
 				LiveWallpaper.getInstance().finalize();
 			}
-
 
 			BroadcastSequenceMap.clear();
 			BroadcastWaitSequenceMap.clear();

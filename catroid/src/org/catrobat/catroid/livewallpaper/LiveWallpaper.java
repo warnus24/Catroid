@@ -81,8 +81,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		Log.e("Error", "new LiveWallpaper");
 	}
 
-
-
 	private static LiveWallpaper INSTANCE = null;
 
 	public void setResumeFromPocketCode(boolean resumeFromPocketCode) {
@@ -100,6 +98,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	{
 		try {
 			WallpaperManager.getInstance(getContext()).clear();
+			//WallpaperManager.getInstance(getContext()).forgetLoadedWallpaper();
 		} catch (IOException e) {
 			Log.e("LWP", "Something somewhere went wrong :-P ");
 			e.printStackTrace();
@@ -170,6 +169,9 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	}
 
 	public Context getContext() {
+		if(context == null){
+			context = this;
+		}
 		return context;
 	}
 
@@ -190,6 +192,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public void finalize(){
 		try {
 			super.finalize();
+			if(previewEngine != null){
+				previewEngine.mHandler.removeCallbacks(previewEngine.mUpdateDisplay);
+				previewEngine.mVisible = false;
+			}
+			if(homeEngine != null){
+				homeEngine.mHandler.removeCallbacks(homeEngine.mUpdateDisplay);
+				homeEngine.mVisible = false;
+			}
 			INSTANCE = null;
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
@@ -241,19 +251,29 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	public void createInstance(){
 		INSTANCE = this;
+		context = this;
+	}
+
+	public void pause(){
+		if(previewEngine != null){
+			previewEngine.onPause();
+		}
+		if(homeEngine != null){
+			homeEngine.onPause();
+		}
 	}
 
 	public class LiveWallpaperEngine extends AndroidWallpaperEngine {
 		public String name = "";
 		private final int REFRESH_RATE = 300;
-		private boolean mVisible = false;
+		private boolean mVisible = true;
 		private final Handler mHandler = new Handler();
 		private final Runnable mUpdateDisplay = new Runnable() {
 			@Override
 			public void run() {
-				//if (mVisible) {
+				if (mVisible) {
 					mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
-				//}
+				}
 			}
 		};
 
@@ -416,7 +436,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 					Log.d("LWP", "StageListener, changeWallpaper wait... ANFANG");
 					getLocalStageListener().reloadProjectLWP(engine);
 					mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
-					//getLocalStageListener().render();
 					engine.wait();
 				} catch (InterruptedException e) {
 					Log.d("LWP", "StageListener, Fehler bei changeWallpaper wait...");

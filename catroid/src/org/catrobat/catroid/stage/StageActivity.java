@@ -61,7 +61,6 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		ClearLiveWallpaper.clearLWP();
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -118,7 +117,6 @@ public class StageActivity extends AndroidApplication {
 
 	@Override
 	public void onResume() {
-		ClearLiveWallpaper.clearLWP();
 		Log.d(TAG, "StageActivity::onResume()");
 		SensorHandler.startSensorListener(this);
 		stageListener.activityResume();
