@@ -144,6 +144,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		INSTANCE = this;
 		Log.d("LWP", "Neuer Service wurde geladen");
 	}
 
@@ -157,6 +158,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		ProjectHandler.getInstance().changeToLiveWallpaper(this);
 		stageListener = new StageListener(true);
 		initialize(stageListener, config);
+		INSTANCE = this;
 		Log.d("LWP", "Preview was initialized");
 	}
 
@@ -235,6 +237,10 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		if (homeEngine != null) {
 			homeEngine.setTinting(false);
 		}
+	}
+
+	public void createInstance(){
+		INSTANCE = this;
 	}
 
 	public class LiveWallpaperEngine extends AndroidWallpaperEngine {
@@ -353,6 +359,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			//	mHandler.removeCallbacks(mUpdateDisplay);
 			//}
 
+			createInstance();
 			if(startSettingsThread != null){
 				synchronized (startSettingsThread) {
 					startSettingsThread.notify();
