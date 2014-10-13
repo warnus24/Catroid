@@ -545,11 +545,11 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 
 		private void activateTextToSpeechIfNeeded() {
-			if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
-				Intent installIntent = new Intent();
-				installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-				startActivity(installIntent);
-			}
+			//if (PreStageActivity.initTextToSpeechForLiveWallpaper(context) != 0) {
+			//	Intent installIntent = new Intent();
+			//	installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+			//	startActivity(installIntent);
+			//}
 		}
 	}
 
