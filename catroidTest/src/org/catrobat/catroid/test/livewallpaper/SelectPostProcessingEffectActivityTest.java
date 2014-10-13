@@ -37,6 +37,7 @@ import android.widget.Switch;
 import com.badlogic.gdx.graphics.Color;
 import com.robotium.solo.Solo;
 
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
@@ -65,7 +66,7 @@ public class SelectPostProcessingEffectActivityTest extends
 		SingleLaunchActivityTestCase<SelectPostProcessingEffectActivity> {
 
 	private static final String PACKAGE = "org.catrobat.catroid";
-	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.LWP);
+	private ProjectManager projectManager = ProjectManager.getInstance();
 	private Solo solo;
 	private final int DEFAULT_SLEEP = 3100;
 
@@ -75,6 +76,7 @@ public class SelectPostProcessingEffectActivityTest extends
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		ProjectHandler.getInstance().changeToLiveWallpaper(this.getActivity());
 		Intent intent = new Intent(getActivity(), LiveWallpaper.class);
 		getActivity().startService(intent);
 		UiTestUtils.prepareStageForTest();
