@@ -290,14 +290,16 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	public void disableEffects()
 	{
-		postProcessorWrapper.removeAll();
+		if(postProcessorWrapper != null) {
+			postProcessorWrapper.removeAll();
+		}
 	}
 
 	public void initializePostProcessEffects()
 	{
 		ShaderLoader.BasePath = "data/shaders/";
 
-		if(postProcessorWrapper == null){
+		if(postProcessorWrapper == null && isLWP){
 			PostProcessor postProcessor = new PostProcessor(false, true, false);
 			EffectsContainer effectsContainer = new EffectsContainer();
 			postProcessorWrapper = new PostProcessorWrapper(postProcessor, effectsContainer, isTest);
@@ -531,6 +533,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 					postProcessorWrapper.getPostProcessor().render();
 				}
 			}
+			else{
+				tinting();
+				stage.draw();
+			}
 		}
 
 		if (makeAutomaticScreenshot) {
@@ -655,7 +661,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		axes.dispose();
 		disposeTextures();
 
-		postProcessorWrapper.dispose();
+		if(postProcessorWrapper != null){
+			postProcessorWrapper.dispose();
+		}
+
 	}
 
 	public boolean makeManualScreenshot() {
