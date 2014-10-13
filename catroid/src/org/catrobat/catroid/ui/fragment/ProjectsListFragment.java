@@ -49,6 +49,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
@@ -248,7 +249,8 @@ public class ProjectsListFragment extends SherlockListFragment implements OnProj
 		Project currentProject = ProjectManager.getInstance().getCurrentProject();
 		if (currentProject == null) {
 			try {
-				ProjectManager.getInstance().loadProject(projectToEdit.projectName, getActivity());
+				Project newProject = ProjectManager.getInstance().loadProject(projectToEdit.projectName, getActivity());
+				ProjectHandler.getInstance().setPocketCodeProject(newProject);
 			} catch (LoadingProjectException loadingProjectException) {
 				Log.e(TAG, "Project cannot load", loadingProjectException);
 				Utils.showErrorDialog(getActivity(), R.string.error_load_project);

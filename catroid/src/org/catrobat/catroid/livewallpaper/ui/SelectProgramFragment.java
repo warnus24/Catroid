@@ -24,17 +24,20 @@ package org.catrobat.catroid.livewallpaper.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
+import android.app.Notification;
+import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.service.wallpaper.WallpaperService;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,25 +48,22 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ProjectData;
 import org.catrobat.catroid.content.Project;
-import org.catrobat.catroid.exceptions.CompatibilityProjectException;
-import org.catrobat.catroid.exceptions.LoadingProjectException;
-import org.catrobat.catroid.exceptions.OutdatedVersionProjectException;
 import org.catrobat.catroid.io.SoundManager;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.livewallpaper.LiveWallpaper;
-import org.catrobat.catroid.livewallpaper.ProjectLoadableEnum;
-import org.catrobat.catroid.livewallpaper.ProjectManagerState;
+import org.catrobat.catroid.livewallpaper.LoadWallpaperTask;
+import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.MyProjectsActivity;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter;
 import org.catrobat.catroid.ui.adapter.ProjectAdapter.OnProjectEditListener;
@@ -89,8 +89,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	private static String deleteActionModeTitle;
 	private ProjectData projectToEdit;
 
-	private ProjectManager projectManagerLWP = ProjectManager.getInstance(ProjectManagerState.LWP);
-	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.NORMAL);
+	private ProjectManager projectManagerLWP = ProjectManager.getInstance();
 
 	private int soundSeekBarVolume;
 
@@ -120,6 +119,13 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			getActivity().unregisterReceiver(ListInitReceiver);
 		}
 
+	}
+
+	private void createLiveWallpaper(){
+		Intent intent = new Intent();
+		LiveWallpaper lwp = new LiveWallpaper();
+		lwp.onCreate();
+		lwp.onCreateApplication();
 	}
 
 	@Override
@@ -193,115 +199,15 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		}
 	}
 
-	private class LoadProject extends AsyncTask<String, String, String> {
-		private ProgressDialog progress;
-
-		public LoadProject() {
-			progress = new ProgressDialog(getActivity());
-			progress.setTitle(getActivity().getString(R.string.please_wait));
-			progress.setMessage(getActivity().getString(R.string.loading));
-			progress.setCancelable(false);
-		}
-
-		@Override
-		protected void onPreExecute() {
-			//LiveWallpaper.getInstance().presetSprites();
-			progress.show();
-			super.onPreExecute();
-		}
-
-		@Override
-		protected String doInBackground(String... params) {
-			//Project project = StorageHandler.getInstance().loadProject(selectedProject);
-			//if (project != null) {
-			//	if (projectManager.getCurrentProject() != null
-			//			&& projectManager.getCurrentProject().getName().equals(selectedProject)) {
-			//		getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-			//		getFragmentManager().popBackStack();
-			//		return null;
-			//	}
-			//	projectManager.setProject(project);
-			//	SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-			//	Editor editor = sharedPreferences.edit();
-			//	editor.putString(Constants.PREF_PROJECTNAME_KEY, selectedProject);
-			//	editor.commit();
-			//}
-			String str_loadable = ProjectLoadableEnum.IS_ALREADY_LOADED.toString();
-
-			synchronized (LiveWallpaper.getInstance()) {
-				if (projectManagerLWP.getCurrentProject() != null
-						&& projectManagerLWP.getCurrentProject().getName().equals(selectedProject)) {
-					//getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-					//getFragmentManager().popBackStack();
-					return str_loadable;
-				}
-
-				boolean preview_loadable = true;
-				try {
-					Context context = LiveWallpaper.getInstance().getContext();
-					projectManagerLWP.loadProject(selectedProject, context);
-				} catch (LoadingProjectException e) {
-					preview_loadable = false;
-					e.printStackTrace();
-				} catch (OutdatedVersionProjectException e) {
-					preview_loadable = false;
-					e.printStackTrace();
-				} catch (CompatibilityProjectException e) {
-					preview_loadable = false;
-					e.printStackTrace();
-				}
-
-				if (!preview_loadable) {
-					getFragmentManager().beginTransaction().remove(selectProgramFragment).commit();
-					getFragmentManager().popBackStack();
-					str_loadable = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
-					return str_loadable;
-				}
-
-				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-				Editor editor = sharedPreferences.edit();
-				editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, selectedProject);
-				editor.commit();
-				str_loadable = ProjectLoadableEnum.IS_LOADABLE.toString();
-			}
-
-			return str_loadable;
-
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			if (result.equals(ProjectLoadableEnum.IS_NOT_LOADABLE.toString())
-					|| result.equals(ProjectLoadableEnum.IS_ALREADY_LOADED.toString())) {
-				if (progress.isShowing()) {
-					progress.dismiss();
-				}
-				Toast toast = Toast.makeText(LiveWallpaper.getInstance().getContext(), result, Toast.LENGTH_LONG);
-				toast.show();
-
-				return;
-			}
-
-			Toast toast = Toast.makeText(LiveWallpaper.getInstance().getContext(), result, Toast.LENGTH_LONG);
-			toast.show();
-			if (progress.isShowing()) {
-				LiveWallpaper.getInstance().changeWallpaperProgram();
-				progress.dismiss();
-			}
-			super.onPostExecute(result);
-		}
-	}
-
 	public void onProjectClicked(int position) {
 		selectedProject = projectList.get(position).projectName;
-		CheckBox checkBox = new CheckBox(getActivity());
+		final CheckBox checkBox = new CheckBox(getActivity());
 		checkBox.setText(R.string.lwp_enable_sound);
-		SeekBar seekBar = new SeekBar(getActivity());
+		final SeekBar seekBar = new SeekBar(getActivity());
 		seekBar.setMax(100);
 
-		seekBar.setProgress(1);
 		seekBar.setVisibility(View.VISIBLE);
-		seekBar.setProgress((int)SoundManager.getInstance().getVolume());
+		seekBar.setProgress(LiveWallpaper.getInstance().getRememberVolume());
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
 		seekBar.setLayoutParams(lp);
 
@@ -319,23 +225,29 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 				// TODO Auto-generated method stub
 				Log.d("SelectProgramFragment", "SeekBar Changelistener progress changed to " + String.valueOf(arg1));
 				SoundManager.getInstance().setVolume(arg1);
+				LiveWallpaper.getInstance().setRememberVolume(arg1);
+				checkBox.setChecked(true);
 				soundSeekBarVolume = arg1;
 			}
+
 		});
 
 
 
-			final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		checkBox.setChecked(!sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED, false));
-		SoundManager.getInstance().setVolume(50);
+		final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		checkBox.setChecked(SoundManager.getInstance().getVolume()>0);
+		if(checkBox.isChecked())
+			soundSeekBarVolume = LiveWallpaper.getInstance().getRememberVolume();
+		seekBar.setProgress(LiveWallpaper.getInstance().getRememberVolume());
+		SoundManager.getInstance().setVolume(LiveWallpaper.getInstance().getRememberVolume());
 		checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked) {
-					SoundManager.getInstance().setVolume(50);
+					soundSeekBarVolume = LiveWallpaper.getInstance().getRememberVolume();
 					Log.d("LWP", "Enable Sound Volume is :" +SoundManager.getInstance().getVolume()+" CHECK!");
 				} else {
-					SoundManager.getInstance().setVolume(0);
+					soundSeekBarVolume = 0;
 					Log.d("LWP", "Enable Sound Volume is :" +SoundManager.getInstance().getVolume()+"  UNCHECK!");
 				}
 			}
@@ -362,8 +274,13 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 			@SuppressLint("NewApi")
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				LoadProject Loader = new LoadProject();
-				Loader.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+				SoundManager.getInstance().setVolume(soundSeekBarVolume);
+				if(ProjectHandler.getInstance().getPocketCodeStageActivity()!= null){
+					ProjectHandler.getInstance().getPocketCodeStageActivity().finishActivity(0);
+				}
+				LoadWallpaperTask loader = new LoadWallpaperTask(getActivity(),selectedProject, selectProgramFragment);
+				//loader.execute();
+				loader.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 			}
 		});
 		AlertDialog alertDialog = builder.create();
@@ -568,6 +485,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 		adapter.notifyDataSetChanged();
 	}
 
+
 	public List<ProjectData> getProjectList() {
 		return projectList;
 	}
@@ -596,7 +514,7 @@ public class SelectProgramFragment extends SherlockListFragment implements OnPro
 	}
 
 	/**
-	 * @param tintingColor2
+	 * @param tintingColor
 	 */
 	public void tinting(int tintingColor) {
 		LiveWallpaper.getInstance().tinting(tintingColor);

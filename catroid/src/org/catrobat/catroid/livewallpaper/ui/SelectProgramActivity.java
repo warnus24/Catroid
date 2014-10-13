@@ -30,8 +30,11 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.livewallpaper.ClearLiveWallpaper;
 import org.catrobat.catroid.livewallpaper.ColorPickerDialog;
+import org.catrobat.catroid.livewallpaper.LiveWallpaper;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.utils.PostProcessingUtil;
 
@@ -51,6 +54,14 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 
 		selectProgramFragment = (SelectProgramFragment) getSupportFragmentManager().findFragmentById(
 				R.id.fragment_projects_list_lwp);
+	}
+
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(LiveWallpaper.getInstance() == null){
+			startMainMenu();
+		}
 	}
 
 	@Override
@@ -88,8 +99,7 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 				break;
 			}
 			case R.id.lwp_pocket_code: {
-				Intent intent = new Intent(this, MainMenuActivity.class);
-				this.startActivity(intent);
+				startMainMenu();
 				break;
 			}
 			case R.id.lwp_disable_tinting: {
@@ -109,13 +119,20 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void goToSelectPostProcessingEffects()
-	{
+	public void goToSelectPostProcessingEffects(){
 		Intent intent = new Intent(this, SelectPostProcessingEffectActivity.class);
 		//String message = editText.getText().toString();
 		//intent.putExtra(EXTRA_MESSAGE, message);
 		startActivity(intent);
 	}
+
+	public void startMainMenu() {
+		ProjectHandler.getInstance().changeToPocketCode(this);
+		Intent intent = new Intent(this, MainMenuActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		this.startActivity(intent);
+	}
+
 
 	public void disableTinting() {
 		selectProgramFragment.disableTinting();
@@ -135,6 +152,15 @@ public class SelectProgramActivity extends BaseActivity implements ColorPickerDi
 
 	public void disableEffects() {
 		selectProgramFragment.disableEffects();
+	}
+
+	public void goBack() {
+		super.onBackPressed();
+	}
+
+
+	@Override
+	public void onBackPressed() {
 	}
 
 	private void setUpActionBar() {

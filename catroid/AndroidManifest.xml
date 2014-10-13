@@ -20,12 +20,16 @@
   ~
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.catrobat.catroid"
     android:installLocation="auto"
     android:versionCode="-1" >
-   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="20" />
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="20" />
+
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
@@ -38,16 +42,26 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.CAMERA" />
-    
-    <!-- drone -->
-    <uses-feature android:name="android.hardware.wifi" android:required="false" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
-    <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
+    <!-- drone -->
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
@@ -57,13 +71,13 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
-    <uses-feature android:name="android.software.live_wallpaper"/>
+    <uses-feature android:name="android.software.live_wallpaper" />
 
     <application
+        android:name=".CatroidApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"     
-        android:name=".CatroidApplication" 
+        android:label="@string/app_name"
         android:theme="@style/Theme.Catroid" >
         <activity
             android:name=".ui.MainMenuActivity"
@@ -133,12 +147,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ScriptActivity"
-			android:windowSoftInputMode="adjustPan"
- 			android:screenOrientation="portrait" />
- 		<activity
- 			android:name=".ui.UserBrickScriptActivity"
- 			android:windowSoftInputMode="adjustPan"
- 			android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.UserBrickScriptActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.MyProjectsActivity"
             android:noHistory="false"
@@ -201,18 +215,33 @@
              android:parentActivityName="org.catrobat.catroid.livewallpaper.ui.SelectPostProcessingEffectActivity" >
 		</activity>
 
-		<activity
-     		 android:name="org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity"
-             android:exported="true"
-     		 android:parentActivityName="org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity"
-             android:noHistory="false"
-             android:screenOrientation="portrait"
-             android:windowSoftInputMode="adjustPan">
 
-		</activity>
+        <service
+            android:name=".livewallpaper.LiveWallpaper"
+            android:enabled="true"
+            android:label="@string/lwp_app_name"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/livewallpaper" />
+        </service>
+
+        <activity
+            android:name=".livewallpaper.ui.SelectProgramActivity"
+            android:exported="true"
+            android:noHistory="false"
+            android:parentActivityName=".livewallpaper.ui.SelectProgramActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
 
         <service android:name=".transfers.ProjectUploadService" />
         <service android:name=".transfers.ProjectDownloadService" />
-        <service android:name="com.parrot.freeflight.service.DroneControlService"/>
+        <service android:name="com.parrot.freeflight.service.DroneControlService" />
     </application>
+
 </manifest>

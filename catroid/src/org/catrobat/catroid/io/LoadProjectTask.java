@@ -32,6 +32,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Project;
@@ -77,9 +78,11 @@ public class LoadProjectTask extends AsyncTask<Void, Void, Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... arg0) {
 		Project currentProject = ProjectManager.getInstance().getCurrentProject();
+		Project newProject = currentProject;
+		ProjectHandler.getInstance().setPocketCodeProject(newProject);
 		if (currentProject == null || !currentProject.getName().equals(projectName)) {
 			try {
-				ProjectManager.getInstance().loadProject(projectName, activity);
+				newProject = ProjectManager.getInstance().loadProject(projectName, activity);
 			} catch (LoadingProjectException loadingProjectException) {
 				Log.e(TAG, "Project cannot load", loadingProjectException);
 				return false;
@@ -91,6 +94,7 @@ public class LoadProjectTask extends AsyncTask<Void, Void, Boolean> {
 				return false;
 			}
 		}
+		ProjectHandler.getInstance().setPocketCodeProject(newProject);
 		return true;
 	}
 

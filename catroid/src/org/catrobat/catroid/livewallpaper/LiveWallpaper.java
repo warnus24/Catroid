@@ -24,14 +24,12 @@
 package org.catrobat.catroid.livewallpaper;
 
 import android.annotation.SuppressLint;
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Binder;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -44,8 +42,10 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 import com.bitfire.postprocessing.PostProcessorEffect;
 
-import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BroadcastSequenceMap;
+import org.catrobat.catroid.common.BroadcastWaitSequenceMap;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.exceptions.CompatibilityProjectException;
@@ -58,9 +58,15 @@ import org.catrobat.catroid.livewallpaper.postprocessing.CurvatureAttributeConta
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectAttributContainer;
 import org.catrobat.catroid.livewallpaper.postprocessing.PostProcessingEffectsEnum;
 import org.catrobat.catroid.livewallpaper.postprocessing.VignetteAttributeContainer;
+import org.catrobat.catroid.formulaeditor.SensorHandler;
+import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageListener;
+import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.Utils;
+import org.catrobat.catroid.utils.VibratorUtil;
+
+import java.io.IOException;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -69,18 +75,19 @@ import java.util.Map;
 @SuppressLint("NewApi")
 //eventuell unnötig 10 intern 15 vorraussetzen Fehlerfall abfangen API Level vorraussetzen  prüfen mit 10
 public class LiveWallpaper extends AndroidLiveWallpaperService {
-
-	private AndroidApplicationConfiguration cfg;
+	private int rememberVolume=50;
 	private Context context;
-	private boolean previewEnginePaused;
-	private boolean homeEnginePaused;
 	private String oldProjectName;
-
+	boolean resumeFromPocketCode = false;
 	private LiveWallpaperEngine previewEngine;
 	private LiveWallpaperEngine homeEngine;
 	private ApplicationListener stageListener = null;
 	private Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> map = new HashMap<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>();
 	private Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer> effectAttributes = Collections.synchronizedMap(map);
+	private StartLiveWallpaperSettingsThread startSettingsThread = null;
+
+	private boolean isTest = false;
+	private boolean firstStart = true;
 
 	public LiveWallpaper() {
 		super();
@@ -93,12 +100,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 
 	private static LiveWallpaper INSTANCE = null;
 
-	public static synchronized LiveWallpaper getInstance() {
-		return INSTANCE;
+	public void setResumeFromPocketCode(boolean resumeFromPocketCode) {
+		this.resumeFromPocketCode = resumeFromPocketCode;
 	}
 
-	public void saveOldProjectName(String name) {
-		this.oldProjectName = name;
+	public boolean isResumeFromPocketCode() {
+		return resumeFromPocketCode;
 	}
 
 	public Map<PostProcessingEffectsEnum,PostProcessingEffectAttributContainer>getEffectMap()
@@ -113,13 +120,26 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		return previewEngine;
 	}
 
-	/**
-	 * @return the homeEngine
-	 */
-	public LiveWallpaperEngine getHomeEngine() {
-		return homeEngine;
+	public static synchronized LiveWallpaper getInstance() {
+		return INSTANCE;
+	}
+	public void resetWallpaper()
+	{
+		try {
+			WallpaperManager.getInstance(getContext()).clear();
+			//WallpaperManager.getInstance(getContext()).forgetLoadedWallpaper();
+		} catch (IOException e) {
+			Log.e("LWP", "Something somewhere went wrong :-P ");
+			e.printStackTrace();
+		}
+	}
+	public int getRememberVolume() {
+		return rememberVolume;
 	}
 
+	public void setRememberVolume(int rememberVolume) {
+		this.rememberVolume = rememberVolume;
+	}
 	/**
 	 * @param previewEngine
 	 *            the previewEngine to set
@@ -136,19 +156,23 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public void setHomeEngine(LiveWallpaperEngine homeEngine) {
 		this.homeEngine = homeEngine;
 		this.homeEngine.name = "HOME";
+		this.firstStart = false;
 	}
 
 	@Override
 	public void onCreate() {
-		//android.os.Debug.waitForDebugger();
 			super.onCreate();
 			SharedPreferences sharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(getApplicationContext());
-			//SoundManager.getInstance().soundDisabledByLwp = sharedPreferences.getBoolean(Constants.PREF_SOUND_DISABLED,
-			//		false);
 			context = this;
+		oldProjectName = sharedPreferences.getString(Constants.PREF_LWP_PROJECTNAME_KEY, null);
 
-		oldProjectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
+		try {
+			getApplication().clearWallpaper();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		INSTANCE = this;
 		Log.d("LWP", "Neuer Service wurde geladen");
 	}
 
@@ -156,24 +180,26 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	public void onCreateApplication() {
 		super.onCreateApplication();
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		//config.getTouchEventsForLiveWallpaper = true;
 
 		setScreenSize(false);
-		ProjectManager.changeState(ProjectManagerState.LWP);
-		loadProject();
-
+		Utils.loadWallpaperIfNeeded(context);
+		ProjectHandler.getInstance().changeToLiveWallpaper(this);
 		stageListener = new StageListener(true);
 		initialize(stageListener, config);
+		INSTANCE = this;
 		Log.d("LWP", "Preview was initialized");
 	}
 
 	public void initializeForTest(){
-		loadProject();
-		stageListener = new StageListener(true, true);
+		Utils.loadWallpaperIfNeeded(context);
+		stageListener = new StageListener(true);
 		previewEngine = new LiveWallpaperEngine();
 	}
 
 	public Context getContext() {
+		if(context == null){
+			context = this;
+		}
 		return context;
 	}
 
@@ -184,13 +210,28 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	@Override
 	public void onDestroy() {
 		Log.d("LWP", "Service wird beendet");
-		ProjectManager.changeState(ProjectManagerState.NORMAL);
-		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, oldProjectName);
-		INSTANCE = null;
-		homeEngine = null;
-		previewEngine = null;
+		ProjectHandler.getInstance().changeToPocketCode(this);
+		Utils.saveToPreferences(context, Constants.PREF_LWP_PROJECTNAME_KEY, oldProjectName);
 		super.onDestroy();
-		PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
+		//PreStageActivity.shutDownTextToSpeechForLiveWallpaper();
+	}
+
+	@Override
+	public void finalize(){
+		try {
+			super.finalize();
+			if(previewEngine != null){
+				previewEngine.mHandler.removeCallbacks(previewEngine.mUpdateDisplay);
+				previewEngine.mVisible = false;
+			}
+			if(homeEngine != null){
+				homeEngine.mHandler.removeCallbacks(homeEngine.mUpdateDisplay);
+				homeEngine.mVisible = false;
+			}
+			INSTANCE = null;
+		} catch (Throwable throwable) {
+			throwable.printStackTrace();
+		}
 	}
 
 	public void  changeWallpaperProgram() {
@@ -199,55 +240,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 	}
 
-	public void loadProject() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		String projectName = "";
-		boolean loadable = true;
-		ProjectManager projectManagerLWP = ProjectManager.getInstance(ProjectManagerState.LWP);
-
-		projectName = sharedPreferences.getString(Constants.PREF_LWP_PROJECTNAME_KEY, null);
-		if (projectName == null) {
-			projectName = sharedPreferences.getString(Constants.PREF_PROJECTNAME_KEY, null);
-		}
-
-		if (projectManagerLWP.getCurrentProject() != null
-				&& projectManagerLWP.getCurrentProject().getName().equals(projectName)) {
-			return;
-		}
-
-		String result = "";
-
-		try {
-			projectManagerLWP.loadProject(projectName, context);
-		} catch (LoadingProjectException e) {
-			loadable = false;
-			e.printStackTrace();
-		} catch (OutdatedVersionProjectException e) {
-			loadable = false;
-			e.printStackTrace();
-		} catch (CompatibilityProjectException e) {
-			loadable = false;
-			e.printStackTrace();
-		}
-
-		if(!loadable)
-		{
-			result = ProjectLoadableEnum.IS_NOT_LOADABLE.toString();
-			Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
-			toast.show();
-			Log.d("LWP", "Project is not loadable");
-			return;
-		}
-
-		result = ProjectLoadableEnum.IS_LOADABLE.toString();
-		Toast toast = Toast.makeText(context, result, Toast.LENGTH_LONG);
-		toast.show();
-		Log.d("LWP", "Project is loadable");
-
-		Editor editor = sharedPreferences.edit();
-		editor.putString(Constants.PREF_LWP_PROJECTNAME_KEY, projectName);
-		editor.commit();
-	}
 
 	public void setPostProcessingEffectAttributes(PostProcessingEffectAttributContainer attributes)
 	{
@@ -318,8 +310,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	}
 
 
-	public void disableEffects()
-	{
+	public void disableEffects() {
 		if (previewEngine != null) {
 			previewEngine.disableEffects();
 		}
@@ -328,10 +319,24 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		}
 	}
 
+	public void createInstance(){
+		INSTANCE = this;
+		context = this;
+	}
+
+	public void pause(){
+		if(previewEngine != null){
+			previewEngine.onPause();
+		}
+		if(homeEngine != null){
+			homeEngine.onPause();
+		}
+	}
+
 	public class LiveWallpaperEngine extends AndroidWallpaperEngine {
 		public String name = "";
 		private final int REFRESH_RATE = 300;
-		private boolean mVisible = false;
+		private boolean mVisible = true;
 		private final Handler mHandler = new Handler();
 		private final Runnable mUpdateDisplay = new Runnable() {
 			@Override
@@ -342,17 +347,12 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 		};
 
-		private boolean change = false;
-
 		public LiveWallpaperEngine() {
 			super();
-//			activateTextToSpeechIfNeeded();
-			//SensorHandler.startSensorListener(getApplicationContext());
 		}
 
 		@Override
 		public void onSurfaceCreated(final SurfaceHolder holder) {
-			Log.d("LWP", "onSurfaceCreated");
 			if (!isPreview() && homeEngine != null && previewEngine != null) {
 				Log.d("LWP", "Home Engine erstellt (nicht zum ersten Mal)");
 			} else if (!isPreview() && previewEngine != null) {
@@ -370,6 +370,26 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 
 			super.onSurfaceCreated(holder);
+
+			if (isPreview()){
+				startSettingsActivity();
+			}
+		}
+
+
+		public void startSettingsActivity(){
+			this.onPause();
+
+			if(firstStart){
+				Intent intent = new Intent(LiveWallpaper.getInstance().getContext(), SelectProgramActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				LiveWallpaper.getInstance().getContext().startActivity(intent);
+			}
+			else{
+				startSettingsThread = new StartLiveWallpaperSettingsThread();
+				startSettingsThread.start();
+			}
+
 		}
 
 		public StageListener getLocalStageListener() {
@@ -380,38 +400,19 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		public void onVisibilityChanged(boolean visible) {
 			Log.d("LWP", "Engine: " + name + " the engine is visible: " + visible);
 
-			mVisible = visible;
 			super.onVisibilityChanged(visible);
 
-			changeVisibilityStates(visible);
 			Log.d("LWP", "Visibility changed: isPreview(" + isPreview() + ") is visible: " + visible);
-		}
-
-		private void changeVisibilityStates(boolean visible) {
-			if (isPreview() && visible) {
-				previewEnginePaused = false;
-			}
-			if (isPreview() && !visible) {
-				previewEnginePaused = true;
-			}
-
-			if (!isPreview() && visible) {
-				homeEnginePaused = false;
-			}
-			if (!isPreview() && !visible) {
-				homeEnginePaused = true;
-			}
 		}
 
 		@Override
 		public void onResume() {
-
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ANFANG");
 			if (getLocalStageListener() == null) {
 				return;
 			}
-
 			//SensorHandler.startSensorListener(getApplicationContext());
+			ProjectHandler.getInstance().changeToLiveWallpaper(getContext());
 			mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 			super.onResume();
 			Log.d("LWP", "StageListener LiveWallpaperEngine onResume() ENDE");
@@ -424,7 +425,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			}
 
 			mHandler.removeCallbacks(mUpdateDisplay);
-			//SensorHandler.stopSensorListeners();
 			super.onPause();
 			Log.d("LWP", "Pausing " + name + ": " + " SL-" + getLocalStageListener().hashCode());
 
@@ -443,31 +443,44 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				return;
 			}
 
+			Log.d("LWP", "Surface changed");
+			//if (mVisible) {
+			//	mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
+			//} else {
+			//	mHandler.removeCallbacks(mUpdateDisplay);
+			//}
 
-			if (mVisible) {
-				mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
-			} else {
-				mHandler.removeCallbacks(mUpdateDisplay);
+			createInstance();
+			if(startSettingsThread != null){
+				synchronized (startSettingsThread) {
+					startSettingsThread.notify();
+				}
 			}
 		}
 
 		@Override
 		public void onSurfaceDestroyed(SurfaceHolder holder) {
 			Log.d("LWP", "destroying surface: " + name);
-			mVisible = false;
+			//mVisible = false;
 			mHandler.removeCallbacks(mUpdateDisplay);
 			super.onSurfaceDestroyed(holder);
 		}
 
 		@Override
 		public void onDestroy() {
-			mVisible = false;
+			//mVisible = false;
 			Log.d("LWP", "destroying engine: " + name);
 			mHandler.removeCallbacks(mUpdateDisplay);
 			super.onDestroy();
 		}
 
-		public synchronized void changeWallpaperProgram() {
+		private void clearBroadcastMaps() {
+			BroadcastSequenceMap.clear();
+			BroadcastWaitSequenceMap.clear();
+			BroadcastWaitSequenceMap.clearCurrentBroadcastEvent();
+		}
+
+		public void changeWallpaperProgram() {
 
 			if (getLocalStageListener() == null) {
 				Log.d("LWP", "StageListener, Fehler bei changeWallpaper " + name);
@@ -476,26 +489,34 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 			if (!isPreview()) {
 				return;
 			}
-			//onPause();
 			LiveWallpaperEngine engine = this;
-			Log.d("LWP", "StageListener, changeWallpaper Engine: " + name);
+			clearBroadcastMaps();
+			getLocalStageListener().create();
+
+			if(Gdx.graphics.isContinuousRendering()){
+				Log.d("LWP", "Is continous rendering");
+			}
+
+			if(!Gdx.graphics.isContinuousRendering()){
+				Log.d("LWP", "Is NOT continous rendering");
+				Gdx.graphics.setContinuousRendering(true);
+			}
 
 			synchronized (engine) {
 				try {
 					Log.d("LWP", "StageListener, changeWallpaper wait... ANFANG");
-					ProjectManager.changeState(ProjectManagerState.LWP);
-					getLocalStageListener().create();
-					ProjectManager.changeState(ProjectManagerState.NORMAL);
 					getLocalStageListener().reloadProjectLWP(engine);
-					onResume();
+					mHandler.postDelayed(mUpdateDisplay, REFRESH_RATE);
 					engine.wait();
 				} catch (InterruptedException e) {
 					Log.d("LWP", "StageListener, Fehler bei changeWallpaper wait...");
 				}
 			}
-			Log.d("LWP", "StageListener, changeWallpaper wait... ENDE");
 
 			getLocalStageListener().menuResume();
+			LedUtil.resumeLed();
+			VibratorUtil.resumeVibrator();
+			SensorHandler.startSensorListener(context);
 		}
 
 		public void tinting(int c) {

@@ -61,12 +61,12 @@ import org.catrobat.catroid.web.ServerCalls;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public final class ProjectManager implements OnLoadProjectCompleteListener, OnCheckTokenCompleteListener {
 	private static final ProjectManager INSTANCE = new ProjectManager();
-    private static final ProjectManager INSTANCE_LWP = new ProjectManager();
 	private static final String TAG = ProjectManager.class.getSimpleName();
-
 	private Project project;
 	private Script currentScript;
 	private Sprite currentSprite;
@@ -84,25 +84,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	}
 
 	public static ProjectManager getInstance() {
-		switch (currentProjectManagerState) {
-			case LWP:
-				return INSTANCE_LWP;
-			case NORMAL:
 				return INSTANCE;
-			default:
-				return INSTANCE;
-		}
-	}
-
-	public static ProjectManager getInstance(ProjectManagerState projectManagerType) {
-		switch (projectManagerType) {
-			case LWP:
-				return INSTANCE_LWP;
-			case NORMAL:
-				return INSTANCE;
-			default:
-				return INSTANCE;
-		}
 	}
 
 	public void uploadProject(String projectName, FragmentActivity fragmentActivity) {
@@ -125,7 +107,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		}
 	}
 
-	public void loadProject(String projectName, Context context) throws LoadingProjectException,
+	public Project loadProject(String projectName, Context context) throws LoadingProjectException,
 			OutdatedVersionProjectException, CompatibilityProjectException {
 
 		fileChecksumContainer = new FileChecksumContainer();
@@ -149,9 +131,11 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 					}
 				}
 			}
+
 			throw new LoadingProjectException(context.getString(R.string.error_load_project));
 		} else if (project.getCatrobatLanguageVersion() > Constants.CURRENT_CATROBAT_LANGUAGE_VERSION) {
 			project = oldProject;
+
 			throw new OutdatedVersionProjectException(context.getString(R.string.error_outdated_pocketcode_version));
 		} else {
 			if (project.getCatrobatLanguageVersion() == 0.8f) {
@@ -180,10 +164,13 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 			} else {
 				//project cannot be converted
 				project = oldProject;
+
 				throw new CompatibilityProjectException(context.getString(R.string.error_project_compatability));
 			}
 		}
+		Project newProject = project;
 
+		return newProject;
 	}
 
 	private void localizeBackgroundSprite(Context context) {
@@ -192,26 +179,12 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 			project.getSpriteList().get(0).setName(context.getString(R.string.background));
 			project.getSpriteList().get(0).look.setZIndex(0);
 		}
+
 		MessageContainer.clearBackup();
 		currentSprite = null;
 		currentScript = null;
 		Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
 	}
-
-	private void saveProjectNameToPreferences(Context context) {
-		switch (currentProjectManagerState) {
-			case LWP:
-				Utils.saveToPreferences(context, Constants.PREF_LWP_PROJECTNAME_KEY, project.getName());
-				break;
-			case NORMAL:
-				Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
-				break;
-			default:
-				Utils.saveToPreferences(context, Constants.PREF_PROJECTNAME_KEY, project.getName());
-				break;
-		}
-	}
-
 
 	public boolean cancelLoadProject() {
 		return StorageHandler.getInstance().cancelLoadProject();
@@ -222,6 +195,16 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	}
 
 	public void saveProject() {
+
+		if (project == null) {
+
+			return;
+		}
+		saveWithoutLock();
+
+	}
+
+	public void saveWithoutLock(){
 		if (project == null) {
 			return;
 		}
@@ -232,13 +215,13 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		} else {
 			StorageHandler.getInstance().saveProject(project);
 		}
+
 	}
 
 	public boolean initializeDefaultProject(Context context) {
 		try {
 			fileChecksumContainer = new FileChecksumContainer();
 			project = StandardProjectHandler.createAndSaveStandardProject(context);
-
 			currentSprite = null;
 			currentScript = null;
 			return true;
@@ -267,25 +250,23 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	public void initializeNewProject(String projectName, Context context, boolean empty)
 			throws IllegalArgumentException, IOException {
 		fileChecksumContainer = new FileChecksumContainer();
-
 		if (empty) {
 			project = StandardProjectHandler.createAndSaveEmptyProject(projectName, context);
 		} else {
 			project = StandardProjectHandler.createAndSaveStandardProject(projectName, context);
 		}
-
 		currentSprite = null;
 		currentScript = null;
 	}
 
 	public Project getCurrentProject() {
-		return project;
+		Project lockme = project;
+		return lockme;
 	}
 
 	public void setProject(Project project) {
 		currentScript = null;
 		currentSprite = null;
-
 		this.project = project;
 	}
 
@@ -299,7 +280,6 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 			Utils.showErrorDialog(context, R.string.error_project_exists);
 			return false;
 		}
-
 		String oldProjectPath = Utils.buildProjectPath(project.getName());
 		File oldProjectDirectory = new File(oldProjectPath);
 
@@ -318,16 +298,14 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		} else {
 			directoryRenamed = oldProjectDirectory.renameTo(newProjectDirectory);
 		}
-
 		if (directoryRenamed) {
 			project.setName(newProjectName);
-			saveProject();
+			saveWithoutLock();
 		}
 
 		if (!directoryRenamed) {
 			Utils.showErrorDialog(context, R.string.error_rename_project);
 		}
-
 		return directoryRenamed;
 	}
 
@@ -377,7 +355,8 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 	}
 
 	public int getCurrentSpritePosition() {
-		return project.getSpriteList().indexOf(currentSprite);
+		int index = project.getSpriteList().indexOf(currentSprite);
+		return index;
 	}
 
 	public int getCurrentScriptPosition() {
@@ -385,8 +364,8 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		if (currentSpritePosition == -1) {
 			return -1;
 		}
-
-		return project.getSpriteList().get(currentSpritePosition).getScriptIndex(currentScript);
+		int index = project.getSpriteList().get(currentSpritePosition).getScriptIndex(currentScript);
+		return index;
 	}
 
 	private String createTemporaryDirectoryName(String projectDirectoryName) {
@@ -412,7 +391,8 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			StorageHandler.getInstance().saveProject(project);
+			Project saveme = project;
+			StorageHandler.getInstance().saveProject(saveme);
 			return null;
 		}
 	}

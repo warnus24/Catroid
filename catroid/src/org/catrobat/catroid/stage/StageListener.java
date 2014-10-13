@@ -49,7 +49,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.bitfire.postprocessing.PostProcessor;
 import com.google.common.collect.Multimap;
 
-import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenModes;
@@ -212,6 +212,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		this.isTinting = isTinting;
 	}
 
+	public void setLWP(boolean isLWP){
+		this.isLWP = isLWP;
+	}
+
 	@Override
 	public void create() {
 		font = new BitmapFont();
@@ -219,10 +223,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		font.setScale(1.2f);
 
 		project = null;
-		if (isLWP) {
-			project = ProjectManager.getInstance(ProjectManagerState.LWP).getCurrentProject();
+		if (!isLWP) {
+			project = ProjectHandler.getInstance().getPocketCodeProject();
 		} else {
-			project = ProjectManager.getInstance(ProjectManagerState.NORMAL).getCurrentProject();
+			project = ProjectHandler.getInstance().getLiveWallpaperProject();
 		}
 
 		pathForScreenshot = Utils.buildProjectPath(project.getName()) + "/";
@@ -297,7 +301,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	{
 		ShaderLoader.BasePath = "data/shaders/";
 
-<<<<<<< HEAD
 		if(postProcessorWrapper == null){
 			PostProcessor postProcessor = new PostProcessor(false, true, false);
 			EffectsContainer effectsContainer = new EffectsContainer();
@@ -314,17 +317,6 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	void activityPause() {
 		FaceDetectionHandler.pauseFaceDetection();
-=======
-		if(postProcessor == null)
-		{
-			postProcessor = new PostProcessor(false, false, isDesktop);
-			Bloom bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
-			postProcessor.addEffect(bloom);
-			effects.add(bloom);
-			Vignette vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
-			postProcessor.addEffect(vignette);
-		}
->>>>>>> Bugs wurden behoben, dass man das LiveWallpaper nicht wechseln kann wenn Effekte aktiviert sind. Blooming und Vignette Effekt wurde hinzugefügt
 	}
 
 	public void menuResume() {
@@ -375,8 +367,10 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 		project.getUserVariables().resetAllUserVariables();
 
-		reloadProject = true;
-		//this.firstStart = true;
+		if(lwpEngine != null){
+			Log.d("LWP", "Engine is not null! RELOAD");
+			reloadProject = true;
+		}
 		Log.d("LWP", "StageListener reloadProject!!!!!");
 	}
 
@@ -438,6 +432,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		if (reloadProject) {
+			Log.d("LWP", "RELOAD!!");
 			int spriteSize = sprites.size();
 			for (int i = 0; i < spriteSize; i++) {
 				sprites.get(i).pause();
@@ -469,7 +464,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 			if (lwpEngine != null) {
 				synchronized (lwpEngine) {
-					lwpEngine.notifyAll();
+					lwpEngine.notify();
 				}
 			}
 		}
@@ -532,19 +527,8 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 
 		if (!finished) {
-<<<<<<< HEAD
+
 			if(postProcessorWrapper != null)
-=======
-			if(postProcessor != null)
-			{
-				postProcessor.captureNoClear();
-			}
-
-			tinting();
-			stage.draw();
-
-			if(postProcessor != null)
->>>>>>> Bugs wurden behoben, dass man das LiveWallpaper nicht wechseln kann wenn Effekte aktiviert sind. Blooming und Vignette Effekt wurde hinzugefügt
 			{
 				synchronized (postProcessorWrapper.getPostProcessor())
 				{
