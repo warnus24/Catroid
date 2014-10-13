@@ -291,6 +291,11 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 	}
 
+	public void pauseForLiveWallpaperToPocketCodeSwitch() {
+		menuPause();
+		finished = true;
+	}
+
 	public void reloadProject(StageActivity stageActivity, StageDialog stageDialog) {
 		if (reloadProject) {
 			return;

@@ -36,6 +36,7 @@ import android.view.WindowManager;
 import com.badlogic.gdx.graphics.Color;
 import com.robotium.solo.Solo;
 
+import org.catrobat.catroid.ProjectHandler;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
@@ -67,7 +68,7 @@ public class SelectProgramActivityTest extends
 	private static final String TEST_PROJECT_NAME = "Test 1";
 	private static final String PACKAGE = "org.catrobat.catroid";
 	private Solo solo;
-	private ProjectManager projectManager = ProjectManager.getInstance(ProjectManagerState.LWP);
+	private ProjectManager projectManager = ProjectManager.getInstance();
 	private File lookFile;
 	private Color REFERENCE_COLOR = new Color(255.0f / 255.0f, 50.0f / 255.0f, 0.0f / 255.0f, 255.0f / 255.0f);
 
@@ -81,6 +82,7 @@ public class SelectProgramActivityTest extends
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		ProjectHandler.getInstance().changeToLiveWallpaper(getActivity());
 		UiTestUtils.prepareStageForTest();
 		Intent intent = new Intent(getActivity(), LiveWallpaper.class);
 		getActivity().startService(intent);

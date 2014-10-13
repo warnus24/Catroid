@@ -98,7 +98,7 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 	{
 		try {
 			WallpaperManager.getInstance(getContext()).clear();
-			//WallpaperManager.getInstance(getContext()).forgetLoadedWallpaper();
+			WallpaperManager.getInstance(getContext()).forgetLoadedWallpaper();
 		} catch (IOException e) {
 			Log.e("LWP", "Something somewhere went wrong :-P ");
 			e.printStackTrace();
@@ -254,12 +254,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		context = this;
 	}
 
-	public void pause(){
+	public void pauseAndFinish(){
 		if(previewEngine != null){
 			previewEngine.onPause();
+			previewEngine.onDestroy();
 		}
 		if(homeEngine != null){
 			homeEngine.onPause();
+			homeEngine.onDestroy();
 		}
 	}
 
