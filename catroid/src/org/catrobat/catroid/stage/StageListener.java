@@ -297,6 +297,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 	{
 		ShaderLoader.BasePath = "data/shaders/";
 
+<<<<<<< HEAD
 		if(postProcessorWrapper == null){
 			PostProcessor postProcessor = new PostProcessor(false, true, false);
 			EffectsContainer effectsContainer = new EffectsContainer();
@@ -313,6 +314,17 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 
 	void activityPause() {
 		FaceDetectionHandler.pauseFaceDetection();
+=======
+		if(postProcessor == null)
+		{
+			postProcessor = new PostProcessor(false, false, isDesktop);
+			Bloom bloom = new Bloom((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f));
+			postProcessor.addEffect(bloom);
+			effects.add(bloom);
+			Vignette vignette = new Vignette((int) (Gdx.graphics.getWidth() * 0.25f), (int) (Gdx.graphics.getHeight() * 0.25f), false);
+			postProcessor.addEffect(vignette);
+		}
+>>>>>>> Bugs wurden behoben, dass man das LiveWallpaper nicht wechseln kann wenn Effekte aktiviert sind. Blooming und Vignette Effekt wurde hinzugefügt
 	}
 
 	public void menuResume() {
@@ -520,7 +532,19 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		}
 
 		if (!finished) {
+<<<<<<< HEAD
 			if(postProcessorWrapper != null)
+=======
+			if(postProcessor != null)
+			{
+				postProcessor.captureNoClear();
+			}
+
+			tinting();
+			stage.draw();
+
+			if(postProcessor != null)
+>>>>>>> Bugs wurden behoben, dass man das LiveWallpaper nicht wechseln kann wenn Effekte aktiviert sind. Blooming und Vignette Effekt wurde hinzugefügt
 			{
 				synchronized (postProcessorWrapper.getPostProcessor())
 				{
