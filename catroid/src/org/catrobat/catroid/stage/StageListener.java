@@ -670,6 +670,7 @@ public class StageListener implements ApplicationListener, AndroidWallpaperListe
 		disposeTextures();
 
 		if(postProcessorWrapper != null){
+			postProcessorWrapper.removeAll();
 			postProcessorWrapper.dispose();
 		}
 

@@ -85,6 +85,9 @@ public class SelectPostProcessingEffectFragment extends ListFragment {
 
 	public static void refresh()
 	{
+		if(adapter == null || activity == null){
+			return;
+		}
 		adapter.notifyDataSetChanged();
 		//ToDo Refresh erst ab Android 3.0 möglich
 		int version_code = Integer.valueOf(android.os.Build.VERSION.SDK);
