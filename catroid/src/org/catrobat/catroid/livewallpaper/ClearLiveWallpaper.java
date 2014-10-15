@@ -24,6 +24,7 @@
 package org.catrobat.catroid.livewallpaper;
 
 import android.app.WallpaperManager;
+import android.content.Intent;
 import android.service.wallpaper.WallpaperService;
 
 import org.catrobat.catroid.common.BroadcastSequenceMap;
@@ -36,20 +37,22 @@ public class ClearLiveWallpaper {
 
 	public static void clearLWP(){
 		if(LiveWallpaper.getInstance()!= null) {
-			LiveWallpaper.getInstance().pause();
-			LiveWallpaper.getInstance().getLocalStageListener().dispose();
+			BroadcastSequenceMap.clear();
+			BroadcastWaitSequenceMap.clear();
+			BroadcastWaitSequenceMap.clearCurrentBroadcastEvent();
+
 			LiveWallpaper.getInstance().resetWallpaper();
+			LiveWallpaper.getInstance().pauseAndFinish();
+			LiveWallpaper.getInstance().getLocalStageListener().pauseForLiveWallpaperToPocketCodeSwitch();
 			LiveWallpaper.getInstance().onDeepPauseApplication();
 			LiveWallpaper.getInstance().onDestroy();
+			Intent intent = new Intent(LiveWallpaper.getInstance().getContext(), LiveWallpaper.class);
+			LiveWallpaper.getInstance().getContext().stopService(intent);
 
 			if(LiveWallpaper.getInstance()!= null){
 				LiveWallpaper.getInstance().stopSelf();
 				LiveWallpaper.getInstance().finalize();
 			}
-
-			BroadcastSequenceMap.clear();
-			BroadcastWaitSequenceMap.clear();
-			BroadcastWaitSequenceMap.clearCurrentBroadcastEvent();
 		}
 	}
 }

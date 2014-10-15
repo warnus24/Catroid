@@ -186,6 +186,8 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		ProjectHandler.getInstance().changeToLiveWallpaper(this);
 		stageListener = new StageListener(true);
 		initialize(stageListener, config);
+		StageListener listener = (StageListener) stageListener;
+		listener.resetLiveWallpaperToPocketCodeSwitch();
 		INSTANCE = this;
 		Log.d("LWP", "Preview was initialized");
 	}
@@ -324,12 +326,14 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 		context = this;
 	}
 
-	public void pause(){
+	public void pauseAndFinish(){
 		if(previewEngine != null){
 			previewEngine.onPause();
+			previewEngine.onDestroy();
 		}
 		if(homeEngine != null){
 			homeEngine.onPause();
+			previewEngine.onDestroy();
 		}
 	}
 
