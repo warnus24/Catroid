@@ -230,10 +230,13 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
 				homeEngine.mHandler.removeCallbacks(homeEngine.mUpdateDisplay);
 				homeEngine.mVisible = false;
 			}
-			INSTANCE = null;
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 		}
+	}
+
+	public void setInstanceNull(){
+		INSTANCE = null;
 	}
 
 	public void  changeWallpaperProgram() {

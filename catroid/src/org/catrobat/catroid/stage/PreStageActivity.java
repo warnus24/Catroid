@@ -90,6 +90,7 @@ public class PreStageActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ClearLiveWallpaper.clearLWP();
 		returnToActivityIntent = new Intent();
 
 		if (isFinishing()) {
@@ -171,8 +172,6 @@ public class PreStageActivity extends BaseActivity {
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}
-
-		ClearLiveWallpaper.clearLWP();
 	}
 
 	public DroneInitializer getDroneInitializer() {
@@ -221,6 +220,7 @@ public class PreStageActivity extends BaseActivity {
 
 	@Override
 	public void onResume() {
+		ClearLiveWallpaper.clearLWP();
 		if (droneInitializer != null) {
 			droneInitializer.onPrestageActivityResume();
 		}
@@ -229,7 +229,6 @@ public class PreStageActivity extends BaseActivity {
 		if (requiredResourceCounter == 0) {
 			finish();
 		}
-		ClearLiveWallpaper.clearLWP();
 	}
 
 	@Override

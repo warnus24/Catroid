@@ -52,6 +52,7 @@ public class ClearLiveWallpaper {
 			if(LiveWallpaper.getInstance()!= null){
 				LiveWallpaper.getInstance().stopSelf();
 				LiveWallpaper.getInstance().finalize();
+				LiveWallpaper.getInstance().setInstanceNull();
 			}
 		}
 	}

@@ -24,6 +24,7 @@
 package org.catrobat.catroid.livewallpaper;
 
 import android.content.Intent;
+import android.util.Log;
 
 import org.catrobat.catroid.livewallpaper.ui.SelectProgramActivity;
 import org.catrobat.catroid.stage.StageListener;
@@ -45,6 +46,12 @@ public class StartLiveWallpaperSettingsThread extends Thread {
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
+		if(LiveWallpaper.getInstance() == null){
+			Log.e("LWP", "LiveWallpaper is NULL!!!!");
+		}
+		if(LiveWallpaper.getInstance().getContext() == null){
+			Log.e("LWP", "Context is NULL!!!!");
 		}
 		Intent intent = new Intent(LiveWallpaper.getInstance().getContext(), SelectProgramActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
