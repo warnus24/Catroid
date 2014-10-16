@@ -167,7 +167,8 @@ public class PreStageActivity extends BaseActivity {
 			} else {
 				resourceFailed();
 			}
-			ledInitialize();
+			if (useFlash)
+				ledInitialize();
 		}
 		if (useFrontCamera && useFaceDetector && useFlash) {
 			// front camera and ~flash and warning
@@ -183,7 +184,7 @@ public class PreStageActivity extends BaseActivity {
 					.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
-
+							resourceInitialized(); // continue without flashlight
 						}
 					});
 			AlertDialog alert = builder.create();
