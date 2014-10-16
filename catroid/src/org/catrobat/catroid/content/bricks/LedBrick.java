@@ -41,19 +41,35 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 
 import java.util.List;
+import java.util.Objects;
 
 public class LedBrick extends BrickBaseType {
 	private static final long serialVersionUID = 1L;
 
-	private boolean currentSelectedValue = true;
+	private transient LightValue lightEnum;
+	private String currentLightValue;
 	private ArrayAdapter<String> onOffAdapter = null;
 	protected transient AdapterView<?> adapterView;
 
-	public LedBrick() {
+	public static enum LightValue {
+		LED_ON, LED_OFF
 	}
 
-	public LedBrick(boolean value) {
-		this.currentSelectedValue = value;
+	public LedBrick(LightValue lightValue) {
+		this.lightEnum = lightValue;
+		this.currentLightValue = lightValue.name();
+	}
+
+	protected Object readResolve() {
+		if (currentLightValue != null) {
+			lightEnum = LightValue.valueOf(currentLightValue);
+		}
+		return this;
+	}
+
+	@Override
+	public int getRequiredResources() {
+		return CAMERA_LED;
 	}
 
 	@Override
@@ -62,8 +78,24 @@ public class LedBrick extends BrickBaseType {
 	}
 
 	@Override
+	public View getPrototypeView(Context context) {
+		View prototypeView = View.inflate(context, R.layout.brick_set_led, null);
+		Spinner setLedSpinner = (Spinner) prototypeView.findViewById(R.id.brick_set_led_spinner);
+		setLedSpinner.setFocusableInTouchMode(false);
+		setLedSpinner.setFocusable(false);
+
+		ArrayAdapter<CharSequence> ledAdapter = ArrayAdapter.createFromResource(context,
+				R.array.set_led_chooser, android.R.layout.simple_spinner_item);
+		ledAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		setLedSpinner.setAdapter(ledAdapter);
+		setLedSpinner.setSelection(lightEnum.ordinal());
+		return prototypeView;
+	}
+
+	@Override
 	public Brick clone() {
-		return new LedBrick(this.currentSelectedValue);
+		return new LedBrick(lightEnum);
 	}
 
 	@Override
@@ -76,12 +108,10 @@ public class LedBrick extends BrickBaseType {
 			alphaValue = 0xFF;
 		}
 
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		view = inflater.inflate(R.layout.brick_set_led, null);
+		view = View.inflate(context, R.layout.brick_set_led, null);
 		view = getViewWithAlpha(alphaValue);
 
 		setCheckboxView(R.id.brick_set_led_checkbox);
-
 		final Brick brickInstance = this;
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
@@ -91,37 +121,23 @@ public class LedBrick extends BrickBaseType {
 			}
 		});
 
-		final Spinner onOffSpinner = (Spinner) view.findViewById(R.id.brick_set_led_spinner);
-		onOffSpinner.setFocusableInTouchMode(false);
-		onOffSpinner.setFocusable(false);
+		ArrayAdapter<CharSequence> ledAdapter = ArrayAdapter.createFromResource(context,
+				R.array.set_led_chooser, android.R.layout.simple_spinner_item);
+		ledAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		Spinner ledSpinner = (Spinner) view.findViewById(R.id.brick_set_led_spinner);
+		ledSpinner.setOnItemSelectedListener(this);
+
 		if (!(checkbox.getVisibility() == View.VISIBLE)) {
-			onOffSpinner.setClickable(true);
-			onOffSpinner.setEnabled(true);
+			ledSpinner.setClickable(true);
+			ledSpinner.setEnabled(true);
 		} else {
-			onOffSpinner.setClickable(false);
-			onOffSpinner.setEnabled(false);
+			ledSpinner.setClickable(false);
+			ledSpinner.setEnabled(false);
 		}
 
-		onOffSpinner.setAdapter(getAdapter(context));
-		onOffSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				currentSelectedValue = parent.getSelectedItem().toString()
-						.equals(context.getString(R.string.brick_led_on));
-				adapterView = parent;
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-			}
-		});
-
-		if (currentSelectedValue) {
-			onOffSpinner.setSelection(onOffAdapter.getPosition(context.getString(R.string.brick_led_on)), true);
-		} else {
-			onOffSpinner.setSelection(onOffAdapter.getPosition(context.getString(R.string.brick_led_off)), true);
-		}
-
+		ledSpinner.setAdapter(ledAdapter);
+		ledSpinner.setSelection(lightEnum.ordinal());
 		return view;
 	}
 
@@ -158,21 +174,5 @@ public class LedBrick extends BrickBaseType {
 		return null;
 	}
 
-	@Override
-	public View getPrototypeView(Context context) {
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View view = inflater.inflate(R.layout.brick_set_led, null);
-		Spinner setLedSpinner = (Spinner) view.findViewById(R.id.brick_set_led_spinner);
-		setLedSpinner.setFocusableInTouchMode(false);
-		setLedSpinner.setFocusable(false);
-		setLedSpinner.setAdapter(getAdapter(context));
-		setLedSpinner.setSelection(onOffAdapter.getPosition(context.getString(R.string.brick_led_on)), true);
-		return view;
-	}
-
-	@Override
-	public int getRequiredResources() {
-		return CAMERA_LED;
-	}
 
 }
