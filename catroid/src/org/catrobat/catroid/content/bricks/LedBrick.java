@@ -24,9 +24,10 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.view.LayoutInflater;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
@@ -41,14 +42,12 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 
 import java.util.List;
-import java.util.Objects;
 
-public class LedBrick extends BrickBaseType {
+public class LedBrick extends BrickBaseType implements OnItemSelectedListener {
 	private static final long serialVersionUID = 1L;
 
 	private transient LightValue lightEnum;
 	private String currentLightValue;
-	private ArrayAdapter<String> onOffAdapter = null;
 	protected transient AdapterView<?> adapterView;
 
 	public static enum LightValue {
@@ -141,19 +140,23 @@ public class LedBrick extends BrickBaseType {
 		return view;
 	}
 
-	protected ArrayAdapter<String> getAdapter(Context context) {
-		if (onOffAdapter == null) {
-			onOffAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item);
-			onOffAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			onOffAdapter.add(context.getString(R.string.brick_led_on));
-			onOffAdapter.add(context.getString(R.string.brick_led_off));
-		}
-		return onOffAdapter;
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		lightEnum = LightValue.values()[position];
+		currentLightValue = lightEnum.name();
+		adapterView = parent;
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
 	}
 
 	@Override
 	public View getViewWithAlpha( int alphaValue ) {
 		if (view != null) {
+			View layout = view.findViewById(R.id.brick_set_led_layout);
+			Drawable background = layout.getBackground();
+			background.setAlpha(alphaValue);
 
 			TextView textLedBrickLabel = (TextView) view.findViewById(R.id.brick_set_led_label);
 			textLedBrickLabel.setTextColor(textLedBrickLabel.getTextColors().withAlpha(alphaValue));
@@ -170,7 +173,12 @@ public class LedBrick extends BrickBaseType {
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.lights(currentSelectedValue));
+		if (lightEnum.equals(LightValue.LED_ON)) {
+			sequence.addAction(ExtendedActions.lights(true));
+		} else {
+			sequence.addAction(ExtendedActions.lights(false));
+		}
+
 		return null;
 	}
 

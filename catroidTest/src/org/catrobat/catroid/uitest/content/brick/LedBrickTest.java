@@ -163,8 +163,8 @@ public class LedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActi
 		Script startScript = new StartScript();
 		Script tappedScript = new WhenScript();
 
-		ledOffBrick = new LedBrick(false);
-		ledOnBrick = new LedBrick(true);
+		ledOffBrick = new LedBrick(LedBrick.LightValue.LED_OFF);
+		ledOnBrick = new LedBrick(LedBrick.LightValue.LED_ON);
 
 		sprite.addScript(startScript);
 		startScript.addBrick(ledOffBrick);
