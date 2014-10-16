@@ -46,5 +46,11 @@
  		<item >@string/close</item >
  	</string-array >
 
+    <!-- LED brick for controlling flash led -->
+    <string-array name="set_led_chooser">
+        <item>@string/brick_led_on</item>
+        <item>@string/brick_led_off</item>
+    </string-array>rin
+
 
 </resources>

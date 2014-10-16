@@ -60,8 +60,7 @@ import org.catrobat.catroid.content.bricks.GoNStepsBackBrick;
 import org.catrobat.catroid.content.bricks.HideBrick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfOnEdgeBounceBrick;
-import org.catrobat.catroid.content.bricks.LedOffBrick;
-import org.catrobat.catroid.content.bricks.LedOnBrick;
+import org.catrobat.catroid.content.bricks.LedBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorTurnAngleBrick;
@@ -223,6 +222,7 @@ public class CategoryBricksFactory {
 		motionBrickList.add(new PointToBrick(null));
 		motionBrickList.add(new GlideToBrick(BrickValues.X_POSITION, BrickValues.Y_POSITION,
 				BrickValues.GLIDE_SECONDS));
+		motionBrickList.add(new VibrationBrick(BrickValues.VIBRATE_SECONDS));
 
 		if (!isBackground(sprite)) {
 			motionBrickList.add(new GoNStepsBackBrick(BrickValues.GO_BACK));
@@ -267,8 +267,7 @@ public class CategoryBricksFactory {
 		looksBrickList.add(new ChangeBrightnessByNBrick(BrickValues.CHANGE_BRITHNESS_BY));
 		looksBrickList.add(new ClearGraphicEffectBrick());
 		if (BuildConfig.FEATURE_LED_BRICK_ENABLED) {
-			looksBrickList.add(new LedOffBrick());
-			looksBrickList.add(new LedOnBrick());
+			looksBrickList.add(new LedBrick(LedBrick.LightValue.LED_ON));
 		}
 
 		return looksBrickList;
