@@ -54,7 +54,7 @@ public final class VibratorUtil {
 	private static Thread vibratorThread = null;
 
 	public static void setTimeToVibrate(double timeInMillis) {
-		Log.d(TAG, "setTimeToVibrate()");
+		Log.d(TAG, "setTimeToVibrate(" + timeInMillis + ")");
 		timeToVibrate = (long) timeInMillis;
 		if (vibratorThreadSemaphore.hasQueuedThreads()) {
 			vibratorThreadSemaphore.release();

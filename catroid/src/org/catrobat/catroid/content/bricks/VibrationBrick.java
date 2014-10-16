@@ -60,8 +60,8 @@ public class VibrationBrick extends FormulaBrick implements OnClickListener {
 		initializeBrickFields(vibrateDurationInSecondsFormula);
 	}
 
-	public VibrationBrick(int vibrationDurationInMilliseconds) {
-		initializeBrickFields(new Formula(vibrationDurationInMilliseconds / 1000.0));
+	public VibrationBrick(int vibrationDurationInSeconds) {
+		initializeBrickFields(new Formula(vibrationDurationInSeconds));
 	}
 
 	private void initializeBrickFields(Formula vibrateDurationInSecondsFormula) {
@@ -108,7 +108,7 @@ public class VibrationBrick extends FormulaBrick implements OnClickListener {
 						Utils.convertDoubleToPluralInteger(getFormulaWithBrickField(BrickField.VIBRATE_DURATION_IN_SECONDS)
 								.interpretDouble(ProjectManager.getInstance().getCurrentSprite()))));
 			} catch (InterpretationException interpretationException) {
-				Log.d(getClass().getSimpleName(), "Formula interpretation for this specific Brick failed.", interpretationException);
+				Log.w(getClass().getSimpleName()d, "Formula interpretation for this specific Brick failed.", interpretationException);
 			}
 
 		} else {
@@ -126,10 +126,10 @@ public class VibrationBrick extends FormulaBrick implements OnClickListener {
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_vibration, null);
 		TextView textSeconds = (TextView) prototypeView.findViewById(R.id.brick_vibration_prototype_text_view_seconds);
-		textSeconds.setText(String.valueOf(BrickValues.VIBRATE_MILLISECONDS));
+		textSeconds.setText(String.valueOf(BrickValues.VIBRATE_SECONDS));
 		TextView times = (TextView) prototypeView.findViewById(R.id.brick_vibration_second_text_view);
 		times.setText(context.getResources().getQuantityString(R.plurals.second_plural,
-				Utils.convertDoubleToPluralInteger(BrickValues.VIBRATE_MILLISECONDS)));
+				Utils.convertDoubleToPluralInteger(BrickValues.VIBRATE_SECONDS)));
 		return prototypeView;
 	}
 
