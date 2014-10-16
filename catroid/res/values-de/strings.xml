@@ -242,7 +242,7 @@
     <string name="text_to_speech_engine_not_installed">Text-to-Speech Modul nicht installiert!\nJetzt installieren?</string>
     <string name="no_flash_led_available">Kein Blitzlicht gefunden</string>
     <string name="no_vibrator_available">Vibrationsfunktion nicht verfügbar</string>
-    <string name="led_and_front_camera_warning">Led UND Front Kamera werden nicht unterstützt</string>
+    <string name="led_and_front_camera_warning">Wenn die Frontkamera benutzt wird, kann nicht gleichzeitig das Blitzlicht benutzt werden. Wähle die Kamera auf der Rückseite oder benutze nicht gleichzeitig Gesichtserkennung *und* Blitzlicht.</string>
     <!-- -->
 
     <!-- Brick context dialog -->

@@ -42,10 +42,9 @@ public final class FaceDetectionHandler {
 	private static boolean running = false;
 	private static boolean paused = false;
 
-    // Suppress default constructor for noninstantiability
-    private FaceDetectionHandler() {
-        throw new AssertionError();
-    }
+	private FaceDetectionHandler() {
+		throw new AssertionError();
+	}
 
 	private static void createFaceDetector() {
 		if (isIcsFaceDetectionSupported()) {
@@ -61,8 +60,8 @@ public final class FaceDetectionHandler {
 
 	public static boolean startFaceDetection(Context context) {
 		if (context != null && !useFaceDetection(context)) {
-            SensorHandler.clearFaceDetectionValues();
-            return true;
+			SensorHandler.clearFaceDetectionValues();
+			return true;
 		}
 		if (running) {
 			return true;
@@ -95,8 +94,8 @@ public final class FaceDetectionHandler {
 			return;
 		}
 
-        faceDetector.stopFaceDetection();
-        running = false;
+		faceDetector.stopFaceDetection();
+		running = false;
 	}
 
 	public static void pauseFaceDetection() {
@@ -157,7 +156,7 @@ public final class FaceDetectionHandler {
 			Camera camera = CameraManager.getInstance().getCamera();
 			possibleFaces = getNumberOfCameras(camera);
 		} catch (Exception exception) {
-            Log.e("Camera", "Camera unaccessable!", exception);
+			Log.e("Camera", "Camera unaccessable!", exception);
 		}
 		return possibleFaces > 0;
 	}
