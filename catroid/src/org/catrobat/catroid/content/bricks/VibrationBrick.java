@@ -71,7 +71,10 @@ public class VibrationBrick extends FormulaBrick implements OnClickListener {
 
 	@Override
 	public int getRequiredResources() {
-		return VIBRATOR;
+		int requiredResources = NO_RESOURCES;
+		requiredResources |= VIBRATOR;
+		requiredResources |= this.getFormula().getRequiredResources();
+		return requiredResources;
 	}
 
 	@Override
@@ -108,7 +111,7 @@ public class VibrationBrick extends FormulaBrick implements OnClickListener {
 						Utils.convertDoubleToPluralInteger(getFormulaWithBrickField(BrickField.VIBRATE_DURATION_IN_SECONDS)
 								.interpretDouble(ProjectManager.getInstance().getCurrentSprite()))));
 			} catch (InterpretationException interpretationException) {
-				Log.w(getClass().getSimpleName()d, "Formula interpretation for this specific Brick failed.", interpretationException);
+				Log.w(getClass().getSimpleName(), "Formula interpretation for this specific Brick failed.", interpretationException);
 			}
 
 		} else {

@@ -28,12 +28,15 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.preference.ListPreference;
+import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
@@ -96,7 +99,7 @@ public class PreStageActivity extends BaseActivity {
 
 		setContentView(R.layout.activity_prestage);
 
-		int requiredResources = getRequiredRessources();
+		int requiredResources = getRequiredResources();
 		requiredResourceCounter = Integer.bitCount(requiredResources);
 
 		if ((requiredResources & Brick.TEXT_TO_SPEECH) > 0) {
@@ -128,6 +131,66 @@ public class PreStageActivity extends BaseActivity {
 		}
 
 		FaceDetectionHandler.resetFaceDedection();
+		boolean useFaceDetector = (requiredResources & Brick.FACE_DETECTION) > 0;
+		boolean useFlash = (requiredResources & Brick.CAMERA_LED) > 0;
+		boolean useFrontCamera = !CameraManager.getInstance().isFacingBack();
+
+		if (useFrontCamera && useFaceDetector && !useFlash) {
+			// front camera and ~flash
+			boolean success = FaceDetectionHandler.startFaceDetection(this);
+			if (success) {
+				resourceInitialized();
+			} else {
+				resourceFailed();
+			}
+		}
+		if (useFrontCamera && !useFaceDetector && useFlash) {
+			// back camera and flash
+			CameraManager.getInstance().releaseCamera();
+			// change camera settings to back camera
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+			preferences.edit().putString(this.getResources().getString(R.string.preference_key_select_camera), "0").commit();
+			// open camera
+			boolean success = FaceDetectionHandler.startFaceDetection(this);
+			if (success) {
+				resourceInitialized();
+			} else {
+				resourceFailed();
+			}
+			ledInitialize();
+		}
+		if (!useFrontCamera && (useFaceDetector || useFlash)) {
+			// back camera and flash
+			boolean success = FaceDetectionHandler.startFaceDetection(this);
+			if (success) {
+				resourceInitialized();
+			} else {
+				resourceFailed();
+			}
+			ledInitialize();
+		}
+		if (useFrontCamera && useFaceDetector && useFlash) {
+			// front camera and ~flash and warning
+			boolean success = FaceDetectionHandler.startFaceDetection(this);
+			if (success) {
+				resourceInitialized();
+			} else {
+				resourceFailed();
+			}
+			// warning! flash not active!
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(getString(R.string.led_and_front_camera_warning)).setCancelable(false)
+					.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+
+						}
+					});
+			AlertDialog alert = builder.create();
+			alert.show();
+		}
+
+		/*
 		if ((requiredResources & Brick.FACE_DETECTION) > 0) {
 			boolean success = FaceDetectionHandler.startFaceDetection(this);
 			if (success) {
@@ -153,11 +216,12 @@ public class PreStageActivity extends BaseActivity {
 				ledInitialize();
 			}
 		}
+		*/
 
 		if ((requiredResources & Brick.VIBRATOR) > 0) {
 			Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 			if (vibrator != null) {
-				requiredResourceCounter--;
+				resourceInitialized();
 				VibratorUtil.setContext(this.getBaseContext());
 				VibratorUtil.activateVibratorThread();
 			} else {
@@ -310,7 +374,7 @@ public class PreStageActivity extends BaseActivity {
 		this.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 	}
 
-	private int getRequiredRessources() {
+	private int getRequiredResources() {
 		ArrayList<Sprite> spriteList = (ArrayList<Sprite>) ProjectManager.getInstance().getCurrentProject()
 				.getSpriteList();
 

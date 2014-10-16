@@ -239,7 +239,10 @@
     <string name="text_to_speech_engine_not_installed">Text-to-Speech engine not installed!\nDo you want to install it?</string>
     <string name="no_flash_led_available">No flash LED available</string>
     <string name="no_vibrator_available">Vibrator not available</string>
-    <string name="led_and_front_camera_warning">Led AND Front Camera are not supported</string>
+    <string name="led_and_front_camera_warning">If the front camera is used, then flash bricks
+will not work. Either select the backside camera in the settings, or
+do not use both face detection functions in formula *and* the flash in
+the same program. Note that this is a technical restriction.</string>
     <!--  -->
 
 
