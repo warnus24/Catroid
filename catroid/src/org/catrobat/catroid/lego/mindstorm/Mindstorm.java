@@ -24,7 +24,4 @@ package org.catrobat.catroid.lego.mindstorm;
 
 public interface Mindstorm {
 
-	// public void connect(String macAddress);
-
-	public void disconnect();
 }

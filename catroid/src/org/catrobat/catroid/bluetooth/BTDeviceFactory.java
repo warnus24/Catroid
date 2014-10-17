@@ -22,18 +22,10 @@
  */
 package org.catrobat.catroid.bluetooth;
 
-import org.catrobat.catroid.common.CatrobatService;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.stage.StageResourceInterface;
+import android.content.Context;
 
-import java.util.UUID;
+public interface BTDeviceFactory {
 
-public interface BTDeviceService extends CatrobatService, StageResourceInterface {
+	public <T extends BTDeviceService> BTDeviceService create(Class<T> service, Context applicationContext);
 
-    public String getName();
-    public Class<? extends BTDeviceService> getServiceType();
-    public void setConnection(BluetoothConnection connection);
-	public void disconnect();
-
-    public UUID getBluetoothDeviceUUID();
 }

@@ -22,10 +22,15 @@
  */
 package org.catrobat.catroid.lego.mindstorm.nxt;
 
+import android.util.Log;
+
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
+import org.catrobat.catroid.lego.mindstorm.MindstormException;
 import org.catrobat.catroid.lego.mindstorm.MindstormMotor;
 
 public class NXTMotor implements MindstormMotor {
+
+	private static final String TAG = NXTMotor.class.getSimpleName();
 
 	private int port;
 	private MindstormConnection connection;
@@ -37,7 +42,6 @@ public class NXTMotor implements MindstormMotor {
 
 	@Override
 	public void stop() {
-
 		OutputState state = new OutputState();
 		state.speed = 0;
 		state.mode = MotorMode.BREAK | MotorMode.ON | MotorMode.REGULATED;
@@ -49,6 +53,14 @@ public class NXTMotor implements MindstormMotor {
 	}
 
 	private void setOutputState(OutputState state, boolean reply) {
+		try {
+			trySetOutputState(state, reply);
+		} catch (MindstormException e) {
+			Log.e(TAG, e.getMessage());
+		}
+	}
+
+	private void trySetOutputState(OutputState state, boolean reply) {
 		if(state.speed > 100){
 			state.speed = 100;
 		}

@@ -45,7 +45,7 @@ public class MindstormConnection {
 	}
 
 	public void init() {
-		bluetoothSocket = bluetoothConnection.getBluetoothSocket();
+		BluetoothSocket bluetoothSocket = bluetoothConnection.getBluetoothSocket();
 		try {
 			nxtInputStream = bluetoothSocket.getInputStream();
 			nxtOutputStream = bluetoothSocket.getOutputStream();
@@ -56,7 +56,6 @@ public class MindstormConnection {
 		}
 	}
 
-	private BluetoothSocket bluetoothSocket = null;
 	private OutputStream nxtOutputStream = null;
 	private InputStream nxtInputStream = null;
 
@@ -68,17 +67,15 @@ public class MindstormConnection {
 
 
 
-	public void disconnect() throws IOException{
+	public void disconnect() {
 
 		isConnected = false;
 
-		if (bluetoothSocket != null) {
-			bluetoothSocket.close();
-			bluetoothSocket = null;
-		}
+		bluetoothConnection.disconnect();
 
 		nxtInputStream = null;
 		nxtOutputStream = null;
+
 	}
 
 	synchronized public byte[] sendAndReceive(MindstormCommand command) {

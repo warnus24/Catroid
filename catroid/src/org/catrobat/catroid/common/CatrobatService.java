@@ -22,5 +22,17 @@
  */
 package org.catrobat.catroid.common;
 
+import org.catrobat.catroid.bluetooth.BTDeviceConnector;
+import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
+
 public interface CatrobatService {
+
+	public static final Class<LegoNXT> LEGO_NXT = LegoNXT.class;
+//    public static final Class<Arduino> ARDUINO = Arduino.class;
+//    public static final Class<Albert> ALBERT = Albert.class;
+
+
+	// Common services - gets created by ServiceProvider if needed
+	public static final Class<BTDeviceConnector> BLUETOOTH_DEVICE_CONNECTOR = BTDeviceConnector.class;
+
 }

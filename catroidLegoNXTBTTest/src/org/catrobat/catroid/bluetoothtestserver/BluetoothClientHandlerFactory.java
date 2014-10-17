@@ -20,20 +20,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.bluetooth;
+package org.catrobat.catroid.bluetoothtestserver;
 
-import org.catrobat.catroid.common.CatrobatService;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.stage.StageResourceInterface;
+import org.catrobat.catroid.bluetoothtestserver.clienthandlers.CommonBluetoothTestClientHandler;
+import org.catrobat.catroid.bluetoothtestserver.clienthandlers.LegoNXTClientHandler;
 
-import java.util.UUID;
+public class BluetoothClientHandlerFactory {
 
-public interface BTDeviceService extends CatrobatService, StageResourceInterface {
-
-    public String getName();
-    public Class<? extends BTDeviceService> getServiceType();
-    public void setConnection(BluetoothConnection connection);
-	public void disconnect();
-
-    public UUID getBluetoothDeviceUUID();
+	public static BTClientHandler create(String uuid) {
+       
+		if (uuid.equals(BTServer.LEGO_NXT_UUID)) {
+			return new LegoNXTClientHandler();
+		}
+		
+		if (uuid.equals(BTServer.COMMON_BT_TEST_UUID)) {
+			return new CommonBluetoothTestClientHandler();
+		}
+		
+		throw new UnsupportedOperationException("Unkown UUID!");
+	}
 }
