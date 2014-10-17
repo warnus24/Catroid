@@ -22,30 +22,39 @@
  */
 package org.catrobat.catroid.bluetoothtestserver;
 
-import android.util.Log;
+//import android.util.Log;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
 
+import javax.bluetooth.BluetoothStateException;
 import javax.bluetooth.LocalDevice;
-import javax.bluetooth.UUID;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 
 public final class BTServer {
-	private static final String TAG = BTServer.class.getName();
+	private static final String TAG = BTServer.class.getSimpleName();
 
-	static StreamConnection connection = null;
 	static BTServer btServer;
 	private static boolean gui = false;
 	private static Writer out = null;
 	private boolean run = true;
 
+	public static final String LEGO_NXT_UUID = "0000110100001000800000805F9B34FB";
+	public static final String COMMON_BT_TEST_UUID = "fd2835bb9d8041e097215372b90342da";
+
+	private Collection<Client> supportedClients = new ArrayList<Client>();
+	
 	// Suppress default constructor for noninstantiability
 	private BTServer() {
+		
+		supportedClients.add(new Client("LEGO NXT", LEGO_NXT_UUID));
+		supportedClients.add(new Client("Common BT Test", COMMON_BT_TEST_UUID));
 	}
 
 	public static void writeMessage(String arg) {
@@ -54,7 +63,7 @@ public final class BTServer {
 				out.write(arg);
 				out.flush();
 			} catch (Exception localException) {
-				Log.e(TAG, "Exception in writeMessage!", localException);
+				// Log.e(TAG, "Exception in writeMessage!", localException);
 			}
 		} else {
 			GUI.writeMessage(arg);
@@ -62,50 +71,87 @@ public final class BTServer {
 	}
 
 	public static void main(String[] args) {
-		if (args.length == 0) {
-			gui = true;
-			GUI.startGUI();
-			btServer = new BTServer();
-			try {
-				btServer.startServer();
-			} catch (IOException ioException) {
-				Log.e(TAG, "IOexception!", ioException);
-			}
-		} else {
-			try {
+
+		try {
+
+			if (args.length == 0) {
+				gui = true;
+				GUI.startGUI();
+			} else {
 				out = new OutputStreamWriter(new FileOutputStream(args[0]));
-
-				LocalDevice localDevice = LocalDevice.getLocalDevice();
-				writeMessage("Local System:\n");
-				writeMessage("Address: " + localDevice.getBluetoothAddress()
-						+ "\n");
-				writeMessage("Name: " + localDevice.getFriendlyName() + "\n");
-
-				btServer = new BTServer();
-				btServer.startServer();
-			} catch (IOException ioException) {
-				Log.e(TAG, "IOException!", ioException);
 			}
+
+			printSystemConfiguration();
+
+			btServer = new BTServer();
+			btServer.startServer();
+			
+		} catch (IOException ioException) {
+			ioException.printStackTrace();
+			// Log.e(TAG, "IOexception!", ioException);
 		}
+
 	}
 
-	private void startServer() throws IOException {
-		UUID uuid = new UUID("1101", true);
+	private static void printSystemConfiguration()
+			throws BluetoothStateException {
+		LocalDevice localDevice = LocalDevice.getLocalDevice();
+		writeMessage("Local System:\n");
+		writeMessage("Address: "
+				+ localDevice.getBluetoothAddress().replaceAll("(.{2})(?!$)",
+						"$1:") + "\n");
+		writeMessage("Name: " + localDevice.getFriendlyName() + "\n");
+	}
 
-		String connectionString = "btspp://localhost:" + uuid
-				+ ";name=BT Test Server";
-
-		StreamConnectionNotifier streamConnNotifier = (StreamConnectionNotifier) Connector
-				.open(connectionString);
-
+	private void startServer() throws IOException {		
+	
 		writeMessage("Bluetooth Server started. Waiting for Bluetooth test clients... \n");
-
-		while (this.run) {
-			connection = streamConnNotifier.acceptAndOpen();
-			BTClientHandler btc = new BTClientHandler(connection);
-			btc.start();
+		writeMessage("Listening for: \n");
+	
+		for (Client client : supportedClients) {
+			writeMessage("  - " + client.name + " (" + client.uuid + ")\n");
+			new InputConnectionHandler(client).start();
 		}
-
-		streamConnNotifier.close();
+	}
+	
+	private class InputConnectionHandler extends Thread {
+		
+		private Client client;
+		
+		public InputConnectionHandler(Client client) {
+			this.client = client;
+		}
+		
+		@Override
+		public void run() {
+			try {
+				tryHandleInputConnection();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		private void tryHandleInputConnection() throws IOException
+		{
+			String connectionString = "btspp://localhost:" + client.uuid
+					+ ";name=BT Test Server";
+			
+			StreamConnectionNotifier streamConnNotifier = (StreamConnectionNotifier) Connector
+					.open(connectionString);
+			
+			while (BTServer.this.run) {
+				StreamConnection connection = streamConnNotifier.acceptAndOpen();
+				
+				BTServer.writeMessage("Incomming connection for " + client.name + "\n");
+				
+				BTClientHandler btc = BluetoothClientHandlerFactory.create(client.uuid);
+				btc.setConnection(connection);
+				
+				btc.start();
+			}
+			
+			streamConnNotifier.close();
+		}
+		
 	}
 }

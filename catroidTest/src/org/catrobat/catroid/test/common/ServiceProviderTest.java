@@ -20,20 +20,33 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.bluetooth;
+package org.catrobat.catroid.test.common;
 
+import android.test.AndroidTestCase;
+
+import org.catrobat.catroid.bluetooth.BTDeviceConnector;
 import org.catrobat.catroid.common.CatrobatService;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.stage.StageResourceInterface;
+import org.catrobat.catroid.common.ServiceProvider;
 
-import java.util.UUID;
+public class ServiceProviderTest extends AndroidTestCase {
 
-public interface BTDeviceService extends CatrobatService, StageResourceInterface {
+	public void testCommonServices() {
+		CatrobatService service = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
 
-    public String getName();
-    public Class<? extends BTDeviceService> getServiceType();
-    public void setConnection(BluetoothConnection connection);
-	public void disconnect();
+		assertNotNull(service);
+		assertTrue(service instanceof BTDeviceConnector);
+	}
 
-    public UUID getBluetoothDeviceUUID();
+	public void testRegisterAndGetService() {
+		assertNull(ServiceProvider.getService(TestService.class));
+
+		ServiceProvider.registerService(TestService.class, new TestService());
+
+		TestService service = ServiceProvider.getService(TestService.class);
+		assertNotNull(service);
+	}
+
+	private class TestService implements CatrobatService {
+
+	}
 }

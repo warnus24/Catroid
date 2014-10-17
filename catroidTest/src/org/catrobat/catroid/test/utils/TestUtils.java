@@ -23,11 +23,14 @@
 package org.catrobat.catroid.test.utils;
 
 import android.app.NotificationManager;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
+
+import junit.framework.Assert;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
@@ -299,12 +302,48 @@ public final class TestUtils {
 		 "definitionBrick");
 		 sprite.addUserBrick(userBrick);
 		 return definitionBrick.getScriptSafe();
-		 }
+	}
 
 	public static void removeFromPreferences(Context context, String key) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor edit = preferences.edit();
 		edit.remove(key);
 		edit.commit();
+	}
+
+	public static void enableBluetooth() {
+		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		Assert.assertTrue("Bluetooth not supported on device", bluetoothAdapter != null);
+
+		if (!bluetoothAdapter.isEnabled()) {
+			bluetoothAdapter.enable();
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void disableBluetooth() {
+
+		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		Assert.assertTrue("Bluetooth not supported on device", bluetoothAdapter != null);
+
+		if (bluetoothAdapter.isEnabled()) {
+			bluetoothAdapter.disable();
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static boolean isBluetoothEnabled() {
+		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		Assert.assertTrue("Bluetooth not supported on device", bluetoothAdapter != null);
+
+		return bluetoothAdapter.isEnabled();
 	}
 }

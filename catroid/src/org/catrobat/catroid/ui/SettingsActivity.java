@@ -46,6 +46,11 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	public static final String SETTINGS_PARROT_AR_DRONE_CATROBAT_TERMS_OF_SERVICE_ACCEPTED_PERMANENTLY = "setting_parrot_ar_drone_catrobat_terms_of_service_accepted_permanently";
 	PreferenceScreen screen = null;
 
+	public static final String NXT_SENSOR_1 = "setting_mindstorms_nxt_sensor_1";
+	public static final String NXT_SENSOR_2 = "setting_mindstorms_nxt_sensor_2";
+	public static final String NXT_SENSOR_3 = "setting_mindstorms_nxt_sensor_3";
+	public static final String NXT_SENSOR_4 = "setting_mindstorms_nxt_sensor_4";
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -20,20 +20,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.bluetooth;
+package org.catrobat.catroid.test.bluetooth;
 
-import org.catrobat.catroid.common.CatrobatService;
+import android.test.InstrumentationTestCase;
+
+import org.catrobat.catroid.bluetooth.BTDeviceFactory;
+import org.catrobat.catroid.bluetooth.BTDeviceFactoryImpl;
+import org.catrobat.catroid.bluetooth.BTDeviceService;
 import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.stage.StageResourceInterface;
 
-import java.util.UUID;
+public class BTDeviceFactoryTest extends InstrumentationTestCase {
 
-public interface BTDeviceService extends CatrobatService, StageResourceInterface {
+	public void testLegoNXTCreation() {
+		BTDeviceFactory btDeviceFactory = new BTDeviceFactoryImpl();
+		BTDeviceService btDeviceService = btDeviceFactory.create(BTDeviceService.LEGO_NXT, getInstrumentation().getTargetContext().getApplicationContext());
 
-    public String getName();
-    public Class<? extends BTDeviceService> getServiceType();
-    public void setConnection(BluetoothConnection connection);
-	public void disconnect();
-
-    public UUID getBluetoothDeviceUUID();
+		assertTrue("Returned service must be of type LegoNXT", btDeviceService instanceof LegoNXT);
+	}
 }

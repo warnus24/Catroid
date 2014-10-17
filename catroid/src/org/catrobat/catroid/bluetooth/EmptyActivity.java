@@ -22,18 +22,23 @@
  */
 package org.catrobat.catroid.bluetooth;
 
-import org.catrobat.catroid.common.CatrobatService;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.stage.StageResourceInterface;
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Intent;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
-public interface BTDeviceService extends CatrobatService, StageResourceInterface {
+public class EmptyActivity extends Activity {
 
-    public String getName();
-    public Class<? extends BTDeviceService> getServiceType();
-    public void setConnection(BluetoothConnection connection);
-	public void disconnect();
+	private Map<Integer, Instrumentation.ActivityResult> activityResults = new HashMap<Integer, Instrumentation.ActivityResult>();
 
-    public UUID getBluetoothDeviceUUID();
+	public Instrumentation.ActivityResult getActivityResult(final int requestCode) {
+		return activityResults.get(requestCode);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		activityResults.put(requestCode, new Instrumentation.ActivityResult(resultCode, data));
+	}
 }

@@ -23,7 +23,9 @@
 package org.catrobat.catroid.lego.mindstorm.nxt;
 
 import org.catrobat.catroid.bluetooth.BTDeviceService;
+import org.catrobat.catroid.formulaeditor.Sensors;
 import org.catrobat.catroid.lego.mindstorm.Mindstorm;
+import org.catrobat.catroid.lego.mindstorm.MindstormSensor;
 
 public interface LegoNXT extends Mindstorm, BTDeviceService {
 
@@ -34,4 +36,11 @@ public interface LegoNXT extends Mindstorm, BTDeviceService {
 	public NXTMotor getMotorC();
 
 	public void stopAllMovements();
+
+	public int getSensorValue(Sensors sensor);
+
+	public MindstormSensor getSensor1();
+	public MindstormSensor getSensor2();
+	public MindstormSensor getSensor3();
+	public MindstormSensor getSensor4();
 }

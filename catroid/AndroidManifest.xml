@@ -150,6 +150,10 @@
             android:name=".bluetooth.DeviceListActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity
+            android:name=".bluetooth.BTConnectDeviceActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".bluetooth.EmptyActivity" />
+        <activity
             android:name=".soundrecorder.SoundRecorderActivity"
             android:exported="true"
             android:label="@string/soundrecorder_name"

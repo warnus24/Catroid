@@ -22,13 +22,17 @@
  */
 package org.catrobat.catroid.formulaeditor;
 
+import android.app.Service;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
+import org.catrobat.catroid.common.CatrobatService;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
+import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 
 public final class SensorHandler implements SensorEventListener, SensorCustomEventListener {
 	private static final String TAG = SensorHandler.class.getSimpleName();
@@ -166,6 +170,15 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 
 			case LOUDNESS:
 				return Double.valueOf(instance.loudness);
+
+			case NXT_SENSOR_1:
+			case NXT_SENSOR_2:
+			case NXT_SENSOR_3:
+			case NXT_SENSOR_4:
+				LegoNXT nxtService = ServiceProvider.getService(CatrobatService.LEGO_NXT);
+				if (nxtService != null) {
+					nxtService.getSensorValue(sensor);
+				}
 		}
 		return 0d;
 	}

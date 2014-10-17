@@ -20,20 +20,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.bluetooth;
+package org.catrobat.catroid.bluetoothtestserver;
 
-import org.catrobat.catroid.common.CatrobatService;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.stage.StageResourceInterface;
+public class Client {
+	
+	public Client(String name, String uuid) {
+		this.name = name;
+		this.uuid = uuid;
+	}
+	
+	public String name;
+	public String uuid;
 
-import java.util.UUID;
-
-public interface BTDeviceService extends CatrobatService, StageResourceInterface {
-
-    public String getName();
-    public Class<? extends BTDeviceService> getServiceType();
-    public void setConnection(BluetoothConnection connection);
-	public void disconnect();
-
-    public UUID getBluetoothDeviceUUID();
 }

@@ -24,6 +24,8 @@ package org.catrobat.catroid.common;
 
 import android.util.Log;
 
+import org.catrobat.catroid.bluetooth.BTDeviceConnectorImpl;
+
 import java.util.HashMap;
 
 public class ServiceProvider {
@@ -42,10 +44,16 @@ public class ServiceProvider {
     }
 
     public static <T extends CatrobatService> T getService(Class<T> serviceType) {
-        Object serviceInstance = services.get(serviceType);
+        CatrobatService serviceInstance = services.get(serviceType);
         if (serviceInstance != null) {
             return (T) serviceInstance;
         }
+		else {
+			serviceInstance = createCommonService(serviceType);
+			if (serviceInstance != null) {
+				return (T)serviceInstance;
+			}
+		}
 
         Log.w(TAG, "No Service '" + serviceType.getSimpleName()  + "' is registered!");
 
@@ -57,4 +65,24 @@ public class ServiceProvider {
             Log.w(TAG, "Unregister Service: Service '" + serviceType.getSimpleName()  + "' is not registered!");
         }
     }
+
+	private static CatrobatService createCommonService(Class<? extends CatrobatService> serviceType) {
+
+		CatrobatService service = null;
+
+		if (serviceType == CatrobatService.BLUETOOTH_DEVICE_CONNECTOR) {
+			service = new BTDeviceConnectorImpl();
+		}
+
+//		example for further common services
+//		if (serviceType == CatrobatService.STORAGE_HANDLER) {
+//			service = new StorageHandler();
+//		}
+
+		if (service != null) {
+			registerService(serviceType, service);
+		}
+
+		return service;
+	}
 }
