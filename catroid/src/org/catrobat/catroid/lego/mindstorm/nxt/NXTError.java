@@ -22,13 +22,14 @@
  */
 package org.catrobat.catroid.lego.mindstorm.nxt;
 
+import android.util.SparseArray;
+
 import org.catrobat.catroid.lego.mindstorm.MindstormReply;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class NXTError
+public final class NXTError
 {
+	private NXTError() {}
+
 	private static final String TAG = NXTError.class.getSimpleName();
 	public static void checkForError(MindstormReply reply, int expectedLength) {
 		if (reply.hasError()) {
@@ -55,11 +56,11 @@ public class NXTError
 		InvalidMailboxQueue(0xee), InvalidField(0xef), BadIO(0xf0), OutOfMemory(0xfb), BadArguments(0xff);
 
 		private final int errorCodeValue;
-		private static final Map<Integer, ErrorCode> lookup = new HashMap<Integer, ErrorCode>();
+		private static final SparseArray<ErrorCode> LOOKUP = new SparseArray<ErrorCode>();
 
 		static {
 			for (ErrorCode c : ErrorCode.values()) {
-				lookup.put(c.errorCodeValue, c);
+				LOOKUP.put(c.errorCodeValue, c);
 			}
 		}
 
@@ -72,7 +73,7 @@ public class NXTError
 		}
 
 		public static ErrorCode getTypeByValue(byte value) {
-			return lookup.get(value & 0xFF);
+			return LOOKUP.get(value & 0xFF);
 		}
 	}
 }

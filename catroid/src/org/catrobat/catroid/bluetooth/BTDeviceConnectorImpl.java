@@ -23,7 +23,6 @@
 package org.catrobat.catroid.bluetooth;
 
 import android.app.Activity;
-import android.app.Service;
 import android.content.Intent;
 
 import org.catrobat.catroid.common.ServiceProvider;

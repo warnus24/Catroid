@@ -25,13 +25,11 @@ package org.catrobat.catroid.bluetooth;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
-
-import java.util.HashMap;
-import java.util.Map;
+import android.util.SparseArray;
 
 public class EmptyActivity extends Activity {
 
-	private Map<Integer, Instrumentation.ActivityResult> activityResults = new HashMap<Integer, Instrumentation.ActivityResult>();
+	private SparseArray<Instrumentation.ActivityResult> activityResults = new SparseArray<Instrumentation.ActivityResult>();
 
 	public Instrumentation.ActivityResult getActivityResult(final int requestCode) {
 		return activityResults.get(requestCode);

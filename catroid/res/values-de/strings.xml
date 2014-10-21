@@ -69,8 +69,11 @@
 
     <!-- Settings activity -->
     <string name="preference_title">Einstellungen</string>
+
     <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorm Bausteine</string>
+    <!--<string name="preference_title_enable_mindstorms_sensors">Lego NXT Sensoren</string>-->
     <string name="preference_description_mindstorm_bricks">Erlaube Steuerung von Lego Mindstorm Robotern</string>
+
     <string name="preference_title_use_face_detection">Gesichtserkennung</string>
     <string name="preference_description_use_face_detection">Erlaube das Erkennen von Gesichtern</string>
     <string name="preference_title_select_camera">Auswahl der Kamera</string>
@@ -551,8 +554,14 @@
     <string name="nxt_motor_a">A</string>
     <string name="nxt_motor_b">B</string>
     <string name="nxt_motor_c">C</string>
-    <string name="nxt_motor_a_and_c">A+C</string>
+    <string name="nxt_motor_b_and_c">B+C</string>
     <string name="nxt_motor_all">Alle</string>
+
+    <string name="nxt_no_sensor">none</string>
+    <string name="nxt_sensor_touch">NXT Berührungssensor</string>
+    <string name="nxt_sensor_sound">NXT Geräuschsensor</string>
+    <string name="nxt_sensor_light">NXT Lichtsensor</string>
+    <string name="nxt_sensor_ultrasonic">NXT Ultraschallsensor</string>
     <!--  -->
     
     <!-- Drone Bricks -->

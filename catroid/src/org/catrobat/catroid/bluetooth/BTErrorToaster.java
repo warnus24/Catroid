@@ -28,7 +28,10 @@ import android.widget.Toast;
 
 import org.catrobat.catroid.R;
 
-public class BTErrorToaster {
+public final class BTErrorToaster {
+
+	private BTErrorToaster() {}
+
 	public static final String TAG = BTErrorToaster.class.getSimpleName();
 
 	public static void handle (BluetoothConnection.State state , Context context) {

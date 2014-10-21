@@ -33,8 +33,9 @@ public class NXTReply extends MindstormReply {
 
 	@Override
 	public boolean hasError() {
-		if (getStatusByte() == NO_ERROR)
+		if (getStatusByte() == NO_ERROR) {
 			return false;
+		}
 		return true;
 	}
 	@Override

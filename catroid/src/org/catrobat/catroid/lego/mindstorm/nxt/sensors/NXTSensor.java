@@ -25,11 +25,12 @@ package org.catrobat.catroid.lego.mindstorm.nxt.sensors;
 
 import android.util.Log;
 
-import org.catrobat.catroid.lego.mindstorm.Mindstorm;
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 import org.catrobat.catroid.lego.mindstorm.MindstormException;
 import org.catrobat.catroid.lego.mindstorm.MindstormSensor;
 import org.catrobat.catroid.lego.mindstorm.nxt.*;
+
+import java.util.Locale;
 
 public abstract class NXTSensor implements MindstormSensor {
 
@@ -70,17 +71,17 @@ public abstract class NXTSensor implements MindstormSensor {
 
 	protected int getScaledValue()
 	{
-		return getSensorReadings().Scaled;
+		return getSensorReadings().scaled;
 	}
 
 	protected int getRawValue()
 	{
-		return getSensorReadings().Raw;
+		return getSensorReadings().raw;
 	}
 
 	protected int getNormalizedValue()
 	{
-		return getSensorReadings().Normalized;
+		return getSensorReadings().normalized;
 	}
 
 	public SensorReadings getSensorReadings()
@@ -95,9 +96,9 @@ public abstract class NXTSensor implements MindstormSensor {
 		NXTReply reply = new NXTReply(connection.sendAndReceive(command));
 		NXTError.checkForError(reply, 16);
 
-		sensorReadings.Raw = reply.getShort(8);
-		sensorReadings.Normalized = reply.getShort(10);
-		sensorReadings.Scaled = reply.getShort(12);
+		sensorReadings.raw = reply.getShort(8);
+		sensorReadings.normalized = reply.getShort(10);
+		sensorReadings.scaled = reply.getShort(12);
 		return sensorReadings;
 	}
 
@@ -126,9 +127,9 @@ public abstract class NXTSensor implements MindstormSensor {
 	}
 
 	private static class SensorReadings {
-		public int Raw;
-		public int Normalized;
-		public int Scaled;
+		public int raw;
+		public int normalized;
+		public int scaled;
 	}
 
 	@Override
@@ -153,7 +154,7 @@ public abstract class NXTSensor implements MindstormSensor {
 
 	@Override
 	public String getName() {
-		return String.format("%s_%s_%d", TAG, sensorType.name(), port);
+		return String.format(Locale.getDefault(), "%s_%s_%d", TAG, sensorType.name(), port);
 	}
 
 	@Override

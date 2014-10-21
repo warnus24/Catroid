@@ -19,6 +19,8 @@
 *
 * You should have received a copy of the GNU Affero General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Code adapted from: http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ThreadPoolExecutor.html
 */
 package org.catrobat.catroid.lego.mindstorm.nxt.sensors;
 
@@ -40,7 +42,9 @@ public class PausableScheduledThreadPoolExecutor extends ScheduledThreadPoolExec
 		super.beforeExecute(t, r);
 		pauseLock.lock();
 		try {
-			while (isPaused) unpaused.await();
+			while (isPaused) {
+				unpaused.await();
+			}
 		} catch (InterruptedException ie) {
 			t.interrupt();
 		} finally {

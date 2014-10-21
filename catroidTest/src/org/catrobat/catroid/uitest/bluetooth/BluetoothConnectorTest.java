@@ -24,15 +24,11 @@ package org.catrobat.catroid.uitest.bluetooth;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.app.Service;
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.content.Intent;
 import android.widget.ListView;
 
 import org.catrobat.catroid.bluetooth.BTConnectDeviceActivity;
 import org.catrobat.catroid.bluetooth.BTDeviceConnector;
-import org.catrobat.catroid.bluetooth.BTDeviceConnectorImpl;
 import org.catrobat.catroid.bluetooth.BTDeviceFactory;
 import org.catrobat.catroid.bluetooth.BTDeviceService;
 import org.catrobat.catroid.bluetooth.BluetoothConnection;
@@ -57,15 +53,15 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 	// needed for testdevices
 	// Bluetooth server is running with a name that starts with 'kitty'
 	// e.g. kittyroid-0, kittyslave-0
-	//private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kitty";
-	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "ASUS";
+	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kitty";
+//	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "ASUS";
 
 	// needed for testdevices
 	// unavailable device is paired with a name that starts with 'SWEET'
 	// e.g. SWEETHEART
 
-	private static final String PAIRED_UNAVAILABLE_DEVICE_NAME = "SWEET";
-	private static final String PAIRED_UNAVAILABLE_DEVICE_MAC = "00:23:4D:F5:A6:18";
+//	private static final String PAIRED_UNAVAILABLE_DEVICE_NAME = "SWEET";
+//	private static final String PAIRED_UNAVAILABLE_DEVICE_MAC = "00:23:4D:F5:A6:18";
 
 	private static final UUID COMMON_BT_TEST_UUID = UUID.fromString("fd2835bb-9d80-41e0-9721-5372b90342da");
 
@@ -89,13 +85,13 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 	@Device
 	public void testBluetoothConnector() throws IOException {
 
-		final int REQUEST_CODE = 11;
+		final int requestCode = 11;
 
 		EmptyActivity emptyActivity = getActivity();
 		BTConnectDeviceActivity.setDeviceFactory(new BTDeviceTestFactory());
 
 		BTDeviceConnector connector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
-		connector.connectDevice(TEST_SERVICE, emptyActivity, REQUEST_CODE);
+		connector.connectDevice(TEST_SERVICE, emptyActivity, requestCode);
 
 		solo.waitForActivity(BTConnectDeviceActivity.class);
 		solo.sleep(2000);
@@ -114,12 +110,12 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 
 		solo.sleep(20000); //yes, has to be that long! waiting for auto connection timeout!
 
-		Instrumentation.ActivityResult result = getActivity().getActivityResult(REQUEST_CODE);
+		Instrumentation.ActivityResult result = getActivity().getActivityResult(requestCode);
 		assertEquals("Result should be OK", Activity.RESULT_OK, result.getResultCode());
 
 		BluetoothTestService service = ServiceProvider.getService(TEST_SERVICE);
 
-		assertNotNull(service);
+		assertNotNull("Service already registered, should not be null here.", service);
 		service.connect();
 
 		byte[] expectedMessage = new byte[] {1,2,3};

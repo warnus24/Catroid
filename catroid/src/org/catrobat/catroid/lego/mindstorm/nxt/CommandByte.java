@@ -22,8 +22,7 @@
  */
 package org.catrobat.catroid.lego.mindstorm.nxt;
 
-import java.util.HashMap;
-import java.util.Map;
+import android.util.SparseArray;
 
 public enum CommandByte {
 	PLAY_TONE(0x03),
@@ -36,11 +35,11 @@ public enum CommandByte {
 	LS_READ(0x10);
 
 	private int commandByteValue;
-	private static final Map<Integer, CommandByte> lookup = new HashMap<Integer, CommandByte>();
+	private static final SparseArray<CommandByte> LOOKUP = new SparseArray<CommandByte>();
 
 	static {
 		for (CommandByte c : CommandByte.values()) {
-			lookup.put(c.commandByteValue, c);
+			LOOKUP.put(c.commandByteValue, c);
 		}
 	}
 
@@ -53,11 +52,11 @@ public enum CommandByte {
 	}
 
 	public static boolean isMember(byte memberToTest) {
-		return lookup.containsKey(memberToTest & 0xFF);
+		return LOOKUP.get(memberToTest & 0xFF) != null;
 	}
 
 	public static CommandByte getTypeByValue(byte value) {
-		return lookup.get(value & 0xFF);
+		return LOOKUP.get(value & 0xFF);
 	}
 
 	/*OpenRead = 0x80, OpenWrite = 0x81,Read = 0x82, Write = 0x83,

@@ -23,7 +23,6 @@
 package org.catrobat.catroid.bluetooth;
 
 import org.catrobat.catroid.common.CatrobatService;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 import org.catrobat.catroid.stage.StageResourceInterface;
 
 import java.util.UUID;
