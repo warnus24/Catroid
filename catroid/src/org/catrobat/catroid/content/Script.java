@@ -38,6 +38,7 @@ import org.catrobat.catroid.content.bricks.UserBrick;
 import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrick;
 
 import java.io.Serializable;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -175,14 +176,7 @@ public abstract class Script implements Serializable {
 
 	public int getRequiredResources() {
 		int resources = Brick.NO_RESOURCES;
-	/*
-		for (Brick brick : brickList) {
-			if (brick instanceof UserBrick) {
-				resources |= brick.getRequiredResources();
-			}
-		}
-		return resources;
-		*/
+
 		for (Brick brick : brickList) {
 			resources |= brick.getRequiredResources();
 		}
@@ -263,4 +257,5 @@ public abstract class Script implements Serializable {
 		copiedLoopBeginBrick.setLoopEndBrick(copiedBrick);
 		copiedBrick.setLoopBeginBrick(copiedLoopBeginBrick);
 	}
+
 }
