@@ -28,7 +28,7 @@ import org.catrobat.catroid.bluetooth.BTDeviceConnectorImpl;
 
 import java.util.HashMap;
 
-public class ServiceProvider {
+public final class ServiceProvider {
 
     public static final String TAG = ServiceProvider.class.getSimpleName();
 

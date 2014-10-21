@@ -25,7 +25,9 @@ package org.catrobat.catroid.bluetoothtestserver;
 import org.catrobat.catroid.bluetoothtestserver.clienthandlers.CommonBluetoothTestClientHandler;
 import org.catrobat.catroid.bluetoothtestserver.clienthandlers.LegoNXTClientHandler;
 
-public class BluetoothClientHandlerFactory {
+public final class BluetoothClientHandlerFactory {
+
+	private BluetoothClientHandlerFactory() {}
 
 	public static BTClientHandler create(String uuid) {
        

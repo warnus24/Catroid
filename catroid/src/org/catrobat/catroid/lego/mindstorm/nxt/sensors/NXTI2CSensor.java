@@ -37,7 +37,7 @@ public abstract class NXTI2CSensor extends NXTSensor {
 
 	private byte address;
 	private int pendingCommunicationErrorWaitTime;
-	private final int I2CTimeOut = 500; //in MS
+	private final int requestTimeout = 500; //in MS
 
 	private static final byte BYTES_READ_BYTE = 3;
 
@@ -49,14 +49,12 @@ public abstract class NXTI2CSensor extends NXTSensor {
 		pendingCommunicationErrorWaitTime = 30;
 	}
 
-	public byte getI2CAddress()
-	{
+	public byte getI2CAddress() {
 		return address;
 	}
 
 	@Override
-	protected void initialize()
-	{
+	protected void initialize()	{
 		super.initialize();
 		readRegister(0x00, 0x01);
 	}
@@ -69,8 +67,7 @@ public abstract class NXTI2CSensor extends NXTSensor {
 		write(command, (byte)0, reply);
 	}
 
-	protected byte[] readRegister(int register, int rxLength)
-	{
+	protected byte[] readRegister(int register, int rxLength) {
 		if (!hasInit) {
 			initialize();
 		}
@@ -78,17 +75,16 @@ public abstract class NXTI2CSensor extends NXTSensor {
 		return writeAndRead(command, (byte) rxLength);
 	}
 
-	private void waitForBytes(byte numberOfBytes)
-	{
+	private void waitForBytes(byte numberOfBytes) {
 		Stopwatch stopWatch = new Stopwatch();
 		byte bytesRead = 0;
 		stopWatch.start();
 		do {
 			bytesRead = tryGetNumberOfBytesAreReadyToRead();
-		} while (bytesRead != numberOfBytes && stopWatch.getElapsedMilliseconds() < I2CTimeOut);
+		} while (bytesRead != numberOfBytes && stopWatch.getElapsedMilliseconds() < requestTimeout);
 
-		if (stopWatch.getElapsedMilliseconds() > I2CTimeOut) {
-			throw new NXTException("I2CTimeOut wail waiting on bytes Ready, waited " + stopWatch.getElapsedMilliseconds() + "ms");
+		if (stopWatch.getElapsedMilliseconds() > requestTimeout) {
+			throw new NXTException("RequestTimeout while waiting on bytes Ready, waited " + stopWatch.getElapsedMilliseconds() + "ms");
 		}
 	}
 
@@ -106,22 +102,20 @@ public abstract class NXTI2CSensor extends NXTSensor {
 		}
 	}
 
-	protected byte[] writeAndRead(byte[] data, byte rxLength)
-	{
+	protected byte[] writeAndRead(byte[] data, byte rxLength) {
 		write(data, rxLength, false);
 		waitForBytes(rxLength);
 		return read();
 	}
 
-	protected void write(byte[] txData, byte rxLength, boolean reply)
-	{
+	protected void write(byte[] txData, byte rxLength, boolean reply) {
 		Command command = new Command(CommandType.DIRECT_COMMAND, CommandByte.LS_WRITE, reply);
 		command.append((byte) port);
 		command.append((byte) txData.length);
 		command.append(rxLength);
 		command.append(txData);
 
-		if(reply){
+		if (reply) {
 			NXTReply brickReply = new NXTReply(connection.sendAndReceive(command));
 			NXTError.checkForError(brickReply, 5);
 		}
@@ -130,8 +124,7 @@ public abstract class NXTI2CSensor extends NXTSensor {
 		}
 	}
 
-	private byte[] read()
-	{
+	private byte[] read() {
 		Command command = new Command(CommandType.DIRECT_COMMAND, CommandByte.LS_READ, true);
 		command.append((byte) port);
 		NXTReply reply = new NXTReply(connection.sendAndReceive(command));
@@ -140,8 +133,7 @@ public abstract class NXTI2CSensor extends NXTSensor {
 		return reply.getData(4, size);
 	}
 
-	private byte getNumberOfBytesAreReadyToRead()
-	{
+	private byte getNumberOfBytesAreReadyToRead() {
 		Command command = new Command(CommandType.DIRECT_COMMAND, CommandByte.LS_GET_STATUS, true);
 		command.append((byte) port);
 		NXTReply reply = new NXTReply(connection.sendAndReceive(command));

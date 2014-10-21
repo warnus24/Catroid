@@ -37,20 +37,20 @@
         <item>@string/nxt_motor_b_and_c</item>
         <item>@string/nxt_motor_all</item>
     </string-array>
-    <string-array name="nxt_sensor_chooser">
-        <item>@string/nxt_no_sensor</item>
-        <item>@string/nxt_sensor_touch</item>
-        <item>@string/nxt_sensor_sound</item>
-        <item>@string/nxt_sensor_light</item>
-        <item>@string/nxt_sensor_ultrasonic</item>
-    </string-array>
-    <string-array name="setting_mindstorms_nxt_sensor">
-        <item>@string/nxt_no_sensor</item>
-        <item>@string/nxt_sensor_touch</item>
-        <item>@string/nxt_sensor_sound</item>
-        <item>@string/nxt_sensor_light</item>
-        <item>@string/nxt_sensor_ultrasonic</item>
-    </string-array>
+    <!--<string-array name="nxt_sensor_chooser">-->
+        <!--<item>@string/nxt_no_sensor</item>-->
+        <!--<item>@string/nxt_sensor_touch</item>-->
+        <!--<item>@string/nxt_sensor_sound</item>-->
+        <!--<item>@string/nxt_sensor_light</item>-->
+        <!--<item>@string/nxt_sensor_ultrasonic</item>-->
+    <!--</string-array>-->
+    <!--<string-array name="setting_mindstorms_nxt_sensor">-->
+        <!--<item>@string/nxt_no_sensor</item>-->
+        <!--<item>@string/nxt_sensor_touch</item>-->
+        <!--<item>@string/nxt_sensor_sound</item>-->
+        <!--<item>@string/nxt_sensor_light</item>-->
+        <!--<item>@string/nxt_sensor_ultrasonic</item>-->
+    <!--</string-array>-->
 
     <!-- User Brick UI Data Editor Fragment -->
     <string-array name="data_editor_buttons" >

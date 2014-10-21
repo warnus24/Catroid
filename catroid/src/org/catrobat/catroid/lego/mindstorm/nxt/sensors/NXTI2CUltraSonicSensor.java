@@ -24,6 +24,8 @@ package org.catrobat.catroid.lego.mindstorm.nxt.sensors;
 
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 
+import java.util.Locale;
+
 public class NXTI2CUltraSonicSensor extends NXTI2CSensor {
 	private static final byte ULTRASONIC_ADDRESS = 0x02;
 	private DistanceUnit distanceUnit;
@@ -89,17 +91,18 @@ public class NXTI2CUltraSonicSensor extends NXTI2CSensor {
 		setMode(UltrasonicCommand.SingleShot, reply);
 	}
 
-	public void TurnOffSonar() {
+	public void turnOffSonar() {
 		setMode(UltrasonicCommand.Off, false);
 	}
 
-	public void Continuous() {
+	public void continuous() {
 		setMode(UltrasonicCommand.Continuous, false);
 	}
 
-	public boolean IsSensorOff() {
-		if (getMode() == UltrasonicCommand.Off)
+	public boolean isSensorOff() {
+		if (getMode() == UltrasonicCommand.Off) {
 			return true;
+		}
 		return false;
 	}
 
@@ -153,6 +156,6 @@ public class NXTI2CUltraSonicSensor extends NXTI2CSensor {
 
 	@Override
 	public String getName() {
-		return String.format("%s_%s_%d", TAG, "ULTRASONIC", port);
+		return String.format(Locale.getDefault(), "%s_%s_%d", TAG, "ULTRASONIC", port);
 	}
 }

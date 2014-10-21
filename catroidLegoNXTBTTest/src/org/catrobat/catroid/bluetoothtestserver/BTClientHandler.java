@@ -22,6 +22,7 @@
  */
 package org.catrobat.catroid.bluetoothtestserver;
 
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +48,7 @@ public abstract class BTClientHandler extends Thread
             handledClient = tryHandleClient();
         }
         catch (IOException ioException) {
-        	ioException.printStackTrace();
+        	Log.e(TAG, "IO Exception", ioException);
         }
 
         BTServer.writeMessage("Client " + handledClient + " disconnected!\n");

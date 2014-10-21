@@ -35,7 +35,7 @@ public class NXTMotor implements MindstormMotor {
 	private int port;
 	private MindstormConnection connection;
 
-	NXTMotor(int port, MindstormConnection connection) {
+	public NXTMotor(int port, MindstormConnection connection) {
 		this.port = port;
 		this.connection = connection;
 	}
@@ -43,7 +43,7 @@ public class NXTMotor implements MindstormMotor {
 	@Override
 	public void stop() {
 		OutputState state = new OutputState();
-		state.speed = 0;
+		state.setSpeed(0);
 		state.mode = MotorMode.BREAK | MotorMode.ON | MotorMode.REGULATED;
 		state.regulation = MotorRegulation.SPEED;
 		state.turnRatio = 100;
@@ -61,22 +61,11 @@ public class NXTMotor implements MindstormMotor {
 	}
 
 	private void trySetOutputState(OutputState state, boolean reply) {
-		if(state.speed > 100){
-			state.speed = 100;
-		}
-		if(state.speed < -100){
-			state.speed = -100;
-		}
-		if(state.turnRatio > 100){
-			state.turnRatio = 100;
-		}
-		if(state.turnRatio < -100){
-			state.turnRatio = 100;
-		}
+
 
 		Command command = new Command(CommandType.DIRECT_COMMAND, CommandByte.SET_OUTPUT_STATE, false);
 		command.append((byte)port);
-		command.append(state.speed);
+		command.append(state.getSpeed());
 		command.append(state.mode);
 		command.append(state.regulation.getByte());
 		command.append(state.turnRatio);
@@ -100,7 +89,7 @@ public class NXTMotor implements MindstormMotor {
 	@Override
 	public void move(int speed, int degrees, boolean reply) {
 		OutputState state = new OutputState();
-		state.speed = (byte)speed;
+		state.setSpeed(speed);
 		state.mode = MotorMode.BREAK | MotorMode.ON | MotorMode.REGULATED;
 		state.regulation =  MotorRegulation.SPEED;
 		state.turnRatio = 100;
@@ -111,7 +100,7 @@ public class NXTMotor implements MindstormMotor {
 
 	private static class OutputState {
 
-		public byte speed;
+		private byte speed;
 
 		public byte mode;
 
@@ -122,6 +111,29 @@ public class NXTMotor implements MindstormMotor {
 		public MotorRunState runState;
 
 		public int tachoLimit; //Current limit on a movement in progress, if any
+
+		public void setSpeed(int speed) {
+			if (speed > 100) {
+				this.speed = (byte)100;
+			}
+			else if (speed < -100) {
+				this.speed = (byte)-100;
+			}
+			else if (turnRatio > 100) {
+				turnRatio = (byte)100;
+			}
+			else if (turnRatio < -100) {
+				this.turnRatio = (byte)100;
+			}
+			else {
+				this.speed = (byte)speed;
+			}
+
+		}
+
+		public byte getSpeed() {
+			return this.speed;
+		}
 
 //		public int tachoCount; //Internal count. Number of counts since last reset of motor
 //
@@ -145,7 +157,7 @@ public class NXTMotor implements MindstormMotor {
 			this.motorRegulationValue = motorRegulationValue;
 		}
 
-		private byte getByte() {
+		public byte getByte() {
 			return (byte)motorRegulationValue;
 		}
 	}
@@ -158,7 +170,7 @@ public class NXTMotor implements MindstormMotor {
 			this.motorRunStateValue = motorRunStateValue;
 		}
 
-		private byte getByte() {
+		public byte getByte() {
 			return (byte)motorRunStateValue;
 		}
 	}

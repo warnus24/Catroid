@@ -22,7 +22,7 @@
  */
 package org.catrobat.catroid.bluetoothtestserver;
 
-//import android.util.Log;
+import android.util.Log;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -63,7 +63,7 @@ public final class BTServer {
 				out.write(arg);
 				out.flush();
 			} catch (Exception localException) {
-				// Log.e(TAG, "Exception in writeMessage!", localException);
+				Log.e(TAG, "Exception in writeMessage!", localException);
 			}
 		} else {
 			GUI.writeMessage(arg);
@@ -87,8 +87,7 @@ public final class BTServer {
 			btServer.startServer();
 			
 		} catch (IOException ioException) {
-			ioException.printStackTrace();
-			// Log.e(TAG, "IOexception!", ioException);
+			Log.e(TAG, "IOexception!", ioException);
 		}
 
 	}
@@ -127,7 +126,7 @@ public final class BTServer {
 			try {
 				tryHandleInputConnection();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.e(TAG, "IOException", e);
 			}
 		}
 		
