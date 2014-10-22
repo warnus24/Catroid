@@ -123,7 +123,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 					}
 				}
 			}
-			throw new LoadingProjectException(context.getString(R.string.error_load_project));
+			throw new LoadingProjectException(context.getString(R.string.error_load_project) + " Program name: " + projectName);
 		} else if (project.getCatrobatLanguageVersion() > Constants.CURRENT_CATROBAT_LANGUAGE_VERSION) {
 			project = oldProject;
 			throw new OutdatedVersionProjectException(context.getString(R.string.error_outdated_pocketcode_version));
