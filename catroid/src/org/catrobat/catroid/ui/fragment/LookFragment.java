@@ -397,13 +397,17 @@ public class LookFragment extends ScriptActivityFragment implements OnLookEditLi
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		//HIER!
+		Log.d("Robotium", "ASDF1 ");
 		super.onActivityResult(requestCode, resultCode, data);
 
 		lastRecivedIntent = data;
 		if (resultCode == Activity.RESULT_OK) {
 			switch (requestCode) {
 				case LookController.REQUEST_SELECT_OR_DRAW_IMAGE:
+					Log.d("Robotium", "REQUEST_SELECT_OR_DRAW_IMAGE1");
 					if (data != null) {
+						Log.d("Robotium", "REQUEST_SELECT_OR_DRAW_IMAGE2");
 						LookController.getInstance().loadImageIntoCatroid(data, getActivity(), lookDataList, this);
 					}
 					break;

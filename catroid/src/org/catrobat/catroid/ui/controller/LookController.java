@@ -75,6 +75,10 @@ public final class LookController {
 	public static final String LOADER_ARGUMENTS_IMAGE_URI = "image_uri";
 	public static final String SHARED_PREFERENCE_NAME = "showDetailsLooks";
 
+	public static ArrayList<LookData> DataListForSetLookBrickTest;
+	public static LookFragment lf;
+	public static String path;
+
 	private static final String TAG = LookController.class.getSimpleName();
 	private static final LookController INSTANCE = new LookController();
 
@@ -289,9 +293,20 @@ public final class LookController {
 		String originalImagePath = "";
 
 		//get path of image - will work for most applications
+		Log.d("Robotium", "REQUEST_SELECT_OR_DRAW_IMAGE3");
 		Bundle bundle = intent.getExtras();
 		if (bundle != null) {
 			originalImagePath = bundle.getString(Constants.EXTRA_PICTURE_PATH_POCKET_PAINT);
+			Log.d("Robotium", "REQUEST_SELECT_OR_DRAW_IMAGE4" + originalImagePath);
+		} //else {
+
+		Uri imageUri = intent.getData();
+		if (imageUri != null) {
+			//TEST!
+			// BESSERE LÖSUNG SUCHEN!!!!!
+			//originalImagePath = this.path;
+			originalImagePath = imageUri.getPath();
+			Log.d("Robotium", "REQUEST_SELECT_OR_DRAW_IMAGE5" + originalImagePath);
 		}
 
 		if (originalImagePath == null || originalImagePath.equals("")) {

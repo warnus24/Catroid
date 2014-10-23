@@ -22,8 +22,11 @@
  */
 package org.catrobat.catroid.uitest.content.brick;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -42,6 +45,7 @@ import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.controller.LookController;
 import org.catrobat.catroid.ui.fragment.LookFragment;
 import org.catrobat.catroid.uitest.annotation.Device;
+import org.catrobat.catroid.uitest.mockups.MockGalleryActivity;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
@@ -58,6 +62,8 @@ public class SetLookBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 	private File lookFile2;
 	private ArrayList<LookData> lookDataList;
 	private String testFile = "testFile";
+
+	private LookFragment lookFragment;
 
 	private File paintroidImageFile;
 
@@ -185,28 +191,42 @@ public class SetLookBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 
 	@Device
 	public void testAddNewLook() {
-		String newText = solo.getString(R.string.new_broadcast_message);
-
 		Bundle bundleForGallery = new Bundle();
 		bundleForGallery.putString("filePath", paintroidImageFile.getAbsolutePath());
 		Intent intent = new Intent(getInstrumentation().getContext(),
 				org.catrobat.catroid.uitest.mockups.MockGalleryActivity.class);
 		intent.putExtras(bundleForGallery);
 
-		UiTestUtils.switchToFragmentInScriptActivity(solo, UiTestUtils.LOOKS_INDEX);
-		UiTestUtils.switchToFragmentInScriptActivity(solo, UiTestUtils.SCRIPTS_INDEX);
+		//assertTrue("Testfile don't exist!", paintroidImageFile.exists());
+		//UiTestUtils.switchToFragmentInScriptActivity(solo, UiTestUtils.LOOKS_INDEX);
+		//UiTestUtils.switchToFragmentInScriptActivity(solo, UiTestUtils.SCRIPTS_INDEX);
 
 		solo.clickOnText(lookName);
+		String newText = solo.getString(R.string.new_broadcast_message);
 		solo.clickOnText(newText);
 
 		ScriptActivity currentActivity = (ScriptActivity) solo.getCurrentActivity();
 		solo.sleep(200);
-		LookFragment lookFragment = (LookFragment) currentActivity.getFragment(ScriptActivity.FRAGMENT_LOOKS);
+		lookFragment = (LookFragment) currentActivity.getFragment(ScriptActivity.FRAGMENT_LOOKS);
+		//LookController.getInstance().DataListForSetLookBrickTest = lookDataList;
+		//LookController.getInstance().lf = lookFragment;
+		LookController.getInstance().path = paintroidImageFile.getAbsolutePath();
+
 		lookFragment.startActivityForResult(intent, LookController.REQUEST_SELECT_OR_DRAW_IMAGE);
+		//lookDataList = LookController.getInstance().DataListForSetLookBrickTest;
+		//lookFragment = LookController.getInstance().lf;
+
 
 		solo.sleep(200);
 		solo.waitForActivity(ScriptActivity.class.getSimpleName());
 		solo.goBack();
+		solo.sleep(200);
+
+		//for(int i = 0; i < 100; i++) {
+		//	TextView textView = solo.getText(i);
+		//	Log.d("Robotium", "AAAAtext: " + textView.getText().toString());
+		//}
+
 		assertTrue("Testfile not added from mockActivity", solo.searchText(testFile));
 
 		solo.waitForFragmentByTag(LookFragment.TAG);
@@ -216,6 +236,20 @@ public class SetLookBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 		String programMenuActivityClass = ProgramMenuActivity.class.getSimpleName();
 		assertTrue("Should be in " + programMenuActivityClass, solo.getCurrentActivity().getClass().getSimpleName()
 				.equals(programMenuActivityClass));
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d("Robotium", "ASDF2 ");
+
+		if (resultCode == Activity.RESULT_OK) {
+			switch (requestCode) {
+				case LookController.REQUEST_SELECT_OR_DRAW_IMAGE:
+					if (data != null) {
+						LookController.getInstance().loadImageIntoCatroid(data, getActivity(), lookDataList, lookFragment);
+					}
+					break;
+			}
+		}
 	}
 
 	public void selectLook(String newLook, String oldName, String lookImagePath) {

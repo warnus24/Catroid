@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 /**
  * A mock gallery activity that simply returns an image file from the drawable resources.
@@ -51,6 +52,7 @@ public class MockGalleryActivity extends Activity {
 		} else {
 			resultIntent = new Intent();
 			resultIntent.setData(imageUri);
+
 		}
 
 		setResult(RESULT_OK, resultIntent);
