@@ -104,9 +104,9 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_ON_VALUE);
 		solo.sleep(WLAN_DELAY_MS);
 
-		Log.d(TAG, "sleep four seconds. the phone should have stopped vibrating");
+		Log.d(TAG, "sleep six seconds. the phone should have stopped vibrating");
 
-		solo.sleep(4000);
+		solo.sleep(6000);
 		Log.d(TAG, "checking vibration sensor value");
 		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE);
 		solo.sleep(WLAN_DELAY_MS);
@@ -143,8 +143,8 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 		Script startScript = new StartScript();
 		Script tappedScript = new WhenScript();
 
-		vibrationBrick5Seconds = new VibrationBrick(5000);
-		vibrationBrick15Seconds = new VibrationBrick(15000);
+		vibrationBrick5Seconds = new VibrationBrick(5);
+		vibrationBrick15Seconds = new VibrationBrick(15);
 
 		sprite.addScript(startScript);
 		startScript.addBrick(vibrationBrick5Seconds);
