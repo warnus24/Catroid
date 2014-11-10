@@ -53,7 +53,12 @@
             android:padding="1.5dp"
             android:scaleType="centerCrop" />
 
-        <include layout="@layout/activity_my_projects_title_details_view" />
+        <include layout="@layout/activity_my_projects_title_details_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/my_projects_activity_project_image"
+            android:layout_toLeftOf="@+id/arrow_right"/>
 
         <ImageView
             android:id="@+id/arrow_right"

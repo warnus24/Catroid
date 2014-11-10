@@ -412,6 +412,11 @@ public class PreStageActivity extends BaseActivity {
 			text = "";
 		}
 
+		if ((null == onUtteranceCompletedListenerContainer) || (null == textToSpeech)) {
+			Log.e(TAG, "text to speech not initialized!!!");
+			return;
+		}
+
 		if (onUtteranceCompletedListenerContainer.addOnUtteranceCompletedListener(speechFile, listener,
 				speakParameter.get(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID))) {
 			int status = textToSpeech.synthesizeToFile(text, speakParameter, speechFile.getAbsolutePath());

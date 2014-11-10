@@ -22,56 +22,70 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/project_activity_sprite_description"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerVertical="true"
-    android:layout_toRightOf="@+id/sprite_img" >
+    android:layout_centerVertical="true" >
 
     <TextView
         android:id="@+id/project_activity_sprite_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        style="@style/ListViewItemTitleText" />
+        style="@style/ListViewItemTitleText"
+        tools:text="Title" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/project_activity_sprite_details"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/project_activity_sprite_title">
+        android:layout_marginLeft="12.5dp"
+        android:dividerPadding="12dp"
+        android:layout_below="@id/project_activity_sprite_title"
+        android:baselineAligned="false">
 
-        <TextView
-            android:id="@+id/textView_number_of_scripts"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="12.5dp" 
-            style="@style/ListViewItemDetailsText"/>
+            android:layout_weight="0.55">
 
-        <TextView
-            android:id="@+id/textView_number_of_looks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textView_number_of_scripts"
-            android:paddingLeft="12.5dp" 
-            style="@style/ListViewItemDetailsText"/>
+            <TextView
+                android:id="@+id/textView_number_of_scripts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Scripts: 42"
+                style="@style/ListViewItemDetailsText"/>
 
-        <TextView
-            android:id="@+id/textView_number_of_bricks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/textView_number_of_scripts"
-            android:paddingLeft="39dp" 
-            style="@style/ListViewItemDetailsText"/>
+            <TextView
+                android:id="@+id/textView_number_of_looks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView_number_of_scripts"
+                tools:text="Looks: 42"
+                style="@style/ListViewItemDetailsText"/>
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/textView_number_of_sounds"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textView_number_of_bricks"
-            android:layout_toRightOf="@id/textView_number_of_scripts"
-            android:paddingLeft="39dp" 
-            style="@style/ListViewItemDetailsText"/>
-    </RelativeLayout>
+            android:layout_weight="0.45">
+
+            <TextView
+                android:id="@+id/textView_number_of_bricks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Bricks: 42"
+                style="@style/ListViewItemDetailsText"/>
+
+            <TextView
+                android:id="@+id/textView_number_of_sounds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView_number_of_bricks"
+                tools:text="Sounds: 42"
+                style="@style/ListViewItemDetailsText"/>
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

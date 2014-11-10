@@ -5,8 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
+        classpath 'com.android.tools.build:gradle:0.14.2'
     }
 }
 
@@ -14,7 +13,6 @@ repositories {
     mavenCentral()
 }
 
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 //apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
@@ -137,8 +135,12 @@ android {
         // all general ignores should be added in this place
         // CommitPrefEdits should be reviewed, if using apply instead of commit is working with our tests
         // OldTargetApi should be reviewed - consider updating target API to 20
+        // missing drawables (IconDensities) should be added ASAP
         ignore 'ContentDescription', 'InvalidPackage', 'ValidFragment', 'GradleDependency',
-                'ClickableViewAccessibility', 'UnusedAttribute', 'CommitPrefEdits', 'OldTargetApi'
+                'ClickableViewAccessibility', 'UnusedAttribute', 'CommitPrefEdits', 'OldTargetApi', 'IconDensities'
+
+        // issues according to RTL support
+        ignore 'RtlSymmetry', 'RtlHardcoded'
 
         textReport true
         xmlReport true
