@@ -176,7 +176,7 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 			case NXT_SENSOR_4:
 				LegoNXT nxtService = ServiceProvider.getService(CatrobatService.LEGO_NXT);
 				if (nxtService != null) {
-					nxtService.getSensorValue(sensor);
+					return Double.valueOf(nxtService.getSensorValue(sensor));
 				}
 		}
 		return 0d;
