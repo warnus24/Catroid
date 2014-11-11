@@ -337,7 +337,7 @@
     <string name="nxt_play_tone" >тон проигрывания NXT</string >
     <string name="tone_duration" >Продолжительность</string >
     <string name="nxt_tone_frequency" >Частота</string >
-    <string name="nxt_tone_hundred_hz" >x100Hz</string >
+    <string name="nxt_tone_hundred_hz" >x 100Hz</string >
     <!-- <string name="nxt_turn_degrees">градусов</string> -->
     <string name="minus_symbol" >-</string >
     <string name="plus_symbol" >+</string >

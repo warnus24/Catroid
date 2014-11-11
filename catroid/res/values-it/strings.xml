@@ -386,12 +386,12 @@
   <string name="nxt_play_tone">Suona tono NXT</string>
   <string name="tone_duration">Durata</string>
   <string name="nxt_tone_frequency">Frequenza</string>
-  <string name="nxt_tone_hundred_hz">x100Hz</string>
+  <string name="nxt_tone_hundred_hz">x 100Hz</string>
   <string name="seconds">secondi</string>
   <string name="nxt_motor_a">A</string>
   <string name="nxt_motor_b">B</string>
   <string name="nxt_motor_c">C</string>
-  <string name="nxt_motor_b_and_c">B+C</string>
+  <string name="nxt_motor_b_and_c">B + C</string>
   <string name="nxt_motor_all">Tutti</string>
   <string name="brick_drone_takeoff">decolla</string>
   <string name="brick_drone_land">atterra</string>
