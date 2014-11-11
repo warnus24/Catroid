@@ -531,13 +531,13 @@
     <string name="button_scan">Suche Bluetooth Geräte</string>
     <string name="select_device">Wähle dein Lego Mindstorms NXT</string>
     <string name="scanning">Suche</string>
-    <string name="connecting_please_wait">Verbinde zum Lego NXT.\nBitte warten…</string>
+    <!--<string name="connecting_please_wait">Verbinde zum Lego NXT.\nBitte warten…</string>-->
     <!-- <string name="pairing_message">Verbinde nach dem Pairing.</string> -->
-    <string name="problem_at_closing">Problem beim Schließen der Verbindung!</string>
+    <!--<string name="problem_at_closing">Problem beim Schließen der Verbindung!</string>-->
     <string name="bt_connection_failed">Verbindung zum Gerät fehlgeschlagen!</string>
-    <string name="no_paired_nxt">Kein verbundenes NXT gefunden</string>
+    <!--<string name="no_paired_nxt">Kein verbundenes NXT gefunden</string>-->
     <string name="none_found">Keine nicht verbundenen Geräte gefunden</string>
-    <string name="none_paired">Keine verbundenen Geräte gefunden</string>
+    <!--<string name="none_paired">Keine verbundenen Geräte gefunden</string>-->
     <!--  -->
 
     <!-- Lego Mindstorms Strings -->
