@@ -303,13 +303,13 @@
     <string name="nxt_play_tone" >"NXT tocar som"</string >
     <string name="tone_duration" >"Duração"</string >
     <string name="nxt_tone_frequency" >"Frequência"</string >
-    <string name="nxt_tone_hundred_hz" >"x100Hz"</string >
+    <string name="nxt_tone_hundred_hz" >"x 100Hz"</string >
     <string name="number_to_small" >"Valor muito pequeno!"</string >
     <string name="number_to_big" >"Valor muito grande!"</string >
     <string name="nxt_motor_a" >A</string >
     <string name="nxt_motor_b" >B</string >
     <string name="nxt_motor_c" >C</string >
-    <string name="nxt_motor_b_and_c" >B+C</string >
+    <string name="nxt_motor_b_and_c" >B + C</string >
     <string name="nxt_motor_all" >"Todos"</string >
     <!--  -->
 
