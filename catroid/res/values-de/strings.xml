@@ -70,9 +70,9 @@
     <!-- Settings activity -->
     <string name="preference_title">Einstellungen</string>
 
-    <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorm Bausteine</string>
-    <!--<string name="preference_title_enable_mindstorms_sensors">Lego NXT Sensoren</string>-->
-    <string name="preference_description_mindstorm_bricks">Erlaube Steuerung von Lego Mindstorm Robotern</string>
+    <string name="preference_title_enable_mindstorms_bricks">Lego Mindstorm Bausteine</string>
+    <string name="preference_title_mindstorms_sensors">Lego NXT Sensoren</string>
+    <string name="preference_description_mindstorms_bricks">Erlaube Steuerung von Lego Mindstorm Robotern</string>
 
     <string name="preference_title_use_face_detection">Gesichtserkennung</string>
     <string name="preference_description_use_face_detection">Erlaube das Erkennen von Gesichtern</string>
@@ -650,6 +650,10 @@
     <string name="formula_editor_sensor_face_size">Gesichtsgröße</string>
     <string name="formula_editor_sensor_face_x_position">Gesichtsposition_x</string>
     <string name="formula_editor_sensor_face_y_position">Gesichtsposition_y</string>
+    <string name="formula_editor_sensor_lego_nxt_1">NXT_Sensor_1</string>
+    <string name="formula_editor_sensor_lego_nxt_2">NXT_Sensor_2</string>
+    <string name="formula_editor_sensor_lego_nxt_3">NXT_Sensor_3</string>
+    <string name="formula_editor_sensor_lego_nxt_4">NXT_Sensor_4</string>
     <string name="formula_editor_object_x">Position_x</string>
     <string name="formula_editor_object_y">Position_y</string>
     <string name="formula_editor_object_ghosteffect">Transparenz</string>

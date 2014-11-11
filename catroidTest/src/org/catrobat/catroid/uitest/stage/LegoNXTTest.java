@@ -42,8 +42,6 @@ import org.catrobat.catroid.content.bricks.LegoNxtPlayToneBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.io.StorageHandler;
-import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
-import org.catrobat.catroid.legonxt.LegoNXTCommunicator;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProgramMenuActivity;
@@ -281,13 +279,13 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 		SetLookBrick setLookBrick = new SetLookBrick();
 
 		LegoNxtMotorActionBrick legoMotorActionBrick = new LegoNxtMotorActionBrick(
-				LegoNxtMotorActionBrick.Motor.MOTOR_A_C, 100);
+				LegoNxtMotorActionBrick.Motor.MOTOR_B_C, 100);
 		commands.add(new int[] { MOTOR_ACTION, 0, 100 }); //motor = 3 means brick will move motors A and C.
 		commands.add(new int[] { MOTOR_ACTION, 2, 100 });
 		WaitBrick firstWaitBrick = new WaitBrick(500);
 
 		LegoNxtMotorStopBrick legoMotorStopBrick = new LegoNxtMotorStopBrick(
-				LegoNxtMotorStopBrick.Motor.MOTOR_A_C);
+				LegoNxtMotorStopBrick.Motor.MOTOR_B_C);
 		commands.add(new int[] { MOTOR_STOP, 0 });
 		commands.add(new int[] { MOTOR_STOP, 2 });
 		WaitBrick secondWaitBrick = new WaitBrick(500);

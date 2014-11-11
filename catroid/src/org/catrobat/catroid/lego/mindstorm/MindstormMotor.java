@@ -25,6 +25,7 @@ package org.catrobat.catroid.lego.mindstorm;
 public interface MindstormMotor {
 
 	public void stop();
+	public void move(int speed);
 	public void move(int speed, int degrees);
 	public void move(int speed, int degrees, boolean reply);
 }

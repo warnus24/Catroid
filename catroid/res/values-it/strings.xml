@@ -58,8 +58,8 @@
   <string name="main_menu_web_dialog_message">Attualmente i browser alternativi come Firefox o Dolphin non sono supportati</string>
   <string name="main_menu_web_dialog_dont_show">Non mostrare nuovamente</string>
   <string name="preference_title">Impostazioni</string>
-  <string name="preference_title_enable_mindstorm_bricks">Mattoncini Lego Mindstorms</string>
-  <string name="preference_description_mindstorm_bricks">Permettono di controllare i robot Lego Mindstorms</string>
+  <string name="preference_title_enable_mindstorms_bricks">Mattoncini Lego Mindstorms</string>
+  <string name="preference_description_mindstorms_bricks">Permettono di controllare i robot Lego Mindstorms</string>
   <string name="preference_title_enable_quadcopter_bricks">Mattoncini per ARDrone 2.0</string>
   <string name="preference_description_quadcopter_bricks">Permettono di controllare i quadricotteri ARDrone 2.0</string>
   <string name="dialog_new_object_pocketpaint">Disegna Immagine</string>

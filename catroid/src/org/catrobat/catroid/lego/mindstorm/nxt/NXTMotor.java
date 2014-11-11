@@ -82,6 +82,11 @@ public class NXTMotor implements MindstormMotor {
 	}
 
 	@Override
+	public void move(int speed) {
+		move(speed, 0, false);
+	}
+
+	@Override
 	public void move(int speed, int degrees) {
 		move(speed, degrees, false);
 	}

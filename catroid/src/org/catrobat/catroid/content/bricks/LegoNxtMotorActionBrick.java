@@ -59,7 +59,7 @@ public class LegoNxtMotorActionBrick extends FormulaBrick implements OnClickList
 	private transient TextView editSpeed;
 
 	public static enum Motor {
-		MOTOR_A, MOTOR_B, MOTOR_C, MOTOR_A_C
+		MOTOR_A, MOTOR_B, MOTOR_C, MOTOR_B_C
 	}
 
 	public LegoNxtMotorActionBrick() {

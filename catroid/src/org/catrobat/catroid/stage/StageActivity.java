@@ -32,7 +32,9 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.ScreenValues;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.io.StageAudioFocus;
@@ -76,6 +78,8 @@ public class StageActivity extends AndroidApplication {
 			}
 		}
 
+		ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR).initialise();
+
 		stageAudioFocus = new StageAudioFocus(this);
 	}
 
@@ -104,6 +108,8 @@ public class StageActivity extends AndroidApplication {
 		if (droneConnection != null) {
 			droneConnection.pause();
 		}
+
+		ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR).pause();
 	}
 
 	@Override
@@ -118,6 +124,8 @@ public class StageActivity extends AndroidApplication {
 		if (droneConnection != null) {
 			droneConnection.start();
 		}
+
+		ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR).start();
 	}
 
 	public void pause() {
@@ -186,6 +194,9 @@ public class StageActivity extends AndroidApplication {
 		if (droneConnection != null) {
 			droneConnection.destroy();
 		}
+
+		ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR).destroy();
+
 		Log.d(TAG, "Destroy");
 		LedUtil.destroy();
 		VibratorUtil.destroy();
