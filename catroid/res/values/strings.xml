@@ -74,9 +74,9 @@
 	<string name="preference_title_enable_quadcopter_bricks">ARDrone 2.0 bricks</string>
     <string name="preference_description_quadcopter_bricks">Allow to control the ARDrone 2.0 quadcopter</string>
 
-    <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorm Bricks</string>
-    <!--<string name="preference_title_enable_mindstorms_sensors">Lego NXT sensors</string>-->
-    <string name="preference_description_mindstorm_bricks">Allow to control Lego Mindstorms NXT robots</string>
+    <string name="preference_title_enable_mindstorms_bricks">Enable Lego Mindstorm Bricks</string>
+    <string name="preference_title_mindstorms_sensors">Lego NXT sensors</string>
+    <string name="preference_description_mindstorms_bricks">Allow to control Lego Mindstorms NXT robots</string>
     <!--  -->
 
 
@@ -558,10 +558,10 @@
     <string name="nxt_motor_b_and_c">NXT motors B+C</string>
     <string name="nxt_motor_all">All</string>
 
-    <!--<string name="nxt_choose_sensor_1">Sensor connected on port 1</string>
+    <string name="nxt_choose_sensor_1">Sensor connected on port 1</string>
     <string name="nxt_choose_sensor_2">Sensor connected on port 2</string>
     <string name="nxt_choose_sensor_3">Sensor connected on port 3</string>
-    <string name="nxt_choose_sensor_4">Sensor connected on port 4</string>-->
+    <string name="nxt_choose_sensor_4">Sensor connected on port 4</string>
 
     <string name="nxt_no_sensor">none</string>
     <string name="nxt_sensor_touch">NXT touch sensor</string>
@@ -661,10 +661,10 @@
     <string name="formula_editor_sensor_face_size">face_size</string>
     <string name="formula_editor_sensor_face_x_position">face_x_position</string>
     <string name="formula_editor_sensor_face_y_position">face_y_position</string>
-    <!--<string name="formula_editor_sensor_lego_nxt_1">NXT_sensor_1</string>
+    <string name="formula_editor_sensor_lego_nxt_1">NXT_sensor_1</string>
     <string name="formula_editor_sensor_lego_nxt_2">NXT_sensor_2</string>
     <string name="formula_editor_sensor_lego_nxt_3">NXT_sensor_3</string>
-    <string name="formula_editor_sensor_lego_nxt_4">NXT_sensor_4</string>-->
+    <string name="formula_editor_sensor_lego_nxt_4">NXT_sensor_4</string>
     <string name="formula_editor_object_x">position_x</string>
     <string name="formula_editor_object_y">position_y</string>
     <string name="formula_editor_object_ghosteffect">transparency</string>

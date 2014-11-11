@@ -72,8 +72,8 @@ public abstract class Script implements Serializable {
 				copiedBrick = precopiedRootBrick;
 			}
 			else if (brick instanceof UserScriptDefinitionBrick) {
-					UserScriptDefinitionBrick preCopiedDefinitionBrick = findBrickWithId(preCopiedUserBricks,((UserScriptDefinitionBrick) brick).getUserBrickId()).getDefinitionBrick();
-					cloneScript.addBrick(preCopiedDefinitionBrick);
+				UserScriptDefinitionBrick preCopiedDefinitionBrick = findBrickWithId(preCopiedUserBricks,((UserScriptDefinitionBrick) brick).getUserBrickId()).getDefinitionBrick();
+				cloneScript.addBrick(preCopiedDefinitionBrick);
 			}
 			else {
 				copiedBrick = brick.copyBrickForSprite(copySprite);
@@ -177,7 +177,7 @@ public abstract class Script implements Serializable {
 
 		for (Brick brick : brickList) {
 			resources |= brick.getRequiredResources();
-	}
+		}
 		return resources;
 	}
 

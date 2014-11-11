@@ -26,10 +26,12 @@ import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
+import org.catrobat.catroid.common.CatrobatService;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
-import org.catrobat.catroid.legonxt.LegoNXT;
+import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 
 public class LegoNxtPlayToneAction extends TemporalAction {
 
@@ -56,7 +58,8 @@ public class LegoNxtPlayToneAction extends TemporalAction {
             Log.d(getClass().getSimpleName(), "Formula interpretation for this specific Brick failed.", interpretationException);
         }
 
-		LegoNXT.sendBTCPlayToneMessage(hertzInterpretation, durationInterpretation);
+		LegoNXT nxt = ServiceProvider.getService(CatrobatService.LEGO_NXT);
+		nxt.playTone(hertzInterpretation, durationInterpretation);
 	}
 
 	public void setHertz(Formula hertz) {
