@@ -151,12 +151,24 @@ public class LegoNXTImpl implements LegoNXT, NXTSensorService.OnSensorChangedLis
 
 		switch (sensor) {
 			case NXT_SENSOR_1:
+				if (getSensor1() == null) {
+					return 0;
+				}
 				return getSensor1().getLastSensorValue();
 			case NXT_SENSOR_2:
+				if (getSensor2() == null) {
+					return 0;
+				}
 				return getSensor2().getLastSensorValue();
 			case NXT_SENSOR_3:
+				if (getSensor3() == null) {
+					return 0;
+				}
 				return getSensor3().getLastSensorValue();
 			case NXT_SENSOR_4:
+				if (getSensor4() == null) {
+					return 0;
+				}
 				return getSensor4().getLastSensorValue();
 		}
 
