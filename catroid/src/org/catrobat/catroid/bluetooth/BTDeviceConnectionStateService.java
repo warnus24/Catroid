@@ -60,7 +60,8 @@ public class BTDeviceConnectionStateService extends Service {
 					BTDeviceConnector btDeviceConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
 					btDeviceConnector.disconnectDevices();
 
-					Toast.makeText(BTDeviceConnectionStateService.this.getApplicationContext(), R.string.bt_connection_failed, Toast.LENGTH_LONG);
+					Toast t = Toast.makeText(BTDeviceConnectionStateService.this.getApplicationContext(), R.string.bt_connection_failed, Toast.LENGTH_LONG);
+					t.show();
 				}
 			}
 		};
