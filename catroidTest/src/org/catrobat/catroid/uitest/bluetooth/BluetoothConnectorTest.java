@@ -91,7 +91,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 		BTConnectDeviceActivity.setDeviceFactory(new BTDeviceTestFactory());
 
 		BTDeviceConnector connector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
-		connector.connectDevice(TEST_SERVICE, emptyActivity, requestCode);
+		connector.connectDevice(TEST_SERVICE, emptyActivity, requestCode, false);
 
 		solo.waitForActivity(BTConnectDeviceActivity.class);
 		solo.sleep(2000);

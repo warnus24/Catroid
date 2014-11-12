@@ -37,6 +37,9 @@ public class LegoNxtMotorStopAction extends TemporalAction {
 	protected void update(float percent) {
 
 		LegoNXT nxt = ServiceProvider.getService(CatrobatService.LEGO_NXT);
+		if (nxt == null) {
+			return;
+		}
 
 		switch (motorEnum) {
 			case MOTOR_A:

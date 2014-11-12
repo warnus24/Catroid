@@ -26,66 +26,92 @@ import android.app.Activity;
 import android.content.Intent;
 
 import org.catrobat.catroid.common.ServiceProvider;
+import org.catrobat.catroid.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BTDeviceConnectorImpl implements BTDeviceConnector {
 
-	private Collection<BTDeviceService> runningBTServices = new ArrayList<BTDeviceService>();
 
-	public void connectDevice(Class<? extends BTDeviceService> serviceToStart, Activity activity, int requestCode) {
-		Intent intent = createStartIntent(serviceToStart, activity);
+	private Set<BTDeviceService> connectedBTServices = new HashSet<BTDeviceService>();
+
+	public synchronized ConnectionState connectDevice(Class<? extends BTDeviceService> serviceToStart,
+			Activity activity, int requestCode, boolean autoConnect) {
+
+		if (!Utils.isServiceRunning(activity, BTDeviceConnectionStateService.class)) {
+			Intent intent = new Intent(activity, BTDeviceConnectionStateService.class);
+			activity.startService(intent);
+		}
+
+		BTDeviceService service = ServiceProvider.getService(serviceToStart);
+
+		if (service != null) {
+
+			if (service.isConnected()) {
+				connectedBTServices.add(service);
+				return ConnectionState.ALREADY_CONNECTED;
+			}
+
+			connectedBTServices.remove(service);
+			ServiceProvider.unregisterService(serviceToStart);
+		}
+
+		Intent intent = createStartIntent(serviceToStart, activity, autoConnect);
 		activity.startActivityForResult(intent, requestCode);
+
+		return ConnectionState.TRY_CONNECT;
 	}
 
 	@Override
-	public void deviceConnected(BTDeviceService service) {
-		runningBTServices.add(service);
+	public synchronized void deviceConnected(BTDeviceService service) {
+		ServiceProvider.registerService(service.getServiceType(), service);
+		connectedBTServices.add(service);
 	}
 
-	public void disconnectDevices() {
-		for (BTDeviceService service : runningBTServices) {
+	@Override
+	public synchronized void disconnectDevices() {
+		for (BTDeviceService service : connectedBTServices) {
 			service.disconnect();
 			ServiceProvider.unregisterService(service.getServiceType());
 		}
 
-		runningBTServices.clear();
+		connectedBTServices.clear();
 	}
 
-	protected Intent createStartIntent(Class<? extends BTDeviceService> serviceToStart, Activity activity) {
+	protected Intent createStartIntent(Class<? extends BTDeviceService> serviceToStart,
+			Activity activity, boolean autoConnect) {
 		Intent intent = new Intent(activity, BTConnectDeviceActivity.class);
 		intent.putExtra(BTConnectDeviceActivity.SERVICE_TO_START, serviceToStart);
+		intent.putExtra(BTConnectDeviceActivity.AUTO_CONNECT, autoConnect);
 		return intent;
 	}
 
 	@Override
-	public void initialise() {
-		for (BTDeviceService service : runningBTServices) {
+	public synchronized void initialise() {
+		for (BTDeviceService service : connectedBTServices) {
 			service.initialise();
 		}
 	}
 
 	@Override
-	public void start() {
-		for (BTDeviceService service : runningBTServices) {
+	public synchronized void start() {
+		for (BTDeviceService service : connectedBTServices) {
 			service.start();
 		}
 	}
 
 	@Override
-	public void pause() {
-		for (BTDeviceService service : runningBTServices) {
+	public synchronized void pause() {
+		for (BTDeviceService service : connectedBTServices) {
 			service.pause();
 		}
 	}
 
 	@Override
-	public void destroy() {
-		for (BTDeviceService service : runningBTServices) {
+	public synchronized void destroy() {
+		for (BTDeviceService service : connectedBTServices) {
 			service.destroy();
 		}
-
-		disconnectDevices();
 	}
 }

@@ -45,6 +45,8 @@ public class LegoNXTImpl implements LegoNXT, NXTSensorService.OnSensorChangedLis
 	private MindstormConnection mindstormConnection;
 	private Context context;
 
+	private boolean isInitialized = false;
+
 	private NXTMotor motorA;
 	private NXTMotor motorB;
 	private NXTMotor motorC;
@@ -62,7 +64,7 @@ public class LegoNXTImpl implements LegoNXT, NXTSensorService.OnSensorChangedLis
 
 	@Override
 	public String getName() {
-		return "NXT";
+		return "Lego Mindstorms NXT";
 	}
 
 	@Override
@@ -73,6 +75,11 @@ public class LegoNXTImpl implements LegoNXT, NXTSensorService.OnSensorChangedLis
 	@Override
 	public void setConnection(BluetoothConnection btConnection) {
 		this.mindstormConnection = new MindstormConnectionImpl(btConnection);
+	}
+
+	@Override
+	public boolean isConnected() {
+		return mindstormConnection.isConnected();
 	}
 
 	@Override
@@ -192,6 +199,11 @@ public class LegoNXTImpl implements LegoNXT, NXTSensorService.OnSensorChangedLis
 
 	@Override
 	public void initialise() {
+
+		if (isInitialized) {
+			return;
+		}
+
 		mindstormConnection.init();
 
 		motorA = new NXTMotor(0, mindstormConnection);
@@ -199,6 +211,8 @@ public class LegoNXTImpl implements LegoNXT, NXTSensorService.OnSensorChangedLis
 		motorC = new NXTMotor(2, mindstormConnection);
 
 		assignSensorsToPorts();
+
+		isInitialized = true;
 	}
 
 	private synchronized void assignSensorsToPorts() {
@@ -217,11 +231,11 @@ public class LegoNXTImpl implements LegoNXT, NXTSensorService.OnSensorChangedLis
 
 	@Override
 	public void pause() {
+		stopAllMovements();
 		sensorService.pauseSensorUpdate();
 	}
 
 	@Override
 	public void destroy() {
-		disconnect();
 	}
 }

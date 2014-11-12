@@ -29,7 +29,14 @@ import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.stage.StageResourceInterface;
 
 public interface BTDeviceConnector extends CatrobatService, StageResourceInterface {
-	public void connectDevice(Class<? extends BTDeviceService> service, Activity activity, int requestCode);
+	public ConnectionState connectDevice(Class<? extends BTDeviceService> service,
+			Activity activity, int requestCode, boolean autoConnect);
+
 	public void deviceConnected(BTDeviceService service);
 	public void disconnectDevices();
+
+	enum ConnectionState {
+		TRY_CONNECT,
+		ALREADY_CONNECTED
+	}
 }

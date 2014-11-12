@@ -58,6 +58,9 @@ public class LegoNxtMotorTurnAngleAction extends TemporalAction {
 		}
 
 		LegoNXT nxt = ServiceProvider.getService(CatrobatService.LEGO_NXT);
+		if (nxt == null) {
+			return;
+		}
 
 		switch (motorEnum) {
 			case MOTOR_A:
