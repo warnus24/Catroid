@@ -72,6 +72,10 @@ public class PrestageActivityDroneTest extends BaseActivityInstrumentationTestCa
 		super(MainMenuActivity.class);
 	}
 
+	/*public void testThisTestmethodIsOnlyHereForPassingTheSourceTest(){
+		assertSame("Remove me!!", "Remove me!!", "Remove me!!");
+	}*/
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -162,7 +166,7 @@ public class PrestageActivityDroneTest extends BaseActivityInstrumentationTestCa
 		Sprite sprite = new Sprite("testSprite");
 		project.addSprite(sprite);
 		Brick brick = new DroneFlipBrick(sprite);
-		Script script = new WhenScript(sprite);
+		Script script = new WhenScript();
 
 		Brick preparedBrick = Mockito.spy(brick);
 		Mockito.when(preparedBrick.getRequiredResources()).thenReturn(0x10000);

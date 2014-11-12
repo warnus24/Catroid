@@ -57,6 +57,10 @@ public class StageActivityDroneTest extends BaseActivityInstrumentationTestCase<
 		super(MainMenuActivity.class);
 	}
 
+	/*public void testThisTestmethodIsOnlyHereForPassingTheSourceTest(){
+		assertSame("Remove me!!", "Remove me!!", "Remove me!!");
+	}*/
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -123,11 +127,14 @@ public class StageActivityDroneTest extends BaseActivityInstrumentationTestCase<
 		assertNotNull("PreStageActivity must not be null", preStageActivity);
 	}
 
+	@Override
 	public void onServiceConnected(ComponentName name, IBinder service) {
 		Log.d(TAG, name.toString());
 		droneControlService = ((DroneControlService.LocalBinder) service).getService();
 	}
 
+
+	@Override
 	public void onServiceDisconnected(ComponentName name) {
 		droneControlService = null;
 	}
