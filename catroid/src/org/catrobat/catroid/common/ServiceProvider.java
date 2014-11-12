@@ -37,13 +37,13 @@ public final class ServiceProvider {
 
     private static HashMap<Class<? extends CatrobatService>, CatrobatService> services = new HashMap<Class<? extends CatrobatService>, CatrobatService>();
 
-    public static <T extends CatrobatService, S extends CatrobatService> void registerService(Class<T> serviceType, S serviceInstance) {
+    public synchronized static <T extends CatrobatService, S extends CatrobatService> void registerService(Class<T> serviceType, S serviceInstance) {
         if (services.put(serviceType, serviceInstance) != null) {
             Log.w(TAG, "Service '" + serviceType.getSimpleName()  + "' got overwritten!");
         }
     }
 
-    public static <T extends CatrobatService> T getService(Class<T> serviceType) {
+    public synchronized static <T extends CatrobatService> T getService(Class<T> serviceType) {
         CatrobatService serviceInstance = services.get(serviceType);
         if (serviceInstance != null) {
             return (T) serviceInstance;
@@ -60,7 +60,7 @@ public final class ServiceProvider {
         return null;
     }
 
-    public static <T extends CatrobatService> void unregisterService(Class<T> serviceType) {
+    public synchronized static <T extends CatrobatService> void unregisterService(Class<T> serviceType) {
         if (services.remove(serviceType) == null) {
             Log.w(TAG, "Unregister Service: Service '" + serviceType.getSimpleName()  + "' is not registered!");
         }

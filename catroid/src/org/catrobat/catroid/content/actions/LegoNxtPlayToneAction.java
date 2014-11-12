@@ -59,6 +59,9 @@ public class LegoNxtPlayToneAction extends TemporalAction {
         }
 
 		LegoNXT nxt = ServiceProvider.getService(CatrobatService.LEGO_NXT);
+		if (nxt == null) {
+			return;
+		}
 		nxt.playTone(hertzInterpretation, durationInterpretation);
 	}
 

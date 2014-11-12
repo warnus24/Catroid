@@ -41,7 +41,10 @@ public class BluetoothManager {
 	}
 
 	public int activateBluetooth() {
-		bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		if (bluetoothAdapter == null) {
+			bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		}
+
 		if (bluetoothAdapter == null) {
 			return BLUETOOTH_NOT_SUPPORTED;
 		}
@@ -52,5 +55,9 @@ public class BluetoothManager {
 		} else {
 			return BLUETOOTH_ALREADY_ON;
 		}
+	}
+
+	public BluetoothAdapter getBluetoothAdapter() {
+		return bluetoothAdapter;
 	}
 }

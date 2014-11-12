@@ -39,6 +39,7 @@ import android.widget.Toast;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BTDeviceConnector;
+import org.catrobat.catroid.bluetooth.BTDeviceService;
 import org.catrobat.catroid.camera.CameraManager;
 import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.Constants;
@@ -97,8 +98,7 @@ public class PreStageActivity extends BaseActivity {
 		}
 
 		if ((requiredResources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
-			BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
-			btConnector.connectDevice(CatrobatService.LEGO_NXT, this, REQUEST_CONNECT_DEVICE);
+			connectBTDevice(CatrobatService.LEGO_NXT, true);
 		}
 
 		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
@@ -147,6 +147,14 @@ public class PreStageActivity extends BaseActivity {
 
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
+		}
+	}
+
+	private void connectBTDevice(Class<? extends BTDeviceService> service, boolean autoConnect) {
+		BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
+		BTDeviceConnector.ConnectionState state = btConnector.connectDevice(service, this, REQUEST_CONNECT_DEVICE, autoConnect);
+		if (state == BTDeviceConnector.ConnectionState.ALREADY_CONNECTED) {
+			resourceInitialized();
 		}
 	}
 
@@ -231,7 +239,7 @@ public class PreStageActivity extends BaseActivity {
 			textToSpeech.shutdown();
 		}
 		BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
-		btConnector.destroy();
+		btConnector.pause();
 
         if (FaceDetectionHandler.isFaceDetectionRunning()) {
             FaceDetectionHandler.stopFaceDetection();
@@ -242,7 +250,7 @@ public class PreStageActivity extends BaseActivity {
 	public static void shutdownPersistentResources() {
 
 		BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
-		btConnector.destroy();
+		btConnector.disconnectDevices();
 
 		deleteSpeechFiles();
 		if (LedUtil.isActive()) {
