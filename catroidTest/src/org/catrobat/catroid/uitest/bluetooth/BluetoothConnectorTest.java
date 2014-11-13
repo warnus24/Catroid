@@ -125,6 +125,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 		byte[] receivedMessage = service.receiveTestMessage();
 		assertMessageEquals(expectedMessage, receivedMessage);
 
+		connector.disconnectDevices();
 	}
 
 	private void assertMessageEquals(byte[] expected, byte[] actual) {

@@ -54,7 +54,7 @@ public class SensorTests extends AndroidTestCase {
 
 		sensor.getValue();
 
-		MindstormCommand command = connection.getLastSentCommand();
+		MindstormCommand command = connection.getNextSentCommand();
 		assertNotNull("No command", command);
 		byte[] rawCommand = command.getRawCommand();
 
@@ -73,7 +73,7 @@ public class SensorTests extends AndroidTestCase {
 
 		sensor.getValue();
 
-		MindstormCommand command = connection.getLastSentCommand();
+		MindstormCommand command = connection.getNextSentCommand();
 		assertNotNull("No command", command);
 		byte[] rawCommand = command.getRawCommand();
 
@@ -92,7 +92,7 @@ public class SensorTests extends AndroidTestCase {
 
 		sensor.getValue();
 
-		MindstormCommand command = connection.getLastSentCommand();
+		MindstormCommand command = connection.getNextSentCommand();
 		assertNotNull("No command", command);
 		byte[] rawCommand = command.getRawCommand();
 
@@ -111,10 +111,10 @@ public class SensorTests extends AndroidTestCase {
 
 		sensor.getValue();
 		MindstormCommand command = null;
-		MindstormCommand firstCommand = connection.getLastSentCommand();
+		MindstormCommand firstCommand = connection.getNextSentCommand();
 		while(firstCommand != null) {
 			command = firstCommand;
-			firstCommand = connection.getLastSentCommand();
+			firstCommand = connection.getNextSentCommand();
 		}
 
 		assertNotNull("No command", command);
@@ -133,7 +133,7 @@ public class SensorTests extends AndroidTestCase {
 
 		sensor.getValue();
 
-		MindstormCommand command = connection.getLastSentCommand();
+		MindstormCommand command = connection.getNextSentCommand();
 		assertNotNull("No command", command);
 		byte[] rawCommand = command.getRawCommand();
 
@@ -144,7 +144,7 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong sensor mode", NXTSensorMode.BOOL.getByte(), rawCommand[4]);
 		assertEquals("Wrong command length", 5, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command2", command);
 		rawCommand = command.getRawCommand();
 
@@ -153,7 +153,7 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong Port2", PORT_NR_0, rawCommand[2]);
 		assertEquals("Wrong command length2", 3, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command3", command);
 		rawCommand = command.getRawCommand();
 
@@ -164,7 +164,7 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong sensor mode3", NXTSensorMode.BOOL.getByte(), rawCommand[4]);
 		assertEquals("Wrong command length3", 5, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command4", command);
 		rawCommand = command.getRawCommand();
 
@@ -181,7 +181,7 @@ public class SensorTests extends AndroidTestCase {
 
 		sensor.getValue();
 
-		MindstormCommand command = connection.getLastSentCommand();
+		MindstormCommand command = connection.getNextSentCommand();
 		assertNotNull("No command", command);
 		byte[] rawCommand = command.getRawCommand();
 
@@ -200,10 +200,10 @@ public class SensorTests extends AndroidTestCase {
 
 		sensor.getValue();
 		MindstormCommand command = null;
-		MindstormCommand firstCommand = connection.getLastSentCommand();
+		MindstormCommand firstCommand = connection.getNextSentCommand();
 		while(firstCommand != null) {
 			command = firstCommand;
-			firstCommand = connection.getLastSentCommand();
+			firstCommand = connection.getNextSentCommand();
 		}
 
 		assertNotNull("No command", command);
@@ -221,19 +221,19 @@ public class SensorTests extends AndroidTestCase {
 		NXTI2CUltraSonicSensor sensor = new NXTI2CUltraSonicSensor(connection);
 
 		sensor.getValue();
-		MindstormCommand command = connection.getLastSentCommand();
+		MindstormCommand command = connection.getNextSentCommand();
 		assertNotNull("No command1a", command);
 		byte[] rawCommand = command.getRawCommand();
 		while( (rawCommand[1] != CommandByte.LS_WRITE.getByte()) && (command != null) ) {
-			command = connection.getLastSentCommand();
+			command = connection.getNextSentCommand();
 			assertNotNull("No command1b", command);
 			rawCommand = command.getRawCommand();
 		}
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command1c", command);
 		rawCommand = command.getRawCommand();
 		while( (rawCommand[1] != CommandByte.LS_WRITE.getByte()) && (command != null) ) {
-			command = connection.getLastSentCommand();
+			command = connection.getNextSentCommand();
 			assertNotNull("No command1d", command);
 			rawCommand = command.getRawCommand();
 		}
@@ -247,7 +247,7 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong Tx register", SENSOR_REGISTER_RESULT1, rawCommand[6]);
 		assertEquals("Wrong command length", 7, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command2", command);
 		rawCommand = command.getRawCommand();
 
@@ -256,11 +256,11 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong port2", PORT_NR_3, rawCommand[2]);
 		assertEquals("Wrong command length2", 3, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command3a", command);
 		rawCommand = command.getRawCommand();
 		while(rawCommand[1] == CommandByte.LS_GET_STATUS.getByte()) {
-			command = connection.getLastSentCommand();
+			command = connection.getNextSentCommand();
 			assertNotNull("No command3b", command);
 			rawCommand = command.getRawCommand();
 		}
@@ -278,7 +278,7 @@ public class SensorTests extends AndroidTestCase {
 
 		sensor.getValue();
 
-		MindstormCommand command = connection.getLastSentCommand();
+		MindstormCommand command = connection.getNextSentCommand();
 		assertNotNull("No command", command);
 		byte[] rawCommand = command.getRawCommand();
 
@@ -289,7 +289,7 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong sensor mode", NXTSensorMode.RAW.getByte(), rawCommand[4]);
 		assertEquals("Wrong command length", 5, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command2", command);
 		rawCommand = command.getRawCommand();
 
@@ -298,7 +298,7 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong Port2", PORT_NR_3, rawCommand[2]);
 		assertEquals("Wrong command length2", 3, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command3", command);
 		rawCommand = command.getRawCommand();
 
@@ -309,7 +309,7 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong sensor mode3", NXTSensorMode.RAW.getByte(), rawCommand[4]);
 		assertEquals("Wrong command length3", 5, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command4", command);
 		rawCommand = command.getRawCommand();
 
@@ -322,7 +322,7 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong Tx register4", 0x00, rawCommand[6]);
 		assertEquals("Wrong command length4", 7, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command5", command);
 		rawCommand = command.getRawCommand();
 
@@ -331,11 +331,11 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong port5", PORT_NR_3, rawCommand[2]);
 		assertEquals("Wrong command length5", 3, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command6a", command);
 		rawCommand = command.getRawCommand();
 		while(rawCommand[1] == CommandByte.LS_GET_STATUS.getByte()) {
-			command = connection.getLastSentCommand();
+			command = connection.getNextSentCommand();
 			assertNotNull("No command6b", command);
 			rawCommand = command.getRawCommand();
 		}
@@ -345,7 +345,7 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong port6", PORT_NR_3, rawCommand[2]);
 		assertEquals("Wrong command length6", 3, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command7", command);
 		rawCommand = command.getRawCommand();
 
@@ -358,7 +358,7 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong Tx register7", SENSOR_REGISTER_RESULT1, rawCommand[6]);
 		assertEquals("Wrong command length7", 7, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command8", command);
 		rawCommand = command.getRawCommand();
 
@@ -367,11 +367,11 @@ public class SensorTests extends AndroidTestCase {
 		assertEquals("Wrong port8", PORT_NR_3, rawCommand[2]);
 		assertEquals("Wrong command length8", 3, rawCommand.length);
 
-		command = connection.getLastSentCommand();
+		command = connection.getNextSentCommand();
 		assertNotNull("No command9a", command);
 		rawCommand = command.getRawCommand();
 		while(rawCommand[1] == CommandByte.LS_GET_STATUS.getByte()) {
-			command = connection.getLastSentCommand();
+			command = connection.getNextSentCommand();
 			assertNotNull("No command9b", command);
 			rawCommand = command.getRawCommand();
 		}

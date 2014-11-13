@@ -42,8 +42,8 @@ public class LegoNXTImpl implements LegoNXT, NXTSensorService.OnSensorChangedLis
 	private static final UUID LEGO_NXT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private static final String TAG = LegoNXTImpl.class.getSimpleName();
 
-	private MindstormConnection mindstormConnection;
-	private Context context;
+	protected MindstormConnection mindstormConnection;
+	protected Context context;
 
 	private boolean isInitialized = false;
 

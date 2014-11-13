@@ -25,12 +25,15 @@ package org.catrobat.catroid.test.mindstorms.nxt;
 
 import junit.framework.Assert;
 
+import org.catrobat.catroid.lego.mindstorm.Mindstorm;
 import org.catrobat.catroid.lego.mindstorm.MindstormCommand;
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 import org.catrobat.catroid.lego.mindstorm.nxt.CommandByte;
 import org.catrobat.catroid.lego.mindstorm.nxt.CommandType;
 import org.catrobat.catroid.lego.mindstorm.nxt.NXTReply;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -135,7 +138,18 @@ public class MindstormTestConnection implements MindstormConnection {
 		return reply;
 	}
 
-	public MindstormCommand getLastSentCommand(){
+	public MindstormCommand getNextSentCommand(){
 		return this.sentCommands.poll();
+	}
+
+	public ArrayList<byte[]> getSentCommands() {
+
+		ArrayList<byte[]> commands = new ArrayList<byte[]>();
+
+		for (MindstormCommand sentCommand : sentCommands) {
+			commands.add(sentCommand.getRawCommand());
+		}
+
+		return commands;
 	}
 }
