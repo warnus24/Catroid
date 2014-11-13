@@ -52,6 +52,8 @@ import java.util.Set;
 
 public class BTConnectDeviceActivity extends Activity {
 
+	public static final String TAG = BTConnectDeviceActivity.class.getSimpleName();
+
 	public static final String SERVICE_TO_START = "org.catrobat.catroid.bluetooth.SERVICE";
 	public static final String AUTO_CONNECT = "auto_connect";
 
@@ -155,6 +157,11 @@ public class BTConnectDeviceActivity extends Activity {
 				result = RESULT_OK;
 				BTDeviceConnector btDeviceConnector = ServiceProvider.getService(BTDeviceConnector.class);
 				btDeviceConnector.deviceConnected(deviceService);
+			}
+			else if (autoConnect) {
+				Log.i(TAG, "auto connect wasn't successful, show available devices instead.");
+				BTConnectDeviceActivity.this.setVisible(true);
+				return;
 			}
 
 			setResult(result);

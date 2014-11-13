@@ -36,31 +36,20 @@ public class BTDeviceConnectorImpl implements BTDeviceConnector {
 
 	private Set<BTDeviceService> connectedBTServices = new HashSet<BTDeviceService>();
 
-	public synchronized ConnectionState connectDevice(Class<? extends BTDeviceService> serviceToStart,
+	public synchronized void connectDevice(Class<? extends BTDeviceService> serviceToStart,
 			Activity activity, int requestCode, boolean autoConnect) {
 
-		if (!Utils.isServiceRunning(activity, BTDeviceConnectionStateService.class)) {
-			Intent intent = new Intent(activity, BTDeviceConnectionStateService.class);
-			activity.startService(intent);
-		}
 
 		BTDeviceService service = ServiceProvider.getService(serviceToStart);
 
 		if (service != null) {
-
-			if (service.isConnected()) {
-				connectedBTServices.add(service);
-				return ConnectionState.ALREADY_CONNECTED;
-			}
-
+			service.disconnect();
 			connectedBTServices.remove(service);
 			ServiceProvider.unregisterService(serviceToStart);
 		}
 
 		Intent intent = createStartIntent(serviceToStart, activity, autoConnect);
 		activity.startActivityForResult(intent, requestCode);
-
-		return ConnectionState.TRY_CONNECT;
 	}
 
 	@Override

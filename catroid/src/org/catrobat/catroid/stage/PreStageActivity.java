@@ -152,10 +152,7 @@ public class PreStageActivity extends BaseActivity {
 
 	private void connectBTDevice(Class<? extends BTDeviceService> service, boolean autoConnect) {
 		BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
-		BTDeviceConnector.ConnectionState state = btConnector.connectDevice(service, this, REQUEST_CONNECT_DEVICE, autoConnect);
-		if (state == BTDeviceConnector.ConnectionState.ALREADY_CONNECTED) {
-			resourceInitialized();
-		}
+		btConnector.connectDevice(service, this, REQUEST_CONNECT_DEVICE, autoConnect);
 	}
 
 	public DroneInitializer getDroneInitializer() {
@@ -239,7 +236,7 @@ public class PreStageActivity extends BaseActivity {
 			textToSpeech.shutdown();
 		}
 		BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
-		btConnector.pause();
+		btConnector.disconnectDevices();
 
         if (FaceDetectionHandler.isFaceDetectionRunning()) {
             FaceDetectionHandler.stopFaceDetection();

@@ -33,7 +33,6 @@ public interface BTDeviceService extends CatrobatService, StageResourceInterface
     public Class<? extends BTDeviceService> getServiceType();
     public void setConnection(BluetoothConnection connection);
 	public void disconnect();
-	public boolean isConnected();
 
     public UUID getBluetoothDeviceUUID();
 }
