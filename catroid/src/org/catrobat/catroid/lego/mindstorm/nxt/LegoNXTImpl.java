@@ -78,11 +78,6 @@ public class LegoNXTImpl implements LegoNXT, NXTSensorService.OnSensorChangedLis
 	}
 
 	@Override
-	public boolean isConnected() {
-		return mindstormConnection.isConnected();
-	}
-
-	@Override
 	public UUID getBluetoothDeviceUUID() {
 		return LEGO_NXT_UUID;
 	}
