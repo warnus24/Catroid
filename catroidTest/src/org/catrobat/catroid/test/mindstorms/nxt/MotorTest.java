@@ -51,7 +51,7 @@ public class MotorTest extends AndroidTestCase {
 		byte expectedTurnRatio = 100;
 
 		motor.move(inputSpeed, degrees);
-		MindstormCommand command = this.connection.getLastSentCommand();
+		MindstormCommand command = this.connection.getNextSentCommand();
 		byte[] setOutputState = command.getRawCommand();
 
 		assertEquals("DIRECT_COMMAND_HEADER check failed, should equals to setOutputState[0]", DIRECT_COMMAND_HEADER, setOutputState[0]);
@@ -79,7 +79,7 @@ public class MotorTest extends AndroidTestCase {
 		byte expectedTurnRatio = 100;
 
 		motor.move(inputSpeed, degrees);
-		MindstormCommand command = this.connection.getLastSentCommand();
+		MindstormCommand command = this.connection.getNextSentCommand();
 		byte[] setOutputState = command.getRawCommand();
 
 		assertEquals("DIRECT_COMMAND_HEADER check failed, should equals to setOutputState[0]", DIRECT_COMMAND_HEADER, setOutputState[0]);
@@ -104,7 +104,7 @@ public class MotorTest extends AndroidTestCase {
 		byte expectedTurnRatio = 100;
 
 		motor.move(inputSpeed, degrees);
-		MindstormCommand command = this.connection.getLastSentCommand();
+		MindstormCommand command = this.connection.getNextSentCommand();
 		byte[] setOutputState = command.getRawCommand();
 
 		assertEquals("DIRECT_COMMAND_HEADER check failed, should equals to setOutputState[0]", DIRECT_COMMAND_HEADER, setOutputState[0]);
@@ -131,7 +131,7 @@ public class MotorTest extends AndroidTestCase {
 		byte expectedTurnRatio = 100;
 
 		motor.move(inputSpeed, degrees);
-		MindstormCommand command = this.connection.getLastSentCommand();
+		MindstormCommand command = this.connection.getNextSentCommand();
 		byte[] setOutputState = command.getRawCommand();
 
 		assertEquals("DIRECT_COMMAND_HEADER check failed, should equals to setOutputState[0]", DIRECT_COMMAND_HEADER, setOutputState[0]);
