@@ -48,9 +48,11 @@ import org.catrobat.catroid.content.bricks.LegoNxtPlayToneBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.io.StorageHandler;
+import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXTImpl;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.test.mindstorms.nxt.MindstormTestConnection;
+import org.catrobat.catroid.test.utils.BluetoothConnectionWrapper;
 import org.catrobat.catroid.test.utils.TestUtils;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProjectActivity;
@@ -61,6 +63,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 	private static final int IMAGE_FILE_ID = org.catrobat.catroid.test.R.raw.icon;
@@ -79,6 +82,8 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 
 	ArrayList<int[]> commands = new ArrayList<int[]>();
 
+	BluetoothConnectionWrapper wrappedConnection;
+
 	public LegoNXTTest() {
 		super(MainMenuActivity.class);
 	}
@@ -87,7 +92,6 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 	public void setUp() throws Exception {
 		super.setUp();
 		UiTestUtils.prepareStageForTest();
-		BTConnectDeviceActivity.setDeviceFactory(new BTDeviceTestFactory());
 
 		Context applicationContext = getInstrumentation().getTargetContext().getApplicationContext();
 		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(applicationContext).edit();
@@ -104,8 +108,25 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 
 		ArrayList<String> autoConnectIDs = new ArrayList<String>();
 		autoConnectIDs.add("IM_NOT_A_MAC_ADDRESS");
-		BTConnectDeviceActivity deviceListActivity = new BTConnectDeviceActivity();
-		Reflection.setPrivateField(deviceListActivity, "autoConnectIDs", autoConnectIDs);
+		Reflection.setPrivateField(BTConnectDeviceActivity.class, "autoConnectIDs", autoConnectIDs);
+
+		BTConnectDeviceActivity.setDeviceFactory(new BTDeviceFactory() {
+			@Override
+			public <T extends BTDeviceService> BTDeviceService createDevice(Class<T> service, Context context) {
+				if (service == BTDeviceService.LEGO_NXT) {
+					return new LegoNXTImpl(context);
+				}
+
+				assertFalse("Started service must be lego nxt", false);
+				return null;
+			}
+
+			@Override
+			public <T extends BTDeviceService> BluetoothConnection createBTConnectionForDevice(Class<T> service, String address, UUID deviceUUID, Context applicationContext) {
+				wrappedConnection = new BluetoothConnectionWrapper(address, deviceUUID, false);
+				return wrappedConnection;
+			}
+		});
 
 		solo.clickOnText(solo.getString(R.string.main_menu_continue));
 		solo.waitForActivity(ProjectActivity.class.getSimpleName());
@@ -129,9 +150,7 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 		solo.clickOnScreen(ScreenValues.SCREEN_WIDTH / 2, ScreenValues.SCREEN_HEIGHT / 2);
 		solo.sleep(10000);
 
-		LegoNXTWrapper nxtWrapper = (LegoNXTWrapper)ServiceProvider.getService(CatrobatService.LEGO_NXT);
-
-		ArrayList<byte[]> executedCommands = nxtWrapper.getSentCommands();
+		ArrayList<byte[]> executedCommands = wrappedConnection.getSentMessages(2, true);
 		assertEquals("Commands seem to have not been executed! Connected to correct device??", commands.size(),
 				executedCommands.size());
 
@@ -253,34 +272,5 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 		firstSprite.getLookDataList().add(lookData);
 
 		StorageHandler.getInstance().saveProject(project);
-	}
-
-	private class LegoNXTWrapper extends LegoNXTImpl {
-
-		public LegoNXTWrapper(Context applicationContext) {
-			super(applicationContext);
-		}
-
-		@Override
-		public void setConnection(BluetoothConnection btConnection) {
-			super.mindstormConnection = new MindstormTestConnection();
-		}
-
-		public ArrayList<byte[]> getSentCommands() {
-			return ((MindstormTestConnection)super.mindstormConnection).getSentCommands();
-		}
-	}
-
-	private class BTDeviceTestFactory implements BTDeviceFactory {
-
-		@Override
-		public <T extends BTDeviceService> BTDeviceService create(Class<T> service, Context context) {
-			if (service == BTDeviceService.LEGO_NXT) {
-				return new LegoNXTWrapper(context);
-			}
-
-			assertFalse("Started service must be lego nxt", false);
-			return null;
-		}
 	}
 }

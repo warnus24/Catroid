@@ -139,7 +139,9 @@ public class BTConnectDeviceActivity extends Activity {
 
 		@Override
 		protected BluetoothConnection.State doInBackground(String... adresses) {
-			btConnection = new BluetoothConnection(adresses[0], deviceService.getBluetoothDeviceUUID());
+			btConnection = btDeviceFactory.createBTConnectionForDevice(deviceService.getServiceType(), adresses[0],
+					deviceService.getBluetoothDeviceUUID(), BTConnectDeviceActivity.this.getApplicationContext());
+
 			return btConnection.connect();
 		}
 
@@ -147,8 +149,6 @@ public class BTConnectDeviceActivity extends Activity {
 		protected void onPostExecute(BluetoothConnection.State connectionState) {
 
 			connectingProgressDialog.dismiss();
-
-			BTErrorToaster.handle(connectionState, BTConnectDeviceActivity.this);
 
 			int result = RESULT_CANCELED;
 
@@ -160,8 +160,13 @@ public class BTConnectDeviceActivity extends Activity {
 			}
 			else if (autoConnect) {
 				Log.i(TAG, "auto connect wasn't successful, show available devices instead.");
+				Toast.makeText(BTConnectDeviceActivity.this, R.string.bt_auto_connection_failed, Toast.LENGTH_SHORT).show();
 				BTConnectDeviceActivity.this.setVisible(true);
+				autoConnect = false;
 				return;
+			}
+			else {
+				Toast.makeText(BTConnectDeviceActivity.this, R.string.bt_connection_failed, Toast.LENGTH_SHORT).show();
 			}
 
 			setResult(result);
@@ -257,7 +262,7 @@ public class BTConnectDeviceActivity extends Activity {
 			btDeviceFactory = new BTDeviceFactoryImpl();
 		}
 
-		deviceService = btDeviceFactory.create(serviceType, this.getApplicationContext());
+		deviceService = btDeviceFactory.createDevice(serviceType, this.getApplicationContext());
 	}
 
 	private void connectDevice(String address) {
