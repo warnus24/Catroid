@@ -24,8 +24,13 @@ package org.catrobat.catroid.bluetooth;
 
 import android.content.Context;
 
+import java.util.UUID;
+
 public interface BTDeviceFactory {
 
-	public <T extends BTDeviceService> BTDeviceService create(Class<T> service, Context applicationContext);
+	public <T extends BTDeviceService> BTDeviceService createDevice(Class<T> service, Context applicationContext);
+
+	public <T extends BTDeviceService> BluetoothConnection createBTConnectionForDevice(Class<T> service,
+			String address, UUID deviceUUID, Context applicationContext);
 
 }

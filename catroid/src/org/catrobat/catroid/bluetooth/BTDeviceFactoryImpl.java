@@ -26,9 +26,12 @@ import android.content.Context;
 
 import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXTImpl;
 
+import java.util.UUID;
+
 public class BTDeviceFactoryImpl implements BTDeviceFactory {
 
-	public <T extends BTDeviceService> BTDeviceService create(Class<T> service, Context applicationContext) {
+	@Override
+	public <T extends BTDeviceService> BTDeviceService createDevice(Class<T> service, Context applicationContext) {
 
 		if (service == BTDeviceService.LEGO_NXT) {
 			return new LegoNXTImpl(applicationContext);
@@ -44,4 +47,12 @@ public class BTDeviceFactoryImpl implements BTDeviceFactory {
 
 		return null; // may throw exception
 	}
+
+	@Override
+	public <T extends BTDeviceService> BluetoothConnection createBTConnectionForDevice(Class<T> service,
+			String address, UUID deviceUUID, Context applicationContext) {
+
+		return new BluetoothConnection(address, deviceUUID);
+	}
+
 }

@@ -226,8 +226,13 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 	private class BTDeviceTestFactory implements BTDeviceFactory {
 
 		@Override
-		public <T extends BTDeviceService> BTDeviceService create(Class<T> service, Context context) {
+		public <T extends BTDeviceService> BTDeviceService createDevice(Class<T> service, Context context) {
 			return new BluetoothTestService();
+		}
+
+		@Override
+		public <T extends BTDeviceService> BluetoothConnection createBTConnectionForDevice(Class<T> service, String address, UUID deviceUUID, Context applicationContext) {
+			return new BluetoothConnection(address, deviceUUID);
 		}
 	}
 }

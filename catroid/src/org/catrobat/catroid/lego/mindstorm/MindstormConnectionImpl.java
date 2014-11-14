@@ -46,10 +46,10 @@ public class MindstormConnectionImpl implements MindstormConnection {
 
 	@Override
 	public void init() {
-		BluetoothSocket bluetoothSocket = bluetoothConnection.getBluetoothSocket();
+
 		try {
-			nxtInputStream = bluetoothSocket.getInputStream();
-			nxtOutputStream = bluetoothSocket.getOutputStream();
+			nxtInputStream = bluetoothConnection.getInputStream();
+			nxtOutputStream = bluetoothConnection.getOutputStream();
 			isConnected = true;
 		} catch (IOException e) {
 			isConnected = false;
@@ -120,7 +120,7 @@ public class MindstormConnectionImpl implements MindstormConnection {
 		catch (IOException e) {
 
 			if (replyLength == 0) {
-				throw new NXTException("No Reply");
+				throw new MindstormException("No Reply");
 			}
 			else if (replyLength != expectedLength) {
 				throw new MindstormException("Wrong Number of Bytes");

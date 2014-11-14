@@ -535,6 +535,7 @@
      <string name="pairing_message">Verbinde nach dem Pairing.</string>
     <string name="problem_at_closing">Problem beim Schließen der Verbindung!</string>
     <string name="bt_connection_failed">Verbindung zum Gerät fehlgeschlagen!</string>
+    <string name="bt_auto_connection_failed">Die automaische Verbindung zum Gerät ist fehlgeschlagen!</string>
     <string name="no_paired_nxt">Kein verbundenes NXT gefunden</string>
     <string name="none_found">Keine nicht verbundenen Geräte gefunden</string>
     <string name="none_paired">Keine verbundenen Geräte gefunden</string>
