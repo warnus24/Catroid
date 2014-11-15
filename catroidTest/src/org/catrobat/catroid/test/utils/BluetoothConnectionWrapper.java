@@ -34,23 +34,30 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.UUID;
 
 public class BluetoothConnectionWrapper extends BluetoothConnection {
 
+	private static final String TAG = BluetoothConnectionWrapper.class.getSimpleName();
 
 	private boolean executeLocal;
 
-	private PipedOutputStream wrappedOutputStream;
-	private PipedInputStream wrappedInputStream;
+	private OutputStream wrappedOutputStream;
+	private InputStream wrappedInputStream;
 
 	private ClientHandlerThread clientHandlerThread;
 
 	private Queue<byte[]> sentMessages = new LinkedList<byte[]>();
 	private Queue<byte[]> receivedMessages = new LinkedList<byte[]>();
+
+	public BluetoothConnectionWrapper() {
+		this(null, null, true);
+	}
 
 	public BluetoothConnectionWrapper(String macAddress, UUID uuid, boolean executLocal) {
 		super(macAddress, uuid);
@@ -73,6 +80,10 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 		}
 	}
 
+	public BluetoothConnectionWrapper(BTClientHandler handler) {
+		this(null, null, handler);
+	}
+
 	public BluetoothConnectionWrapper(String macAddress, UUID uuid, BTClientHandler handler) {
 		super(macAddress, uuid);
 		this.executeLocal = true;
@@ -80,20 +91,24 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 		PipedInputStream serverInputStreamFromClientsOutputStream = new PipedInputStream();
 		PipedOutputStream serverOutputStreamToClientsInputStream = new PipedOutputStream();
 
-		wrappedInputStream = new WrappedInputStream();
-		wrappedOutputStream = new WrappedOutputStream();
+		PipedInputStream pipedInputStreamForClient = new PipedInputStream();
+		PipedOutputStream pipedOutputStreamForClient = new PipedOutputStream();
 
 		try {
-			serverInputStreamFromClientsOutputStream.connect(wrappedOutputStream);
-			serverOutputStreamToClientsInputStream.connect(wrappedInputStream);
+			serverInputStreamFromClientsOutputStream.connect(pipedOutputStreamForClient);
+			serverOutputStreamToClientsInputStream.connect(pipedInputStreamForClient);
+
+			wrappedInputStream = new WrappedInputStream(pipedInputStreamForClient);
+			wrappedOutputStream = new WrappedOutputStream(pipedOutputStreamForClient);
+
+			clientHandlerThread = new ClientHandlerThread(handler, serverInputStreamFromClientsOutputStream, serverOutputStreamToClientsInputStream);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			Assert.fail("Error with ConnectionWrapper Stream pipes.");
 		}
-
-		clientHandlerThread = new ClientHandlerThread(handler, serverInputStreamFromClientsOutputStream, serverOutputStreamToClientsInputStream);
-		clientHandlerThread.start();
 	}
+
+
 
 	public void startClientHandlerThread() {
 		if (clientHandlerThread != null) {
@@ -107,72 +122,79 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 		}
 	}
 
+
+
 	public byte[] getNextSentMessage() {
-		return getNextSentMessage(0);
+		return getNextSentMessage(0, 0);
 	}
 
 	public byte[] getNextSentMessage(int messageOffset){
-		for (int i = 0; i < messageOffset; i++) {
-			this.sentMessages.poll();
-		}
-			return this.sentMessages.poll();
+		return getNextSentMessage(messageOffset, 0);
 	}
+
+	public byte[] getNextSentMessage(int messageOffset, int messageByteOffset) {
+		return getNextMessage(sentMessages, messageOffset, messageByteOffset);
+	}
+
+
 
 	public ArrayList<byte[]> getSentMessages() {
 		return getSentMessages(0, true);
 	}
 
 	public ArrayList<byte[]> getSentMessages(int messageByteOffset, boolean clearMessageQueue) {
-
-		ArrayList<byte[]> messages = new ArrayList<byte[]>();
-
-		if (messageByteOffset != 0) {
-			for (byte[] sentCommand : sentMessages) {
-				messages.add(getSubArray(sentCommand, messageByteOffset));
-			}
-		}
-		else {
-			for (byte[] sentCommand : sentMessages) {
-				messages.add(sentCommand);
-			}
-		}
-
-		if (clearMessageQueue) {
-			sentMessages.clear();
-		}
-
-		return messages;
+		return getMessages(sentMessages, messageByteOffset, clearMessageQueue);
 	}
 
+
+
 	public byte[] getNextReceivedMessage() {
-		return getNextReceivedMessage(0);
+		return getNextReceivedMessage(0, 0);
 	}
 
 	public byte[] getNextReceivedMessage(int messageOffset) {
-		for (int i = 0; i < messageOffset; i++) {
-			this.receivedMessages.poll();
-		}
-		return this.receivedMessages.poll();
+		return getNextReceivedMessage(messageOffset, 0);
 	}
+
+	public byte[] getNextReceivedMessage(int messageOffset, int messageByteOffset) {
+		return getNextMessage(receivedMessages, messageOffset, messageByteOffset);
+	}
+
+
 
 	public ArrayList<byte[]> getReceivedMessages() {
-		return getReceivedMessages(true);
+		return getReceivedMessages(0, true);
 	}
 
-	public ArrayList<byte[]> getReceivedMessages(boolean clearMessageQueue) {
+	public ArrayList<byte[]> getReceivedMessages(int messageByteOffset, boolean clearMessageQueue) {
+		return getMessages(receivedMessages, messageByteOffset, clearMessageQueue);
+	}
 
-		ArrayList<byte[]> messages = new ArrayList<byte[]>();
 
-		for (byte[] receivedCommand : receivedMessages) {
-			messages.add(receivedCommand);
+
+	private static byte[] getNextMessage(Queue<byte[]> messages, int messageOffset, int messageByteOffset) {
+		for (int i = 0; i < messageOffset; i++) {
+			messages.poll();
+		}
+		return getSubArray(messages.poll(), messageByteOffset);
+	}
+
+	private static ArrayList<byte[]> getMessages(Queue<byte[]> messages, int messageByteOffset, boolean clearMessageQueue) {
+
+		ArrayList<byte[]> m = new ArrayList<byte[]>();
+
+		for (byte[] message : messages) {
+			m.add(getSubArray(message, messageByteOffset));
 		}
 
 		if (clearMessageQueue) {
-			receivedMessages.clear();
+			messages.clear();
 		}
 
-		return messages;
+		return m;
 	}
+
+
 
 	@Override
 	public InputStream getInputStream() throws IOException {
@@ -204,16 +226,29 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 		return super.connect();
 	}
 
-	private class WrappedInputStream extends PipedInputStream {
+	@Override
+	public void disconnect() {
+		if (executeLocal) {
+			try {
+				wrappedOutputStream.close();
+				wrappedInputStream.close();
+			}
+			catch (IOException e) {
+				Log.e(TAG, "Error on disconnect while closing streams");
+			}
+			stopClientHandlerThread();
+			return;
+		}
+
+		super.disconnect();
+	}
+
+	private class WrappedInputStream extends InputStream {
 
 		public InputStream inputStream;
 
 		private WrappedInputStream(InputStream inputStream) {
 			this.inputStream = inputStream;
-		}
-
-		public WrappedInputStream() {
-			this.inputStream = this;
 		}
 
 		@Override
@@ -233,14 +268,19 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 
 		@Override
 		public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
-			int numOfReadBytes = super.read(buffer, byteOffset, byteCount);
+			int numOfReadBytes = inputStream.read(buffer, byteOffset, byteCount);
 			receivedMessages.add(getSubArray(buffer, byteOffset, byteCount));
-
 			return numOfReadBytes;
+		}
+
+		@Override
+		public void close() throws IOException {
+			super.close();
+			inputStream.close();
 		}
 	}
 
-	private class WrappedOutputStream extends PipedOutputStream {
+	private class WrappedOutputStream extends OutputStream {
 
 		private OutputStream outputStream;
 
@@ -248,54 +288,52 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 			this.outputStream = outputStream;
 		}
 
-		public WrappedOutputStream() {
-			this.outputStream = this;
-		}
-
 		@Override
-		public synchronized void write(byte[] buffer) throws IOException {
+		public void write(byte[] buffer) throws IOException {
 			outputStream.write(buffer);
 			sentMessages.add(buffer);
 		}
 
 		@Override
-		public synchronized void write(byte[] buffer, int offset, int count) throws IOException {
+		public void write(byte[] buffer, int offset, int count) throws IOException {
 			outputStream.write(buffer, offset, count);
 			sentMessages.add(getSubArray(buffer, offset, count));
 		}
 
 		@Override
-		public synchronized void write(int i) throws IOException {
+		public void write(int i) throws IOException {
 			outputStream.write(i);
 			sentMessages.add(intToByteArray(i));
 		}
+
+		@Override
+		public void close() throws IOException {
+			super.close();
+			outputStream.close();
+		}
 	}
 
-	private static final int INT_SIZE = Integer.SIZE / Byte.SIZE;
 	private static byte[] intToByteArray(int i) {
-		byte[] buffer = new byte[INT_SIZE];
-		for (int j = 0; j < INT_SIZE; j++) {
-			buffer[j] = (byte)(0xFF & (i >> j * Byte.SIZE));
-		}
-
-		return buffer;
+		return ByteBuffer.allocate(4).putInt(i).array();
 	}
 
 	private static byte[] getSubArray(byte[] buffer, int offset) {
-		return getSubArray(buffer, offset, buffer.length - offset);
+		if (buffer == null) {
+			return null;
+		}
+
+		return Arrays.copyOfRange(buffer, offset, buffer.length);
 	}
 
 	private static byte[] getSubArray(byte[] buffer, int offset, int count) {
-		Assert.assertTrue("count can't be negativ", count >= 0);
-		Assert.assertTrue("wrong offset or count", buffer.length - offset >= count);
-
-		byte[] subArray = new byte[count];
-
-		for (int i = 0; i < count; i++) {
-			subArray[i] = buffer[i + offset];
+		if (buffer == null) {
+			return null;
 		}
 
-		return subArray;
+		Assert.assertTrue("count can't be negative", count >= 0);
+		Assert.assertTrue("wrong offset or count", buffer.length - offset >= count);
+
+		return Arrays.copyOfRange(buffer, offset, offset + count);
 	}
 
 	public static interface BTClientHandler {
@@ -303,7 +341,7 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 	}
 
 	public static class ClientHandlerThread extends Thread {
-		public static final String TAG = CommonBluetoothTestClientHandler.class.getSimpleName();
+		public static final String TAG = BTClientHandler.class.getSimpleName();
 
 		private BTClientHandler handler;
 		private InputStream inStream;
@@ -320,45 +358,18 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 			try {
 				handler.handle(inStream, outStream);
 			} catch (IOException e) {
-				Log.e(TAG, "stream closed");
+				Log.e(TAG, "stream closed.");
 			}
 		}
 
 		public void stopHandler() {
 			try {
-				inStream.close();
 				outStream.close();
+				inStream.close();
 			} catch (IOException e) {
 				Log.e(TAG, "error while closing the stream");
 			}
 
-		}
-
-	}
-
-	public static class CommonBluetoothTestClientHandler implements BTClientHandler {
-
-		@Override
-		public void handle(InputStream inStream, OutputStream outStream) throws IOException {
-			byte[] messageLengthBuffer = new byte[1];
-
-			while (inStream.read(messageLengthBuffer, 0, 1) != -1) {
-				int expectedMessageLength = messageLengthBuffer[0];
-				handleClientMessage(expectedMessageLength, inStream, outStream);
-			}
-		}
-
-		private void handleClientMessage(int expectedMessageLength, InputStream inStream, OutputStream outStream) throws IOException {
-
-			byte[] payload = new byte[expectedMessageLength];
-
-			inStream.read(payload, 0, expectedMessageLength);
-
-			byte[] testResult = payload;
-
-			outStream.write(testResult.length);
-			outStream.write(testResult);
-			outStream.flush();
 		}
 
 	}

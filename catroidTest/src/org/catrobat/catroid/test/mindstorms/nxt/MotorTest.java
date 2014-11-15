@@ -26,22 +26,27 @@ package org.catrobat.catroid.test.mindstorms.nxt;
 import android.test.AndroidTestCase;
 
 import org.catrobat.catroid.lego.mindstorm.MindstormCommand;
+import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
+import org.catrobat.catroid.lego.mindstorm.MindstormConnectionImpl;
 import org.catrobat.catroid.lego.mindstorm.nxt.CommandByte;
 import org.catrobat.catroid.lego.mindstorm.nxt.CommandType;
 import org.catrobat.catroid.lego.mindstorm.nxt.NXTMotor;
+import org.catrobat.catroid.test.utils.BluetoothConnectionWrapper;
 
 public class MotorTest extends AndroidTestCase {
 
 	private NXTMotor motor;
-	private MindstormTestConnection connection;
+	private BluetoothConnectionWrapper connectionWrapper;
 	private static final byte DIRECT_COMMAND_HEADER = (byte)(CommandType.DIRECT_COMMAND.getByte() | 0x80);
 
 	private static final int USED_PORT = 0;
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.connection = new MindstormTestConnection();
-		this.motor = new NXTMotor(USED_PORT, connection);
+		this.connectionWrapper = new BluetoothConnectionWrapper();
+		MindstormConnection mindstormConnection = new MindstormConnectionImpl(connectionWrapper);
+		mindstormConnection.init();
+		this.motor = new NXTMotor(USED_PORT, mindstormConnection);
 	}
 
 	public void testSimpleMotorTest() {
@@ -51,8 +56,7 @@ public class MotorTest extends AndroidTestCase {
 		byte expectedTurnRatio = 100;
 
 		motor.move(inputSpeed, degrees);
-		MindstormCommand command = this.connection.getNextSentCommand();
-		byte[] setOutputState = command.getRawCommand();
+		byte[] setOutputState = this.connectionWrapper.getNextSentMessage(0, 2);
 
 		assertEquals("DIRECT_COMMAND_HEADER check failed, should equals to setOutputState[0]", DIRECT_COMMAND_HEADER, setOutputState[0]);
 		assertEquals("SET_OUTPUT_STATE check failed, should equals to setOutputState[1]", CommandByte.SET_OUTPUT_STATE.getByte(), setOutputState[1]);
@@ -79,8 +83,7 @@ public class MotorTest extends AndroidTestCase {
 		byte expectedTurnRatio = 100;
 
 		motor.move(inputSpeed, degrees);
-		MindstormCommand command = this.connection.getNextSentCommand();
-		byte[] setOutputState = command.getRawCommand();
+		byte[] setOutputState = this.connectionWrapper.getNextSentMessage(0, 2);
 
 		assertEquals("DIRECT_COMMAND_HEADER check failed, should equals to setOutputState[0]", DIRECT_COMMAND_HEADER, setOutputState[0]);
 		assertEquals("SET_OUTPUT_STATE check failed, should equals to setOutputState[1]", CommandByte.SET_OUTPUT_STATE.getByte(), setOutputState[1]);
@@ -104,8 +107,7 @@ public class MotorTest extends AndroidTestCase {
 		byte expectedTurnRatio = 100;
 
 		motor.move(inputSpeed, degrees);
-		MindstormCommand command = this.connection.getNextSentCommand();
-		byte[] setOutputState = command.getRawCommand();
+		byte[] setOutputState = this.connectionWrapper.getNextSentMessage(0, 2);
 
 		assertEquals("DIRECT_COMMAND_HEADER check failed, should equals to setOutputState[0]", DIRECT_COMMAND_HEADER, setOutputState[0]);
 		assertEquals("SET_OUTPUT_STATE check failed, should equals to setOutputState[1]", CommandByte.SET_OUTPUT_STATE.getByte(), setOutputState[1]);
@@ -131,8 +133,7 @@ public class MotorTest extends AndroidTestCase {
 		byte expectedTurnRatio = 100;
 
 		motor.move(inputSpeed, degrees);
-		MindstormCommand command = this.connection.getNextSentCommand();
-		byte[] setOutputState = command.getRawCommand();
+		byte[] setOutputState = this.connectionWrapper.getNextSentMessage(0, 2);
 
 		assertEquals("DIRECT_COMMAND_HEADER check failed, should equals to setOutputState[0]", DIRECT_COMMAND_HEADER, setOutputState[0]);
 		assertEquals("SET_OUTPUT_STATE check failed, should equals to setOutputState[1]",CommandByte.SET_OUTPUT_STATE.getByte(), setOutputState[1]);

@@ -23,20 +23,19 @@
 
 package org.catrobat.catroid.lego.mindstorm;
 
-import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import org.catrobat.catroid.bluetooth.BluetoothConnection;
-import org.catrobat.catroid.lego.mindstorm.nxt.NXTException;
 
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 public class MindstormConnectionImpl implements MindstormConnection {
 
 	private BluetoothConnection bluetoothConnection;
 	private OutputStream nxtOutputStream = null;
-	private InputStream nxtInputStream = null;
+	private DataInputStream nxtInputStream = null;
 
 	private boolean isConnected = false;
 
@@ -48,7 +47,7 @@ public class MindstormConnectionImpl implements MindstormConnection {
 	public void init() {
 
 		try {
-			nxtInputStream = bluetoothConnection.getInputStream();
+			nxtInputStream = new DataInputStream(bluetoothConnection.getInputStream());
 			nxtOutputStream = bluetoothConnection.getOutputStream();
 			isConnected = true;
 		} catch (IOException e) {
@@ -92,10 +91,8 @@ public class MindstormConnectionImpl implements MindstormConnection {
 
 			System.arraycopy(message, 0, data, 2, messageLength);
 
-			synchronized (nxtOutputStream) {
-				nxtOutputStream.write(data, 0, messageLength + 2);
-				nxtOutputStream.flush();
-			}
+			nxtOutputStream.write(data, 0, messageLength + 2);
+			nxtOutputStream.flush();
 
 		} catch (IOException e) {
 			throw new MindstormException(e, "Error on message send.");
@@ -105,26 +102,15 @@ public class MindstormConnectionImpl implements MindstormConnection {
 	protected synchronized byte[] receive() {
 		byte[] data = new byte[2];
 		byte[] payload;
-		int expectedLength = 0;
-		int replyLength = 0;
+
 		try {
-			expectedLength = 2;
-			synchronized (nxtInputStream) {
-				replyLength = nxtInputStream.read(data, 0, 2);
-				expectedLength = ((data[0] & 0xFF) | (data[1] & 0xFF) << 8);
-				payload = new byte[expectedLength];
-				replyLength = 0;
-				replyLength = nxtInputStream.read(payload, 0, expectedLength);
-			}
+			nxtInputStream.readFully(data, 0, 2);
+			int expectedLength = ((data[0] & 0xFF) | (data[1] & 0xFF) << 8);
+			payload = new byte[expectedLength];
+
+			nxtInputStream.readFully(payload, 0, expectedLength);
 		}
 		catch (IOException e) {
-
-			if (replyLength == 0) {
-				throw new MindstormException("No Reply");
-			}
-			else if (replyLength != expectedLength) {
-				throw new MindstormException("Wrong Number of Bytes");
-			}
 			throw new MindstormException(e, "Read Error");
 		}
 

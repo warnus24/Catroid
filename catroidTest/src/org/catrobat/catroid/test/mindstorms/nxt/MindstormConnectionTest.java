@@ -33,6 +33,7 @@ import org.catrobat.catroid.test.utils.Reflection;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 
 public class MindstormConnectionTest extends AndroidTestCase {
 
@@ -73,7 +74,7 @@ public class MindstormConnectionTest extends AndroidTestCase {
 
 		MindstormConnectionImpl connection = new MindstormConnectionImpl(null);
 		Reflection.setPrivateField(connection, "nxtOutputStream", outStream);
-		Reflection.setPrivateField(connection, "nxtInputStream", inStream);
+		Reflection.setPrivateField(connection, "nxtInputStream", new DataInputStream(inStream));
 
 		Command command = new Command(CommandType.DIRECT_COMMAND, CommandByte.SET_OUTPUT_STATE, false);
 		command.append((byte)0x1);
