@@ -25,6 +25,7 @@ package org.catrobat.catroid.bluetoothtestserver.clienthandlers;
 import org.catrobat.catroid.bluetoothtestserver.BTClientHandler;
 import org.catrobat.catroid.bluetoothtestserver.BTServer;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,31 +33,30 @@ import java.io.OutputStream;
 public class CommonBluetoothTestClientHandler extends BTClientHandler {
 
 	@Override
-	public void handle(InputStream inStream, OutputStream outStream) throws IOException {		
+	public void handle(InputStream inStream, OutputStream outStream) throws IOException {
         byte[] messageLengthBuffer = new byte[1];
 
         while (inStream.read(messageLengthBuffer, 0, 1) != -1) {
             int expectedMessageLength = messageLengthBuffer[0];
-            handleClientMessage(expectedMessageLength, inStream, outStream);
+            handleClientMessage(expectedMessageLength, new DataInputStream(inStream), outStream);
         }
-		
+
 	}
-	
-	private void handleClientMessage(int expectedMessageLength, InputStream inStream, OutputStream outStream) throws IOException {
+
+	private void handleClientMessage(int expectedMessageLength, DataInputStream inStream, OutputStream outStream) throws IOException {
 
         BTServer.writeMessage("Incomming expected message length (byte): " + expectedMessageLength + "\n");
 
         byte[] payload = new byte[expectedMessageLength];
 
-        inStream.read(payload, 0, expectedMessageLength);
+        inStream.readFully(payload, 0, expectedMessageLength);
         BTServer.writeMessage("Received message, length (byte): " + expectedMessageLength + "\n");
 
         byte[] testResult = payload;
 
 		BTServer.writeMessage("\nSending reply message \n");
-        outStream.write(testResult.length);
+		outStream.write(new byte[] {(byte)(0xFF & testResult.length)});
         outStream.write(testResult);
         outStream.flush();
     }
-
 }

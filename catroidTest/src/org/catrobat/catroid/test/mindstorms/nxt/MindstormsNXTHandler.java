@@ -23,63 +23,24 @@
 
 package org.catrobat.catroid.test.mindstorms.nxt;
 
-import junit.framework.Assert;
+import android.util.Log;
 
-import org.catrobat.catroid.lego.mindstorm.Mindstorm;
-import org.catrobat.catroid.lego.mindstorm.MindstormCommand;
-import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 import org.catrobat.catroid.lego.mindstorm.nxt.CommandByte;
 import org.catrobat.catroid.lego.mindstorm.nxt.CommandType;
 import org.catrobat.catroid.lego.mindstorm.nxt.NXTReply;
+import org.catrobat.catroid.test.utils.BluetoothConnectionWrapper;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-public class MindstormTestConnection implements MindstormConnection {
+public class MindstormsNXTHandler implements BluetoothConnectionWrapper.BTClientHandler {
 
-	private Queue<MindstormCommand> sentCommands;
-
-
-	public MindstormTestConnection() {
-		Assert.assertTrue("Need a assert in class", true);
-		this.sentCommands = new LinkedList<MindstormCommand>();
-	}
-
-	private boolean isConnected = false;
-
-	@Override
-	public void init() {
-		isConnected = true;
-	}
-
-	@Override
-	public boolean isConnected() {
-		return isConnected;
-	}
-
-	@Override
-	public void disconnect() {
-		isConnected = false;
-	}
-
-	@Override
-	public byte[] sendAndReceive(MindstormCommand command) {
-		send(command);
-		return receive(command);
-	}
-
-	@Override
-	public void send(MindstormCommand command) {
-		this.sentCommands.add(command);
-	}
-
-
-	protected byte[] receive(MindstormCommand command) {
+	protected byte[] createResponseFromClientRequest(byte[] message) {
 		byte[] reply;
-		byte commandType = command.getRawCommand()[0];
-		byte commandByte = command.getRawCommand()[1];
+		byte commandType = message[0];
+		byte commandByte = message[1];
 
 		if (commandType != 0x00) {
 			return null;
@@ -93,7 +54,7 @@ public class MindstormTestConnection implements MindstormConnection {
 			reply[2] = NXTReply.NO_ERROR;
 
 		} else if (commandByte == CommandByte.GET_INPUT_VALUES.getByte()) {
-			byte inputPort = command.getRawCommand()[2];
+			byte inputPort = message[2];
 			reply = new byte[16];
 
 			reply[0] = CommandType.REPLY_COMMAND.getByte();
@@ -138,18 +99,40 @@ public class MindstormTestConnection implements MindstormConnection {
 		return reply;
 	}
 
-	public MindstormCommand getNextSentCommand(){
-		return this.sentCommands.poll();
+	@Override
+	public void handle(InputStream inStream, OutputStream outStream) throws IOException {
+		byte[] messageLengthBuffer = new byte[2];
+
+		while (inStream.read(messageLengthBuffer, 0, 2) != -1) {
+			int expectedMessageLength = ((messageLengthBuffer[0] & 0xFF) | (messageLengthBuffer[1] & 0xFF) << 8);
+			handleClientMessage(expectedMessageLength, new DataInputStream(inStream), outStream);
+		}
 	}
 
-	public ArrayList<byte[]> getSentCommands() {
+	private void handleClientMessage(int expectedMessageLength, DataInputStream inStream, OutputStream outStream) throws IOException {
 
-		ArrayList<byte[]> commands = new ArrayList<byte[]>();
+		byte[] requestMessage = new byte[expectedMessageLength];
 
-		for (MindstormCommand sentCommand : sentCommands) {
-			commands.add(sentCommand.getRawCommand());
+		inStream.readFully(requestMessage, 0, expectedMessageLength);
+
+		byte[] responseMessage = createResponseFromClientRequest(requestMessage);
+
+		if (responseMessage == null) {
+			return;
 		}
 
-		return commands;
+		outStream.write(getMessageLength(responseMessage));
+		outStream.write(responseMessage);
+		outStream.flush();
+	}
+
+	private byte[] getMessageLength(byte[] message) {
+
+		byte[] messageLength = {
+				(byte) (message.length & 0x00FF),
+				(byte) ((message.length & 0xFF00) >> 8)
+		};
+
+		return messageLength;
 	}
 }

@@ -36,6 +36,7 @@ import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTI2CUltraSonicSensor;
 import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTLightSensor;
 import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTSoundSensor;
 import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTTouchSensor;
+import org.catrobat.catroid.test.utils.BluetoothConnectionWrapper;
 import org.catrobat.catroid.test.utils.Reflection;
 import org.catrobat.catroid.ui.SettingsActivity;
 
@@ -43,6 +44,9 @@ public class LegoNXTImplTest extends AndroidTestCase {
 
 	private Context applicationContext;
 	private SharedPreferences preferences;
+
+	private LegoNXT nxt;
+	BluetoothConnectionWrapper connectionWrapper;
 
 	private static final int PREFERENCES_SAVE_DELAY = 50;
 
@@ -52,6 +56,10 @@ public class LegoNXTImplTest extends AndroidTestCase {
 
 		applicationContext = this.getContext().getApplicationContext();
 		preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+
+		nxt = new LegoNXTImpl(this.applicationContext);
+		connectionWrapper = new BluetoothConnectionWrapper();
+		nxt.setConnection(connectionWrapper);
 	}
 
 	private void setSensor(SharedPreferences.Editor editor, String sensor, int sensorType) {
@@ -59,10 +67,6 @@ public class LegoNXTImplTest extends AndroidTestCase {
 	}
 
 	public void testSensorAssignment() throws InterruptedException {
-		LegoNXT nxt = new LegoNXTImpl(applicationContext);
-		MindstormConnection connection = new MindstormTestConnection();
-		Reflection.setPrivateField(nxt, "mindstormConnection", connection);
-
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.clear();
 
@@ -74,10 +78,7 @@ public class LegoNXTImplTest extends AndroidTestCase {
 		editor.apply();
 		Thread.sleep(PREFERENCES_SAVE_DELAY); // Preferences need some time to get saved
 
-
-		assertFalse("Connection should not yet be in connected state.", connection.isConnected());
 		nxt.initialise();
-		assertTrue("Connection should be in connected state.", connection.isConnected());
 
 		assertNotNull("Motor A not initialized correctly", nxt.getMotorA());
 		assertNotNull("Motor B not initialized correctly", nxt.getMotorB());
@@ -101,10 +102,6 @@ public class LegoNXTImplTest extends AndroidTestCase {
 	}
 
 	public void testSensorAssignmentChange() throws InterruptedException {
-		LegoNXT nxt = new LegoNXTImpl(applicationContext);
-		MindstormConnection connection = new MindstormTestConnection();
-		Reflection.setPrivateField(nxt, "mindstormConnection", connection);
-
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.clear();
 		editor.apply();
@@ -139,13 +136,10 @@ public class LegoNXTImplTest extends AndroidTestCase {
 		int expectedHz = 10000;
 		int durationInMs = 3000;
 
-		LegoNXT nxt = new LegoNXTImpl(this.applicationContext);
-		MindstormTestConnection connection = new MindstormTestConnection();
-		Reflection.setPrivateField(nxt, "mindstormConnection", connection);
+		nxt.initialise();
 		nxt.playTone(inputHz, durationInMs);
 
-		MindstormCommand command = connection.getNextSentCommand();
-		byte[] setOutputState = command.getRawCommand();
+		byte[] setOutputState = connectionWrapper.getNextSentMessage(0, 2);
 
 		assertEquals("Expected Hz not same as input Hz", (byte)expectedHz, setOutputState[2]);
 		assertEquals("Expected Hz not same as input Hz", (byte)(expectedHz >> 8), setOutputState[3]);
@@ -158,13 +152,10 @@ public class LegoNXTImplTest extends AndroidTestCase {
 		int expectedHz = 14000;
 		int durationInMs = 5000;
 
-		LegoNXT nxt = new LegoNXTImpl(this.applicationContext);
-		MindstormTestConnection connection = new MindstormTestConnection();
-		Reflection.setPrivateField(nxt, "mindstormConnection", connection);
+		nxt.initialise();
 		nxt.playTone(inputHz, durationInMs);
 
-		MindstormCommand command = connection.getNextSentCommand();
-		byte[] setOutputState = command.getRawCommand();
+		byte[] setOutputState = connectionWrapper.getNextSentMessage(0, 2);
 
 		assertEquals("Expected Hz over maximum Value (max. Value = 14000)", (byte)expectedHz, setOutputState[2]);
 		assertEquals("Expected Hz over maximum Value (max. Value = 14000)", (byte)(expectedHz >> 8), setOutputState[3]);
@@ -176,13 +167,10 @@ public class LegoNXTImplTest extends AndroidTestCase {
 		int inputDurationInMs = 6000;
 		int expectedDurationInMs = 6000;
 
-		LegoNXT nxt = new LegoNXTImpl(this.applicationContext);
-		MindstormTestConnection connection = new MindstormTestConnection();
-		Reflection.setPrivateField(nxt, "mindstormConnection", connection);
+		nxt.initialise();
 		nxt.playTone(inputHz, inputDurationInMs);
 
-		MindstormCommand command = connection.getNextSentCommand();
-		byte[] setOutputState = command.getRawCommand();
+		byte[] setOutputState = connectionWrapper.getNextSentMessage(0, 2);
 
 		assertEquals("Expected Duration not same as Input Duration", (byte)expectedDurationInMs, setOutputState[4]);
 		assertEquals("Expected Duration not same as Input Duration", (byte)(expectedDurationInMs >> 8), setOutputState[5]);
@@ -193,12 +181,11 @@ public class LegoNXTImplTest extends AndroidTestCase {
 		int inputHz = 13000;
 		int inputDurationInMs = 0;
 
-		LegoNXT nxt = new LegoNXTImpl(this.applicationContext);
-		MindstormTestConnection connection = new MindstormTestConnection();
-		Reflection.setPrivateField(nxt, "mindstormConnection", connection);
+		nxt.initialise();
 		nxt.playTone(inputHz, inputDurationInMs);
 
-		MindstormCommand command = connection.getNextSentCommand();
+		byte[] command = connectionWrapper.getNextSentMessage(0, 2);
+
 		assertEquals("LastSentCommand Should be NULL", null, command);
 	}
 }

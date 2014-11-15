@@ -32,10 +32,8 @@ import org.catrobat.catroid.bluetooth.BTConnectDeviceActivity;
 import org.catrobat.catroid.bluetooth.BTDeviceFactory;
 import org.catrobat.catroid.bluetooth.BTDeviceService;
 import org.catrobat.catroid.bluetooth.BluetoothConnection;
-import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenValues;
-import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
@@ -48,10 +46,8 @@ import org.catrobat.catroid.content.bricks.LegoNxtPlayToneBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.io.StorageHandler;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXTImpl;
 import org.catrobat.catroid.stage.StageActivity;
-import org.catrobat.catroid.test.mindstorms.nxt.MindstormTestConnection;
 import org.catrobat.catroid.test.utils.BluetoothConnectionWrapper;
 import org.catrobat.catroid.test.utils.TestUtils;
 import org.catrobat.catroid.ui.MainMenuActivity;
@@ -123,7 +119,7 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 
 			@Override
 			public <T extends BTDeviceService> BluetoothConnection createBTConnectionForDevice(Class<T> service, String address, UUID deviceUUID, Context applicationContext) {
-				wrappedConnection = new BluetoothConnectionWrapper(address, deviceUUID, false);
+				wrappedConnection = new BluetoothConnectionWrapper(address, deviceUUID, true);
 				return wrappedConnection;
 			}
 		});

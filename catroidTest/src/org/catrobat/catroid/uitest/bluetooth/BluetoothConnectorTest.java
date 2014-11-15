@@ -35,10 +35,12 @@ import org.catrobat.catroid.bluetooth.BluetoothConnection;
 import org.catrobat.catroid.bluetooth.EmptyActivity;
 import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.ServiceProvider;
+import org.catrobat.catroid.test.utils.BluetoothConnectionWrapper;
 import org.catrobat.catroid.test.utils.TestUtils;
 import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -53,7 +55,8 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 	// needed for testdevices
 	// Bluetooth server is running with a name that starts with 'kitty'
 	// e.g. kittyroid-0, kittyslave-0
-	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kitty";
+	//private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kitty";
+	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "NXT";
 //	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "ASUS";
 
 	// needed for testdevices
@@ -66,7 +69,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 	private static final UUID COMMON_BT_TEST_UUID = UUID.fromString("fd2835bb-9d80-41e0-9721-5372b90342da");
 
 	public static final Class<BluetoothTestService> TEST_SERVICE  = BluetoothTestService.class;
-
+	private BluetoothConnectionWrapper connectionWrapper;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -88,7 +91,19 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 		final int requestCode = 11;
 
 		EmptyActivity emptyActivity = getActivity();
-		BTConnectDeviceActivity.setDeviceFactory(new BTDeviceTestFactory());
+		BTConnectDeviceActivity.setDeviceFactory(new BTDeviceFactory() {
+			@Override
+			public <T extends BTDeviceService> BTDeviceService createDevice(Class<T> service, Context context) {
+				return new BluetoothTestService();
+			}
+
+			@Override
+			public <T extends BTDeviceService> BluetoothConnection createBTConnectionForDevice(Class<T> service, String address, UUID deviceUUID, Context applicationContext) {
+				connectionWrapper = new BluetoothConnectionWrapper(address, deviceUUID, new CommonBluetoothTestClientHandler());
+				connectionWrapper.startClientHandlerThread();
+				return connectionWrapper;
+			}
+		});
 
 		BTDeviceConnector connector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
 		connector.connectDevice(TEST_SERVICE, emptyActivity, requestCode, false);
@@ -108,7 +123,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 
 		solo.clickOnText(connectedDeviceName);
 
-		solo.sleep(20000); //yes, has to be that long! waiting for auto connection timeout!
+		solo.sleep(2000); //yes, has to be that long! waiting for auto connection timeout!
 
 		Instrumentation.ActivityResult result = getActivity().getActivityResult(requestCode);
 		assertEquals("Result should be OK", Activity.RESULT_OK, result.getResultCode());
@@ -124,6 +139,9 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 		solo.sleep(2000);
 		byte[] receivedMessage = service.receiveTestMessage();
 		assertMessageEquals(expectedMessage, receivedMessage);
+
+		assertMessageEquals(expectedMessage, connectionWrapper.getNextSentMessage(1));
+		assertMessageEquals(expectedMessage, connectionWrapper.getNextReceivedMessage(1));
 
 		connector.disconnectDevices();
 	}
@@ -165,8 +183,8 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 		}
 
 		public void connect() throws IOException{
-			inStream = connection.getBluetoothSocket().getInputStream();
-			outStream = connection.getBluetoothSocket().getOutputStream();
+			inStream = connection.getInputStream();
+			outStream = connection.getOutputStream();
 
 			isConnected = true;
 		}
@@ -184,7 +202,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 
 		public void sendTestMessage(byte[] message) throws IOException {
 
-			outStream.write(message.length);
+			outStream.write((byte)(0xFF & message.length));
 			outStream.write(message);
 			outStream.flush();
 		}
@@ -223,16 +241,30 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCase<
 		}
 	}
 
-	private class BTDeviceTestFactory implements BTDeviceFactory {
+	// TODO: move this class to Bluetoothtest server or internal lib that is usable from tests and the bluetooth test server
+	public static class CommonBluetoothTestClientHandler implements BluetoothConnectionWrapper.BTClientHandler {
 
 		@Override
-		public <T extends BTDeviceService> BTDeviceService createDevice(Class<T> service, Context context) {
-			return new BluetoothTestService();
+		public void handle(InputStream inStream, OutputStream outStream) throws IOException {
+			byte[] messageLengthBuffer = new byte[1];
+
+			while (inStream.read(messageLengthBuffer, 0, 1) != -1) {
+				int expectedMessageLength = messageLengthBuffer[0];
+				handleClientMessage(expectedMessageLength, new DataInputStream(inStream), outStream);
+			}
 		}
 
-		@Override
-		public <T extends BTDeviceService> BluetoothConnection createBTConnectionForDevice(Class<T> service, String address, UUID deviceUUID, Context applicationContext) {
-			return new BluetoothConnection(address, deviceUUID);
+		private void handleClientMessage(int expectedMessageLength, DataInputStream inStream, OutputStream outStream) throws IOException {
+
+			byte[] payload = new byte[expectedMessageLength];
+
+			inStream.readFully(payload, 0, expectedMessageLength);
+
+			byte[] testResult = payload;
+
+			outStream.write(new byte[] {(byte)(0xFF & testResult.length)});
+			outStream.write(testResult);
+			outStream.flush();
 		}
 	}
 }
