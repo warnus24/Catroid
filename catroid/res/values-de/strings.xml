@@ -532,11 +532,11 @@
     <string name="select_device">Wähle dein</string>
     <string name="scanning">Suche</string>
     <string name="connecting_please_wait">Verbindung wird hergestellt.\nBitte warten…</string>
-     <string name="pairing_message">Verbinde nach dem Pairing.</string>
-    <string name="problem_at_closing">Problem beim Schließen der Verbindung!</string>
+     <!--<string name="pairing_message">Verbinde nach dem Pairing.</string>-->
+    <!--<string name="problem_at_closing">Problem beim Schließen der Verbindung!</string>-->
     <string name="bt_connection_failed">Verbindung zum Gerät fehlgeschlagen!</string>
     <string name="bt_auto_connection_failed">Die automaische Verbindung zum Gerät ist fehlgeschlagen!</string>
-    <string name="no_paired_nxt">Kein verbundenes NXT gefunden</string>
+    <!--<string name="no_paired_nxt">Kein verbundenes NXT gefunden</string>-->
     <string name="none_found">Keine nicht verbundenen Geräte gefunden</string>
     <string name="none_paired">Keine verbundenen Geräte gefunden</string>
     <!--  -->
@@ -557,6 +557,11 @@
     <string name="nxt_motor_c">C</string>
     <string name="nxt_motor_b_and_c">B + C</string>
     <string name="nxt_motor_all">Alle</string>
+
+    <string name="nxt_choose_sensor_1">Sensor an Anschluss 1</string>
+    <string name="nxt_choose_sensor_2">Sensor an Anschluss 2</string>
+    <string name="nxt_choose_sensor_3">Sensor an Anschluss 3</string>
+    <string name="nxt_choose_sensor_4">Sensor an Anschluss 4</string>
 
     <string name="nxt_no_sensor">none</string>
     <string name="nxt_sensor_touch">NXT Berührungssensor</string>

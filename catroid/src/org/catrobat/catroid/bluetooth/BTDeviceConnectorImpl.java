@@ -26,7 +26,6 @@ import android.app.Activity;
 import android.content.Intent;
 
 import org.catrobat.catroid.common.ServiceProvider;
-import org.catrobat.catroid.utils.Utils;
 
 import java.util.HashSet;
 import java.util.Set;

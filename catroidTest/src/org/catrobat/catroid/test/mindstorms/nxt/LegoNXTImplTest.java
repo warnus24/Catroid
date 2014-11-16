@@ -28,8 +28,6 @@ import android.preference.PreferenceManager;
 import android.test.AndroidTestCase;
 
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.lego.mindstorm.MindstormCommand;
-import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXTImpl;
 import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTI2CUltraSonicSensor;
@@ -37,7 +35,6 @@ import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTLightSensor;
 import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTSoundSensor;
 import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTTouchSensor;
 import org.catrobat.catroid.test.utils.BluetoothConnectionWrapper;
-import org.catrobat.catroid.test.utils.Reflection;
 import org.catrobat.catroid.ui.SettingsActivity;
 
 public class LegoNXTImplTest extends AndroidTestCase {
