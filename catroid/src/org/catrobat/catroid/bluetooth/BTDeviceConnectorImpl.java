@@ -23,6 +23,7 @@
 package org.catrobat.catroid.bluetooth;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import org.catrobat.catroid.common.ServiceProvider;
@@ -68,8 +69,8 @@ public class BTDeviceConnectorImpl implements BTDeviceConnector {
 	}
 
 	protected Intent createStartIntent(Class<? extends BTDeviceService> serviceToStart,
-			Activity activity, boolean autoConnect) {
-		Intent intent = new Intent(activity, BTConnectDeviceActivity.class);
+			Context context, boolean autoConnect) {
+		Intent intent = new Intent(context, BTConnectDeviceActivity.class);
 		intent.putExtra(BTConnectDeviceActivity.SERVICE_TO_START, serviceToStart);
 		intent.putExtra(BTConnectDeviceActivity.AUTO_CONNECT, autoConnect);
 		return intent;
