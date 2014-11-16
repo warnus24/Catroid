@@ -25,7 +25,6 @@ package org.catrobat.catroid.test.mindstorms.nxt;
 
 import android.test.AndroidTestCase;
 
-import org.catrobat.catroid.lego.mindstorm.MindstormCommand;
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 import org.catrobat.catroid.lego.mindstorm.MindstormConnectionImpl;
 import org.catrobat.catroid.lego.mindstorm.nxt.CommandByte;

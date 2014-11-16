@@ -243,7 +243,7 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 		super.disconnect();
 	}
 
-	private class WrappedInputStream extends InputStream {
+	private final class WrappedInputStream extends InputStream {
 
 		public InputStream inputStream;
 
@@ -280,7 +280,7 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 		}
 	}
 
-	private class WrappedOutputStream extends OutputStream {
+	private final class WrappedOutputStream extends OutputStream {
 
 		private OutputStream outputStream;
 

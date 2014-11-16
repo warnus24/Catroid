@@ -23,8 +23,6 @@
 
 package org.catrobat.catroid.lego.mindstorm;
 
-import android.util.Log;
-
 import org.catrobat.catroid.bluetooth.BluetoothConnection;
 
 import java.io.DataInputStream;

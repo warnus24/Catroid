@@ -23,8 +23,6 @@
 
 package org.catrobat.catroid.test.mindstorms.nxt;
 
-import android.util.Log;
-
 import org.catrobat.catroid.lego.mindstorm.nxt.CommandByte;
 import org.catrobat.catroid.lego.mindstorm.nxt.CommandType;
 import org.catrobat.catroid.lego.mindstorm.nxt.NXTReply;
