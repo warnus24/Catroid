@@ -151,6 +151,9 @@
             android:name=".bluetooth.DeviceListActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity
+            android:name=".bluetooth.BTConnectDeviceActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
             android:name=".soundrecorder.SoundRecorderActivity"
             android:exported="true"
             android:label="@string/soundrecorder_name"
@@ -166,6 +169,6 @@
 
         <service android:name=".transfers.ProjectUploadService" />
         <service android:name=".transfers.ProjectDownloadService" />
-        <service android:name="com.parrot.freeflight.service.DroneControlService"/>        
+        <service android:name="com.parrot.freeflight.service.DroneControlService"/>
     </application>
 </manifest>

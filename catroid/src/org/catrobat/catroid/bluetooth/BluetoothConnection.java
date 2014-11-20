@@ -28,6 +28,8 @@ import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.UUID;
@@ -154,6 +156,14 @@ public class BluetoothConnection {
 
 	public BluetoothSocket getBluetoothSocket() {
 		return bluetoothSocket;
+	}
+
+	public InputStream getInputStream() throws IOException {
+		return bluetoothSocket.getInputStream();
+	}
+
+	public OutputStream getOutputStream() throws IOException {
+		return bluetoothSocket.getOutputStream();
 	}
 
 	public State getState() {

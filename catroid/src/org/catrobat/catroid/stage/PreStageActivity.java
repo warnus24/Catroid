@@ -23,6 +23,7 @@
 package org.catrobat.catroid.stage;
 
 import android.annotation.SuppressLint;
+import android.os.Message;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -32,7 +33,6 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -46,14 +46,16 @@ import org.catrobat.catroid.arduino.Arduino;
 import org.catrobat.catroid.arduino.ArduinoBtCommunicator;
 import org.catrobat.catroid.arduino.ArduinoReadPinData;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
+import org.catrobat.catroid.bluetooth.BTDeviceConnector;
+import org.catrobat.catroid.bluetooth.BTDeviceService;
 import org.catrobat.catroid.camera.CameraManager;
+import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
-import org.catrobat.catroid.legonxt.LegoNXT;
-import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
 import org.catrobat.catroid.ui.BaseActivity;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import org.catrobat.catroid.utils.LedUtil;
@@ -77,10 +79,10 @@ public class PreStageActivity extends BaseActivity {
 	private int resources = Brick.NO_RESOURCES;
 	private int requiredResourceCounter;
 
-	private static LegoNXT legoNXT;
 	private static Arduino arduino;
 	private boolean autoConnect = false;
 	private ProgressDialog connectingProgressDialog;
+
 	private static TextToSpeech textToSpeech;
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
 
@@ -114,11 +116,7 @@ public class PreStageActivity extends BaseActivity {
 		}
 
 		if ((requiredResources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
-			if (legoNXT == null) {
-				startBluetoothCommunication(true, Brick.BLUETOOTH_LEGO_NXT);
-			} else {
-				resourceInitialized();
-			}
+			connectBTDevice(CatrobatService.LEGO_NXT, true);
 		}
 
 		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
@@ -171,6 +169,11 @@ public class PreStageActivity extends BaseActivity {
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}
+	}
+
+	private void connectBTDevice(Class<? extends BTDeviceService> service, boolean autoConnect) {
+		BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
+		btConnector.connectDevice(service, this, REQUEST_CONNECT_DEVICE, autoConnect);
 	}
 
 	public DroneInitializer getDroneInitializer() {
@@ -252,13 +255,12 @@ public class PreStageActivity extends BaseActivity {
 			textToSpeech.stop();
 			textToSpeech.shutdown();
 		}
-		if (legoNXT != null) {
-			legoNXT.pauseCommunicator();
-		}
 
 		if(arduino != null) {
 			arduino.pauseCommunicator();
 		}
+		BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
+		btConnector.disconnectDevices();
 
         if (FaceDetectionHandler.isFaceDetectionRunning()) {
             FaceDetectionHandler.stopFaceDetection();
@@ -267,14 +269,14 @@ public class PreStageActivity extends BaseActivity {
 
 	//all resources that should not have to be reinitialized every stage start
 	public static void shutdownPersistentResources() {
-		if (legoNXT != null) {
-			legoNXT.destroyCommunicator();
-			legoNXT = null;
-		}
 		if (arduino != null) {
 			arduino.destroyCommunicator();
 			arduino = null;
 		}
+
+		BTDeviceConnector btConnector = ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR);
+		btConnector.disconnectDevices();
+
 		deleteSpeechFiles();
 		if (LedUtil.isActive()) {
 			LedUtil.destroy();
@@ -343,7 +345,7 @@ public class PreStageActivity extends BaseActivity {
 						Log.d("Prestage", "RESULT_OK");
 						int bluetoothDeviceConstant = data.getExtras().getInt(DeviceListActivity.BLUETOOTH_DEVICE);
 						switch (bluetoothDeviceConstant) {
-							//check if this is correct
+//check if this is correct
 							case Brick.BLUETOOTH_SENSORS_ARDUINO:
 								Log.d("Prestage", "BLUETOOTH_SENSORS_ARDUINO");
 								arduino = new Arduino(this, recieveHandler);
@@ -353,38 +355,26 @@ public class PreStageActivity extends BaseActivity {
 								arduino.startBTCommunicator(addressArduino);
 								Log.d("Prestage", "After startBtCommunicator(address)");
 								break;
-							case Brick.BLUETOOTH_LEGO_NXT:
-								Log.d("Prestage", "BLUETOOTH_LEGO_NXT");
-								legoNXT = new LegoNXT(this, recieveHandler);
-								String addressLego = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-								autoConnect = data.getExtras().getBoolean(DeviceListActivity.AUTO_CONNECT);
-								legoNXT.startBTCommunicator(addressLego);
-								break;
 							default:
 								Log.d("Prestage", "BLUETOOTH_DEVICE_UNKNOWN, deviceConstant was = " + bluetoothDeviceConstant);
 								break;
 						}
 						break;
-
 					case Activity.RESULT_CANCELED:
 						connectingProgressDialog.dismiss();
 						Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_LONG).show();
 						resourceFailed();
 						break;
-
 					case DeviceListActivity.BLUETOOTH_ACTIVATION_CANCELED:
 						Toast.makeText(PreStageActivity.this, R.string.notification_blueth_err, Toast.LENGTH_LONG).show();
 						resourceFailed();
 						break;
-
 					case DeviceListActivity.BLUETOOTH_NOT_SUPPORTED:
 						Toast.makeText(PreStageActivity.this, R.string.notification_blueth_err, Toast.LENGTH_LONG).show();
 						resourceFailed();
 						break;
-
 				}
 				break;
-
 			case REQUEST_TEXT_TO_SPEECH:
 				if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
 					textToSpeech = new TextToSpeech(getApplicationContext(), new OnInitListener() {
@@ -458,22 +448,6 @@ public class PreStageActivity extends BaseActivity {
 
 			Log.i("bt", "message" + myMessage.getData().getInt("message"));
 			switch (myMessage.getData().getInt("message")) {
-				case LegoNXTBtCommunicator.STATE_CONNECTED:
-					//autoConnect = false;
-					connectingProgressDialog.dismiss();
-					resourceInitialized();
-					break;
-				case LegoNXTBtCommunicator.STATE_CONNECTERROR:
-					Toast.makeText(PreStageActivity.this, R.string.bt_connection_failed, Toast.LENGTH_SHORT).show();
-					connectingProgressDialog.dismiss();
-					legoNXT.destroyCommunicator();
-					legoNXT = null;
-					if (autoConnect) {
-						startBluetoothCommunication(false, Brick.BLUETOOTH_LEGO_NXT);
-					} else {
-						resourceFailed();
-					}
-					break;
 				case ArduinoBtCommunicator.STATE_CONNECTED:
 					//autoConnect = false;
 					connectingProgressDialog.dismiss();

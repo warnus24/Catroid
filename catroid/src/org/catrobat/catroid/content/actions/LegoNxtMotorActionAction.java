@@ -26,16 +26,17 @@ import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
+import org.catrobat.catroid.common.CatrobatService;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick.Motor;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
-import org.catrobat.catroid.legonxt.LegoNXT;
+import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 
 public class LegoNxtMotorActionAction extends TemporalAction {
 	private static final int MIN_SPEED = -100;
 	private static final int MAX_SPEED = 100;
-	private static final int NO_DELAY = 0;
 
 	private Motor motorEnum;
 	private Formula speed;
@@ -57,14 +58,26 @@ public class LegoNxtMotorActionAction extends TemporalAction {
 			speedValue = MAX_SPEED;
 		}
 
-		if (motorEnum.equals(Motor.MOTOR_A_C)) {
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_A.ordinal(), speedValue, 0);
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, Motor.MOTOR_C.ordinal(), speedValue, 0);
-		} else {
-			LegoNXT.sendBTCMotorMessage(NO_DELAY, motorEnum.ordinal(), speedValue, 0);
+		LegoNXT nxt = ServiceProvider.getService(CatrobatService.LEGO_NXT);
+		if (nxt == null) {
+			return;
 		}
-		//LegoNXT.sendBTCMotorMessage((int) (duration * 1000), motor, 0, 0);
 
+		switch (motorEnum) {
+			case MOTOR_A:
+				nxt.getMotorA().move(speedValue);
+				break;
+			case MOTOR_B:
+				nxt.getMotorB().move(speedValue);
+				break;
+			case MOTOR_C:
+				nxt.getMotorC().move(speedValue);
+				break;
+			case MOTOR_B_C:
+				nxt.getMotorB().move(speedValue);
+				nxt.getMotorC().move(speedValue);
+				break;
+		}
 	}
 
 	public void setMotorEnum(Motor motorEnum) {

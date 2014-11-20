@@ -282,7 +282,7 @@
     <string name="title_paired_devices" >"Dispositivos pareados"</string >
     <string name="title_other_devices" >"Novos dispositivos"</string >
     <string name="button_scan" >"Buscar dispositivos Bluetooth"</string >
-    <string name="select_device" >"Selecione seu Lego Mindstorms NXT"</string >
+    <string name="select_device" >"Selecione seu"</string >
     <string name="scanning" >"Procurando"</string >
     <string name="connecting_please_wait" >"Conectando ao seu dispositivo.\nPor favor, aguarde…"</string >
     <!-- <string name="pairing_message">"Após o pareamento, conectar."</string> -->
@@ -303,13 +303,13 @@
     <string name="nxt_play_tone" >"NXT tocar som"</string >
     <string name="tone_duration" >"Duração"</string >
     <string name="nxt_tone_frequency" >"Frequência"</string >
-    <string name="nxt_tone_hundred_hz" >"x100Hz"</string >
+    <string name="nxt_tone_hundred_hz" >"x 100Hz"</string >
     <string name="number_to_small" >"Valor muito pequeno!"</string >
     <string name="number_to_big" >"Valor muito grande!"</string >
     <string name="nxt_motor_a" >A</string >
     <string name="nxt_motor_b" >B</string >
     <string name="nxt_motor_c" >C</string >
-    <string name="nxt_motor_a_and_c" >A+C</string >
+    <string name="nxt_motor_b_and_c" >B + C</string >
     <string name="nxt_motor_all" >"Todos"</string >
     <!--  -->
 

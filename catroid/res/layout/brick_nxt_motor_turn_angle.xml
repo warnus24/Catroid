@@ -68,7 +68,7 @@
 
         <TextView
             android:id="@+id/motor_turn_angle_text_view"
-            style="@style/BrickText.SingleLine" />
+            style="@style/BrickPrototypeTextView" />
 
         <TextView
             android:id="@+id/motor_turn_angle_edit_text"

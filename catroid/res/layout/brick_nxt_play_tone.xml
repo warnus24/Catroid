@@ -61,7 +61,7 @@
 
         <TextView
             android:id="@+id/nxt_tone_duration_text_view"
-            style="@style/BrickText.SingleLine" >
+            style="@style/BrickPrototypeTextView" >
         </TextView >
 
         <TextView
@@ -90,7 +90,7 @@
 
         <TextView
             android:id="@+id/nxt_tone_freq_text_view"
-            style="@style/BrickText.SingleLine" >
+            style="@style/BrickPrototypeTextView" >
         </TextView >
 
         <TextView
