@@ -86,15 +86,15 @@ public class LegoNXTImplTest extends AndroidTestCase {
 				nxt.getSensor1() instanceof NXTLightSensor);
 
 		assertNotNull("Sensor 2 not initialized correctly", nxt.getSensor2());
-		assertTrue("Sensor 1 is of wrong instance, SensorFactory may has an error",
+		assertTrue("Sensor 2 is of wrong instance, SensorFactory may has an error",
 				nxt.getSensor2() instanceof NXTSoundSensor);
 
 		assertNotNull("Sensor 3 not initialized correctly", nxt.getSensor3());
-		assertTrue("Sensor 1 is of wrong instance, SensorFactory may has an error",
+		assertTrue("Sensor 3 is of wrong instance, SensorFactory may has an error",
 				nxt.getSensor3() instanceof NXTTouchSensor);
 
 		assertNotNull("Sensor 4 not initialized correctly", nxt.getSensor4());
-		assertTrue("Sensor 1 is of wrong instance, SensorFactory may has an error",
+		assertTrue("Sensor 4 is of wrong instance, SensorFactory may has an error",
 				nxt.getSensor4() instanceof NXTI2CUltraSonicSensor);
 	}
 
@@ -122,8 +122,8 @@ public class LegoNXTImplTest extends AndroidTestCase {
 		editor.apply();
 		Thread.sleep(PREFERENCES_SAVE_DELAY); // Preferences need some time to get saved
 
-		assertNotNull("Sensor 1 not initialized correctly", nxt.getSensor1());
-		assertTrue("Sensor 1 is of wrong instance, SensorFactory may has an error",
+		assertNotNull("Sensor 1 not reinitialized correctly", nxt.getSensor1());
+		assertTrue("Sensor 1 is of wrong instance now, SensorFactory may has an error",
 				nxt.getSensor1() instanceof NXTTouchSensor);
 	}
 
