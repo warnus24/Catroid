@@ -24,6 +24,8 @@
 package org.catrobat.catroid.uitest.mindstorms.nxt;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.robotium.solo.Solo;
 
@@ -37,6 +39,8 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
  */
 public class LegoNXTPreferencesTests extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
+	private SharedPreferences mPreferences;
+
 	public LegoNXTPreferencesTests() {
 		super(MainMenuActivity.class);
 	}
@@ -44,30 +48,66 @@ public class LegoNXTPreferencesTests extends BaseActivityInstrumentationTestCase
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		Context applicationContext = getInstrumentation().getTargetContext().getApplicationContext();
+		mPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+		mPreferences.edit().clear();
+		mPreferences.edit().apply();
 		UiTestUtils.prepareStageForTest();
 	}
 
-	public void testNXTPreferencesOnOff() {
-		// Button: Enable Lego Mindstorm Bricks
+	public void testNXTPreferencesOnOff() throws InterruptedException {
+
+		boolean nxtPreferencesOnOff = mPreferences.getBoolean("setting_mindstorms_enable_nxt_bricks", false);
+
+		String preferenceTitle = solo.getString(R.string.preference_title_enable_mindstorms_bricks);
 		solo.clickOnActionBarItem(R.id.settings);
-		solo.clickOnButton(R.string.settings);
-		//UiTestUtils.clickOnExactText(solo, "Enable Lego Mindstorm Bricks");
-		//solo.clickOnButton(R.string.preference_title_enable_mindstorms_bricks);
-		//solo.clickOnButton(R.string.preference_title_enable_mindstorms_bricks);
-		//solo.clickOnCheckBox(R.string.preference_title_enable_mindstorm_bricks);
-		//solo.clickOnCheckBox(R.string.preference_title_enable_mindstorm_bricks);
+		solo.waitForText(preferenceTitle);
+		solo.clickOnText(preferenceTitle);
+		solo.waitForText(preferenceTitle);
+		solo.clickOnText(preferenceTitle);
 
-		//solo.clickOnToggleButton("Enable Lego Mindstorm Bricks");
-		solo.clickLongOnText("Enable Lego Mindstorm Bricks");
+		solo.goBack();
+		solo.goBack();
 
+		boolean enableNXTBricks = mPreferences.getBoolean("setting_mindstorms_enable_nxt_bricks", nxtPreferencesOnOff);
 
+		assertTrue("NXT Category Brick ON/OFF not changed", nxtPreferencesOnOff != enableNXTBricks);
 
-		//solo.clickOnButton(applicationContext.getString(R.string.preference_title_enable_mindstorms_bricks));
+		solo.clickOnText(solo.getString(R.string.main_menu_new));
+		solo.enterText(0, "RobotiumTest");
+		solo.clickOnText(solo.getString(R.string.ok));
+		solo.clickOnText(solo.getString(R.string.background));
+		solo.clickOnText(solo.getString(R.string.scripts));
+		UiTestUtils.clickOnBottomBar(solo, R.id.button_add);
 
+		if(enableNXTBricks)
+		{
+			assertTrue("NXT Category Brick shown.",solo.searchText(solo.getString(R.string.category_lego_nxt)));
+		}
+		else
+		{
+			assertFalse("NXT Category Brick not shown.", solo.searchText(solo.getString(R.string.category_lego_nxt)));
+		}
 
+		solo.clickOnActionBarItem(R.id.settings);
+		solo.waitForText(preferenceTitle);
+		solo.clickOnText(preferenceTitle);
+		solo.waitForText(preferenceTitle);
+		solo.clickOnText(preferenceTitle);
 
+		solo.goBack();
+		solo.goBack();
+
+		enableNXTBricks = mPreferences.getBoolean("setting_mindstorms_enable_nxt_bricks", !nxtPreferencesOnOff);
+		assertTrue("SecondCheck: NXT Category Brick ON/OFF not changed", nxtPreferencesOnOff == enableNXTBricks);
+
+		if(enableNXTBricks)
+		{
+			assertTrue("SecondCheck: NXT Category Brick shown.", solo.searchText(solo.getString(R.string.category_lego_nxt)));
+		}
+		else
+		{
+			assertFalse("SecondCheck: NXT Category Brick not shown.", solo.searchText(solo.getString(R.string.category_lego_nxt)));
+		}
 	}
-
-
-
 }
