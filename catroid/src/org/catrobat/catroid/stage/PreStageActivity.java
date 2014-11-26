@@ -167,8 +167,9 @@ public class PreStageActivity extends BaseActivity {
 			} else {
 				resourceFailed();
 			}
-			if (useFlash)
+			if (useFlash) {
 				ledInitialize();
+			}
 		}
 		if (useFrontCamera && useFaceDetector && useFlash) {
 			// front camera and ~flash and warning

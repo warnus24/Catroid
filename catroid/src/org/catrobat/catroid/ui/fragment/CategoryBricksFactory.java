@@ -222,14 +222,13 @@ public class CategoryBricksFactory {
 		motionBrickList.add(new PointToBrick(null));
 		motionBrickList.add(new GlideToBrick(BrickValues.X_POSITION, BrickValues.Y_POSITION,
 				BrickValues.GLIDE_SECONDS));
-		motionBrickList.add(new VibrationBrick(BrickValues.VIBRATE_SECONDS));
 
 		if (!isBackground(sprite)) {
 			motionBrickList.add(new GoNStepsBackBrick(BrickValues.GO_BACK));
 			motionBrickList.add(new ComeToFrontBrick());
 		}
 		if (BuildConfig.FEATURE_VIBRATION_BRICK_ENABLED) {
-			motionBrickList.add(new VibrationBrick(BrickValues.VIBRATE_MILLISECONDS));
+			motionBrickList.add(new VibrationBrick(BrickValues.VIBRATE_SECONDS));
 		}
 
 		return motionBrickList;
