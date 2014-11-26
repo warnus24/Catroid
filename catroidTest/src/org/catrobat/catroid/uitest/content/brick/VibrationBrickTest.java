@@ -48,7 +48,7 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 
 	private static final String TAG = VibrationBrickTest.class.getSimpleName();
 
-	private static final int WLAN_DELAY_MS = 1000;
+	private static final int WLAN_DELAY_MS = 500;
 
 	private VibrationBrick vibrationBrick5Seconds;
 	private VibrationBrick vibrationBrick15Seconds;
@@ -106,7 +106,7 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 
 		Log.d(TAG, "sleep four seconds. the phone should have stopped vibrating");
 
-		solo.sleep(4000);
+		solo.sleep(5000);
 		Log.d(TAG, "checking vibration sensor value");
 		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE);
 		solo.sleep(WLAN_DELAY_MS);
