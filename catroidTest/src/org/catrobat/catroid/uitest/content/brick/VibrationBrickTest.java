@@ -48,7 +48,7 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 
 	private static final String TAG = VibrationBrickTest.class.getSimpleName();
 
-	private static final int WLAN_DELAY_MS = 500;
+	private static final int WLAN_DELAY_MS = 1000;
 
 	private VibrationBrick vibrationBrick5Seconds;
 	private VibrationBrick vibrationBrick15Seconds;
