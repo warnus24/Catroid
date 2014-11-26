@@ -118,6 +118,48 @@ public final class SensorTestServerConnection {
 		}
 	}
 
+	public static void checkVibrationSensorValue(int expected, int repetitions) {
+
+		char expectedChar;
+		String assertString;
+		String response = null;
+		if (expected == SET_VIBRATION_ON_VALUE) {
+			expectedChar = '1';
+			assertString = "Error: Vibrator is turned off!";
+		} else {
+			expectedChar = '0';
+			assertString = "Error: Vibrator is turned on!";
+		}
+		try {
+			for(int i = 0; i < repetitions; i++) {
+				connectToArduinoServer();
+				Thread.sleep(NETWORK_DELAY_MS);
+				Log.d(TAG, "requesting sensor value: ");
+
+				sendToServer.writeByte(Integer.toHexString(GET_VIBRATION_VALUE_ID).charAt(0));
+				sendToServer.flush();
+				Thread.sleep(NETWORK_DELAY_MS);
+				response = receiveFromServer.readLine();
+				Log.d(TAG, "response received! " + response);
+
+				if(response.contains("VIBRATION_END") && response.charAt(0) == expectedChar) {
+					clientSocket.close();
+					return;
+				}
+				clientSocket.close();
+			}
+
+			assertFalse("Wrong Command!", response.contains("ERROR"));
+			assertTrue("Wrong data received!", response.contains("VIBRATION_END"));
+			assertTrue(assertString, response.charAt(0) == expectedChar);
+
+		} catch (IOException ioException) {
+			throw new AssertionFailedError("Data exchange failed! Check server connection!");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void checkVibrationSensorValue(int expected) {
 
 		char expectedChar;

@@ -93,22 +93,18 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 		Log.d(TAG, "checking vibration sensor value");
 		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE);
 		solo.sleep(WLAN_DELAY_MS);
-		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE);
-		solo.sleep(WLAN_DELAY_MS);
 
 		Log.d(TAG, "Vibration starts after pressing play");
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 
 		solo.sleep(WLAN_DELAY_MS);
-		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_ON_VALUE);
-		solo.sleep(WLAN_DELAY_MS);
+		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_ON_VALUE, 5);
 
 		Log.d(TAG, "sleep four seconds. the phone should have stopped vibrating");
-
-		solo.sleep(5000);
+		solo.sleep(6000);
 		Log.d(TAG, "checking vibration sensor value");
-		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE);
+		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE, 5);
 		solo.sleep(WLAN_DELAY_MS);
 
 		Log.d(TAG, "tapping the screen should turn on the vibrator");
@@ -122,8 +118,6 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 		solo.goBack();
 
 		Log.d(TAG, "checking vibration sensor value");
-		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE);
-		solo.sleep(WLAN_DELAY_MS);
 		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE);
 		solo.sleep(WLAN_DELAY_MS);
 
