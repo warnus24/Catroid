@@ -91,7 +91,7 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 		assertEquals( "Incorrect number of bricks", 1, projectBrickList.size() );
 
 		Log.d(TAG, "checking vibration sensor value");
-		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE, 20);
+		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE);
 		solo.sleep(WLAN_DELAY_MS);
 
 		Log.d(TAG, "Vibration starts after pressing play");
@@ -99,8 +99,9 @@ public class VibrationBrickTest extends BaseActivityInstrumentationTestCase<Scri
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 
 		solo.sleep(WLAN_DELAY_MS);
-		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_ON_VALUE, 20);
+		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_ON_VALUE, 5);
 
+		Log.d(TAG, "sleep four seconds. the phone should have stopped vibrating");
 		solo.sleep(1000);
 		Log.d(TAG, "checking vibration sensor value");
 		SensorTestServerConnection.checkVibrationSensorValue(SensorTestServerConnection.SET_VIBRATION_OFF_VALUE, 20);
