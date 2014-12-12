@@ -686,7 +686,6 @@ public class FormulaEditorEditTextTest extends BaseActivityInstrumentationTestCa
 				hyphenOrCostumephraseOrSpritephraseFound);
 	}
 
-	@Device
 	public void testComputeDialog() {
 		//For initialization
 		SensorLoudness.getSensorLoudness();
