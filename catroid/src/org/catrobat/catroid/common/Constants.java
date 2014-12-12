@@ -50,6 +50,7 @@ public final class Constants {
 	public static final String IMAGE_DIRECTORY = "images";
 	public static final String SOUND_DIRECTORY = "sounds";
 	public static final String BACKPACK_DIRECTORY = "backpack";
+	public static final String STANDALONE_PROJECT_POCKET_CODE_DIRECTORY = "/Standalone/";
 
 	public static final String BACKPACK_SOUND_DIRECTORY = "backpack_sound";
 	public static final String BACKPACK_IMAGE_DIRECTORY = "backpack_image";

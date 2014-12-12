@@ -31,7 +31,7 @@
         android:smallScreens="true"
         android:xlargeScreens="false" />
 
-    <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -46,9 +46,6 @@
     <!--<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>-->
     <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>-->
 
-    <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <!-- For testing purposes, this is automatically removed in live builds, but not in jenkins builds -->
     <uses-permission android:name="android.permission.SET_ANIMATION_SCALE" />
@@ -59,8 +56,8 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@drawable/icon"
+        android:label="Space Portal"
         android:name=".CatroidApplication" 
         android:theme="@style/Theme.Catroid" >
         <activity
@@ -71,39 +68,6 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
-                    android:pathPattern="@string/catroid_extension_pathPattern"
-                    android:scheme="http" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
-                    android:pathPattern="@string/catroid_extension_pathPattern"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data
-                    android:host="*"
-                    android:mimeType="application/catrobat+zip"
-                    android:pathPattern="@string/catroid_extension_pathPattern"
-                    android:scheme="file" />
             </intent-filter>
         </activity>
         <activity
@@ -153,13 +117,7 @@
             android:exported="true"
             android:label="@string/soundrecorder_name"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.GET_CONTENT" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="audio/*" />
-            </intent-filter>
         </activity>
 
         <service android:name=".transfers.ProjectUploadService" />

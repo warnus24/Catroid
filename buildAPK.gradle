@@ -6,6 +6,7 @@ buildscript {
         repositories {
             mavenCentral()
         }
+        classpath 'com.android.tools.build:gradle:1.0.0'
         classpath 'org.rauschig:jarchivelib:0.6.0'
     }
 }
@@ -17,7 +18,7 @@ ext {
 apply plugin: 'com.android.application'
 android {
     defaultConfig {
-        buildConfigField "String", "START_PROJECT", "\"WHACK A MOLE\""
+        buildConfigField "String", "START_PROJECT", "\"SPACE PORTAL\""
     }
 
     productFlavors {
@@ -27,9 +28,12 @@ android {
         }
 
         standalone {
-            applicationId 'org.catrobat.catroid.' + getPackageNameSuffix()
+            //applicationId 'org.catrobat.catroid.' + getPackageNameSuffix()
+            applicationId 'org.catrobat.catroid.standalone.spaceportal'
             versionCode 1
+            println "VersionCode is " + versionCode
             versionName '1.0-standalone'
+            println "VersionName is " + versionName
             buildConfigField "String", "START_PROJECT", "\"${getStartingProjectName()}\""
         }
     }
@@ -140,7 +144,7 @@ task buildStandalone(dependsOn: ':downloadProject') << {
 }
 
 task downloadProject() << {
-    def id = 719; //TODO temorary placeholder for the projectID. remove later on
+    def id = 1683; //TODO temorary placeholder for the projectID. remove later on
     if (project.hasProperty("projectID")) {
         id = project["projectID"]
     }
@@ -160,4 +164,9 @@ task commandlineAdbInstallDebugTest(dependsOn: 'commandlineAdbInstallCatroidDebu
 
 task testremoveIntentFilters() << {
     messUpIntentFilters()
+}
+
+task unzipRawProject() << {
+    File temp = new File("catroid/assets", "project.zip")
+    unzipProject(temp);
 }

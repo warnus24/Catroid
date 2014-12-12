@@ -89,13 +89,16 @@ public class MarketingActivity extends Activity {
 		playstore.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Uri uri = Uri.parse("market://search?q=Catrobat");
+				/*Uri uri = Uri.parse("market://search?q=Catrobat");
+
 				Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
 				try {
 					startActivity(myAppLinkToMarket);
 				} catch (ActivityNotFoundException e) {
 					Toast.makeText(MarketingActivity.this, R.string.main_menu_play_store_not_installed, Toast.LENGTH_SHORT).show();
-				}
+				}*/
+				String url = Constants.BASE_URL_HTTPS;
+				startWebViewActivity(url);
 			}
 		});
 

@@ -142,14 +142,19 @@
 
 
     <!-- Script activity -->
-    <string name="scripts">Scripts</string>
-    <string name="look">Look</string>
-    <string name="looks">Looks</string>
-    <string name="sounds">Sounds</string>
-    <string name="backgrounds">Backgrounds</string>
-    <string name="size">Size:</string>
+    <string name="scripts" >Scripts</string >
+    <string name="look" >Look</string >
+    <string name="looks" >Looks</string >
+    <string name="sounds" >Sounds</string >
+    <string name="backgrounds" >Backgrounds</string >
+    <string name="size" >Size:</string >
     <!--  -->
 
+    <!-- Standalone Marketing activity -->
+    <string name="standalone_description" >created directly on a phone</string >
+    <string name="standalone_pocketcode_org_link" >> Details about this app</string >
+    <string name="standalone_play_store_link" >> More apps made with Pocket Code</string >
+    <!-- -->
 
     <!-- Script fragment -->
     <string name="fragment_script_text_description">Tap \"+\" to add Scripts</string>

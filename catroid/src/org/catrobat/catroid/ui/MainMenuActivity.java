@@ -137,7 +137,6 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 
 		String zipFileString = Constants.DEFAULT_ROOT + "/" + ZIP_FILE_NAME;
 		copyProgramZip();
-		Log.d("STANDALONE", "default root " + Constants.DEFAULT_ROOT);
 		Archiver archiver = ArchiverFactory.createArchiver("zip");
 		try {
 			archiver.extract(new File(zipFileString), new File(Constants.DEFAULT_ROOT + "/" + START_PROJECT));

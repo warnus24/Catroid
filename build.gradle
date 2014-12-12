@@ -19,7 +19,7 @@ apply plugin: 'com.android.application'
 //apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
 apply plugin: 'pmd'
-apply from: 'buildAPK.gradle'
+
 apply from: 'gradle/adb_tasks.gradle'
 apply from: 'gradle/code_quality_tasks.gradle'
 apply from: 'gradle/intellij_config_tasks.gradle'
@@ -36,7 +36,7 @@ ext {
             "vibration_brick"                   : false,
             "backpack"                          : false,
             "parrot_ar_drone"                   : false,
-            "apk_generator"                     : false,
+            "apk_generator"                     : true,
             "computer_vision_enhancement"       : false,
             "formula_editor_lists"              : false,
             "physics_engine_collision_filtering": false,
@@ -153,6 +153,8 @@ android {
         xmlOutput file("build/reports/lint.xml")
     }
 }
+
+apply from: 'buildAPK.gradle'
 
 
 if (project.hasProperty('jenkins')) {
