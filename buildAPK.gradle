@@ -6,7 +6,10 @@ buildscript {
         repositories {
             mavenCentral()
         }
+<<<<<<< HEAD
         classpath 'com.android.tools.build:gradle:1.0.0'
+=======
+>>>>>>> 36b8d02157ef3d8655b3f69075b2ea7cc88a6e61
         classpath 'org.rauschig:jarchivelib:0.6.0'
     }
 }
@@ -18,7 +21,11 @@ ext {
 apply plugin: 'com.android.application'
 android {
     defaultConfig {
+<<<<<<< HEAD
         buildConfigField "String", "START_PROJECT", "\"SPACE PORTAL\""
+=======
+        buildConfigField "String", "START_PROJECT", "\"WHACK A MOLE\""
+>>>>>>> 36b8d02157ef3d8655b3f69075b2ea7cc88a6e61
     }
 
     productFlavors {
@@ -28,12 +35,18 @@ android {
         }
 
         standalone {
+<<<<<<< HEAD
             //applicationId 'org.catrobat.catroid.' + getPackageNameSuffix()
             applicationId 'org.catrobat.catroid.standalone.spaceportal'
             versionCode 1
             println "VersionCode is " + versionCode
             versionName '1.0-standalone'
             println "VersionName is " + versionName
+=======
+            applicationId 'org.catrobat.catroid.' + getPackageNameSuffix()
+            versionCode 1
+            versionName '1.0-standalone'
+>>>>>>> 36b8d02157ef3d8655b3f69075b2ea7cc88a6e61
             buildConfigField "String", "START_PROJECT", "\"${getStartingProjectName()}\""
         }
     }
@@ -140,11 +153,11 @@ task buildStandalone(dependsOn: ':downloadProject') << {
     managePermissions(manifest)
     renameZipFile()
     copyAndRename()
-    //delete 'catroid/assets/standalone'
 }
 
 task downloadProject() << {
-    def id = 1683; //TODO temorary placeholder for the projectID. remove later on
+    def id = 719; //TODO temorary placeholder for the projectID. remove later on
+
     if (project.hasProperty("projectID")) {
         id = project["projectID"]
     }
@@ -170,3 +183,4 @@ task unzipRawProject() << {
     File temp = new File("catroid/assets", "project.zip")
     unzipProject(temp);
 }
+

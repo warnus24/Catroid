@@ -19,7 +19,11 @@ apply plugin: 'com.android.application'
 //apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
 apply plugin: 'pmd'
+<<<<<<< HEAD
 
+=======
+apply from: 'buildAPK.gradle'
+>>>>>>> 36b8d02157ef3d8655b3f69075b2ea7cc88a6e61
 apply from: 'gradle/adb_tasks.gradle'
 apply from: 'gradle/code_quality_tasks.gradle'
 apply from: 'gradle/intellij_config_tasks.gradle'
@@ -52,10 +56,13 @@ dependencies {
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.google.guava:guava:17.0'
+<<<<<<< HEAD
     compile 'com.squareup.okhttp:okhttp:2.1.0-RC1'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0-RC1'
     compile 'com.github.kevinsawicki:http-request:5.6'
     compile 'org.rauschig:jarchivelib:0.6.0'
+=======
+>>>>>>> 36b8d02157ef3d8655b3f69075b2ea7cc88a6e61
     compile('org.rauschig:jarchivelib:0.6.0') {
         exclude group: 'org.apache.commons', module: 'commons-compress'
     }

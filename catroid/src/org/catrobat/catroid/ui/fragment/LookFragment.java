@@ -701,6 +701,9 @@ public class LookFragment extends ScriptActivityFragment implements OnLookEditLi
 		catch (NullPointerException e) {
 			Log.e(TAG, e.getMessage());
 		}
+		catch (NullPointerException e) {
+			Log.e(TAG, e.getMessage());
+		}
 
 	}
 

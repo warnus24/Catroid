@@ -27,9 +27,17 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
+<<<<<<< HEAD
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+=======
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+>>>>>>> 36b8d02157ef3d8655b3f69075b2ea7cc88a6e61
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -41,7 +49,11 @@ import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
+<<<<<<< HEAD
 
+=======
+import org.catrobat.catroid.common.ScreenValues;
+>>>>>>> 36b8d02157ef3d8655b3f69075b2ea7cc88a6e61
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MarketingActivity extends Activity {
@@ -89,14 +101,16 @@ public class MarketingActivity extends Activity {
 		playstore.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*Uri uri = Uri.parse("market://search?q=Catrobat");
+
+				Uri uri = Uri.parse("market://search?q=Catrobat");
 
 				Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
 				try {
 					startActivity(myAppLinkToMarket);
 				} catch (ActivityNotFoundException e) {
 					Toast.makeText(MarketingActivity.this, R.string.main_menu_play_store_not_installed, Toast.LENGTH_SHORT).show();
-				}*/
+
+				}
 				String url = Constants.BASE_URL_HTTPS;
 				startWebViewActivity(url);
 			}
@@ -104,6 +118,16 @@ public class MarketingActivity extends Activity {
 
 	}
 
+	private Bitmap scaleDrawable2Bitmap() {
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pocket_code);
+
+		int width = ScreenValues.SCREEN_WIDTH;
+		double factor = ((float) width / (float) bitmap.getWidth());
+		int height = (int) ((float) bitmap.getHeight() * factor);
+		Log.d("GSOC", "width: " + width + "  height: " + height + "   scaleFactor: " + (int) ((float) width / (float) bitmap.getWidth()));
+		Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+		return scaledBitmap;
+	}
 
 	private void startWebViewActivity(String url) {
 		// TODO just a quick fix for not properly working webview on old devices
@@ -117,5 +141,4 @@ public class MarketingActivity extends Activity {
 		}
 
 	}
-
 }

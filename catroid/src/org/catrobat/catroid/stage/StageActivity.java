@@ -22,7 +22,10 @@
  */
 package org.catrobat.catroid.stage;
 
+<<<<<<< HEAD
 import android.content.Context;
+=======
+>>>>>>> 36b8d02157ef3d8655b3f69075b2ea7cc88a6e61
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
@@ -92,7 +95,6 @@ public class StageActivity extends AndroidApplication {
 	@Override
 	public void onBackPressed() {
 		if (BuildConfig.FEATURE_APK_GENERATOR_ENABLED) {
-
 			Intent marketingIntent = new Intent(StageActivity.this, MarketingActivity.class);
 			startActivity(marketingIntent);
 			finish();
@@ -100,38 +102,7 @@ public class StageActivity extends AndroidApplication {
 			pause();
 			stageDialog.show();
 		}
-	}
 
-	public boolean isOnline() {
-		ConnectivityManager cm =
-				(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-			return true;
-		}
-		return false;
-	}
-
-	private void sendWebviewIntent() {
-		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.STANDALONE_URL));
-			browserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				browserIntent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
-			}
-			startActivity(browserIntent);
-			//finish();
-		} else {
-			Intent intent = new Intent(StageActivity.this, MarketingActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				intent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
-			}
-			startActivity(intent);
-			//finish();
-		}
 	}
 
 	public void manageLoadAndFinish() {
@@ -144,6 +115,7 @@ public class StageActivity extends AndroidApplication {
 	@Override
 	public void onPause() {
 		SensorHandler.stopSensorListeners();
+		Log.d("GSOC", "ON PAUSE called in Stage");
 		stageAudioFocus.releaseAudioFocus();
 		LedUtil.pauseLed();
 		VibratorUtil.pauseVibrator();

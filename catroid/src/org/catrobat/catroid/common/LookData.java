@@ -32,7 +32,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.utils.ImageEditing;

@@ -58,6 +58,7 @@
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="Space Portal"
+
         android:name=".CatroidApplication" 
         android:theme="@style/Theme.Catroid" >
         <activity

@@ -152,13 +152,14 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 		}
 	}
 
-	private void copyProgramZip() {
+
+	private void copyProgramZip() { //TODO use Guava
 		AssetManager assetManager = getResources().getAssets();
 		String[] files = null;
 		try {
 			files = assetManager.list("");
 		} catch (IOException e) {
-			Log.e("STANDALONE", "Failed to get asset file list.", e);
+			Log.e("GSOC", "Failed to get asset file list.", e);
 		}
 		for (String filename : files) {
 			if (filename.contains(ZIP_FILE_NAME)) {
@@ -175,7 +176,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 					in = null;
 					out = null;
 				} catch (IOException e) {
-					Log.e("STANDALONE", "Failed to copy asset file: " + filename, e);
+					Log.e("GSOC", "Failed to copy asset file: " + filename, e);
 				}
 			}
 		}
@@ -192,7 +193,8 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 	private void loadStageProject(String projectName) {
 		LoadProjectTask loadProjectTask = new LoadProjectTask(this, projectName, false, false);
 		loadProjectTask.setOnLoadProjectCompleteListener(this);
-		Log.e("STANDALONE", "going to execute standalone project");
+		Log.e("GSOC", "going to execute standalone project");
+
 		loadProjectTask.execute();
 	}
 
@@ -213,6 +215,7 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				intent.addFlags(0x8000); // equal to Intent.FLAG_ACTIVITY_CLEAR_TASK which is only available from API level 11
 			}
+
 			startActivityForResult(intent, StageActivity.STAGE_ACTIVITY_FINISH);
 		}
 		if (requestCode == StageActivity.STAGE_ACTIVITY_FINISH) {
@@ -221,6 +224,11 @@ public class MainMenuActivity extends BaseActivity implements OnLoadProjectCompl
 			}
 			finish();
 		}
+
+			startActivity(intent);
+		}
+		finish();
+
 	}
 
 	@Override

@@ -20,7 +20,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 36b8d02157ef3d8655b3f69075b2ea7cc88a6e61
  */
 /**
  * Copyright for original "String buildPath" held by:
