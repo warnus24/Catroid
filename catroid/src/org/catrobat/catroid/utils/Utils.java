@@ -19,6 +19,15 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+<<<<<<< HEAD
+=======
+ */
+/**
+ * Copyright for original "String buildPath" held by:
+ * 	Copyright (C) 2008 Rob Manning
+ * 	manningr@users.sourceforge.net
+ * Source: http://www.java2s.com/Code/Java/File-Input-Output/Autilityclassformanipulatingpaths.htm
+>>>>>>> cat-862 #fixed
  */
 
 
