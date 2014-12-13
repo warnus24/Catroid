@@ -133,6 +133,8 @@ public class StageActivity extends AndroidApplication {
 		stageListener.menuPause();
 		LedUtil.pauseLed();
 		VibratorUtil.pauseVibrator();
+
+		ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR).pause();
 	}
 
 	public void resume() {
