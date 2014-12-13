@@ -79,7 +79,7 @@ public class MindstormConnectionImpl implements MindstormConnection {
 	}
 
 	@Override
-	public synchronized void send(MindstormCommand command) {
+	public void send(MindstormCommand command) {
 		try {
 			int messageLength = command.getLength();
 			byte[] message = command.getRawCommand();
@@ -89,15 +89,17 @@ public class MindstormConnectionImpl implements MindstormConnection {
 
 			System.arraycopy(message, 0, data, 2, messageLength);
 
-			nxtOutputStream.write(data, 0, messageLength + 2);
-			nxtOutputStream.flush();
+			synchronized (nxtOutputStream) {
+				nxtOutputStream.write(data, 0, messageLength + 2);
+				nxtOutputStream.flush();
+			}
 
 		} catch (IOException e) {
 			throw new MindstormException(e, "Error on message send.");
 		}
 	}
 
-	protected synchronized byte[] receive() {
+	protected byte[] receive() {
 		byte[] data = new byte[2];
 		byte[] payload;
 
