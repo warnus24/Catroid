@@ -35,11 +35,10 @@ import org.catrobat.catroid.bluetooth.BluetoothConnection;
 import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.test.utils.BluetoothConnectionWrapper;
-import org.catrobat.catroid.test.utils.TestUtils;
 import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCaseWithoutSolo;
+import org.catrobat.catroid.uitest.util.BluetoothUtils;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -56,12 +55,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 	// e.g. kittyroid-0, kittyslave-0
 	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kitty";
 
-	// needed for testdevices
-	// unavailable device is paired with a name that starts with 'SWEET'
-	// e.g. SWEETHEART
-
-//	private static final String PAIRED_UNAVAILABLE_DEVICE_NAME = "SWEET";
-//	private static final String PAIRED_UNAVAILABLE_DEVICE_MAC = "00:23:4D:F5:A6:18";
+	private static final String PAIRED_UNAVAILABLE_DEVICE_NAME = "SWEET";
 
 	private static final UUID COMMON_BT_TEST_UUID = UUID.fromString("fd2835bb-9d80-41e0-9721-5372b90342da");
 
@@ -87,7 +81,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 
 			@Override
 			public <T extends BTDeviceService> BluetoothConnection createBTConnectionForDevice(Class<T> service, String address, UUID deviceUUID, Context applicationContext) {
-				connectionWrapper = new BluetoothConnectionWrapper(address, deviceUUID, new CommonBluetoothTestClientHandler());
+				connectionWrapper = new BluetoothConnectionWrapper(address, deviceUUID, false);
 				connectionWrapper.startClientHandlerThread();
 				return connectionWrapper;
 			}
@@ -95,7 +89,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 
 
 
-		TestUtils.enableBluetooth();
+		BluetoothUtils.enableBluetooth();
 		solo = new Solo(getInstrumentation(), getActivity());
 		solo.unlockScreen();
 	}
@@ -105,15 +99,13 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 		solo.finishOpenedActivities();
 
 		ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR).disconnectDevices();
-		TestUtils.disableBluetooth();
+		BluetoothUtils.disableBluetooth();
 
 		super.tearDown();
 	}
 
 	@Device
 	public void testBluetoothConnector() throws IOException {
-
-		final int requestCode = 11;
 
 		solo.waitForActivity(BTConnectDeviceActivity.class);
 		solo.sleep(2000);
@@ -128,13 +120,16 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 			}
 		}
 
+		assertTrue("Bluetooth device '" + PAIRED_BLUETOOTH_SERVER_DEVICE_NAME + "' is not paired, so cannot connect.",
+				connectedDeviceName != null && solo.searchText(connectedDeviceName));
+
 		solo.clickOnText(connectedDeviceName);
 
-		solo.sleep(2000); //yes, has to be that long! waiting for auto connection timeout!
+		solo.sleep(15000); //yes, has to be that long! waiting for auto connection timeout!
 
 		BluetoothTestService service = ServiceProvider.getService(TEST_SERVICE);
 
-		assertNotNull("Service already registered, should not be null here.", service);
+		assertNotNull("Service should be registered now. Bluetooth connection might failed. Is Bluetooth-Server running?", service);
 		service.connect();
 
 		byte[] expectedMessage = new byte[] {1,2,3};
@@ -155,6 +150,33 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 		for (int i = 0; i < expected.length; i++) {
 			assertEquals("Bluetooth message is not equal, byte " + i + " is different", expected[i], actual[i]);
 		}
+	}
+
+	@Device
+	public void testConnectNotAvailableBluetoothDevice() throws IOException {
+		solo.waitForActivity(BTConnectDeviceActivity.class);
+		solo.sleep(2000);
+
+		BluetoothUtils.addPairedDevice(PAIRED_UNAVAILABLE_DEVICE_NAME, getActivity(), getInstrumentation());
+
+		ListView deviceList = solo.getCurrentViews(ListView.class).get(0);
+		String connectedDeviceName = null;
+		for (int i = 0; i < deviceList.getCount(); i++) {
+			String deviceName = (String) deviceList.getItemAtPosition(i);
+			if (deviceName.startsWith(PAIRED_UNAVAILABLE_DEVICE_NAME)) {
+				connectedDeviceName = deviceName;
+				break;
+			}
+		}
+		assertTrue("Bluetooth device '" + PAIRED_UNAVAILABLE_DEVICE_NAME + "' is not paired, so cannot connect.",
+				connectedDeviceName != null && solo.searchText(connectedDeviceName));
+		solo.clickOnText(connectedDeviceName);
+
+		solo.sleep(15000); //yes, has to be that long! waiting for auto connection timeout!
+
+		BluetoothTestService service = ServiceProvider.getService(TEST_SERVICE);
+
+		assertNull("Service should not be registered, because test tries to connect to a device which is not available.", service);
 	}
 
 	private class BluetoothTestService implements BTDeviceService {
@@ -240,33 +262,6 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 		@Override
 		public void destroy() {
 
-		}
-	}
-
-	// TODO: move this class to Bluetoothtest server or internal lib that is usable from tests and the bluetooth test server
-	public static class CommonBluetoothTestClientHandler implements BluetoothConnectionWrapper.BTClientHandler {
-
-		@Override
-		public void handle(InputStream inStream, OutputStream outStream) throws IOException {
-			byte[] messageLengthBuffer = new byte[1];
-
-			while (inStream.read(messageLengthBuffer, 0, 1) != -1) {
-				int expectedMessageLength = messageLengthBuffer[0];
-				handleClientMessage(expectedMessageLength, new DataInputStream(inStream), outStream);
-			}
-		}
-
-		private void handleClientMessage(int expectedMessageLength, DataInputStream inStream, OutputStream outStream) throws IOException {
-
-			byte[] payload = new byte[expectedMessageLength];
-
-			inStream.readFully(payload, 0, expectedMessageLength);
-
-			byte[] testResult = payload;
-
-			outStream.write(new byte[] {(byte)(0xFF & testResult.length)});
-			outStream.write(testResult);
-			outStream.flush();
 		}
 	}
 }

@@ -35,7 +35,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 
-public class MindstormConnectionTest extends AndroidTestCase {
+public class MindstormsConnectionTest extends AndroidTestCase {
 
 	public static final int HEADER_SIZE = 2;
 

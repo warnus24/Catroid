@@ -77,9 +77,24 @@ public class BTConnectDeviceActivity extends Activity {
 		autoConnectIDs.add(OUI_LEGO);
 	}
 
+	private static BTDeviceFactory getDeviceFactory() {
+		if (btDeviceFactory == null) {
+			btDeviceFactory = new BTDeviceFactoryImpl();
+		}
+
+		return btDeviceFactory;
+	}
+
+	// hooks for testing
 	public static void setDeviceFactory(BTDeviceFactory deviceFactory) {
 		btDeviceFactory = deviceFactory;
 	}
+	public void addPairedDevice(String pairedDevice) {
+		if (pairedDevicesArrayAdapter != null) {
+			pairedDevicesArrayAdapter.add(pairedDevice);
+		}
+	}
+	// end hooks for testing
 
 	private OnItemClickListener deviceClickListener = new OnItemClickListener() {
 
@@ -116,7 +131,7 @@ public class BTConnectDeviceActivity extends Activity {
 				}
 			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
 				setProgressBarIndeterminateVisibility(false);
-				setTitle(R.string.select_device + " " + deviceService.getName());
+				setTitle(getString(R.string.select_device) + " " + deviceService.getName());
 				if (newDevicesArrayAdapter.isEmpty()) {
 					String noDevices = getResources().getString(R.string.none_found);
 					newDevicesArrayAdapter.add(noDevices);
@@ -139,7 +154,7 @@ public class BTConnectDeviceActivity extends Activity {
 
 		@Override
 		protected BluetoothConnection.State doInBackground(String... adresses) {
-			btConnection = btDeviceFactory.createBTConnectionForDevice(deviceService.getServiceType(), adresses[0],
+			btConnection = getDeviceFactory().createBTConnectionForDevice(deviceService.getServiceType(), adresses[0],
 					deviceService.getBluetoothDeviceUUID(), BTConnectDeviceActivity.this.getApplicationContext());
 
 			return btConnection.connect();
@@ -258,11 +273,7 @@ public class BTConnectDeviceActivity extends Activity {
 	protected void createAndSetDeviceService() {
 		Class<BTDeviceService> serviceType = (Class<BTDeviceService>)getIntent().getSerializableExtra(SERVICE_TO_START);
 
-		if (btDeviceFactory == null) {
-			btDeviceFactory = new BTDeviceFactoryImpl();
-		}
-
-		deviceService = btDeviceFactory.createDevice(serviceType, this.getApplicationContext());
+		deviceService = getDeviceFactory().createDevice(serviceType, this.getApplicationContext());
 	}
 
 	private void connectDevice(String address) {

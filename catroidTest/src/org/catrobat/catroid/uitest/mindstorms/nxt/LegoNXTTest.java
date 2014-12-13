@@ -49,11 +49,11 @@ import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXTImpl;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.test.utils.BluetoothConnectionWrapper;
-import org.catrobat.catroid.test.utils.TestUtils;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProjectActivity;
 import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
+import org.catrobat.catroid.uitest.util.BluetoothUtils;
 import org.catrobat.catroid.uitest.util.Reflection;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
@@ -100,7 +100,7 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 	public void testNXTFunctionality() {
 		createTestproject(projectName);
 
-		TestUtils.enableBluetooth();
+		BluetoothUtils.enableBluetooth();
 
 		ArrayList<String> autoConnectIDs = new ArrayList<String>();
 		autoConnectIDs.add("IM_NOT_A_MAC_ADDRESS");
@@ -128,6 +128,12 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 		solo.waitForActivity(ProjectActivity.class.getSimpleName());
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 		solo.sleep(2000);
+
+		solo.assertCurrentActivity("Not in BTConnectDeviceActivity", BTConnectDeviceActivity.class);
+
+		// use this only, if BluetoothConnectionWrapper is in local mode
+		BluetoothUtils.addPairedDevice(PAIRED_BLUETOOTH_SERVER_DEVICE_NAME, (BTConnectDeviceActivity)solo.getCurrentActivity(), getInstrumentation());
+
 
 		ListView deviceList = solo.getCurrentViews(ListView.class).get(0);
 		String connectedDeviceName = null;
@@ -199,7 +205,7 @@ public class LegoNXTTest extends BaseActivityInstrumentationTestCase<MainMenuAct
 		BTConnectDeviceActivity deviceListActivity = new BTConnectDeviceActivity();
 		Reflection.setPrivateField(deviceListActivity, "autoConnectIDs", autoConnectIDs);
 
-		TestUtils.enableBluetooth();
+		BluetoothUtils.enableBluetooth();
 
 		solo.clickOnText(solo.getString(R.string.main_menu_continue));
 		solo.waitForActivity(ProjectActivity.class.getSimpleName());
