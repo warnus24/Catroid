@@ -23,6 +23,9 @@
 package org.catrobat.catroid.formulaeditor;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.CatrobatService;
+import org.catrobat.catroid.common.SensorService;
+import org.catrobat.catroid.common.ServiceProvider;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -141,14 +144,14 @@ public class InternFormulaKeyboardAdapter {
 			case R.string.formula_editor_sensor_face_y_position:
 				return buildSensor(Sensors.FACE_Y_POSITION);
 
-			case R.string.formula_editor_sensor_lego_nxt_1:
-				return buildSensor(Sensors.NXT_SENSOR_1);
-			case R.string.formula_editor_sensor_lego_nxt_2:
-				return buildSensor(Sensors.NXT_SENSOR_2);
-			case R.string.formula_editor_sensor_lego_nxt_3:
-				return buildSensor(Sensors.NXT_SENSOR_3);
-			case R.string.formula_editor_sensor_lego_nxt_4:
-				return buildSensor(Sensors.NXT_SENSOR_4);
+//			case R.string.formula_editor_sensor_lego_nxt_1:
+//				return buildSensor(Sensors.NXT_SENSOR_1);
+//			case R.string.formula_editor_sensor_lego_nxt_2:
+//				return buildSensor(Sensors.NXT_SENSOR_2);
+//			case R.string.formula_editor_sensor_lego_nxt_3:
+//				return buildSensor(Sensors.NXT_SENSOR_3);
+//			case R.string.formula_editor_sensor_lego_nxt_4:
+//				return buildSensor(Sensors.NXT_SENSOR_4);
 
 				//PERIOD
 			case R.id.formula_editor_keyboard_decimal_mark:
@@ -211,6 +214,11 @@ public class InternFormulaKeyboardAdapter {
 			case R.string.formula_editor_object_layer:
 				return buildObject(Sensors.OBJECT_LAYER);
 
+		}
+
+		Sensors sensor = ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).getMappedSensor(resource);
+		if (sensor != null) {
+			return buildSensor(sensor);
 		}
 
 		return null;

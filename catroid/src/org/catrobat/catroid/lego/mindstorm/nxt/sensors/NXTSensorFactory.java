@@ -29,45 +29,36 @@ import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 import org.catrobat.catroid.lego.mindstorm.MindstormException;
 
 public class NXTSensorFactory {
-
-	private Context context;
 	private MindstormConnection connection;
 
-	public NXTSensorFactory(Context context, MindstormConnection connection) {
-		this.context = context;
+	public NXTSensorFactory(MindstormConnection connection) {
 		this.connection = connection;
 	}
 
-	public NXTSensor create(String sensorTypeName, int port) {
+	public NXTSensor create(Integer sensorType, int port) {
 
-		if (equals(sensorTypeName, R.string.nxt_sensor_touch)) {
+		if (sensorType == R.string.nxt_sensor_touch) {
 			return new NXTTouchSensor(port, connection);
 		}
 
-		if (equals(sensorTypeName, R.string.nxt_sensor_sound)) {
+		if (sensorType == R.string.nxt_sensor_sound) {
 			return new NXTSoundSensor(port, connection);
 		}
 
-		if (equals(sensorTypeName, R.string.nxt_sensor_light)) {
+		if (sensorType == R.string.nxt_sensor_light) {
 			return new NXTLightSensor(port, connection);
 		}
 
-		if (equals(sensorTypeName, R.string.nxt_sensor_ultrasonic)) {
+		if (sensorType == R.string.nxt_sensor_ultrasonic) {
 			return new NXTI2CUltraSonicSensor(connection);
 		}
 
 		throw new MindstormException("No valid sensor found!"); // Should never occur
 	}
 
-	public boolean isSensorAssigned(String sensorTypeName) {
-			return !( equals(sensorTypeName, R.string.nxt_no_sensor)
-					  || sensorTypeName == null
-					  || sensorTypeName.isEmpty()
+	public boolean isSensorAssigned(Integer sensorType) {
+			return !( sensorType ==  R.string.nxt_no_sensor
+					  || sensorType == null
 			);
 	}
-
-	private boolean equals(String sensorTypeName, int sensorType) {
-		return sensorTypeName.equals(context.getString(sensorType));
-	}
-
 }

@@ -40,6 +40,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.CatrobatService;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.BroadcastHandler;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.stage.PreStageActivity;
@@ -140,6 +142,8 @@ public class ScriptActivity extends BaseActivity {
 
 	@Override
 	public void onResume() {
+		ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).loadProjectSpecificMappings(this);
+
 		super.onResume();
 		setupActionBar();
 		setupBottomBar();

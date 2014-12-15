@@ -20,20 +20,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.catrobat.catroid.common;
 
-import org.catrobat.catroid.bluetooth.BTDeviceConnector;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
+import android.content.Context;
 
-// CHECKSTYLE DISABLE InterfaceIsType FOR 1 LINES
-public interface CatrobatService {
+import org.catrobat.catroid.formulaeditor.Sensors;
 
-	public static final Class<LegoNXT> LEGO_NXT = LegoNXT.class;
-//    public static final Class<Arduino> ARDUINO = Arduino.class;
-//    public static final Class<Albert> ALBERT = Albert.class;
+public interface SensorService extends CatrobatService {
 
+	public Sensors getMappedSensor(int stringId);
+	public Integer getMappedSensor(String sensorToken);
+	public String getMappedSensorString(String sensorToken, Context applicationContext);
+	public Integer getMappedSensor(Sensors sensors);
 
-	// Common services - gets created by ServiceProvider if needed
-	public static final Class<BTDeviceConnector> BLUETOOTH_DEVICE_CONNECTOR = BTDeviceConnector.class;
-	public static final Class<SensorService> SENSOR_SERVICE = SensorService.class;
+	public void registerSensor(Sensors sensor, int stringId);
+
+	public void loadProjectSpecificMappings(Context applicationContext);
 }

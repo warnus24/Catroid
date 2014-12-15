@@ -45,11 +45,11 @@
         <item>@string/nxt_sensor_ultrasonic</item>
     </string-array>
     <string-array name="setting_mindstorms_nxt_sensor">
-        <item>@string/nxt_no_sensor</item>
-        <item>@string/nxt_sensor_touch</item>
-        <item>@string/nxt_sensor_sound</item>
-        <item>@string/nxt_sensor_light</item>
-        <item>@string/nxt_sensor_ultrasonic</item>
+        <item>@string/nxt_no_sensor_value</item>
+        <item>@string/nxt_sensor_touch_value</item>
+        <item>@string/nxt_sensor_sound_value</item>
+        <item>@string/nxt_sensor_light_value</item>
+        <item>@string/nxt_sensor_ultrasonic_value</item>
     </string-array>
 
     <!-- User Brick UI Data Editor Fragment -->

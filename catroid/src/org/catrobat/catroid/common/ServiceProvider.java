@@ -74,6 +74,10 @@ public final class ServiceProvider {
 			service = new BTDeviceConnectorImpl();
 		}
 
+		else if (serviceType == CatrobatService.SENSOR_SERVICE) {
+			service = new SensorServiceImpl();
+		}
+
 //		example for further common services
 //		if (serviceType == CatrobatService.STORAGE_HANDLER) {
 //			service = new StorageHandler();

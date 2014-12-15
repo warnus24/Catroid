@@ -29,6 +29,8 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import org.catrobat.catroid.common.CatrobatService;
+import org.catrobat.catroid.common.ServiceProvider;
+import org.catrobat.catroid.formulaeditor.Sensors;
 import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
 import org.catrobat.catroid.ui.SettingsActivity;
 import org.catrobat.catroid.utils.Stopwatch;
@@ -56,7 +58,7 @@ public class NXTSensorService implements CatrobatService, SharedPreferences.OnSh
 		preferences.registerOnSharedPreferenceChangeListener(this);
 
 		sensorRegistry = new SensorRegistry();
-		sensorFactory = new NXTSensorFactory(context, connection);
+		sensorFactory = new NXTSensorFactory(connection);
 
         sensorScheduler = new PausableScheduledThreadPoolExecutor(SENSOR_UPDATER_THREAD_COUNT);
 	}
@@ -75,33 +77,33 @@ public class NXTSensorService implements CatrobatService, SharedPreferences.OnSh
 	}
 
 	public NXTSensor createSensor1() {
-		String sensorTypeName = preferences.getString(SettingsActivity.NXT_SENSOR_1, "");
-        return  createSensor(sensorTypeName, 0);
+		Integer sensorType = ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).getMappedSensor(Sensors.NXT_SENSOR_1);// preferences.getString(SettingsActivity.NXT_SENSOR_1, "");
+        return  createSensor(sensorType, 0);
 	}
 
 	public NXTSensor createSensor2() {
-		String sensorTypeName = preferences.getString(SettingsActivity.NXT_SENSOR_2, "");
-        return  createSensor(sensorTypeName, 1);
+		Integer sensorType = ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).getMappedSensor(Sensors.NXT_SENSOR_2); // preferences.getString(SettingsActivity.NXT_SENSOR_2, "");
+        return  createSensor(sensorType, 1);
 	}
 
 	public NXTSensor createSensor3() {
-		String sensorTypeName = preferences.getString(SettingsActivity.NXT_SENSOR_3, "");
-        return  createSensor(sensorTypeName, 2);
+		Integer sensorType = ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).getMappedSensor(Sensors.NXT_SENSOR_3); // preferences.getString(SettingsActivity.NXT_SENSOR_3, "");
+        return  createSensor(sensorType, 2);
 	}
 
 	public NXTSensor createSensor4() {
-		String sensorTypeName = preferences.getString(SettingsActivity.NXT_SENSOR_4, "");
-        return  createSensor(sensorTypeName, 3);
+		Integer sensorType = ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).getMappedSensor(Sensors.NXT_SENSOR_4); // preferences.getString(SettingsActivity.NXT_SENSOR_4, "");
+        return  createSensor(sensorType, 3);
 	}
 
-	private NXTSensor createSensor(String sensorTypeName, int port) {
+	private NXTSensor createSensor(Integer sensorType, int port) {
 
-		if (sensorFactory.isSensorAssigned(sensorTypeName) == false) {
+		if (sensorFactory.isSensorAssigned(sensorType) == false) {
 			sensorRegistry.remove(port);
 			return null;
 		}
 
-		NXTSensor sensor = sensorFactory.create(sensorTypeName, port);
+		NXTSensor sensor = sensorFactory.create(sensorType, port);
 		sensorRegistry.add(sensor);
 
         return sensor;
