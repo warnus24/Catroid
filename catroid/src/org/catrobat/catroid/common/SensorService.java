@@ -29,10 +29,13 @@ import org.catrobat.catroid.formulaeditor.Sensors;
 
 public interface SensorService extends CatrobatService {
 
-	public Sensors getMappedSensor(int stringId);
-	public Integer getMappedSensor(String sensorToken);
 	public String getMappedSensorString(String sensorToken, Context applicationContext);
+
+	public String getMappedSensorString(Sensors sensor, Context applicationContext);
+
 	public Integer getMappedSensor(Sensors sensors);
+
+	public Sensors getMappedSensor(String sensorToken);
 
 	public void registerSensor(Sensors sensor, int stringId);
 

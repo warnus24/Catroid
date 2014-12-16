@@ -25,6 +25,7 @@ package org.catrobat.catroid.ui.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.hardware.Sensor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -42,6 +43,16 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.CatrobatService;
+import org.catrobat.catroid.common.SensorService;
+import org.catrobat.catroid.common.ServiceProvider;
+import org.catrobat.catroid.formulaeditor.Sensors;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class FormulaEditorListFragment extends SherlockListFragment implements Dialog.OnKeyListener {
 
@@ -55,19 +66,19 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 
 	public static final String[] TAGS = { OBJECT_TAG, FUNCTION_TAG, LOGIC_TAG, SENSOR_TAG };
 
-	private static final int[] OBJECT_ITEMS = { R.string.formula_editor_object_x, R.string.formula_editor_object_y,
+	private static final List<Integer> OBJECT_ITEMS = Arrays.asList( R.string.formula_editor_object_x, R.string.formula_editor_object_y,
 			R.string.formula_editor_object_ghosteffect, R.string.formula_editor_object_brightness,
 			R.string.formula_editor_object_size, R.string.formula_editor_object_rotation,
-			R.string.formula_editor_object_layer };
+			R.string.formula_editor_object_layer );
 
-	private static final int[] LOGIC_ITEMS = { R.string.formula_editor_logic_equal,
+	private static final List<Integer> LOGIC_ITEMS = Arrays.asList( R.string.formula_editor_logic_equal,
 			R.string.formula_editor_logic_notequal, R.string.formula_editor_logic_lesserthan,
 			R.string.formula_editor_logic_leserequal, R.string.formula_editor_logic_greaterthan,
 			R.string.formula_editor_logic_greaterequal, R.string.formula_editor_logic_and,
 			R.string.formula_editor_logic_or, R.string.formula_editor_logic_not, R.string.formula_editor_function_true,
-			R.string.formula_editor_function_false };
+			R.string.formula_editor_function_false );
 
-	private static final int[] FUNCTIONS_ITEMS = { R.string.formula_editor_function_sin,
+	private static final List<Integer> FUNCTIONS_ITEMS = Arrays.asList( R.string.formula_editor_function_sin,
 			R.string.formula_editor_function_cos, R.string.formula_editor_function_tan,
 			R.string.formula_editor_function_ln, R.string.formula_editor_function_log,
 			R.string.formula_editor_function_pi, R.string.formula_editor_function_sqrt,
@@ -77,9 +88,9 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_function_arctan, R.string.formula_editor_function_exp,
 			R.string.formula_editor_function_max, R.string.formula_editor_function_min,
 			R.string.formula_editor_function_length, R.string.formula_editor_function_letter,
-			R.string.formula_editor_function_join };
+			R.string.formula_editor_function_join);
 
-	private static final int[] FUNCTIONS_PARAMETERS = { R.string.formula_editor_function_sin_parameter,
+	private static final List<Integer> FUNCTIONS_PARAMETERS = Arrays.asList( R.string.formula_editor_function_sin_parameter,
 			R.string.formula_editor_function_cos_parameter, R.string.formula_editor_function_tan_parameter,
 			R.string.formula_editor_function_ln_parameter, R.string.formula_editor_function_log_parameter,
 			R.string.formula_editor_function_pi_parameter, R.string.formula_editor_function_sqrt_parameter,
@@ -89,28 +100,38 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_function_arctan_parameter, R.string.formula_editor_function_exp_parameter,
 			R.string.formula_editor_function_max_parameter, R.string.formula_editor_function_min_parameter,
 			R.string.formula_editor_function_length_parameter, R.string.formula_editor_function_letter_parameter,
-			R.string.formula_editor_function_join_parameter };
+			R.string.formula_editor_function_join_parameter );
 
-	private static final int[] SENSOR_ITEMS = { R.string.formula_editor_sensor_x_acceleration,
-			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
-			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
-			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
-			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
-			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position,
-			R.string.formula_editor_sensor_lego_nxt_1, R.string.formula_editor_sensor_lego_nxt_2,
-			R.string.formula_editor_sensor_lego_nxt_3, R.string.formula_editor_sensor_lego_nxt_4};
+	private static final List<Integer> SENSOR_ITEMS = new ArrayList<Integer>();
+
+	static {
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_x_acceleration);
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_y_acceleration);
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_z_acceleration);
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_compass_direction);
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_x_inclination);
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_y_inclination);
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_loudness);
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_face_detected);
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_face_size);
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_face_x_position);
+		SENSOR_ITEMS.add(R.string.formula_editor_sensor_face_y_position);
+			/*R.string.formula_editor_sensor_lego_nxt_1, R.string.formula_editor_sensor_lego_nxt_2,
+			R.string.formula_editor_sensor_lego_nxt_3, R.string.formula_editor_sensor_lego_nxt_4*/
+	}
 
 	private String tag;
-	private String[] items;
+	private ArrayList<String> items;
+	private ArrayList<String> tokens;
 	private String actionBarTitle;
-	private int[] itemsIds;
+	private List<Integer> itemsIds;
 
 	@Override
 	public void onListItemClick(ListView listView, View view, int position, long id) {
 		FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getSherlockActivity().getSupportFragmentManager()
 				.findFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		if (formulaEditor != null) {
-			formulaEditor.addResourceToActiveFormula(itemsIds[position]);
+			formulaEditor.addDynamicResourceToActiveFormula(itemsIds.get(position), tokens.get(position));
 			formulaEditor.updateButtonViewOnKeyboard();
 		}
 		KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
@@ -128,7 +149,13 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 		this.actionBarTitle = getArguments().getString(ACTION_BAR_TITLE_BUNDLE_ARGUMENT);
 		this.tag = getArguments().getString(FRAGMENT_TAG_BUNDLE_ARGUMENT);
 
-		itemsIds = new int[] {};
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		itemsIds = new ArrayList<Integer>();
 
 		if (tag == OBJECT_TAG) {
 			itemsIds = OBJECT_ITEMS;
@@ -140,16 +167,39 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			itemsIds = SENSOR_ITEMS;
 		}
 
-		items = new String[itemsIds.length];
+		items = new ArrayList<String>();
 
-		for (int index = 0; index < items.length; index++) {
-			items[index] = tag == FUNCTION_TAG ? getString(itemsIds[index]) + getString(FUNCTIONS_PARAMETERS[index])
-					: getString(itemsIds[index]);
+		for (int index = 0; index < itemsIds.size(); index++) {
+
+			if (tag == FUNCTION_TAG) {
+				items.add(getString(itemsIds.get(index)) + getString(FUNCTIONS_PARAMETERS.get(index)));
+			}
+			else {
+				items.add(getString(itemsIds.get(index)));
+			}
+		}
+
+		if (tag == SENSOR_TAG) {
+			SensorService sensorService = ServiceProvider.getService(CatrobatService.SENSOR_SERVICE);
+			Sensors[] sensors = { Sensors.NXT_SENSOR_1, Sensors.NXT_SENSOR_2, Sensors.NXT_SENSOR_3, Sensors.NXT_SENSOR_4 };
+
+			tokens = new ArrayList<String>(items);
+
+			for (Sensors sensor : sensors) {
+				Integer sensorResourceId = sensorService.getMappedSensor(sensor);
+				itemsIds.add(sensorResourceId);
+				items.add(sensorService.getMappedSensorString(sensor, getActivity().getApplicationContext()));
+				tokens.add(sensor.name());
+			}
+		}
+		else {
+			tokens = items;
 		}
 
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
 				R.layout.fragment_formula_editor_list_item, items);
 		setListAdapter(arrayAdapter);
+
 	}
 
 	@Override

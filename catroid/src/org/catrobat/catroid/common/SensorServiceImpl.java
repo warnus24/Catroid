@@ -30,8 +30,14 @@ import android.preference.PreferenceManager;
 import org.catrobat.catroid.formulaeditor.Sensors;
 import org.catrobat.catroid.ui.SettingsActivity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SensorServiceImpl implements SensorService {
 
@@ -40,22 +46,11 @@ public class SensorServiceImpl implements SensorService {
 	Map<Sensors, Integer> sensorMappings = new HashMap<Sensors, Integer>();
 
 	@Override
-	public Sensors getMappedSensor(int stringId) {
-		for (Map.Entry<Sensors, Integer> entry : sensorMappings.entrySet()) {
-			if (entry.getValue() == stringId) {
-				return entry.getKey();
-			}
-		}
+	public Sensors getMappedSensor(String sensorToken) {
 
-		return null;
-	}
-
-	@Override
-	public Integer getMappedSensor(String sensorToken) {
-
-		for (Map.Entry<Sensors, Integer> entry : sensorMappings.entrySet()) {
-			if (entry.getKey().name().equals(sensorToken)) {
-				return entry.getValue();
+		for (Sensors sensor : sensorMappings.keySet()) {
+			if (sensor.name().endsWith(sensorToken)) {
+				return sensor;
 			}
 		}
 
@@ -64,17 +59,33 @@ public class SensorServiceImpl implements SensorService {
 
 	public String getMappedSensorString(String sensorToken, Context applicationContext) {
 
-		Integer resourceId = getMappedSensor(sensorToken);
-		if (resourceId == null) {
-			return null;
+		for (Map.Entry<Sensors, Integer> entry : sensorMappings.entrySet()) {
+			if (entry.getKey().name().endsWith(sensorToken)) {
+				int resourceId = entry.getValue();
+				return getFormatedSensorString(applicationContext, resourceId, sensorToken);
+
+			}
 		}
 
-		return "(" + sensorToken.charAt(sensorToken.length() - 1) + ") " +  applicationContext.getString(resourceId);
+		return null;
+	}
+
+	@Override
+	public String getMappedSensorString(Sensors sensor, Context applicationContext) {
+		int resourceId = sensorMappings.get(sensor);
+		return getFormatedSensorString(applicationContext, resourceId, sensor.name());
 	}
 
 	@Override
 	public Integer getMappedSensor(Sensors sensors) {
 		return sensorMappings.get(sensors);
+	}
+
+	private String getFormatedSensorString(Context context, int resourceId, String token) {
+		char sensorPort = token.charAt(token.length() - 1);
+		String sensorName = context.getString(resourceId);
+
+		return String.format("(%c) %s", sensorPort , sensorName);
 	}
 
 	@Override

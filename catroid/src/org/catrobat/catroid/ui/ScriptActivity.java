@@ -23,11 +23,14 @@
 package org.catrobat.catroid.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -60,7 +63,7 @@ import org.catrobat.catroid.ui.fragment.UserBrickDataEditorFragment;
 
 import java.util.concurrent.locks.Lock;
 
-public class ScriptActivity extends BaseActivity {
+public class ScriptActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 	public static final int FRAGMENT_SCRIPTS = 0;
 	public static final int FRAGMENT_LOOKS = 1;
 	public static final int FRAGMENT_SOUNDS = 2;
@@ -94,12 +97,18 @@ public class ScriptActivity extends BaseActivity {
 	private boolean isSoundFragmentHandleAddButtonHandled = false;
 	private boolean isLookFragmentFromSetLookBrickNew = false;
 	private boolean isLookFragmentHandleAddButtonHandled = false;
+	private SharedPreferences preferences;
 
 	private ImageButton buttonAdd;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		preferences.registerOnSharedPreferenceChangeListener(this);
+
+		ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).loadProjectSpecificMappings(this);
+
 		setContentView(R.layout.activity_script);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -142,7 +151,6 @@ public class ScriptActivity extends BaseActivity {
 
 	@Override
 	public void onResume() {
-		ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).loadProjectSpecificMappings(this);
 
 		super.onResume();
 		setupActionBar();
@@ -577,5 +585,12 @@ public class ScriptActivity extends BaseActivity {
 
 		updateHandleAddButtonClickListener();
 		fragmentTransaction.commit();
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+		Log.d("ScriptActivity", "Preferences Changed - redraw scripts!!");
+		ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).loadProjectSpecificMappings(this);
+		redrawBricks();
 	}
 }

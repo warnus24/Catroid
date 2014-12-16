@@ -216,7 +216,7 @@ public class InternFormulaKeyboardAdapter {
 
 		}
 
-		Sensors sensor = ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).getMappedSensor(resource);
+		Sensors sensor = ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).getMappedSensor(name);
 		if (sensor != null) {
 			return buildSensor(sensor);
 		}
