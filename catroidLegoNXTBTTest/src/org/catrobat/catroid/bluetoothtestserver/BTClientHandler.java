@@ -52,7 +52,7 @@ public abstract class BTClientHandler extends Thread
 			Log.d(TAG, "BT Connection closed");
 		}
 
-		BTServer.writeMessage("Client " + handledClient + " disconnected!\n");
+		BTServer.writeMessage("Client disconnected!\n");
 	}
 
 	private String tryHandleClient() throws IOException {
@@ -62,10 +62,10 @@ public abstract class BTClientHandler extends Thread
 		BTServer.writeMessage("Address: " + dev.getBluetoothAddress().replaceAll("(.{2})(?!$)", "$1:") + "\n");
 		BTServer.writeMessage("Remote device name: " + client + "\n");
 
-		InputStream inStream = this.connection.openInputStream();
+		DataInputStream inStream = new DataInputStream(this.connection.openInputStream());
 		OutputStream outStream = this.connection.openOutputStream();
 
-		this.handle(new DataInputStream(inStream), outStream);
+		this.handle(inStream, outStream);
 
 		outStream.close();
 		inStream.close();

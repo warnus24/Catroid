@@ -39,8 +39,8 @@ import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCaseWithoutSolo;
 import org.catrobat.catroid.uitest.util.BluetoothUtils;
 
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
@@ -53,7 +53,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 	// needed for testdevices
 	// Bluetooth server is running with a name that starts with 'kitty'
 	// e.g. kittyroid-0, kittyslave-0
-	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kitty";
+	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "osiris";
 
 	private static final String PAIRED_UNAVAILABLE_DEVICE_NAME = "SWEET";
 
@@ -125,7 +125,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 
 		solo.clickOnText(connectedDeviceName);
 
-		solo.sleep(15000); //yes, has to be that long! waiting for auto connection timeout!
+		solo.sleep(20000); //yes, has to be that long! waiting for auto connection timeout!
 
 		BluetoothTestService service = ServiceProvider.getService(TEST_SERVICE);
 
@@ -184,7 +184,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 		private boolean isConnected = false;
 		BluetoothConnection connection;
 
-		private InputStream inStream;
+		private DataInputStream inStream;
 		private OutputStream outStream;
 
 		public boolean isConnected() {
@@ -207,7 +207,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 		}
 
 		public void connect() throws IOException{
-			inStream = connection.getInputStream();
+			inStream = new DataInputStream(connection.getInputStream());
 			outStream = connection.getOutputStream();
 
 			isConnected = true;
@@ -226,7 +226,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 
 		public void sendTestMessage(byte[] message) throws IOException {
 
-			outStream.write((byte)(0xFF & message.length));
+			outStream.write(new byte[] {(byte)(0xFF & message.length)});
 			outStream.write(message);
 			outStream.flush();
 		}
@@ -234,12 +234,12 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 		public byte[] receiveTestMessage() throws IOException {
 			byte[] messageLengthBuffer = new byte[1];
 
-			inStream.read(messageLengthBuffer, 0, 1);
+			inStream.readFully(messageLengthBuffer, 0, 1);
 			int expectedMessageLength = messageLengthBuffer[0];
 
 			byte[] payload = new byte[expectedMessageLength];
 
-			inStream.read(payload, 0, expectedMessageLength);
+			inStream.readFully(payload, 0, expectedMessageLength);
 
 			return payload;
 		}
