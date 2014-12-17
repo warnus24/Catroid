@@ -65,9 +65,9 @@ public class SensorTests extends AndroidTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		super.tearDown();
-
 		mindstormsConnection.disconnect();
+
+		super.tearDown();
 	}
 
 	public void testSetSensorModeTouch() {

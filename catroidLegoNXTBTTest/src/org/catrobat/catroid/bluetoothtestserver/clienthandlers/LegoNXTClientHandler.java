@@ -26,8 +26,8 @@ import org.catrobat.catroid.bluetoothtestserver.BTClientHandler;
 import org.catrobat.catroid.bluetoothtestserver.BTServer;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
@@ -44,7 +44,7 @@ public class LegoNXTClientHandler extends BTClientHandler {
 	public static final byte GET_INPUT_VALUES = 7;
 
 	@Override
-	public void handle(InputStream inStream, OutputStream outStream)
+	public void handle(DataInputStream inStream, OutputStream outStream)
 			throws IOException {
 
 		char[] lastMessage = (char[]) null;

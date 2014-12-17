@@ -30,10 +30,11 @@ import org.catrobat.catroid.test.utils.BluetoothConnectionWrapper;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 public class MindstormsNXTHandler implements BluetoothConnectionWrapper.BTClientHandler {
+
+	private boolean isRunning = true;
 
 	protected byte[] createResponseFromClientRequest(byte[] message) {
 		byte[] reply;
@@ -98,13 +99,19 @@ public class MindstormsNXTHandler implements BluetoothConnectionWrapper.BTClient
 	}
 
 	@Override
-	public void handle(InputStream inStream, OutputStream outStream) throws IOException {
+	public void handle(DataInputStream inStream, OutputStream outStream) throws IOException {
 		byte[] messageLengthBuffer = new byte[2];
 
-		while (inStream.read(messageLengthBuffer, 0, 2) != -1) {
+		while (isRunning) {
+			inStream.readFully(messageLengthBuffer, 0, 2);
 			int expectedMessageLength = ((messageLengthBuffer[0] & 0xFF) | (messageLengthBuffer[1] & 0xFF) << 8);
-			handleClientMessage(expectedMessageLength, new DataInputStream(inStream), outStream);
+			handleClientMessage(expectedMessageLength, inStream, outStream);
 		}
+	}
+
+	@Override
+	public void stop() {
+		isRunning = false;
 	}
 
 	private void handleClientMessage(int expectedMessageLength, DataInputStream inStream, OutputStream outStream) throws IOException {

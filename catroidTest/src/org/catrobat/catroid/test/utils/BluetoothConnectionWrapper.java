@@ -29,6 +29,7 @@ import junit.framework.Assert;
 
 import org.catrobat.catroid.bluetooth.BluetoothConnection;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -337,19 +338,20 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 	}
 
 	public static interface BTClientHandler {
-		public abstract void handle(InputStream inStream, OutputStream outStream) throws IOException;
+		public void handle(DataInputStream inStream, OutputStream outStream) throws IOException;
+		public void stop();
 	}
 
 	public static class ClientHandlerThread extends Thread {
 		public static final String TAG = BTClientHandler.class.getSimpleName();
 
 		private BTClientHandler handler;
-		private InputStream inStream;
+		private DataInputStream inStream;
 		private OutputStream outStream;
 
 		public ClientHandlerThread(BTClientHandler handler, InputStream inStream, OutputStream outStream) {
 			this.handler = handler;
-			this.inStream = inStream;
+			this.inStream = new DataInputStream(inStream);
 			this.outStream = outStream;
 		}
 
@@ -364,6 +366,7 @@ public class BluetoothConnectionWrapper extends BluetoothConnection {
 
 		public void stopHandler() {
 			try {
+				handler.stop();
 				outStream.close();
 				inStream.close();
 			} catch (IOException e) {

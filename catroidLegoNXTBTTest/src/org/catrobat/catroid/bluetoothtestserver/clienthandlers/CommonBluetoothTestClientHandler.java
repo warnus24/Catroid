@@ -27,36 +27,36 @@ import org.catrobat.catroid.bluetoothtestserver.BTServer;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 public class CommonBluetoothTestClientHandler extends BTClientHandler {
 
 	@Override
-	public void handle(InputStream inStream, OutputStream outStream) throws IOException {
-        byte[] messageLengthBuffer = new byte[1];
+	public void handle(DataInputStream inStream, OutputStream outStream) throws IOException {
+		byte[] messageLengthBuffer = new byte[1];
 
-        while (inStream.read(messageLengthBuffer, 0, 1) != -1) {
-            int expectedMessageLength = messageLengthBuffer[0];
-            handleClientMessage(expectedMessageLength, new DataInputStream(inStream), outStream);
-        }
+		while (true) {
+			inStream.readFully(messageLengthBuffer, 0, 1);
+			int expectedMessageLength = messageLengthBuffer[0];
+			handleClientMessage(expectedMessageLength, inStream, outStream);
+		}
 
 	}
 
 	private void handleClientMessage(int expectedMessageLength, DataInputStream inStream, OutputStream outStream) throws IOException {
 
-        BTServer.writeMessage("Incomming expected message length (byte): " + expectedMessageLength + "\n");
+		BTServer.writeMessage("Incomming expected message length (byte): " + expectedMessageLength + "\n");
 
-        byte[] payload = new byte[expectedMessageLength];
+		byte[] payload = new byte[expectedMessageLength];
 
-        inStream.readFully(payload, 0, expectedMessageLength);
-        BTServer.writeMessage("Received message, length (byte): " + expectedMessageLength + "\n");
+		inStream.readFully(payload, 0, expectedMessageLength);
+		BTServer.writeMessage("Received message, length (byte): " + expectedMessageLength + "\n");
 
-        byte[] testResult = payload;
+		byte[] testResult = payload;
 
 		BTServer.writeMessage("\nSending reply message \n");
 		outStream.write(new byte[] {(byte)(0xFF & testResult.length)});
-        outStream.write(testResult);
-        outStream.flush();
-    }
+		outStream.write(testResult);
+		outStream.flush();
+	}
 }
