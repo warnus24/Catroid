@@ -125,7 +125,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 
 		solo.clickOnText(connectedDeviceName);
 
-		solo.sleep(20000); //yes, has to be that long! waiting for auto connection timeout!
+		solo.sleep(40000); //yes, has to be that long! waiting for auto connection timeout!
 
 		BluetoothTestService service = ServiceProvider.getService(TEST_SERVICE);
 
