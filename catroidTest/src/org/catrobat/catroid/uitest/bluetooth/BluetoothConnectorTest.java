@@ -53,7 +53,7 @@ public class BluetoothConnectorTest extends BaseActivityInstrumentationTestCaseW
 	// needed for testdevices
 	// Bluetooth server is running with a name that starts with 'kitty'
 	// e.g. kittyroid-0, kittyslave-0
-	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "osiris";
+	private static final String PAIRED_BLUETOOTH_SERVER_DEVICE_NAME = "kitty";
 
 	private static final String PAIRED_UNAVAILABLE_DEVICE_NAME = "SWEET";
 
