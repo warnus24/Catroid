@@ -36,7 +36,9 @@ import com.actionbarsherlock.view.MenuItem;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.Constants;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 
@@ -85,6 +87,12 @@ public class ProjectActivity extends BaseActivity {
 
 		spritesListFragment = (SpritesListFragment) getSupportFragmentManager().findFragmentById(
 				R.id.fragment_sprites_list);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		ServiceProvider.getService(CatrobatService.SENSOR_SERVICE).loadProjectSpecificMappings(this);
 	}
 
 	@Override
