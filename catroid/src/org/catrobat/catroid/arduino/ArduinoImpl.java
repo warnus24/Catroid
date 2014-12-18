@@ -35,8 +35,10 @@ public class ArduinoImpl implements Arduino {
 
 	private static final UUID ARDUINO_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private static final String TAG = ArduinoImpl.class.getSimpleName();
+
 	protected ArduinoConnection arduinoConnection;
 	protected Context context;
+
 	private boolean isInitialized = false;
 
 
