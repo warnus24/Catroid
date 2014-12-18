@@ -273,6 +273,7 @@ public class FormulaElement implements Serializable {
 				return interpretFunctionLENGTH(left, sprite);
 			case JOIN:
 				return interpretFunctionJOIN(sprite);
+			/*
 			case ARDUINODIGITAL:
 				char pinNumberLowerByteDigital = '0';
 				char pinNumberHigherByteDigital = '0';
@@ -327,6 +328,7 @@ public class FormulaElement implements Serializable {
 				}
 
 				return (double) pinValueFromArduinoAnalog;
+				*/
 		}
 		return 0d;
 	}

@@ -20,22 +20,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.common;
+package org.catrobat.catroid.arduino;
 
-import org.catrobat.catroid.bluetooth.BTDeviceConnector;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.arduino.Arduino;
+import org.catrobat.catroid.lego.mindstorm.MindstormException;
+import org.catrobat.catroid.lego.mindstorm.nxt.CommandByte;
+import org.catrobat.catroid.lego.mindstorm.nxt.NXTError;
 
+public class Exception extends ArduinoException {
 
-// CHECKSTYLE DISABLE InterfaceIsType FOR 1 LINES
-public interface CatrobatService {
+	ArduinoError.ErrorCode error;
 
-	public static final Class<LegoNXT> LEGO_NXT = LegoNXT.class;
-    public static final Class<Arduino> ARDUINO = Arduino.class;
-//    public static final Class<Albert> ALBERT = Albert.class;
+	public ArduinoError.ErrorCode getError() {
+		return error;
+	}
 
+	public Exception(ArduinoError.ErrorCode error, ArduinoCommandByte commandByte) {
+		super(String.format("NXTException: Error caused by  '%s' on command '%s'",
+				error.name(), commandByte.name()));
+		this.error = error;
+	}
 
-	// Common services - gets created by ServiceProvider if needed
-	public static final Class<BTDeviceConnector> BLUETOOTH_DEVICE_CONNECTOR = BTDeviceConnector.class;
-
+	public Exception(String message) {
+		super(message);
+	}
 }

@@ -51,6 +51,9 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	public static final String NXT_SENSOR_3 = "setting_mindstorms_nxt_sensor_3";
 	public static final String NXT_SENSOR_4 = "setting_mindstorms_nxt_sensor_4";
 
+	public static final String ARDUINO_SENSOR_ANALOG = "setting_arduino_sensor_analog";
+	public static final String ARDUINO_SENSOR_DIGITAL = "setting_arduino_sensor_digital";
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

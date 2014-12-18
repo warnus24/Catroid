@@ -20,22 +20,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.common;
+package org.catrobat.catroid.arduino;
 
-import org.catrobat.catroid.bluetooth.BTDeviceConnector;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.arduino.Arduino;
+public enum ArduinoCommandType {
+	DIRECT_COMMAND(0X00),
+	REPLY_COMMAND(0X02);
 
+	private int commandTypeValue;
 
-// CHECKSTYLE DISABLE InterfaceIsType FOR 1 LINES
-public interface CatrobatService {
+	private ArduinoCommandType(int commandTypeValue) {
+		this.commandTypeValue = commandTypeValue;
+	}
 
-	public static final Class<LegoNXT> LEGO_NXT = LegoNXT.class;
-    public static final Class<Arduino> ARDUINO = Arduino.class;
-//    public static final Class<Albert> ALBERT = Albert.class;
+	public byte getByte() {
+		return (byte)commandTypeValue;
+	}
 
-
-	// Common services - gets created by ServiceProvider if needed
-	public static final Class<BTDeviceConnector> BLUETOOTH_DEVICE_CONNECTOR = BTDeviceConnector.class;
-
+	public static boolean isMember(byte memberToTest) {
+		for (ArduinoCommandType commandType : ArduinoCommandType.values()) {
+			if (commandType.getByte() == memberToTest) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

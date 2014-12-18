@@ -20,22 +20,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.common;
+package org.catrobat.catroid.arduino;
 
-import org.catrobat.catroid.bluetooth.BTDeviceConnector;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.arduino.Arduino;
+import org.catrobat.catroid.lego.mindstorm.MindstormConnection;
+import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTLightSensor;
+import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTSensor;
+import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTSensorMode;
+import org.catrobat.catroid.lego.mindstorm.nxt.sensors.NXTSensorType;
 
+public class ArduinoAnalogSensor extends ArduinoSensor {
 
-// CHECKSTYLE DISABLE InterfaceIsType FOR 1 LINES
-public interface CatrobatService {
+	private static final String TAG = NXTLightSensor.class.getSimpleName();
+	private static final int DEFAULT_VALUE = 0;
 
-	public static final Class<LegoNXT> LEGO_NXT = LegoNXT.class;
-    public static final Class<Arduino> ARDUINO = Arduino.class;
-//    public static final Class<Albert> ALBERT = Albert.class;
+	public ArduinoAnalogSensor(int port, ArduinoConnection connection) {
+		super(port, ArduinoSensorType.ANALOG, ArduinoSensorMode.Percent, connection);
+		lastValidValue = DEFAULT_VALUE;
+	}
 
-
-	// Common services - gets created by ServiceProvider if needed
-	public static final Class<BTDeviceConnector> BLUETOOTH_DEVICE_CONNECTOR = BTDeviceConnector.class;
-
+	@Override
+	public int getValue() {
+		return getScaledValue();
+	}
 }

@@ -20,22 +20,58 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.common;
+package org.catrobat.catroid.arduino;
 
-import org.catrobat.catroid.bluetooth.BTDeviceConnector;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.arduino.Arduino;
+public abstract class ArduinoDataReply {
 
+	protected byte[] data;
 
-// CHECKSTYLE DISABLE InterfaceIsType FOR 1 LINES
-public interface CatrobatService {
+	public ArduinoDataReply(byte[] data) {
+		this.data = data;
+	}
 
-	public static final Class<LegoNXT> LEGO_NXT = LegoNXT.class;
-    public static final Class<Arduino> ARDUINO = Arduino.class;
-//    public static final Class<Albert> ALBERT = Albert.class;
+	public abstract boolean hasError();
 
+	public abstract byte getStatusByte();
+	public abstract byte getCommandByte();
 
-	// Common services - gets created by ServiceProvider if needed
-	public static final Class<BTDeviceConnector> BLUETOOTH_DEVICE_CONNECTOR = BTDeviceConnector.class;
+	public int getLength() {
+		return data.length;
+	}
 
+	public byte[] getData() {
+		return data.clone();
+	}
+
+	public byte[] getData(int offset, int length) {
+		byte[] a = null;
+		if (offset <= data.length - length)
+		{
+			a = new byte[length];
+			for (int i = 0;i < length;i++) {
+				a[i] = data[i + offset];
+			}
+		}
+
+		return a;
+	}
+
+	public byte getByte(int number) {
+		return data[number];
+	}
+
+	public int getShort(int offset) {
+		int value = ( (data[offset] & 0xFF)  | (data[offset + 1] & 0xFF) << 8);
+
+		return (short)value;	}
+
+	public int getInt(int offset) {
+		int value = ((data[offset] & 0xFF) |
+				(data[offset + 1] & 0xFF) << 8 |
+				(data[offset + 2] & 0xFF) << 16 |
+				(data[offset + 3] & 0xFF) << 24
+		);
+
+		return value;
+	}
 }
