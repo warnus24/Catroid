@@ -116,7 +116,7 @@ public class LedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActi
 		UiTestUtils.clickOnStageCoordinates(solo, 100, 200, 480, 800);
 		
 		//TODO: fix this test
-		/*
+
 		// wait a long time, then check the sensor value weather the light is really on
 		solo.sleep(LED_DELAY_MS);
 		Log.d(TAG, "checking sensor value");
@@ -153,7 +153,7 @@ public class LedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActi
 		solo.sleep(WLAN_DELAY_MS);
 		SensorTestServerConnection.checkLightSensorValue(SensorTestServerConnection.SET_LED_ON_VALUE);
 		solo.sleep(WLAN_DELAY_MS);
-		*/
+		
 
 		Log.d(TAG, "testLedBrick() finished");
 	}
