@@ -57,8 +57,8 @@
 
     <!-- Settings activity -->
     <string name="preference_title">"Instellingen"</string>
-    <string name="preference_title_enable_mindstorm_bricks">"Lego Mindstorms-stenen"</string>
-    <string name="preference_description_mindstorm_bricks">"Lego Mindstorms-besturing toestaan"</string>
+    <string name="preference_title_enable_mindstorms_bricks">"Lego Mindstorms-stenen"</string>
+    <string name="preference_description_mindstorms_bricks">"Lego Mindstorms-besturing toestaan"</string>
     <!--  -->
 
 

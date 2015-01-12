@@ -70,9 +70,9 @@
     <!-- Settings activity -->
     <string name="preference_title">Einstellungen</string>
 
-    <string name="preference_title_enable_mindstorms_bricks">Lego Mindstorm Bausteine</string>
+    <string name="preference_title_enable_mindstorms_bricks">Lego Mindstorms Bausteine</string>
     <string name="preference_title_mindstorms_sensors">Lego NXT Sensoren</string>
-    <string name="preference_description_mindstorms_bricks">Erlaube Steuerung von Lego Mindstorm Robotern</string>
+    <string name="preference_description_mindstorms_bricks">Erlaube Steuerung von Lego Mindstorms Robotern</string>
 
     <string name="preference_title_use_face_detection">Gesichtserkennung</string>
     <string name="preference_description_use_face_detection">Erlaube das Erkennen von Gesichtern</string>
