@@ -37,6 +37,7 @@ package org.catrobat.catroid.uitest.stage;
 import org.catrobat.catroid.ui.ProjectActivity;
 //import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
+import org.catrobat.catroid.uitest.util.UiTestUtils;
 //import org.catrobat.catroid.uitest.util.Reflection;
 //import org.catrobat.catroid.uitest.util.UiTestUtils;
 //import org.catrobat.catroid.utils.Utils;
@@ -72,6 +73,15 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<ProjectA
 //
 	public SpeakStageTest() throws InterruptedException {
 		super(ProjectActivity.class);
+	}
+
+	@Override
+	protected void setUp() throws Exception {
+		// normally super.setUp should be called first
+		// but kept the test failing due to view is null
+		// when starting in ScriptActivity
+		UiTestUtils.createEmptyProject();
+		super.setUp();
 	}
 
 	public void testThisTestmethodIsOnlyHereForPassingTheSourceTest(){
