@@ -22,9 +22,6 @@
  */
 package org.catrobat.catroid.uitest.content.brick;
 
-import android.content.Intent;
-import android.os.Bundle;
-
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
@@ -37,11 +34,7 @@ import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
-import org.catrobat.catroid.ui.ProgramMenuActivity;
 import org.catrobat.catroid.ui.ScriptActivity;
-import org.catrobat.catroid.ui.controller.LookController;
-import org.catrobat.catroid.ui.fragment.LookFragment;
-import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
@@ -183,40 +176,40 @@ public class SetLookBrickTest extends BaseActivityInstrumentationTestCase<MainMe
 		}
 	}
 
-	@Device
-	public void testAddNewLook() {
-		String newText = solo.getString(R.string.new_broadcast_message);
-
-		Bundle bundleForGallery = new Bundle();
-		bundleForGallery.putString("filePath", paintroidImageFile.getAbsolutePath());
-		Intent intent = new Intent(getInstrumentation().getContext(),
-				org.catrobat.catroid.uitest.mockups.MockGalleryActivity.class);
-		intent.putExtras(bundleForGallery);
-
-		UiTestUtils.switchToFragmentInScriptActivity(solo, UiTestUtils.LOOKS_INDEX);
-		UiTestUtils.switchToFragmentInScriptActivity(solo, UiTestUtils.SCRIPTS_INDEX);
-
-		solo.clickOnText(lookName);
-		solo.clickOnText(newText);
-
-		ScriptActivity currentActivity = (ScriptActivity) solo.getCurrentActivity();
-		solo.sleep(200);
-		LookFragment lookFragment = (LookFragment) currentActivity.getFragment(ScriptActivity.FRAGMENT_LOOKS);
-		lookFragment.startActivityForResult(intent, LookController.REQUEST_SELECT_OR_DRAW_IMAGE);
-
-		solo.sleep(200);
-		solo.waitForActivity(ScriptActivity.class.getSimpleName());
-		solo.goBack();
-		assertTrue("Testfile not added from mockActivity", solo.searchText(testFile));
-
-		solo.waitForFragmentByTag(LookFragment.TAG);
-		assertTrue(testFile + " is not selected in Spinner", solo.isSpinnerTextSelected(testFile));
-
-		solo.goBack();
-		String programMenuActivityClass = ProgramMenuActivity.class.getSimpleName();
-		assertTrue("Should be in " + programMenuActivityClass, solo.getCurrentActivity().getClass().getSimpleName()
-				.equals(programMenuActivityClass));
-	}
+//	@Device
+//	public void testAddNewLook() {
+//		String newText = solo.getString(R.string.new_broadcast_message);
+//
+//		Bundle bundleForGallery = new Bundle();
+//		bundleForGallery.putString("filePath", paintroidImageFile.getAbsolutePath());
+//		Intent intent = new Intent(getInstrumentation().getContext(),
+//				org.catrobat.catroid.uitest.mockups.MockGalleryActivity.class);
+//		intent.putExtras(bundleForGallery);
+//
+//		UiTestUtils.switchToFragmentInScriptActivity(solo, UiTestUtils.LOOKS_INDEX);
+//		UiTestUtils.switchToFragmentInScriptActivity(solo, UiTestUtils.SCRIPTS_INDEX);
+//
+//		solo.clickOnText(lookName);
+//		solo.clickOnText(newText);
+//
+//		ScriptActivity currentActivity = (ScriptActivity) solo.getCurrentActivity();
+//		solo.sleep(200);
+//		LookFragment lookFragment = (LookFragment) currentActivity.getFragment(ScriptActivity.FRAGMENT_LOOKS);
+//		lookFragment.startActivityForResult(intent, LookController.REQUEST_SELECT_OR_DRAW_IMAGE);
+//
+//		solo.sleep(200);
+//		solo.waitForActivity(ScriptActivity.class.getSimpleName());
+//		solo.goBack();
+//		assertTrue("Testfile not added from mockActivity", solo.searchText(testFile));
+//
+//		solo.waitForFragmentByTag(LookFragment.TAG);
+//		assertTrue(testFile + " is not selected in Spinner", solo.isSpinnerTextSelected(testFile));
+//
+//		solo.goBack();
+//		String programMenuActivityClass = ProgramMenuActivity.class.getSimpleName();
+//		assertTrue("Should be in " + programMenuActivityClass, solo.getCurrentActivity().getClass().getSimpleName()
+//				.equals(programMenuActivityClass));
+//	}
 
 	public void selectLook(String newLook, String oldName, String lookImagePath) {
 		solo.clickOnText(oldName);
