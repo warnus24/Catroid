@@ -1954,6 +1954,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	public void testDeletingProjectAndVerifySettings() {
 		try {
 			StandardProjectHandler.createAndSaveStandardProject(getActivity());
+			StandardProjectHandler.createAndSaveStandardProject("test", getActivity());
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("Standard Project not created");
