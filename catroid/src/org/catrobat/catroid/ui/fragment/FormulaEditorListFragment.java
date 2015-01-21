@@ -164,7 +164,7 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 		} else if (tag == LOGIC_TAG) {
 			itemsIds = LOGIC_ITEMS;
 		} else if (tag == SENSOR_TAG) {
-			itemsIds = SENSOR_ITEMS;
+			itemsIds.addAll(SENSOR_ITEMS);
 		}
 
 		items = new ArrayList<String>();
@@ -181,7 +181,7 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 
 		if (tag == SENSOR_TAG) {
 			SensorService sensorService = ServiceProvider.getService(CatrobatService.SENSOR_SERVICE);
-			Sensors[] sensors = { Sensors.NXT_SENSOR_1, Sensors.NXT_SENSOR_2, Sensors.NXT_SENSOR_3, Sensors.NXT_SENSOR_4 };
+			final Sensors[] sensors = { Sensors.NXT_SENSOR_1, Sensors.NXT_SENSOR_2, Sensors.NXT_SENSOR_3, Sensors.NXT_SENSOR_4 };
 
 			tokens = new ArrayList<String>(items);
 
