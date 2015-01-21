@@ -36,9 +36,9 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
 
-public class UserBrickTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
+public class IUserBrickTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
-	public UserBrickTest() {
+	public IUserBrickTest() {
 		super(MainMenuActivity.class);
 	}
 

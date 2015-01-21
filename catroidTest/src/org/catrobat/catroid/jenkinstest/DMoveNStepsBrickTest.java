@@ -45,13 +45,13 @@ import org.catrobat.catroid.utils.Utils;
 
 import java.util.ArrayList;
 
-public class MoveNStepsBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
+public class DMoveNStepsBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 	private static final double STEPS_TO_MOVE = 23.0;
 
 	private Project project;
 	private MoveNStepsBrick moveNStepsBrick;
 
-	public MoveNStepsBrickTest() {
+	public DMoveNStepsBrickTest() {
 		super(ScriptActivity.class);
 	}
 

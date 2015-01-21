@@ -40,12 +40,12 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
 
-public class LegoNxtMotorStopBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
+public class BLegoNxtMotorStopBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 
 	private Project project;
 	private LegoNxtMotorStopBrick motorStopBrick;
 
-	public LegoNxtMotorStopBrickTest() {
+	public BLegoNxtMotorStopBrickTest() {
 		super(ScriptActivity.class);
 	}
 

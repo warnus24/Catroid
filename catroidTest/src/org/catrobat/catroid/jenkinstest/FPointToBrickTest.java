@@ -46,7 +46,7 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 import java.io.File;
 import java.util.ArrayList;
 
-public class PointToBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
+public class FPointToBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 
 	private Project project;
 	private PointToBrick pointToBrick;
@@ -57,7 +57,7 @@ public class PointToBrickTest extends BaseActivityInstrumentationTestCase<Script
 	private final String newSpriteName1 = "cat3";
 	private final String newSpriteName2 = "cat4";
 
-	public PointToBrickTest() {
+	public FPointToBrickTest() {
 		super(ScriptActivity.class);
 	}
 

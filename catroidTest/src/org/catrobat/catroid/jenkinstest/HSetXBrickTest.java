@@ -31,7 +31,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.ComeToFrontBrick;
+import org.catrobat.catroid.content.bricks.SetXBrick;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
@@ -39,11 +39,13 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
 
-public class ComeToFrontTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
+public class HSetXBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
+	private static final int SET_X = 17;
 
 	private Project project;
+	private SetXBrick setXBrick;
 
-	public ComeToFrontTest() {
+	public HSetXBrickTest() {
 		super(ScriptActivity.class);
 	}
 
@@ -56,7 +58,7 @@ public class ComeToFrontTest extends BaseActivityInstrumentationTestCase<ScriptA
 		super.setUp();
 	}
 
-	public void testComeToFrontBrick() {
+	public void testSetXBrick() {
 		ListView dragDropListView = UiTestUtils.getScriptListView(solo);
 		BrickAdapter adapter = (BrickAdapter) dragDropListView.getAdapter();
 
@@ -70,15 +72,18 @@ public class ComeToFrontTest extends BaseActivityInstrumentationTestCase<ScriptA
 		assertEquals("Incorrect number of bricks.", 1, projectBrickList.size());
 
 		assertEquals("Wrong Brick instance.", projectBrickList.get(0), adapter.getChild(groupCount - 1, 0));
-		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.brick_come_to_front)));
+		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.brick_set_x)));
+
+		UiTestUtils.testBrickWithFormulaEditor(solo, ProjectManager.getInstance().getCurrentSprite(),
+				R.id.brick_set_x_edit_text, SET_X, Brick.BrickField.X_POSITION, setXBrick);
 	}
 
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
 		Script script = new StartScript();
-		ProjectManager.getInstance().setProject(project);
-		script.addBrick(new ComeToFrontBrick());
+		setXBrick = new SetXBrick(0);
+		script.addBrick(setXBrick);
 
 		sprite.addScript(script);
 		project.addSprite(sprite);

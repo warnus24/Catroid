@@ -53,7 +53,7 @@ import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 //import org.catrobat.catroid.uitest.util.UiTestUtils;
 //import org.mockito.Mockito;
 
-public class PrestageActivityDroneTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
+public class JPrestageActivityDroneTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
 //	private enum ActivityUnderTest {
 //		PRE_STAGE, STAGE
@@ -68,7 +68,7 @@ public class PrestageActivityDroneTest extends BaseActivityInstrumentationTestCa
 //	private Intent stageActivityIntent;
 //	private DroneConnection droneConnection = null;
 //
-	public PrestageActivityDroneTest() {
+	public JPrestageActivityDroneTest() {
 		super(MainMenuActivity.class);
 	}
 

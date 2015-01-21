@@ -43,7 +43,7 @@ import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 //import org.catrobat.catroid.uitest.util.UiTestUtils;
 //import org.mockito.Mockito;
 
-public class StageActivityDroneTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> implements
+public class KStageActivityDroneTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> implements
 		ServiceConnection {
 
 //	private static final String TAG = StageActivityDroneTest.class.getSimpleName();
@@ -53,7 +53,7 @@ public class StageActivityDroneTest extends BaseActivityInstrumentationTestCase<
 //	private DroneProxy droneProxyMock;
 //	private StageActivity stageActivity;
 //
-	public StageActivityDroneTest() {
+	public KStageActivityDroneTest() {
 		super(MainMenuActivity.class);
 	}
 

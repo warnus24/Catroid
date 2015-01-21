@@ -50,11 +50,11 @@ import org.catrobat.catroid.utils.UtilFile;
 
 import java.io.File;
 
-public class SetSizeToBrickTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
+public class GSetSizeToBrickTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 	private static final int SCREEN_WIDTH = 480;
 	private static final int SCREEN_HEIGHT = 800;
 
-	private static final String TAG = SetSizeToBrickTest.class.getSimpleName();
+	private static final String TAG = GSetSizeToBrickTest.class.getSimpleName();
 
 	private String projectName = "SetSizeToBrickTestProject";
 	private Project project;
@@ -62,7 +62,7 @@ public class SetSizeToBrickTest extends BaseActivityInstrumentationTestCase<Main
 	private SetLookBrick setLookBrick;
 	private int imageRawId = org.catrobat.catroid.test.R.raw.red_quad;
 
-	public SetSizeToBrickTest() {
+	public GSetSizeToBrickTest() {
 		super(MainMenuActivity.class);
 	}
 

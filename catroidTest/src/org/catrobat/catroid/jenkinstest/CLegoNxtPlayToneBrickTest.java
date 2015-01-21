@@ -31,8 +31,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
-import org.catrobat.catroid.content.bricks.PointInDirectionBrick.Direction;
+import org.catrobat.catroid.content.bricks.LegoNxtPlayToneBrick;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
@@ -40,12 +39,16 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
 
-public class PointInDirectionBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
-	private static final double SET_DEGREE = 90.0;
-	private Project project;
-	private PointInDirectionBrick pointInDirectionBrick;
+public class CLegoNxtPlayToneBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 
-	public PointInDirectionBrickTest() {
+	private static final double SET_DURATION = 3.0;
+	private static final int SET_FREQUENCY = 70;
+	private static final int SET_FREQUENCY_INITIALLY = 20;
+
+	private Project project;
+	private LegoNxtPlayToneBrick playToneBrick;
+
+	public CLegoNxtPlayToneBrickTest() {
 		super(ScriptActivity.class);
 	}
 
@@ -58,7 +61,7 @@ public class PointInDirectionBrickTest extends BaseActivityInstrumentationTestCa
 		super.setUp();
 	}
 
-	public void testPointInDirectionBrickTest() throws InterruptedException {
+	public void testNXTPlayToneBrick() {
 		ListView dragDropListView = UiTestUtils.getScriptListView(solo);
 		BrickAdapter adapter = (BrickAdapter) dragDropListView.getAdapter();
 
@@ -72,19 +75,25 @@ public class PointInDirectionBrickTest extends BaseActivityInstrumentationTestCa
 		assertEquals("Incorrect number of bricks.", 1, projectBrickList.size());
 
 		assertEquals("Wrong Brick instance.", projectBrickList.get(0), adapter.getChild(groupCount - 1, 0));
-		assertNotNull("TextView does not exist", solo.getText(solo.getString(R.string.brick_point_in_direction)));
+		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.nxt_play_tone)));
 
 		UiTestUtils.testBrickWithFormulaEditor(solo, ProjectManager.getInstance().getCurrentSprite(),
-				R.id.brick_point_in_direction_edit_text, SET_DEGREE, Brick.BrickField.DEGREES, pointInDirectionBrick);
+				R.id.nxt_tone_duration_edit_text, SET_DURATION, Brick.BrickField.LEGO_NXT_DURATION_IN_SECONDS, playToneBrick);
+
+		UiTestUtils.testBrickWithFormulaEditor(solo, ProjectManager.getInstance().getCurrentSprite(),
+				R.id.nxt_tone_freq_edit_text, SET_FREQUENCY, Brick.BrickField.LEGO_NXT_FREQUENCY, playToneBrick);
+
 	}
 
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
 		Script script = new StartScript();
-		pointInDirectionBrick = new PointInDirectionBrick(Direction.RIGHT);
-		script.addBrick(pointInDirectionBrick);
 
+		int setDurationInitially = 1000;
+		playToneBrick = new LegoNxtPlayToneBrick(SET_FREQUENCY_INITIALLY * 100, setDurationInitially);
+
+		script.addBrick(playToneBrick);
 		sprite.addScript(script);
 		project.addSprite(sprite);
 
