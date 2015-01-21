@@ -20,10 +20,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.uitest.content.brick;
+package org.catrobat.catroid.jenkinstest;
 
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -32,7 +31,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick;
+import org.catrobat.catroid.content.bricks.ComeToFrontBrick;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
@@ -40,12 +39,11 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
 
-public class LegoNxtMotorStopBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
+public class ComeToFrontTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 
 	private Project project;
-	private LegoNxtMotorStopBrick motorStopBrick;
 
-	public LegoNxtMotorStopBrickTest() {
+	public ComeToFrontTest() {
 		super(ScriptActivity.class);
 	}
 
@@ -58,7 +56,7 @@ public class LegoNxtMotorStopBrickTest extends BaseActivityInstrumentationTestCa
 		super.setUp();
 	}
 
-	public void testMotorActionBrick() {
+	public void testComeToFrontBrick() {
 		ListView dragDropListView = UiTestUtils.getScriptListView(solo);
 		BrickAdapter adapter = (BrickAdapter) dragDropListView.getAdapter();
 
@@ -72,34 +70,15 @@ public class LegoNxtMotorStopBrickTest extends BaseActivityInstrumentationTestCa
 		assertEquals("Incorrect number of bricks.", 1, projectBrickList.size());
 
 		assertEquals("Wrong Brick instance.", projectBrickList.get(0), adapter.getChild(groupCount - 1, 0));
-		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.motor_stop)));
-
-		String[] motors = getActivity().getResources().getStringArray(R.array.nxt_stop_motor_chooser);
-		assertTrue("Spinner items list too short!", motors.length == 5);
-
-		int legoSpinnerIndex = 0;
-
-		Spinner currentSpinner = solo.getCurrentViews(Spinner.class).get(legoSpinnerIndex);
-		solo.pressSpinnerItem(legoSpinnerIndex, 5);
-		assertEquals("Wrong item in spinner!", motors[4], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(legoSpinnerIndex, -1);
-		assertEquals("Wrong item in spinner!", motors[3], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(legoSpinnerIndex, -1);
-		assertEquals("Wrong item in spinner!", motors[2], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(legoSpinnerIndex, -1);
-		assertEquals("Wrong item in spinner!", motors[1], currentSpinner.getSelectedItem());
-		solo.pressSpinnerItem(legoSpinnerIndex, -1);
-		assertEquals("Wrong item in spinner!", motors[0], currentSpinner.getSelectedItem());
+		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.brick_come_to_front)));
 	}
 
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
 		Script script = new StartScript();
-
-		motorStopBrick = new LegoNxtMotorStopBrick(LegoNxtMotorStopBrick.Motor.MOTOR_A);
-
-		script.addBrick(motorStopBrick);
+		ProjectManager.getInstance().setProject(project);
+		script.addBrick(new ComeToFrontBrick());
 
 		sprite.addScript(script);
 		project.addSprite(sprite);

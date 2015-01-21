@@ -20,9 +20,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.uitest.content.brick;
+package org.catrobat.catroid.jenkinstest;
 
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -31,8 +32,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
-import org.catrobat.catroid.content.bricks.PointInDirectionBrick.Direction;
+import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
@@ -40,12 +40,12 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
 
-public class PointInDirectionBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
-	private static final double SET_DEGREE = 90.0;
-	private Project project;
-	private PointInDirectionBrick pointInDirectionBrick;
+public class LegoNxtMotorStopBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 
-	public PointInDirectionBrickTest() {
+	private Project project;
+	private LegoNxtMotorStopBrick motorStopBrick;
+
+	public LegoNxtMotorStopBrickTest() {
 		super(ScriptActivity.class);
 	}
 
@@ -58,7 +58,7 @@ public class PointInDirectionBrickTest extends BaseActivityInstrumentationTestCa
 		super.setUp();
 	}
 
-	public void testPointInDirectionBrickTest() throws InterruptedException {
+	public void testMotorActionBrick() {
 		ListView dragDropListView = UiTestUtils.getScriptListView(solo);
 		BrickAdapter adapter = (BrickAdapter) dragDropListView.getAdapter();
 
@@ -72,18 +72,34 @@ public class PointInDirectionBrickTest extends BaseActivityInstrumentationTestCa
 		assertEquals("Incorrect number of bricks.", 1, projectBrickList.size());
 
 		assertEquals("Wrong Brick instance.", projectBrickList.get(0), adapter.getChild(groupCount - 1, 0));
-		assertNotNull("TextView does not exist", solo.getText(solo.getString(R.string.brick_point_in_direction)));
+		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.motor_stop)));
 
-		UiTestUtils.testBrickWithFormulaEditor(solo, ProjectManager.getInstance().getCurrentSprite(),
-				R.id.brick_point_in_direction_edit_text, SET_DEGREE, Brick.BrickField.DEGREES, pointInDirectionBrick);
+		String[] motors = getActivity().getResources().getStringArray(R.array.nxt_stop_motor_chooser);
+		assertTrue("Spinner items list too short!", motors.length == 5);
+
+		int legoSpinnerIndex = 0;
+
+		Spinner currentSpinner = solo.getCurrentViews(Spinner.class).get(legoSpinnerIndex);
+		solo.pressSpinnerItem(legoSpinnerIndex, 5);
+		assertEquals("Wrong item in spinner!", motors[4], currentSpinner.getSelectedItem());
+		solo.pressSpinnerItem(legoSpinnerIndex, -1);
+		assertEquals("Wrong item in spinner!", motors[3], currentSpinner.getSelectedItem());
+		solo.pressSpinnerItem(legoSpinnerIndex, -1);
+		assertEquals("Wrong item in spinner!", motors[2], currentSpinner.getSelectedItem());
+		solo.pressSpinnerItem(legoSpinnerIndex, -1);
+		assertEquals("Wrong item in spinner!", motors[1], currentSpinner.getSelectedItem());
+		solo.pressSpinnerItem(legoSpinnerIndex, -1);
+		assertEquals("Wrong item in spinner!", motors[0], currentSpinner.getSelectedItem());
 	}
 
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
 		Script script = new StartScript();
-		pointInDirectionBrick = new PointInDirectionBrick(Direction.RIGHT);
-		script.addBrick(pointInDirectionBrick);
+
+		motorStopBrick = new LegoNxtMotorStopBrick(LegoNxtMotorStopBrick.Motor.MOTOR_A);
+
+		script.addBrick(motorStopBrick);
 
 		sprite.addScript(script);
 		project.addSprite(sprite);

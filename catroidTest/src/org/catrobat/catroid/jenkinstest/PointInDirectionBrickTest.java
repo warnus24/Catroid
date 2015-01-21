@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.uitest.content.brick;
+package org.catrobat.catroid.jenkinstest;
 
 import android.widget.ListView;
 
@@ -31,7 +31,8 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.SetXBrick;
+import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
+import org.catrobat.catroid.content.bricks.PointInDirectionBrick.Direction;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
@@ -39,13 +40,12 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import java.util.ArrayList;
 
-public class SetXBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
-	private static final int SET_X = 17;
-
+public class PointInDirectionBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
+	private static final double SET_DEGREE = 90.0;
 	private Project project;
-	private SetXBrick setXBrick;
+	private PointInDirectionBrick pointInDirectionBrick;
 
-	public SetXBrickTest() {
+	public PointInDirectionBrickTest() {
 		super(ScriptActivity.class);
 	}
 
@@ -58,7 +58,7 @@ public class SetXBrickTest extends BaseActivityInstrumentationTestCase<ScriptAct
 		super.setUp();
 	}
 
-	public void testSetXBrick() {
+	public void testPointInDirectionBrickTest() throws InterruptedException {
 		ListView dragDropListView = UiTestUtils.getScriptListView(solo);
 		BrickAdapter adapter = (BrickAdapter) dragDropListView.getAdapter();
 
@@ -72,18 +72,18 @@ public class SetXBrickTest extends BaseActivityInstrumentationTestCase<ScriptAct
 		assertEquals("Incorrect number of bricks.", 1, projectBrickList.size());
 
 		assertEquals("Wrong Brick instance.", projectBrickList.get(0), adapter.getChild(groupCount - 1, 0));
-		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.brick_set_x)));
+		assertNotNull("TextView does not exist", solo.getText(solo.getString(R.string.brick_point_in_direction)));
 
 		UiTestUtils.testBrickWithFormulaEditor(solo, ProjectManager.getInstance().getCurrentSprite(),
-				R.id.brick_set_x_edit_text, SET_X, Brick.BrickField.X_POSITION, setXBrick);
+				R.id.brick_point_in_direction_edit_text, SET_DEGREE, Brick.BrickField.DEGREES, pointInDirectionBrick);
 	}
 
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
 		Script script = new StartScript();
-		setXBrick = new SetXBrick(0);
-		script.addBrick(setXBrick);
+		pointInDirectionBrick = new PointInDirectionBrick(Direction.RIGHT);
+		script.addBrick(pointInDirectionBrick);
 
 		sprite.addScript(script);
 		project.addSprite(sprite);
