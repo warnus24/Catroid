@@ -142,6 +142,8 @@ public class StageActivity extends AndroidApplication {
 		LedUtil.resumeLed();
 		VibratorUtil.resumeVibrator();
 		SensorHandler.startSensorListener(this);
+
+		ServiceProvider.getService(CatrobatService.BLUETOOTH_DEVICE_CONNECTOR).start();
 	}
 
 	public boolean getResizePossible() {
