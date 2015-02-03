@@ -171,8 +171,8 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<ProjectA
 		UiTestUtils.goToHomeActivity(getActivity());
 		solo.waitForActivity(MainMenuActivity.class);
 
-		assertEquals("TextToSpeech folder is not empty", 0,
-				new File(Constants.TEXT_TO_SPEECH_TMP_PATH).listFiles().length);
+		File file = new File(Constants.TEXT_TO_SPEECH_TMP_PATH);
+		assertEquals("TextToSpeech folder is not empty", 0, file.listFiles().length);
 	}
 
 	private void createNormalBehaviourProject() {
