@@ -89,7 +89,7 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	private final String lorem = "Lorem ipsum dolor sit amet";
 	private File renameDirectory = null;
 	//private boolean unzip;
-	private boolean deleteCacheProjects = false;
+	//private boolean deleteCacheProjects = false;
 	private int numberOfCacheProjects = 27;
 	private String cacheProjectName = "cachetestProject";
 	private File lookFile;

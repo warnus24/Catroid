@@ -80,7 +80,6 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 	@Override
 	protected void tearDown() throws Exception {
 
-		File directory;
 		File rootDirectory = new File(Constants.DEFAULT_ROOT);
 
 		Log.v(TAG, "tearDown");
@@ -147,7 +146,6 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 	}
 
 	public void saveProjectsToZip() {
-		File directory;
 		File rootDirectory = new File(Constants.DEFAULT_ROOT);
 
 		rootDirectory.mkdirs();
