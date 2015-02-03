@@ -32,10 +32,14 @@ import com.robotium.solo.Solo;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
-import org.catrobat.catroid.content.Project;
+import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.ui.MainMenuActivity;
+import org.catrobat.catroid.utils.UtilFile;
+import org.catrobat.catroid.utils.UtilZip;
+import org.catrobat.catroid.utils.Utils;
 
+import java.io.File;
 import java.io.IOException;
 
 public abstract class BaseActivityInstrumentationTestCase<T extends Activity> extends
@@ -45,6 +49,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 	private static final String TAG = "BaseActivityInstrumentationTestCase";
 	private Class clazz;
 	private SystemAnimations systemAnimations;
+	private static final String ZIPFILE_NAME = "testzip";
 
 	public BaseActivityInstrumentationTestCase(Class<T> clazz) {
 		super(clazz);
@@ -55,6 +60,8 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 	protected void setUp() throws Exception {
 		Log.v(TAG, "setUp");
 		super.setUp();
+
+		saveProjectsToZip();
 		systemAnimations = new SystemAnimations(getInstrumentation().getContext());
 		systemAnimations.disableAll();
 		UiTestUtils.clearAllUtilTestProjects();
@@ -70,6 +77,10 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 
 	@Override
 	protected void tearDown() throws Exception {
+
+		File directory;
+		File rootDirectory = new File(Constants.DEFAULT_ROOT);
+
 		Log.v(TAG, "tearDown");
 		Log.v(TAG, "remove Projectname from SharedPreferences");
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -79,21 +90,40 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 
 		solo.finishOpenedActivities();
 
-		try {
-			Project currentProject = ProjectManager.getInstance().getCurrentProject();
-			if (currentProject != null) {
-				ProjectManager.getInstance().deleteProject(currentProject.getName(), null);
-			}
-		} catch (IOException e) {
-			Log.d(TAG, "deleteCurrentProject exception", e);
-		}
+//		try {
+//			Project currentProject = ProjectManager.getInstance().getCurrentProject();
+//			if (currentProject != null) {
+//				ProjectManager.getInstance().deleteProject(currentProject.getName(), null);
+//			}
+//		} catch (IOException e) {
+//			Log.d(TAG, "deleteCurrentProject exception", e);
+//		}
+//
+//		UiTestUtils.clearAllUtilTestProjects();
 
-		UiTestUtils.clearAllUtilTestProjects();
-		super.tearDown();
 		systemAnimations.enableAll();
 		solo = null;
+		Log.i(TAG, "tearDown end 1");
 
-		Log.v(TAG, "tearDown end");
+		try {
+			Log.d(TAG, UtilFile.getProjectNames(rootDirectory).toString());
+		} catch (NullPointerException e) {
+			Log.d(TAG, "List is empty");
+		}
+
+		for (String projectName : UtilFile.getProjectNames(rootDirectory)) {
+			Log.d(TAG, projectName + "will be deleted");
+			ProjectManager.getInstance().deleteProject(projectName, this.getActivity());
+		}
+
+		Log.i(TAG, "tearDown end 2");
+
+		unzipProjects();
+
+		Log.i(TAG, "tearDown end 3");
+		super.tearDown();
+
+		Log.i(TAG, "tearDown end 4");
 	}
 
 	@Override
@@ -102,7 +132,54 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 			setUp();
 			runTest();
 		} finally {
-			tearDown();
+			try {
+				tearDown();
+			} catch (Exception e) {
+				Log.d(TAG, "###########################");
+				Log.d(TAG, e.getMessage());
+			}
 		}
+	}
+
+	public void saveProjectsToZip() {
+		File directory;
+		File rootDirectory = new File(Constants.DEFAULT_ROOT);
+		String[] paths = rootDirectory.list();
+
+		if (paths == null) {
+			fail("could not determine catroid directory");
+		}
+
+		for (int i = 0; i < paths.length; i++) {
+			paths[i] = Utils.buildPath(rootDirectory.getAbsolutePath(), paths[i]);
+		}
+		try {
+			String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
+			Log.d(TAG, "i am the zipfile: " + zipFileString);
+			File zipFile = new File(zipFileString);
+			if (zipFile.exists()) {
+				zipFile.delete();
+			}
+			zipFile.getParentFile().mkdirs();
+			zipFile.createNewFile();
+			if (!UtilZip.writeToZipFile(paths, zipFileString)) {
+				zipFile.delete();
+				throw new IOException("asdf");
+			}
+		} catch (IOException e) {
+			fail("IOException while zipping projects");
+		}
+
+		for (int i = 0; i < paths.length; i++) {
+			StorageHandler.getInstance().deleteFile(paths[i]);
+		}
+	}
+
+	public void unzipProjects() {
+		String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
+		Log.d(TAG, "i am the unzipfile: " + zipFileString);
+		File zipFile = new File(zipFileString);
+		UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
+		zipFile.delete();
 	}
 }
