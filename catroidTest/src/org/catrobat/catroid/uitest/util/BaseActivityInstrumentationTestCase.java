@@ -136,7 +136,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 				tearDown();
 			} catch (Exception e) {
 				Log.d(TAG, "###########################");
-				Log.d(TAG, e.getMessage());
+				Log.d(TAG, "Here you are - Excepzion in runBare");
 			}
 		}
 	}
