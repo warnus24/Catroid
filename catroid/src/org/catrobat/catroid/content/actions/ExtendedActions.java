@@ -189,12 +189,10 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static ArduinoSendAction sendArduinoValues(Sprite sprite, int pinNumberLowerByte, int pinNumberHigherByte,
-			int pinValue) {
+	public static ArduinoSendAction sendArduinoValues(Sprite sprite, String pinNumber, int pinValue) {
 		ArduinoSendAction action = action(ArduinoSendAction.class);
 		action.setSprite(sprite);
-		action.setPinNumberLowerByte(pinNumberLowerByte);
-		action.setPinNumberHigherByte(pinNumberHigherByte);
+		action.setPinNumber(pinNumber);
 		action.setPinValue(pinValue);
 		return action;
 	}

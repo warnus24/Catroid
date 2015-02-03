@@ -24,6 +24,7 @@ package org.catrobat.catroid.bluetooth;
 
 import android.content.Context;
 
+import org.catrobat.catroid.arduino.ArduinoImpl;
 import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXTImpl;
 
 import java.util.UUID;
@@ -41,9 +42,9 @@ public class BTDeviceFactoryImpl implements BTDeviceFactory {
 //            return new Albert();
 //        }
 
-//        if (service == BTDeviceService.ARDUINO) {
-//            return new Arduino();
-//        }
+        if (service == BTDeviceService.ARDUINO) {
+            return new ArduinoImpl(applicationContext);
+        }
 
 		return null; // may throw exception
 	}

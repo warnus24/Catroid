@@ -24,9 +24,6 @@
 package org.catrobat.catroid.arduino;
 
 import org.catrobat.catroid.bluetooth.BluetoothConnection;
-import org.catrobat.catroid.arduino.ArduinoCommand;
-import org.catrobat.catroid.arduino.ArduinoConnection;
-import org.catrobat.catroid.arduino.ArduinoException;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -53,7 +50,7 @@ public class ArduinoConnectionImpl implements ArduinoConnection {
 			isConnected = true;
 		} catch (IOException e) {
 			isConnected = false;
-			throw new ArduinoException(e, "Cannot establish BtConnection");
+			//throw new ArduinoException(e, "Cannot establish BtConnection");
 		}
 	}
 
@@ -76,23 +73,15 @@ public class ArduinoConnectionImpl implements ArduinoConnection {
 	}
 
 	@Override
-	public synchronized byte[] sendAndReceive(ArduinoCommand command) {
-		send(command);
+	public synchronized byte[] sendAndReceive(byte[] message) {
+		send(message);
 		return receive();
 	}
 
 	@Override
-	public synchronized void send(ArduinoCommand command) {
+	public synchronized void send(byte[] message) {
 		try {
-			int messageLength = command.getLength();
-			byte[] message = command.getRawCommand();
-			byte[] data = new byte[command.getLength() + 2];
-			data[0] = (byte)(messageLength & 0x00FF);
-			data[1] = (byte)((messageLength & 0xFF00) >> 8) ;
-
-			System.arraycopy(message, 0, data, 2, messageLength);
-
-			arduinoOutputStream.write(data, 0, messageLength + 2);
+			arduinoOutputStream.write(message, 0, message.length);
 			arduinoOutputStream.flush();
 
 		} catch (IOException e) {
@@ -101,15 +90,15 @@ public class ArduinoConnectionImpl implements ArduinoConnection {
 	}
 
 	protected synchronized byte[] receive() {
-		byte[] data = new byte[2];
+		byte[] expectedLength = new byte[1];
 		byte[] payload;
 
 		try {
-			arduinoInputStream.readFully(data, 0, 2);
-			int expectedLength = ((data[0] & 0xFF) | (data[1] & 0xFF) << 8);
-			payload = new byte[expectedLength];
+			while(arduinoInputStream.readByte() != 126);
+			arduinoInputStream.readFully(expectedLength, 0, 1);
+			payload = new byte[expectedLength[0] - 48];
 
-			arduinoInputStream.readFully(payload, 0, expectedLength);
+			arduinoInputStream.readFully(payload, 0, expectedLength[0] - 48);
 		}
 		catch (IOException e) {
 			throw new ArduinoException(e, "Read Error");

@@ -54,6 +54,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 	private int pinValue = 0;
 	private int pinSpinnerPosition = 0;
 	private int valueSpinnerPosition = 0;
+	private String pinNumberString = "";
 
 	public ArduinoSendBrick() {
 	}
@@ -168,6 +169,10 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String tempSavingString = "00";
 				tempSavingString = parent.getItemAtPosition(position).toString();
+
+				if(tempSavingString != "")
+					pinNumberString = tempSavingString;
+
 				if (tempSavingString.length() < 2) {
 					pinNumberLowerByte = '0';
 					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
@@ -234,7 +239,7 @@ public class ArduinoSendBrick extends BrickBaseType implements OnItemSelectedLis
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.sendArduinoValues(sprite, pinNumberLowerByte, pinNumberHigherByte, pinValue));
+		sequence.addAction(ExtendedActions.sendArduinoValues(sprite, pinNumberString, pinValue));
 		return null;
 	}
 }

@@ -22,16 +22,14 @@
  */
 package org.catrobat.catroid.arduino;
 
-import org.catrobat.catroid.arduino.ArduinoInterface;
-
 public interface ArduinoConnection {
 
 	public void init();
 	public boolean isConnected();
 	public void disconnect();
 
-	public byte[] sendAndReceive(ArduinoCommand command);
+	public byte[] sendAndReceive(byte[] message);
 
-	public void send(ArduinoCommand command);
+	public void send(byte[] message);
 
 }
