@@ -61,10 +61,12 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		Log.v(TAG, "setUp");
 		super.setUp();
 
-		saveProjectsToZip();
 		systemAnimations = new SystemAnimations(getInstrumentation().getContext());
 		systemAnimations.disableAll();
-		UiTestUtils.clearAllUtilTestProjects();
+
+		saveProjectsToZip();
+
+		//UiTestUtils.clearAllUtilTestProjects();
 		if (clazz.getSimpleName().equalsIgnoreCase(MainMenuActivity.class.getSimpleName())) {
 			UiTestUtils.createEmptyProject();
 		}
@@ -131,12 +133,15 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		try {
 			setUp();
 			runTest();
+		} catch(Exception e) {
+			Log.d(TAG, "###########################");
+			Log.d(TAG, "Here you are - Exception in runBare");
 		} finally {
 			try {
 				tearDown();
 			} catch (Exception e) {
 				Log.d(TAG, "###########################");
-				Log.d(TAG, "Here you are - Excepzion in runBare");
+				Log.d(TAG, "Here you are - Exception in runBare finally");
 			}
 		}
 	}
