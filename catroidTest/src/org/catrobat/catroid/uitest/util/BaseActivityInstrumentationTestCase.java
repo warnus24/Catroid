@@ -149,6 +149,9 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 	public void saveProjectsToZip() {
 		File directory;
 		File rootDirectory = new File(Constants.DEFAULT_ROOT);
+
+		rootDirectory.mkdirs();
+
 		String[] paths = rootDirectory.list();
 
 		if (paths == null) {
