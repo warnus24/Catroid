@@ -388,8 +388,6 @@ public class MyProjectsActivityTest extends BaseActivityInstrumentationTestCase<
 	}
 
 	public void testImageCache() {
-		deleteCacheProjects = true;
-
 		//create first cache test project and set it as current project
 		Project firstCacheTestProject = new Project(getActivity(), "cachetestProject" + 0);
 		StorageHandler.getInstance().saveProject(firstCacheTestProject);
