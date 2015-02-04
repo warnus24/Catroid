@@ -67,8 +67,9 @@
 
     <!-- Settings activity -->
     <string name="preference_title">Settings</string>
-    <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorms bricks</string>
-    <string name="preference_description_mindstorm_bricks">Allow to control Lego Mindstorms robots</string>
+    <string name="preference_title_enable_mindstorms_bricks">Enable Lego Mindstorms Bricks</string>
+    <string name="preference_title_mindstorms_sensors">Lego NXT sensors</string>
+    <string name="preference_description_mindstorms_bricks">Allow to control Lego Mindstorms NXT robots</string>
     <string name="preference_title_enable_arduino_bricks">Arduino bricks</string>
     <string name="preference_description_arduino_bricks">Allow to control Arduino bricks</string>
     <string name="preference_title_use_face_detection">Face Detection</string>

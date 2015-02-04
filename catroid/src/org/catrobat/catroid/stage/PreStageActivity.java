@@ -98,7 +98,7 @@ public class PreStageActivity extends BaseActivity {
 		}
 
 		if ((requiredResources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
-			connectBTDevice(CatrobatService.LEGO_NXT, true);
+			connectBTDevice(CatrobatService.LEGO_NXT, false);
 		}
 
 		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
