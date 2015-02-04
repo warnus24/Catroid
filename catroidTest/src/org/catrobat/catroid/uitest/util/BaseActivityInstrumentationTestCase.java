@@ -30,10 +30,12 @@ import android.util.Log;
 
 import com.robotium.solo.Solo;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.ui.MainMenuActivity;
+import org.catrobat.catroid.utils.UtilFile;
 import org.catrobat.catroid.utils.UtilZip;
 import org.catrobat.catroid.utils.Utils;
 
@@ -67,7 +69,6 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		unzip = false;
 		saveProjectsToZip();
 
-		//UiTestUtils.clearAllUtilTestProjects();
 		if (clazz.getSimpleName().equalsIgnoreCase(MainMenuActivity.class.getSimpleName())) {
 			UiTestUtils.createEmptyProject();
 		}
@@ -81,8 +82,6 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 	@Override
 	protected void tearDown() throws Exception {
 
-		File rootDirectory = new File(Constants.DEFAULT_ROOT);
-
 		Log.v(TAG, "tearDown");
 		Log.v(TAG, "remove Projectname from SharedPreferences");
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -92,37 +91,16 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 
 		solo.finishOpenedActivities();
 
-//		try {
-//			Project currentProject = ProjectManager.getInstance().getCurrentProject();
-//			if (currentProject != null) {
-//				ProjectManager.getInstance().deleteProject(currentProject.getName(), null);
-//			}
-//		} catch (IOException e) {
-//			Log.d(TAG, "deleteCurrentProject exception", e);
-//		}
-//
-//		UiTestUtils.clearAllUtilTestProjects();
-
 		systemAnimations.enableAll();
 		solo = null;
 		Log.i(TAG, "tearDown end 1");
 
-
-		rootDirectory.mkdirs();
-		String[] paths = rootDirectory.list();
-		for (int i = 0; i < paths.length; i++) {
-			Log.d(TAG, "Path to delete: " + paths[i]);
-			StorageHandler.getInstance().deleteAllFile(paths[i]);
-		}
-
-		Log.i(TAG, "tearDown end 2");
-
 		unzipProjects();
 
-		Log.i(TAG, "tearDown end 3");
+		Log.i(TAG, "tearDown end 2");
 		super.tearDown();
 
-		Log.i(TAG, "tearDown end 4");
+		Log.i(TAG, "tearDown end 3");
 	}
 
 	@Override
@@ -170,25 +148,53 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 					zipFile.delete();
 					throw new IOException("asdf");
 				}
+
+				for (String projectName : UtilFile.getProjectNames(rootDirectory)) {
+					Log.d(TAG, projectName + "will be deleted");
+					ProjectManager.getInstance().deleteProject(projectName, this.getActivity());
+				}
+
+				for (int i = 0; i < paths.length; i++) {
+					Log.d(TAG, "Path to delete: " + paths[i]);
+					StorageHandler.getInstance().deleteAllFile(paths[i]);
+				}
+				unzip = true;
 			} catch (IOException e) {
 				fail("IOException while zipping projects");
 			}
-
-			for (int i = 0; i < paths.length; i++) {
-				Log.d(TAG, "Path to delete: " + paths[i]);
-				StorageHandler.getInstance().deleteAllFile(paths[i]);
-			}
-			unzip = true;
 		}
 	}
 
 	public void unzipProjects() {
-		if (unzip) {
-			String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
-			Log.d(TAG, "i am the unzipfile: " + zipFileString);
-			File zipFile = new File(zipFileString);
-			UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
-			zipFile.delete();
+
+		try {
+
+			File rootDirectory = new File(Constants.DEFAULT_ROOT);
+
+			for (String projectName : UtilFile.getProjectNames(rootDirectory)) {
+				Log.d(TAG, projectName + "will be deleted");
+				ProjectManager.getInstance().deleteProject(projectName, this.getActivity());
+			}
+
+			String[] paths = rootDirectory.list();
+			for (int i = 0; i < paths.length; i++) {
+				paths[i] = Utils.buildPath(rootDirectory.getAbsolutePath(), paths[i]);
+			}
+			for (int i = 0; i < paths.length; i++) {
+				Log.d(TAG, "Path to delete: " + paths[i]);
+				StorageHandler.getInstance().deleteAllFile(paths[i]);
+			}
+
+			if (unzip) {
+				String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
+				Log.d(TAG, "i am the unzipfile: " + zipFileString);
+				File zipFile = new File(zipFileString);
+				UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
+				zipFile.delete();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
