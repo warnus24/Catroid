@@ -28,7 +28,6 @@ import android.util.Log;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import com.parrot.freeflight.utils.FileUtils;
 import com.thoughtworks.xstream.converters.reflection.FieldDictionary;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 
@@ -665,6 +664,7 @@ public final class StorageHandler {
 		File toDelete = new File(filepath);
 
 		if (toDelete.isDirectory()) {
+			Log.d(TAG, "file is directory" + filepath);
 			for (String file : toDelete.list()) {
 				deleteFile(file);
 			}
@@ -673,11 +673,13 @@ public final class StorageHandler {
 		FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
 
 		if (container == null || container.containsChecksum(filepath) == false) {
+			Log.d(TAG, "container or checksum failed - if : " + filepath);
 			toDelete.delete();
 		}
 		else {
 			try {
 				if (container.decrementUsage(filepath)) {
+					Log.d(TAG, "decrementUsage succeeded: " + filepath);
 					toDelete.delete();
 				}
 			} catch (FileNotFoundException fileNotFoundException) {
