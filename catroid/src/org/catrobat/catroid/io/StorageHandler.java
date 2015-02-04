@@ -663,13 +663,14 @@ public final class StorageHandler {
 	public void deleteFile(String filepath) {
 
 		File toDelete = new File(filepath);
-		FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
 
 		if (toDelete.isDirectory()) {
 			for (String file : toDelete.list()) {
 				deleteFile(file);
 			}
 		}
+
+		FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
 
 		if (container == null || container.containsChecksum(filepath) == false) {
 			toDelete.delete();
