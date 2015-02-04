@@ -56,6 +56,8 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		this.clazz = clazz;
 	}
 
+	private boolean unzip;
+
 	@Override
 	protected void setUp() throws Exception {
 		Log.v(TAG, "setUp");
@@ -64,6 +66,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		systemAnimations = new SystemAnimations(getInstrumentation().getContext());
 		systemAnimations.disableAll();
 
+		unzip = false;
 		saveProjectsToZip();
 
 		//UiTestUtils.clearAllUtilTestProjects();
@@ -134,13 +137,13 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 			runTest();
 		} catch(Exception e) {
 			Log.d(TAG, "###########################");
-			Log.d(TAG, "Here you are - Exception in runBare");
+			Log.d(TAG, Log.getStackTraceString(e));
 		} finally {
 			try {
 				tearDown();
 			} catch (Exception e) {
 				Log.d(TAG, "###########################");
-				Log.d(TAG, "Here you are - Exception in runBare finally");
+				Log.d(TAG, Log.getStackTraceString(e));
 			}
 		}
 	}
@@ -155,37 +158,42 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		if (paths == null) {
 			fail("could not determine catroid directory");
 		}
-
-		for (int i = 0; i < paths.length; i++) {
-			paths[i] = Utils.buildPath(rootDirectory.getAbsolutePath(), paths[i]);
-		}
-		try {
-			String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
-			Log.d(TAG, "i am the zipfile: " + zipFileString);
-			File zipFile = new File(zipFileString);
-			if (zipFile.exists()) {
-				zipFile.delete();
+		else if (paths.length > 0) {
+			for (int i = 0; i < paths.length; i++) {
+				paths[i] = Utils.buildPath(rootDirectory.getAbsolutePath(), paths[i]);
 			}
-			zipFile.getParentFile().mkdirs();
-			zipFile.createNewFile();
-			if (!UtilZip.writeToZipFile(paths, zipFileString)) {
-				zipFile.delete();
-				throw new IOException("asdf");
+			try {
+				String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
+				Log.d(TAG, "i am the zipfile: " + zipFileString);
+				File zipFile = new File(zipFileString);
+				if (zipFile.exists()) {
+					zipFile.delete();
+				}
+				zipFile.getParentFile().mkdirs();
+				zipFile.createNewFile();
+				if (!UtilZip.writeToZipFile(paths, zipFileString)) {
+					zipFile.delete();
+					throw new IOException("asdf");
+				}
+			} catch (IOException e) {
+				fail("IOException while zipping projects");
 			}
-		} catch (IOException e) {
-			fail("IOException while zipping projects");
-		}
 
-		for (int i = 0; i < paths.length; i++) {
-			StorageHandler.getInstance().deleteFile(paths[i]);
+			for (int i = 0; i < paths.length; i++) {
+				Log.d(TAG, "Path to delete: " + paths[i]);
+				StorageHandler.getInstance().deleteFile(paths[i]);
+			}
+			unzip = true;
 		}
 	}
 
 	public void unzipProjects() {
-		String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
-		Log.d(TAG, "i am the unzipfile: " + zipFileString);
-		File zipFile = new File(zipFileString);
-		UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
-		zipFile.delete();
+		if (unzip) {
+			String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
+			Log.d(TAG, "i am the unzipfile: " + zipFileString);
+			File zipFile = new File(zipFileString);
+			UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
+			zipFile.delete();
+		}
 	}
 }
