@@ -28,6 +28,7 @@ import android.util.Log;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.parrot.freeflight.utils.FileUtils;
 import com.thoughtworks.xstream.converters.reflection.FieldDictionary;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 
@@ -663,6 +664,12 @@ public final class StorageHandler {
 
 		File toDelete = new File(filepath);
 		FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
+
+		if (toDelete.isDirectory()) {
+			for (String file : toDelete.list()) {
+				deleteFile(file);
+			}
+		}
 
 		if (container == null || container.containsChecksum(filepath) == false) {
 			toDelete.delete();
