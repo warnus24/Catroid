@@ -94,16 +94,8 @@ public class ArduinoImpl implements Arduino {
 
 	@Override
 	public void setDigitalArduinoPin(String digitalPinNumber, char pinValue) {
-		byte[] message = new byte[3];
 		//prüfen ob länge 1, oder 2, ansonsten exception
-		if(digitalPinNumber.length() < 2) {
-			message[0] = 0;
-			message[1] = digitalPinNumber.getBytes()[0];
-		}
-		else {
-			message[0] = digitalPinNumber.getBytes()[0];
-			message[1] = digitalPinNumber.getBytes()[1];
-		}
+		byte[] message = parseMessage(digitalPinNumber);
 
 		message[2] = (byte) pinValue;
 		arduinoConnection.send(message);
@@ -111,16 +103,8 @@ public class ArduinoImpl implements Arduino {
 
 	@Override
 	public double getDigitalArduinoPin(String digitalPinNumber) {
-		byte[] message = new byte[3];
 		//prüfen ob länge 1, oder 2, ansonsten exception
-		if(digitalPinNumber.length() < 2) {
-			message[0] = 0;
-			message[1] = digitalPinNumber.getBytes()[0];
-		}
-		else {
-			message[0] = digitalPinNumber.getBytes()[0];
-			message[1] = digitalPinNumber.getBytes()[1];
-		}
+		byte[] message = parseMessage(digitalPinNumber);
 		message[2] = 'D';
 
 		byte[] receiveMessage = arduinoConnection.sendAndReceive(message);
@@ -137,21 +121,33 @@ public class ArduinoImpl implements Arduino {
 
 	@Override
 	public double getAnalogArduinoPin(String analogPinNumber) {
-		byte[] message = new byte[3];
 		//prüfen ob länge 1, oder 2, ansonsten exception
-		if(analogPinNumber.length() < 2) {
-			message[0] = 0;
-			message[1] = analogPinNumber.getBytes()[0];
-		}
-		else {
-			message[0] = analogPinNumber.getBytes()[0];
-			message[1] = analogPinNumber.getBytes()[1];
-		}
+		byte[] message = parseMessage(analogPinNumber);
 		message[2] = 'A';
 
 		byte[] receiveMessage = arduinoConnection.sendAndReceive(message);
 		byte[] value = Arrays.copyOfRange(receiveMessage, 3, receiveMessage.length);
 
 		return (double)Float.valueOf(Arrays.toString(value));
+	}
+
+	private byte[] parseMessage(String input)
+	{
+		byte[] message = new byte[3];
+		if(input.length() != 2) {
+			//exception here
+			return message;
+		}
+
+		if(input.length() < 2) {
+			message[0] = 0;
+			message[1] = input.getBytes()[0];
+		}
+		else {
+			message[0] = input.getBytes()[0];
+			message[1] = input.getBytes()[1];
+		}
+
+		return message;
 	}
 }
