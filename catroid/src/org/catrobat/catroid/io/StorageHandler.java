@@ -660,15 +660,21 @@ public final class StorageHandler {
 	}
 
 	public void deleteFile(String filepath) {
+
+		File toDelete = new File(filepath);
 		FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
-		try {
-			if (container.decrementUsage(filepath)) {
-				File toDelete = new File(filepath);
-				toDelete.delete();
+
+		if (container == null || container.containsChecksum(filepath) == false) {
+			toDelete.delete();
+		}
+		else {
+			try {
+				if (container.decrementUsage(filepath)) {
+					toDelete.delete();
+				}
+			} catch (FileNotFoundException fileNotFoundException) {
+				Log.e(TAG, Log.getStackTraceString(fileNotFoundException));
 			}
-		} catch (FileNotFoundException fileNotFoundException) {
-			Log.e(TAG, Log.getStackTraceString(fileNotFoundException));
-			//deleteFile(filepath);
 		}
 	}
 
