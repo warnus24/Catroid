@@ -30,12 +30,10 @@ import android.util.Log;
 
 import com.robotium.solo.Solo;
 
-import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.stage.StageListener;
 import org.catrobat.catroid.ui.MainMenuActivity;
-import org.catrobat.catroid.utils.UtilFile;
 import org.catrobat.catroid.utils.UtilZip;
 import org.catrobat.catroid.utils.Utils;
 
@@ -67,7 +65,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		systemAnimations.disableAll();
 
 		unzip = false;
-		saveProjectsToZip();
+		//saveProjectsToZip();
 
 		//UiTestUtils.clearAllUtilTestProjects();
 		if (clazz.getSimpleName().equalsIgnoreCase(MainMenuActivity.class.getSimpleName())) {
@@ -109,20 +107,17 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		solo = null;
 		Log.i(TAG, "tearDown end 1");
 
-		try {
-			Log.d(TAG, UtilFile.getProjectNames(rootDirectory).toString());
-		} catch (NullPointerException e) {
-			Log.d(TAG, "List is empty");
-		}
 
-		for (String projectName : UtilFile.getProjectNames(rootDirectory)) {
-			Log.d(TAG, projectName + "will be deleted");
-			ProjectManager.getInstance().deleteProject(projectName, this.getActivity());
+		rootDirectory.mkdirs();
+		String[] paths = rootDirectory.list();
+		for (int i = 0; i < paths.length; i++) {
+			Log.d(TAG, "Path to delete: " + paths[i]);
+			StorageHandler.getInstance().deleteAllFile(paths[i]);
 		}
 
 		Log.i(TAG, "tearDown end 2");
 
-		unzipProjects();
+		//unzipProjects();
 
 		Log.i(TAG, "tearDown end 3");
 		super.tearDown();
