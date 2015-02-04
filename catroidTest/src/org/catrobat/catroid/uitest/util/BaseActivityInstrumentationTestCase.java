@@ -65,7 +65,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		systemAnimations.disableAll();
 
 		unzip = false;
-		//saveProjectsToZip();
+		saveProjectsToZip();
 
 		//UiTestUtils.clearAllUtilTestProjects();
 		if (clazz.getSimpleName().equalsIgnoreCase(MainMenuActivity.class.getSimpleName())) {
@@ -117,7 +117,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 
 		Log.i(TAG, "tearDown end 2");
 
-		//unzipProjects();
+		unzipProjects();
 
 		Log.i(TAG, "tearDown end 3");
 		super.tearDown();
@@ -176,7 +176,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 
 			for (int i = 0; i < paths.length; i++) {
 				Log.d(TAG, "Path to delete: " + paths[i]);
-				StorageHandler.getInstance().deleteFile(paths[i]);
+				StorageHandler.getInstance().deleteAllFile(paths[i]);
 			}
 			unzip = true;
 		}

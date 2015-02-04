@@ -682,23 +682,7 @@ public final class StorageHandler {
 				deleteAllFile(file);
 			}
 		}
-
-		FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
-
-		if (container == null || container.containsChecksum(filepath) == false) {
-			Log.d(TAG, "container or checksum failed - if : " + filepath);
-			toDelete.delete();
-		}
-		else {
-			try {
-				if (container.decrementUsage(filepath)) {
-					Log.d(TAG, "decrementUsage succeeded: " + filepath);
-					toDelete.delete();
-				}
-			} catch (FileNotFoundException fileNotFoundException) {
-				Log.e(TAG, Log.getStackTraceString(fileNotFoundException));
-			}
-		}
+		toDelete.delete();
 	}
 
 	public void fillChecksumContainer() {
