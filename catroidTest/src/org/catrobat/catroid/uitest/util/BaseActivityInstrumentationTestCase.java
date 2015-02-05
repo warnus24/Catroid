@@ -146,7 +146,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 				zipFile.createNewFile();
 				if (!UtilZip.writeToZipFile(paths, zipFileString)) {
 					zipFile.delete();
-					throw new IOException("asdf");
+					throw new IOException("Cannot write data to Zip File!");
 				}
 
 				for (String projectName : UtilFile.getProjectNames(rootDirectory)) {
@@ -160,6 +160,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 				}
 				unzip = true;
 			} catch (IOException e) {
+				Log.d(TAG, "Zipping failed!", e);
 				fail("IOException while zipping projects");
 			}
 		}
@@ -180,13 +181,17 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 			for (int i = 0; i < paths.length; i++) {
 				paths[i] = Utils.buildPath(rootDirectory.getAbsolutePath(), paths[i]);
 			}
+
+			String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
+
 			for (int i = 0; i < paths.length; i++) {
-				Log.d(TAG, "Path to delete: " + paths[i]);
-				StorageHandler.getInstance().deleteAllFile(paths[i]);
+				if (paths[i].equals(zipFileString) == false) {
+					Log.d(TAG, "Path to delete: " + paths[i]);
+					StorageHandler.getInstance().deleteAllFile(paths[i]);
+				}
 			}
 
 			if (unzip) {
-				String zipFileString = Utils.buildPath(Constants.DEFAULT_ROOT, ZIPFILE_NAME);
 				Log.d(TAG, "i am the unzipfile: " + zipFileString);
 				File zipFile = new File(zipFileString);
 				UtilZip.unZipFile(zipFileString, Constants.DEFAULT_ROOT);
@@ -194,6 +199,7 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 			}
 
 		} catch (IOException e) {
+			Log.d(TAG, "Something wet wrong while unzip files in tear down", e);
 			e.printStackTrace();
 		}
 	}

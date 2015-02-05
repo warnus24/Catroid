@@ -1448,6 +1448,7 @@ public final class UiTestUtils {
 	 */
 	public static void openActionMode(Solo solo, String overflowMenuItemName, int menuItemId, Activity activity) {
 
+		solo.sleep(1000);
 		ArrayList<View> views = solo.getCurrentViews();
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		for (View view : views) {
