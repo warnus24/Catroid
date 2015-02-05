@@ -1456,10 +1456,10 @@ public final class UiTestUtils {
 		}
 
 		if (ids.contains(menuItemId)) {
-			solo.waitForView(menuItemId);
+			solo.waitForView(menuItemId, 0, 20000, false);
 			UiTestUtils.clickOnActionBar(solo, menuItemId);
 		} else if (overflowMenuItemName != null) {
-			solo.waitForText(overflowMenuItemName);
+			solo.waitForText(overflowMenuItemName, 0, 20000, false);
 			solo.clickOnMenuItem(overflowMenuItemName, true);
 		}
 		else {

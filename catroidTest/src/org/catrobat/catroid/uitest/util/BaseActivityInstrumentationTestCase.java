@@ -108,16 +108,8 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 		try {
 			setUp();
 			runTest();
-		} catch(Exception e) {
-			Log.d(TAG, "###########################");
-			Log.d(TAG, Log.getStackTraceString(e));
 		} finally {
-			try {
-				tearDown();
-			} catch (Exception e) {
-				Log.d(TAG, "###########################");
-				Log.d(TAG, Log.getStackTraceString(e));
-			}
+			tearDown();
 		}
 	}
 
