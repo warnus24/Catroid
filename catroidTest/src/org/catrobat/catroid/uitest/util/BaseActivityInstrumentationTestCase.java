@@ -200,7 +200,6 @@ public abstract class BaseActivityInstrumentationTestCase<T extends Activity> ex
 
 		} catch (IOException e) {
 			Log.d(TAG, "Something wet wrong while unzip files in tear down", e);
-			e.printStackTrace();
 		}
 	}
 }
