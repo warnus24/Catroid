@@ -137,6 +137,8 @@ public class CategoryBricksFactory {
 			tempList = setupLegoNxtCategoryList();
 		} else if (category.equals(context.getString(R.string.category_drone))) {
 			tempList = setupDroneCategoryList();
+		} else if ( category.equals(context.getString(R.string.category_robot_albert))){
+			return setupRobotAlbertCategoryList(sprite);
 		}
 		for (Brick brick : tempList) {
 			ScriptBrick brickAsScriptBrick;

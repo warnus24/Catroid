@@ -94,7 +94,7 @@ public class BTDummyClient {
 
 					} catch (Exception e2) {
 						Log.d("TestRobotAlbert", "error: testing 3nd variant");
-						Method m;
+						Method m = null;
 						try {
 							m = dummyServer.getClass().getMethod("createRfcommSocket", new Class[] { int.class });
 						} catch (NoSuchMethodException e1) {
