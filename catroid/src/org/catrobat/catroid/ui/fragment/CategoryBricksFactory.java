@@ -105,7 +105,10 @@ public class CategoryBricksFactory {
 			return setupVariablesCategoryList(sprite);
 		} else if (category.equals(context.getString(R.string.category_lego_nxt))) {
 			return setupLegoNxtCategoryList(sprite);
+		} else if ( category.equals(context.getString(R.string.category_robot_albert))){
+			return setupRobotAlbertCategoryList(sprite);
 		}
+
 
 		return new ArrayList<Brick>();
 	}
