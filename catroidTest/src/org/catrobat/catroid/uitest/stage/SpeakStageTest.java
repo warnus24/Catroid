@@ -23,6 +23,8 @@
 
 package org.catrobat.catroid.uitest.stage;
 
+import android.speech.tts.TextToSpeech;
+
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
@@ -32,6 +34,8 @@ import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.SpeakBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.exceptions.ProjectException;
+import org.catrobat.catroid.io.SoundManager;
+import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProjectActivity;
@@ -41,11 +45,15 @@ import org.catrobat.catroid.uitest.util.UiTestUtils;
 import org.catrobat.catroid.utils.Utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 
-	private final String testText = "This is a test.";
+	private final String testText = "Test test.";
 	private long byteLengthOfTestText;
 	private final File speechFileTestText = new File(Constants.TEXT_TO_SPEECH_TMP_PATH, Utils.md5Checksum(testText)
 			+ Constants.TEXT_TO_SPEECH_EXTENSION);
@@ -55,18 +63,19 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 	}
 
 	@Override
-	public void setUp() throws Exception{
+	public void setUp() throws Exception {
 		super.setUp();
+		deleteSpeechFiles();
 		createTestProject();
 	}
 
 	@Override
-	public void tearDown() throws Exception{
+	public void tearDown() throws Exception {
 		super.tearDown();
 		deleteSpeechFiles();
 	}
 
-	private void createTestProject(){
+	private void createTestProject() {
 		Sprite spriteNormal = new Sprite("testNormalBehaviour");
 
 		Script startScriptNormal = new StartScript();
@@ -93,19 +102,23 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 
 	private void prepareStageForTesting(String projectName) {
 		UiTestUtils.prepareStageForTest();
-		/*try {
-			ProjectManager.getInstance().loadProject(projectName, getActivity().getApplicationContext());
-		} catch (ProjectException projectException) {
-			fail("Could not load project.");
-		}*/
 		UiTestUtils.getIntoSpritesFromMainMenu(solo);
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
 	}
 
 	@Device
-	public void testSimpleSpeech(){
+	public void testSimpleSpeech() {
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		solo.sleep(1500);
-		//assertTrue("X", speechFileTestText.exists());
+		int currentTry = 1;
+		boolean found = false;
+		while (++currentTry != 10) {
+			if (speechFileTestText.exists()) {
+				found = true;
+				break;
+			}
+			solo.sleep(3000);
+		}
+
+		assertTrue("speechFileTestText does not exist.", found);
 	}
 }
