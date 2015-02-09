@@ -25,29 +25,23 @@ package org.catrobat.catroid.uitest.content.brick;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.util.Log;
-import android.widget.ListView;
 
 import junit.framework.Assert;
 
 import org.catrobat.catroid.ProjectManager;
-import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.WhenScript;
-import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.LedOffBrick;
 import org.catrobat.catroid.content.bricks.LedOnBrick;
-import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.ScriptActivity;
-import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.SensorTestServerConnection;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
