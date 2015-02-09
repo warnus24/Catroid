@@ -165,46 +165,14 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<ProjectA
 		prepareStageForTesting(UiTestUtils.PROJECTNAME3);
 		solo.sleep(2000);
 
-		int currentTry = 0;
-		boolean found = false;
-		while (++currentTry != 10) {
-			if (speechFileLongText.exists()) {
-				found = true;
-				break;
-			}
-			solo.sleep(3000);
-		}
-
-		currentTry = 0;
-		found = false;
-		while (++currentTry != 10) {
-			if (speechFileSimultaneousText.exists()) {
-				found = true;
-				break;
-			}
-			solo.sleep(3000);
-		}
-
 		assertTrue("speechFileLongText does not exist", speechFileLongText.exists());
 		assertTrue("speechFileSimultaneousText does not exist", speechFileSimultaneousText.exists());
 
 		UiTestUtils.goToHomeActivity(getActivity());
 		solo.waitForActivity(MainMenuActivity.class);
 
-		File speechTmpFolder = new File(Constants.TEXT_TO_SPEECH_TMP_PATH);
-
-		currentTry = 0;
-		boolean deleted = false;
-		while (++currentTry != 10) {
-			if (speechTmpFolder.listFiles().length == 0) {
-				deleted = true;
-				break;
-			}
-			solo.sleep(1500);
-		}
-
 		assertEquals("TextToSpeech folder is not empty", 0,
-				speechTmpFolder.listFiles().length);
+				new File(Constants.TEXT_TO_SPEECH_TMP_PATH).listFiles().length);
 	}
 
 	private void createNormalBehaviourProject() {
