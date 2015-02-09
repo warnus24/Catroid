@@ -24,6 +24,7 @@
 package org.catrobat.catroid.uitest.stage;
 
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -35,12 +36,14 @@ import org.catrobat.catroid.content.bricks.SpeakBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.exceptions.ProjectException;
 import org.catrobat.catroid.io.SoundManager;
+import org.catrobat.catroid.stage.OnUtteranceCompletedListenerContainer;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ProjectActivity;
 import org.catrobat.catroid.uitest.annotation.Device;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
+import org.catrobat.catroid.uitest.util.Reflection;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 import org.catrobat.catroid.utils.Utils;
 
@@ -50,8 +53,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
+
+	private SoundManagerMock soundManagerMock;
 
 	private final String testText = "Test test.";
 	private long byteLengthOfTestText;
@@ -65,7 +72,11 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		soundManagerMock = new SoundManagerMock();
+		Reflection.setPrivateField(SoundManager.class, "INSTANCE", soundManagerMock);
+
 		deleteSpeechFiles();
+		detectReferenceFileSize(speechFileTestText, testText);
 		createTestProject();
 	}
 
@@ -120,5 +131,20 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 		}
 
 		assertTrue("speechFileTestText does not exist.", found);
+	}
+
+	private void detectReferenceFileSize(File file, String text){
+
+		solo.sleep(1000);
+	}
+
+	private class SoundManagerMock extends SoundManager {
+
+		private final Set<String> playedSoundFiles = new HashSet<String>();
+
+		@Override
+		public synchronized void playSoundFile(String pathToSoundfile) {
+			playedSoundFiles.add(pathToSoundfile);
+		}
 	}
 }
