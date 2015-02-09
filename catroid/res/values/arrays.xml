@@ -84,5 +84,16 @@
         <item>@string/arduino_pin_value_high</item>
     </string-array>
 
+    <!-- Kodey tone spinner -->
+    <string-array name="brick_kodey_select_tone_spinner">
+        <item>@string/kodey_tone_do</item>
+        <item>@string/kodey_tone_re</item>
+        <item>@string/kodey_tone_mi</item>
+        <item>@string/kodey_tone_fa</item>
+        <item>@string/kodey_tone_so</item>
+        <item>@string/kodey_tone_la</item>
+        <item>@string/kodey_tone_ti</item>
+    </string-array>
+
 
 </resources>

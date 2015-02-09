@@ -67,10 +67,18 @@
 
     <!-- Settings activity -->
     <string name="preference_title">Settings</string>
+
+    <!-- delete the others? -->
     <string name="preference_title_enable_mindstorm_bricks">Lego Mindstorms bricks</string>
     <string name="preference_description_mindstorm_bricks">Allow to control Lego Mindstorms robots</string>
     <string name="preference_title_enable_arduino_bricks">Arduino bricks</string>
     <string name="preference_description_arduino_bricks">Allow to control Arduino bricks</string>
+
+    <!-- Kodey implementation -->
+    <string name="preference_title_enable_kodey_bricks">Kodey bricks</string>
+    <string name="preference_description_kodey_bricks">Allow to control Kodey bricks</string>
+    <!--  -->
+
     <string name="preference_title_use_face_detection">Face Detection</string>
     <string name="preference_description_use_face_detection">Allow to detect faces</string>
     <string name="preference_title_select_camera">Choose Camera</string>
@@ -336,6 +344,10 @@
     <string name="category_variables">Variables</string>
     <string name="category_user_bricks">My Bricks</string>
     <string name="category_lego_nxt">Lego NXT</string>
+
+    <!-- Kodey implementation -->
+    <string name="category_kodey">Kodey</string>
+
     <string name="category_arduino">Arduino</string>
     <string name="category_drone">ARDrone</string>
     <!--  -->
@@ -597,6 +609,37 @@
     <string name="digital_arduino_pin_13">13</string> <!-- built-in LED pin -->
     <string name="arduino_pin_value_high">high</string>
 	<string name="arduino_pin_value_low">low</string>
+    <!--  -->
+
+    <!-- Kodey bricks -->
+    <!-- motor -->
+    <string name="kodey_motor_stop">Kodey stop motor</string>
+    <string name="brick_kodey_motor_action">Kodey move motor</string>
+    <string name="kodey_motor_speed">Speed</string>
+    <!-- sensor -->
+    <string name="brick_kodey_sensor_action">Kodey PRO Sensor</string>
+    <string name="brick_kodey_sensor_begin">If</string>
+    <string name="brick_kodey_sensor_second_part">is activated</string>
+    <!-- tone -->
+    <string name="kodey_play_tone">Kodey play tone</string>
+    <string name="kodey_tone_duration">Duration</string>
+    <string name="brick_kodey_select_tone">Kodey tone elements</string>
+    <!-- light -->
+    <string name="brick_kodey_rgb_led_action">Kodey PRO RGB light</string>
+    <string name="kodey_rgb_led_red">Red</string>
+    <string name="kodey_rgb_led_green">Green</string>
+    <string name="kodey_rgb_led_blue">Blue</string>
+    <!--  -->
+
+
+    <!-- Kodey strings -->
+    <string name="kodey_tone_do">Do</string>
+    <string name="kodey_tone_re">Re</string>
+    <string name="kodey_tone_mi">Mi</string>
+    <string name="kodey_tone_fa">Fa</string>
+    <string name="kodey_tone_so">So</string>
+    <string name="kodey_tone_la">La</string>
+    <string name="kodey_tone_ti">Ti</string>
     <!--  -->
 
     <!-- Drone Bricks -->
