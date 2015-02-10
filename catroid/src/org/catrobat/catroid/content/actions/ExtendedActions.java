@@ -218,6 +218,7 @@ public class ExtendedActions extends Actions {
 		action.setSpeed(speed);
 		return action;
 	}
+
 	public static KodeyRGBLightAction kodeyRgbLedEyeAction(Sprite sprite, KodeyRGBLightBrick.Eye eye,
 			Formula red, Formula green, Formula blue) {
 		KodeyRGBLightAction action = action(KodeyRGBLightAction.class);

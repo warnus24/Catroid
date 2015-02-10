@@ -73,8 +73,11 @@
     <string name="preference_description_mindstorm_bricks">Allow to control Lego Mindstorms robots</string>
     <string name="preference_title_enable_arduino_bricks">Arduino bricks</string>
     <string name="preference_description_arduino_bricks">Allow to control Arduino bricks</string>
+
+    <!-- Kodey implementation -->
     <string name="preference_title_enable_kodey_bricks">Kodey bricks</string>
     <string name="preference_description_kodey_bricks">Allow to control Kodey bricks</string>
+    <!--  -->
 
     <string name="preference_title_use_face_detection">Face Detection</string>
     <string name="preference_description_use_face_detection">Allow to detect faces</string>
@@ -341,9 +344,12 @@
     <string name="category_variables">Variables</string>
     <string name="category_user_bricks">My Bricks</string>
     <string name="category_lego_nxt">Lego NXT</string>
+
+    <!-- Kodey implementation -->
+    <string name="category_kodey">Kodey</string>
+
     <string name="category_arduino">Arduino</string>
     <string name="category_drone">ARDrone</string>
-    <string name="category_kodey">Kodey</string>
     <!--  -->
 
 
@@ -409,8 +415,6 @@
     <string name="brick_change_volume_by">Change volume by</string>
     <string name="brick_speak">Speak</string>
     <string name="brick_speak_default_value">"Hello!"</string>
-    <string name="dialog_edit_speak_title">Edit Text</string>
-    <string name="dialog_edit_speak_text">Speak:</string>
     <!--  -->
 
 
@@ -430,8 +434,6 @@
     <string name="brick_note">Note</string>
     <string name="brick_forever">Forever</string>
     <string name="brick_repeat">Repeat</string>
-    <string name="dialog_edit_note_title">Edit note</string>
-    <string name="dialog_edit_note_text">Note:</string>
 
     <plurals name="time_plural">
         <item quantity="one">time</item>
@@ -508,6 +510,8 @@
     <string name="error_no_writiable_external_storage_available">Pocket Code requires writable external storage like an SD card in order to run, but none was found.\nYou can fix this by making the external storage writable or inserting an SD card, then try again.</string>
     <string name="error_no_name_entered">Please enter a name.</string>
     <string name="error_project_exists">A program with the same name already exists.\nPlease choose a different name.</string>
+    <string name="error_delete_project">An error while deleting the program occurred</string>
+    <string name="error_unknown_project">A program with that name does not exist.</string>
     <string name="error_project_upload">An error occurred while uploading the program.</string>
     <string name="error_project_download">An error occurred while downloading the program.</string>
     <string name="error_new_project">An error occurred while creating a new program.</string>
@@ -540,14 +544,14 @@
     <string name="title_paired_devices">Paired devices</string>
     <string name="title_other_devices">New devices</string>
     <string name="button_scan">Search Bluetooth devices</string>
-    <string name="select_device">Select your</string>
+    <string name="select_device">Select your Bluetooth device</string>
+    <string name="select_device_arduino">Select your Arduino Board</string>
     <string name="scanning">Scanning</string>
     <string name="connecting_please_wait">Connecting to your device.\nPlease wait…</string>
-    <!--<string name="pairing_message">After pairing, connect.</string>-->
-    <!--<string name="problem_at_closing">Problem while closing the connection!</string>-->
-    <string name="select_device_arduino">Select your Arduino Board</string>
     <string name="pairing_message">After pairing, connect.</string>
     <string name="problem_at_closing">Problem while closing the connection!</string>
+    <!--<string name="pairing_message">After pairing, connect.</string>-->
+    <!--<string name="problem_at_closing">Problem while closing the connection!</string>-->
     <string name="bt_connection_failed">Connection to device failed!</string>
     <string name="bt_auto_connection_failed">Auto connection failed!</string>
     <!--<string name="no_paired_nxt">No paired NXT found</string>-->
@@ -607,6 +611,76 @@
 	<string name="arduino_pin_value_low">low</string>
     <!--  -->
 
+    <!-- Kodey bricks -->
+    <!-- motor -->
+    <string name="kodey_motor_stop">Kodey Pro stop motor</string>
+    <string name="brick_kodey_motor_forward_action">Kodey Pro move motor forward</string>
+    <string name="brick_kodey_motor_backward_action">Kodey Pro move motor backward</string>
+    <string name="kodey_motor_speed">Speed</string>
+    <!-- sensor -->
+    <string name="brick_kodey_sensor_action">Kodey Pro Sensor \n</string>
+    <string name="brick_kodey_sensor_begin">If</string>
+    <string name="brick_kodey_sensor_second_part">is activated</string>
+    <string name="brick_kodey_sensor_else">Else</string>
+    <string name="brick_kodey_sensor_end">End If</string>
+    <!-- tone -->
+    <string name="kodey_play_tone">Kodey Pro Play Music</string>
+    <string name="kodey_tone_duration">Duration</string>
+    <string name="brick_kodey_select_tone">Tone</string>
+    <!-- light -->
+    <string name="brick_kodey_rgb_led_action">Kodey Pro RGB light</string>
+    <string name="kodey_rgb_led_red">Red</string>
+    <string name="kodey_rgb_led_green">Green</string>
+    <string name="kodey_rgb_led_blue">Blue</string>
+    <!--  -->
+
+    <string name="kodey_color_chooser_title">Kodey Pro Color Chooser</string>
+    <string name="kodey_motor_forward_title">Kodey Pro Move Motor Forward Chooser</string>
+    <string name="kodey_motor_backward_title">Kodey Pro Move Motor Backward Chooser</string>
+
+    <!-- Kodey tone strings -->
+    <string name="kodey_tone_do">Do</string>
+    <string name="kodey_tone_re">Re</string>
+    <string name="kodey_tone_mi">Mi</string>
+    <string name="kodey_tone_fa">Fa</string>
+    <string name="kodey_tone_so">So</string>
+    <string name="kodey_tone_la">La</string>
+    <string name="kodey_tone_ti">Ti</string>
+    <!--  -->
+
+    <!-- Kodey motor strings -->
+    <string name="kodey_motor_left">Left</string>
+    <string name="kodey_motor_right">Right</string>
+    <string name="kodey_motor_both">Both</string>
+    <!--  -->
+
+    <!-- Kodey light strings -->
+    <string name="kodey_light_left">Left</string>
+    <string name="kodey_light_right">Right</string>
+    <string name="kodey_light_both">Both</string>
+    <!--  -->
+
+    <!-- Kodey sensor strings -->
+    <string name="kodey_sensor_front_left">Front Left Sensor</string>
+    <string name="kodey_sensor_front_right">Front Right Sensor</string>
+    <string name="kodey_sensor_side_left">Side Left Sensor</string>
+    <string name="kodey_sensor_side_right">Side Right Sensor</string>
+    <string name="kodey_sensor_bottom_left">Bottom Left Sensor</string>
+    <string name="kodey_sensor_bottom_right">Bottom Right Sensor</string>
+    <!--  -->
+
+    <!-- Kodey RGBColor Chooser strings -->
+    <string name="color_red">Red</string>
+    <string name="color_green">Green</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_alpha">Alpha</string>
+    <string name="color_pre">preselected</string>
+    <string name="color_chooser_title">Color Chooser</string>
+    <string name="color_rgb">Red Green Blue (RGB)</string>
+    <string name="color_preview">Color Preview</string>
+    <string name="done">Done</string>
+    <!-- -->
+
     <!-- Drone Bricks -->
     <string name="brick_drone_takeoff">Take off</string>
     <string name="brick_drone_land">Land</string>
@@ -627,80 +701,6 @@
 
     <!-- <string name="brick_drone_land">Drone: land</string> -->
     <!--  -->
-
-    <!-- Kodey bricks -->
-    <!-- motor -->
-    <string name="kodey_motor_stop">Kodey Pro stop motor</string>
-    <string name="brick_kodey_motor_forward_action">Kodey Pro move motor forward</string>
-    <string name="brick_kodey_motor_backward_action">Kodey Pro move motor backward</string>
-    <string name="kodey_motor_speed">Speed</string>
-
-    <!-- sensor -->
-    <string name="brick_kodey_sensor_action">Kodey Pro Sensor \n</string>
-    <string name="brick_kodey_sensor_begin">If</string>
-    <string name="brick_kodey_sensor_second_part">is activated</string>
-    <string name="brick_kodey_sensor_else">Else</string>
-    <string name="brick_kodey_sensor_end">End If</string>
-
-    <!-- tone -->
-    <string name="kodey_play_tone">Kodey Pro Play Music</string>
-    <string name="kodey_tone_duration">Duration</string>
-    <string name="brick_kodey_select_tone">Tone</string>
-
-    <!-- light -->
-    <string name="brick_kodey_rgb_led_action">Kodey Pro RGB light</string>
-    <string name="kodey_rgb_led_red">Red</string>
-    <string name="kodey_rgb_led_green">Green</string>
-    <string name="kodey_rgb_led_blue">Blue</string>
-    <!-- -->
-
-    <string name="kodey_color_chooser_title">Kodey Pro Color Chooser</string>
-    <string name="kodey_motor_forward_title">Kodey Pro Move Motor Forward Chooser</string>
-    <string name="kodey_motor_backward_title">Kodey Pro Move Motor Backward Chooser</string>
-
-    <!-- Kodey tone strings -->
-    <string name="kodey_tone_do">Do</string>
-    <string name="kodey_tone_re">Re</string>
-    <string name="kodey_tone_mi">Mi</string>
-    <string name="kodey_tone_fa">Fa</string>
-    <string name="kodey_tone_so">So</string>
-    <string name="kodey_tone_la">La</string>
-    <string name="kodey_tone_ti">Ti</string>
-    <!-- -->
-
-    <!-- Kodey motor strings -->
-    <string name="kodey_motor_left">Left</string>
-    <string name="kodey_motor_right">Right</string>
-    <string name="kodey_motor_both">Both</string>
-    <!-- -->
-
-    <!-- Kodey light strings -->
-    <string name="kodey_light_left">Left</string>
-    <string name="kodey_light_right">Right</string>
-    <string name="kodey_light_both">Both</string>
-    <!-- -->
-
-    <!-- Kodey sensor strings -->
-    <string name="kodey_sensor_front_left">Front Left Sensor</string>
-    <string name="kodey_sensor_front_right">Front Right Sensor</string>
-    <string name="kodey_sensor_side_left">Side Left Sensor</string>
-    <string name="kodey_sensor_side_right">Side Right Sensor</string>
-    <string name="kodey_sensor_bottom_left">Bottom Left Sensor</string>
-    <string name="kodey_sensor_bottom_right">Bottom Right Sensor</string>
-    <!-- -->
-
-    <!-- Kodey RGBColor Chooser strings -->
-    <string name="color_red">Red</string>
-    <string name="color_green">Green</string>
-    <string name="color_blue">Blue</string>
-    <string name="color_alpha">Alpha</string>
-    <string name="color_pre">preselected</string>
-    <string name="color_chooser_title">Color Chooser</string>
-    <string name="color_rgb">Red Green Blue (RGB)</string>
-    <string name="color_preview">Color Preview</string>
-    <string name="done">Done</string>
-    <!-- -->
-
 
 
     <!-- Formula Editor Strings -->
@@ -785,12 +785,10 @@
     <string name="formula_editor_object_layer">layer</string>
     <string name="formula_editor_compute">Compute</string>
     <string name="formula_editor_object">Object</string>
-    <string name="formula_editor_math">Math</string>
     <string name="formula_editor_function">Functions</string>
     <string name="formula_editor_logic">Logic</string>
     <string name="formula_editor_sensors">Sensors</string>
     <string name="formula_editor_variables">Variables</string>
-    <string name="formula_editor_random">Random</string>
     <string name="formula_editor_string">Abc</string>
     <string name="formula_editor_logic_notequal">&#x2260;</string>
     <string name="formula_editor_logic_lesserthan">&lt;</string>

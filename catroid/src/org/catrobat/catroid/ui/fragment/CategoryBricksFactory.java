@@ -61,6 +61,12 @@ import org.catrobat.catroid.content.bricks.GoNStepsBackBrick;
 import org.catrobat.catroid.content.bricks.HideBrick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfOnEdgeBounceBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorBackwardActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorForwardActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorStopBrick;
+import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick;
+import org.catrobat.catroid.content.bricks.KodeyRGBLightBrick;
+import org.catrobat.catroid.content.bricks.KodeySensorBrick;
 import org.catrobat.catroid.content.bricks.LedOffBrick;
 import org.catrobat.catroid.content.bricks.LedOnBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
@@ -135,6 +141,8 @@ public class CategoryBricksFactory {
 			tempList = setupArduinoCategoryList();
 		} else if (category.equals(context.getString(R.string.category_drone))) {
 			tempList = setupDroneCategoryList();
+		} else if (category.equals(context.getString(R.string.category_kodey))) {
+			tempList = setupKodeyCategoryList();
 		}
 		for (Brick brick : tempList) {
 			ScriptBrick brickAsScriptBrick;
@@ -301,6 +309,20 @@ public class CategoryBricksFactory {
 		List<Brick> arduinoBrickList = new ArrayList<Brick>();
 		arduinoBrickList.add(new ArduinoSendBrick());
 		return arduinoBrickList;
+	}
+
+	private List<Brick> setupKodeyCategoryList() {
+		List<Brick> kodeyBrickList = new ArrayList<Brick>();
+		kodeyBrickList.add(new KodeyMotorForwardActionBrick(KodeyMotorForwardActionBrick.Motor.MOTOR_A,
+				BrickValues.KODEY_SPEED));
+		kodeyBrickList.add(new KodeyMotorBackwardActionBrick(KodeyMotorBackwardActionBrick.Motor.MOTOR_A,
+				BrickValues.KODEY_SPEED));
+		kodeyBrickList.add(new KodeyPlayMusicBrick(KodeyPlayMusicBrick.Tone.DO,
+				BrickValues.KODEY_DURATION));
+		kodeyBrickList.add(new KodeyMotorStopBrick(KodeyMotorStopBrick.Motor.ALL_MOTORS));
+		kodeyBrickList.add(new KodeyRGBLightBrick(KodeyRGBLightBrick.Eye.Both, BrickValues.KODEY_VALUE_RED, BrickValues.KODEY_VALUE_GREEN,BrickValues.KODEY_VALUE_BLUE));
+		kodeyBrickList.add(new KodeySensorBrick());
+		return kodeyBrickList;
 	}
 
 	private List<Brick> setupDroneCategoryList() {
