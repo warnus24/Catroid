@@ -632,7 +632,7 @@
     <!--  -->
 
 
-    <!-- Kodey strings -->
+    <!-- Kodey tone strings -->
     <string name="kodey_tone_do">Do</string>
     <string name="kodey_tone_re">Re</string>
     <string name="kodey_tone_mi">Mi</string>
@@ -640,6 +640,27 @@
     <string name="kodey_tone_so">So</string>
     <string name="kodey_tone_la">La</string>
     <string name="kodey_tone_ti">Ti</string>
+    <!--  -->
+
+    <!-- Kodey motor strings -->
+    <string name="kodey_motor_left">Left</string>
+    <string name="kodey_motor_right">Right</string>
+    <string name="kodey_motor_both">Both</string>
+    <!--  -->
+
+    <!-- Kodey light strings -->
+    <string name="kodey_light_left">Left</string>
+    <string name="kodey_light_right">Right</string>
+    <string name="kodey_light_both">Both</string>
+    <!--  -->
+
+    <!-- Kodey sensor strings -->
+    <string name="kodey_sensor_front_left">Front Left Sensor</string>
+    <string name="kodey_sensor_front_right">Front Right Sensor</string>
+    <string name="kodey_sensor_side_left">Side Left Sensor</string>
+    <string name="kodey_sensor_side_right">Side Right Sensor</string>
+    <string name="kodey_sensor_bottom_left">Bottom Left Sensor</string>
+    <string name="kodey_sensor_bottom_right">Bottom Right Sensor</string>
     <!--  -->
 
     <!-- Drone Bricks -->

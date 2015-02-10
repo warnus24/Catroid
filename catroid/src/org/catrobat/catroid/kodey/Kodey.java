@@ -20,24 +20,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.common;
+package org.catrobat.catroid.kodey;
 
-import org.catrobat.catroid.bluetooth.BTDeviceConnector;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
-import org.catrobat.catroid.arduino.Arduino;
-import org.catrobat.catroid.kodey.Kodey;
+import org.catrobat.catroid.bluetooth.BTDeviceService;
+import org.catrobat.catroid.formulaeditor.Sensors;
 
+public interface Kodey extends BTDeviceService {
 
-// CHECKSTYLE DISABLE InterfaceIsType FOR 1 LINES
-public interface CatrobatService {
+	public void playTone(int selected_tone, int duration);
 
-	public static final Class<LegoNXT> LEGO_NXT = LegoNXT.class;
-	public static final Class<Kodey> KODEY = Kodey.class;
-    public static final Class<Arduino> ARDUINO = Arduino.class;
-//    public static final Class<Albert> ALBERT = Albert.class;
+	public KodeyMotor getMotorA();
+	public KodeyMotor getMotorB();
 
+	public void stopAllMovements();
 
-	// Common services - gets created by ServiceProvider if needed
-	public static final Class<BTDeviceConnector> BLUETOOTH_DEVICE_CONNECTOR = BTDeviceConnector.class;
+	public int getSensorValue(Sensors sensor);
 
+	public KodeySensor getSensor1();
+	public KodeySensor getSensor2();
+	public KodeySensor getSensor3();
+	public KodeySensor getSensor4();
+	public KodeySensor getSensor5();
+	public KodeySensor getSensor6();
 }

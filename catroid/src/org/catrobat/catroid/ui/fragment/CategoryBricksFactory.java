@@ -61,6 +61,7 @@ import org.catrobat.catroid.content.bricks.GoNStepsBackBrick;
 import org.catrobat.catroid.content.bricks.HideBrick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfOnEdgeBounceBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorActionBrick;
 import org.catrobat.catroid.content.bricks.LedOffBrick;
 import org.catrobat.catroid.content.bricks.LedOnBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
@@ -135,6 +136,8 @@ public class CategoryBricksFactory {
 			tempList = setupArduinoCategoryList();
 		} else if (category.equals(context.getString(R.string.category_drone))) {
 			tempList = setupDroneCategoryList();
+		} else if (category.equals(context.getString(R.string.category_kodey))) {
+			tempList = setupKodeyCategoryList();
 		}
 		for (Brick brick : tempList) {
 			ScriptBrick brickAsScriptBrick;
@@ -300,6 +303,13 @@ public class CategoryBricksFactory {
 		List<Brick> arduinoBrickList = new ArrayList<Brick>();
 		arduinoBrickList.add(new ArduinoSendBrick());
 		return arduinoBrickList;
+	}
+
+	private List<Brick> setupKodeyCategoryList() {
+		List<Brick> kodeyBrickList = new ArrayList<Brick>();
+		kodeyBrickList.add(new KodeyMotorActionBrick(KodeyMotorActionBrick.Motor.MOTOR_A,
+				BrickValues.KODEY_SPEED));
+		return kodeyBrickList;
 	}
 
 	private List<Brick> setupDroneCategoryList() {

@@ -54,6 +54,8 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	public static final String ARDUINO_SENSOR_ANALOG = "setting_arduino_sensor_analog";
 	public static final String ARDUINO_SENSOR_DIGITAL = "setting_arduino_sensor_digital";
 
+	private static final String SETTINGS_SHOW_KODEY_BRICKS = "setting_kodey_bricks";
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -133,5 +135,9 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 
 	public static boolean isLegoNXTSharedPreferenceEnabled(Context context, boolean defaultValue) {
 		return getBooleanSharedPreference(defaultValue, SETTINGS_SHOW_LEGO_NXT_BRICKS, context);
+	}
+
+	public static boolean isKodeySharedPreferenceEnabled(Context context, boolean defaultValue) {
+		return getBooleanSharedPreference(defaultValue, SETTINGS_SHOW_KODEY_BRICKS, context);
 	}
 }
