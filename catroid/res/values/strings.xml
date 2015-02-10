@@ -581,6 +581,10 @@
 
     <!-- Arduino Bricks -->
     <string name="brick_arduino_select_value">Set Arduino Pin</string>
+    <string name="brick_arduino_ir">command</string>
+    <string name="brick_arduino_ir_default_value">"add command here"</string>
+    <string name="dialog_edit_arduino_ir_text">send command to arduino</string>
+    <string name="dialog_edit_arduino_ir_title">Enter IR command</string>
     <!--  -->
 
     <!-- Arduino Strings -->
