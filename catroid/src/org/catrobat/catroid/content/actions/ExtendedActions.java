@@ -229,15 +229,17 @@ public class ExtendedActions extends Actions {
 		action.setBlue(blue);
 		return action;
 	}
-	public static KodeyMotorStopAction kodeyMotorStopAction(KodeyMotorStopBrick.Motor motorEnum) {
-		KodeyMotorStopAction action = action(KodeyMotorStopAction.class);
-		action.setMotorEnum(motorEnum);
-		return action;
-	}
+
 	public static KodeySensorAction kodeySendSelectedSensor(Sprite sprite, int sensorNumber) {
 		KodeySensorAction action = action(KodeySensorAction.class);
 		action.setSprite(sprite);
 		action.setSensor(sensorNumber);
+		return action;
+	}
+
+	public static KodeyMotorStopAction kodeyMotorStopAction(KodeyMotorStopBrick.Motor motorEnum) {
+		KodeyMotorStopAction action = action(KodeyMotorStopAction.class);
+		action.setMotorEnum(motorEnum);
 		return action;
 	}
 
