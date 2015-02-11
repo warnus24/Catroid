@@ -35,6 +35,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.KodeyMotorStopBrick;
 import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick;
 import org.catrobat.catroid.content.bricks.KodeyMotorActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyRGBLightBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorTurnAngleBrick;
@@ -207,6 +208,17 @@ public class ExtendedActions extends Actions {
 		action.setMotorEnum(motorEnum);
 		action.setSprite(sprite);
 		action.setSpeed(speed);
+		return action;
+	}
+
+	public static KodeyRGBLightAction kodeyRgbLedEyeAction(Sprite sprite, KodeyRGBLightBrick.Eye eye,
+			Formula red, Formula green, Formula blue) {
+		KodeyRGBLightAction action = action(KodeyRGBLightAction.class);
+		action.setSprite(sprite);
+		action.setEyeEnum(eye);
+		action.setRed(red);
+		action.setGreen(green);
+		action.setBlue(blue);
 		return action;
 	}
 
