@@ -617,8 +617,8 @@
     <string name="brick_kodey_motor_action">Kodey move motor</string>
     <string name="kodey_motor_speed">Speed</string>
     <!-- sensor -->
-    <string name="brick_kodey_sensor_action">Kodey PRO Sensor</string>
-    <string name="brick_kodey_sensor_begin">If</string>
+    <string name="brick_kodey_sensor_action">Kodey PRO Sensor \n</string>
+       <string name="brick_kodey_sensor_begin">If</string>
     <string name="brick_kodey_sensor_second_part">is activated</string>
     <!-- tone -->
     <string name="kodey_play_tone">Kodey Pro Play Music</string>

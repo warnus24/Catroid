@@ -1,6 +1,6 @@
 /*
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2014 The Catrobat Team
+ * Copyright (C) 2010-2015 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,30 +20,32 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.kodey;
+package org.catrobat.catroid.content.actions;
 
-import org.catrobat.catroid.bluetooth.BTDeviceService;
-import org.catrobat.catroid.formulaeditor.Sensors;
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
-public interface Kodey extends BTDeviceService {
+import org.catrobat.catroid.kodey.Kodey;
+import org.catrobat.catroid.common.CatrobatService;
+import org.catrobat.catroid.common.ServiceProvider;
+import org.catrobat.catroid.content.Sprite;
 
-	public void playTone(int selected_tone, int duration);
+public class KodeySensorAction extends TemporalAction {
 
-	public KodeyMotor getMotorA();
-	public KodeyMotor getMotorB();
+	private int sensorNumber;
+	private Sprite sprite;
 
-	public void stopAllMovements();
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
+	}
 
-	public void setRGBLightColor(int eye, int red, int green, int blue);
+	public void setSensor(int newSensorNumber) {
+		sensorNumber = newSensorNumber;
+	}
 
-	public void setSensor(int sensorNumber);
-
-	public int getSensorValue(Sensors sensor);
-
-	public KodeySensor getSensor1();
-	public KodeySensor getSensor2();
-	public KodeySensor getSensor3();
-	public KodeySensor getSensor4();
-	public KodeySensor getSensor5();
-	public KodeySensor getSensor6();
+	@Override
+	protected void update(float percent) {
+		Kodey kodey = ServiceProvider.getService(CatrobatService.KODEY);
+		if(kodey != null)
+			kodey.setSensor(sensorNumber);
+	}
 }

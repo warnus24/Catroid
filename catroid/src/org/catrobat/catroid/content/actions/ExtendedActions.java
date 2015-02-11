@@ -228,6 +228,13 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
+	public static KodeySensorAction kodeySendSelectedSensor(Sprite sprite, int sensorNumber) {
+		KodeySensorAction action = action(KodeySensorAction.class);
+		action.setSprite(sprite);
+		action.setSensor(sensorNumber);
+		return action;
+	}
+
 	public static ArduinoSendAction sendArduinoValues(Sprite sprite, String pinNumber, int pinValue) {
 		ArduinoSendAction action = action(ArduinoSendAction.class);
 		action.setSprite(sprite);

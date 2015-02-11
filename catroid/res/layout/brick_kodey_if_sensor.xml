@@ -38,38 +38,38 @@
 
     <org.catrobat.catroid.ui.BrickLayout
         android:id="@+id/brick_kodey_sensor_layout"
-        style="@style/BrickContainer.Control.Small"
+        style="@style/BrickContainer.Control.Big"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:horizontalSpacing="@dimen/brick_flow_layout_horizontal_spacing"
         app:verticalSpacing="@dimen/brick_flow_layout_vertical_spacing" >
 
-         <TextView
+        <TextView
            android:id="@+id/brick_kodey_sensor_action_label"
            style="@style/BrickText.SingleLine"
            android:text="@string/brick_kodey_sensor_action" >
         </TextView>
 
         <TextView
-            android:id="@+id/kodey_sensor_label"
+            android:id="@+id/brick_kodey_sensor_label"
             style="@style/BrickText.SingleLine"
             android:text="@string/brick_if_begin" >
         </TextView >
 
-        <TextView
-            android:id="@+id/brick_kodey_sensor_edit_text"
-            style="@style/BrickEditText"
-            app:layout_inputType="number"
-            app:layout_textField="true" />
+        <Spinner
+            android:id="@+id/brick_kodey_sensor_action_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false" >
 
-        <TextView
-            android:id="@+id/brick_kodey_sensor_prototype_text_view"
-            style="@style/BrickPrototypeTextView" />
+        <!-- do not add spinner items here! -->
+        </Spinner >
 
         <TextView
             android:id="@+id/kodey_sensor_label_second_part"
-            style="@style/BrickText.Multiple"
+            style="@style/BrickText.SingleLine"
             android:paddingLeft="5dip"
             android:text="@string/brick_kodey_sensor_second_part" >
         </TextView >

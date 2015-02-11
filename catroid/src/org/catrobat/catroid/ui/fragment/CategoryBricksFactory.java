@@ -65,6 +65,7 @@ import org.catrobat.catroid.content.bricks.KodeyMotorActionBrick;
 import org.catrobat.catroid.content.bricks.KodeyMotorStopBrick;
 import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick;
 import org.catrobat.catroid.content.bricks.KodeyRGBLightBrick;
+import org.catrobat.catroid.content.bricks.KodeySensorBrick;
 import org.catrobat.catroid.content.bricks.LedOffBrick;
 import org.catrobat.catroid.content.bricks.LedOnBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
@@ -316,6 +317,7 @@ public class CategoryBricksFactory {
 				BrickValues.KODEY_DURATION));
 		kodeyBrickList.add(new KodeyMotorStopBrick(KodeyMotorStopBrick.Motor.ALL_MOTORS));
 		kodeyBrickList.add(new KodeyRGBLightBrick(KodeyRGBLightBrick.Eye.Both, BrickValues.KODEY_VALUE_RED, BrickValues.KODEY_VALUE_GREEN,BrickValues.KODEY_VALUE_BLUE));
+		kodeyBrickList.add(new KodeySensorBrick());
 		return kodeyBrickList;
 	}
 

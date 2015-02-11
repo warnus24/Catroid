@@ -46,59 +46,36 @@ public class KodeySensorBrick extends BrickBaseType implements OnItemSelectedLis
 	private static final long serialVersionUID = 1l;
 	private transient View prototypeView;
 	private transient AdapterView<?> adapterView;
-
-	private int pinNumberLowerByte = 0;
-	private int pinNumberHigherByte = 0;
-	private int pinValue = 0;
-	private int pinSpinnerPosition = 0;
-	private int valueSpinnerPosition = 0;
-	private String pinNumberString = "";
+	private int sensorSpinnerPosition = 0;
 
 	public KodeySensorBrick() {
 	}
 
-	/*
-	public ArduinoSendBrick(Sprite sprite) {
-		this.sprite = sprite;
-	}
-    */
-
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_SENSORS_ARDUINO;
+		return BLUETOOTH_KODEY;
 	}
 
 	@Override
 	public Brick copyBrickForSprite(Sprite sprite) {
 		KodeySensorBrick copyBrick = (KodeySensorBrick) clone();
-		//copyBrick.sprite = sprite;
 		return copyBrick;
 	}
 
 	@Override
 	public View getPrototypeView(Context context) {
-		prototypeView = View.inflate(context, R.layout.brick_arduino_send, null);
+		prototypeView = View.inflate(context, R.layout.brick_kodey_if_sensor, null);
 
-		Spinner arduinoPinSpinner = (Spinner) prototypeView.findViewById(R.id.brick_arduino_send_pin_spinner);
-		arduinoPinSpinner.setFocusableInTouchMode(false);
-		arduinoPinSpinner.setFocusable(false);
+		Spinner kodeySensorSpinner = (Spinner) prototypeView.findViewById(R.id.brick_kodey_sensor_action_spinner);
+		kodeySensorSpinner.setFocusableInTouchMode(false);
+		kodeySensorSpinner.setFocusable(false);
 
-		Spinner arduinoValueSpinner = (Spinner) prototypeView.findViewById(R.id.brick_arduino_send_value_spinner);
-		arduinoValueSpinner.setFocusableInTouchMode(false);
-		arduinoValueSpinner.setFocusable(false);
+		ArrayAdapter<CharSequence> kodeySensorSpinnerAdapter = ArrayAdapter.createFromResource(context,
+				R.array.brick_kodey_select_sensor_spinner, android.R.layout.simple_spinner_item);
+		kodeySensorSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-		ArrayAdapter<CharSequence> pinSpinnerAdapter = ArrayAdapter.createFromResource(context,
-				R.array.arduino_pin_chooser, android.R.layout.simple_spinner_item);
-		pinSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-		ArrayAdapter<CharSequence> valueSpinnerAdapter = ArrayAdapter.createFromResource(context,
-				R.array.arduino_value_chooser, android.R.layout.simple_spinner_item);
-		valueSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-		arduinoPinSpinner.setAdapter(pinSpinnerAdapter);
-		arduinoPinSpinner.setSelection(pinSpinnerPosition);
-		arduinoValueSpinner.setAdapter(valueSpinnerAdapter);
-		arduinoValueSpinner.setSelection(valueSpinnerPosition);
+		kodeySensorSpinner.setAdapter(kodeySensorSpinnerAdapter);
+		kodeySensorSpinner.setSelection(sensorSpinnerPosition);
 
 		return prototypeView;
 
@@ -106,7 +83,6 @@ public class KodeySensorBrick extends BrickBaseType implements OnItemSelectedLis
 
 	@Override
 	public Brick clone() {
-		//return new ArduinoSendBrick(getSprite());
 		return new KodeySensorBrick();
 	}
 
@@ -119,10 +95,10 @@ public class KodeySensorBrick extends BrickBaseType implements OnItemSelectedLis
 			alphaValue = 255;
 		}
 
-		view = View.inflate(context, R.layout.brick_arduino_send, null);
+		view = View.inflate(context, R.layout.brick_kodey_if_sensor, null);
 		view = getViewWithAlpha(alphaValue);
 
-		setCheckboxView(R.id.brick_arduino_send_checkbox);
+		setCheckboxView(R.id.brick_kodey_sensor_checkbox);
 		final Brick brickInstance = this;
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
@@ -132,76 +108,34 @@ public class KodeySensorBrick extends BrickBaseType implements OnItemSelectedLis
 			}
 		});
 
-		Spinner arduinoPinSpinner = (Spinner) view.findViewById(R.id.brick_arduino_send_pin_spinner);
-		Spinner arduinoValueSpinner = (Spinner) view.findViewById(R.id.brick_arduino_send_value_spinner);
+		Spinner kodeySensorSpinner = (Spinner) view.findViewById(R.id.brick_kodey_sensor_action_spinner);
 
-		ArrayAdapter<CharSequence> arduinoPinAdapter = ArrayAdapter.createFromResource(context,
-				R.array.arduino_pin_chooser, android.R.layout.simple_spinner_item);
-		arduinoPinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-		ArrayAdapter<CharSequence> arduinoValueAdapter = ArrayAdapter.createFromResource(context,
-				R.array.arduino_value_chooser, android.R.layout.simple_spinner_item);
-		arduinoValueAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<CharSequence> kodeySensorAdapter = ArrayAdapter.createFromResource(context,
+				R.array.brick_kodey_select_sensor_spinner, android.R.layout.simple_spinner_item);
+		kodeySensorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		if (checkbox.getVisibility() == View.VISIBLE) {
-			arduinoPinSpinner.setClickable(false);
-			arduinoPinSpinner.setEnabled(false);
-			arduinoValueSpinner.setClickable(false);
-			arduinoValueSpinner.setEnabled(false);
+			kodeySensorSpinner.setClickable(false);
+			kodeySensorSpinner.setEnabled(false);
 		} else {
-			arduinoPinSpinner.setClickable(true);
-			arduinoPinSpinner.setEnabled(true);
-			arduinoPinSpinner.setOnItemSelectedListener(this);
-			arduinoValueSpinner.setClickable(true);
-			arduinoValueSpinner.setEnabled(true);
-			arduinoValueSpinner.setOnItemSelectedListener(this);
+			kodeySensorSpinner.setClickable(true);
+			kodeySensorSpinner.setEnabled(true);
+			kodeySensorSpinner.setOnItemSelectedListener(this);
 		}
 
-		arduinoPinSpinner.setAdapter(arduinoPinAdapter);
-		arduinoPinSpinner.setSelection(pinSpinnerPosition);
-		arduinoValueSpinner.setAdapter(arduinoValueAdapter);
-		arduinoValueSpinner.setSelection(valueSpinnerPosition);
+		kodeySensorSpinner.setAdapter(kodeySensorAdapter);
+		kodeySensorSpinner.setSelection(sensorSpinnerPosition);
 
-		arduinoPinSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+		kodeySensorSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				String tempSavingString = "00";
-				tempSavingString = parent.getItemAtPosition(position).toString();
-
-				if(tempSavingString != "")
-					pinNumberString = tempSavingString;
-
-				if (tempSavingString.length() < 2) {
-					pinNumberLowerByte = '0';
-					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
-				} else {
-					pinNumberLowerByte = tempSavingString.charAt(tempSavingString.length() - 2);
-					pinNumberHigherByte = tempSavingString.charAt(tempSavingString.length() - 1);
-				}
-				pinSpinnerPosition = position;
+				sensorSpinnerPosition = position;
 				adapterView = parent;
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		});
-
-		arduinoValueSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				if (position == 0) {
-					pinValue = 'L';
-				} else {
-					pinValue = 'H';
-				}
-				valueSpinnerPosition = position;
-				adapterView = parent;
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-
 			}
 		});
 
@@ -211,15 +145,12 @@ public class KodeySensorBrick extends BrickBaseType implements OnItemSelectedLis
 	@Override
 	public View getViewWithAlpha(int alphaValue) {
 		if (view != null) {
-			View layout = view.findViewById(R.id.brick_arduino_send_layout);
+			View layout = view.findViewById(R.id.brick_kodey_sensor_layout);
 			Drawable background = layout.getBackground();
 			background.setAlpha(alphaValue);
 
-			Spinner pinSpinner = (Spinner) view.findViewById(R.id.brick_arduino_send_pin_spinner);
-			pinSpinner.getBackground().setAlpha(alphaValue);
-
-			Spinner valueSpinner = (Spinner) view.findViewById(R.id.brick_arduino_send_value_spinner);
-			valueSpinner.getBackground().setAlpha(alphaValue);
+			Spinner kodeySensorSpinner = (Spinner) view.findViewById(R.id.brick_kodey_sensor_action_spinner);
+			kodeySensorSpinner.getBackground().setAlpha(alphaValue);
 
 			this.alphaValue = (alphaValue);
 		}
@@ -237,7 +168,7 @@ public class KodeySensorBrick extends BrickBaseType implements OnItemSelectedLis
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.sendArduinoValues(sprite, pinNumberString, pinValue));
+		sequence.addAction(ExtendedActions.kodeySendSelectedSensor(sprite, sensorSpinnerPosition));
 		return null;
 	}
 }
