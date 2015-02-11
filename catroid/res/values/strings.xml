@@ -621,9 +621,9 @@
     <string name="brick_kodey_sensor_begin">If</string>
     <string name="brick_kodey_sensor_second_part">is activated</string>
     <!-- tone -->
-    <string name="kodey_play_tone">Kodey play tone</string>
+    <string name="kodey_play_tone">Kodey Pro Play Music</string>
     <string name="kodey_tone_duration">Duration</string>
-    <string name="brick_kodey_select_tone">Kodey tone elements</string>
+    <string name="brick_kodey_select_tone">Tone</string>
     <!-- light -->
     <string name="brick_kodey_rgb_led_action">Kodey PRO RGB light</string>
     <string name="kodey_rgb_led_red">Red</string>

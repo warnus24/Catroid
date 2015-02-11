@@ -30,6 +30,7 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.common.MessageContainer;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.actions.KodeyPlayToneAction;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.ArduinoSendBrick;
 import org.catrobat.catroid.content.bricks.BroadcastBrick;
@@ -62,6 +63,7 @@ import org.catrobat.catroid.content.bricks.HideBrick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfOnEdgeBounceBrick;
 import org.catrobat.catroid.content.bricks.KodeyMotorActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick;
 import org.catrobat.catroid.content.bricks.LedOffBrick;
 import org.catrobat.catroid.content.bricks.LedOnBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
@@ -309,6 +311,8 @@ public class CategoryBricksFactory {
 		List<Brick> kodeyBrickList = new ArrayList<Brick>();
 		kodeyBrickList.add(new KodeyMotorActionBrick(KodeyMotorActionBrick.Motor.MOTOR_A,
 				BrickValues.KODEY_SPEED));
+		kodeyBrickList.add(new KodeyPlayMusicBrick(KodeyPlayMusicBrick.Tone.DO,
+				BrickValues.KODEY_DURATION));
 		return kodeyBrickList;
 	}
 

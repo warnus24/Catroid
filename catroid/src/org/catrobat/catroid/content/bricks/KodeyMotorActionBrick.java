@@ -232,7 +232,7 @@ public class KodeyMotorActionBrick extends FormulaBrick implements OnClickListen
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.kodeyMotorAction(sprite, motorEnum,
+		sequence.addAction(ExtendedActions.kodeyMotorActionAction(sprite, motorEnum,
 				getFormulaWithBrickField(BrickField.KODEY_SPEED)));
 		return null;
 	}

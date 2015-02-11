@@ -64,6 +64,7 @@ public final class BrickValues {
 
 	//Constants Kodey
 	public static final int KODEY_SPEED = 100;
+	public static final int KODEY_DURATION = 1;
 
 	//Constants Drone
 	public static final int DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS = 1000;
