@@ -33,6 +33,7 @@ public interface Kodey extends BTDeviceService {
 	public KodeyMotor getMotorB();
 
 	public void stopAllMovements();
+	public void setRGBLightColor(int eye, int red, int green, int blue);
 
 	public int getSensorValue(Sensors sensor);
 
