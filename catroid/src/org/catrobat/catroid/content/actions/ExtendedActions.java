@@ -32,11 +32,12 @@ import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.content.BroadcastEvent;
 import org.catrobat.catroid.content.BroadcastEvent.BroadcastType;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.bricks.KodeyMotorStopBrick;
 import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorActionBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorTurnAngleBrick;
-import org.catrobat.catroid.content.bricks.KodeyMotorActionBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 
@@ -206,6 +207,12 @@ public class ExtendedActions extends Actions {
 		action.setMotorEnum(motorEnum);
 		action.setSprite(sprite);
 		action.setSpeed(speed);
+		return action;
+	}
+
+	public static KodeyMotorStopAction kodeyMotorStopAction(KodeyMotorStopBrick.Motor motorEnum) {
+		KodeyMotorStopAction action = action(KodeyMotorStopAction.class);
+		action.setMotorEnum(motorEnum);
 		return action;
 	}
 

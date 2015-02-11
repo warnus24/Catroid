@@ -102,6 +102,13 @@
         <item>@string/kodey_motor_both</item>
     </string-array>
 
+    <!-- Kodey stop motor spinner -->
+    <string-array name="brick_kodey_stop_motor_spinner">
+        <item>@string/kodey_motor_left</item>
+        <item>@string/kodey_motor_right</item>
+        <item>@string/kodey_motor_both</item>
+    </string-array>
+
     <!-- Kodey light spinner -->
     <string-array name="brick_kodey_select_light_spinner">
         <item>@string/kodey_light_left</item>

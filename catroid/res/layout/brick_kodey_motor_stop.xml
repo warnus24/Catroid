@@ -52,7 +52,7 @@
         </TextView >
 
         <Spinner
-            android:id="@+id/stop_kodey_motor_spinner"
+            android:id="@+id/brick_kodey_stop_motor_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"

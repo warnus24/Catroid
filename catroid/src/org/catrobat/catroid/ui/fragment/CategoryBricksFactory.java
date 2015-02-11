@@ -63,6 +63,7 @@ import org.catrobat.catroid.content.bricks.HideBrick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfOnEdgeBounceBrick;
 import org.catrobat.catroid.content.bricks.KodeyMotorActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorStopBrick;
 import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick;
 import org.catrobat.catroid.content.bricks.LedOffBrick;
 import org.catrobat.catroid.content.bricks.LedOnBrick;
@@ -313,6 +314,7 @@ public class CategoryBricksFactory {
 				BrickValues.KODEY_SPEED));
 		kodeyBrickList.add(new KodeyPlayMusicBrick(KodeyPlayMusicBrick.Tone.DO,
 				BrickValues.KODEY_DURATION));
+		kodeyBrickList.add(new KodeyMotorStopBrick(KodeyMotorStopBrick.Motor.ALL_MOTORS));
 		return kodeyBrickList;
 	}
 
