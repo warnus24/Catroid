@@ -122,6 +122,14 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 
+		if(requiredResources == 0){
+			Log.d("PreStageActivity", "requiredResources is null!");
+		}
+
+		if(Brick.ARDRONE_SUPPORT == 0){
+			Log.d("PreStageActivity", "ARDRONE_SUPPORT is null!");
+		}
+
 		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
 			droneInitializer = getDroneInitializer();
 			droneInitializer.initialise();
