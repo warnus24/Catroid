@@ -40,7 +40,6 @@ import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BluetoothManager;
@@ -97,7 +96,7 @@ public class PreStageActivity extends BaseActivity {
 
 		setContentView(R.layout.activity_prestage);
 
-		int requiredResources = getRequiredRessources();
+		int requiredResources = getRequiredResources();
 		requiredResourceCounter = Integer.bitCount(requiredResources);
 
 		if ((requiredResources & Brick.TEXT_TO_SPEECH) > 0) {
@@ -123,9 +122,17 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 
-		if (BuildConfig.DEBUG && (requiredResources & Brick.ARDRONE_SUPPORT) > 0)
-		{
-			droneInitializer = getdroneInitialiser();
+
+		if(requiredResources == 0){
+			Log.d("PreStageActivity", "requiredResources is null!");
+		}
+
+		if(Brick.ARDRONE_SUPPORT == 0){
+			Log.d("PreStageActivity", "ARDRONE_SUPPORT is null!");
+		}
+
+		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
+			droneInitializer = getDroneInitializer();
 			droneInitializer.initialise();
 		}
 
@@ -173,7 +180,7 @@ public class PreStageActivity extends BaseActivity {
 		}
 	}
 
-	public DroneInitializer getdroneInitialiser() {
+	public DroneInitializer getDroneInitializer() {
 		if (droneInitializer == null) {
 			droneInitializer = new DroneInitializer(this, returnToActivityIntent);
 		}
@@ -312,7 +319,7 @@ public class PreStageActivity extends BaseActivity {
 		this.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 	}
 
-	private int getRequiredRessources() {
+	private int getRequiredResources() {
 		ArrayList<Sprite> spriteList = (ArrayList<Sprite>) ProjectManager.getInstance().getCurrentProject()
 				.getSpriteList();
 
