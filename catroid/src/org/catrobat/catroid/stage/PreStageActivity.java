@@ -40,6 +40,7 @@ import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BluetoothManager;
@@ -122,8 +123,9 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 
-		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
-			droneInitializer = getDroneInitializer();
+		if (BuildConfig.DEBUG && (requiredResources & Brick.ARDRONE_SUPPORT) > 0)
+		{
+			droneInitializer = getdroneInitialiser();
 			droneInitializer.initialise();
 		}
 
@@ -171,7 +173,7 @@ public class PreStageActivity extends BaseActivity {
 		}
 	}
 
-	public DroneInitializer getDroneInitializer() {
+	public DroneInitializer getdroneInitialiser() {
 		if (droneInitializer == null) {
 			droneInitializer = new DroneInitializer(this, returnToActivityIntent);
 		}
@@ -254,9 +256,9 @@ public class PreStageActivity extends BaseActivity {
 		if (legoNXT != null) {
 			legoNXT.pauseCommunicator();
 		}
-        if (FaceDetectionHandler.isFaceDetectionRunning()) {
-            FaceDetectionHandler.stopFaceDetection();
-        }
+		if (FaceDetectionHandler.isFaceDetectionRunning()) {
+			FaceDetectionHandler.stopFaceDetection();
+		}
 	}
 
 	//all resources that should not have to be reinitialized every stage start
