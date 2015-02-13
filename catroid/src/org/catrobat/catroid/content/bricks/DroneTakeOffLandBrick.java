@@ -37,16 +37,16 @@ import org.catrobat.catroid.content.actions.ExtendedActions;
 
 import java.util.List;
 
-public class DroneTakeOffBrick extends BrickBaseType {
+public class DroneTakeOffLandBrick extends BrickBaseType {
 	private static final long serialVersionUID = 1L;
 
-	public DroneTakeOffBrick() {
+	public DroneTakeOffLandBrick() {
 
 	}
 
 	@Override
 	public Brick copyBrickForSprite(Sprite sprite) {
-		DroneTakeOffBrick copyBrick = (DroneTakeOffBrick) clone();
+		DroneTakeOffLandBrick copyBrick = (DroneTakeOffLandBrick) clone();
 		return copyBrick;
 	}
 
@@ -59,7 +59,7 @@ public class DroneTakeOffBrick extends BrickBaseType {
 
 	@Override
 	public Brick clone() {
-		return new DroneTakeOffBrick();
+		return new DroneTakeOffLandBrick();
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class DroneTakeOffBrick extends BrickBaseType {
 		view = View.inflate(context, R.layout.brick_drone_takeoff, null);
 		view = getViewWithAlpha(alphaValue);
 
-		setCheckboxView(R.id.brick_drone_takeoff_checkbox);
+		setCheckboxView(R.id.brick_drone_takeoff_land_checkbox);
 		final Brick brickInstance = this;
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
@@ -89,7 +89,7 @@ public class DroneTakeOffBrick extends BrickBaseType {
 	@Override
 	public View getViewWithAlpha(int alphaValue) {
 		if (view != null) {
-			View layout = view.findViewById(R.id.brick_drone_takeoff);
+			View layout = view.findViewById(R.id.brick_drone_takeoff_land);
 			Drawable background = layout.getBackground();
 			background.setAlpha(alphaValue);
 			this.alphaValue = (alphaValue);
