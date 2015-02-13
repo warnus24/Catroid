@@ -613,19 +613,19 @@
 
     <!-- Kodey bricks -->
     <!-- motor -->
-    <string name="kodey_motor_stop">Kodey stop motor</string>
-    <string name="brick_kodey_motor_action">Kodey move motor</string>
+    <string name="kodey_motor_stop">Kodey Pro stop motor</string>
+    <string name="brick_kodey_motor_action">Kodey Pro move motor</string>
     <string name="kodey_motor_speed">Speed</string>
     <!-- sensor -->
-    <string name="brick_kodey_sensor_action">Kodey PRO Sensor \n</string>
-       <string name="brick_kodey_sensor_begin">If</string>
+    <string name="brick_kodey_sensor_action">Kodey Pro Sensor \n</string>
+    <string name="brick_kodey_sensor_begin">If</string>
     <string name="brick_kodey_sensor_second_part">is activated</string>
     <!-- tone -->
     <string name="kodey_play_tone">Kodey Pro Play Music</string>
     <string name="kodey_tone_duration">Duration</string>
     <string name="brick_kodey_select_tone">Tone</string>
     <!-- light -->
-    <string name="brick_kodey_rgb_led_action">Kodey PRO RGB light</string>
+    <string name="brick_kodey_rgb_led_action">Kodey Pro RGB light</string>
     <string name="kodey_rgb_led_red">Red</string>
     <string name="kodey_rgb_led_green">Green</string>
     <string name="kodey_rgb_led_blue">Blue</string>
@@ -662,6 +662,17 @@
     <string name="kodey_sensor_bottom_left">Bottom Left Sensor</string>
     <string name="kodey_sensor_bottom_right">Bottom Right Sensor</string>
     <!--  -->
+
+    <!-- Kodey RGBColor Chooser strings -->
+    <string name="color_red">Red</string>
+    <string name="color_green">Green</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_alpha">Alpha</string>
+    <string name="color_pre">preselected</string>
+    <string name="color_chooser_title">Color Chooser</string>
+    <string name="color_rgb">Red Green Blue (RGB)</string>
+    <string name="done">Done</string>
+    <!-- -->
 
     <!-- Drone Bricks -->
     <string name="brick_drone_takeoff">Take off</string>
