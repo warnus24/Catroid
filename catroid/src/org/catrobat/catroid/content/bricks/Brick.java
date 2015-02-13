@@ -49,15 +49,15 @@ public interface Brick extends Serializable, Cloneable {
 	}
 
 	//use bitwise | for using multiple ressources in a brick
-	final int NO_RESOURCES = 0x0;
+	int NO_RESOURCES = 0x0;
 	//	public static final int SOUND_MANAGER = 0x1;
-	final int TEXT_TO_SPEECH = 0x2;
-	final int BLUETOOTH_LEGO_NXT = 0x4;
-	final static int ARDRONE_SUPPORT = 0x20;
-	final int CAMERA_LED = 0x100;
-	final int VIBRATOR = 0x200;
+	int TEXT_TO_SPEECH = 0x2;
+	int BLUETOOTH_LEGO_NXT = 0x4;
+	int ARDRONE_SUPPORT = 0x20;
+	int CAMERA_LED = 0x100;
+	int VIBRATOR = 0x200;
 	//	public static final int BLUETOOTH_ARDUINO = 0x8;
-	final int FACE_DETECTION = 0x10;
+	int FACE_DETECTION = 0x10;
 
 	List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence);
 
