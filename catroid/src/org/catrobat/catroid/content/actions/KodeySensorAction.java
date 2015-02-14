@@ -22,30 +22,107 @@
  */
 package org.catrobat.catroid.content.actions;
 
-import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
+import android.util.Log;
+
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 
 import org.catrobat.catroid.kodey.Kodey;
 import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
 
-public class KodeySensorAction extends TemporalAction {
+public class KodeySensorAction extends Action {
 
 	private int sensorNumber;
 	private Sprite sprite;
+	private Action ifAction;
+	private Action elseAction;
+	private Formula ifCondition;
+	private Boolean ifConditionValue;
+	private boolean isInitialized = false;
+	private boolean isInterpretedCorrectly;
+	Kodey kodey = ServiceProvider.getService(CatrobatService.KODEY);
+
+	protected void begin() {
+		try {
+			if (ifCondition == null) {
+				isInterpretedCorrectly = false;
+				return;
+			}
+			Double interpretation = ifCondition.interpretDouble(sprite);
+			ifConditionValue = interpretation.intValue() != 0 ? true : false;
+			isInterpretedCorrectly = true;
+		} catch (InterpretationException interpretationException) {
+			isInterpretedCorrectly = false;
+			Log.d(getClass().getSimpleName(), "Formula interpretation for this specific Brick failed.", interpretationException);
+		}
+	}
+
+	@Override
+	public boolean act(float delta) {
+		if (!isInitialized) {
+			begin();
+			isInitialized = true;
+		}
+
+		if (!isInterpretedCorrectly) {
+			return true;
+		}
+
+		if (ifConditionValue) {
+			return ifAction.act(delta);
+		} else {
+			return elseAction.act(delta);
+		}
+	}
+
+	@Override
+	public void restart() {
+		ifAction.restart();
+		elseAction.restart();
+		isInitialized = false;
+		super.restart();
+	}
 
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
 	}
 
-	public void setSensor(int newSensorNumber) {
-		sensorNumber = newSensorNumber;
+	public void setIfAction(Action ifAction) {
+		this.ifAction = ifAction;
 	}
 
+	public void setElseAction(Action elseAction) {
+		this.elseAction = elseAction;
+	}
+
+	public void setIfCondition(Formula ifCondition) {
+		this.ifCondition = ifCondition;
+	}
+
+	public void setSensor(int sensorNumber)
+	{
+		if(kodey != null)
+			kodey.setSensor(sensorNumber);
+	}
+	/*
 	@Override
 	protected void update(float percent) {
 		Kodey kodey = ServiceProvider.getService(CatrobatService.KODEY);
 		if(kodey != null)
 			kodey.setSensor(sensorNumber);
+	}
+	*/
+
+	@Override
+	public void setActor(Actor actor) {
+		super.setActor(actor);
+		ifAction.setActor(actor);
+		elseAction.setActor(actor);
 	}
 }

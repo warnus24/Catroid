@@ -614,12 +614,15 @@
     <!-- Kodey bricks -->
     <!-- motor -->
     <string name="kodey_motor_stop">Kodey Pro stop motor</string>
-    <string name="brick_kodey_motor_action">Kodey Pro move motor</string>
+    <string name="brick_kodey_motor_forward_action">Kodey Pro move motor forward</string>
+    <string name="brick_kodey_motor_backward_action">Kodey Pro move motor backward</string>
     <string name="kodey_motor_speed">Speed</string>
     <!-- sensor -->
     <string name="brick_kodey_sensor_action">Kodey Pro Sensor \n</string>
     <string name="brick_kodey_sensor_begin">If</string>
     <string name="brick_kodey_sensor_second_part">is activated</string>
+    <string name="brick_kodey_sensor_else">Else</string>
+    <string name="brick_kodey_sensor_end">End If</string>
     <!-- tone -->
     <string name="kodey_play_tone">Kodey Pro Play Music</string>
     <string name="kodey_tone_duration">Duration</string>

@@ -47,7 +47,7 @@ import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class KodeyMotorActionBrick extends FormulaBrick implements OnClickListener {
+public class KodeyMotorBackwardActionBrick extends FormulaBrick implements OnClickListener {
 	private static final long serialVersionUID = 1L;
 
 	private transient View prototypeView;
@@ -60,17 +60,17 @@ public class KodeyMotorActionBrick extends FormulaBrick implements OnClickListen
 		MOTOR_A, MOTOR_B, MOTOR_A_B
 	}
 
-	public KodeyMotorActionBrick() {
+	public KodeyMotorBackwardActionBrick() {
 		addAllowedBrickField(BrickField.KODEY_SPEED);
 	}
 
-	public KodeyMotorActionBrick(Motor motor, int speedValue) {
+	public KodeyMotorBackwardActionBrick(Motor motor, int speedValue) {
 		this.motorEnum = motor;
 		this.motor = motorEnum.name();
 		initializeBrickFields(new Formula(speedValue));
 	}
 
-	public KodeyMotorActionBrick(Motor motor, Formula speedFormula) {
+	public KodeyMotorBackwardActionBrick(Motor motor, Formula speedFormula) {
 		this.motorEnum = motor;
 		this.motor = motorEnum.name();
 		initializeBrickFields(speedFormula);
@@ -95,11 +95,11 @@ public class KodeyMotorActionBrick extends FormulaBrick implements OnClickListen
 
 	@Override
 	public View getPrototypeView(Context context) {
-		prototypeView = View.inflate(context, R.layout.brick_kodey_motor_action, null);
-		TextView textSpeed = (TextView) prototypeView.findViewById(R.id.brick_kodey_motor_action_speed_text_view);
+		prototypeView = View.inflate(context, R.layout.brick_kodey_motor_backward, null);
+		TextView textSpeed = (TextView) prototypeView.findViewById(R.id.brick_kodey_motor_backward_action_speed_text_view);
 		textSpeed.setText(String.valueOf(BrickValues.KODEY_SPEED));
 
-		Spinner kodeyMotorSpinner = (Spinner) prototypeView.findViewById(R.id.brick_kodey_motor_action_spinner);
+		Spinner kodeyMotorSpinner = (Spinner) prototypeView.findViewById(R.id.brick_kodey_motor_backward_action_spinner);
 		kodeyMotorSpinner.setFocusableInTouchMode(false);
 		kodeyMotorSpinner.setFocusable(false);
 
@@ -114,7 +114,7 @@ public class KodeyMotorActionBrick extends FormulaBrick implements OnClickListen
 
 	@Override
 	public Brick clone() {
-		return new KodeyMotorActionBrick(motorEnum, getFormulaWithBrickField(BrickField.KODEY_SPEED).clone());
+		return new KodeyMotorBackwardActionBrick(motorEnum, getFormulaWithBrickField(BrickField.KODEY_SPEED).clone());
 	}
 
 	@Override
@@ -126,9 +126,9 @@ public class KodeyMotorActionBrick extends FormulaBrick implements OnClickListen
 			alphaValue = 255;
 		}
 
-		view = View.inflate(context, R.layout.brick_kodey_motor_action, null);
+		view = View.inflate(context, R.layout.brick_kodey_motor_backward, null);
 		view = getViewWithAlpha(alphaValue);
-		setCheckboxView(R.id.brick_kodey_motor_action_checkbox);
+		setCheckboxView(R.id.brick_kodey_motor_backward_action_checkbox);
 
 		final Brick brickInstance = this;
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -139,9 +139,9 @@ public class KodeyMotorActionBrick extends FormulaBrick implements OnClickListen
 			}
 		});
 
-		TextView textSpeed = (TextView) view.findViewById(R.id.brick_kodey_motor_action_speed_text_view);
-		editSpeed = (TextView) view.findViewById(R.id.brick_kodey_motor_action_speed_edit_text);
-		getFormulaWithBrickField(BrickField.KODEY_SPEED).setTextFieldId(R.id.brick_kodey_motor_action_speed_edit_text);
+		TextView textSpeed = (TextView) view.findViewById(R.id.brick_kodey_motor_backward_action_speed_text_view);
+		editSpeed = (TextView) view.findViewById(R.id.brick_kodey_motor_backward_action_speed_edit_text);
+		getFormulaWithBrickField(BrickField.KODEY_SPEED).setTextFieldId(R.id.brick_kodey_motor_backward_action_speed_edit_text);
 		getFormulaWithBrickField(BrickField.KODEY_SPEED).refreshTextField(view);
 
 		textSpeed.setVisibility(View.GONE);
@@ -152,7 +152,7 @@ public class KodeyMotorActionBrick extends FormulaBrick implements OnClickListen
 		ArrayAdapter<CharSequence> motorAdapter = ArrayAdapter.createFromResource(context, R.array.brick_kodey_select_motor_spinner,
 				android.R.layout.simple_spinner_item);
 		motorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		Spinner motorSpinner = (Spinner) view.findViewById(R.id.brick_kodey_motor_action_spinner);
+		Spinner motorSpinner = (Spinner) view.findViewById(R.id.brick_kodey_motor_backward_action_spinner);
 
 		if (!(checkbox.getVisibility() == View.VISIBLE)) {
 			motorSpinner.setClickable(true);
@@ -198,23 +198,23 @@ public class KodeyMotorActionBrick extends FormulaBrick implements OnClickListen
 
 		if (view != null) {
 
-			View layout = view.findViewById(R.id.brick_kodey_motor_action_layout);
+			View layout = view.findViewById(R.id.brick_kodey_motor_backward_action_layout);
 			Drawable background = layout.getBackground();
 			background.setAlpha(alphaValue);
 
-			TextView textKodeyMotorActionLabel = (TextView) view.findViewById(R.id.brick_kodey_motor_action_label);
-			TextView textKodeyMotorActionSpeed = (TextView) view.findViewById(R.id.brick_kodey_motor_action_speed);
-			TextView textLKodeyMotorActionPercent = (TextView) view.findViewById(R.id.brick_kodey_motor_action_percent);
+			TextView textKodeyMotorActionLabel = (TextView) view.findViewById(R.id.brick_kodey_motor_backward_action_label);
+			TextView textKodeyMotorActionSpeed = (TextView) view.findViewById(R.id.brick_kodey_motor_backward_action_speed);
+			TextView textLKodeyMotorActionPercent = (TextView) view.findViewById(R.id.brick_kodey_motor_backward_action_percent);
 			TextView textKodeyMotorActionLabelSpeedView = (TextView) view
-					.findViewById(R.id.brick_kodey_motor_action_speed_text_view);
-			TextView editSpeed = (TextView) view.findViewById(R.id.brick_kodey_motor_action_speed_edit_text);
+					.findViewById(R.id.brick_kodey_motor_backward_action_speed_text_view);
+			TextView editSpeed = (TextView) view.findViewById(R.id.brick_kodey_motor_backward_action_speed_edit_text);
 
 			textKodeyMotorActionLabel.setTextColor(textKodeyMotorActionLabel.getTextColors().withAlpha(alphaValue));
 			textKodeyMotorActionSpeed.setTextColor(textKodeyMotorActionSpeed.getTextColors().withAlpha(alphaValue));
 			textLKodeyMotorActionPercent.setTextColor(textLKodeyMotorActionPercent.getTextColors().withAlpha(alphaValue));
 			textKodeyMotorActionLabelSpeedView.setTextColor(textKodeyMotorActionLabelSpeedView.getTextColors().withAlpha(
 					alphaValue));
-			Spinner motorSpinner = (Spinner) view.findViewById(R.id.brick_kodey_motor_action_spinner);
+			Spinner motorSpinner = (Spinner) view.findViewById(R.id.brick_kodey_motor_backward_action_spinner);
 			ColorStateList color = textKodeyMotorActionLabelSpeedView.getTextColors().withAlpha(alphaValue);
 			motorSpinner.getBackground().setAlpha(alphaValue);
 			if (adapterView != null) {
@@ -232,7 +232,7 @@ public class KodeyMotorActionBrick extends FormulaBrick implements OnClickListen
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.kodeyMotorActionAction(sprite, motorEnum,
+		sequence.addAction(ExtendedActions.kodeyMotorBackwardActionAction(sprite, motorEnum,
 				getFormulaWithBrickField(BrickField.KODEY_SPEED)));
 		return null;
 	}

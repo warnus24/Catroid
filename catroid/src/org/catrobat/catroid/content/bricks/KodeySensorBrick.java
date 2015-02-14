@@ -24,6 +24,7 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -38,15 +39,22 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
+import org.catrobat.catroid.kodey.KodeySensor;
+import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class KodeySensorBrick extends BrickBaseType implements OnItemSelectedListener {
+public class KodeySensorBrick extends FormulaBrick implements NestingBrick, OnItemSelectedListener {
 
 	private static final long serialVersionUID = 1l;
 	private transient View prototypeView;
 	private transient AdapterView<?> adapterView;
 	private int sensorSpinnerPosition = 0;
+	protected transient KodeySensorElseBrick kodeySensorElseBrick;
+	protected transient KodeySensorEndBrick kodeySensorEndBrick;
+	private transient KodeySensorBrick copy;
+	private static final String TAG = KodeySensor.class.getSimpleName();
 
 	public KodeySensorBrick() {
 	}
@@ -79,6 +87,68 @@ public class KodeySensorBrick extends BrickBaseType implements OnItemSelectedLis
 
 		return prototypeView;
 
+	}
+
+
+	@Override
+	public boolean isInitialized() {
+		if (kodeySensorElseBrick == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	public void initialize() {
+		kodeySensorElseBrick = new KodeySensorElseBrick(this);
+		kodeySensorEndBrick = new KodeySensorEndBrick(kodeySensorElseBrick, this);
+		Log.w(TAG, "Creating if logic stuff");
+	}
+
+	@Override
+	public List<NestingBrick> getAllNestingBrickParts(boolean sorted) {
+		//TODO: handle sorting
+		List<NestingBrick> nestingBrickList = new ArrayList<NestingBrick>();
+		if (sorted) {
+			nestingBrickList.add(this);
+			nestingBrickList.add(kodeySensorElseBrick);
+			nestingBrickList.add(kodeySensorEndBrick);
+		} else {
+			nestingBrickList.add(this);
+			nestingBrickList.add(kodeySensorEndBrick);
+		}
+
+		return nestingBrickList;
+	}
+
+	@Override
+	public boolean isDraggableOver(Brick brick) {
+		if (brick == kodeySensorElseBrick) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public KodeySensorElseBrick getKodeySensorElseBrick() {
+		return kodeySensorElseBrick;
+	}
+
+	public KodeySensorEndBrick getKodeySensorEndBrick() {
+		return kodeySensorEndBrick;
+	}
+
+	public KodeySensorBrick getCopy() {
+		return copy;
+	}
+
+	public void setKodeySensorElseBrick(KodeySensorElseBrick kodeySensorElseBrick) {
+		this.kodeySensorElseBrick = kodeySensorElseBrick;
+	}
+
+	public void setKodeySensorEndBrick(KodeySensorEndBrick kodeySensorEndBrick) {
+		this.kodeySensorEndBrick = kodeySensorEndBrick;
 	}
 
 	@Override

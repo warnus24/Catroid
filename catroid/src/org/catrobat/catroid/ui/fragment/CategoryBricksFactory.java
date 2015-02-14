@@ -61,7 +61,8 @@ import org.catrobat.catroid.content.bricks.GoNStepsBackBrick;
 import org.catrobat.catroid.content.bricks.HideBrick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfOnEdgeBounceBrick;
-import org.catrobat.catroid.content.bricks.KodeyMotorActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorForwardActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorBackwardActionBrick;
 import org.catrobat.catroid.content.bricks.KodeyMotorStopBrick;
 import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick;
 import org.catrobat.catroid.content.bricks.KodeyRGBLightBrick;
@@ -311,7 +312,9 @@ public class CategoryBricksFactory {
 
 	private List<Brick> setupKodeyCategoryList() {
 		List<Brick> kodeyBrickList = new ArrayList<Brick>();
-		kodeyBrickList.add(new KodeyMotorActionBrick(KodeyMotorActionBrick.Motor.MOTOR_A,
+		kodeyBrickList.add(new KodeyMotorForwardActionBrick(KodeyMotorForwardActionBrick.Motor.MOTOR_A,
+				BrickValues.KODEY_SPEED));
+		kodeyBrickList.add(new KodeyMotorBackwardActionBrick(KodeyMotorBackwardActionBrick.Motor.MOTOR_A,
 				BrickValues.KODEY_SPEED));
 		kodeyBrickList.add(new KodeyPlayMusicBrick(KodeyPlayMusicBrick.Tone.DO,
 				BrickValues.KODEY_DURATION));

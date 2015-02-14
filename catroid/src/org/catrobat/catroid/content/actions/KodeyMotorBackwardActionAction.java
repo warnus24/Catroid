@@ -29,13 +29,12 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.bricks.KodeyMotorActionBrick.Motor;
+import org.catrobat.catroid.content.bricks.KodeyMotorBackwardActionBrick.Motor;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.kodey.Kodey;
-import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 
-public class KodeyMotorActionAction extends TemporalAction {
+public class KodeyMotorBackwardActionAction extends TemporalAction {
 	private static final int MIN_SPEED = -100;
 	private static final int MAX_SPEED = 100;
 

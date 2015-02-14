@@ -34,7 +34,8 @@ import org.catrobat.catroid.content.BroadcastEvent.BroadcastType;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.KodeyMotorStopBrick;
 import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick;
-import org.catrobat.catroid.content.bricks.KodeyMotorActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorForwardActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorBackwardActionBrick;
 import org.catrobat.catroid.content.bricks.KodeyRGBLightBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick;
@@ -202,9 +203,18 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static KodeyMotorActionAction kodeyMotorActionAction(Sprite sprite, KodeyMotorActionBrick.Motor motorEnum,
+	public static KodeyMotorForwardActionAction kodeyMotorForwardActionAction(Sprite sprite, KodeyMotorForwardActionBrick.Motor motorEnum,
 			Formula speed) {
-		KodeyMotorActionAction action = action(KodeyMotorActionAction.class);
+		KodeyMotorForwardActionAction action = action(KodeyMotorForwardActionAction.class);
+		action.setMotorEnum(motorEnum);
+		action.setSprite(sprite);
+		action.setSpeed(speed);
+		return action;
+	}
+
+	public static KodeyMotorBackwardActionAction kodeyMotorBackwardActionAction(Sprite sprite, KodeyMotorBackwardActionBrick.Motor motorEnum,
+			Formula speed) {
+		KodeyMotorBackwardActionAction action = action(KodeyMotorBackwardActionAction.class);
 		action.setMotorEnum(motorEnum);
 		action.setSprite(sprite);
 		action.setSpeed(speed);
