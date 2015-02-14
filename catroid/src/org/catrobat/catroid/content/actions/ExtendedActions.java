@@ -36,6 +36,8 @@ import org.catrobat.catroid.content.bricks.KodeyMotorBackwardActionBrick;
 import org.catrobat.catroid.content.bricks.KodeyMotorForwardActionBrick;
 import org.catrobat.catroid.content.bricks.KodeyMotorStopBrick;
 import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorForwardActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorBackwardActionBrick;
 import org.catrobat.catroid.content.bricks.KodeyRGBLightBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick;
@@ -202,6 +204,7 @@ public class ExtendedActions extends Actions {
 		action.setDurationInSeconds(duration);
 		return action;
 	}
+
 	public static KodeyMotorForwardActionAction kodeyMotorForwardActionAction(Sprite sprite, KodeyMotorForwardActionBrick.Motor motorEnum,
 			Formula speed) {
 		KodeyMotorForwardActionAction action = action(KodeyMotorForwardActionAction.class);
@@ -210,6 +213,7 @@ public class ExtendedActions extends Actions {
 		action.setSpeed(speed);
 		return action;
 	}
+
 	public static KodeyMotorBackwardActionAction kodeyMotorBackwardActionAction(Sprite sprite, KodeyMotorBackwardActionBrick.Motor motorEnum,
 			Formula speed) {
 		KodeyMotorBackwardActionAction action = action(KodeyMotorBackwardActionAction.class);
