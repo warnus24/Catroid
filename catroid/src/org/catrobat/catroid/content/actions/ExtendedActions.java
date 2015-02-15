@@ -352,7 +352,7 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static RobotAlbertMotorActionAction robotAlbertMotor(Sprite sprite, String motor,
+	public static RobotAlbertMotorActionAction robotAlbertMotor(Sprite sprite,
 			org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick.Motor motorEnum, Formula speed) {
 		RobotAlbertMotorActionAction action = action(RobotAlbertMotorActionAction.class);
 		action.setMotorEnum(motorEnum);
@@ -514,7 +514,7 @@ public class ExtendedActions extends Actions {
 			Formula variableFormula, UserVariable userVariable) {
 
 		RobotAlbertDistanceSensorRightAction action = action(RobotAlbertDistanceSensorRightAction.class);
-		action.setSprite(sprite);
+//		action.setSprite(sprite);
 		//action.setChangeVariable(variableFormula);
 		action.setUserVariable(userVariable);
 		return action;

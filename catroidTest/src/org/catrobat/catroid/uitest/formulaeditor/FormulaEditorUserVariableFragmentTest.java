@@ -528,16 +528,12 @@ public class FormulaEditorUserVariableFragmentTest extends BaseActivityInstrumen
 		UiTestUtils.clickOnCheckBox(solo, 1);
 		assertTrue("Select All is not shown", solo.getView(R.id.select_all).isShown());
 
-<<<<<<< HEAD
 		UiTestUtils.clickOnCheckBox(solo, 0);
 		solo.sleep(100);
-		UiTestUtils.clickOnCheckBox(solo, 1);		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
-		solo.sleep(200);
-=======
-		solo.clickOnCheckBox(0);
-		solo.clickOnCheckBox(1);
+		UiTestUtils.clickOnCheckBox(solo, 1);
 		assertFalse("Select All is still shown", solo.getView(R.id.select_all).isShown());
->>>>>>> reverted many files that did not need to change
+		solo.sleep(200);
+
 	}
 
 	private void createProject(String projectName) throws InterruptedException {

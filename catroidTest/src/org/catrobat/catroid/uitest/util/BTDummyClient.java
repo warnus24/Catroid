@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -91,7 +91,7 @@ public class BTDummyClient {
 					Log.d("BTDummyClient.EEEEEERRRRRRROOOOORRRRR", e.getMessage());
 
 					try {
-
+						Log.d("TestRobotAlbert", "testing 3nd variant");
 					} catch (Exception e2) {
 						Log.d("TestRobotAlbert", "error: testing 3nd variant");
 						Method m = null;

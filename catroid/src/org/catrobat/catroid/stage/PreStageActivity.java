@@ -436,7 +436,7 @@ public class PreStageActivity extends BaseActivity {
 							robotAlbert = new RobotAlbert(this, recieveHandler);
 							String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
 							autoConnect = data.getExtras().getBoolean(DeviceListActivity.AUTO_CONNECT);
-							robotAlbert.startBTCommunicator(address);
+								robotAlbert.startBTCommunicator(address);
 						}
 						break;
 
@@ -541,9 +541,9 @@ public class PreStageActivity extends BaseActivity {
 							resourceFailed();
 						}
 						break;
+					default:
+						return;
 				}
-				default:
-					return;
 			}
 			if (robotAlbertActive == true) {
 

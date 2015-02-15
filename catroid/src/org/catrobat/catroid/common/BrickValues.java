@@ -83,5 +83,6 @@ public final class BrickValues {
 	public static final int ROBOT_ALBERT_RGB_LED_EYE_BLUE = 255;
 	public static final int ROBOT_ALBERT_RGB_LED_EYE = 2;
 	public static final int ROBOT_ALBERT_FRONT_LED = 1;
+	public static final int ROBOT_ALBERT_BUZZER = 5;
 
 }

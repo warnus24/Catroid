@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -80,20 +80,20 @@ public class RobotAlbertBuzzerBrickTest extends BaseActivityInstrumentationTestC
 
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.robot_albert_buzzer_frequency)));
 
-		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.robot_albert_buzzer_frequency_edit_text, SET_FREQ, "value",
-				brick);
+		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(), R.id.robot_albert_buzzer_frequency_edit_text, SET_FREQ,
+				Brick.BrickField.ALBERT_ROBOT_BUZZER,brick);
 
 		//TODO: Prints an error after setting it from init to new value, but I can see that it was set. Executing the command a second time seams to solve that. Why not the first time??
-		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.robot_albert_buzzer_frequency_edit_text, SET_FREQ, "value",
-				brick);
+		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
+				R.id.robot_albert_buzzer_frequency_edit_text, SET_FREQ,Brick.BrickField.ALBERT_ROBOT_BUZZER,brick);
 	}
 
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
+		Script script = new StartScript();
 
-		brick = new RobotAlbertBuzzerBrick(sprite, SET_FREQ_INITIALLY);
+		brick = new RobotAlbertBuzzerBrick( SET_FREQ_INITIALLY);
 
 		script.addBrick(brick);
 

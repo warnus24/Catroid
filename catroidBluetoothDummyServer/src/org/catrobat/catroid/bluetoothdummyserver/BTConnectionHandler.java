@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -99,9 +99,9 @@ public class BTConnectionHandler implements Runnable {
 	private void multiplayerDummyServer() throws IOException {
 		String connectionstring = CONNECTION_STRING_BEGIN + uuid + BT_NAME_AND_AUTHENTICATION;
 		System.out.println("[SERVER] Waiting for incoming connection...  UUID: " + uuid);
-		StreamConnectionNotifier stream_conn_notifier = (StreamConnectionNotifier) Connector.open(connectionstring);
+		StreamConnectionNotifier streamConnNotifier = (StreamConnectionNotifier) Connector.open(connectionstring);
 		System.out.println("[Server] Notifier done");
-		btProgramConnection = stream_conn_notifier.acceptAndOpen();
+		btProgramConnection = streamConnNotifier.acceptAndOpen();
 		stream_conn_notifier.close();
 		stream_conn_notifier = null;
 		System.out.println("[SERVER] Client Connected...");

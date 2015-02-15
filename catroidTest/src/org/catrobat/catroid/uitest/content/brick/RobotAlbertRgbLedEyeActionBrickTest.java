@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -90,12 +90,12 @@ public class RobotAlbertRgbLedEyeActionBrickTest extends BaseActivityInstrumenta
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.robot_albert_rgb_led_green)));
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.robot_albert_rgb_led_blue)));
 
-		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.robot_albert_rgb_led_action_red_edit_text, SET_RED, "red",
-				brick);
-		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.robot_albert_rgb_led_action_green_edit_text, SET_GREEN,
-				"green", brick);
-		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.robot_albert_rgb_led_action_blue_edit_text, SET_BLUE, "blue",
-				brick);
+		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
+				R.id.robot_albert_rgb_led_action_red_edit_text, SET_RED,Brick.BrickField.ALBERT_ROBOT_RGB_RED,	brick);
+		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
+				R.id.robot_albert_rgb_led_action_green_edit_text, SET_GREEN, Brick.BrickField.ALBERT_ROBOT_RGB_GREEN, brick);
+		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
+				R.id.robot_albert_rgb_led_action_blue_edit_text, SET_BLUE, Brick.BrickField.ALBERT_ROBOT_RGB_BLUE ,brick);
 
 		String[] eyes = getActivity().getResources().getStringArray(R.array.robot_albert_eye_chooser);
 		assertTrue("Spinner items list too short!", eyes.length == 3);
@@ -125,9 +125,9 @@ public class RobotAlbertRgbLedEyeActionBrickTest extends BaseActivityInstrumenta
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
+		Script script = new StartScript();
 
-		brick = new RobotAlbertRgbLedEyeActionBrick(sprite, RobotAlbertRgbLedEyeActionBrick.Eye.Left,
+		brick = new RobotAlbertRgbLedEyeActionBrick( RobotAlbertRgbLedEyeActionBrick.Eye.Left,
 				SET_RED_INITIALLY, SET_GREEN_INITIALLY, SET_BLUE_INITIALLY);
 
 		script.addBrick(brick);

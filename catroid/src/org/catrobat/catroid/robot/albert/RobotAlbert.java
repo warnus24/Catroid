@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -80,7 +80,7 @@ public class RobotAlbert {
 			}
 		}
 
-		myCommunicator = new RobotAlbertBtCommunicator(this, albertReceiverHandler, BluetoothAdapter.getDefaultAdapter(),
+		myCommunicator = new RobotAlbertBtCommunicator( albertReceiverHandler, BluetoothAdapter.getDefaultAdapter(),
 				activity.getResources());
 		btcHandler = myCommunicator.getHandler();
 

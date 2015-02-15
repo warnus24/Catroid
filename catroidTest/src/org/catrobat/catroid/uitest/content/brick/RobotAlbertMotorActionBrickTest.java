@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -82,8 +82,8 @@ public class RobotAlbertMotorActionBrickTest extends BaseActivityInstrumentation
 				solo.getText(solo.getString(R.string.brick_robot_albert_motor_action)));
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.robot_albert_motor_speed)));
 
-		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.robot_albert_motor_action_speed_edit_text, SET_SPEED,
-				"speed", motorBrick);
+		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(), R.id.robot_albert_motor_action_speed_edit_text, SET_SPEED,
+				Brick.BrickField.ALBERT_ROBOT_SPEED, motorBrick);
 
 		String[] motors = getActivity().getResources().getStringArray(R.array.robot_albert_motor_chooser);
 		assertTrue("Spinner items list too short!", motors.length == 3);
@@ -112,9 +112,9 @@ public class RobotAlbertMotorActionBrickTest extends BaseActivityInstrumentation
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
+		Script script = new StartScript();
 
-		motorBrick = new RobotAlbertMotorActionBrick(sprite, RobotAlbertMotorActionBrick.Motor.Left,
+		motorBrick = new RobotAlbertMotorActionBrick( RobotAlbertMotorActionBrick.Motor.Left,
 				SET_SPEED_INITIALLY);
 
 		script.addBrick(motorBrick);

@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -24,14 +24,12 @@ package org.catrobat.catroid.content.actions;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
-import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.robot.albert.RobotAlbert;
 
 public class RobotAlbertDistanceSensorRightAction extends TemporalAction {
 
 	@SuppressWarnings("unused")
-	private Sprite sprite;
 	private UserVariable userVariable;
 
 	@Override
@@ -52,8 +50,5 @@ public class RobotAlbertDistanceSensorRightAction extends TemporalAction {
 		this.userVariable = userVariable;
 	}
 
-	public void setSprite(Sprite sprite) {
-		this.sprite = sprite;
-	}
 
 }

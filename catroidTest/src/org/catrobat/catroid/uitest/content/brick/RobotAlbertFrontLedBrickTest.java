@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -80,16 +80,17 @@ public class RobotAlbertFrontLedBrickTest extends BaseActivityInstrumentationTes
 
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.robot_albert_front_led_status)));
 
-		UiTestUtils.testBrickWithFormulaEditor(solo, R.id.robot_albert_front_led_status_edit_text, SET_LED, "value",
-				brick);
+
+		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
+				R.id.robot_albert_front_led_status_edit_text, SET_LED, Brick.BrickField.ALBERT_ROBOT_BUZZER,brick);
 	}
 
 	private void createProject() {
 		project = new Project(null, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
 		Sprite sprite = new Sprite("cat");
-		Script script = new StartScript(sprite);
+		Script script = new StartScript();
 
-		brick = new RobotAlbertFrontLedBrick(sprite, SET_LED_INITIALLY);
+		brick = new RobotAlbertFrontLedBrick( SET_LED_INITIALLY);
 
 		script.addBrick(brick);
 

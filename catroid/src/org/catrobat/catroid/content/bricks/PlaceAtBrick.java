@@ -71,11 +71,12 @@ public class PlaceAtBrick extends FormulaBrick implements OnClickListener {
 
 	@Override
 	public int getRequiredResources() {
-		if ((xPosition.containsRobotAlbertSensors() == true) || (yPosition.containsRobotAlbertSensors() == true)) {
-			return BLUETOOTH_ROBOT_ALBERT;
-		} else {
-			return NO_RESOURCES;
-		}
+//		if ((BrickField.X_POSITION.containsRobotAlbertSensors() == true) || (yPosition.containsRobotAlbertSensors() == true)) {
+//			return BLUETOOTH_ROBOT_ALBERT;
+//		} else {
+			return getFormulaWithBrickField(BrickField.Y_POSITION).getRequiredResources()|getFormulaWithBrickField(BrickField.X_POSITION).getRequiredResources();
+//		}
+	}
 	private void initializeBrickFields(Formula xPosition, Formula yPosition) {
 		addAllowedBrickField(BrickField.X_POSITION);
 		addAllowedBrickField(BrickField.Y_POSITION);
@@ -83,10 +84,7 @@ public class PlaceAtBrick extends FormulaBrick implements OnClickListener {
 		setFormulaWithBrickField(BrickField.Y_POSITION, yPosition);
 	}
 
-	@Override
-	public int getRequiredResources() {
-		return getFormulaWithBrickField(BrickField.Y_POSITION).getRequiredResources()|getFormulaWithBrickField(BrickField.X_POSITION).getRequiredResources();
-	}
+
 
 	@Override
 	public View getView(Context context, int brickId, BaseAdapter baseAdapter) {

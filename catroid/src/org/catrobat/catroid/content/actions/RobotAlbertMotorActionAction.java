@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick.Motor;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.robot.albert.RobotAlbert;
 
 public class RobotAlbertMotorActionAction extends TemporalAction {
@@ -41,8 +42,14 @@ public class RobotAlbertMotorActionAction extends TemporalAction {
 
 	@Override
 	protected void update(float percent) {
+		int speedValue = 0;
+		// only local
 
-		int speedValue = speed.interpretInteger(sprite);
+		try {
+			speedValue = speed.interpretInteger(sprite);
+		} catch (InterpretationException interpretationException) {
+			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+		}
 		if (speedValue < MIN) {
 			speedValue = MIN;
 		} else if (speedValue > MAX) {

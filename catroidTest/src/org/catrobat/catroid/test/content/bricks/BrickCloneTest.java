@@ -129,21 +129,23 @@ public class BrickCloneTest extends AndroidTestCase {
 		brick = new MoveNStepsBrick(BRICK_FORMULA_VALUE);
 		brickClone(brick, Brick.BrickField.STEPS);
 
-		brick = new RobotAlbertMotorActionBrick(sprite, RobotAlbertMotorActionBrick.Motor.Left, BRICK_FORMULA_VALUE);
-		brickClone(brick, "speed");
+		brick = new RobotAlbertMotorActionBrick( RobotAlbertMotorActionBrick.Motor.Left, BRICK_FORMULA_VALUE);
+		brickClone(brick,Brick.BrickField.ALBERT_ROBOT_SPEED);
 
-		brick = new RobotAlbertBuzzerBrick(sprite, BRICK_FORMULA_VALUE);
-		brickClone(brick, "value");
+		brick = new RobotAlbertBuzzerBrick( BRICK_FORMULA_VALUE);
+		brickClone(brick,Brick.BrickField.ALBERT_ROBOT_BUZZER);
 
-		brick = new RobotAlbertFrontLedBrick(sprite, BRICK_FORMULA_VALUE);
-		brickClone(brick, "value");
+		brick = new RobotAlbertFrontLedBrick( BRICK_FORMULA_VALUE);
+		brickClone(brick,Brick.BrickField.ALBERT_ROBOT_FRONT_LED);
 
-		brick = new RobotAlbertRgbLedEyeActionBrick(sprite, RobotAlbertRgbLedEyeActionBrick.Eye.Both,
+		brick = new RobotAlbertRgbLedEyeActionBrick( RobotAlbertRgbLedEyeActionBrick.Eye.Both,
 				BRICK_FORMULA_VALUE, BRICK_FORMULA_VALUE, BRICK_FORMULA_VALUE);
-		brickClone(brick, "red", "green", "blue");
+//		brickClone(brick, "red", "green", "blue");
+		brickClone(brick,Brick.BrickField.ALBERT_ROBOT_RGB_LED_EYE);
 
-		brick = new SetBrightnessBrick(sprite, BRICK_FORMULA_VALUE);
-		brickClone(brick, "brightness");
+		brick = new SetBrightnessBrick( BRICK_FORMULA_VALUE);
+		brickClone(brick, Brick.BrickField.BRIGHTNESS);
+
 		brick = new RepeatBrick(BRICK_FORMULA_VALUE);
 		brickClone(brick, Brick.BrickField.TIMES_TO_REPEAT);
 

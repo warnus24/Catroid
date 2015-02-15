@@ -78,6 +78,7 @@ import org.catrobat.catroid.content.bricks.PlaySoundBrick;
 import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.PointToBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
 import org.catrobat.catroid.content.bricks.SetBrightnessBrick;
 import org.catrobat.catroid.content.bricks.SetGhostEffectBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
@@ -357,6 +358,10 @@ public class XStreamToSupportCatrobatLanguageVersion092AndBefore extends XStream
 
 		brickInfo = new BrickInfo(DroneLandBrick.class.getSimpleName());
 		brickInfoMap.put("droneTakeOffBrick", brickInfo);
+
+		brickInfo=new BrickInfo(RobotAlbertMotorActionBrick.class.getSimpleName());
+		brickInfo.addBrickFieldToMap("speed",BrickField.ALBERT_ROBOT_SPEED);
+		brickInfoMap.put("robotAlbertMotorActionBrick",brickInfo);
 
 		brickInfo = new BrickInfo(DroneMoveForwardBrick.class.getSimpleName());
 		brickInfo.addBrickFieldToMap("timeToFlyInSeconds", BrickField.DRONE_TIME_TO_FLY_IN_SECONDS);

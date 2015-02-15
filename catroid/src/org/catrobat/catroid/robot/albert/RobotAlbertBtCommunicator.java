@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -80,13 +80,10 @@ public class RobotAlbertBtCommunicator extends RobotAlbertCommunicator {
 	private OutputStream outputStream;
 	private InputStream inputStream;
 	private String macAddress;
-	private RobotAlbert myOwner;
 
-	public RobotAlbertBtCommunicator(RobotAlbert myOwner, Handler uiHandler, BluetoothAdapter btAdapter,
+	public RobotAlbertBtCommunicator( Handler uiHandler, BluetoothAdapter btAdapter,
 			Resources resources) {
 		super(uiHandler, resources);
-
-		this.myOwner = myOwner;
 		this.btAdapter = btAdapter;
 	}
 

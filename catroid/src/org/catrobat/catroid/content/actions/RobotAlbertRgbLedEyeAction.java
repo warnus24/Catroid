@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.RobotAlbertRgbLedEyeActionBrick.Eye;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.robot.albert.RobotAlbert;
 
 public class RobotAlbertRgbLedEyeAction extends TemporalAction {
@@ -44,19 +45,34 @@ public class RobotAlbertRgbLedEyeAction extends TemporalAction {
 	@Override
 	protected void update(float percent) {
 
-		int redValue = red.interpretInteger(sprite);
+		int redValue = 0;
+		try {
+			redValue = red.interpretInteger(sprite);
+		} catch (InterpretationException interpretationException) {
+			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+		}
 		if (redValue < MIN_VALUE) {
 			redValue = MIN_VALUE;
 		} else if (redValue > MAX_VALUE) {
 			redValue = MAX_VALUE;
 		}
-		int greenValue = green.interpretInteger(sprite);
+		int greenValue = 0;
+		try {
+			greenValue = green.interpretInteger(sprite);
+		} catch (InterpretationException interpretationException) {
+			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+		}
 		if (greenValue < MIN_VALUE) {
 			greenValue = MIN_VALUE;
 		} else if (greenValue > MAX_VALUE) {
 			greenValue = MAX_VALUE;
 		}
-		int blueValue = blue.interpretInteger(sprite);
+		int blueValue = 0;
+		try {
+			blueValue = blue.interpretInteger(sprite);
+		} catch (InterpretationException interpretationException) {
+			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+		}
 		if (blueValue < MIN_VALUE) {
 			blueValue = MIN_VALUE;
 		} else if (blueValue > MAX_VALUE) {

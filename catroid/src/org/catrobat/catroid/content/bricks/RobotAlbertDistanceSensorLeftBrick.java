@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
@@ -56,33 +55,36 @@ import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class RobotAlbertDistanceSensorLeftBrick extends BrickBaseType implements OnClickListener,
+public class RobotAlbertDistanceSensorLeftBrick extends FormulaBrick implements OnClickListener,
 		NewVariableDialogListener {
 	private static final long serialVersionUID = 1L;
 	private UserVariable userVariable;
-	private Formula variableFormula;
 	private transient AdapterView<?> adapterView;
+	public boolean inUserBrick = false;
 
-	public RobotAlbertDistanceSensorLeftBrick(Sprite sprite, Formula variableFormula, UserVariable userVariable) {
-		this.sprite = sprite;
-		this.variableFormula = variableFormula;
+	public RobotAlbertDistanceSensorLeftBrick( Formula variableFormula, UserVariable userVariable,boolean inUserBrick) {
 		this.userVariable = userVariable;
+		this.inUserBrick = inUserBrick;
+		initializeBrickFields(variableFormula);
 	}
 
-	public RobotAlbertDistanceSensorLeftBrick(Sprite sprite, double value) {
-		this.sprite = sprite;
-		this.variableFormula = new Formula(value);
+	public RobotAlbertDistanceSensorLeftBrick( double value) {
 		this.userVariable = null;
+		initializeBrickFields(new Formula(value));
 	}
 
+	private void initializeBrickFields(Formula brightness) {
+		addAllowedBrickField(BrickField.ALBERT_ROBOT_DISTANCE_SENSOR_LEFT);
+		setFormulaWithBrickField(BrickField.ALBERT_ROBOT_DISTANCE_SENSOR_LEFT, brightness);
+	}
 	@Override
 	public int getRequiredResources() {
 		return BLUETOOTH_ROBOT_ALBERT;
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertDistanceSensorLeft(sprite, variableFormula, userVariable));
+	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
+		sequence.addAction(ExtendedActions.robotAlbertDistanceSensorLeft(sprite, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_DISTANCE_SENSOR_LEFT), userVariable));
 		return null;
 	}
 
@@ -108,9 +110,13 @@ public class RobotAlbertDistanceSensorLeftBrick extends BrickBaseType implements
 			}
 		});
 
-		Spinner variableSpinner = (Spinner) view.findViewById(R.id.robot_albert_distance_sensor_left_spinner);
+		UserBrick currentBrick = ProjectManager.getInstance().getCurrentUserBrick();
+		int userBrickId = (currentBrick == null ? -1 : currentBrick.getUserBrickId());
+
 		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
-				.createUserVariableAdapter(context, sprite);
+				.createUserVariableAdapter(context, userBrickId, ProjectManager.getInstance().getCurrentSprite(), inUserBrick);
+
+		Spinner variableSpinner = (Spinner) view.findViewById(R.id.robot_albert_distance_sensor_left_spinner);
 		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
 				userVariableAdapter);
 		userVariableAdapterWrapper.setItemLayout(android.R.layout.simple_spinner_item, android.R.id.text1);
@@ -171,8 +177,10 @@ public class RobotAlbertDistanceSensorLeftBrick extends BrickBaseType implements
 		Spinner variableSpinner = (Spinner) prototypeView.findViewById(R.id.robot_albert_distance_sensor_left_spinner);
 		variableSpinner.setFocusableInTouchMode(false);
 		variableSpinner.setFocusable(false);
-		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
-				.createUserVariableAdapter(context, sprite);
+		UserBrick currentBrick = ProjectManager.getInstance().getCurrentUserBrick();
+		int userBrickId = (currentBrick == null ? -1 : currentBrick.getDefinitionBrick().getUserBrickId());
+		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables().createUserVariableAdapter(context, userBrickId, ProjectManager.getInstance().getCurrentSprite(),inUserBrick);
+
 
 		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
 				userVariableAdapter);
@@ -204,27 +212,16 @@ public class RobotAlbertDistanceSensorLeftBrick extends BrickBaseType implements
 		return view;
 	}
 
-	@Override
-	public Brick clone() {
-		RobotAlbertDistanceSensorLeftBrick clonedBrick = new RobotAlbertDistanceSensorLeftBrick(getSprite(),
-				variableFormula.clone(), userVariable);
-		return clonedBrick;
-	}
+
 
 	@Override
 	public void onClick(View view) {
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, variableFormula);
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_DISTANCE_SENSOR_LEFT));
 	}
 
-	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
-		RobotAlbertDistanceSensorLeftBrick copyBrick = (RobotAlbertDistanceSensorLeftBrick) clone();
-		copyBrick.sprite = sprite;
-		return copyBrick;
-	}
 
 	private void updateUserVariableIfDeleted(UserVariableAdapterWrapper userVariableAdapterWrapper) {
 		if (userVariable != null && userVariableAdapterWrapper.getPositionOfItem(userVariable) == 0) {

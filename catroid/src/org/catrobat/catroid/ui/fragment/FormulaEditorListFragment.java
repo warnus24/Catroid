@@ -97,16 +97,16 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 	private static final int[] SENSOR_ITEMS = { R.string.formula_editor_sensor_x_acceleration,
 			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
 			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
-			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness };
+			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
+			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
+			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position };
 
 	private static final int[] SENSOR_ITEMS_WITH_ALBERT = { R.string.formula_editor_sensor_x_acceleration,
 			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
 			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
 			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
 			R.string.formula_editor_sensor_albert_robot_distance_left,
-			R.string.formula_editor_sensor_albert_robot_distance_right };
-			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
-			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position };
+			R.string.formula_editor_sensor_albert_robot_distance_right};
 
 	private String tag;
 	private String[] items;

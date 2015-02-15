@@ -138,7 +138,7 @@ public class CategoryBricksFactory {
 		} else if (category.equals(context.getString(R.string.category_drone))) {
 			tempList = setupDroneCategoryList();
 		} else if ( category.equals(context.getString(R.string.category_robot_albert))){
-			return setupRobotAlbertCategoryList(sprite);
+			return setupRobotAlbertCategoryList();
 		}
 		for (Brick brick : tempList) {
 			ScriptBrick brickAsScriptBrick;
@@ -301,17 +301,17 @@ public class CategoryBricksFactory {
 		return legoNXTBrickList;
 	}
 
-	private List<Brick> setupRobotAlbertCategoryList(Sprite sprite) {
+	private List<Brick> setupRobotAlbertCategoryList() {
 		List<Brick> robotAlbertBrickList = new ArrayList<Brick>();
-		robotAlbertBrickList.add(new RobotAlbertMotorActionBrick(sprite, RobotAlbertMotorActionBrick.Motor.Left,
+		robotAlbertBrickList.add(new RobotAlbertMotorActionBrick( RobotAlbertMotorActionBrick.Motor.Left,
 				BrickValues.ROBOT_ALBERT_SPEED));
-		robotAlbertBrickList.add(new RobotAlbertBuzzerBrick(sprite, BrickValues.ROBOT_ALBERT_FREQUENCY));
-		robotAlbertBrickList.add(new RobotAlbertRgbLedEyeActionBrick(sprite, RobotAlbertRgbLedEyeActionBrick.Eye.Both,
+		robotAlbertBrickList.add(new RobotAlbertBuzzerBrick( BrickValues.ROBOT_ALBERT_FREQUENCY));
+		robotAlbertBrickList.add(new RobotAlbertRgbLedEyeActionBrick(RobotAlbertRgbLedEyeActionBrick.Eye.Both,
 				BrickValues.ROBOT_ALBERT_RGB_LED_EYE_RED, BrickValues.ROBOT_ALBERT_RGB_LED_EYE_GREEN,
 				BrickValues.ROBOT_ALBERT_RGB_LED_EYE_BLUE));
-		robotAlbertBrickList.add(new RobotAlbertFrontLedBrick(sprite, BrickValues.ROBOT_ALBERT_FRONT_LED));
-		robotAlbertBrickList.add(new SetVariableBrick(sprite, Sensors.ALBERT_ROBOT_DISTANCE_LEFT.toString()));
-		robotAlbertBrickList.add(new SetVariableBrick(sprite, Sensors.ALBERT_ROBOT_DISTANCE_RIGHT.toString()));
+		robotAlbertBrickList.add(new RobotAlbertFrontLedBrick( BrickValues.ROBOT_ALBERT_FRONT_LED));
+		robotAlbertBrickList.add(new SetVariableBrick( Sensors.ALBERT_ROBOT_DISTANCE_LEFT.toString()));
+		robotAlbertBrickList.add(new SetVariableBrick( Sensors.ALBERT_ROBOT_DISTANCE_RIGHT.toString()));
 
 		return robotAlbertBrickList;
 	}

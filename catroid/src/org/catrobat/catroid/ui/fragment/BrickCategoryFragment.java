@@ -123,8 +123,8 @@ public class BrickCategoryFragment extends SherlockListFragment {
 						return;
 					}
 
-					if (onCategorySelectedListener != null) {
-						onCategorySelectedListener.onCategorySelected(adapter.getItem(position));
+					if (scriptFragment != null) {
+						scriptFragment.onCategorySelected(adapter.getItem(position));
 					}
 				}
 			}

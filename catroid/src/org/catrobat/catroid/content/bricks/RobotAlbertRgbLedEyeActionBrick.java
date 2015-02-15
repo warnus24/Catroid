@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ package org.catrobat.catroid.content.bricks;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -38,16 +39,18 @@ import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.Script;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class RobotAlbertRgbLedEyeActionBrick extends BrickBaseType implements OnClickListener {
+public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnClickListener {
 	private static final long serialVersionUID = 1L;
 
 	private transient View prototypeView;
@@ -73,24 +76,26 @@ public class RobotAlbertRgbLedEyeActionBrick extends BrickBaseType implements On
 		return this;
 	}
 
-	public RobotAlbertRgbLedEyeActionBrick(Sprite sprite, Eye eye, int red, int green, int blue) {
-		this.sprite = sprite;
+	public RobotAlbertRgbLedEyeActionBrick( Eye eye, int red, int green, int blue) {
 		this.eyeEnum = eye;
 		this.eye = eyeEnum.name();
-
+		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_LED_EYE);
 		this.red = new Formula(red);
 		this.green = new Formula(green);
 		this.blue = new Formula(blue);
 	}
 
-	public RobotAlbertRgbLedEyeActionBrick(Sprite sprite, Eye eye, Formula red, Formula green, Formula blue) {
-		this.sprite = sprite;
+	public RobotAlbertRgbLedEyeActionBrick( Eye eye, Formula red, Formula green, Formula blue) {
 		this.eyeEnum = eye;
 		this.eye = eyeEnum.name();
-
+		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_LED_EYE);
+		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE);
+		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN);
+		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_RED);
 		this.red = red;
 		this.green = green;
 		this.blue = blue;
+
 	}
 
 	@Override
@@ -99,21 +104,14 @@ public class RobotAlbertRgbLedEyeActionBrick extends BrickBaseType implements On
 	}
 
 	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
-		RobotAlbertRgbLedEyeActionBrick copyBrick = (RobotAlbertRgbLedEyeActionBrick) clone();
-		copyBrick.sprite = sprite;
-		return copyBrick;
-	}
-
-	@Override
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_robot_albert_rgb_eye_action, null);
 		TextView textred = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_red_prototype_text_view);
-		textred.setText(String.valueOf(red.interpretInteger(sprite)));
+		textred.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_RED));
 		TextView textgreen = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_green_prototype_text_view);
-		textgreen.setText(String.valueOf(green.interpretInteger(sprite)));
+		textgreen.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_GREEN));
 		TextView textblue = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_blue_prototype_text_view);
-		textblue.setText(String.valueOf(blue.interpretInteger(sprite)));
+		textblue.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_BLUE));
 		Spinner eyeSpinner = (Spinner) prototypeView.findViewById(R.id.robot_albert_eye_spinner);
 		eyeSpinner.setFocusableInTouchMode(false);
 		eyeSpinner.setFocusable(false);
@@ -128,10 +126,6 @@ public class RobotAlbertRgbLedEyeActionBrick extends BrickBaseType implements On
 		return prototypeView;
 	}
 
-	@Override
-	public Brick clone() {
-		return new RobotAlbertRgbLedEyeActionBrick(getSprite(), eyeEnum, red.clone(), green.clone(), blue.clone());
-	}
 
 	@Override
 	public View getView(Context context, int brickId, BaseAdapter baseAdapter) {
@@ -187,9 +181,18 @@ public class RobotAlbertRgbLedEyeActionBrick extends BrickBaseType implements On
 		//TextView colorView = (TextView) view.findViewById(R.id.robot_albert_rgb_led_color_text_view);
 		//colorView.setVisibility(View.VISIBLE);
 		//update color of the current rgb-selection
-		int r = red.interpretInteger(sprite);
-		int g = green.interpretInteger(sprite);
-		int b = blue.interpretInteger(sprite);
+		Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
+		int r = 0;
+		int g = 0;
+		int b = 0;
+		try {
+			g = green.interpretInteger(sprite);
+			b = blue.interpretInteger(sprite);
+			r = red.interpretInteger(sprite);
+		} catch (InterpretationException interpretationException) {
+			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+		}
+
 		//colorView.setBackgroundColor(Color.rgb(r, g, b));
 
 		if (r > 255) {
@@ -321,7 +324,7 @@ public class RobotAlbertRgbLedEyeActionBrick extends BrickBaseType implements On
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
+	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
 		sequence.addAction(ExtendedActions.robotAlbertRgbLedEye(sprite, eye, eyeEnum, red, green, blue));
 		return null;
 	}

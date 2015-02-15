@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -145,7 +145,7 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		solo.sleep(6000);
 		solo.assertCurrentActivity("Not in stage - connection to bluetooth-device failed", StageActivity.class);
 
-		double distanceLeft = userVariablesContainer.getUserVariable("p1", sprite).getValue();
+		double distanceLeft = (Double)userVariablesContainer.getUserVariable("p1", sprite).getValue();
 
 		solo.clickOnScreen(ScreenValues.SCREEN_WIDTH / 2, ScreenValues.SCREEN_HEIGHT / 2);
 		solo.sleep(5000);
@@ -185,12 +185,12 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 	private void createTestproject(String projectName) {
 
 		Sprite firstSprite = new Sprite(spriteName);
-		Script startScript = new StartScript(firstSprite);
-		Script whenScript = new WhenScript(firstSprite);
-		SetLookBrick setLookBrick = new SetLookBrick(firstSprite);
+		Script startScript = new StartScript();
+		Script whenScript = new WhenScript();
+		SetLookBrick setLookBrick = new SetLookBrick();
 		sprite = firstSprite;
 
-		RobotAlbertMotorActionBrick legoMotorActionBrick = new RobotAlbertMotorActionBrick(firstSprite,
+		RobotAlbertMotorActionBrick legoMotorActionBrick = new RobotAlbertMotorActionBrick(
 				RobotAlbertMotorActionBrick.Motor.Both, 100);
 		ControlCommands commands = new ControlCommands();
 		commands.setSpeedOfLeftMotor(100);
@@ -199,20 +199,20 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		int commandLength = command.length;
 		sendCommands.append(command, 0, commandLength);
 
-		RobotAlbertFrontLedBrick robotAlbertFrontLedBrick = new RobotAlbertFrontLedBrick(firstSprite, new Formula(1));
+		RobotAlbertFrontLedBrick robotAlbertFrontLedBrick = new RobotAlbertFrontLedBrick( new Formula(1));
 		commands.setFrontLed(1);
 		command = commands.getCommandMessage();
 		commandLength = command.length;
 		sendCommands.append(command, 0, commandLength);
 
-		RobotAlbertBuzzerBrick robotAlbertBuzzerBrick = new RobotAlbertBuzzerBrick(firstSprite, new Formula(50));
+		RobotAlbertBuzzerBrick robotAlbertBuzzerBrick = new RobotAlbertBuzzerBrick( new Formula(50));
 		commands.setBuzzer(50);
 		command = commands.getCommandMessage();
 		commandLength = command.length;
 		sendCommands.append(command, 0, commandLength);
 
 		RobotAlbertRgbLedEyeActionBrick robotAlbertRgbLedEyeActionBrick = new RobotAlbertRgbLedEyeActionBrick(
-				firstSprite, RobotAlbertRgbLedEyeActionBrick.Eye.Both, new Formula(255), new Formula(255), new Formula(
+				 RobotAlbertRgbLedEyeActionBrick.Eye.Both, new Formula(255), new Formula(255), new Formula(
 						255));
 		commands.setLeftEye(255, 255, 255);
 		commands.setRightEye(255, 255, 255);
@@ -220,7 +220,7 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		commandLength = command.length;
 		sendCommands.append(command, 0, commandLength);
 
-		SetVariableBrick setVariableBrick = new SetVariableBrick(firstSprite, 0.0);
+		SetVariableBrick setVariableBrick = new SetVariableBrick( 0.0);
 
 		whenScript.addBrick(legoMotorActionBrick);
 		whenScript.addBrick(robotAlbertFrontLedBrick);
@@ -239,7 +239,7 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		userVariablesContainer.addProjectUserVariable("p1");
 		userVariablesContainer.addSpriteUserVariable("sprite_var1");
 
-		setVariableBrick = new SetVariableBrick(firstSprite, 0.0);
+		setVariableBrick = new SetVariableBrick( 0.0);
 
 		String imageName = "image";
 		File image = UiTestUtils.saveFileToProject(projectName, imageName, IMAGE_FILE_ID, getInstrumentation()

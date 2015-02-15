@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2013 The Catrobat Team
+ *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *  
  *  This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
@@ -34,16 +35,18 @@ import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
+import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.Script;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickListener {
+public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListener {
 	private static final long serialVersionUID = 1L;
 
 	private transient View prototypeView;
@@ -55,26 +58,22 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 		return this;
 	}
 
-	public RobotAlbertBuzzerBrick(Sprite sprite, int value) {
-		this.sprite = sprite;
+	public RobotAlbertBuzzerBrick( int value) {
 		this.value = new Formula(value);
+		initializeBrickFields(new Formula(value));
 	}
 
-	public RobotAlbertBuzzerBrick(Sprite sprite, Formula value) {
-		this.sprite = sprite;
+	public RobotAlbertBuzzerBrick( Formula value) {
 		this.value = value;
+		initializeBrickFields(value);
 	}
-
+	private void initializeBrickFields(Formula brightness) {
+		addAllowedBrickField(BrickField.ALBERT_ROBOT_BUZZER);
+		setFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER, brightness);
+	}
 	@Override
 	public int getRequiredResources() {
 		return BLUETOOTH_ROBOT_ALBERT;
-	}
-
-	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
-		RobotAlbertBuzzerBrick copyBrick = (RobotAlbertBuzzerBrick) clone();
-		copyBrick.sprite = sprite;
-		return copyBrick;
 	}
 
 	@Override
@@ -82,13 +81,8 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 		prototypeView = View.inflate(context, R.layout.brick_robot_albert_buzzer_action, null);
 		TextView textValue = (TextView) prototypeView
 				.findViewById(R.id.robot_albert_buzzer_frequency_prototype_text_view);
-		textValue.setText(String.valueOf(value.interpretInteger(sprite)));
+		textValue.setText(String.valueOf(BrickValues.ROBOT_ALBERT_BUZZER));
 		return prototypeView;
-	}
-
-	@Override
-	public Brick clone() {
-		return new RobotAlbertBuzzerBrick(getSprite(), value.clone());
 	}
 
 	@Override
@@ -122,7 +116,12 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 
 		editValue.setOnClickListener(this);
 
-		int val = value.interpretInteger(sprite);
+		int val = 0;
+		try {
+			val = getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
+		} catch (InterpretationException interpretationException) {
+			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+		}
 		if (val > 100) {
 			editValue.setText("" + 100);
 		} else if (val < 0) {
@@ -147,8 +146,8 @@ public class RobotAlbertBuzzerBrick extends BrickBaseType implements OnClickList
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertBuzzer(sprite, value));
+	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
+		sequence.addAction(ExtendedActions.setBrightness(sprite, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_FRONT_LED)));
 		return null;
 	}
 }

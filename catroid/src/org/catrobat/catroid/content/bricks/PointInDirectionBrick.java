@@ -86,11 +86,12 @@ public class PointInDirectionBrick extends FormulaBrick implements View.OnClickL
 
 	@Override
 	public int getRequiredResources() {
-		if (degrees.containsRobotAlbertSensors() == true) {
+		if (getFormulaWithBrickField(BrickField.DEGREES).containsRobotAlbertSensors() == true) {
 			return BLUETOOTH_ROBOT_ALBERT;
 		} else {
 			return NO_RESOURCES;
 		}
+
 	}
 
 	@Override

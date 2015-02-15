@@ -24,6 +24,7 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,11 +42,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.formulaeditor.Sensors;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.ui.adapter.UserVariableAdapter;
@@ -79,18 +80,16 @@ public class SetVariableBrick extends FormulaBrick implements OnClickListener, N
 		initializeBrickFields(new Formula(value));
 	}
 
-	public SetVariableBrick(Sprite sprite, String value) {
+	public SetVariableBrick( String value) {
 		this.isStringInPrototype = true;
 		this.stringInPrototype = value;
-		this.sprite = sprite;
-		this.variableFormula = new Formula(value);
 		this.userVariable = null;
-
+		initializeBrickFields(new Formula(value));
 	}
-
 	@Override
 	public Formula getFormula() {
-		return variableFormula;
+		return getFormulaWithBrickField(BrickField.VARIABLE);
+	}
 	private void initializeBrickFields(Formula variableFormula) {
 		addAllowedBrickField(BrickField.VARIABLE);
 		setFormulaWithBrickField(BrickField.VARIABLE, variableFormula);
@@ -221,7 +220,11 @@ public class SetVariableBrick extends FormulaBrick implements OnClickListener, N
 
 		TextView textSetVariable = (TextView) prototypeView.findViewById(R.id.brick_set_variable_prototype_view);
 		if (isStringInPrototype == false) {
-			textSetVariable.setText(String.valueOf(variableFormula.interpretDouble(sprite)));
+			try {
+				textSetVariable.setText(String.valueOf(getFormulaWithBrickField(BrickField.VARIABLE).interpretDouble(ProjectManager.getInstance().getCurrentSprite())));
+			} catch (InterpretationException interpretationException) {
+				Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+			}
 		} else {
 			if (stringInPrototype.equalsIgnoreCase(Sensors.ALBERT_ROBOT_DISTANCE_LEFT.toString())) {
 				textSetVariable.setText(context.getResources().getString(
