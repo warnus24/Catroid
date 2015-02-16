@@ -68,6 +68,10 @@ public class UserBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		solo.waitForDialogToClose();
 		assertEquals("The selected brick could not be deleted!", 3, ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick().getUserScript().getBrickList().size());
 
+
+		solo.sleep(300);
+
+
 		//copy via context menu
 		solo.clickOnView(solo.getCurrentActivity().findViewById(R.id.brick_change_x_prototype_text_view));
 		String stringOnCopy = solo.getCurrentActivity()
@@ -97,6 +101,7 @@ public class UserBrickTest extends BaseActivityInstrumentationTestCase<MainMenuA
 		solo.clickOnButton(solo.getString(R.string.yes));
 		solo.waitForDialogToClose();
 		assertEquals("Any of the bricks could not be deleted or the definition brick was deleted by mistake!", 0, ProjectManager.getInstance().getCurrentUserBrick().getDefinitionBrick().getUserScript().getBrickList().size());
+
 	}
 
 //	public void testSetParameterOfUserbricksInScript() {
