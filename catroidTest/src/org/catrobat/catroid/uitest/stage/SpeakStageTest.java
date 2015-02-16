@@ -120,14 +120,15 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 	@Device
 	public void testSimpleSpeech() {
 		solo.waitForActivity(StageActivity.class.getSimpleName());
-		int currentTry = 1;
+		int currentTry = 0;
 		boolean found = false;
-		while (++currentTry != 10) {
+		while (currentTry != 60) {
 			if (speechFileTestText.exists()) {
 				found = true;
 				break;
 			}
-			solo.sleep(3000);
+			solo.sleep(1000);
+			currentTry++;
 		}
 
 		assertTrue("speechFileTestText does not exist.", found);
