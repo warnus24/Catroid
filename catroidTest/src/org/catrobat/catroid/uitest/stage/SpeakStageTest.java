@@ -65,6 +65,11 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 	private final File speechFileTestText = new File(Constants.TEXT_TO_SPEECH_TMP_PATH, Utils.md5Checksum(testText)
 			+ Constants.TEXT_TO_SPEECH_EXTENSION);
 
+	private final String anotherLongerText = "This text is slightly longer than the Test test.";
+	private long byteLengthOfAnotherLongerText;
+	private final File speechFileAnotherLongerText = new File(Constants.TEXT_TO_SPEECH_TMP_PATH, Utils.md5Checksum(anotherLongerText)
+			+ Constants.TEXT_TO_SPEECH_EXTENSION);
+
 	public SpeakStageTest() {
 		super(MainMenuActivity.class);
 	}
@@ -77,7 +82,6 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 
 		deleteSpeechFiles();
 		detectReferenceFileSize(speechFileTestText, testText);
-		createTestProject();
 	}
 
 	@Override
@@ -86,10 +90,27 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 		deleteSpeechFiles();
 	}
 
-	private void createTestProject() {
-		Sprite spriteNormal = new Sprite("testNormalBehaviour");
+	private void createSingleTestProject() {
+		Sprite spriteNormal = new Sprite("testSingleSpeech");
 
 		Script startScriptNormal = new StartScript();
+		startScriptNormal.addBrick(new SpeakBrick(testText));
+		startScriptNormal.addBrick(new WaitBrick(1500));
+
+		spriteNormal.addScript(startScriptNormal);
+
+		ArrayList<Sprite> spriteListNormal = new ArrayList<Sprite>();
+		spriteListNormal.add(spriteNormal);
+
+		UiTestUtils.createProject(UiTestUtils.DEFAULT_TEST_PROJECT_NAME, spriteListNormal, getActivity().getApplicationContext());
+		prepareStageForTesting(UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
+	}
+
+	private void createMultipleSpeechTestProject() {
+		Sprite spriteNormal = new Sprite("testMultipleSimultaneousSpeech");
+
+		Script startScriptNormal = new StartScript();
+		startScriptNormal.addBrick(new SpeakBrick(anotherLongerText));
 		startScriptNormal.addBrick(new SpeakBrick(testText));
 		startScriptNormal.addBrick(new WaitBrick(1500));
 
@@ -118,7 +139,8 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 	}
 
 	@Device
-	public void testSimpleSpeech() {
+	public void testSingleSpeech() {
+		createSingleTestProject();
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 		int currentTry = 0;
 		boolean found = false;
@@ -136,13 +158,33 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 	}
 
 	@Device
+	public void testMultipleSimultaneousSpeech() {
+		createMultipleSpeechTestProject();
+		solo.waitForActivity(StageActivity.class.getSimpleName());
+		int currentTry = 0;
+		boolean found = false;
+		while (currentTry != 120) {
+			currentTry++;
+			if (speechFileTestText.exists() && speechFileAnotherLongerText.exists()) {
+				found = true;
+				break;
+			}
+			solo.sleep(1000);
+		}
+
+		assertTrue("some of the required speechfiles do not exist.", found);
+		Log.i("info", "filecheck took " + currentTry + " seconds");
+	}
+
+	@Device
 	public void testDeleteSpeechFiles() {
+		createMultipleSpeechTestProject();
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 		solo.sleep(2000);
 
 		int currentTry = 0;
 		boolean found = false;
-		while (currentTry != 60) {
+		while (currentTry != 120) {
 			currentTry++;
 			if (speechFileTestText.exists()) {
 				found = true;
