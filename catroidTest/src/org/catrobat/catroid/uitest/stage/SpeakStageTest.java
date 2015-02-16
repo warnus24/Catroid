@@ -123,15 +123,55 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 		int currentTry = 0;
 		boolean found = false;
 		while (currentTry != 60) {
+			currentTry++;
 			if (speechFileTestText.exists()) {
 				found = true;
 				break;
 			}
 			solo.sleep(1000);
-			currentTry++;
 		}
 
 		assertTrue("speechFileTestText does not exist.", found);
+		Log.i("info", "filecheck took " + currentTry + " seconds");
+	}
+
+	@Device
+	public void testDeleteSpeechFiles() {
+		solo.waitForActivity(StageActivity.class.getSimpleName());
+		solo.sleep(2000);
+
+		int currentTry = 0;
+		boolean found = false;
+		while (currentTry != 60) {
+			currentTry++;
+			if (speechFileTestText.exists()) {
+				found = true;
+				break;
+			}
+			solo.sleep(1000);
+		}
+
+		assertTrue("speechFileTestText does not exist.", found);
+		Log.i("info", "filecheck took " + currentTry + " seconds");
+
+		UiTestUtils.goToHomeActivity(getActivity());
+		solo.waitForActivity(MainMenuActivity.class);
+
+		File file = new File(Constants.TEXT_TO_SPEECH_TMP_PATH);
+
+		currentTry = 0;
+		boolean folderEmpty = false;
+		while (currentTry != 60) {
+			currentTry++;
+			if (file.listFiles().length == 0) {
+				folderEmpty = true;
+				break;
+			}
+			solo.sleep(1000);
+		}
+
+		assertEquals("TextToSpeech folder is not empty", 0, file.listFiles().length);
+		Log.i("info", "filecheck took " + currentTry + " seconds");
 	}
 
 	private void detectReferenceFileSize(File file, String text){
