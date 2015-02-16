@@ -95,7 +95,7 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 
 		Script startScriptNormal = new StartScript();
 		startScriptNormal.addBrick(new SpeakBrick(testText));
-		startScriptNormal.addBrick(new WaitBrick(1500));
+		startScriptNormal.addBrick(new WaitBrick(1000));
 
 		spriteNormal.addScript(startScriptNormal);
 
@@ -107,17 +107,17 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 	}
 
 	private void createMultipleSpeechTestProject() {
-		Sprite spriteNormal = new Sprite("testMultipleSimultaneousSpeech");
+		Sprite spriteMultiple = new Sprite("testMultipleSpeech");
 
-		Script startScriptNormal = new StartScript();
-		startScriptNormal.addBrick(new SpeakBrick(anotherLongerText));
-		startScriptNormal.addBrick(new SpeakBrick(testText));
-		startScriptNormal.addBrick(new WaitBrick(1500));
+		Script startScriptMultiple = new StartScript();
+		startScriptMultiple.addBrick(new SpeakBrick(anotherLongerText));
+		startScriptMultiple.addBrick(new SpeakBrick(testText));
+		startScriptMultiple.addBrick(new WaitBrick(1000));
 
-		spriteNormal.addScript(startScriptNormal);
+		spriteMultiple.addScript(startScriptMultiple);
 
 		ArrayList<Sprite> spriteListNormal = new ArrayList<Sprite>();
-		spriteListNormal.add(spriteNormal);
+		spriteListNormal.add(spriteMultiple);
 
 		UiTestUtils.createProject(UiTestUtils.DEFAULT_TEST_PROJECT_NAME, spriteListNormal, getActivity().getApplicationContext());
 		prepareStageForTesting(UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
@@ -153,8 +153,13 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 			solo.sleep(1000);
 		}
 
-		assertTrue("speechFileTestText does not exist.", found);
-		Log.i("info", "filecheck took " + currentTry + " seconds");
+		assertTrue("some of the required speechfiles do not exist.", found);
+
+		solo.sleep(3000);
+
+		assertTrue("speechFileTestText was not played.",
+				soundManagerMock.playedSoundFiles.contains(speechFileTestText.getAbsolutePath()));
+		assertEquals("Wrong amount of soundfiles played", 1, soundManagerMock.playedSoundFiles.size());
 	}
 
 	@Device
@@ -173,7 +178,14 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 		}
 
 		assertTrue("some of the required speechfiles do not exist.", found);
-		Log.i("info", "filecheck took " + currentTry + " seconds");
+
+		solo.sleep(3000);
+
+		assertTrue("speechFileTestText was not played.",
+				soundManagerMock.playedSoundFiles.contains(speechFileTestText.getAbsolutePath()));
+		assertTrue("speechFileAnotherLongerText was not played.",
+				soundManagerMock.playedSoundFiles.contains(speechFileAnotherLongerText.getAbsolutePath()));
+		assertEquals("Wrong amount of soundfiles played", 2, soundManagerMock.playedSoundFiles.size());
 	}
 
 	@Device
@@ -193,8 +205,7 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 			solo.sleep(1000);
 		}
 
-		assertTrue("speechFileTestText does not exist.", found);
-		Log.i("info", "filecheck took " + currentTry + " seconds");
+		assertTrue("some of the required speechfiles do not exist.", found);
 
 		UiTestUtils.goToHomeActivity(getActivity());
 		solo.waitForActivity(MainMenuActivity.class);
@@ -213,11 +224,10 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 		}
 
 		assertEquals("TextToSpeech folder is not empty", 0, file.listFiles().length);
-		Log.i("info", "filecheck took " + currentTry + " seconds");
 	}
 
 	private void detectReferenceFileSize(File file, String text){
-
+		//TODO
 		solo.sleep(1000);
 	}
 
