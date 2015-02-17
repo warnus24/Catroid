@@ -96,16 +96,18 @@ public class PreStageActivity extends BaseActivity {
 
 		setContentView(R.layout.activity_prestage);
 
-		int requiredResources = getRequiredResources();
-		requiredResourceCounter = Integer.bitCount(requiredResources);
+		resources = getRequiredResources();
+		returnToActivityIntent.putExtra("Resources", resources);
 
-		if ((requiredResources & Brick.TEXT_TO_SPEECH) > 0) {
+		requiredResourceCounter = Integer.bitCount(resources);
+
+		if ((resources & Brick.TEXT_TO_SPEECH) > 0) {
 			Intent checkIntent = new Intent();
 			checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
 			startActivityForResult(checkIntent, REQUEST_TEXT_TO_SPEECH);
 		}
 
-		if ((requiredResources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
+		if ((resources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
 			BluetoothManager bluetoothManager = new BluetoothManager(this);
 
 			int bluetoothState = bluetoothManager.activateBluetooth();
@@ -123,7 +125,7 @@ public class PreStageActivity extends BaseActivity {
 		}
 
 
-		if(requiredResources == 0){
+		if(resources == 0){
 			Log.d("PreStageActivity", "requiredResources is null!");
 		}
 
@@ -131,13 +133,13 @@ public class PreStageActivity extends BaseActivity {
 			Log.d("PreStageActivity", "ARDRONE_SUPPORT is null!");
 		}
 
-		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
+		if ((resources & Brick.ARDRONE_SUPPORT) > 0) {
 			droneInitializer = getDroneInitializer();
 			droneInitializer.initialise();
 		}
 
 		FaceDetectionHandler.resetFaceDedection();
-		if ((requiredResources & Brick.FACE_DETECTION) > 0) {
+		if ((resources & Brick.FACE_DETECTION) > 0) {
 			boolean success = FaceDetectionHandler.startFaceDetection(this);
 			if (success) {
 				resourceInitialized();
@@ -146,7 +148,7 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 
-		if ((requiredResources & Brick.CAMERA_LED ) > 0) {
+		if ((resources & Brick.CAMERA_LED ) > 0) {
 			if (!CameraManager.getInstance().isFacingBack()) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setMessage(getString(R.string.led_and_front_camera_warning)).setCancelable(false)
@@ -163,7 +165,7 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 
-		if ((requiredResources & Brick.VIBRATOR) > 0) {
+		if ((resources & Brick.VIBRATOR) > 0) {
 			Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 			if (vibrator != null) {
 				requiredResourceCounter--;
@@ -307,6 +309,7 @@ public class PreStageActivity extends BaseActivity {
 	}
 
 	public void startStage() {
+
 		setResult(RESULT_OK, returnToActivityIntent);
 		finish();
 	}
