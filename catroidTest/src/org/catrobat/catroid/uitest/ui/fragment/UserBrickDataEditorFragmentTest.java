@@ -58,10 +58,12 @@ public class UserBrickDataEditorFragmentTest extends BaseActivityInstrumentation
 		String stringOnVariablesButton = solo.getCurrentActivity().getString(R.string.formula_editor_variables);
 		solo.clickOnText(stringOnVariablesButton);
 
+		solo.sleep(1000);
+		
 		String stringOnUserBrickVar = UiTestUtils.TEST_USER_BRICK_VARIABLE;
 		boolean hasBrickVariable = solo.waitForText(stringOnUserBrickVar, 0, 5000);
 
-		solo.sleep(500);
+		solo.sleep(1000);
 
 		assertTrue("'" + stringOnUserBrickVar + "' didn't appear", hasBrickVariable);
 		solo.clickOnText(stringOnUserBrickVar);
