@@ -674,6 +674,7 @@
     <string name="color_pre">preselected</string>
     <string name="color_chooser_title">Color Chooser</string>
     <string name="color_rgb">Red Green Blue (RGB)</string>
+    <string name="color_preview">Color Preview</string>
     <string name="done">Done</string>
     <!-- -->
 

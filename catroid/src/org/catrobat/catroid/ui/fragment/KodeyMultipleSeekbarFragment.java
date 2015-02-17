@@ -29,6 +29,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -44,6 +45,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -86,6 +88,9 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 	private FormulaEditorEditText formulaEditorEditTextRed;
 	private FormulaEditorEditText formulaEditorEditTextGreen;
 	private FormulaEditorEditText formulaEditorEditTextBlue;
+	private SeekBar redSeekBar;
+	private SeekBar greenSeekBar;
+	private SeekBar blueSeekBar;
 	private LinearLayout kodeyBrick;
 	private Toast toast;
 	private View brickView;
@@ -260,7 +265,44 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 
 		fragmentView.getViewTreeObserver().addOnGlobalLayoutListener(this);
 
-		//setInputFormula(currentFormula, SET_FORMULA_ON_CREATE_VIEW);
+		redSeekBar = (SeekBar) fragmentView.findViewById(R.id.color_rgb_seekbar_red);
+		greenSeekBar = (SeekBar) fragmentView.findViewById(R.id.color_rgb_seekbar_green);
+		blueSeekBar = (SeekBar) fragmentView.findViewById(R.id.color_rgb_seekbar_blue);
+
+		SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+				//enter value to textview
+				switch(seekBar.getId())
+				{
+					case R.id.color_rgb_seekbar_red:
+						formulaEditorEditTextRed.setText(Integer.toString(seekBar.getProgress()));
+						break;
+					case R.id.color_rgb_seekbar_green:
+						formulaEditorEditTextGreen.setText(Integer.toString(seekBar.getProgress()));
+						break;
+					case R.id.color_rgb_seekbar_blue:
+						formulaEditorEditTextBlue.setText(Integer.toString(seekBar.getProgress()));
+						break;
+					default:
+						break;
+				}
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+
+			}
+		};
+
+		redSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+		greenSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+		blueSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
 
 		return fragmentView;
 	}
@@ -276,22 +318,6 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					view.setPressed(false);
 					return true;
-				}
-
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
-					view.setPressed(true);
-
-					switch (view.getId()) {
-						case R.id.kodey_colorchooser_ok:
-							endFormulaEditor();
-						default:
-							formulaEditorEditTextRed.handleKeyEvent(view.getId(), "");
-							formulaEditorEditTextGreen.handleKeyEvent(view.getId(), "");
-							formulaEditorEditTextBlue.handleKeyEvent(view.getId(), "");
-							return true;
-					}
-
 				}
 				return false;
 			}
