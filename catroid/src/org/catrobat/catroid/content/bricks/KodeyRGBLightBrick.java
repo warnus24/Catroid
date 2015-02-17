@@ -44,6 +44,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
+import org.catrobat.catroid.ui.fragment.KodeyMultipleSeekbarFragment;
 
 import java.util.List;
 
@@ -227,7 +228,7 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 //		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.KODEY_LIGHT));
 //	}
 
-
+/*
 	@Override
 	public void onClick(View view) {
 
@@ -247,6 +248,14 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 				FormulaEditorFragment.showFragment(view, this, blue);
 				break;
 		}
+	}
+*/
+	@Override
+	public void onClick(View view) {
+		if (checkbox.getVisibility() == View.VISIBLE) {
+			return;
+		}
+		KodeyMultipleSeekbarFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.KODEY_LIGHT));
 	}
 
 	@Override
