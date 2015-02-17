@@ -140,9 +140,9 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 			fragTransaction.add(R.id.script_fragment_container, formulaEditorMultipleSeekbarFragment, FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG);
 		}
 
-			fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-			fragTransaction.show(formulaEditorMultipleSeekbarFragment);
-			BottomBar.hideBottomBar(activity);
+		fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+		fragTransaction.show(formulaEditorMultipleSeekbarFragment);
+		BottomBar.hideBottomBar(activity);
 
 		fragTransaction.commit();
 	}
@@ -306,7 +306,7 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		Log.i("info", "onKey() in FE-Fragment! keyCode: " + keyCode);
 		switch (keyCode) {
 			case KeyEvent.KEYCODE_BACK:
-					onUserDismiss();
+				onUserDismiss();
 				return true;
 		}
 		return false;

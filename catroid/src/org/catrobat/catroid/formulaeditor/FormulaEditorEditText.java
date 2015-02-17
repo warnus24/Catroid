@@ -37,6 +37,7 @@ import android.widget.EditText;
 
 import org.catrobat.catroid.formulaeditor.InternFormula.TokenSelectionType;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
+import org.catrobat.catroid.ui.fragment.KodeyMultipleSeekbarFragment;
 
 public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
@@ -44,6 +45,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 	private static final BackgroundColorSpan COLOR_HIGHLIGHT = new BackgroundColorSpan(0xFFFFFF00);
 	private static FormulaEditorHistory history = null;
 	FormulaEditorFragment formulaEditorFragment = null;
+	KodeyMultipleSeekbarFragment kodeyMultipleSeekbarFragment = null;
 	private int absoluteCursorPosition = 0;
 	private InternFormula internFormula;
 	private Spannable highlightSpan = null;
@@ -143,6 +145,15 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 	public void init(FormulaEditorFragment formulaEditorFragment) {
 		this.formulaEditorFragment = formulaEditorFragment;
+		this.setOnTouchListener(this);
+		this.setLongClickable(false);
+		this.setSelectAllOnFocus(false);
+		this.setCursorVisible(false);
+
+	}
+
+	public void init(KodeyMultipleSeekbarFragment newEditorFragment) {
+		this.kodeyMultipleSeekbarFragment = newEditorFragment;
 		this.setOnTouchListener(this);
 		this.setLongClickable(false);
 		this.setSelectAllOnFocus(false);
