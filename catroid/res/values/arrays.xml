@@ -46,5 +46,12 @@
  		<item >@string/close</item >
  	</string-array >
 
+    <!-- Drone Config Spinner -->
+    <string-array name="drone_config_spinner" >
+ 		<item >@string/drone_config_default</item >
+ 		<item >@string/drone_config_outdoor</item >
+ 		<item >@string/drone_config_indoor</item >
+ 	</string-array >
+
 
 </resources>
