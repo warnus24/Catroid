@@ -617,16 +617,19 @@
     <string name="brick_kodey_motor_forward_action">Kodey Pro move motor forward</string>
     <string name="brick_kodey_motor_backward_action">Kodey Pro move motor backward</string>
     <string name="kodey_motor_speed">Speed</string>
+
     <!-- sensor -->
     <string name="brick_kodey_sensor_action">Kodey Pro Sensor \n</string>
     <string name="brick_kodey_sensor_begin">If</string>
     <string name="brick_kodey_sensor_second_part">is activated</string>
     <string name="brick_kodey_sensor_else">Else</string>
     <string name="brick_kodey_sensor_end">End If</string>
+
     <!-- tone -->
     <string name="kodey_play_tone">Kodey Pro Play Music</string>
     <string name="kodey_tone_duration">Duration</string>
     <string name="brick_kodey_select_tone">Tone</string>
+
     <!-- light -->
     <string name="brick_kodey_rgb_led_action">Kodey Pro RGB light</string>
     <string name="kodey_rgb_led_red">Red</string>
@@ -637,6 +640,7 @@
     <string name="kodey_color_chooser_title">Kodey Pro Color Chooser</string>
     <string name="kodey_motor_forward_title">Kodey Pro Move Motor Forward Chooser</string>
     <string name="kodey_motor_backward_title">Kodey Pro Move Motor Backward Chooser</string>
+
 
     <!-- Kodey tone strings -->
     <string name="kodey_tone_do">Do</string>

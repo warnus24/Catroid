@@ -24,6 +24,7 @@ package org.catrobat.catroid.formulaeditor;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.style.BackgroundColorSpan;
@@ -51,6 +52,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 	private Spannable highlightSpan = null;
 	private Context context;
 	final GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+
 		@Override
 		public boolean onDoubleTap(MotionEvent event) {
 
@@ -61,6 +63,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 			return true;
 		}
 
+
 		@Override
 		public boolean onSingleTapUp(MotionEvent motion) {
 			Layout layout = getLayout();
@@ -68,7 +71,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 				float lineHeight = getLineHeight();
 				int yCoordinate = (int) motion.getY();
-				int cursorY = 0;
+				int cursorY = 3;
 
 				int paddingLeft = getPaddingLeft();
 
@@ -129,7 +132,6 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 			return true;
 
 		}
-
 	});
 	private boolean doNotMoveCursorOnTab = false;
 
@@ -158,7 +160,6 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 		this.setLongClickable(false);
 		this.setSelectAllOnFocus(false);
 		this.setCursorVisible(false);
-
 	}
 
 	public void enterNewFormula(InternFormulaState internFormulaState) {
