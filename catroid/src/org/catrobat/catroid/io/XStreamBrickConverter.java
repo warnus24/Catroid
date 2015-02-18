@@ -66,7 +66,7 @@ public class XStreamBrickConverter extends ReflectionConverter {
 				Brick brick = (Brick) reflectionProvider.newInstance(cls);
 				return super.doUnmarshal(brick, reader, context);
 			} catch (ClassNotFoundException e) {
-				Log.e(TAG, "Reason for Exception", e);
+				//Log.e(TAG, "Reason for Exception", e);
 			}
 		}
 		return super.doUnmarshal(result, reader, context);
