@@ -95,7 +95,11 @@ public class Sprite implements Serializable, Cloneable {
 	private void init() {
 		// maybe there is no ScriptList at this time ? ?
 		if ((getRequiredResources() & Brick.PHYSIC) > 0) {
-			PhysicsWorld physicsWorld = ProjectManager.getInstance().getCurrentProject().getPhysicsWorld();
+			PhysicsWorld physicsWorld = null;
+			if (ProjectManager.getInstance().getCurrentProject() != null)
+			{
+				physicsWorld = ProjectManager.getInstance().getCurrentProject().getPhysicsWorld();
+			}
 			look = new PhysicsLook(this, physicsWorld);
 		} else {
 			look = new Look(this);

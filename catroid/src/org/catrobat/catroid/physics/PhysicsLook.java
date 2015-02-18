@@ -39,6 +39,10 @@ public class PhysicsLook extends Look {
 
 	public PhysicsLook(Sprite sprite, PhysicsWorld physicsWorld) {
 		super(sprite);
+		if (physicsWorld == null)
+		{
+			physicsWorld = new PhysicsWorld();
+		}
 		physicsObject = physicsWorld.getPhysicsObject(sprite);
 	}
 
@@ -178,6 +182,7 @@ public class PhysicsLook extends Look {
 			positionCondition = new PhysicsObjectStateCondition() {
 				@Override
 				public boolean isTrue() {
+					// TODO-physics clean comments
 					//Log.d(TAG, "PhysicsWorld.activeArea.x: " + PhysicsWorld.activeArea.x);
 					//Log.d(TAG, "PhysicsWorld.activeArea.y: " + PhysicsWorld.activeArea.y);
 					if (isOutsideActiveArea()) {
