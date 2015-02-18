@@ -47,6 +47,7 @@ import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.ui.fragment.KodeyMultipleSeekbarFragment;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener {
 	private static final long serialVersionUID = 1L;
@@ -94,6 +95,24 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 		this.red = red;
 		this.green = green;
 		this.blue = blue;
+	}
+
+	public void setRedTextValues(int red)
+	{
+		editRedValue.setText(String.valueOf(red));
+		this.red.setDisplayText(String.valueOf(red));
+	}
+
+	public void setGreenTextValues(int green)
+	{
+		editBlueValue.setText(String.valueOf(green));
+		this.green.setDisplayText(String.valueOf(green));
+	}
+
+	public void setBlueTextValues(int blue)
+	{
+		editBlueValue.setText(String.valueOf(blue));
+		this.blue.setDisplayText(String.valueOf(blue));
 	}
 
 	@Override
@@ -219,44 +238,12 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 		return view;
 	}
 
-	//from Lego NXT
-//	@Override
-//	public void onClick(View view) {
-//		if (checkbox.getVisibility() == View.VISIBLE) {
-//			return;
-//		}
-//		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.KODEY_LIGHT));
-//	}
-
-/*
-	@Override
-	public void onClick(View view) {
-
-		if (checkbox.getVisibility() == View.VISIBLE) {
-			return;
-		}
-		switch (view.getId()) {
-			case R.id.brick_kodey_rgb_led_action_red_edit_text:
-				FormulaEditorFragment.showFragment(view, this, red);
-				break;
-
-			case R.id.brick_kodey_rgb_led_action_green_edit_text:
-				FormulaEditorFragment.showFragment(view, this, green);
-				break;
-
-			case R.id.brick_kodey_rgb_led_action_blue_edit_text:
-				FormulaEditorFragment.showFragment(view, this, blue);
-				break;
-		}
-	}
-*/
 	@Override
 	public void onClick(View view) {
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		KodeyMultipleSeekbarFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.KODEY_LIGHT));
-		//KodeyMultipleSeekbarFragment.showMultipleSeekBarFragment(view, this, red, green, blue);
+		KodeyMultipleSeekbarFragment.showMultipleSeekBarFragment(view, this, red, green, blue);
 	}
 
 	@Override
