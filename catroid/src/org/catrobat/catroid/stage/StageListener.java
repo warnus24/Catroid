@@ -45,6 +45,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.common.collect.Multimap;
 
+import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
@@ -403,6 +404,14 @@ public class StageListener implements ApplicationListener {
 			testPixels = ScreenUtils.getFrameBufferPixels(testX, testY, testWidth, testHeight, false);
 			makeTestPixels = false;
 		}
+
+		if (BuildConfig.FEATURE_PARROT_AR_DRONE_ENABLED) {
+			int width = Gdx.graphics.getWidth();
+			int height = Gdx.graphics.getHeight();
+			drawText("Surface: " + width + " : " + height, -width / 2, height / 2, 2);
+			drawText("   ARDRONE", width / 6, height / 2-20, 1.5f);
+			drawText("SUPPORTED", width / 6, height / 2-50, 1.5f);
+		}
 	}
 
 	private List<String> reconstructNotifyActions(Map<String, List<String>> actions) {
@@ -627,5 +636,15 @@ public class StageListener implements ApplicationListener {
 				lookData.getTextureRegion().getTexture().dispose();
 			}
 		}
+	}
+
+	private void drawText(String text, int posX, int posY, float scale){
+		font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+		font.setScale(scale);
+
+		SpriteBatch batch = stage.getSpriteBatch();
+		batch.begin();
+		font.draw(batch, text, posX, posY);
+		batch.end();
 	}
 }
