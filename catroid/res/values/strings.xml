@@ -495,7 +495,7 @@
     <string name="drone_alert_battery_low">Battery is too low to take-off again.</string>
     <string name="drone_alert_ultrasound">Ultrasound sensor can\'t determine AR.Drone altitude.</string>
     <string name="drone_alert_vision">No speed estimation from bottom facing camera.</string>
-
+    <string name="drone_emergency_title">Emergency</string>
     <!--  -->
 
 
@@ -529,6 +529,7 @@
     <string name="error_drone_wrong_platform">We can not run a ARDrone project on your device.</string>
 	<string name="error_rename_incompatible_project">Renaming an incompatible project isn\'t possible.</string>
     <string name="error_changing_description_of_incompatible_project">Changing the description of an incompatible project isn\'t possible.</string>
+
 	<!--  -->
 
 

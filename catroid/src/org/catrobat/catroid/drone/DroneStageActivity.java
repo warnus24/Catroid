@@ -23,6 +23,9 @@
 
 package org.catrobat.catroid.drone;
 
+import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -38,6 +41,7 @@ import com.parrot.freeflight.service.DroneControlService;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.stage.StageActivity;
+import org.catrobat.catroid.ui.ProjectActivity;
 
 /**
  * Created by Lukas on 16.02.2015.
@@ -136,7 +140,7 @@ public class DroneStageActivity extends StageActivity implements DroneBatteryCha
 	{
 		if (code == NavData.ERROR_STATE_NONE)
 			return;
-		
+
 		int messageId;
 
 		switch (code) {
@@ -169,7 +173,18 @@ public class DroneStageActivity extends StageActivity implements DroneBatteryCha
 				messageId = R.string.drone_emergency_default;
 		}
 
-		Toast.makeText(this, messageId, Toast.LENGTH_LONG).show();
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.drone_emergency_title)
+				.setMessage(messageId)
+				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int id) {
+						Intent intent = new Intent(DroneStageActivity.this, ProjectActivity.class);
+						startActivity(intent);
+
+					}})
+				.setCancelable(false)
+				.show();
 
 	}
 
