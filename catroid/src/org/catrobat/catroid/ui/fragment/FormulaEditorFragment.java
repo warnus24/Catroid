@@ -158,41 +158,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		fragTransaction.commit();
 	}
 
-	public static void showMultipleSeekBarFragment(View view, Brick brick, Formula red, Formula green, Formula blue)
-	{
-		SherlockFragmentActivity activity = null;
-		activity = (SherlockFragmentActivity) view.getContext();
-
-		FormulaEditorFragment formulaEditorMultipleSeekbarFragment = (FormulaEditorFragment) activity.getSupportFragmentManager()
-				.findFragmentByTag(FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG);
-
-		FragmentManager fragmentManager = activity.getSupportFragmentManager();
-		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
-
-		if (formulaEditorMultipleSeekbarFragment == null) {
-			formulaEditorMultipleSeekbarFragment = new FormulaEditorFragment();
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(BRICK_BUNDLE_ARGUMENT, brick);
-			bundle.putSerializable(FORMULA_BUNDLE_ARGUMENT, red);
-			bundle.putSerializable(FORMULA_BUNDLE_ARGUMENT, green);
-			bundle.putSerializable(FORMULA_BUNDLE_ARGUMENT, blue);
-			formulaEditorMultipleSeekbarFragment.setArguments(bundle);
-
-			fragTransaction.add(R.id.script_fragment_container, formulaEditorMultipleSeekbarFragment, FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG);
-			fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-			fragTransaction.show(formulaEditorMultipleSeekbarFragment);
-			BottomBar.hideBottomBar(activity);
-		} else if (formulaEditorMultipleSeekbarFragment.isHidden()) {
-			formulaEditorMultipleSeekbarFragment.updateBrickViewAndFormula(brick, red);//nur ein Wert
-			fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-			fragTransaction.show(formulaEditorMultipleSeekbarFragment);
-			BottomBar.hideBottomBar(activity);
-		} else {
-			formulaEditorMultipleSeekbarFragment.setInputFormula(red, SET_FORMULA_ON_SWITCH_EDIT_TEXT);
-		}
-		fragTransaction.commit();
-	}
-
 	public void updateBrickView() {
 		updateBrickView(currentBrick);
 	}
