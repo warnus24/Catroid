@@ -634,6 +634,8 @@
     <string name="kodey_rgb_led_blue">Blue</string>
     <!--  -->
 
+    <string name="kodey_color_chooser_title">Kodey Pro Color Chooser</string>
+
 
     <!-- Kodey tone strings -->
     <string name="kodey_tone_do">Do</string>

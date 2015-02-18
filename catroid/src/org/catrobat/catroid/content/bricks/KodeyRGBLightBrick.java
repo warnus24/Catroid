@@ -256,6 +256,7 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 			return;
 		}
 		KodeyMultipleSeekbarFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.KODEY_LIGHT));
+		//KodeyMultipleSeekbarFragment.showMultipleSeekBarFragment(view, this, red, green, blue);
 	}
 
 	@Override

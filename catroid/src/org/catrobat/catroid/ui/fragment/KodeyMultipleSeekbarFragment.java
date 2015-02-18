@@ -43,9 +43,11 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -66,8 +68,7 @@ import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import org.catrobat.catroid.ui.dialogs.FormulaEditorComputeDialog;
 import org.catrobat.catroid.ui.dialogs.NewStringDialog;
 
-public class KodeyMultipleSeekbarFragment extends SherlockFragment implements OnKeyListener,
-		ViewTreeObserver.OnGlobalLayoutListener {
+public class KodeyMultipleSeekbarFragment extends SherlockFragment implements OnKeyListener, ViewTreeObserver.OnGlobalLayoutListener {
 
 	private static final int PARSER_OK = -1;
 	private static final int PARSER_STACK_OVERFLOW = -2;
@@ -88,9 +89,13 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 	private FormulaEditorEditText formulaEditorEditTextRed;
 	private FormulaEditorEditText formulaEditorEditTextGreen;
 	private FormulaEditorEditText formulaEditorEditTextBlue;
+	private TextView redLightBrickTextView;
+	private TextView greenLightBrickTextView;
+	private TextView blueLightBrickTextView;
 	private SeekBar redSeekBar;
 	private SeekBar greenSeekBar;
 	private SeekBar blueSeekBar;
+	private int color;
 	private LinearLayout kodeyBrick;
 	private Toast toast;
 	private View brickView;
@@ -110,6 +115,7 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		setUpActionBar();
 		currentBrick = (Brick) getArguments().getSerializable(BRICK_BUNDLE_ARGUMENT);
 		currentFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT);
+		color = Color.rgb(0, 255, 255);
 
 		//ToDO: also for Kodey Sensors
 		if (currentFormula.containsArduinoSensors()) {
@@ -123,7 +129,7 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		ActionBar actionBar = getSherlockActivity().getSupportActionBar();
 		previousActionBarTitle = ProjectManager.getInstance().getCurrentSprite().getName();
 		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(R.string.formula_editor_title);
+		actionBar.setTitle(R.string.kodey_color_chooser_title);
 	}
 
 	private void resetActionBar() {
@@ -241,6 +247,25 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 
 	}
 
+	/*
+	public void setSelectedColor(int color) {
+		int colorRed = Color.red(color);
+		int colorGreen = Color.green(color);
+		int colorBlue = Color.blue(color);
+		redSeekBar.setProgress(colorRed);
+		greenSeekBar.setProgress(colorGreen);
+		blueSeekBar.setProgress(colorBlue);
+		formulaEditorEditTextRed.setText(Integer.toString(colorRed));
+		formulaEditorEditTextGreen.setText(Integer.toString(colorGreen));
+		formulaEditorEditTextBlue.setText(Integer.toString(colorBlue));
+	}
+
+	public int getSelectedColor() {
+		return Color.rgb(redSeekBar.getProgress(), greenSeekBar.getProgress(),
+				blueSeekBar.getProgress());
+	}
+	*/
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -269,20 +294,41 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		greenSeekBar = (SeekBar) fragmentView.findViewById(R.id.color_rgb_seekbar_green);
 		blueSeekBar = (SeekBar) fragmentView.findViewById(R.id.color_rgb_seekbar_blue);
 
+		redLightBrickTextView = (TextView) fragmentView.findViewById(R.id.brick_kodey_rgb_led_action_red_edit_text);
+		greenLightBrickTextView = (TextView) fragmentView.findViewById(R.id.brick_kodey_rgb_led_action_green_edit_text);
+		blueLightBrickTextView = (TextView) fragmentView.findViewById(R.id.brick_kodey_rgb_led_action_blue_edit_text);
+
+		formulaEditorEditTextRed.setText(redLightBrickTextView.getText());
+		formulaEditorEditTextGreen.setText(greenLightBrickTextView.getText());
+		formulaEditorEditTextBlue.setText(blueLightBrickTextView.getText());
+
+		redSeekBar.setProgress(Color.red(color));
+		greenSeekBar.setProgress(Color.green(color));
+		blueSeekBar.setProgress(Color.blue(color));
+
+
 		SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 				//enter value to textview
+				color = Color.rgb(redSeekBar.getProgress(), greenSeekBar.getProgress(), blueSeekBar.getProgress());
+
 				switch(seekBar.getId())
 				{
 					case R.id.color_rgb_seekbar_red:
 						formulaEditorEditTextRed.setText(Integer.toString(seekBar.getProgress()));
+						redLightBrickTextView.setText(Integer.toString(seekBar.getProgress()));
+						//saveFormulaRedIfPossible();
 						break;
 					case R.id.color_rgb_seekbar_green:
 						formulaEditorEditTextGreen.setText(Integer.toString(seekBar.getProgress()));
+						greenLightBrickTextView.setText(Integer.toString(seekBar.getProgress()));
+						//saveFormulaGreenIfPossible();
 						break;
 					case R.id.color_rgb_seekbar_blue:
 						formulaEditorEditTextBlue.setText(Integer.toString(seekBar.getProgress()));
+						blueLightBrickTextView.setText(Integer.toString(seekBar.getProgress()));
+						//saveFormulaBlueIfPossible();
 						break;
 					default:
 						break;
@@ -333,7 +379,7 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		}
 
 		getSherlockActivity().getSupportActionBar().setDisplayShowTitleEnabled(true);
-		getSherlockActivity().getSupportActionBar().setTitle(getString(R.string.formula_editor_title));
+		getSherlockActivity().getSupportActionBar().setTitle(getString(R.string.kodey_color_chooser_title));
 
 		super.onPrepareOptionsMenu(menu);
 	}
@@ -535,7 +581,7 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									if (saveFormulaRedIfPossible()) {
+									if (saveFormulaRedIfPossible() && saveFormulaGreenIfPossible() && saveFormulaBlueIfPossible()) {
 										onUserDismiss();
 									}
 								}

@@ -50,6 +50,7 @@ import org.catrobat.catroid.ui.dragndrop.DragAndDropListView;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorListFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorVariableListFragment;
+import org.catrobat.catroid.ui.fragment.KodeyMultipleSeekbarFragment;
 import org.catrobat.catroid.ui.fragment.LookFragment;
 import org.catrobat.catroid.ui.fragment.ScriptActivityFragment;
 import org.catrobat.catroid.ui.fragment.ScriptFragment;
@@ -321,6 +322,14 @@ public class ScriptActivity extends BaseActivity {
 		if (formulaEditor != null && formulaEditor.isVisible()) {
 			scriptFragment.getAdapter().updateProjectBrickList();
 			return formulaEditor.onKey(null, keyCode, event);
+		}
+
+		KodeyMultipleSeekbarFragment kodeyFragment = (KodeyMultipleSeekbarFragment) getSupportFragmentManager().findFragmentByTag(
+				KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG);
+
+		if (kodeyFragment != null && kodeyFragment.isVisible()) {
+			scriptFragment.getAdapter().updateProjectBrickList();
+			return kodeyFragment.onKey(null, keyCode, event);
 		}
 
 		if (soundFragment != null && soundFragment.isVisible() && soundFragment.onKey(null, keyCode, event)) {
