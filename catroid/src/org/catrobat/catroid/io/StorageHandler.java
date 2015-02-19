@@ -322,9 +322,9 @@ public final class StorageHandler {
 			fileInputStream = new FileInputStream(projectCodeFile);
 			return (Project) xstream.getProjectFromXML(projectCodeFile);
 		} catch (Exception exception) {
-			//Log.e(TAG, "Loading project " + projectName + " failed.", exception);
-			//delete Project
+			Log.e(TAG, "Loading project " + projectName + " failed.", exception);
 			try {
+				Log.e(TAG, "delete project " + projectName, exception);
 				deleteProject(projectName);
 			} catch (IOException e) {
 				e.printStackTrace();
