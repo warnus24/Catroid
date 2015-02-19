@@ -232,6 +232,7 @@
                 android:text="255"
                 android:textColor="@color/white"
                 tools:ignore="HardcodedText" />
+
         </TableRow>
 
      </TableLayout>
