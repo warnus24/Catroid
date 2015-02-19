@@ -37,6 +37,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -49,9 +51,14 @@ import com.actionbarsherlock.view.Menu;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.KodeyRGBLightBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.FormulaEditorEditText;
+import org.catrobat.catroid.formulaeditor.FormulaElement;
+import org.catrobat.catroid.formulaeditor.InternFormulaParser;
+import org.catrobat.catroid.formulaeditor.InternFormulaState;
 import org.catrobat.catroid.ui.BottomBar;
 import org.catrobat.catroid.ui.ScriptActivity;
 
@@ -68,6 +75,7 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 	private Formula redFormula;
 	private Formula greenFormula;
 	private Formula blueFormula;
+	private View colorPreviewView;
 	private TextView formulaEditorEditTextRed;
 	private TextView formulaEditorEditTextGreen;
 	private TextView formulaEditorEditTextBlue;
@@ -78,28 +86,26 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 	private SeekBar greenSeekBar;
 	private SeekBar blueSeekBar;
 	private int color;
+	private int referenceColor;
 	private LinearLayout kodeyBrick;
 	private View brickView;
 	private CharSequence previousActionBarTitle;
 	private View fragmentView;
 	private VariableDeletedReceiver variableDeletedReceiver;
 
-	public KodeyMultipleSeekbarFragment() {
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		setUpActionBar();
+
 		if(getArguments() != null) {
 			currentBrick = (Brick) getArguments().getSerializable(BRICK_BUNDLE_ARGUMENT);
 			redFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT_RED);
 			greenFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT_GREEN);
 			blueFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT_BLUE);
-			color = Color.rgb(0, 255, 255);
+			//color = Color.rgb(0, 255, 255);
 		}
-
 		/*
 		//ToDO: also for Kodey Sensors
 		if (currentFormula.containsArduinoSensors()) {
@@ -122,7 +128,6 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		actionBar.setTitle(previousActionBarTitle);
 	}
 
-
 	public static void showMultipleSeekBarFragment(View view, Brick brick, Formula red, Formula green, Formula blue)
 	{
 		SherlockFragmentActivity activity = null;
@@ -144,6 +149,7 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 			formulaEditorMultipleSeekbarFragment.setArguments(bundle);
 			fragTransaction.add(R.id.script_fragment_container, formulaEditorMultipleSeekbarFragment, FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG);
 		}
+
 			fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
 			fragTransaction.show(formulaEditorMultipleSeekbarFragment);
 			BottomBar.hideBottomBar(activity);
@@ -168,7 +174,7 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		SherlockFragmentActivity activity = getSherlockActivity();
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
-		fragTransaction.hide(this);
+		fragTransaction.remove(this);
 		fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
 		fragTransaction.commit();
 
@@ -178,25 +184,6 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		BottomBar.showPlayButton(activity);
 
 	}
-
-	/*
-	public void setSelectedColor(int color) {
-		int colorRed = Color.red(color);
-		int colorGreen = Color.green(color);
-		int colorBlue = Color.blue(color);
-		redSeekBar.setProgress(colorRed);
-		greenSeekBar.setProgress(colorGreen);
-		blueSeekBar.setProgress(colorBlue);
-		formulaEditorEditTextRed.setText(Integer.toString(colorRed));
-		formulaEditorEditTextGreen.setText(Integer.toString(colorGreen));
-		formulaEditorEditTextBlue.setText(Integer.toString(colorBlue));
-	}
-
-	public int getSelectedColor() {
-		return Color.rgb(redSeekBar.getProgress(), greenSeekBar.getProgress(),
-				blueSeekBar.getProgress());
-	}
-	*/
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -219,14 +206,13 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 				switch (view.getId())
 				{
 					case R.id.rgb_red_value:
-						FormulaEditorFragment.showFragment(view, currentBrick, redFormula);
-						
+						FormulaEditorFragment.showFragment(fragmentView, currentBrick, redFormula);
 						break;
 					case R.id.rgb_green_value:
-						FormulaEditorFragment.showFragment(view, currentBrick, greenFormula);
+						FormulaEditorFragment.showFragment(fragmentView, currentBrick, greenFormula);
 						break;
 					case R.id.rgb_blue_value:
-						FormulaEditorFragment.showFragment(view, currentBrick, blueFormula);
+						FormulaEditorFragment.showFragment(fragmentView, currentBrick, blueFormula);
 						break;
 				}
 			}
@@ -256,17 +242,21 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		formulaEditorEditTextGreen.setText(greenLightBrickTextView.getText());
 		formulaEditorEditTextBlue.setText(blueLightBrickTextView.getText());
 
+		String redFormulaString = formulaEditorEditTextRed.getText().toString().trim();
+		String greenFormulaString = formulaEditorEditTextGreen.getText().toString().trim();
+		String blueFormulaString = formulaEditorEditTextBlue.getText().toString().trim();
+
+		colorPreviewView = fragmentView.findViewById(R.id.color_rgb_preview);
+
+		color = Color.rgb(Integer.parseInt(redFormulaString), Integer.parseInt(greenFormulaString), Integer.parseInt(blueFormulaString));
 		redSeekBar.setProgress(Color.red(color));
 		greenSeekBar.setProgress(Color.green(color));
 		blueSeekBar.setProgress(Color.blue(color));
-
 
 		SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 				//enter value to textview
-				color = Color.rgb(redSeekBar.getProgress(), greenSeekBar.getProgress(), blueSeekBar.getProgress());
-
 				switch(seekBar.getId())
 				{
 					case R.id.color_rgb_seekbar_red:
@@ -284,6 +274,9 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 					default:
 						break;
 				}
+				color = Color.rgb(redSeekBar.getProgress(), greenSeekBar.getProgress(), blueSeekBar.getProgress());
+				colorPreviewView.setBackgroundColor(color | 0xFF000000);
+				colorPreviewView.invalidate();
 			}
 
 			@Override
@@ -358,6 +351,29 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		if (variableDeletedReceiver == null) {
 			variableDeletedReceiver = new VariableDeletedReceiver();
 		}
+
+		if(getArguments() != null) {
+			currentBrick = (Brick) getArguments().getSerializable(BRICK_BUNDLE_ARGUMENT);
+			redFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT_RED);
+			greenFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT_GREEN);
+			blueFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT_BLUE);
+		}
+
+		formulaEditorEditTextRed.setText(redFormula.getDisplayString(this.context));
+		formulaEditorEditTextGreen.setText(greenFormula.getDisplayString(this.context));
+		formulaEditorEditTextBlue.setText(blueFormula.getDisplayString(this.context));
+
+		String redFormulaString = formulaEditorEditTextRed.getText().toString().trim();
+		String greenFormulaString = formulaEditorEditTextGreen.getText().toString().trim();
+		String blueFormulaString = formulaEditorEditTextBlue.getText().toString().trim();
+
+		color = Color.rgb(Integer.parseInt(redFormulaString), Integer.parseInt(greenFormulaString), Integer.parseInt(blueFormulaString));
+		redSeekBar.setProgress(Color.red(color));
+		greenSeekBar.setProgress(Color.green(color));
+		blueSeekBar.setProgress(Color.blue(color));
+
+		colorPreviewView.setBackgroundColor(color | 0xFF000000);
+		colorPreviewView.invalidate();
 
 		IntentFilter filterVariableDeleted = new IntentFilter(ScriptActivity.ACTION_VARIABLE_DELETED);
 		getActivity().registerReceiver(variableDeletedReceiver, filterVariableDeleted);

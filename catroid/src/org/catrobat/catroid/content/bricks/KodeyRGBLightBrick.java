@@ -25,6 +25,7 @@ package org.catrobat.catroid.content.bricks;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -43,7 +44,7 @@ import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
-import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
+import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.ui.fragment.KodeyMultipleSeekbarFragment;
 
 import java.util.List;
@@ -243,6 +244,7 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
+
 		KodeyMultipleSeekbarFragment.showMultipleSeekBarFragment(view, this, red, green, blue);
 	}
 

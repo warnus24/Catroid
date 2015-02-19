@@ -278,20 +278,6 @@ public class Formula implements Serializable {
 		}
 	}
 
-	//I'm using "Arduino Sensors" as Functions -> to discuss if good/bad
-	/*
-	public boolean containsArduinoSensors() {
-		List<InternToken> internTokenList = formulaTree.getInternTokenList();
-		for (InternToken internToken : internTokenList) {
-			if ((internToken.getTokenStringValue().equalsIgnoreCase(Functions.ARDUINOANALOG.toString()) || internToken
-					.getTokenStringValue().equalsIgnoreCase(Functions.ARDUINODIGITAL.toString()))) {
-				return true;
-			}
-		}
-		return false;
-	}
-	*/
-
 	public boolean containsArduinoSensors() {
 		List<InternToken> internTokenList = formulaTree.getInternTokenList();
 		for (InternToken internToken : internTokenList) {
