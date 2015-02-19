@@ -176,10 +176,6 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 		return StorageHandler.getInstance().cancelLoadProject();
 	}
 
-	public boolean canLoadProject(String projectName) {
-		return StorageHandler.getInstance().loadProject(projectName) != null;
-	}
-
 	public void saveProject() {
 		if (project == null) {
 			return;

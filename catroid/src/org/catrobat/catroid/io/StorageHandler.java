@@ -322,7 +322,13 @@ public final class StorageHandler {
 			fileInputStream = new FileInputStream(projectCodeFile);
 			return (Project) xstream.getProjectFromXML(projectCodeFile);
 		} catch (Exception exception) {
-			Log.e(TAG, "Loading project " + projectName + " failed.", exception);
+			//Log.e(TAG, "Loading project " + projectName + " failed.", exception);
+			//delete Project
+			try {
+				deleteProject(projectName);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			return null;
 		} finally {
 			if (fileInputStream != null) {
@@ -657,15 +663,16 @@ public final class StorageHandler {
 	}
 
 	public void deleteFile(String filepath) {
-		FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
-		try {
-			if (container.decrementUsage(filepath)) {
-				File toDelete = new File(filepath);
-				toDelete.delete();
+		File fileToDelete = new File(filepath);
+		if (fileToDelete.exists()) {
+			FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
+			try {
+				if (container.decrementUsage(filepath)) {
+					fileToDelete.delete();
+				}
+			} catch (FileNotFoundException fileNotFoundException) {
+				Log.e(TAG, Log.getStackTraceString(fileNotFoundException));
 			}
-		} catch (FileNotFoundException fileNotFoundException) {
-			Log.e(TAG, Log.getStackTraceString(fileNotFoundException));
-			//deleteFile(filepath);
 		}
 	}
 
