@@ -233,7 +233,6 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 				// TODO Auto-generated method stub
 
 			}
-
 		});
 
 		eyeSpinner.setSelection(eyeEnum.ordinal());
