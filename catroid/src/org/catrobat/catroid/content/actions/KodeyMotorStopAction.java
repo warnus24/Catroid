@@ -27,7 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.bricks.KodeyMotorStopBrick.Motor;
-import org.catrobat.catroid.kodey.Kodey;
+import org.catrobat.catroid.devices.arduino.kodey.Kodey;
 
 public class KodeyMotorStopAction extends TemporalAction {
 
@@ -43,10 +43,10 @@ public class KodeyMotorStopAction extends TemporalAction {
 
 		switch (motorEnum) {
 			case MOTOR_A:
-				kodey.getMotorA().stop();
+				kodey.stopLeft();
 				break;
 			case MOTOR_B:
-				kodey.getMotorB().stop();
+				kodey.stopRight();
 				break;
 			case ALL_MOTORS:
 				kodey.stopAllMovements();

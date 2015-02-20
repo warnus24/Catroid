@@ -105,6 +105,10 @@ public class PreStageActivity extends BaseActivity {
 			connectBTDevice(CatrobatService.ARDUINO, false);  //broken
 		}
 
+		if ((requiredResources & Brick.BLUETOOTH_KODEY) > 0) {
+			connectBTDevice(CatrobatService.KODEY, false);
+		}
+
 		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
 			droneInitializer = getDroneInitializer();
 			droneInitializer.initialise();

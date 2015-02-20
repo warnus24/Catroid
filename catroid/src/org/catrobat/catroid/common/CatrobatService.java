@@ -25,7 +25,7 @@ package org.catrobat.catroid.common;
 import org.catrobat.catroid.bluetooth.BTDeviceConnector;
 import org.catrobat.catroid.lego.mindstorm.nxt.LegoNXT;
 import org.catrobat.catroid.arduino.Arduino;
-import org.catrobat.catroid.kodey.Kodey;
+import org.catrobat.catroid.devices.arduino.kodey.Kodey;
 
 
 // CHECKSTYLE DISABLE InterfaceIsType FOR 1 LINES

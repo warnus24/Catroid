@@ -32,7 +32,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.KodeyMotorForwardActionBrick.Motor;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
-import org.catrobat.catroid.kodey.Kodey;
+import org.catrobat.catroid.devices.arduino.kodey.Kodey;
 
 public class KodeyMotorForwardActionAction extends TemporalAction {
 	private static final int MIN_SPEED = -100;
@@ -65,14 +65,14 @@ public class KodeyMotorForwardActionAction extends TemporalAction {
 
 		switch (motorEnum) {
 			case MOTOR_A:
-				kodey.getMotorA().move(speedValue);
+				kodey.move(Kodey.LEFT_MOTOR_FORWARD, speedValue);
 				break;
 			case MOTOR_B:
-				kodey.getMotorB().move(speedValue);
+				kodey.move(Kodey.RIGHT_MOTOR_FORWARD, speedValue);
 				break;
 			case MOTOR_A_B:
-				kodey.getMotorA().move(speedValue);
-				kodey.getMotorB().move(speedValue);
+				kodey.move(Kodey.LEFT_MOTOR_FORWARD, speedValue);
+				kodey.move(Kodey.RIGHT_MOTOR_FORWARD, speedValue);
 				break;
 		}
 	}

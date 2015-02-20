@@ -31,10 +31,9 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
 
-import org.catrobat.catroid.kodey.Kodey;
+import org.catrobat.catroid.devices.arduino.kodey.Kodey;
 import org.catrobat.catroid.common.CatrobatService;
 import org.catrobat.catroid.common.ServiceProvider;
-import org.catrobat.catroid.content.Sprite;
 
 public class KodeySensorAction extends Action {
 
@@ -46,7 +45,6 @@ public class KodeySensorAction extends Action {
 	private Boolean ifConditionValue;
 	private boolean isInitialized = false;
 	private boolean isInterpretedCorrectly;
-	Kodey kodey = ServiceProvider.getService(CatrobatService.KODEY);
 
 	protected void begin() {
 		try {
@@ -107,8 +105,10 @@ public class KodeySensorAction extends Action {
 
 	public void setSensor(int sensorNumber)
 	{
-		if(kodey != null)
-			kodey.setSensor(sensorNumber);
+		Kodey kodey = ServiceProvider.getService(CatrobatService.KODEY);
+
+//		if(kodey != null)
+//			kodey.setSensor(sensorNumber);
 	}
 	/*
 	@Override

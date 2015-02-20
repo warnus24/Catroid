@@ -20,12 +20,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.kodey;
+package org.catrobat.catroid.devices.arduino.kodey;
 
-public interface KodeyMotor {
+public interface KodeySensor {
+	public int getValue();
 
-	public void stop();
-	public void move(int speed);
-	public void move(int speed, int degrees);
-	public void move(int speed, int degrees, boolean reply);
+	public int getUpdateInterval();
+	public void updateLastSensorValue();
+	public int getLastSensorValue();
+
+	public String getName();
+
+	public int getConnectedPort();
 }

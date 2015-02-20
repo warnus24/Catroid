@@ -32,7 +32,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick.Tone;
-import org.catrobat.catroid.kodey.Kodey;
+import org.catrobat.catroid.devices.arduino.kodey.Kodey;
 
 public class KodeyPlayToneAction extends TemporalAction {
 

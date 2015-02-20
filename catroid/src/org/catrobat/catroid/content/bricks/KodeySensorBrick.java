@@ -39,8 +39,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
-import org.catrobat.catroid.kodey.KodeySensor;
-import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
+import org.catrobat.catroid.devices.arduino.kodey.KodeySensor;
 
 import java.util.ArrayList;
 import java.util.List;
