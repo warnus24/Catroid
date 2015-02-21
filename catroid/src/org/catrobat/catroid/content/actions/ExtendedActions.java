@@ -373,6 +373,13 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
+	public static RobotAlbertBodyLedAction robotAlbertBodyLedAction( Formula value) {
+		RobotAlbertBodyLedAction action = action(RobotAlbertBodyLedAction.class);
+		action.setValue(value);
+		return action;
+	}
+
+
 	public static RobotAlbertRgbLedEyeAction robotAlbertRgbLedEye(Sprite sprite, String eye,
 			org.catrobat.catroid.content.bricks.RobotAlbertRgbLedEyeActionBrick.Eye eyeEnum, Formula red,
 			Formula green, Formula blue) {

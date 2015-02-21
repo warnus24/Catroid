@@ -92,6 +92,7 @@ import org.catrobat.catroid.content.bricks.PlaySoundBrick;
 import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.PointToBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertBodyLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertBuzzerBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertFrontLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
@@ -338,6 +339,7 @@ public final class StorageHandler {
 		xstream.alias("robotAlbertMotorBrick", RobotAlbertMotorActionBrick.class);
 		xstream.alias("robotAlbertRgbLedEyeActionBrick", RobotAlbertRgbLedEyeActionBrick.class);
 		xstream.alias("robotAlbertFrontLedBrick", RobotAlbertFrontLedBrick.class);
+		xstream.alias("robotAlbertBodyLedBrick", RobotAlbertBodyLedBrick.class);
 		xstream.alias("robotAlbertBuzzerBrick", RobotAlbertBuzzerBrick.class);
 		xstream.alias("setBrightnessBrick", SetBrightnessBrick.class);
 		xstream.alias("setGhostEffectBrick", SetGhostEffectBrick.class);

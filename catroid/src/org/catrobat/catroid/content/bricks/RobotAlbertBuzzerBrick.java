@@ -147,7 +147,7 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.setBrightness(sprite, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_FRONT_LED)));
+		sequence.addAction(ExtendedActions.robotAlbertBuzzer(sprite, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER)));
 		return null;
 	}
 }

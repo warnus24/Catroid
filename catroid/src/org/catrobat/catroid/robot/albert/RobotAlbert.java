@@ -59,6 +59,7 @@ public class RobotAlbert {
 	private static final int BUZZER_COMMAND = 104;
 	private static final int RGB_EYE_COMMAND = 105;
 	private static final int FRONT_LED_COMMAND = 106;
+	private static final int BODY_LED_COMMAND = 107;
 	private static final String TAG = RobotAlbert.class.getSimpleName();
 
 	private static Handler btcHandler;
@@ -130,6 +131,15 @@ public class RobotAlbert {
 		Message myMessage = btcHandler.obtainMessage();
 		myMessage.setData(myBundle);
 		myMessage.what = FRONT_LED_COMMAND;
+		btcHandler.sendMessage(myMessage);
+	}
+
+	public static synchronized void sendRobotAlbertBodyLedMessage(int status) {
+		Bundle myBundle = new Bundle();
+		myBundle.putInt("bodyLED", status);
+		Message myMessage = btcHandler.obtainMessage();
+		myMessage.setData(myBundle);
+		myMessage.what = BODY_LED_COMMAND;
 		btcHandler.sendMessage(myMessage);
 	}
 

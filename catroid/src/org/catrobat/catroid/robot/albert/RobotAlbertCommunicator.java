@@ -75,6 +75,7 @@ public abstract class RobotAlbertCommunicator extends Thread {
 	public static final int BUZZER_COMMAND = 104;
 	public static final int RGB_EYE_COMMAND = 105;
 	public static final int FRONT_LED_COMMAND = 106;
+	public static final int BODY_LED_COMMAND =107;
 
 	public static final String TAG = RobotAlbertCommunicator.class.getSimpleName();
 
@@ -235,6 +236,12 @@ public abstract class RobotAlbertCommunicator extends Thread {
 				case FRONT_LED_COMMAND:
 					int status = message.getData().getInt("frontLED");
 					commands.setFrontLed(status);
+					commandMessage = commands.getCommandMessage();
+					sendCommandMessage(commandMessage);
+					break;
+				case BODY_LED_COMMAND:
+					int value = message.getData().getInt("bodyLED");
+					commands.setBodyLed(value);
 					commandMessage = commands.getCommandMessage();
 					sendCommandMessage(commandMessage);
 					break;

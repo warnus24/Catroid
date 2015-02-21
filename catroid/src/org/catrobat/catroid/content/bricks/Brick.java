@@ -47,11 +47,11 @@ public interface Brick extends Serializable, Cloneable {
 
 		ALBERT_ROBOT_RGB_GREEN,ALBERT_ROBOT_RGB_BLUE,ALBERT_ROBOT_RGB_RED,
 		BLUETOOTH_ROBOT_ALBERT,ALBERT_ROBOT_FRONT_LED,ALBERT_ROBOT_DISTANCE_SENSOR_LEFT,ALBERT_ROBOT_SPEED,
-		DRONE_TIME_TO_FLY_IN_SECONDS, ALBERT_ROBOT_DISTANCE_SENSOR_RIGHT, ALBERT_ROBOT_BUZZER, ALBERT_ROBOT_RGB_LED_EYE, DRONE_POWER_IN_PERCENT
+		DRONE_TIME_TO_FLY_IN_SECONDS, ALBERT_ROBOT_DISTANCE_SENSOR_RIGHT, ALBERT_ROBOT_BUZZER, ALBERT_ROBOT_RGB_LED_EYE, ALBERT_ROBOT_BODY_LED, DRONE_POWER_IN_PERCENT
 	}
 
 	//use bitwise | for using multiple ressources in a brick
-	public static final int NO_RESOURCES = 0x0;
+	int NO_RESOURCES = 0x0;
 	//	public static final int SOUND_MANAGER = 0x1;
 	int TEXT_TO_SPEECH = 0x2;
 	int BLUETOOTH_LEGO_NXT = 0x4;
@@ -60,7 +60,7 @@ public interface Brick extends Serializable, Cloneable {
 	int VIBRATOR = 0x200;
 
 	//	public static final int BLUETOOTH_ARDUINO = 0x8;
-	public static final int BLUETOOTH_ROBOT_ALBERT = 0x8;
+	int BLUETOOTH_ROBOT_ALBERT = 0x8;
 	int FACE_DETECTION = 0x10;
 
 	List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence);

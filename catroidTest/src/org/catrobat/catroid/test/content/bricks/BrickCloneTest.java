@@ -48,6 +48,7 @@ import org.catrobat.catroid.content.bricks.MoveNStepsBrick;
 import org.catrobat.catroid.content.bricks.NoteBrick;
 import org.catrobat.catroid.content.bricks.PlaceAtBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertBodyLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertBuzzerBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertFrontLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
@@ -137,6 +138,9 @@ public class BrickCloneTest extends AndroidTestCase {
 
 		brick = new RobotAlbertFrontLedBrick( BRICK_FORMULA_VALUE);
 		brickClone(brick,Brick.BrickField.ALBERT_ROBOT_FRONT_LED);
+
+		brick = new RobotAlbertBodyLedBrick( BRICK_FORMULA_VALUE);
+		brickClone(brick,Brick.BrickField.ALBERT_ROBOT_BODY_LED);
 
 		brick = new RobotAlbertRgbLedEyeActionBrick( RobotAlbertRgbLedEyeActionBrick.Eye.Both,
 				BRICK_FORMULA_VALUE, BRICK_FORMULA_VALUE, BRICK_FORMULA_VALUE);

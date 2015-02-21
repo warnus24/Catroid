@@ -469,7 +469,7 @@ public class BrickValueParameterTest extends BaseActivityInstrumentationTestCase
 
 		TextView albertBuzzerTextView = (TextView) solo.getView(R.id.robot_albert_buzzer_frequency_prototype_text_view);
 		int albertBuzzerPrototypeValue = Integer.parseInt(albertBuzzerTextView.getText().toString());
-		assertEquals("Value in Brick Robot_Albert_Buzzer is not correct", BrickValues.ROBOT_ALBERT_FREQUENCY,
+		assertEquals("Value in Brick Robot_Albert_Buzzer is not correct", BrickValues.ROBOT_ALBERT_BUZZER,
 				albertBuzzerPrototypeValue);
 
 		TextView albertEyeRedTextView = (TextView) solo.getView(R.id.robot_albert_rgb_led_red_prototype_text_view);

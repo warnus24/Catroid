@@ -75,6 +75,7 @@ import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.PointInDirectionBrick.Direction;
 import org.catrobat.catroid.content.bricks.PointToBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertBodyLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertBuzzerBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertFrontLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
@@ -138,7 +139,7 @@ public class CategoryBricksFactory {
 		} else if (category.equals(context.getString(R.string.category_drone))) {
 			tempList = setupDroneCategoryList();
 		} else if ( category.equals(context.getString(R.string.category_robot_albert))){
-			return setupRobotAlbertCategoryList();
+			tempList= setupRobotAlbertCategoryList();
 		}
 		for (Brick brick : tempList) {
 			ScriptBrick brickAsScriptBrick;
@@ -305,11 +306,12 @@ public class CategoryBricksFactory {
 		List<Brick> robotAlbertBrickList = new ArrayList<Brick>();
 		robotAlbertBrickList.add(new RobotAlbertMotorActionBrick( RobotAlbertMotorActionBrick.Motor.Left,
 				BrickValues.ROBOT_ALBERT_SPEED));
-		robotAlbertBrickList.add(new RobotAlbertBuzzerBrick( BrickValues.ROBOT_ALBERT_FREQUENCY));
+		robotAlbertBrickList.add(new RobotAlbertBuzzerBrick( BrickValues.ROBOT_ALBERT_BUZZER));
 		robotAlbertBrickList.add(new RobotAlbertRgbLedEyeActionBrick(RobotAlbertRgbLedEyeActionBrick.Eye.Both,
 				BrickValues.ROBOT_ALBERT_RGB_LED_EYE_RED, BrickValues.ROBOT_ALBERT_RGB_LED_EYE_GREEN,
 				BrickValues.ROBOT_ALBERT_RGB_LED_EYE_BLUE));
 		robotAlbertBrickList.add(new RobotAlbertFrontLedBrick( BrickValues.ROBOT_ALBERT_FRONT_LED));
+		robotAlbertBrickList.add(new RobotAlbertBodyLedBrick( BrickValues.ROBOT_ALBERT_BODY_LED));
 		robotAlbertBrickList.add(new SetVariableBrick( Sensors.ALBERT_ROBOT_DISTANCE_LEFT.toString()));
 		robotAlbertBrickList.add(new SetVariableBrick( Sensors.ALBERT_ROBOT_DISTANCE_RIGHT.toString()));
 
