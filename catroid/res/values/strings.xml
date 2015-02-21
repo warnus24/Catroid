@@ -635,7 +635,8 @@
     <!--  -->
 
     <string name="kodey_color_chooser_title">Kodey Pro Color Chooser</string>
-
+    <string name="kodey_motor_forward_title">Kodey Pro Move Motor Forward Chooser</string>
+    <string name="kodey_motor_backward_title">Kodey Pro Move Motor Backward Chooser</string>
 
     <!-- Kodey tone strings -->
     <string name="kodey_tone_do">Do</string>

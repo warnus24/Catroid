@@ -43,7 +43,9 @@ import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
+import org.catrobat.catroid.ui.fragment.KodeyMotorBackwardSingleSeekbarFragment;
 
 import java.util.List;
 
@@ -55,6 +57,7 @@ public class KodeyMotorBackwardActionBrick extends FormulaBrick implements OnCli
 	private String motor;
 	private transient Motor motorEnum;
 	private transient TextView editSpeed;
+	private Formula speed;
 
 	public static enum Motor {
 		MOTOR_A, MOTOR_B, MOTOR_A_B
@@ -67,13 +70,21 @@ public class KodeyMotorBackwardActionBrick extends FormulaBrick implements OnCli
 	public KodeyMotorBackwardActionBrick(Motor motor, int speedValue) {
 		this.motorEnum = motor;
 		this.motor = motorEnum.name();
-		initializeBrickFields(new Formula(speedValue));
+
+		this.speed = new Formula(speedValue);
 	}
 
 	public KodeyMotorBackwardActionBrick(Motor motor, Formula speedFormula) {
 		this.motorEnum = motor;
 		this.motor = motorEnum.name();
-		initializeBrickFields(speedFormula);
+
+		this.speed = speedFormula;
+	}
+
+	public void setSpeedTextValue(int speed)
+	{
+		editSpeed.setText(String.valueOf(speed));
+		this.speed.setDisplayText(String.valueOf(speed));
 	}
 
 	protected Object readResolve() {
@@ -81,11 +92,6 @@ public class KodeyMotorBackwardActionBrick extends FormulaBrick implements OnCli
 			motorEnum = Motor.valueOf(motor);
 		}
 		return this;
-	}
-
-	private void initializeBrickFields(Formula speed) {
-		addAllowedBrickField(BrickField.KODEY_SPEED);
-		setFormulaWithBrickField(BrickField.KODEY_SPEED, speed);
 	}
 
 	@Override
@@ -114,7 +120,7 @@ public class KodeyMotorBackwardActionBrick extends FormulaBrick implements OnCli
 
 	@Override
 	public Brick clone() {
-		return new KodeyMotorBackwardActionBrick(motorEnum, getFormulaWithBrickField(BrickField.KODEY_SPEED).clone());
+		return new KodeyMotorBackwardActionBrick(motorEnum, speed.clone());
 	}
 
 	@Override
@@ -141,8 +147,8 @@ public class KodeyMotorBackwardActionBrick extends FormulaBrick implements OnCli
 
 		TextView textSpeed = (TextView) view.findViewById(R.id.brick_kodey_motor_backward_action_speed_text_view);
 		editSpeed = (TextView) view.findViewById(R.id.brick_kodey_motor_backward_action_speed_edit_text);
-		getFormulaWithBrickField(BrickField.KODEY_SPEED).setTextFieldId(R.id.brick_kodey_motor_backward_action_speed_edit_text);
-		getFormulaWithBrickField(BrickField.KODEY_SPEED).refreshTextField(view);
+		speed.setTextFieldId(R.id.brick_kodey_motor_backward_action_speed_edit_text);
+		speed.refreshTextField(view);
 
 		textSpeed.setVisibility(View.GONE);
 		editSpeed.setVisibility(View.VISIBLE);
@@ -190,7 +196,13 @@ public class KodeyMotorBackwardActionBrick extends FormulaBrick implements OnCli
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.KODEY_SPEED));
+		if((speed.getRoot().getElementType() == FormulaElement.ElementType.NUMBER)){
+			KodeyMotorBackwardSingleSeekbarFragment.showSingleSeekBarFragment(view, this, speed);
+		} else {
+			if(speed.getRoot().getElementType() != FormulaElement.ElementType.NUMBER) {
+				FormulaEditorFragment.showFragment(view, this, speed);
+			}
+		}
 	}
 
 	@Override
@@ -233,7 +245,7 @@ public class KodeyMotorBackwardActionBrick extends FormulaBrick implements OnCli
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
 		sequence.addAction(ExtendedActions.kodeyMotorBackwardActionAction(sprite, motorEnum,
-				getFormulaWithBrickField(BrickField.KODEY_SPEED)));
+				speed));
 		return null;
 	}
 

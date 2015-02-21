@@ -108,7 +108,7 @@
                 android:id="@+id/color_rgb_seekbar_red"
                 android:layout_width="0px"
                 android:layout_height="match_parent"
-                android:layout_weight="79"
+                android:layout_weight="70"
                 android:max="255" />
 
             <TextView
@@ -122,11 +122,11 @@
 
             <TextView
                 android:id="@+id/rgb_red_value"
-                android:layout_width="wrap_content"
+                android:layout_width="5px"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="10"
                 android:text="255"
-                android:textColor="@color/holo_blue_bright"
+                android:textColor="@color/white"
                 tools:ignore="HardcodedText" />
 
         </TableRow>
@@ -160,7 +160,7 @@
                 android:id="@+id/color_rgb_seekbar_green"
                 android:layout_width="0px"
                 android:layout_height="match_parent"
-                android:layout_weight="79"
+                android:layout_weight="70"
                 android:max="255" />
 
             <TextView
@@ -174,11 +174,11 @@
 
             <TextView
                 android:id="@+id/rgb_green_value"
-                android:layout_width="wrap_content"
+                android:layout_width="5px"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="10"
                 android:text="255"
-                android:textColor="@color/holo_blue_bright"
+                android:textColor="@color/white"
                 tools:ignore="HardcodedText" />
 
         </TableRow>
@@ -212,7 +212,7 @@
                 android:id="@+id/color_rgb_seekbar_blue"
                 android:layout_width="0px"
                 android:layout_height="match_parent"
-                android:layout_weight="79"
+                android:layout_weight="70"
                 android:max="255" />
 
             <TextView
@@ -226,16 +226,15 @@
 
             <TextView
                 android:id="@+id/rgb_blue_value"
-                android:layout_width="wrap_content"
+                android:layout_width="5px"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="10"
                 android:text="255"
-                android:textColor="@color/holo_blue_bright"
+                android:textColor="@color/white"
                 tools:ignore="HardcodedText" />
 
         </TableRow>
 
      </TableLayout>
-
 
 </LinearLayout>

@@ -50,6 +50,8 @@ import org.catrobat.catroid.ui.dragndrop.DragAndDropListView;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorListFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorVariableListFragment;
+import org.catrobat.catroid.ui.fragment.KodeyMotorBackwardSingleSeekbarFragment;
+import org.catrobat.catroid.ui.fragment.KodeyMotorForwardSingleSeekbarFragment;
 import org.catrobat.catroid.ui.fragment.KodeyMultipleSeekbarFragment;
 import org.catrobat.catroid.ui.fragment.LookFragment;
 import org.catrobat.catroid.ui.fragment.ScriptActivityFragment;
@@ -324,12 +326,28 @@ public class ScriptActivity extends BaseActivity {
 			return formulaEditor.onKey(null, keyCode, event);
 		}
 
+		//ToDo: #Kodey check if we are allowed to do this
 		KodeyMultipleSeekbarFragment kodeyFragment = (KodeyMultipleSeekbarFragment) getSupportFragmentManager().findFragmentByTag(
 				KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG);
+		KodeyMotorForwardSingleSeekbarFragment kodeyMotorForwardFragment = (KodeyMotorForwardSingleSeekbarFragment) getSupportFragmentManager().findFragmentByTag(
+				KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG);
+		KodeyMotorBackwardSingleSeekbarFragment kodeyMotorBackwardFragment = (KodeyMotorBackwardSingleSeekbarFragment) getSupportFragmentManager().findFragmentByTag(
+				KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG);
+
 
 		if (kodeyFragment != null && kodeyFragment.isVisible()) {
 			scriptFragment.getAdapter().updateProjectBrickList();
 			return kodeyFragment.onKey(null, keyCode, event);
+		}
+
+		if (kodeyMotorForwardFragment != null && kodeyMotorForwardFragment.isVisible()) {
+			scriptFragment.getAdapter().updateProjectBrickList();
+			return kodeyMotorForwardFragment.onKey(null, keyCode, event);
+		}
+
+		if (kodeyMotorBackwardFragment != null && kodeyMotorBackwardFragment.isVisible()) {
+			scriptFragment.getAdapter().updateProjectBrickList();
+			return kodeyMotorBackwardFragment.onKey(null, keyCode, event);
 		}
 
 		if (soundFragment != null && soundFragment.isVisible() && soundFragment.onKey(null, keyCode, event)) {

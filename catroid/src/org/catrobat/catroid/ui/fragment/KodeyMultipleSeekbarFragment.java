@@ -86,7 +86,6 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 	private SeekBar greenSeekBar;
 	private SeekBar blueSeekBar;
 	private int color;
-	private int referenceColor;
 	private LinearLayout kodeyBrick;
 	private View brickView;
 	private CharSequence previousActionBarTitle;
@@ -104,16 +103,7 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 			redFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT_RED);
 			greenFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT_GREEN);
 			blueFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT_BLUE);
-			//color = Color.rgb(0, 255, 255);
 		}
-		/*
-		//ToDO: also for Kodey Sensors
-		if (currentFormula.containsArduinoSensors()) {
-			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(true);
-		} else {
-			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
-		}
-		*/
 	}
 
 	private void setUpActionBar() {
@@ -177,12 +167,9 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		fragTransaction.remove(this);
 		fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
 		fragTransaction.commit();
-
 		resetActionBar();
-
 		BottomBar.showBottomBar(activity);
 		BottomBar.showPlayButton(activity);
-
 	}
 
 	@Override
@@ -256,7 +243,6 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-				//enter value to textview
 				switch(seekBar.getId())
 				{
 					case R.id.color_rgb_seekbar_red:
@@ -367,6 +353,7 @@ public class KodeyMultipleSeekbarFragment extends SherlockFragment implements On
 		String greenFormulaString = formulaEditorEditTextGreen.getText().toString().trim();
 		String blueFormulaString = formulaEditorEditTextBlue.getText().toString().trim();
 
+		//ToDO: talk with Wolfgang (what happens if a values is greater than 255 and smaller than 0)
 		color = Color.rgb(Integer.parseInt(redFormulaString), Integer.parseInt(greenFormulaString), Integer.parseInt(blueFormulaString));
 		redSeekBar.setProgress(Color.red(color));
 		greenSeekBar.setProgress(Color.green(color));

@@ -44,7 +44,9 @@ import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
+import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.ui.fragment.KodeyMultipleSeekbarFragment;
 
 import java.util.List;
@@ -244,8 +246,22 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
+		if((red.getRoot().getElementType() == FormulaElement.ElementType.NUMBER) &&
+				(green.getRoot().getElementType() == FormulaElement.ElementType.NUMBER) &&
+				(blue.getRoot().getElementType() == FormulaElement.ElementType.NUMBER)){
+			KodeyMultipleSeekbarFragment.showMultipleSeekBarFragment(view, this, red, green, blue);
+		} else {
+			if(red.getRoot().getElementType() != FormulaElement.ElementType.NUMBER) {
+				FormulaEditorFragment.showFragment(view, this, red);
+			}
+			if(green.getRoot().getElementType() != FormulaElement.ElementType.NUMBER) {
+				FormulaEditorFragment.showFragment(view, this, green);
+			}
+			if(blue.getRoot().getElementType() != FormulaElement.ElementType.NUMBER) {
+				FormulaEditorFragment.showFragment(view, this, blue);
+			}
+		}
 
-		KodeyMultipleSeekbarFragment.showMultipleSeekBarFragment(view, this, red, green, blue);
 	}
 
 	@Override
