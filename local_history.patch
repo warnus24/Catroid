@@ -1,0 +1,265 @@
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(revision )
++++ build.gradle	(revision )
+@@ -2,111 +2,73 @@
+ 
+ buildscript {
+     repositories {
++        mavenLocal()
+         mavenCentral()
+     }
+     dependencies {
+-        classpath 'com.android.tools.build:gradle:0.12.+'
+-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
++        classpath 'com.android.tools.build:gradle:0.9.+'
+     }
+ }
+ 
+ repositories {
++    mavenLocal()
+     mavenCentral()
+ }
+ 
+-apply plugin: 'android-sdk-manager'
+-apply plugin: 'com.android.application'
++apply plugin: 'android'
+ //apply plugin: 'findbugs'
+ apply plugin: 'checkstyle'
+-apply plugin: 'pmd'
+-apply from: 'gradle/adb_tasks.gradle'
+-apply from: 'gradle/code_quality_tasks.gradle'
+-apply from: 'gradle/intellij_config_tasks.gradle'
++//apply plugin: 'pmd'
+ 
+-check.dependsOn 'checkstyle'
+-check.dependsOn 'pmd'
+-
+-ext {
+-    projectVersion = "0.9"
+-    featuresEnabled = [
+-            "lego_nxt"                          : true,
+-            "led_brick"                         : false,
+-            "vibration_brick"                   : false,
+-            "backpack"                          : false,
+-            "parrot_ar_drone"                   : false,
+-            "apk_generator"                     : false,
+-            "computer_vision_enhancement"       : true,
+-            "formula_editor_lists"              : false,
+-            "physics_engine_collision_filtering": false,
+-            "time_capsule"                      : false,
+-            "userbricks"                        : false
++ext.catroid_version = "0.9"
++ext.features_enabled = [
++        "backpack": false
+-    ]
++]
+-}
+ 
+-configurations {
+-    compile.exclude group: 'xpp3' //compile problem with xstream
+-}
+-
+ dependencies {
+     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+-    compile 'com.android.support:support-v4:19.1.0'
+-    compile 'com.google.guava:guava:17.0'
+-    compile fileTree(include: '*.jar', dir: 'catroid/libs')
+-    compile fileTree(include: '*.jar', dir: 'catroid/libs-natives')
+-    androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
+-    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
+-    pmd 'net.sourceforge.pmd:pmd:5.1.1'
++    compile 'com.android.support:support-v4:18.0.+'
++    compile fileTree(dir: 'catroid/libs', include: '*.jar')
++    compile fileTree(dir: 'catroid/libs-natives', include: '*.jar')
++
++    androidTestCompile fileTree(dir: 'catroidTest/libs', include: '*.jar')
++
+ }
+ 
+ 
+-def getBuildNumberParameter = { ->
++def getVersionCode = { ->
+     def code = project.hasProperty('versionCode') ? versionCode.toInteger() : -1
+     return code
+ }
+ 
+-def generateVersionName(version, buildNumber) {
+-    def versionName
+-    if (buildNumber == -1) {
+-        versionName = getGitDescribe() + " " + getCurrentGitBranch()
+-    } else {
+-        versionName = version + "." + buildNumber
+-    }
++def getVersionName = { ->
++    def code = getVersionCode
++    def versionName = "$ext.catroid_version.$code"
++    println "VersionCode is set to $code"
++    println "VersionName is set to $versionName"
+     return versionName
+ }
+ 
+-def getGitDescribe() {
+-    try {
++def gitDescribe() {
+-        return 'git describe --tags'.execute().text.trim()
++    return 'git describe --tags'.execute().text.trim()
+-    } catch (IOException exception) {
+-        throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
+-    }
++}
+-}
+ 
+-def getCurrentGitBranch() {
+-    try {
+-        return 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
+-    } catch (IOException exception) {
+-        throw new UnsupportedOperationException("Could not find git! Maybe it is not in \$PATH variable?", exception)
+-    }
+-}
+ 
+-
+ android {
+     compileSdkVersion 19
+-    buildToolsVersion '19.1.0'
++    buildToolsVersion "19"
++
+     defaultConfig {
+         minSdkVersion 10
+         targetSdkVersion 19
+-        applicationId 'org.catrobat.catroid'
+-        testApplicationId "org.catrobat.catroid.test"
+-        testInstrumentationRunner 'pl.polidea.instrumentation.PolideaInstrumentationTestRunner'
+-        versionCode getBuildNumberParameter()
+-        println "VersionCode is " + versionCode
+-        versionName generateVersionName(projectVersion, versionCode)
+-        println "VersionName is " + versionName
+-        buildConfigField "String", "GIT_DESCRIBE", "\"${getGitDescribe()}\""
+-        buildConfigField "String", "GIT_CURRENT_BRANCH", "\"${getCurrentGitBranch()}\""
++        packageName "org.catrobat.catroid"
++        testPackageName "org.catrobat.catroid.test"
++        testInstrumentationRunner "pl.polidea.instrumentation.PolideaInstrumentationTestRunner"
++        versionCode getVersionCode()
++        versionName getVersionName()
++        buildConfigField "String", "GIT_DESCRIBE", "\"${gitDescribe()}\""
+     }
++
+     sourceSets {
+         main {
+             manifest.srcFile 'catroid/AndroidManifest.xml'
+@@ -125,55 +87,57 @@
+             renderscript.srcDirs = ['catroidTest/src']
+             res.srcDirs = ['catroidTest/res']
+             assets.srcDirs = ['catroidTest/assets']
+-            if (file('testexclusions.txt').exists()) {
++            if(file('testexclusions.txt').exists()){
+                 java.exclude file('testexclusions.txt').readLines()
+             }
+         }
+     }
+-    lintOptions {
+-        // define ignores like a specific res-folder in our lint.xml file
+-        lintConfig file('config/lint.xml')
+ 
+-        // all general ignores should be added in this place
+-        // CommitPrefEdits should be reviewed, if using apply instead of commit is working with our tests
+-        // OldTargetApi should be reviewed - consider updating target API to 20
+-        ignore 'ContentDescription', 'InvalidPackage', 'ValidFragment', 'GradleDependency',
+-                'ClickableViewAccessibility', 'UnusedAttribute', 'CommitPrefEdits', 'OldTargetApi'
+-
++    lintOptions {
++        //lintConfig file('catroid/lint.xml')
+         textReport true
+-        xmlReport true
+-        htmlReport false
+-        xmlOutput file("build/reports/lint.xml")
++        ignore 'ContentDescription', 'ExtraTranslation', 'MissingTranslation', 'UnusedResources'
++        //these should be fixed soon:
++        ignore 'ValidFragment', 'IconDensities', 'InvalidPackage', 'GradleOverrides', 'GradleDependency'
+     }
+ }
+ 
++// Doesn't work atm. Maybe if the pmd plugin gets updated.
++//task findbugs(type: FindBugs) {
++//    classes = fileTree('build/classes/debug/')
++//    source = fileTree(android.sourceSets.main.java.srcDirs)
++//    classpath = files( project.configurations.compile.asPath )
++//    effort = 'max'
++//    reports.xml.enabled = false
++//    reports.html.enabled = true
++//}
+ 
+-if (project.hasProperty('jenkins')) {
+-    project.android.dexOptions.preDexLibraries = false
++task checkstyle(type: Checkstyle) {
++    configFile file('catroid/checkstyle.xml')
++    source '.'
++    include '**/*.java'
++    exclude 'build/**', 'libraryProjects/**'
++
++    classpath = files(project.configurations.compile.asPath)
++}
++
++// Doesn't work atm. Maybe if the pmd plugin gets updated.
++//task pmd(type: Pmd) {
++//    ruleSets = ["basic", "braces", "strings"]
++//    source = fileTree(android.sourceSets.main.java.srcDirs)
++//}
++
++task jenkins() << {
+ //    android.buildTypes.each { type ->
+ //        if (type.name == "debug") {
+ //            type.packageNameSuffix = ".jenkinsdebug"
+ //            type.versionNameSuffix = "-jenkins-$type.name"
+ //        }
+ //    }
+-} else {
+-    //not a jenkins build, remove animation scale permission
+-    android.applicationVariants.all { variant ->
+-        println "Removing the SET_ANIMATION_SCALE permission for $variant.name"
+-        variant.processManifest.doLast {
+-            def generatedContent = manifestOutputFile.getText()
+-            generatedContent = generatedContent.replace('<uses-permission android:name="android.permission.SET_ANIMATION_SCALE" />', '')
+-            if (generatedContent.contains('SET_ANIMATION_SCALE')) {
+-                throw new RuntimeException("Error in removing animation scale permission!")
+-            }
++}
+-            manifestOutputFile.write(generatedContent)
+-        }
+-    }
+-}
+ 
+-task featuresToBuildconfig << {
+-    println "Activated Features:"
+-    for (feature in featuresEnabled) {
++task featuresToBuildconfig() {
++    for (feature in project.ext.features_enabled) {
+         def name = feature.key
+         def value = feature.value
+         if (project.hasProperty("allFeatures_enabled"))
+@@ -181,20 +145,13 @@
+         if (project.hasProperty("${name}_enabled"))
+             value = project["${name}_enabled"]
+ 
+-        if (!(value.toString().equals("true") || value.toString().equals("false")))
+-            throw new IllegalArgumentException("Wrong Argument! Usage:\ne.g. -PallFeatures_enabled=true -Pparrot_ar_drone_enabled=false")
+-
+-        if (value.toString().equals("true")) {
+-            println "- " + name
+-        }
+         android.defaultConfig.buildConfigField "boolean", "FEATURE_${name.toUpperCase()}_ENABLED", "${value}"
+     }
+-    println ""
+ }
+ 
+-task testManifestHack << {
++task testManifestHack() << {
+     def origManifest = file('catroidTest/AndroidManifest.xml')
+-    def generatedManifest = file("build/intermediates/manifests/test/debug/AndroidManifest.xml")
++    def generatedManifest = file("build/manifests/test/debug/AndroidManifest.xml")
+     def origContent = origManifest.getText()
+     def generatedContent = generatedManifest.getText()
+     def pattern = Pattern.compile("<application.*?>.*?</application>", Pattern.DOTALL)

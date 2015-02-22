@@ -66,6 +66,8 @@
   <string name="preference_description_select_camera">Wähle eine Kamera für die Gesichtserkennung</string>
   <string name="preference_title_enable_quadcopter_bricks">ARDrone 2.0 Bausteine</string>
   <string name="preference_description_quadcopter_bricks">Erlaubt dir, die ARDrone 2.0 zu steuern.</string>
+  <string name="preference_title_enable_robot_albert_bricks">Roboter Albert Bausteine</string>
+  <string name="preference_description_robot_albert_bricks">Erlaube Steuerung von Roboter Albert</string>
   <string name="dialog_new_object_pocketpaint">Bild zeichnen</string>
   <string name="dialog_new_object_gallery">Bild auswählen</string>
   <string name="dialog_new_object_camera">Foto schießen</string>
@@ -238,6 +240,7 @@
   <string name="category_user_bricks">Meine Bausteine</string>
   <string name="category_lego_nxt">Lego NXT</string>
   <string name="category_drone">ARDrone</string>
+  <string name="category_robot_albert">Robot Albert</string>
   <string name="brick_place_at">"Setze an Position "</string>
   <string name="x_label">"X: "</string>
   <string name="y_label">"Y: "</string>
@@ -398,6 +401,8 @@
   <string name="none_found">Keine nicht verbundenen Geräte gefunden</string>
   <string name="none_paired">Keine verbundenen Geräte gefunden</string>
   <string name="brick_motor_action">NXT Motor bewegen</string>
+  <string name="robot_albert_select_device">Wähle deinen Robot Albert</string>
+  <string name="robot_albert_connecting_please_wait">Verbinde zum Robot Albert.\nBitte warten…</string>
   <string name="motor_speed">Geschwindigkeit</string>
   <string name="brick_motor_turn_angle">NXT Motor drehen</string>
   <string name="motor_angle">Winkel</string>
@@ -557,4 +562,32 @@
   <string name="recursive_user_brick_forbidden">Hinzufügen eines Userbricks in einem Userbrick ist noch nicht erlaubt!</string>
   <string name="brick_single">Baustein</string>
   <string name="brick_multiple">Bausteine</string>
+  <!-- Robot Albert Strings -->
+    <string name="brick_robot_albert_motor_action">Albert bewege Motor</string>
+    <string name="robot_albert_motor_speed">Geschwindigkeit</string>
+    <string name="brick_robot_albert_buzzer_action">Albert benutze Summer</string>
+    <string name="robot_albert_buzzer_frequency">Frequenz</string>
+    <string name="brick_robot_albert_rgb_led_action">Albert beleuchte Auge</string>
+    <string name="robot_albert_rgb_led_red">Rot</string>
+    <string name="robot_albert_rgb_led_green">Gruen</string>
+    <string name="robot_albert_rgb_led_blue">Blau</string>
+    <string name="brick_robot_albert_body_led_action">Albert benutze Körper LED</string>
+    <string name="brick_robot_albert_front_led_action">Albert benutze fordere LED</string>
+    <string name="robot_albert_front_led_status">Status</string>
+    <string name="robot_albert_front_led_status_info">Wert: 0=aus sonst=ein</string>
+    <string name="brick_robot_albert_distance_sensor_left">Setze linken Abstandssensor auf</string>
+    <string name="brick_robot_albert_distance_sensor_right">Setze rechten Abstandssensor auf</string>
+    <string name="robot_albert_motor_both">Beide</string>
+    <string name="robot_albert_motor_left">Links</string>
+    <string name="robot_albert_motor_right">Rechts</string>
+    <string name="robot_albert_eye_both">Beide</string>
+    <string name="robot_albert_eye_left">Links</string>
+    <string name="robot_albert_eye_right">Rechts</string>
+    <string name="robot_albert_body_led_status">Status</string>
+    <string name="robot_albert_body_led_status_info">Wert: [0,255]</string>
+    <string name="formula_editor_sensor_albert_robot_distance_left">Albert_robot_linker_Abstand</string>
+    <string name="formula_editor_sensor_albert_robot_distance_right">Albert_robot_rechter_Abstand</string>
+    <string name="category_error_message_already_albert_bricks_in_use">Das Projekt enthält bereits Albert-Bausteine, man kann nicht NXT-Bausteine im selben Projekt verwenden.</string>
+    <string name="category_error_message_already_nxt_bricks_in_use">Das Projekt enthält bereits NXT-Bausteine, man kann nicht Albert-Bausteine im selben Projekt verwenden.</string>
+
 </resources>

@@ -91,11 +91,11 @@ public class RobotAlbertRgbLedEyeActionBrickTest extends BaseActivityInstrumenta
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.robot_albert_rgb_led_blue)));
 
 		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
-				R.id.robot_albert_rgb_led_action_red_edit_text, SET_RED,Brick.BrickField.ALBERT_ROBOT_RGB_RED,	brick);
+				R.id.robot_albert_rgb_led_action_red_edit_text, SET_RED,Brick.BrickField.ALBERT_ROBOT_RGB_LED_EYE,	brick);
 		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
-				R.id.robot_albert_rgb_led_action_green_edit_text, SET_GREEN, Brick.BrickField.ALBERT_ROBOT_RGB_GREEN, brick);
+				R.id.robot_albert_rgb_led_action_green_edit_text, SET_GREEN, Brick.BrickField.ALBERT_ROBOT_RGB_LED_EYE, brick);
 		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
-				R.id.robot_albert_rgb_led_action_blue_edit_text, SET_BLUE, Brick.BrickField.ALBERT_ROBOT_RGB_BLUE ,brick);
+				R.id.robot_albert_rgb_led_action_blue_edit_text, SET_BLUE, Brick.BrickField.ALBERT_ROBOT_RGB_LED_EYE ,brick);
 
 		String[] eyes = getActivity().getResources().getStringArray(R.array.robot_albert_eye_chooser);
 		assertTrue("Spinner items list too short!", eyes.length == 3);

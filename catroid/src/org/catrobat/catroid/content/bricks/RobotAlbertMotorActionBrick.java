@@ -121,6 +121,7 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 		if (view == null) {
 			alphaValue = 255;
 		}
+		this.motorEnum = Motor.valueOf(this.motor);
 
 		view = View.inflate(context, R.layout.brick_robot_albert_motor_action, null);
 		view = getViewWithAlpha(alphaValue);
@@ -246,7 +247,7 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertMotor(sprite, motorEnum, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_SPEED)));
+		sequence.addAction(ExtendedActions.robotAlbertMotor(sprite,Motor.valueOf(motor), getFormulaWithBrickField(BrickField.ALBERT_ROBOT_SPEED)));
 		return null;
 	}
 }

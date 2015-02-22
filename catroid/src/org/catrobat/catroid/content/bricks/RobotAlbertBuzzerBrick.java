@@ -52,19 +52,19 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 	private transient View prototypeView;
 
 	private transient TextView editValue;
-	private Formula value;
+//	private Formula value;
 
 	protected Object readResolve() {
 		return this;
 	}
 
 	public RobotAlbertBuzzerBrick( int value) {
-		this.value = new Formula(value);
+//		this.value = new Formula(value);
 		initializeBrickFields(new Formula(value));
 	}
 
 	public RobotAlbertBuzzerBrick( Formula value) {
-		this.value = value;
+//		this.value = value;
 		initializeBrickFields(value);
 	}
 	private void initializeBrickFields(Formula brightness) {
@@ -108,8 +108,8 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 
 		TextView textValue = (TextView) view.findViewById(R.id.robot_albert_buzzer_frequency_prototype_text_view);
 		editValue = (TextView) view.findViewById(R.id.robot_albert_buzzer_frequency_edit_text);
-		value.setTextFieldId(R.id.robot_albert_buzzer_frequency_edit_text);
-		value.refreshTextField(view);
+		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER).setTextFieldId(R.id.robot_albert_buzzer_frequency_edit_text);
+		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER).refreshTextField(view);
 
 		textValue.setVisibility(View.GONE);
 		editValue.setVisibility(View.VISIBLE);
@@ -133,7 +133,7 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 
 	@Override
 	public void onClick(View view) {
-		FormulaEditorFragment.showFragment(view, this, value);
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER));
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertBuzzer(sprite, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER)));
+		sequence.addAction(ExtendedActions.robotAlbertBuzzer(sprite,getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER)));
 		return null;
 	}
 }

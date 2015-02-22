@@ -89,13 +89,9 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 		this.eyeEnum = eye;
 		this.eye = eyeEnum.name();
 		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_LED_EYE);
-		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE);
-		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN);
-		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_RED);
 		this.red = red;
 		this.green = green;
 		this.blue = blue;
-
 	}
 
 	@Override
@@ -106,12 +102,18 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 	@Override
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_robot_albert_rgb_eye_action, null);
+		Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
+		try {
 		TextView textred = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_red_prototype_text_view);
-		textred.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_RED));
+		textred.setText(String.valueOf(red.interpretInteger(sprite)));
 		TextView textgreen = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_green_prototype_text_view);
-		textgreen.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_GREEN));
+		textgreen.setText(String.valueOf(green.interpretInteger(sprite)));
 		TextView textblue = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_blue_prototype_text_view);
-		textblue.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_BLUE));
+		textblue.setText(String.valueOf(blue.interpretInteger(sprite)));
+		} catch (InterpretationException interpretationException) {
+			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
+		}
+
 		Spinner eyeSpinner = (Spinner) prototypeView.findViewById(R.id.robot_albert_eye_spinner);
 		eyeSpinner.setFocusableInTouchMode(false);
 		eyeSpinner.setFocusable(false);

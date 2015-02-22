@@ -82,7 +82,7 @@ public class RobotAlbertBodyLedBrickTest extends BaseActivityInstrumentationTest
 
 
 		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
-				R.id.robot_albert_body_led_status_edit_text, SET_LED, Brick.BrickField.ALBERT_ROBOT_BUZZER,brick);
+				R.id.robot_albert_body_led_status_edit_text, SET_LED, Brick.BrickField.ALBERT_ROBOT_BODY_LED,brick);
 	}
 
 	private void createProject() {
