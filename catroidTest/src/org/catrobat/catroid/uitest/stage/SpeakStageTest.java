@@ -158,8 +158,10 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 
 		while (currentTry != 60) {
 			currentTry++;
-			if (speechFileTestText.length() > 0) {
-				fileSizeValid = true;
+			if (speechFileTestText.exists() && speechFileAnotherLongerText.exists()) {
+				if (speechFileTestText.length() > 0) {
+					fileSizeValid = true;
+				}
 			}
 			solo.sleep(1000);
 		}
@@ -194,8 +196,10 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 
 		while (currentTry != 60) {
 			currentTry++;
-			if (speechFileTestText.length() > 0 && speechFileAnotherLongerText.length() > 0) {
-				fileSizeValid = true;
+			if (speechFileTestText.exists() && speechFileAnotherLongerText.exists()) {
+				if (speechFileTestText.length() > 0 && speechFileAnotherLongerText.length() > 0) {
+					fileSizeValid = true;
+				}
 			}
 			solo.sleep(1000);
 		}
