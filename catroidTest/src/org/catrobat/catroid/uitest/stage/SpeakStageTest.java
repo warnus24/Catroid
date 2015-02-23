@@ -144,22 +144,27 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 		int currentTry = 0;
 		boolean found = false;
+		boolean fileSizeValid = false;
 		while (currentTry != 60) {
 			currentTry++;
 			if (speechFileTestText.exists()) {
 				found = true;
+				if(speechFileTestText.length() > 0) {
+					fileSizeValid = true;
+				}
 				break;
 			}
 			solo.sleep(1000);
 		}
 
-		assertTrue("some of the required speechfiles do not exist.", found);
+		assertTrue("some of the required speech files do not exist.", found);
+		assertTrue("some of the required speech files have a size of 0.", fileSizeValid);
 
 		solo.sleep(3000);
 
 		assertTrue("speechFileTestText was not played.",
 				soundManagerMock.playedSoundFiles.contains(speechFileTestText.getAbsolutePath()));
-		assertEquals("Wrong amount of soundfiles played", 1, soundManagerMock.playedSoundFiles.size());
+		assertEquals("Wrong amount of sound files played", 1, soundManagerMock.playedSoundFiles.size());
 	}
 
 	@Device
@@ -168,16 +173,21 @@ public class SpeakStageTest extends BaseActivityInstrumentationTestCase<MainMenu
 		solo.waitForActivity(StageActivity.class.getSimpleName());
 		int currentTry = 0;
 		boolean found = false;
+		boolean fileSizeValid = false;
 		while (currentTry != 120) {
 			currentTry++;
 			if (speechFileTestText.exists() && speechFileAnotherLongerText.exists()) {
 				found = true;
+				if (speechFileTestText.length() > 0 && speechFileAnotherLongerText.length() > 0) {
+					fileSizeValid = true;
+				}
 				break;
 			}
 			solo.sleep(1000);
 		}
 
-		assertTrue("some of the required speechfiles do not exist.", found);
+		assertTrue("some of the required speech files do not exist.", found);
+		assertTrue("some of the required speech files have a size of 0.", fileSizeValid);
 
 		solo.sleep(3000);
 
