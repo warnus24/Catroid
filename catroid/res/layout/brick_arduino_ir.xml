@@ -59,14 +59,14 @@
             android:gravity="left" >
         </TextView>
 
-        <TextView
+        <EditText
             android:id="@+id/brick_arduino_ir_edit_text"
             style="@style/BrickEditText"
             android:layout_width="match_parent"
             app:layout_inputType="text"
             app:layout_textField="true"
             android:gravity="left" >
-        </TextView>
+        </EditText>
     </org.catrobat.catroid.ui.BrickLayout>
 
 </LinearLayout>

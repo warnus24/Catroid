@@ -24,12 +24,16 @@ package org.catrobat.catroid.content.actions;
 
 import android.util.Log;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
+import org.catrobat.catroid.arduino.Arduino;
+import org.catrobat.catroid.common.CatrobatService;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
 
 public class ArduinoIrCommandAction extends TemporalAction {
 
 	private String commandToSend;
 	private Sprite sprite;
+
 
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
@@ -39,6 +43,10 @@ public class ArduinoIrCommandAction extends TemporalAction {
 	protected void update(float percent) {
 		Log.d("Arduino IR Command", "BT command" + commandToSend);
 		// here the magic happens :-)
+
+		Arduino arduino = ServiceProvider.getService(CatrobatService.ARDUINO);
+		if(arduino != null)
+			arduino.sendArduinoMessage(commandToSend);
 	}
 
 	public void setCommand(String command) {

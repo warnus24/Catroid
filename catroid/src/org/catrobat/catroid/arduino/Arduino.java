@@ -31,6 +31,8 @@ public interface Arduino extends BTDeviceService {
 
 	public void setDigitalArduinoPin(String digitalPinNumber, char pinValue);
 
+	public void sendArduinoMessage(String message);
+
 	public double getDigitalArduinoPin(String digitalPinNumber);
 
 	public double getAnalogArduinoPin(String analogPinNumber);

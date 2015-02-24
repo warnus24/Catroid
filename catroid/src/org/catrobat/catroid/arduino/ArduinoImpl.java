@@ -102,6 +102,20 @@ public class ArduinoImpl implements Arduino {
 	}
 
 	@Override
+	public void sendArduinoMessage(String arduinoMessage){
+		//byte[] message = parseMessage(arduinoMessage);
+
+		byte[] byteMessage = new byte[arduinoMessage.length()];
+		for(int i = 0; i < arduinoMessage.length(); i++)
+		{
+
+			byteMessage[i] = arduinoMessage.getBytes()[i];
+
+		}
+		arduinoConnection.send(byteMessage);
+	}
+
+	@Override
 	public double getDigitalArduinoPin(String digitalPinNumber) {
 		//prüfen ob länge 1, oder 2, ansonsten exception
 		byte[] message = parseMessage(digitalPinNumber);
