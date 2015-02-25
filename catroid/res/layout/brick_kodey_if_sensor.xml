@@ -46,16 +46,16 @@
         app:verticalSpacing="@dimen/brick_flow_layout_vertical_spacing" >
 
         <TextView
+           android:id="@+id/brick_kodey_sensor_label"
+           style="@style/BrickText.SingleLine"
+           android:text="@string/brick_kodey_sensor_begin" >
+        </TextView >
+
+        <TextView
            android:id="@+id/brick_kodey_sensor_action_label"
            style="@style/BrickText.SingleLine"
            android:text="@string/brick_kodey_sensor_action" >
         </TextView>
-
-        <TextView
-            android:id="@+id/brick_kodey_sensor_label"
-            style="@style/BrickText.SingleLine"
-            android:text="@string/brick_if_begin" >
-        </TextView >
 
         <Spinner
             android:id="@+id/brick_kodey_sensor_action_spinner"

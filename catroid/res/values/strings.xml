@@ -75,8 +75,8 @@
     <string name="preference_description_arduino_bricks">Allow to control Arduino bricks</string>
 
     <!-- Kodey implementation -->
-    <string name="preference_title_enable_kodey_bricks">Kodey bricks</string>
-    <string name="preference_description_kodey_bricks">Allow to control Kodey bricks</string>
+    <string name="preference_title_enable_kodey_bricks">Kodey Pro bricks</string>
+    <string name="preference_description_kodey_bricks">Allow to control Kodey Pro bricks</string>
     <!--  -->
 
     <string name="preference_title_use_face_detection">Face Detection</string>
@@ -344,10 +344,7 @@
     <string name="category_variables">Variables</string>
     <string name="category_user_bricks">My Bricks</string>
     <string name="category_lego_nxt">Lego NXT</string>
-
-    <!-- Kodey implementation -->
-    <string name="category_kodey">Kodey</string>
-
+    <string name="category_kodey">Kodey Pro</string>
     <string name="category_arduino">Arduino</string>
     <string name="category_drone">ARDrone</string>
     <!--  -->
@@ -619,27 +616,27 @@
     <string name="kodey_motor_speed">Speed</string>
 
     <!-- sensor -->
-    <string name="brick_kodey_sensor_action">Kodey Pro Sensor \n</string>
-    <string name="brick_kodey_sensor_begin">If</string>
+    <string name="brick_kodey_sensor_action">Kodey Pro</string>
+    <string name="brick_kodey_sensor_begin">If \n</string>
     <string name="brick_kodey_sensor_second_part">is activated</string>
     <string name="brick_kodey_sensor_else">Else</string>
     <string name="brick_kodey_sensor_end">End If</string>
 
     <!-- tone -->
-    <string name="kodey_play_tone">Kodey Pro Play Music</string>
+    <string name="kodey_play_tone">Kodey Pro music tone</string>
     <string name="kodey_tone_duration">Duration</string>
     <string name="brick_kodey_select_tone">Tone</string>
 
     <!-- light -->
-    <string name="brick_kodey_rgb_led_action">Kodey Pro RGB light</string>
+    <string name="brick_kodey_rgb_led_action">Kodey Pro light</string>
     <string name="kodey_rgb_led_red">Red</string>
     <string name="kodey_rgb_led_green">Green</string>
     <string name="kodey_rgb_led_blue">Blue</string>
     <!--  -->
 
-    <string name="kodey_color_chooser_title">Kodey Pro Color Chooser</string>
-    <string name="kodey_motor_forward_title">Kodey Pro Move Motor Forward Chooser</string>
-    <string name="kodey_motor_backward_title">Kodey Pro Move Motor Backward Chooser</string>
+    <string name="kodey_color_chooser_title">Kodey Pro color chooser</string>
+    <string name="kodey_motor_forward_title">Kodey Pro move motor forward chooser</string>
+    <string name="kodey_motor_backward_title">Kodey Pro move motor backward chooser</string>
 
     <!-- Kodey tone strings -->
     <string name="kodey_tone_do">Do</string>

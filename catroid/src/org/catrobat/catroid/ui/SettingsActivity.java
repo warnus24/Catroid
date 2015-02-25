@@ -44,6 +44,8 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	private static final String SETTINGS_SHOW_LEGO_NXT_BRICKS = "setting_mindstorms_enable_nxt_bricks";
 	public static final String SETTINGS_SHOW_PARROT_AR_DRONE_BRICKS = "setting_parrot_ar_drone_bricks";
 	public static final String SETTINGS_PARROT_AR_DRONE_CATROBAT_TERMS_OF_SERVICE_ACCEPTED_PERMANENTLY = "setting_parrot_ar_drone_catrobat_terms_of_service_accepted_permanently";
+	private static final String SETTINGS_SHOW_KODEY_BRICKS = "setting_enable_kodey_bricks";
+	public static final String SETTINGS_SHOW_ARDUINO_BRICKS = "setting_enable_arduino_bricks";
 	PreferenceScreen screen = null;
 
 	public static final String NXT_SENSOR_1 = "setting_mindstorms_nxt_sensor_1";
@@ -51,11 +53,9 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 	public static final String NXT_SENSOR_3 = "setting_mindstorms_nxt_sensor_3";
 	public static final String NXT_SENSOR_4 = "setting_mindstorms_nxt_sensor_4";
 
-	public static final String SETTINGS_SHOW_ARDUINO_BRICKS = "setting_arduino_enable_arduino_bricks";
 	public static final String ARDUINO_SENSOR_ANALOG = "setting_arduino_sensor_analog";
 	public static final String ARDUINO_SENSOR_DIGITAL = "setting_arduino_sensor_digital";
 
-	private static final String SETTINGS_SHOW_KODEY_BRICKS = "setting_kodey_bricks";
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -99,7 +99,19 @@ public class SettingsActivity extends SherlockPreferenceActivity {
 			legoPreference.setEnabled(false);
 			screen.removePreference(legoPreference);
 		}
+/*
+		if (!BuildConfig.FEATURE_ARDUINO_ENABLED) {
+			PreferenceScreen arduinoPreference = (PreferenceScreen) findPreference("setting_arduino_bricks");
+			arduinoPreference.setEnabled(false);
+			screen.removePreference(arduinoPreference);
+		}
 
+		if (!BuildConfig.FEATURE_KODEY_PRO_ENABLED) {
+			PreferenceScreen kodeyPreference = (PreferenceScreen) findPreference("setting_kodey_bricks");
+			kodeyPreference.setEnabled(false);
+			screen.removePreference(kodeyPreference);
+		}
+*/
 		if (!BuildConfig.FEATURE_PARROT_AR_DRONE_ENABLED) {
 			CheckBoxPreference dronePreference = (CheckBoxPreference) findPreference(SETTINGS_SHOW_PARROT_AR_DRONE_BRICKS);
 			dronePreference.setEnabled(false);

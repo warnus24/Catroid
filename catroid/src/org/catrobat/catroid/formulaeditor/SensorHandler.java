@@ -178,6 +178,13 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 				if (nxtService != null) {
 					return Double.valueOf(nxtService.getSensorValue(sensor));
 				}
+			case KODEY_FRONT_LEFT:
+			case KODEY_FRONT_RIGHT:
+			case KODEY_SIDE_LEFT:
+			case KODEY_SIDE_RIGHT:
+			case KODEY_BOTTOM_LEFT:
+			case KODEY_BOTTOM_RIGHT:
+				return 0d;
 		}
 		return 0d;
 	}

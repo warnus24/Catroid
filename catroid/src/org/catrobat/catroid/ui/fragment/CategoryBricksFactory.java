@@ -174,6 +174,7 @@ public class CategoryBricksFactory {
 		controlBrickList.add(new ForeverBrick());
 		controlBrickList.add(new IfLogicBeginBrick(0));
 		controlBrickList.add(new RepeatBrick(BrickValues.REPEAT));
+		controlBrickList.add(new KodeySensorBrick());
 
 		return controlBrickList;
 	}
@@ -260,6 +261,8 @@ public class CategoryBricksFactory {
 		soundBrickList.add(new ChangeVolumeByNBrick(new Formula(defaultValueChangeVolumeBy)));
 
 		soundBrickList.add(new SpeakBrick(BrickValues.SPEAK));
+		soundBrickList.add(new KodeyPlayMusicBrick(KodeyPlayMusicBrick.Tone.DO,
+				BrickValues.KODEY_DURATION));
 
 		return soundBrickList;
 	}
@@ -282,6 +285,7 @@ public class CategoryBricksFactory {
 			looksBrickList.add(new LedOffBrick());
 			looksBrickList.add(new LedOnBrick());
 		}
+		looksBrickList.add(new KodeyRGBLightBrick(KodeyRGBLightBrick.Eye.Both, BrickValues.KODEY_VALUE_RED, BrickValues.KODEY_VALUE_GREEN,BrickValues.KODEY_VALUE_BLUE));
 
 		return looksBrickList;
 	}
@@ -290,6 +294,7 @@ public class CategoryBricksFactory {
 		List<Brick> userVariablesBrickList = new ArrayList<Brick>();
 		userVariablesBrickList.add(new SetVariableBrick(0));
 		userVariablesBrickList.add(new ChangeVariableBrick(0));
+
 		return userVariablesBrickList;
 	}
 
@@ -308,6 +313,7 @@ public class CategoryBricksFactory {
 	private List<Brick> setupArduinoCategoryList() {
 		List<Brick> arduinoBrickList = new ArrayList<Brick>();
 		arduinoBrickList.add(new ArduinoSendBrick());
+
 		return arduinoBrickList;
 	}
 
@@ -317,11 +323,12 @@ public class CategoryBricksFactory {
 				BrickValues.KODEY_SPEED));
 		kodeyBrickList.add(new KodeyMotorBackwardActionBrick(KodeyMotorBackwardActionBrick.Motor.MOTOR_A,
 				BrickValues.KODEY_SPEED));
+		kodeyBrickList.add(new KodeyMotorStopBrick(KodeyMotorStopBrick.Motor.ALL_MOTORS));
 		kodeyBrickList.add(new KodeyPlayMusicBrick(KodeyPlayMusicBrick.Tone.DO,
 				BrickValues.KODEY_DURATION));
-		kodeyBrickList.add(new KodeyMotorStopBrick(KodeyMotorStopBrick.Motor.ALL_MOTORS));
 		kodeyBrickList.add(new KodeyRGBLightBrick(KodeyRGBLightBrick.Eye.Both, BrickValues.KODEY_VALUE_RED, BrickValues.KODEY_VALUE_GREEN,BrickValues.KODEY_VALUE_BLUE));
 		kodeyBrickList.add(new KodeySensorBrick());
+
 		return kodeyBrickList;
 	}
 
