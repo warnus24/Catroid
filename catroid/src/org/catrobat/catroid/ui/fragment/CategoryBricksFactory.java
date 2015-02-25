@@ -75,6 +75,12 @@ import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.PointInDirectionBrick.Direction;
 import org.catrobat.catroid.content.bricks.PointToBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.RoboMeMoveBackwardBrick;
+import org.catrobat.catroid.content.bricks.RoboMeMoveForwardBrick;
+import org.catrobat.catroid.content.bricks.RoboMeTurnLeftAngleBrick;
+import org.catrobat.catroid.content.bricks.RoboMeTurnLeftSpeedBrick;
+import org.catrobat.catroid.content.bricks.RoboMeTurnRightAngleBrick;
+import org.catrobat.catroid.content.bricks.RoboMeTurnRightSpeedBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
 import org.catrobat.catroid.content.bricks.SetBrightnessBrick;
 import org.catrobat.catroid.content.bricks.SetGhostEffectBrick;
@@ -320,6 +326,8 @@ public class CategoryBricksFactory {
 		roboMeBrickList.add(new RoboMeTurnLeftAngleBrick(BrickValues.ROBOME_TURN_BRICK_DEFAULT_ANGLE, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
 		roboMeBrickList.add(new RoboMeTurnRightAngleBrick(BrickValues.ROBOME_TURN_BRICK_DEFAULT_ANGLE, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
 		//todo ..... etc.
+
+		return roboMeBrickList;
 	}
 
 	private boolean isBackground(Sprite sprite) {
