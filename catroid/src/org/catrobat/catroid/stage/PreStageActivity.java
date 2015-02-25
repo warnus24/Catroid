@@ -40,6 +40,8 @@ import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.wowwee.robome.RoboMe;
+
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BluetoothManager;
@@ -52,6 +54,7 @@ import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
+import org.catrobat.catroid.robome.RoboMeInitializer;
 import org.catrobat.catroid.ui.BaseActivity;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import org.catrobat.catroid.utils.LedUtil;
@@ -82,6 +85,9 @@ public class PreStageActivity extends BaseActivity {
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
 
 	private DroneInitializer droneInitializer = null;
+
+	private static RoboMe roboMe;
+	private RoboMeInitializer roboMeInitializer = null;
 
 	private Intent returnToActivityIntent = null;
 
@@ -178,6 +184,13 @@ public class PreStageActivity extends BaseActivity {
 		return droneInitializer;
 	}
 
+	public RoboMeInitializer getRoboMeInitializer() {
+		if (roboMeInitializer == null) {
+			roboMeInitializer = new RoboMeInitializer(this, returnToActivityIntent);
+		}
+		return roboMeInitializer;
+	}
+
 	protected boolean hasFlash() {
 		boolean hasCamera = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 		boolean hasLed = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
@@ -221,6 +234,10 @@ public class PreStageActivity extends BaseActivity {
 			droneInitializer.onPrestageActivityResume();
 		}
 
+		if (roboMeInitializer != null) {
+			roboMeInitializer.onPrestageActivityResume();
+		}
+
 		super.onResume();
 		if (requiredResourceCounter == 0) {
 			finish();
@@ -233,6 +250,10 @@ public class PreStageActivity extends BaseActivity {
 			droneInitializer.onPrestageActivityPause();
 		}
 
+		if (roboMeInitializer != null) {
+			roboMeInitializer.onPrestageActivityPause();
+		}
+
 		super.onPause();
 	}
 
@@ -240,6 +261,10 @@ public class PreStageActivity extends BaseActivity {
 	protected void onDestroy() {
 		if (droneInitializer != null) {
 			droneInitializer.onPrestageActivityDestroy();
+		}
+
+		if (roboMeInitializer != null) {
+			roboMeInitializer.onPrestageActivityDestroy();
 		}
 
 		super.onDestroy();

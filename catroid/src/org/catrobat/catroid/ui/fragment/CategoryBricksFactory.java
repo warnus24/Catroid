@@ -311,6 +311,17 @@ public class CategoryBricksFactory {
 		return droneBrickList;
 	}
 
+	private List<Brick> setupRoboMeCategoryList() {
+		List<Brick> roboMeBrickList = new ArrayList<Brick>();
+		roboMeBrickList.add(new RoboMeMoveForwardBrick(BrickValues.ROBOME_MOVE_BRICK_DEFAULT_SPEED, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
+		roboMeBrickList.add(new RoboMeMoveBackwardBrick(BrickValues.ROBOME_MOVE_BRICK_DEFAULT_SPEED, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
+		roboMeBrickList.add(new RoboMeTurnLeftSpeedBrick(BrickValues.ROBOME_MOVE_BRICK_DEFAULT_SPEED, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
+		roboMeBrickList.add(new RoboMeTurnRightSpeedBrick(BrickValues.ROBOME_MOVE_BRICK_DEFAULT_SPEED, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
+		roboMeBrickList.add(new RoboMeTurnLeftAngleBrick(BrickValues.ROBOME_TURN_BRICK_DEFAULT_ANGLE, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
+		roboMeBrickList.add(new RoboMeTurnRightAngleBrick(BrickValues.ROBOME_TURN_BRICK_DEFAULT_ANGLE, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
+		//todo ..... etc.
+	}
+
 	private boolean isBackground(Sprite sprite) {
 		if (ProjectManager.getInstance().getCurrentProject().getSpriteList().indexOf(sprite) == 0) {
 			return true;

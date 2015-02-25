@@ -66,6 +66,11 @@ public final class BrickValues {
 	public static final int DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS = 1000;
 	public static final float DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT = 0.2f;
 
+	//Constants RoboMe
+	public static final int ROBOME_MOVE_BRICK_DEFAULT_SPEED = 1;
+	public static final int ROBOME_TURN_BRICK_DEFAULT_ANGLE = 90;
+	public static final int ROBOME_MOVE_BRICK_DEFAULT_CYCLES = 1;
+
     //Constants Variables
 	public static final double SET_VARIABLE = 0d;
 	public static final double CHANGE_VARIABLE = 0d;
