@@ -157,6 +157,10 @@ public class BrickCategoryFragment extends SherlockListFragment {
 			categories.add(inflater.inflate(R.layout.brick_category_lego_nxt, null));
 		}
 
+		if (sharedPreferences.getBoolean("setting_robome_bricks", false)) {
+			categories.add(inflater.inflate(R.layout.brick_category_robome, null));
+		}
+
 		categories.add(inflater.inflate(R.layout.brick_category_uservariables, null));
 
 		if (BuildConfig.FEATURE_USERBRICKS_ENABLED && brickAdapter.getUserBrick() == null) {

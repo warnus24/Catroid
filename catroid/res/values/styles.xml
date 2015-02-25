@@ -512,6 +512,14 @@
         <item name="android:background" >@drawable/brick_selection_background_lego</item >
         <item name="android:drawableRight" >@drawable/main_menu_button_arrow_lego</item >
     </style >
+
+    <style name="BrickCategoryText.RoboMe">
+        <item name="android:background" >@drawable/brick_selection_background_lego</item >
+        <item name="android:drawableRight" >@drawable/main_menu_button_arrow_lego</item >
+       <!-- <item name="android:background">@drawable/brick_selection_background_robome</item >
+        <item name="android:drawableRight">@drawable/main_menu_button_arrow_robome</item >-->
+        <!--//TODO choose new color for roboMe-->
+    </style >
     
     <style name="userBrickDataTextBackground" >
  		<item name="android:background" >@drawable/brick_data_round_rect</item >

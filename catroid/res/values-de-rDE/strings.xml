@@ -66,6 +66,8 @@
   <string name="preference_description_select_camera">Wähle eine Kamera für die Gesichtserkennung</string>
   <string name="preference_title_enable_quadcopter_bricks">ARDrone 2.0 Bausteine</string>
   <string name="preference_description_quadcopter_bricks">Erlaubt dir, die ARDrone 2.0 zu steuern.</string>
+  <string name="preference_description_robome_bricks">Erlaube Steuerung von WowWee RoboMe Robotern</string>
+  <string name="preference_title_enable_robome_bricks">RoboMe Bausteine</string>
   <string name="dialog_new_object_pocketpaint">Bild zeichnen</string>
   <string name="dialog_new_object_gallery">Bild auswählen</string>
   <string name="dialog_new_object_camera">Bild aufnehmen</string>
@@ -238,6 +240,7 @@
   <string name="category_user_bricks">Meine Bausteine</string>
   <string name="category_lego_nxt">Lego NXT</string>
   <string name="category_drone">ARDrone</string>
+  <string name="category_robome">RoboMe</string>
   <string name="brick_place_at">"Setze an Position "</string>
   <string name="x_label">"X: "</string>
   <string name="y_label">"Y: "</string>

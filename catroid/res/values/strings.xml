@@ -75,6 +75,8 @@
     <string name="preference_description_select_camera">Select camera which is used for face detection</string>
 	<string name="preference_title_enable_quadcopter_bricks">ARDrone 2.0 bricks</string>
     <string name="preference_description_quadcopter_bricks">Allow to control the ARDrone 2.0 quadcopter</string>
+    <string name="preference_description_robome_bricks">Allow to control WowWee RoboMe robots</string>
+    <string name="preference_title_enable_robome_bricks">RoboMe bricks</string>
     <!--  -->
 
 
@@ -331,6 +333,7 @@
     <string name="category_user_bricks">My Bricks</string>
     <string name="category_lego_nxt">Lego NXT</string>
     <string name="category_drone">ARDrone</string>
+    <string name="category_robome">RoboMe</string>
     <!--  -->
 
 
