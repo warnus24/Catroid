@@ -67,6 +67,7 @@ import org.catrobat.catroid.content.bricks.KodeyMotorStopBrick;
 import org.catrobat.catroid.content.bricks.KodeyPlayMusicBrick;
 import org.catrobat.catroid.content.bricks.KodeyRGBLightBrick;
 import org.catrobat.catroid.content.bricks.KodeySensorBrick;
+import org.catrobat.catroid.content.bricks.KodeySetVariableBrick;
 import org.catrobat.catroid.content.bricks.LedOffBrick;
 import org.catrobat.catroid.content.bricks.LedOnBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
@@ -105,6 +106,7 @@ import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 import org.catrobat.catroid.formulaeditor.Operators;
+import org.catrobat.catroid.formulaeditor.Sensors;
 import org.catrobat.catroid.ui.UserBrickScriptActivity;
 
 import java.util.ArrayList;
@@ -294,6 +296,12 @@ public class CategoryBricksFactory {
 		List<Brick> userVariablesBrickList = new ArrayList<Brick>();
 		userVariablesBrickList.add(new SetVariableBrick(0));
 		userVariablesBrickList.add(new ChangeVariableBrick(0));
+		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_FRONT_LEFT.toString()));
+		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_FRONT_RIGHT.toString()));
+		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_SIDE_LEFT.toString()));
+		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_SIDE_RIGHT.toString()));
+		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_BOTTOM_LEFT.toString()));
+		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_BOTTOM_RIGHT.toString()));
 
 		return userVariablesBrickList;
 	}
@@ -328,6 +336,12 @@ public class CategoryBricksFactory {
 				BrickValues.KODEY_DURATION));
 		kodeyBrickList.add(new KodeyRGBLightBrick(KodeyRGBLightBrick.Eye.Both, BrickValues.KODEY_VALUE_RED, BrickValues.KODEY_VALUE_GREEN,BrickValues.KODEY_VALUE_BLUE));
 		kodeyBrickList.add(new KodeySensorBrick());
+		kodeyBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_FRONT_LEFT.toString()));
+		kodeyBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_FRONT_RIGHT.toString()));
+		kodeyBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_SIDE_LEFT.toString()));
+		kodeyBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_SIDE_RIGHT.toString()));
+		kodeyBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_BOTTOM_LEFT.toString()));
+		kodeyBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_BOTTOM_RIGHT.toString()));
 
 		return kodeyBrickList;
 	}
