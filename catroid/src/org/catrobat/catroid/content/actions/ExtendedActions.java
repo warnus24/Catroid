@@ -466,4 +466,12 @@ public class ExtendedActions extends Actions {
 		action.setDuration(duration);
 		return action;
 	}
+
+	public static TemporalAction roboMeMoveForward(Sprite sprite, Formula speed, Formula cycles) {
+		RoboMeMoveForwardAction action = action(RoboMeMoveForwardAction.class);
+		action.setSprite(sprite);
+		action.setSpeed(speed);
+		action.setCycles(cycles);
+		return action;
+	}
 }

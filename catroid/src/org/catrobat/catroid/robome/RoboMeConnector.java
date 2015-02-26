@@ -30,6 +30,10 @@ public class RoboMeConnector implements RoboMe.RoboMeListener {
 		}
 	}
 
+	public static RoboMe getRoboMe() {
+		return roboMe;
+	}
+
 	@Override
 	public void commandReceived(RoboMeCommands.IncomingRobotCommand incomingRobotCommand) {
 		if(get_mood_enabled && incomingRobotCommand.isMoodValue()){
@@ -71,7 +75,7 @@ public class RoboMeConnector implements RoboMe.RoboMeListener {
 		Log.d(TAG, "Volume changed to " + v);
 	}
 
-	public void moveForward(int speed, int cycles){
+	public static void moveForward(int speed, int cycles){
 		switch (speed) {
 			case RoboMeConstants.ROBOME_MOVE_SPEED_1:
 				roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed1, cycles);
