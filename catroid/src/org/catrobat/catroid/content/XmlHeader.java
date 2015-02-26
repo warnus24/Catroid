@@ -44,6 +44,7 @@ public class XmlHeader implements Serializable {
 
 	private boolean isArudinoProject = false;
 	private boolean isLegoProject = false;
+	private boolean isKodeyProject = false;
 
 	private float catrobatLanguageVersion;
 
@@ -175,5 +176,13 @@ public class XmlHeader implements Serializable {
 
 	void setLegoProject(boolean isLegoProject) {
 		this.isLegoProject = isLegoProject;
+	}
+
+	boolean isKodeyProject() {
+		return isKodeyProject;
+	}
+
+	void setKodeyProject(boolean isKodeyProject) {
+		this.isKodeyProject = isKodeyProject;
 	}
 }

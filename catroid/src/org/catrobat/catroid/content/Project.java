@@ -222,6 +222,14 @@ public class Project implements Serializable {
 		xmlHeader.setLegoProject(isLegoProject);
 	}
 
+	public boolean checkIfKodeyProject() {
+		return xmlHeader.isKodeyProject();
+	}
+
+	public void setIsKodeyProject(boolean isKodeyProject) {
+		xmlHeader.setKodeyProject(isKodeyProject);
+	}
+
 	public boolean containsArduinoBricks() {
 		boolean isArduinoProject = false;
 		for (Sprite currentSprite : spriteList) {

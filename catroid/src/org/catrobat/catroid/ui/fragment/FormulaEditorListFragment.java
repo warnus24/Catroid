@@ -99,6 +99,13 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
 			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
 			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
+			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position};
+
+	private static final int[] SENSOR_ITEMS_WITH_LEGO = { R.string.formula_editor_sensor_x_acceleration,
+			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
+			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
+			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
+			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
 			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position,
 			R.string.formula_editor_sensor_lego_nxt_1, R.string.formula_editor_sensor_lego_nxt_2,
 			R.string.formula_editor_sensor_lego_nxt_3, R.string.formula_editor_sensor_lego_nxt_4};
@@ -107,9 +114,20 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
 			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
 			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
+			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
+			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position,
 			R.string.formula_editor_function_arduino_read_pin_value_digital,
 			R.string.formula_editor_function_arduino_read_pin_value_analog };
 
+	private static final int[] SENSOR_ITEMS_WITH_KODEY = { R.string.formula_editor_sensor_x_acceleration,
+			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
+			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
+			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
+			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
+			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position,
+			R.string.kodey_sensor_front_left, R.string.kodey_sensor_front_right,
+			R.string.kodey_sensor_side_left, R.string.kodey_sensor_side_right,
+			R.string.kodey_sensor_bottom_left, R.string.kodey_sensor_bottom_right};
 
 	private String tag;
 	private String[] items;
@@ -171,21 +189,23 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
-		if ((sharedPreferences.getBoolean("setting_arduino_bricks", false)
+		ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
+		ProjectManager.getInstance().getCurrentProject().setIsKodeyProject(false);
+
+		if ((sharedPreferences.getBoolean("setting_enable_arduino_bricks", false)
 				|| ProjectManager.getInstance().getCurrentProject().checkIfArduinoProject() || ProjectManager
 				.getInstance().getCurrentProject().containsArduinoBricks())
 				&& tag == SENSOR_TAG) {
 			itemsIds = SENSOR_ITEMS_WITH_ARDUINO;
 			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(true);
-			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
-
-			//			ArduinoReceiveAction.initBluetoothConnection();
-
-		} else if (((sharedPreferences.getBoolean("setting_mindstorm_bricks", false)) || (ProjectManager.getInstance()
+		} else if (((sharedPreferences.getBoolean("setting_mindstorms_enable_nxt_bricks", false)) || (ProjectManager.getInstance()
 				.getCurrentProject().checkIfLegoProject())) && tag == SENSOR_TAG) {
-			itemsIds = SENSOR_ITEMS; //must be changed to Mindstorm Sensors
+			itemsIds = SENSOR_ITEMS_WITH_LEGO;
 			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(true);
-			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
+		} else if (((sharedPreferences.getBoolean("setting_enable_kodey_bricks", false)) || (ProjectManager.getInstance()
+				.getCurrentProject().checkIfKodeyProject())) && tag == SENSOR_TAG) {
+			itemsIds = SENSOR_ITEMS_WITH_KODEY;
+			ProjectManager.getInstance().getCurrentProject().setIsKodeyProject(true);
 		} else {
 			if (tag == OBJECT_TAG) {
 				itemsIds = OBJECT_ITEMS;
@@ -196,8 +216,6 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			} else if (tag == SENSOR_TAG) {
 				itemsIds = SENSOR_ITEMS;
 			}
-			ProjectManager.getInstance().getCurrentProject().setIsLegoProject(false);
-			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
 		}
 
 		items = new String[itemsIds.length];
