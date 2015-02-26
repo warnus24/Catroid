@@ -40,8 +40,6 @@ import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.wowwee.robome.RoboMe;
-
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.BluetoothManager;
@@ -54,6 +52,7 @@ import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.legonxt.LegoNXT;
 import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
+import org.catrobat.catroid.robome.RoboMeConnector;
 import org.catrobat.catroid.robome.RoboMeInitializer;
 import org.catrobat.catroid.ui.BaseActivity;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
@@ -86,7 +85,7 @@ public class PreStageActivity extends BaseActivity {
 
 	private DroneInitializer droneInitializer = null;
 
-	private static RoboMe roboMe;
+	private static RoboMeConnector roboMe;
 	private RoboMeInitializer roboMeInitializer = null;
 
 	private Intent returnToActivityIntent = null;

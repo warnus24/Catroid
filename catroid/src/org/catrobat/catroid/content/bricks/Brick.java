@@ -45,7 +45,9 @@ public interface Brick extends Serializable, Cloneable {
 
 		LEGO_NXT_SPEED, LEGO_NXT_DEGREES, LEGO_NXT_FREQUENCY, LEGO_NXT_DURATION_IN_SECONDS,
 
-		DRONE_TIME_TO_FLY_IN_SECONDS, DRONE_POWER_IN_PERCENT
+		DRONE_TIME_TO_FLY_IN_SECONDS, DRONE_POWER_IN_PERCENT,
+
+		ROBOME_MOVE_SPEED, ROBOME_MOVE_CYCLES
 	}
 
 	//use bitwise | for using multiple ressources in a brick

@@ -22,8 +22,40 @@
  */
 package org.catrobat.catroid.content.bricks;
 
-public class RoboMeMoveForwardBrick extends BrickBaseType {
+import android.view.View;
+
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+
+import org.catrobat.catroid.R;
+import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.actions.ExtendedActions;
+
+import java.util.List;
+
+public class RoboMeMoveForwardBrick extends RoboMeMoveBrick {
+
 	public RoboMeMoveForwardBrick(int speed, int cycles) {
+		super(speed, cycles);
+	}
+
+	public RoboMeMoveForwardBrick() { super(); }
+
+	@Override
+	protected String getBrickLabel(View view) {
+		return view.getResources().getString(R.string.brick_robome_move_forward);
+		//TODO add german string resource
+	}
+
+	@Override
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
+		sequence.addAction(ExtendedActions.roboMeMoveForward(sprite,
+				getFormulaWithBrickField(BrickField.ROBOME_MOVE_SPEED),
+				getFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES)));
+		return null;
+	}
+
+	@Override
+	public void onClick(View v) {
 
 	}
 }

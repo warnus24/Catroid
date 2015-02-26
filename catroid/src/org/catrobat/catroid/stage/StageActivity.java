@@ -37,6 +37,7 @@ import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.io.StageAudioFocus;
+import org.catrobat.catroid.robome.RoboMeConnector;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.VibratorUtil;
@@ -48,6 +49,7 @@ public class StageActivity extends AndroidApplication {
 	private StageDialog stageDialog;
 
 	private DroneConnection droneConnection = null;
+	private RoboMeConnector roboMeConnection = null;
 
 	public static final int STAGE_ACTIVITY_FINISH = 7777;
 
