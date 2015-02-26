@@ -116,8 +116,7 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
 			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
 			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position,
-			R.string.formula_editor_function_arduino_read_pin_value_digital,
-			R.string.formula_editor_function_arduino_read_pin_value_analog };
+			R.string.formula_editor_function_arduino_read_pin_value_digital, R.string.formula_editor_function_arduino_read_pin_value_analog };
 
 	private static final int[] SENSOR_ITEMS_WITH_KODEY = { R.string.formula_editor_sensor_x_acceleration,
 			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
@@ -125,9 +124,9 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
 			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
 			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position,
-			R.string.kodey_sensor_front_left, R.string.kodey_sensor_front_right,
-			R.string.kodey_sensor_side_left, R.string.kodey_sensor_side_right,
-			R.string.kodey_sensor_bottom_left, R.string.kodey_sensor_bottom_right};
+			R.string.formula_editor_kodey_sensor_front_left, R.string.formula_editor_kodey_sensor_front_right,
+			R.string.formula_editor_kodey_sensor_side_left, R.string.formula_editor_kodey_sensor_side_right,
+			R.string.formula_editor_kodey_sensor_bottom_left, R.string.formula_editor_kodey_sensor_bottom_right};
 
 	private String tag;
 	private String[] items;

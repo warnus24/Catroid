@@ -219,22 +219,22 @@ public class KodeySetVariableBrick extends FormulaBrick implements OnClickListen
 		} else {
 			if (stringInPrototype.equalsIgnoreCase(Sensors.KODEY_FRONT_LEFT.toString())) {
 				textSetVariable.setText(context.getResources().getString(
-						R.string.kodey_sensor_front_left));
+						R.string.formula_editor_kodey_sensor_front_left));
 			} else if (stringInPrototype.equalsIgnoreCase(Sensors.KODEY_FRONT_RIGHT.toString())) {
 				textSetVariable.setText(context.getResources().getString(
-						R.string.kodey_sensor_front_right));
+						R.string.formula_editor_kodey_sensor_front_right));
 			} else if (stringInPrototype.equalsIgnoreCase(Sensors.KODEY_SIDE_LEFT.toString())) {
 				textSetVariable.setText(context.getResources().getString(
-						R.string.kodey_sensor_side_left));
+						R.string.formula_editor_kodey_sensor_side_left));
 			} else if (stringInPrototype.equalsIgnoreCase(Sensors.KODEY_SIDE_RIGHT.toString())) {
 				textSetVariable.setText(context.getResources().getString(
-						R.string.kodey_sensor_side_right));
+						R.string.formula_editor_kodey_sensor_side_right));
 			} else if (stringInPrototype.equalsIgnoreCase(Sensors.KODEY_BOTTOM_LEFT.toString())) {
 				textSetVariable.setText(context.getResources().getString(
-						R.string.kodey_sensor_bottom_left));
+						R.string.formula_editor_kodey_sensor_bottom_left));
 			} else if (stringInPrototype.equalsIgnoreCase(Sensors.KODEY_BOTTOM_RIGHT.toString())) {
 				textSetVariable.setText(context.getResources().getString(
-						R.string.kodey_sensor_bottom_right));
+						R.string.formula_editor_kodey_sensor_bottom_right));
 			} else {
 				textSetVariable.setText(stringInPrototype);
 			}

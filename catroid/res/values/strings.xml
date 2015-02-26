@@ -776,6 +776,12 @@
     <string name="formula_editor_sensor_lego_nxt_2">NXT_sensor_2</string>
     <string name="formula_editor_sensor_lego_nxt_3">NXT_sensor_3</string>
     <string name="formula_editor_sensor_lego_nxt_4">NXT_sensor_4</string>
+    <string name="formula_editor_kodey_sensor_front_left">kodey_pro_front_left_sensor</string>
+    <string name="formula_editor_kodey_sensor_front_right">kodey_pro_front_right_sensor</string>
+    <string name="formula_editor_kodey_sensor_side_left">kodey_pro_side_left_sensor</string>
+    <string name="formula_editor_kodey_sensor_side_right">kodey_pro_side_right_sensor</string>
+    <string name="formula_editor_kodey_sensor_bottom_left">kodey_pro_bottom_left_sensor</string>
+    <string name="formula_editor_kodey_sensor_bottom_right">kodey_pro_bottom_right_sensor</string>
     <string name="formula_editor_object_x">position_x</string>
     <string name="formula_editor_object_y">position_y</string>
     <string name="formula_editor_object_ghosteffect">transparency</string>

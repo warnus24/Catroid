@@ -197,7 +197,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 				LinearLayout.LayoutParams.MATCH_PARENT));
 		brickView = newBrickView;
 		fragmentView.getViewTreeObserver().addOnGlobalLayoutListener(this);
-
 	}
 
 	private void updateBrickViewAndFormula(Brick newBrick, Formula newFormula) {
@@ -657,7 +656,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		if (variableDeletedReceiver == null) {
 			variableDeletedReceiver = new VariableDeletedReceiver();
 		}
-
 		IntentFilter filterVariableDeleted = new IntentFilter(ScriptActivity.ACTION_VARIABLE_DELETED);
 		getActivity().registerReceiver(variableDeletedReceiver, filterVariableDeleted);
 		BottomBar.hideBottomBar(getSherlockActivity());
