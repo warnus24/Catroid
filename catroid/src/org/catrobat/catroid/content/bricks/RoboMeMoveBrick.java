@@ -73,8 +73,10 @@ public abstract class RoboMeMoveBrick extends FormulaBrick implements View.OnCli
 		speedSpinner.setFocusable(false);
 
 		ArrayAdapter<CharSequence> directionAdapter = ArrayAdapter.createFromResource(context, R.array.robome_move_chooser, android.R.layout.simple_spinner_item);
+		directionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		ArrayAdapter<CharSequence> speedAdapter = ArrayAdapter.createFromResource(context, R.array.robome_speed_chooser, android.R.layout.simple_spinner_item);
+		speedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		directionSpinner.setAdapter(directionAdapter);
 		speedSpinner.setAdapter(speedAdapter);
@@ -154,11 +156,9 @@ public abstract class RoboMeMoveBrick extends FormulaBrick implements View.OnCli
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parent) {}
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
 		});
-
-		speedSpinner.setSelection(speedEnum.ordinal());
-		directionSpinner.setSelection(directionEnum.ordinal());
 
 		return view;
 	}
@@ -205,7 +205,8 @@ public abstract class RoboMeMoveBrick extends FormulaBrick implements View.OnCli
 	public void onClick(View view) {
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
+		} else {
+			FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES));
 		}
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES));
 	}
 }

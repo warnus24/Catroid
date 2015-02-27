@@ -50,9 +50,4 @@ public class RoboMeMoveForwardBrick extends RoboMeMoveBrick {
 				getFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES)));
 		return null;
 	}
-
-	@Override
-	public void onClick(View v) {
-
-	}
 }
