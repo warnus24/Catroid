@@ -38,6 +38,25 @@
         <item >@string/nxt_motor_all</item >
     </string-array >
 
+    <!-- RoboMe Speed spinner -->
+    <string-array name="robome_speed_chooser">
+        <item>@string/robome_speed_1</item>
+        <item>@string/robome_speed_2</item>
+        <item>@string/robome_speed_3</item>
+        <item>@string/robome_speed_4</item>
+        <item>@string/robome_speed_5</item>
+    </string-array>
+
+    <string-array name="robome_move_chooser">
+        <item>@string/robome_move_forward</item>
+        <item>@string/robome_move_backward</item>
+    </string-array>
+
+    <string-array name="robome_turn_chooser">
+        <item>@string/robome_turn_left</item>
+        <item>@string/robome_turn_right</item>
+    </string-array>
+
     <!-- User Brick UI Data Editor Fragment -->
     <string-array name="data_editor_buttons" >
  		<item >@string/add_text</item >
@@ -45,6 +64,4 @@
  		<item >@string/add_line_break</item >
  		<item >@string/close</item >
  	</string-array >
-
-
 </resources>

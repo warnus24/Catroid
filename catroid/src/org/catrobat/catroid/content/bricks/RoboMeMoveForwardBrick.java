@@ -34,11 +34,9 @@ import java.util.List;
 
 public class RoboMeMoveForwardBrick extends RoboMeMoveBrick {
 
-	public RoboMeMoveForwardBrick(int speed, int cycles) {
-		super(speed, cycles);
+	public RoboMeMoveForwardBrick(Direction direction, Speed speed, int cycles) {
+		super(direction, speed, cycles);
 	}
-
-	public RoboMeMoveForwardBrick() { super(); }
 
 	@Override
 	protected String getBrickLabel(View view) {
@@ -48,8 +46,7 @@ public class RoboMeMoveForwardBrick extends RoboMeMoveBrick {
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.roboMeMoveForward(sprite,
-				getFormulaWithBrickField(BrickField.ROBOME_MOVE_SPEED),
+		sequence.addAction(ExtendedActions.roboMeMoveForward(sprite, speedEnum, directionEnum,
 				getFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES)));
 		return null;
 	}

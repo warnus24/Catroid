@@ -37,7 +37,7 @@ public class RoboMeInitializer {
 		this.returnToActivityIntent = returnToActivityIntent;
 	}
 
-	public void initilize() {
+	public void initiliaze() {
 		initializeRoboMe();
 	}
 

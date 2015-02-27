@@ -75,12 +75,8 @@ import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.PointInDirectionBrick.Direction;
 import org.catrobat.catroid.content.bricks.PointToBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
-import org.catrobat.catroid.content.bricks.RoboMeMoveBackwardBrick;
+import org.catrobat.catroid.content.bricks.RoboMeMoveBrick;
 import org.catrobat.catroid.content.bricks.RoboMeMoveForwardBrick;
-import org.catrobat.catroid.content.bricks.RoboMeTurnLeftAngleBrick;
-import org.catrobat.catroid.content.bricks.RoboMeTurnLeftSpeedBrick;
-import org.catrobat.catroid.content.bricks.RoboMeTurnRightAngleBrick;
-import org.catrobat.catroid.content.bricks.RoboMeTurnRightSpeedBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
 import org.catrobat.catroid.content.bricks.SetBrightnessBrick;
 import org.catrobat.catroid.content.bricks.SetGhostEffectBrick;
@@ -136,6 +132,8 @@ public class CategoryBricksFactory {
 			tempList = setupUserBricksCategoryList();
 		} else if (category.equals(context.getString(R.string.category_lego_nxt))) {
 			tempList = setupLegoNxtCategoryList();
+		} else if (category.equals(context.getString(R.string.category_robome))) {
+			tempList = setupRoboMeCategoryList();
 		} else if (category.equals(context.getString(R.string.category_drone))) {
 			tempList = setupDroneCategoryList();
 		}
@@ -319,13 +317,8 @@ public class CategoryBricksFactory {
 
 	private List<Brick> setupRoboMeCategoryList() {
 		List<Brick> roboMeBrickList = new ArrayList<Brick>();
-		roboMeBrickList.add(new RoboMeMoveForwardBrick(BrickValues.ROBOME_MOVE_BRICK_DEFAULT_SPEED, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
-		roboMeBrickList.add(new RoboMeMoveBackwardBrick(BrickValues.ROBOME_MOVE_BRICK_DEFAULT_SPEED, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
-		roboMeBrickList.add(new RoboMeTurnLeftSpeedBrick(BrickValues.ROBOME_MOVE_BRICK_DEFAULT_SPEED, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
-		roboMeBrickList.add(new RoboMeTurnRightSpeedBrick(BrickValues.ROBOME_MOVE_BRICK_DEFAULT_SPEED, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
-		roboMeBrickList.add(new RoboMeTurnLeftAngleBrick(BrickValues.ROBOME_TURN_BRICK_DEFAULT_ANGLE, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
-		roboMeBrickList.add(new RoboMeTurnRightAngleBrick(BrickValues.ROBOME_TURN_BRICK_DEFAULT_ANGLE, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
-		//todo ..... etc.
+		roboMeBrickList.add(new RoboMeMoveForwardBrick(RoboMeMoveBrick.Direction.FORWARD, RoboMeMoveBrick.Speed.SPEED1, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
+		//todo add all bricks for roboMe
 
 		return roboMeBrickList;
 	}

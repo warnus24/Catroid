@@ -349,6 +349,23 @@
         <item name="android:background" >@drawable/brick_cyan_3h</item >
     </style >
 
+    <style name="BrickContainer.RoboMe"></style>
+
+    <style name="BrickContainer.RoboMe.Small">
+        <item name="android:minHeight">@dimen/brick_height_small</item>
+        <item name="android:background">@drawable/brick_yellow_1h</item>
+    </style>
+
+    <style name="BrickContainer.RoboMe.Medium">
+        <item name="android:minHeight">@dimen/brick_height_medium</item>
+        <item name="android:background">@drawable/brick_yellow_2h</item>
+    </style>
+
+    <style name="BrickContainer.RoboMe.Big">
+        <item name="android:minHeight">@dimen/brick_height_big</item>
+        <item name="android:background">@drawable/brick_yellow_3h</item>
+    </style>
+
     <style name="BrickContainer.Control" ></style >
 
     <style name="BrickContainer.Control.Small" >
@@ -518,7 +535,7 @@
         <item name="android:drawableRight" >@drawable/main_menu_button_arrow_lego</item >
        <!-- <item name="android:background">@drawable/brick_selection_background_robome</item >
         <item name="android:drawableRight">@drawable/main_menu_button_arrow_robome</item >-->
-        <!--//TODO choose new color for roboMe-->
+        <!--TODO choose new color for roboMe-->
     </style >
     
     <style name="userBrickDataTextBackground" >

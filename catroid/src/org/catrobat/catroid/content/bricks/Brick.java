@@ -47,7 +47,7 @@ public interface Brick extends Serializable, Cloneable {
 
 		DRONE_TIME_TO_FLY_IN_SECONDS, DRONE_POWER_IN_PERCENT,
 
-		ROBOME_MOVE_SPEED, ROBOME_MOVE_CYCLES
+		ROBOME_MOVE_CYCLES
 	}
 
 	//use bitwise | for using multiple ressources in a brick

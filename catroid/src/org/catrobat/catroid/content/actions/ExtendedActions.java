@@ -35,6 +35,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorTurnAngleBrick;
+import org.catrobat.catroid.content.bricks.RoboMeMoveBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 
@@ -467,10 +468,11 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static TemporalAction roboMeMoveForward(Sprite sprite, Formula speed, Formula cycles) {
+	public static TemporalAction roboMeMoveForward(Sprite sprite, RoboMeMoveBrick.Speed speedEnum, RoboMeMoveBrick.Direction directionEnum, Formula cycles) {
 		RoboMeMoveForwardAction action = action(RoboMeMoveForwardAction.class);
 		action.setSprite(sprite);
-		action.setSpeed(speed);
+		action.setSpeedEnum(speedEnum);
+		action.setDirection(directionEnum);
 		action.setCycles(cycles);
 		return action;
 	}

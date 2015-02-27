@@ -559,6 +559,21 @@
     <string name="nxt_motor_all">All</string>
     <!--  -->
 
+    <!-- RoboMe Strings -->
+    <string name="brick_robome_move_forward">Move forward</string>
+    <string name="brick_robome_move">RoboMe Move</string>
+    <string name="robome_cycles">Cycles</string>
+    <string name="robome_speed_1">Speed 1</string>
+    <string name="robome_speed_2">Speed 2</string>
+    <string name="robome_speed_3">Speed 3</string>
+    <string name="robome_speed_4">Speed 4</string>
+    <string name="robome_speed_5">Speed 5</string>
+    <string name="robome_move_forward">Forward</string>
+    <string name="robome_move_backward">Backward</string>
+    <string name="robome_turn_left">Left</string>
+    <string name="robome_turn_right">Right</string>
+    <!--  -->
+
 
     <!-- Drone Bricks -->
     <string name="brick_drone_takeoff">Take off</string>
