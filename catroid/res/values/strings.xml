@@ -561,8 +561,8 @@
 
     <!-- RoboMe Strings -->
     <string name="brick_robome_move_forward">Move forward</string>
-    <string name="brick_robome_move">RoboMe Move</string>
-    <string name="robome_cycles">Cycles</string>
+    <string name="brick_robome_move">RoboMe move</string>
+    <string name="robome_cycles">cycles</string>
     <string name="robome_speed_1">Speed 1</string>
     <string name="robome_speed_2">Speed 2</string>
     <string name="robome_speed_3">Speed 3</string>

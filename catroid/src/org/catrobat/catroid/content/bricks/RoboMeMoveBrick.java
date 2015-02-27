@@ -48,6 +48,16 @@ public abstract class RoboMeMoveBrick extends FormulaBrick implements View.OnCli
 		initializeBrickFields(new Formula(cycles));
 	}
 
+	protected Object readResolve() {
+		if (speed != null) {
+			speedEnum = Speed.valueOf(speed);
+		}
+		if (direction != null) {
+			directionEnum = Direction.valueOf(direction);
+		}
+		return this;
+	}
+
 	private void initializeBrickFields(Formula cycles) {
 		addAllowedBrickField(BrickField.ROBOME_MOVE_CYCLES);
 		setFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES, cycles);
@@ -135,7 +145,7 @@ public abstract class RoboMeMoveBrick extends FormulaBrick implements View.OnCli
 		speedSpinner.setAdapter(speedAdapter);
 		directionSpinner.setAdapter(directionAdapter);
 
-		speedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		directionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				directionEnum = Direction.values()[position];
@@ -147,7 +157,7 @@ public abstract class RoboMeMoveBrick extends FormulaBrick implements View.OnCli
 			public void onNothingSelected(AdapterView<?> parent) {}
 		});
 
-		directionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+		speedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				speedEnum = Speed.values()[position];
@@ -159,6 +169,9 @@ public abstract class RoboMeMoveBrick extends FormulaBrick implements View.OnCli
 			public void onNothingSelected(AdapterView<?> parent) {
 			}
 		});
+
+		directionSpinner.setSelection(directionEnum.ordinal());
+		speedSpinner.setSelection(speedEnum.ordinal());
 
 		return view;
 	}
