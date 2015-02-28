@@ -437,7 +437,6 @@
   <string name="formula_editor_parse_fail">Fehler in der Eingabe!</string>
   <string name="formula_nothing_selected">Bitte Wert eingeben!</string>
   <string name="formula_editor_parse_fail_formula_too_long">Formel zu lang!</string>
-  <string name="formula_editor_choose_object_variable">Objekt-Eigenschaften</string>
   <string name="formula_editor_existing_variable">Name wird bereits verwendet!</string>
   <string name="formula_editor_bracket_open">(</string>
   <string name="formula_editor_bracket_close">)</string>
