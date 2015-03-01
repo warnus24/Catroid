@@ -171,6 +171,11 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 
+		if ((requiredResources & Brick.ROBOME) > 0) {
+			roboMeInitializer = getRoboMeInitializer();
+			roboMeInitializer.initialize();
+		}
+
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}

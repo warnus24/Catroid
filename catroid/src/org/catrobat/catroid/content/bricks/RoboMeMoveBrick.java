@@ -22,7 +22,7 @@ import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public abstract class RoboMeMoveBrick extends FormulaBrick implements View.OnClickListener {
+public class RoboMeMoveBrick extends FormulaBrick implements View.OnClickListener {
 
 	private transient View prototypeView;
 	private transient AdapterView<?> directionAdapterView;

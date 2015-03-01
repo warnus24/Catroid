@@ -29,6 +29,7 @@ import org.catrobat.catroid.stage.PreStageActivity;
 public class RoboMeInitializer {
 	private static final String TAG = RoboMeInitializer.class.getSimpleName();
 
+	public static final String INIT_ROBOME_STRING_EXTRA = "STRING_EXTRA_INIT_ROBOME";
 	private PreStageActivity prestageStageActivity;
 	private Intent returnToActivityIntent = null;
 
@@ -37,11 +38,8 @@ public class RoboMeInitializer {
 		this.returnToActivityIntent = returnToActivityIntent;
 	}
 
-	public void initiliaze() {
-		initializeRoboMe();
-	}
-
-	public void initializeRoboMe() {
+	public void initialize() {
+		this.returnToActivityIntent.putExtra(INIT_ROBOME_STRING_EXTRA, true);
 	}
 
 	public void onPrestageActivityResume() {

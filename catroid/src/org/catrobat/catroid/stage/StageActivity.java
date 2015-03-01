@@ -38,6 +38,7 @@ import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.io.StageAudioFocus;
 import org.catrobat.catroid.robome.RoboMeConnector;
+import org.catrobat.catroid.robome.RoboMeInitializer;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
 import org.catrobat.catroid.utils.LedUtil;
 import org.catrobat.catroid.utils.VibratorUtil;
@@ -64,6 +65,11 @@ public class StageActivity extends AndroidApplication {
 		if (getIntent().getBooleanExtra(DroneInitializer.INIT_DRONE_STRING_EXTRA, false)) {
 			droneConnection = new DroneConnection(this);
 		}
+
+		if (getIntent().getBooleanExtra(RoboMeInitializer.INIT_ROBOME_STRING_EXTRA, false)) {
+			roboMeConnection = new RoboMeConnector(this);
+		}
+
 		stageListener = new StageListener();
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		calculateScreenSizes();

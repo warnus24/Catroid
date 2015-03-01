@@ -76,7 +76,6 @@ import org.catrobat.catroid.content.bricks.PointInDirectionBrick.Direction;
 import org.catrobat.catroid.content.bricks.PointToBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
 import org.catrobat.catroid.content.bricks.RoboMeMoveBrick;
-import org.catrobat.catroid.content.bricks.RoboMeMoveForwardBrick;
 import org.catrobat.catroid.content.bricks.ScriptBrick;
 import org.catrobat.catroid.content.bricks.SetBrightnessBrick;
 import org.catrobat.catroid.content.bricks.SetGhostEffectBrick;
@@ -317,7 +316,7 @@ public class CategoryBricksFactory {
 
 	private List<Brick> setupRoboMeCategoryList() {
 		List<Brick> roboMeBrickList = new ArrayList<Brick>();
-		roboMeBrickList.add(new RoboMeMoveForwardBrick(RoboMeMoveBrick.Direction.FORWARD, RoboMeMoveBrick.Speed.SPEED1, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
+		roboMeBrickList.add(new RoboMeMoveBrick(RoboMeMoveBrick.Direction.FORWARD, RoboMeMoveBrick.Speed.SPEED1, BrickValues.ROBOME_MOVE_BRICK_DEFAULT_CYCLES));
 		//todo add all bricks for roboMe
 
 		return roboMeBrickList;

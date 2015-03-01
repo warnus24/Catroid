@@ -58,6 +58,7 @@ public interface Brick extends Serializable, Cloneable {
 	int ARDRONE_SUPPORT = 0x20;
 	int CAMERA_LED = 0x100;
 	int VIBRATOR = 0x200;
+	int ROBOME = 0x40;
 
 	//	public static final int BLUETOOTH_ARDUINO = 0x8;
 	int FACE_DETECTION = 0x10;
