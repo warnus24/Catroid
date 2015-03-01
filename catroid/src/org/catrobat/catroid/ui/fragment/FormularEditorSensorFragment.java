@@ -27,6 +27,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
@@ -50,15 +51,22 @@ public class FormularEditorSensorFragment extends FormulaEditorListFragment impl
 
 		this.actionBarTitle = getString(R.string.formula_editor_sensors);
 
-		itemsIds = Constants.SENSOR_ITEMS;
-
 		SensorHandler.startSensorListener(getActivity().getApplicationContext());
 		SensorHandler.registerListener(this);
 
 		valuePairList = new ArrayList<SensorValuePair>();
 
+		boolean isFaceDetectionEnabled = PreferenceManager.getDefaultSharedPreferences(this.getActivity()).getBoolean("setting_use_face_detection", false);
+
+		if (!isFaceDetectionEnabled) {
+			itemsIds = Constants.SENSOR_ITEMS;
+		}
+		else {
+			itemsIds = this.appendTwoIntArrays(Constants.SENSOR_ITEMS, Constants.FACEDETECTION_ITEMS);
+		}
+
 		for (int id : itemsIds) {
-			valuePairList.add(new SensorValuePair(getString(id), " "));
+			valuePairList.add(new SensorValuePair(getString(id), "0"));
 		}
 
 		sensorAdapter = new FormularEditorSensorAdapter(getActivity(),

@@ -144,9 +144,11 @@ public final class Constants {
 	public static final int[] SENSOR_ITEMS = { R.string.formula_editor_sensor_x_acceleration,
 			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
 			R.string.formula_editor_sensor_compass_direction, R.string.formula_editor_sensor_x_inclination,
-			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness,
-			R.string.formula_editor_sensor_face_detected, R.string.formula_editor_sensor_face_size,
-			R.string.formula_editor_sensor_face_x_position, R.string.formula_editor_sensor_face_y_position };
+			R.string.formula_editor_sensor_y_inclination, R.string.formula_editor_sensor_loudness			};
+	public static final int[] FACEDETECTION_ITEMS = {R.string.formula_editor_sensor_face_detected,
+			R.string.formula_editor_sensor_face_size,
+			R.string.formula_editor_sensor_face_x_position,
+			R.string.formula_editor_sensor_face_y_position };
 
 	// Suppress default constructor for noninstantiability
 	private Constants() {

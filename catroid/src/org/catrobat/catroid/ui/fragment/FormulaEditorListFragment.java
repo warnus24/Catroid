@@ -115,4 +115,21 @@ public abstract class FormulaEditorListFragment extends SherlockListFragment imp
 		}
 		return returnValue;
 	}
+
+	protected int[] appendTwoIntArrays(int [] first, int [] second) {
+
+		int totalLength = first.length + second.length;
+		int[] newArray = new int[totalLength];
+
+		int i = 0;
+
+		for (;i < first.length ;i++){
+			newArray[i] = first[i];
+		}
+		for (;i < totalLength;i++){
+			newArray[i] = second[i - first.length];
+		}
+
+		return newArray;
+	}
 }
