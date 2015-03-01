@@ -76,26 +76,30 @@ public class RoboMeConnector implements RoboMe.RoboMeListener {
 	}
 
 	public static void moveForward(int speed, int cycles){
-		switch (speed) {
-			case RoboMeConstants.ROBOME_MOVE_SPEED_1:
-				roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed1, cycles);
-				break;
-			case RoboMeConstants.ROBOME_MOVE_SPEED_2:
-				roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed2, cycles);
-				break;
-			case RoboMeConstants.ROBOME_MOVE_SPEED_3:
-				roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed3, cycles);
-				break;
-			case RoboMeConstants.ROBOME_MOVE_SPEED_4:
-				roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed4, cycles);
-				break;
-			case RoboMeConstants.ROBOME_MOVE_SPEED_5:
-				roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed5, cycles);
-				break;
+		if (roboMe.isRoboMeConnected()) {
+			switch (speed) {
+				case RoboMeConstants.ROBOME_MOVE_SPEED_1:
+					roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed1, cycles);
+					break;
+				case RoboMeConstants.ROBOME_MOVE_SPEED_2:
+					roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed2, cycles);
+					break;
+				case RoboMeConstants.ROBOME_MOVE_SPEED_3:
+					roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed3, cycles);
+					break;
+				case RoboMeConstants.ROBOME_MOVE_SPEED_4:
+					roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed4, cycles);
+					break;
+				case RoboMeConstants.ROBOME_MOVE_SPEED_5:
+					roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveForwardSpeed5, cycles);
+					break;
+			}
+		} else {
+			Log.d(TAG, "RoboMe is not connected!");
 		}
 	}
 
-	public void moveBackward(int speed, int cycles){
+	public static void moveBackward(int speed, int cycles){
 		switch (speed) {
 			case RoboMeConstants.ROBOME_MOVE_SPEED_1:
 				roboMe.sendCommand(RoboMeCommands.RobotCommand.kRobot_MoveBackwardSpeed1, cycles);
@@ -198,7 +202,6 @@ public class RoboMeConnector implements RoboMe.RoboMeListener {
 		}
 	}
 
-	//----------------------------------------------------------------------------------------------
 	public void moveHeadDown(int amount){
 		switch (amount) {
 			case RoboMeConstants.ROBOME_HEAD_SPEED_SLOW:

@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
@@ -37,7 +38,17 @@ public abstract class RoboMeMoveBrick extends FormulaBrick implements View.OnCli
 	}
 
 	public static enum Speed {
-		SPEED1, SPEED2, SPEED3, SPEED4, SPEED5
+		SPEED1(1), SPEED2(2), SPEED3(3), SPEED4(4), SPEED5(5);
+
+		private int value;
+
+		private Speed(int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return this.value;
+		}
 	}
 
 	public RoboMeMoveBrick(Direction direction, Speed speed, int cycles) {
@@ -63,10 +74,16 @@ public abstract class RoboMeMoveBrick extends FormulaBrick implements View.OnCli
 		setFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES, cycles);
 	}
 
-	protected abstract String getBrickLabel(View view);
+	public String getBrickLabel(View view) {
+		return view.getResources().getString(R.string.brick_robome_move);
+	}
 
 	@Override
-	public abstract List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence);
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
+		sequence.addAction(ExtendedActions.roboMeMove(sprite, speedEnum, directionEnum,
+				getFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES)));
+		return null;
+	}
 
 	@Override
 	public View getPrototypeView(Context context) {

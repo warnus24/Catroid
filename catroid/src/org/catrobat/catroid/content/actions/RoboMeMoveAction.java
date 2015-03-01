@@ -11,7 +11,7 @@ import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
 import org.catrobat.catroid.robome.RoboMeConnector;
 
-public class RoboMeMoveForwardAction extends TemporalAction {
+public class RoboMeMoveAction extends TemporalAction {
 
 	private static final int MIN_SPEED = 1;
 	private static final int MAX_SPEED = 5;
@@ -25,7 +25,7 @@ public class RoboMeMoveForwardAction extends TemporalAction {
 	@Override
 	protected void update(float percent) {
 
-		int speedValue = Integer.getInteger(speed.name());
+		int speedValue = speed.getValue();
 
 		if (speedValue < MIN_SPEED) {
 			speedValue = MIN_SPEED;
@@ -43,6 +43,12 @@ public class RoboMeMoveForwardAction extends TemporalAction {
 
 		if (direction.equals(Direction.FORWARD)) {
 			RoboMeConnector.moveForward(speedValue, cyclesValue);
+		}
+		else if (direction.equals(Direction.BACKWARD)) {
+			RoboMeConnector.moveBackward(speedValue, cyclesValue);
+		}
+		else {
+			Log.d(this.getClass().getSimpleName(), "No direction set!");
 		}
 	}
 

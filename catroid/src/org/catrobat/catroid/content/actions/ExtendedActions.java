@@ -468,8 +468,8 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static TemporalAction roboMeMoveForward(Sprite sprite, RoboMeMoveBrick.Speed speedEnum, RoboMeMoveBrick.Direction directionEnum, Formula cycles) {
-		RoboMeMoveForwardAction action = action(RoboMeMoveForwardAction.class);
+	public static TemporalAction roboMeMove(Sprite sprite, RoboMeMoveBrick.Speed speedEnum, RoboMeMoveBrick.Direction directionEnum, Formula cycles) {
+		RoboMeMoveAction action = action(RoboMeMoveAction.class);
 		action.setSprite(sprite);
 		action.setSpeedEnum(speedEnum);
 		action.setDirection(directionEnum);
