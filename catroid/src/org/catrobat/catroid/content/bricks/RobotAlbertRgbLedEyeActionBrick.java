@@ -65,9 +65,6 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 	private transient TextView editRedValue;
 	private transient TextView editGreenValue;
 	private transient TextView editBlueValue;
-	private Formula red;
-	private Formula green;
-	private Formula blue;
 
 	protected Object readResolve() {
 		if (eye != null) {
@@ -79,19 +76,24 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 	public RobotAlbertRgbLedEyeActionBrick( Eye eye, int red, int green, int blue) {
 		this.eyeEnum = eye;
 		this.eye = eyeEnum.name();
-		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_LED_EYE);
-		this.red = new Formula(red);
-		this.green = new Formula(green);
-		this.blue = new Formula(blue);
+		initializeBrickFields(new Formula(red),new Formula(green),new Formula(blue));
 	}
 
 	public RobotAlbertRgbLedEyeActionBrick( Eye eye, Formula red, Formula green, Formula blue) {
 		this.eyeEnum = eye;
 		this.eye = eyeEnum.name();
-		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_LED_EYE);
-		this.red = red;
-		this.green = green;
-		this.blue = blue;
+		initializeBrickFields(red,green,blue);
+
+	}
+
+	private void initializeBrickFields(Formula red,Formula green,Formula blue) {
+		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE);
+		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN);
+		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_RED);
+
+		setFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_RED, red);
+		setFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN, green);
+		setFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE, blue);
 	}
 
 	@Override
@@ -102,18 +104,12 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 	@Override
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_robot_albert_rgb_eye_action, null);
-		Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
-		try {
 		TextView textred = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_red_prototype_text_view);
-		textred.setText(String.valueOf(red.interpretInteger(sprite)));
+		textred.setText(String.valueOf((BrickValues.ROBOT_ALBERT_RGB_LED_EYE_RED)));
 		TextView textgreen = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_green_prototype_text_view);
-		textgreen.setText(String.valueOf(green.interpretInteger(sprite)));
+		textgreen.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_GREEN));
 		TextView textblue = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_blue_prototype_text_view);
-		textblue.setText(String.valueOf(blue.interpretInteger(sprite)));
-		} catch (InterpretationException interpretationException) {
-			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
-		}
-
+		textblue.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_BLUE));
 		Spinner eyeSpinner = (Spinner) prototypeView.findViewById(R.id.robot_albert_eye_spinner);
 		eyeSpinner.setFocusableInTouchMode(false);
 		eyeSpinner.setFocusable(false);
@@ -152,8 +148,8 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 
 		TextView textRed = (TextView) view.findViewById(R.id.robot_albert_rgb_led_red_prototype_text_view);
 		editRedValue = (TextView) view.findViewById(R.id.robot_albert_rgb_led_action_red_edit_text);
-		red.setTextFieldId(R.id.robot_albert_rgb_led_action_red_edit_text);
-		red.refreshTextField(view);
+		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_RED).setTextFieldId(R.id.robot_albert_rgb_led_action_red_edit_text);
+		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_RED).refreshTextField(view);
 
 		textRed.setVisibility(View.GONE);
 		editRedValue.setVisibility(View.VISIBLE);
@@ -162,8 +158,8 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 
 		TextView textGreen = (TextView) view.findViewById(R.id.robot_albert_rgb_led_green_prototype_text_view);
 		editGreenValue = (TextView) view.findViewById(R.id.robot_albert_rgb_led_action_green_edit_text);
-		green.setTextFieldId(R.id.robot_albert_rgb_led_action_green_edit_text);
-		green.refreshTextField(view);
+		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN).setTextFieldId(R.id.robot_albert_rgb_led_action_green_edit_text);
+		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN).refreshTextField(view);
 
 		textGreen.setVisibility(View.GONE);
 		editGreenValue.setVisibility(View.VISIBLE);
@@ -172,30 +168,26 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 
 		TextView textBlue = (TextView) view.findViewById(R.id.robot_albert_rgb_led_blue_prototype_text_view);
 		editBlueValue = (TextView) view.findViewById(R.id.robot_albert_rgb_led_action_blue_edit_text);
-		blue.setTextFieldId(R.id.robot_albert_rgb_led_action_blue_edit_text);
-		blue.refreshTextField(view);
+		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE).setTextFieldId(R.id.robot_albert_rgb_led_action_blue_edit_text);
+		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE).refreshTextField(view);
 
 		textBlue.setVisibility(View.GONE);
 		editBlueValue.setVisibility(View.VISIBLE);
 
 		editBlueValue.setOnClickListener(this);
 
-		//TextView colorView = (TextView) view.findViewById(R.id.robot_albert_rgb_led_color_text_view);
-		//colorView.setVisibility(View.VISIBLE);
 		//update color of the current rgb-selection
 		Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
 		int r = 0;
 		int g = 0;
 		int b = 0;
 		try {
-			g = green.interpretInteger(sprite);
-			b = blue.interpretInteger(sprite);
-			r = red.interpretInteger(sprite);
+			r = getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_RED).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
+			g = getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
+			b = getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
 		} catch (InterpretationException interpretationException) {
 			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
 		}
-
-		//colorView.setBackgroundColor(Color.rgb(r, g, b));
 
 		if (r > 255) {
 			editRedValue.setText("" + 255);
@@ -250,15 +242,15 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 		}
 		switch (view.getId()) {
 			case R.id.robot_albert_rgb_led_action_red_edit_text:
-				FormulaEditorFragment.showFragment(view, this, red);
+				FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_RED));
 				break;
 
 			case R.id.robot_albert_rgb_led_action_green_edit_text:
-				FormulaEditorFragment.showFragment(view, this, green);
+				FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN));
 				break;
 
 			case R.id.robot_albert_rgb_led_action_blue_edit_text:
-				FormulaEditorFragment.showFragment(view, this, blue);
+				FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE));
 				break;
 		}
 	}
@@ -276,16 +268,11 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 			TextView textAlbertEyeRed = (TextView) view.findViewById(R.id.robot_albert_rgb_led_red_text_view);
 			TextView editRed = (TextView) view.findViewById(R.id.robot_albert_rgb_led_action_red_edit_text);
 
-			//			TextView textAlbertEyeColorLabel = (TextView) view
-			//					.findViewById(R.id.robot_albert_rgb_led_color_text_view_label);
 			TextView textAlbertEyeRedView = (TextView) view.findViewById(R.id.robot_albert_rgb_led_red_text_view);
 
 			textAlbertEyeLabel.setTextColor(textAlbertEyeLabel.getTextColors().withAlpha(alphaValue));
 			textAlbertEyeRed.setTextColor(textAlbertEyeRed.getTextColors().withAlpha(alphaValue));
-			//textAlbertEyeColorLabel.setTextColor(textAlbertEyeColorLabel.getTextColors().withAlpha(alphaValue));
 
-			//			textAlbertMotorActionLabelSpeedView.setTextColor(textAlbertMotorActionLabelSpeedView.getTextColors()
-			//					.withAlpha(alphaValue));
 			Spinner eyeSpinner = (Spinner) view.findViewById(R.id.robot_albert_eye_spinner);
 			ColorStateList color = textAlbertEyeRedView.getTextColors().withAlpha(alphaValue);
 			eyeSpinner.getBackground().setAlpha(alphaValue);
@@ -327,7 +314,8 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertRgbLedEye(sprite, eye, eyeEnum, red, green, blue));
+		sequence.addAction(ExtendedActions.robotAlbertRgbLedEye(sprite, eye, eyeEnum, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_RED),
+				getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN),getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE)));
 		return null;
 	}
 }

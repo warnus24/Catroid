@@ -150,11 +150,13 @@ public class BrickCloneTest extends AndroidTestCase {
 
 		brick = new RobotAlbertRgbLedEyeActionBrick( RobotAlbertRgbLedEyeActionBrick.Eye.Both,
 				BRICK_FORMULA_VALUE, BRICK_FORMULA_VALUE, BRICK_FORMULA_VALUE);
-		brickClone(brick,Brick.BrickField.ALBERT_ROBOT_RGB_LED_EYE);
+		brickClone(brick,Brick.BrickField.ALBERT_ROBOT_RGB_RED,Brick.BrickField.ALBERT_ROBOT_RGB_GREEN,
+				Brick.BrickField.ALBERT_ROBOT_RGB_BLUE);
 
 		brick = new RobotAlbertRgbLedEyeActionBrick( RobotAlbertRgbLedEyeActionBrick.Eye.Left,
-				BRICK_FORMULA_VALUE, BRICK_FORMULA_VALUE*255, BRICK_FORMULA_VALUE);
-		brickClone(brick,Brick.BrickField.ALBERT_ROBOT_RGB_LED_EYE);
+				BRICK_FORMULA_VALUE, BRICK_FORMULA_VALUE, BRICK_FORMULA_VALUE);
+		brickClone(brick,Brick.BrickField.ALBERT_ROBOT_RGB_RED,Brick.BrickField.ALBERT_ROBOT_RGB_GREEN,
+				Brick.BrickField.ALBERT_ROBOT_RGB_BLUE);
 
 		brick = new SetBrightnessBrick( BRICK_FORMULA_VALUE);
 		brickClone(brick, Brick.BrickField.BRIGHTNESS);
