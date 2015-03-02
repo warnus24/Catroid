@@ -66,14 +66,19 @@ public class KodeyRGBLightAction extends TemporalAction {
 			Log.d(getClass().getSimpleName(), "Formula interpretation for this specific Brick failed.", interpretationException);
 		}
 
+		//ToDo: check if this solves the Value Problems
 		if (greenValue < MIN_VALUE) {
 			greenValue = MIN_VALUE;
+			Formula newFormulaGreen = new Formula(greenValue);
+			setGreen(newFormulaGreen);
 		} else if (greenValue > MAX_VALUE) {
 			greenValue = MAX_VALUE;
+			Formula newFormulaGreen = new Formula(greenValue);
+			setGreen(newFormulaGreen);
 		}
 
 		try {
-			blueValue = red.interpretInteger(sprite);
+			blueValue = blue.interpretInteger(sprite);
 		} catch (InterpretationException interpretationException) {
 			blueValue = 0;
 			Log.d(getClass().getSimpleName(), "Formula interpretation for this specific Brick failed.", interpretationException);

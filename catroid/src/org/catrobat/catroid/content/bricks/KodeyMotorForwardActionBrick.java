@@ -58,6 +58,11 @@ public class KodeyMotorForwardActionBrick extends FormulaBrick implements OnClic
 	private transient Motor motorEnum;
 	private transient TextView editSpeed;
 	private Formula speed;
+	private Boolean isFormulaEditorPreview = false;
+
+	public void setIsFormulaEditorPreview(Boolean isFormulaEditorPreview) {
+		this.isFormulaEditorPreview = isFormulaEditorPreview;
+	}
 
 	public static enum Motor {
 		MOTOR_A, MOTOR_B, MOTOR_A_B
@@ -196,12 +201,10 @@ public class KodeyMotorForwardActionBrick extends FormulaBrick implements OnClic
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		if((speed.getRoot().getElementType() == FormulaElement.ElementType.NUMBER)){
+		if((speed.getRoot().getElementType() == FormulaElement.ElementType.NUMBER) && (isFormulaEditorPreview == false)){
 			KodeyMotorForwardSingleSeekbarFragment.showSingleSeekBarFragment(view, this, speed);
 		} else {
-			if(speed.getRoot().getElementType() != FormulaElement.ElementType.NUMBER) {
-				FormulaEditorFragment.showFragment(view, this, speed);
-			}
+			FormulaEditorFragment.showFragment(view, this, speed);
 		}
 	}
 

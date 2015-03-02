@@ -70,6 +70,11 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 	private Formula red;
 	private Formula green;
 	private Formula blue;
+	private Boolean isFormulaEditorPreview = false;
+
+	public void setIsFormulaEditorPreview(Boolean isFormulaEditorPreview) {
+		this.isFormulaEditorPreview = isFormulaEditorPreview;
+	}
 
 	protected Object readResolve() {
 		if (eye != null) {
@@ -247,20 +252,17 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 		}
 		if((red.getRoot().getElementType() == FormulaElement.ElementType.NUMBER) &&
 				(green.getRoot().getElementType() == FormulaElement.ElementType.NUMBER) &&
-				(blue.getRoot().getElementType() == FormulaElement.ElementType.NUMBER)){
+				(blue.getRoot().getElementType() == FormulaElement.ElementType.NUMBER) && (isFormulaEditorPreview == false)){
 			KodeyMultipleSeekbarFragment.showMultipleSeekBarFragment(view, this, red, green, blue);
 		} else {
-			if(red.getRoot().getElementType() != FormulaElement.ElementType.NUMBER) {
+			if(view.getId() == R.id.brick_kodey_rgb_led_action_red_edit_text) {
 				FormulaEditorFragment.showFragment(view, this, red);
-			}
-			if(green.getRoot().getElementType() != FormulaElement.ElementType.NUMBER) {
+			} else if(view.getId() == R.id.brick_kodey_rgb_led_action_green_edit_text) {
 				FormulaEditorFragment.showFragment(view, this, green);
-			}
-			if(blue.getRoot().getElementType() != FormulaElement.ElementType.NUMBER) {
+			} else if(view.getId() == R.id.brick_kodey_rgb_led_action_blue_edit_text) {
 				FormulaEditorFragment.showFragment(view, this, blue);
 			}
 		}
-
 	}
 
 	@Override
