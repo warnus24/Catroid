@@ -33,6 +33,7 @@ public class RoboMeMoveBrick extends FormulaBrick implements View.OnClickListene
 	private String direction;
 	private String speed;
 
+
 	public static enum Direction {
 		FORWARD, BACKWARD
 	}
@@ -57,6 +58,14 @@ public class RoboMeMoveBrick extends FormulaBrick implements View.OnClickListene
 		this.speedEnum = speed;
 		this.speed = speedEnum.name();
 		initializeBrickFields(new Formula(cycles));
+	}
+
+	public RoboMeMoveBrick(Direction direction, Speed speed, Formula cycles) {
+		this.directionEnum = direction;
+		this.direction = directionEnum.name();
+		this.speedEnum = speed;
+		this.speed = speedEnum.name();
+		initializeBrickFields(cycles);
 	}
 
 	protected Object readResolve() {
@@ -199,6 +208,11 @@ public class RoboMeMoveBrick extends FormulaBrick implements View.OnClickListene
 	}
 
 	@Override
+	public Brick clone() {
+		return new RoboMeMoveBrick(directionEnum,speedEnum, getFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES).clone());
+	}
+
+	@Override
 	public View getViewWithAlpha(int alphaValue) {
 		if (view != null) {
 			View layout = view.findViewById(R.id.brick_robome_move_layout);
@@ -238,9 +252,7 @@ public class RoboMeMoveBrick extends FormulaBrick implements View.OnClickListene
 
 	@Override
 	public void onClick(View view) {
-		if (checkbox.getVisibility() == View.VISIBLE) {
-			return;
-		} else {
+		if (checkbox.getVisibility() != View.VISIBLE) {
 			FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES));
 		}
 	}
