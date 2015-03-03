@@ -623,9 +623,9 @@
     <string name="brick_kodey_sensor_end">End If</string>
 
     <!-- tone -->
-    <string name="kodey_play_tone">Kodey Pro music tone</string>
+    <string name="kodey_play_tone">Kodey Pro music\n</string>
     <string name="kodey_tone_duration">Duration</string>
-    <string name="brick_kodey_select_tone">Tone</string>
+    <string name="brick_kodey_select_tone">tone</string>
 
     <!-- light -->
     <string name="brick_kodey_rgb_led_action">Kodey Pro light</string>

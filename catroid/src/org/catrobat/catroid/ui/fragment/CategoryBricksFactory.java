@@ -296,12 +296,6 @@ public class CategoryBricksFactory {
 		List<Brick> userVariablesBrickList = new ArrayList<Brick>();
 		userVariablesBrickList.add(new SetVariableBrick(0));
 		userVariablesBrickList.add(new ChangeVariableBrick(0));
-		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_FRONT_LEFT.toString()));
-		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_FRONT_RIGHT.toString()));
-		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_SIDE_LEFT.toString()));
-		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_SIDE_RIGHT.toString()));
-		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_BOTTOM_LEFT.toString()));
-		userVariablesBrickList.add(new KodeySetVariableBrick(Sensors.KODEY_BOTTOM_RIGHT.toString()));
 
 		return userVariablesBrickList;
 	}
