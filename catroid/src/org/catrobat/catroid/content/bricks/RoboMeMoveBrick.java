@@ -79,6 +79,11 @@ public class RoboMeMoveBrick extends FormulaBrick implements View.OnClickListene
 	}
 
 	@Override
+	public int getRequiredResources() {
+		return ROBOME;
+	}
+
+	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
 		sequence.addAction(ExtendedActions.roboMeMove(sprite, speedEnum, directionEnum,
 				getFormulaWithBrickField(BrickField.ROBOME_MOVE_CYCLES)));
