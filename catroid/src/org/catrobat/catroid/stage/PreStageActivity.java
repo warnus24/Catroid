@@ -85,7 +85,6 @@ public class PreStageActivity extends BaseActivity {
 
 	private DroneInitializer droneInitializer = null;
 
-	private static RoboMeConnector roboMe;
 	private RoboMeInitializer roboMeInitializer = null;
 
 	private Intent returnToActivityIntent = null;

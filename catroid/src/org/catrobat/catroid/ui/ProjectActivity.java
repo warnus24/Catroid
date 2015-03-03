@@ -42,6 +42,7 @@ import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 
+import org.catrobat.catroid.robome.RoboMeInitializer;
 import org.catrobat.catroid.stage.PreStageActivity;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.adapter.SpriteAdapter;
@@ -146,6 +147,7 @@ public class ProjectActivity extends BaseActivity {
 		if (requestCode == PreStageActivity.REQUEST_RESOURCES_INIT && resultCode == RESULT_OK) {
 			Intent intent = new Intent(ProjectActivity.this, StageActivity.class);
 			DroneInitializer.addDroneSupportExtraToNewIntentIfPresentInOldIntent(data, intent);
+			RoboMeInitializer.addRoboMeSupportExtraToNewIntentIfPresentInOldIntent(data, intent);
 			startActivity(intent);
 		}
 		if (requestCode == StageActivity.STAGE_ACTIVITY_FINISH) {

@@ -22,6 +22,7 @@
  */
 package org.catrobat.catroid.stage;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,13 +63,23 @@ public class StageActivity extends AndroidApplication {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		if (getIntent().getBooleanExtra(DroneInitializer.INIT_DRONE_STRING_EXTRA, false)) {
+		Bundle tempIntent = getIntent().getExtras();
+		if (tempIntent != null) {
+			if (tempIntent.getBoolean(DroneInitializer.INIT_DRONE_STRING_EXTRA, false)) {
+				droneConnection = new DroneConnection(this);
+			}
+
+			if (tempIntent.getBoolean(RoboMeInitializer.INIT_ROBOME_STRING_EXTRA, false)) {
+				roboMeConnection = new RoboMeConnector(this);
+			}
+		}
+		/*if (getIntent().getBooleanExtra(DroneInitializer.INIT_DRONE_STRING_EXTRA, false)) {
 			droneConnection = new DroneConnection(this);
 		}
 
 		if (getIntent().getBooleanExtra(RoboMeInitializer.INIT_ROBOME_STRING_EXTRA, false)) {
 			roboMeConnection = new RoboMeConnector(this);
-		}
+		}*/
 
 		stageListener = new StageListener();
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);

@@ -23,6 +23,8 @@
 package org.catrobat.catroid.robome;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 
 import org.catrobat.catroid.stage.PreStageActivity;
 
@@ -40,6 +42,16 @@ public class RoboMeInitializer {
 
 	public void initialize() {
 		this.returnToActivityIntent.putExtra(INIT_ROBOME_STRING_EXTRA, true);
+	}
+
+	public static void addRoboMeSupportExtraToNewIntentIfPresentInOldIntent(Intent oldIntent, Intent newIntent) {
+		if (newIntent == null || oldIntent == null) {
+			return;
+		}
+
+		Boolean isRoboMeRequired = oldIntent.getBooleanExtra(INIT_ROBOME_STRING_EXTRA, false);
+		Log.d(TAG, "Extra STRING_EXTRA_INIT_ROBOME=" + isRoboMeRequired.toString());
+		newIntent.putExtra(INIT_ROBOME_STRING_EXTRA, isRoboMeRequired);
 	}
 
 	public void onPrestageActivityResume() {
