@@ -88,5 +88,9 @@ public class IcsFaceDetector extends FaceDetector implements FaceDetectionListen
 			faceSize = faceSize > 100 ? 100 : faceSize;
 			onFaceDetected(relativePoint, faceSize);
 		}
+		else {
+			onFaceDetected(false);
+			onFaceDetected(new Point(0, 0), 0);
+		}
 	}
 }

@@ -28,10 +28,13 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.formulaeditor.FormularEditorSensorAdapter;
+import org.catrobat.catroid.formulaeditor.SensorCustomEvent;
+import org.catrobat.catroid.formulaeditor.SensorCustomEventListener;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.formulaeditor.SensorValuePair;
 import org.catrobat.catroid.formulaeditor.Sensors;
@@ -40,7 +43,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FormularEditorSensorFragment extends FormulaEditorListFragment implements SensorEventListener {
+public class FormularEditorSensorFragment extends FormulaEditorListFragment implements SensorEventListener, SensorCustomEventListener {
 
 	private FormularEditorSensorAdapter sensorAdapter;
 	private List<SensorValuePair> valuePairList;
@@ -50,6 +53,13 @@ public class FormularEditorSensorFragment extends FormulaEditorListFragment impl
 		super.onCreate(savedInstanceState);
 
 		this.actionBarTitle = getString(R.string.formula_editor_sensors);
+
+	}
+
+	@Override
+	public void onResume() {
+
+		super.onResume();
 
 		SensorHandler.startSensorListener(getActivity().getApplicationContext());
 		SensorHandler.registerListener(this);
@@ -73,7 +83,6 @@ public class FormularEditorSensorFragment extends FormulaEditorListFragment impl
 				R.layout.fragment_formula_editor_sensor_list_item, valuePairList);
 
 		this.setListAdapter(sensorAdapter);
-
 	}
 
 	@Override
@@ -108,5 +117,20 @@ public class FormularEditorSensorFragment extends FormulaEditorListFragment impl
 			SensorHandler.registerListener(this);
 		}
 
+	}
+
+	@Override
+	public void onCustomSensorChanged(SensorCustomEvent event) {
+
+		DecimalFormat df = new DecimalFormat("0.00");
+
+		Log.d("FACEDETECTION", SensorHandler.getSensorValue(Sensors.FACE_DETECTED) + " #######################################################");
+
+		valuePairList.get(7).setValue(df.format(SensorHandler.getSensorValue(Sensors.FACE_DETECTED)));
+		valuePairList.get(8).setValue(df.format(SensorHandler.getSensorValue(Sensors.FACE_DETECTED)));
+		valuePairList.get(9).setValue(df.format(SensorHandler.getSensorValue(Sensors.FACE_DETECTED)));
+		valuePairList.get(10).setValue(df.format(SensorHandler.getSensorValue(Sensors.FACE_DETECTED)));
+
+		sensorAdapter.notifyDataSetChanged();
 	}
 }
