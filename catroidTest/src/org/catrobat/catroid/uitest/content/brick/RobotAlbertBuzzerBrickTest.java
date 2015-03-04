@@ -43,6 +43,7 @@ import java.util.ArrayList;
 public class RobotAlbertBuzzerBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 	private static final int SET_FREQ = 30;
 	private static final int SET_FREQ_INITIALLY = 40;
+	private static final String SET_FREQ_STRING = "20+30";
 
 	private Project project;
 	private RobotAlbertBuzzerBrick brick;
@@ -86,6 +87,9 @@ public class RobotAlbertBuzzerBrickTest extends BaseActivityInstrumentationTestC
 		//TODO: Prints an error after setting it from init to new value, but I can see that it was set. Executing the command a second time seams to solve that. Why not the first time??
 		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
 				R.id.robot_albert_buzzer_frequency_edit_text, SET_FREQ,Brick.BrickField.ALBERT_ROBOT_BUZZER,brick);
+
+		UiTestUtils.testBrickWithFormulaEditor(ProjectManager.getInstance().getCurrentSprite(),solo,
+				R.id.robot_albert_buzzer_frequency_edit_text, SET_FREQ_STRING,Brick.BrickField.ALBERT_ROBOT_BUZZER,brick);
 	}
 
 	private void createProject() {

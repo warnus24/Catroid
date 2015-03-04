@@ -461,17 +461,31 @@ public class BrickValueParameterTest extends BaseActivityInstrumentationTestCase
 		solo.scrollListToBottom(fragmentListView);
 		solo.clickOnText(categoryRobotAlbertText);
 
+
+		fragmentListView = solo.getCurrentViews(ListView.class).get(
+				solo.getCurrentViews(ListView.class).size() - 1);
+
+		if (!solo.searchText(solo.getString(R.string.brick_robot_albert_motor_action))) {
+			solo.scrollDownList(fragmentListView);
+		}
+
 		TextView albertMotorTextView = (TextView) solo
 				.getView(R.id.robot_albert_motor_action_speed_prototype_text_view);
 		int albertMotorPrototypeValue = Integer.parseInt(albertMotorTextView.getText().toString());
 		assertEquals("Value in Brick Robot_Albert_Motor is not correct", BrickValues.ROBOT_ALBERT_SPEED,
 				albertMotorPrototypeValue);
 
+		if (!solo.searchText(solo.getString(R.string.brick_robot_albert_buzzer_action))) {
+			solo.scrollDownList(fragmentListView);
+		}
 		TextView albertBuzzerTextView = (TextView) solo.getView(R.id.robot_albert_buzzer_frequency_prototype_text_view);
 		int albertBuzzerPrototypeValue = Integer.parseInt(albertBuzzerTextView.getText().toString());
 		assertEquals("Value in Brick Robot_Albert_Buzzer is not correct", BrickValues.ROBOT_ALBERT_BUZZER,
 				albertBuzzerPrototypeValue);
 
+		if (!solo.searchText(solo.getString(R.string.brick_robot_albert_rgb_led_action))) {
+			solo.scrollDownList(fragmentListView);
+		}
 		TextView albertEyeRedTextView = (TextView) solo.getView(R.id.robot_albert_rgb_led_red_prototype_text_view);
 		int albertEyeRedPrototypeValue = Integer.parseInt(albertEyeRedTextView.getText().toString());
 		assertEquals("Value in Brick Robot_Albert_Eye (Red) is not correct", BrickValues.ROBOT_ALBERT_RGB_LED_EYE_RED,
@@ -487,11 +501,23 @@ public class BrickValueParameterTest extends BaseActivityInstrumentationTestCase
 		assertEquals("Value in Brick Robot_Albert_Eye (Blue) is not correct",
 				BrickValues.ROBOT_ALBERT_RGB_LED_EYE_BLUE, albertEyeBluePrototypeValue);
 
+		if (!solo.searchText(solo.getString(R.string.brick_robot_albert_front_led_action))) {
+			solo.scrollDownList(fragmentListView);
+		}
 		TextView albertFrontLedTextView = (TextView) solo
 				.getView(R.id.robot_albert_front_led_status_prototype_text_view);
 		int albertFrontLedPrototypeValue = Integer.parseInt(albertFrontLedTextView.getText().toString());
 		assertEquals("Value in Brick Robot_Albert_Front_LED is not correct", BrickValues.ROBOT_ALBERT_FRONT_LED,
 				albertFrontLedPrototypeValue);
+
+		if (!solo.searchText(solo.getString(R.string.brick_robot_albert_body_led_action))) {
+			solo.scrollDownList(fragmentListView);
+		}
+		TextView albertBodyLedTextView = (TextView) solo
+				.getView(R.id.robot_albert_body_led_status_prototype_text_view);
+		int albertBodyLedPrototypeValue = Integer.parseInt(albertBodyLedTextView.getText().toString());
+		assertEquals("Value in Brick Robot_Albert_BODY_LED is not correct", BrickValues.ROBOT_ALBERT_BODY_LED,
+				albertBodyLedPrototypeValue);
 
 	}
 

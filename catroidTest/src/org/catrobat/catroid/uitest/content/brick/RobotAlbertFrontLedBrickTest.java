@@ -43,6 +43,7 @@ import java.util.ArrayList;
 public class RobotAlbertFrontLedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 	private static final int SET_LED = 1;
 	private static final int SET_LED_INITIALLY = 0;
+	private static final String SET_LED_STRING = "0+1";
 
 	private Project project;
 	private RobotAlbertFrontLedBrick brick;
@@ -83,6 +84,9 @@ public class RobotAlbertFrontLedBrickTest extends BaseActivityInstrumentationTes
 
 		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
 				R.id.robot_albert_front_led_status_edit_text, SET_LED, Brick.BrickField.ALBERT_ROBOT_FRONT_LED,brick);
+
+		UiTestUtils.testBrickWithFormulaEditor(ProjectManager.getInstance().getCurrentSprite(),solo,
+				R.id.robot_albert_front_led_status_edit_text, SET_LED_STRING, Brick.BrickField.ALBERT_ROBOT_FRONT_LED,brick);
 	}
 
 	private void createProject() {

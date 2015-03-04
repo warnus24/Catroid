@@ -46,6 +46,7 @@ import java.util.ArrayList;
 public class RobotAlbertMotorActionBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 	private static final int SET_SPEED = 60;
 	private static final int SET_SPEED_INITIALLY = -50;
+	private static final String SET_SPEED_STRING = "10+70";
 
 	private Project project;
 	private RobotAlbertMotorActionBrick motorBrick;
@@ -84,6 +85,10 @@ public class RobotAlbertMotorActionBrickTest extends BaseActivityInstrumentation
 
 		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(), R.id.robot_albert_motor_action_speed_edit_text, SET_SPEED,
 				Brick.BrickField.ALBERT_ROBOT_SPEED, motorBrick);
+
+		UiTestUtils.testBrickWithFormulaEditor(ProjectManager.getInstance().getCurrentSprite(),solo, R.id.robot_albert_motor_action_speed_edit_text, SET_SPEED_STRING,
+				Brick.BrickField.ALBERT_ROBOT_SPEED, motorBrick);
+
 
 		String[] motors = getActivity().getResources().getStringArray(R.array.robot_albert_motor_chooser);
 		assertTrue("Spinner items list too short!", motors.length == 3);

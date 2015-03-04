@@ -52,6 +52,10 @@ public class RobotAlbertRgbLedEyeActionBrickTest extends BaseActivityInstrumenta
 	private static final int SET_BLUE = 30;
 	private static final int SET_BLUE_INITIALLY = 90;
 
+	private static final String SET_RED_STRING = "0+250";
+	private static final String SET_GREEN_STRING = "0+250";
+	private static final String SET_BLUE_STRING = "0+250";
+
 	private Project project;
 	private RobotAlbertRgbLedEyeActionBrick brick;
 
@@ -96,6 +100,13 @@ public class RobotAlbertRgbLedEyeActionBrickTest extends BaseActivityInstrumenta
 				R.id.robot_albert_rgb_led_action_green_edit_text, SET_GREEN, Brick.BrickField.ALBERT_ROBOT_RGB_GREEN, brick);
 		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
 				R.id.robot_albert_rgb_led_action_blue_edit_text, SET_BLUE, Brick.BrickField.ALBERT_ROBOT_RGB_BLUE ,brick);
+
+		UiTestUtils.testBrickWithFormulaEditor(ProjectManager.getInstance().getCurrentSprite(),solo,
+				R.id.robot_albert_rgb_led_action_red_edit_text,SET_RED_STRING,Brick.BrickField.ALBERT_ROBOT_RGB_RED,brick);
+		UiTestUtils.testBrickWithFormulaEditor(ProjectManager.getInstance().getCurrentSprite(),solo,
+				R.id.robot_albert_rgb_led_action_green_edit_text,SET_GREEN_STRING,Brick.BrickField.ALBERT_ROBOT_RGB_GREEN,brick);
+		UiTestUtils.testBrickWithFormulaEditor(ProjectManager.getInstance().getCurrentSprite(),solo,
+				R.id.robot_albert_rgb_led_action_blue_edit_text,SET_BLUE_STRING,Brick.BrickField.ALBERT_ROBOT_RGB_BLUE,brick);
 
 		String[] eyes = getActivity().getResources().getStringArray(R.array.robot_albert_eye_chooser);
 		assertTrue("Spinner items list too short!", eyes.length == 3);

@@ -43,6 +43,7 @@ import java.util.ArrayList;
 public class RobotAlbertBodyLedBrickTest extends BaseActivityInstrumentationTestCase<ScriptActivity> {
 	private static final int SET_LED = 255;
 	private static final int SET_LED_INITIALLY = 0;
+	private static final String SET_LED_STRING = "150+105";
 
 	private Project project;
 	private RobotAlbertBodyLedBrick brick;
@@ -80,9 +81,11 @@ public class RobotAlbertBodyLedBrickTest extends BaseActivityInstrumentationTest
 
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.robot_albert_body_led_status)));
 
-
 		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
 				R.id.robot_albert_body_led_status_edit_text, SET_LED, Brick.BrickField.ALBERT_ROBOT_BODY_LED,brick);
+
+		UiTestUtils.testBrickWithFormulaEditor(ProjectManager.getInstance().getCurrentSprite(),solo,
+				R.id.robot_albert_body_led_status_edit_text, SET_LED_STRING, Brick.BrickField.ALBERT_ROBOT_BODY_LED,brick);
 	}
 
 	private void createProject() {

@@ -37,6 +37,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.WhenScript;
+import org.catrobat.catroid.content.bricks.RobotAlbertBodyLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertBuzzerBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertFrontLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
@@ -220,6 +221,12 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		commandLength = command.length;
 		sendCommands.append(command, 0, commandLength);
 
+		RobotAlbertBodyLedBrick robotAlbertBodyLedBrick = new RobotAlbertBodyLedBrick( new Formula(255));
+		commands.setBodyLed(255);
+		command = commands.getCommandMessage();
+		commandLength = command.length;
+		sendCommands.append(command, 0, commandLength);
+
 		SetVariableBrick setVariableBrick = new SetVariableBrick( 0.0);
 
 		whenScript.addBrick(legoMotorActionBrick);
@@ -227,6 +234,7 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		whenScript.addBrick(robotAlbertBuzzerBrick);
 		whenScript.addBrick(robotAlbertRgbLedEyeActionBrick);
 		whenScript.addBrick(setVariableBrick);
+		whenScript.addBrick(robotAlbertBodyLedBrick);
 
 		startScript.addBrick(setLookBrick);
 		firstSprite.addScript(startScript);

@@ -2,21 +2,21 @@
  *  Catroid: An on-device visual programming system for Android devices
  *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
  *  published by the Free Software Foundation, either version 3 of the
  *  License, or (at your option) any later version.
- *  
+ *
  *  An additional term exception under section 7 of the GNU Affero
  *  General Public License, version 3, is available at
  *  http://developer.catrobat.org/license_additional_term
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU Affero General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -55,16 +55,24 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 
 	private transient View prototypeView;
 	private transient AdapterView<?> adapterView;
-
-	public static enum Eye {
-		Left, Right, Both
-	}
-
 	private String eye;
 	private transient Eye eyeEnum;
 	private transient TextView editRedValue;
 	private transient TextView editGreenValue;
 	private transient TextView editBlueValue;
+
+	public RobotAlbertRgbLedEyeActionBrick(Eye eye, int red, int green, int blue) {
+		this.eyeEnum = eye;
+		this.eye = eyeEnum.name();
+		initializeBrickFields(new Formula(red), new Formula(green), new Formula(blue));
+	}
+
+	public RobotAlbertRgbLedEyeActionBrick(Eye eye, Formula red, Formula green, Formula blue) {
+		this.eyeEnum = eye;
+		this.eye = eyeEnum.name();
+		initializeBrickFields(red, green, blue);
+
+	}
 
 	protected Object readResolve() {
 		if (eye != null) {
@@ -73,20 +81,7 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 		return this;
 	}
 
-	public RobotAlbertRgbLedEyeActionBrick( Eye eye, int red, int green, int blue) {
-		this.eyeEnum = eye;
-		this.eye = eyeEnum.name();
-		initializeBrickFields(new Formula(red),new Formula(green),new Formula(blue));
-	}
-
-	public RobotAlbertRgbLedEyeActionBrick( Eye eye, Formula red, Formula green, Formula blue) {
-		this.eyeEnum = eye;
-		this.eye = eyeEnum.name();
-		initializeBrickFields(red,green,blue);
-
-	}
-
-	private void initializeBrickFields(Formula red,Formula green,Formula blue) {
+	private void initializeBrickFields(Formula red, Formula green, Formula blue) {
 		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE);
 		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN);
 		addAllowedBrickField(BrickField.ALBERT_ROBOT_RGB_RED);
@@ -123,7 +118,6 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 
 		return prototypeView;
 	}
-
 
 	@Override
 	public View getView(Context context, int brickId, BaseAdapter baseAdapter) {
@@ -177,7 +171,6 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 		editBlueValue.setOnClickListener(this);
 
 		//update color of the current rgb-selection
-		Sprite sprite = ProjectManager.getInstance().getCurrentSprite();
 		int r = 0;
 		int g = 0;
 		int b = 0;
@@ -313,9 +306,13 @@ public class RobotAlbertRgbLedEyeActionBrick extends FormulaBrick implements OnC
 	}
 
 	@Override
-	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
+	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
 		sequence.addAction(ExtendedActions.robotAlbertRgbLedEye(sprite, eye, eyeEnum, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_RED),
-				getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN),getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE)));
+				getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_GREEN), getFormulaWithBrickField(BrickField.ALBERT_ROBOT_RGB_BLUE)));
 		return null;
+	}
+
+	public static enum Eye {
+		Left, Right, Both
 	}
 }
