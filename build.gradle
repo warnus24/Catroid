@@ -59,6 +59,11 @@ dependencies {
     androidTestCompile fileTree(include: '*.jar', dir: 'catroidTest/libs')
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
     pmd 'net.sourceforge.pmd:pmd:5.1.1'
+
+
+    compile 'com.android.support:support-annotations:21.0.3'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
 }
 
 
@@ -102,7 +107,8 @@ android {
         targetSdkVersion 19
         applicationId 'org.catrobat.catroid'
         testApplicationId "org.catrobat.catroid.test"
-        testInstrumentationRunner 'pl.polidea.instrumentation.PolideaInstrumentationTestRunner'
+        //testInstrumentationRunner 'pl.polidea.instrumentation.PolideaInstrumentationTestRunner'
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         versionCode 21
         println "VersionCode is " + versionCode
         versionName "0.9.14"
