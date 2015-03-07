@@ -29,6 +29,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
+import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.okhttp.ConnectionSpec;
@@ -229,7 +230,8 @@ public final class ServerCalls {
 		});
 
 		try {
-			okHttpClient.newCall(request).execute();
+			Response response = okHttpClient.newCall(request).execute();
+			Files.write(response.body().bytes(), file);
 		} catch (IOException ioException) {
 			Log.e(TAG, Log.getStackTraceString(ioException));
 			throw new WebconnectionException(WebconnectionException.ERROR_NETWORK,

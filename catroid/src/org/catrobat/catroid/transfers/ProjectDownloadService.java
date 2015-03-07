@@ -23,8 +23,6 @@
 package org.catrobat.catroid.transfers;
 
 import android.app.IntentService;
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -52,12 +50,6 @@ public class ProjectDownloadService extends IntentService {
 
 	private static final String DOWNLOAD_FILE_NAME = "down" + Constants.CATROBAT_EXTENSION;
 
-	private String projectName;
-	private String zipFileString;
-	private String url;
-	Notification downloadNotification;
-	PendingIntent pendingDownload;
-	private Integer notificationId;
 	public ResultReceiver receiver;
 	private Handler handler;
 
@@ -75,12 +67,12 @@ public class ProjectDownloadService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		boolean result = false;
 
-		this.projectName = intent.getStringExtra(DOWNLOAD_NAME_TAG);
-		this.zipFileString = Utils.buildPath(Constants.TMP_PATH, DOWNLOAD_FILE_NAME);
-		this.url = intent.getStringExtra(URL_TAG);
-		this.notificationId = intent.getIntExtra(ID_TAG, -1);
+		String projectName = intent.getStringExtra(DOWNLOAD_NAME_TAG);
+		String zipFileString = Utils.buildPath(Constants.TMP_PATH, DOWNLOAD_FILE_NAME);
+		String url = intent.getStringExtra(URL_TAG);
+		Integer notificationId = intent.getIntExtra(ID_TAG, -1);
 
-		receiver = (ResultReceiver) intent.getParcelableExtra(RECEIVER_TAG);
+		receiver = intent.getParcelableExtra(RECEIVER_TAG);
 		try {
 			ServerCalls.getInstance().downloadProject(url, zipFileString, receiver, notificationId);
 			result = UtilZip.unZipFile(zipFileString, Utils.buildProjectPath(projectName));
