@@ -120,9 +120,8 @@ public final class ServerCalls {
 
 		Preconditions.checkNotNull(context, "Context cannot be null!");
 
-		if (emailForUiTests != null) {
-			userEmail = emailForUiTests;
-		}
+		userEmail = emailForUiTests == null ? userEmail : emailForUiTests;
+		userEmail = userEmail == null ? "" : userEmail;
 
 		try {
 			String md5Checksum = Utils.md5Checksum(new File(zipFileString));
