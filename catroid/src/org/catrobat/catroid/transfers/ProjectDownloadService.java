@@ -36,9 +36,10 @@ import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.utils.DownloadUtil;
 import org.catrobat.catroid.utils.UtilZip;
 import org.catrobat.catroid.utils.Utils;
-import org.catrobat.catroid.web.ConnectionWrapper;
 import org.catrobat.catroid.web.ServerCalls;
 import org.catrobat.catroid.web.WebconnectionException;
+
+import java.io.IOException;
 
 public class ProjectDownloadService extends IntentService {
 
@@ -59,11 +60,6 @@ public class ProjectDownloadService extends IntentService {
 	private Integer notificationId;
 	public ResultReceiver receiver;
 	private Handler handler;
-
-	// mock object testing
-	protected ConnectionWrapper createConnection() {
-		return new ConnectionWrapper();
-	}
 
 	public ProjectDownloadService() {
 		super(ProjectDownloadService.class.getSimpleName());
@@ -89,6 +85,8 @@ public class ProjectDownloadService extends IntentService {
 			ServerCalls.getInstance().downloadProject(url, zipFileString, receiver, notificationId);
 			result = UtilZip.unZipFile(zipFileString, Utils.buildProjectPath(projectName));
 			Log.v(TAG, "url: " + url + ", zip-file: " + zipFileString + ", notificationId: " + notificationId);
+		} catch (IOException ioException) {
+			Log.e(TAG, Log.getStackTraceString(ioException));
 		} catch (WebconnectionException webconnectionException) {
 			Log.e(TAG, Log.getStackTraceString(webconnectionException));
 		} finally {
