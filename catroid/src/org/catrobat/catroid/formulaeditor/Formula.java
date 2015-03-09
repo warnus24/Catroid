@@ -100,7 +100,7 @@ public class Formula implements Serializable {
 		} else if (value.equalsIgnoreCase(Sensors.ALBERT_ROBOT_DISTANCE_RIGHT.toString())) {
 			formulaTree = new FormulaElement(ElementType.SENSOR, Sensors.ALBERT_ROBOT_DISTANCE_RIGHT.toString(), null);
 		} else {
-			formulaTree = new FormulaElement(ElementType.NUMBER, value, null);
+			formulaTree = new FormulaElement(ElementType.STRING, value, null);
 		}
 
 		internFormula = new InternFormula(formulaTree.getInternTokenList());

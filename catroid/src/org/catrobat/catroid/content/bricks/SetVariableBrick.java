@@ -42,6 +42,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
@@ -233,7 +234,7 @@ public class SetVariableBrick extends FormulaBrick implements OnClickListener, N
 				textSetVariable.setText(context.getResources().getString(
 						R.string.formula_editor_sensor_albert_robot_distance_right));
 			} else {
-				textSetVariable.setText(stringInPrototype);
+				textSetVariable.setText(String.valueOf(BrickValues.SET_VARIABLE));
 			}
 		}
 		return prototypeView;
