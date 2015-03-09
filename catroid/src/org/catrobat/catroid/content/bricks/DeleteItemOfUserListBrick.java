@@ -42,7 +42,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
-import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
@@ -50,18 +49,16 @@ import org.catrobat.catroid.formulaeditor.UserList;
 import org.catrobat.catroid.ui.adapter.DataAdapter;
 import org.catrobat.catroid.ui.adapter.UserListAdapterWrapper;
 import org.catrobat.catroid.ui.dialogs.NewDataDialog;
-import org.catrobat.catroid.ui.dialogs.NewDataDialog.NewUserListDialogListener;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class DeleteItemOfUserListBrick extends FormulaBrick implements OnClickListener, NewUserListDialogListener {
+public class DeleteItemOfUserListBrick extends UserListBrick implements OnClickListener {
 	private static final long serialVersionUID = 1L;
-	private UserList userList;
 	private transient AdapterView<?> adapterView;
 
 	public DeleteItemOfUserListBrick() {
-		addAllowedBrickField(BrickField.LIST_DELETE_ITEM);
+		addAllowedBrickField(BrickField.LIST_DELETE_INDEX);
 	}
 
 	public DeleteItemOfUserListBrick(Formula userListFormula, UserList userList) {
@@ -74,18 +71,13 @@ public class DeleteItemOfUserListBrick extends FormulaBrick implements OnClickLi
 	}
 
 	private void initializeBrickFields(Formula listAddItemFormula) {
-		addAllowedBrickField(BrickField.LIST_DELETE_ITEM);
-		setFormulaWithBrickField(BrickField.LIST_DELETE_ITEM, listAddItemFormula);
-	}
-
-	@Override
-	public int getRequiredResources() {
-		return NO_RESOURCES;
+		addAllowedBrickField(BrickField.LIST_DELETE_INDEX);
+		setFormulaWithBrickField(BrickField.LIST_DELETE_INDEX, listAddItemFormula);
 	}
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.deleteItemOfUserList(sprite, getFormulaWithBrickField(BrickField.LIST_DELETE_ITEM), userList));
+		sequence.addAction(ExtendedActions.deleteItemOfUserList(sprite, getFormulaWithBrickField(BrickField.LIST_DELETE_INDEX), userList));
 		return null;
 	}
 
@@ -114,8 +106,8 @@ public class DeleteItemOfUserListBrick extends FormulaBrick implements OnClickLi
 		TextView prototypeText = (TextView) view.findViewById(R.id.brick_delete_item_of_userlist_prototype_view);
 		TextView textField = (TextView) view.findViewById(R.id.brick_delete_item_of_userlist_edit_text);
 		prototypeText.setVisibility(View.GONE);
-		getFormulaWithBrickField(BrickField.LIST_DELETE_ITEM).setTextFieldId(R.id.brick_delete_item_of_userlist_edit_text);
-		getFormulaWithBrickField(BrickField.LIST_DELETE_ITEM).refreshTextField(view);
+		getFormulaWithBrickField(BrickField.LIST_DELETE_INDEX).setTextFieldId(R.id.brick_delete_item_of_userlist_edit_text);
+		getFormulaWithBrickField(BrickField.LIST_DELETE_INDEX).refreshTextField(view);
 		textField.setVisibility(View.VISIBLE);
 		textField.setOnClickListener(this);
 
@@ -227,7 +219,8 @@ public class DeleteItemOfUserListBrick extends FormulaBrick implements OnClickLi
 
 	@Override
 	public Brick clone() {
-		DeleteItemOfUserListBrick clonedBrick = new DeleteItemOfUserListBrick(getFormulaWithBrickField(BrickField.LIST_DELETE_ITEM).clone(), userList);
+		DeleteItemOfUserListBrick clonedBrick = new DeleteItemOfUserListBrick(getFormulaWithBrickField(
+				BrickField.LIST_DELETE_INDEX).clone(), userList == null ? null : userList.clone());
 		return clonedBrick;
 	}
 
@@ -236,48 +229,7 @@ public class DeleteItemOfUserListBrick extends FormulaBrick implements OnClickLi
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.LIST_DELETE_ITEM));
-	}
-
-	@Override
-	public Brick copyBrickForSprite(Sprite sprite) {
-		Project currentProject = ProjectManager.getInstance().getCurrentProject();
-		if (currentProject == null) {
-			throw new RuntimeException("The current project must be set before cloning it");
-		}
-
-		DeleteItemOfUserListBrick copyBrick = (DeleteItemOfUserListBrick) clone();
-		copyBrick.userList = currentProject.getDataContainer().getUserList(userList.getName(), sprite);
-		return copyBrick;
-	}
-
-	private void updateUserListIfDeleted(UserListAdapterWrapper userListAdapterWrapper) {
-		if (userList != null && (userListAdapterWrapper.getPositionOfItem(userList) == 0)) {
-			userList = null;
-		}
-	}
-
-	private void setSpinnerSelection(Spinner userListSpinner, UserList newUserList) {
-		UserListAdapterWrapper userListAdapterWrapper = (UserListAdapterWrapper) userListSpinner.getAdapter();
-
-		updateUserListIfDeleted(userListAdapterWrapper);
-
-		if (userList != null) {
-			userListSpinner.setSelection(userListAdapterWrapper.getPositionOfItem(userList), true);
-		} else if (newUserList != null) {
-			userListSpinner.setSelection(userListAdapterWrapper.getPositionOfItem(newUserList), true);
-			userList = newUserList;
-		} else {
-			userListSpinner.setSelection(userListAdapterWrapper.getCount() - 1, true);
-			userList = userListAdapterWrapper.getItem(userListAdapterWrapper.getCount() - 1);
-		}
-	}
-
-	@Override
-	public void onFinishNewUserListDialog(Spinner spinnerToUpdate, UserList newUserList) {
-		UserListAdapterWrapper userListAdapterWrapper = ((UserListAdapterWrapper) spinnerToUpdate.getAdapter());
-		userListAdapterWrapper.notifyDataSetChanged();
-		setSpinnerSelection(spinnerToUpdate, newUserList);
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.LIST_DELETE_INDEX));
 	}
 
 }

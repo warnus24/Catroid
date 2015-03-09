@@ -111,6 +111,7 @@ import org.catrobat.catroid.content.bricks.TurnLeftBrick;
 import org.catrobat.catroid.content.bricks.TurnRightBrick;
 import org.catrobat.catroid.content.bricks.UserBrick;
 import org.catrobat.catroid.content.bricks.UserBrickParameter;
+import org.catrobat.catroid.content.bricks.UserListBrick;
 import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrick;
 import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrickElement;
 import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrickElements;
@@ -218,8 +219,6 @@ public final class StorageHandler {
 	private void setXstreamAliases() {
 		xstream.alias("look", LookData.class);
 		xstream.alias("sound", SoundInfo.class);
-		xstream.alias("userVariable", UserVariable.class);
-		xstream.alias("userList", UserList.class);
 
 		xstream.alias("script", Script.class);
 		xstream.alias("object", Sprite.class);
@@ -306,6 +305,18 @@ public final class StorageHandler {
 
 		xstream.aliasField("formulaList", FormulaBrick.class, "formulaMap");
 		xstream.aliasField("object", BrickBaseType.class, "sprite");
+
+		xstream.aliasField("programVariableList", DataContainer.class, "projectVariables");
+		xstream.aliasField("objectVariableList", DataContainer.class, "spriteVariables");
+		xstream.alias("userVariableAliase", UserVariable.class);
+
+		xstream.aliasField("userBrickVariableList", DataContainer.class, "userBrickVariables");
+
+		xstream.aliasField("programListOfLists", DataContainer.class, "projectLists");
+		xstream.aliasField("objectListOfList", DataContainer.class, "spriteListOfLists");
+		xstream.alias("userListReference", UserList.class);
+		xstream.aliasField("userListSpinner", UserListBrick.class, "userList");
+
 	}
 
 	private void createCatroidRoot() {

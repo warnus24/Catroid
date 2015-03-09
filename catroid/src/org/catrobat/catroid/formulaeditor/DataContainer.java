@@ -25,8 +25,6 @@ package org.catrobat.catroid.formulaeditor;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.UserBrick;
@@ -45,18 +43,13 @@ public class DataContainer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final int INVALID_ID = -1;
 
-	@XStreamAlias("programVariableList")
 	private List<UserVariable> projectVariables;
-	@XStreamAlias("objectVariableList")
 	private Map<Sprite, List<UserVariable>> spriteVariables;
 
-	@XStreamAlias("userBrickVariableList")
 	@SuppressLint("UseSparseArrays")
 	private Map<Integer, List<UserVariable>> userBrickVariables = new HashMap<Integer, List<UserVariable>>();
 
-	@XStreamAlias("programListOfLists")
 	private List<UserList> projectLists;
-	@XStreamAlias("objectListOfList")
 	private Map<Sprite, List<UserList>> spriteListOfLists;
 
 	public DataContainer() {
@@ -65,7 +58,6 @@ public class DataContainer implements Serializable {
 
 		projectLists = new ArrayList<UserList>();
 		spriteListOfLists = new HashMap<Sprite, List<UserList>>();
-
 	}
 
 	public DataAdapter createDataAdapter(Context context, Sprite sprite) {
