@@ -221,7 +221,7 @@
         <item name="android:ellipsize" >end</item >
     </style >
 
-    <style name="FragmentColorChooserTextView" parent="android:style/Widget.EditText" >
+    <style name="FragmentSeekbarChooserTextView" parent="android:style/Widget.EditText" >
         <item name="android:focusable" >false</item >
         <item name="android:focusableInTouchMode" >false</item >
         <item name="android:clickable" >false</item >
