@@ -59,7 +59,7 @@ public class UserList implements Serializable {
 	}
 
 	public UserList clone() {
-		ArrayList cloneList = new ArrayList<Object>(list);
-		return new UserList(String.valueOf(name), cloneList);
+		ArrayList<Object> cloneList = new ArrayList<Object>(list);
+		return new UserList(name, cloneList);
 	}
 }

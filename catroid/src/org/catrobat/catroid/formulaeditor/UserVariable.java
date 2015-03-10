@@ -56,4 +56,9 @@ public class UserVariable implements Serializable {
 		this.name = name;
 	}
 
+	public UserVariable clone(){
+		//TODO: deep copy value!
+		return new UserVariable(String.valueOf(name), value);
+	}
+
 }

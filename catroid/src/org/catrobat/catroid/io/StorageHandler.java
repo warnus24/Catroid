@@ -115,6 +115,7 @@ import org.catrobat.catroid.content.bricks.UserListBrick;
 import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrick;
 import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrickElement;
 import org.catrobat.catroid.content.bricks.UserScriptDefinitionBrickElements;
+import org.catrobat.catroid.content.bricks.UserVariableBrick;
 import org.catrobat.catroid.content.bricks.VibrationBrick;
 import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.content.bricks.WhenBrick;
@@ -179,7 +180,6 @@ public final class StorageHandler {
 		xstream.processAnnotations(XmlHeader.class);
 		xstream.processAnnotations(DataContainer.class);
 		xstream.registerConverter(new XStreamConcurrentFormulaHashMapConverter());
-		xstream.registerConverter(new XStreamUserVariableConverter());
 		xstream.registerConverter(new XStreamBrickConverter(xstream.getMapper(), xstream.getReflectionProvider()));
 		xstream.registerConverter(new XStreamScriptConverter(xstream.getMapper(), xstream.getReflectionProvider()));
 
@@ -308,7 +308,8 @@ public final class StorageHandler {
 
 		xstream.aliasField("programVariableList", DataContainer.class, "projectVariables");
 		xstream.aliasField("objectVariableList", DataContainer.class, "spriteVariables");
-		xstream.alias("userVariableAliase", UserVariable.class);
+		xstream.alias("userVariable", UserVariable.class);
+		xstream.aliasField("userVariable", UserVariableBrick.class, "userVariable");
 
 		xstream.aliasField("userBrickVariableList", DataContainer.class, "userBrickVariables");
 

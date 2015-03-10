@@ -43,7 +43,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
-import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
@@ -51,15 +50,13 @@ import org.catrobat.catroid.formulaeditor.UserVariable;
 import org.catrobat.catroid.ui.adapter.DataAdapter;
 import org.catrobat.catroid.ui.adapter.UserVariableAdapterWrapper;
 import org.catrobat.catroid.ui.dialogs.NewDataDialog;
-import org.catrobat.catroid.ui.dialogs.NewDataDialog.NewVariableDialogListener;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class ChangeVariableBrick extends FormulaBrick implements OnClickListener, NewVariableDialogListener {
+public class ChangeVariableBrick extends UserVariableBrick implements OnClickListener{
 
 	private static final long serialVersionUID = 1L;
-	private UserVariable userVariable;
 	private transient AdapterView<?> adapterView;
 	public boolean inUserBrick = false;
 
@@ -244,7 +241,7 @@ public class ChangeVariableBrick extends FormulaBrick implements OnClickListener
 	@Override
 	public Brick clone() {
 		ChangeVariableBrick clonedBrick = new ChangeVariableBrick(getFormulaWithBrickField(
-				BrickField.VARIABLE_CHANGE).clone(), userVariable, inUserBrick);
+				BrickField.VARIABLE_CHANGE).clone(), userVariable == null ? null : userVariable.clone(), inUserBrick);
 		return clonedBrick;
 	}
 
@@ -261,50 +258,6 @@ public class ChangeVariableBrick extends FormulaBrick implements OnClickListener
 		sequence.addAction(ExtendedActions.changeVariable(sprite, getFormulaWithBrickField(BrickField.VARIABLE_CHANGE),
 				userVariable));
 		return null;
-	}
-
-	@Override
-	public Brick copyBrickForSprite(Sprite cloneSprite) {
-		Project currentProject = ProjectManager.getInstance().getCurrentProject();
-		if (currentProject == null) {
-			throw new RuntimeException("The current project must be set before cloning it");
-		}
-
-		ChangeVariableBrick copyBrick = (ChangeVariableBrick) clone();
-		copyBrick.userVariable = currentProject.getDataContainer().getUserVariable(userVariable.getName(), cloneSprite);
-
-		return copyBrick;
-	}
-
-	private void updateUserVariableIfDeleted(UserVariableAdapterWrapper userVariableAdapterWrapper) {
-		if (userVariable != null && userVariableAdapterWrapper.getPositionOfItem(userVariable) == 0) {
-			userVariable = null;
-		}
-	}
-
-	private void setSpinnerSelection(Spinner variableSpinner, UserVariable newUserVariable) {
-		UserVariableAdapterWrapper userVariableAdapterWrapper = (UserVariableAdapterWrapper) variableSpinner
-				.getAdapter();
-
-		updateUserVariableIfDeleted(userVariableAdapterWrapper);
-
-		if (userVariable != null) {
-			variableSpinner.setSelection(userVariableAdapterWrapper.getPositionOfItem(userVariable), true);
-		} else if (newUserVariable != null) {
-			variableSpinner.setSelection(userVariableAdapterWrapper.getPositionOfItem(newUserVariable), true);
-			userVariable = newUserVariable;
-		} else {
-			variableSpinner.setSelection(userVariableAdapterWrapper.getCount() - 1, true);
-			userVariable = userVariableAdapterWrapper.getItem(userVariableAdapterWrapper.getCount() - 1);
-		}
-	}
-
-	@Override
-	public void onFinishNewVariableDialog(Spinner spinnerToUpdate, UserVariable newUserVariable) {
-		UserVariableAdapterWrapper userVariableAdapterWrapper = ((UserVariableAdapterWrapper) spinnerToUpdate
-				.getAdapter());
-		userVariableAdapterWrapper.notifyDataSetChanged();
-		setSpinnerSelection(spinnerToUpdate, newUserVariable);
 	}
 
 	public void setInUserBrick(boolean inUserBrick) {
