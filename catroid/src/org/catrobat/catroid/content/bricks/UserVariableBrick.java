@@ -33,6 +33,7 @@ public class UserVariableBrick extends FormulaBrick implements NewDataDialog.New
 
 	private static final long serialVersionUID = 1L;
 	protected UserVariable userVariable;
+	public boolean inUserBrick = false;
 
 	private void updateUserVariableIfDeleted(UserVariableAdapterWrapper userVariableAdapterWrapper) {
 		if (userVariable != null && (userVariableAdapterWrapper.getPositionOfItem(userVariable) == 0)) {
@@ -65,4 +66,8 @@ public class UserVariableBrick extends FormulaBrick implements NewDataDialog.New
 		setSpinnerSelection(spinnerToUpdate, newUserVariable);
 	}
 
+
+	public void setInUserBrick(boolean inUserBrick) {
+		this.inUserBrick = inUserBrick;
+	}
 }

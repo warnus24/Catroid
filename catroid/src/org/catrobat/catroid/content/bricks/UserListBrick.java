@@ -33,6 +33,7 @@ public abstract class UserListBrick extends FormulaBrick implements NewDataDialo
 
 	private static final long serialVersionUID = 1L;
 	protected UserList userList;
+	public boolean inUserBrick = false;
 
 	private void updateUserListIfDeleted(UserListAdapterWrapper userListAdapterWrapper) {
 		if (userList != null && (userListAdapterWrapper.getPositionOfItem(userList) == 0)) {
@@ -66,5 +67,10 @@ public abstract class UserListBrick extends FormulaBrick implements NewDataDialo
 	@Override
 	public int getRequiredResources() {
 		return NO_RESOURCES;
+	}
+
+
+	public void setInUserBrick(boolean inUserBrick) {
+		this.inUserBrick = inUserBrick;
 	}
 }

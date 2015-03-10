@@ -58,7 +58,6 @@ public class SetVariableBrick extends UserVariableBrick implements OnClickListen
 
 	private static final long serialVersionUID = 1L;
 	private transient AdapterView<?> adapterView;
-	public boolean inUserBrick = false;
 
 	public SetVariableBrick() {
 		addAllowedBrickField(BrickField.VARIABLE);
@@ -243,10 +242,6 @@ public class SetVariableBrick extends UserVariableBrick implements OnClickListen
 			return;
 		}
 		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.VARIABLE));
-	}
-
-	public void setInUserBrick(boolean inUserBrick) {
-		this.inUserBrick = inUserBrick;
 	}
 
 	@Override
