@@ -28,12 +28,14 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
@@ -96,7 +98,7 @@ public class PreStageActivity extends BaseActivity {
 
 		setContentView(R.layout.activity_prestage);
 
-		int requiredResources = getRequiredRessources();
+		int requiredResources = getRequiredResources();
 		requiredResourceCounter = Integer.bitCount(requiredResources);
 
 		if ((requiredResources & Brick.TEXT_TO_SPEECH) > 0) {
@@ -157,7 +159,7 @@ public class PreStageActivity extends BaseActivity {
 		if ((requiredResources & Brick.VIBRATOR) > 0) {
 			Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 			if (vibrator != null) {
-				requiredResourceCounter--;
+        resourceInitialized();
 				VibratorUtil.setContext(this.getBaseContext());
 				VibratorUtil.activateVibratorThread();
 			} else {
@@ -310,7 +312,7 @@ public class PreStageActivity extends BaseActivity {
 		this.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 	}
 
-	private int getRequiredRessources() {
+	private int getRequiredResources() {
 		ArrayList<Sprite> spriteList = (ArrayList<Sprite>) ProjectManager.getInstance().getCurrentProject()
 				.getSpriteList();
 
