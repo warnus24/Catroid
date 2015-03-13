@@ -248,6 +248,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			}
 		} else {
 			fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+			((KodeyRGBLightBrick)currentBrick).setIsFormulaEditorPreview(false);
 		}
 
 		//ToDo: #Kodey check for Motor Forward Brick
