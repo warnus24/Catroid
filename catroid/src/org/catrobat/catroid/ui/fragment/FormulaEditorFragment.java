@@ -240,6 +240,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			if (fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG) {
 				fragTransaction.show(fragmentManager.findFragmentByTag(KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
 				fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+				((KodeyRGBLightBrick)currentBrick).setIsFormulaEditorPreview(true);
 			} else {
 				fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
 				fragTransaction.remove(fragmentManager.findFragmentByTag(KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
@@ -254,6 +255,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			if (fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) {
 				fragTransaction.show(fragmentManager.findFragmentByTag(KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
 				fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+				((KodeyMotorForwardActionBrick)currentBrick).setIsFormulaEditorPreview(true);
 			} else {
 				fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
 				fragTransaction.remove(fragmentManager.findFragmentByTag(KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
@@ -268,6 +270,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			if (fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) {
 				fragTransaction.show(fragmentManager.findFragmentByTag(KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
 				fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+				((KodeyMotorBackwardActionBrick)currentBrick).setIsFormulaEditorPreview(true);
 			} else {
 				fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
 				fragTransaction.remove(fragmentManager.findFragmentByTag(KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
