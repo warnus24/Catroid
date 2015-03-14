@@ -248,7 +248,9 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			}
 		} else {
 			fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-			((KodeyRGBLightBrick)currentBrick).setIsFormulaEditorPreview(false);
+			if(fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG) {
+				((KodeyRGBLightBrick) currentBrick).setIsFormulaEditorPreview(false);
+			}
 		}
 
 		//ToDo: #Kodey check for Motor Forward Brick
@@ -264,6 +266,9 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			}
 		} else {
 			fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+			if(fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) {
+				((KodeyMotorForwardActionBrick) currentBrick).setIsFormulaEditorPreview(false);
+			}
 		}
 
 		//ToDo: #Kodey check for Motor Backward Brick
@@ -279,6 +284,9 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			}
 		} else {
 			fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+			if(fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) {
+				((KodeyMotorBackwardActionBrick) currentBrick).setIsFormulaEditorPreview(false);
+			}
 		}
 
 		fragTransaction.commit();
