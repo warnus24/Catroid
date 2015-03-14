@@ -30,8 +30,9 @@ import android.hardware.SensorEventListener;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.catrobat.catroid.robot.albert.SensorRobotAlbert;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
+import org.catrobat.catroid.robot.albert.SensorRobotAlbert;
+
 
 public final class SensorHandler implements SensorEventListener, SensorCustomEventListener {
 	private static final String TAG = SensorHandler.class.getSimpleName();

@@ -127,9 +127,9 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 			bluetoothAdapter.enable();
 			solo.sleep(5000);
 		}
-
+		solo.sleep(5000);
 		UiTestUtils.clickOnBottomBar(solo, R.id.button_play);
-		solo.sleep(2500);
+		solo.sleep(5000);
 
 		ListView deviceList = solo.getCurrentViews(ListView.class).get(0);
 		String connectedDeviceName = null;
