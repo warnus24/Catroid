@@ -254,16 +254,17 @@ public class KodeyRGBLightBrick extends FormulaBrick implements OnClickListener 
 				(green.getRoot().getElementType() == FormulaElement.ElementType.NUMBER) &&
 				(blue.getRoot().getElementType() == FormulaElement.ElementType.NUMBER) && (isFormulaEditorPreview == false)){
 			KodeyMultipleSeekbarFragment.showMultipleSeekBarFragment(view, this, red, green, blue);
+			isFormulaEditorPreview = false;
 		} else {
 			if(view.getId() == R.id.brick_kodey_rgb_led_action_red_edit_text) {
+				isFormulaEditorPreview = true;
 				FormulaEditorFragment.showFragment(view, this, red);
-				isFormulaEditorPreview = true;
 			} else if(view.getId() == R.id.brick_kodey_rgb_led_action_green_edit_text) {
+				isFormulaEditorPreview = true;
 				FormulaEditorFragment.showFragment(view, this, green);
-				isFormulaEditorPreview = true;
 			} else if(view.getId() == R.id.brick_kodey_rgb_led_action_blue_edit_text) {
-				FormulaEditorFragment.showFragment(view, this, blue);
 				isFormulaEditorPreview = true;
+				FormulaEditorFragment.showFragment(view, this, blue);
 			}
 		}
 	}
