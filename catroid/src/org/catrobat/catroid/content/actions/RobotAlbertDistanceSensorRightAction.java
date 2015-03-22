@@ -25,7 +25,7 @@ package org.catrobat.catroid.content.actions;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 import org.catrobat.catroid.formulaeditor.UserVariable;
-import org.catrobat.catroid.robot.albert.RobotAlbert;
+//import org.catrobat.catroid.robot.albert.RobotAlbert;
 
 public class RobotAlbertDistanceSensorRightAction extends TemporalAction {
 
@@ -37,9 +37,8 @@ public class RobotAlbertDistanceSensorRightAction extends TemporalAction {
 		if (userVariable == null) {
 			return;
 		}
-		int value = RobotAlbert.getRobotAlbertDistanceSensorRightMessage();
-		userVariable.setValue(value);
-
+//		int value = RobotAlbert.getRobotAlbertDistanceSensorRightMessage();
+//		userVariable.setValue(value);
 	}
 
 	public void setUserVariable(UserVariable userVariable) {

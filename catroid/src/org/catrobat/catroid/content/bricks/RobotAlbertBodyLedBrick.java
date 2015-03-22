@@ -65,13 +65,13 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 	}
 
 	private void initializeBrickFields(Formula brightness) {
-		addAllowedBrickField(BrickField.ALBERT_ROBOT_BODY_LED);
-		setFormulaWithBrickField(BrickField.ALBERT_ROBOT_BODY_LED, brightness);
+		addAllowedBrickField(BrickField.ROBOT_ALBERT_BODY_LED);
+		setFormulaWithBrickField(BrickField.ROBOT_ALBERT_BODY_LED, brightness);
 	}
 
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_ROBOT_ALBERT;
+		return 0; // BLUETOOTH_ROBOT_ALBERT;
 	}
 
 	@Override
@@ -83,8 +83,6 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 		textValue.setText(String.valueOf(BrickValues.ROBOT_ALBERT_BODY_LED));
 		return prototypeView;
 	}
-
-
 
 	@Override
 	public View getView(Context context, int brickId, BaseAdapter baseAdapter) {
@@ -110,8 +108,8 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 		TextView textValue = (TextView) view.findViewById(R.id.robot_albert_body_led_status_prototype_text_view);
 		editValue = (TextView) view.findViewById(R.id.robot_albert_body_led_status_edit_text);
 
-		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BODY_LED).setTextFieldId(R.id.robot_albert_body_led_status_edit_text);
-		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BODY_LED).refreshTextField(view);
+		getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BODY_LED).setTextFieldId(R.id.robot_albert_body_led_status_edit_text);
+		getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BODY_LED).refreshTextField(view);
 
 		textValue.setVisibility(View.GONE);
 		editValue.setVisibility(View.VISIBLE);
@@ -120,7 +118,7 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 
 		int val = 0;
 		try {
-			val = getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BODY_LED).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
+			val = getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BODY_LED).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
 		} catch (InterpretationException interpretationException) {
 			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
 		}
@@ -135,7 +133,7 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 
 	@Override
 	public void onClick(View view) {
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BODY_LED));
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BODY_LED));
 	}
 
 	@Override
@@ -149,7 +147,7 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertBodyLedAction( getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BODY_LED)));
+//		sequence.addAction(ExtendedActions.robotAlbertBodyLedAction( getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BODY_LED)));
 		return null;
 	}
 }

@@ -30,7 +30,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick.Motor;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
-import org.catrobat.catroid.robot.albert.RobotAlbert;
+//import org.catrobat.catroid.robot.albert.RobotAlbert;
 
 public class RobotAlbertMotorActionAction extends TemporalAction {
 	private static final int MIN = -100;
@@ -67,7 +67,7 @@ public class RobotAlbertMotorActionAction extends TemporalAction {
 			Log.d("Albert", "Error: motorEnum:" + motorEnum);
 		}
 
-		RobotAlbert.sendRobotAlbertMotorMessage(motor, speedValue);
+//		RobotAlbert.sendRobotAlbertMotorMessage(motor, speedValue);
 	}
 
 	public void setMotorEnum(Motor motorEnum) {

@@ -66,12 +66,13 @@ public class RobotAlbertFrontLedBrick extends FormulaBrick implements OnClickLis
 	}
 
 	private void initializeBrickFields(Formula brightness) {
-		addAllowedBrickField(BrickField.ALBERT_ROBOT_FRONT_LED);
-		setFormulaWithBrickField(BrickField.ALBERT_ROBOT_FRONT_LED, brightness);
+		addAllowedBrickField(BrickField.ROBOT_ALBERT_FRONT_LED);
+		setFormulaWithBrickField(BrickField.ROBOT_ALBERT_FRONT_LED, brightness);
 	}
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_ROBOT_ALBERT;
+		return 0;
+//		return BLUETOOTH_ROBOT_ALBERT;
 	}
 
 
@@ -111,8 +112,8 @@ public class RobotAlbertFrontLedBrick extends FormulaBrick implements OnClickLis
 		TextView textValue = (TextView) view.findViewById(R.id.robot_albert_front_led_status_prototype_text_view);
 		editValue = (TextView) view.findViewById(R.id.robot_albert_front_led_status_edit_text);
 
-		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_FRONT_LED).setTextFieldId(R.id.robot_albert_front_led_status_edit_text);
-		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_FRONT_LED).refreshTextField(view);
+		getFormulaWithBrickField(BrickField.ROBOT_ALBERT_FRONT_LED).setTextFieldId(R.id.robot_albert_front_led_status_edit_text);
+		getFormulaWithBrickField(BrickField.ROBOT_ALBERT_FRONT_LED).refreshTextField(view);
 
 		textValue.setVisibility(View.GONE);
 		editValue.setVisibility(View.VISIBLE);
@@ -121,7 +122,7 @@ public class RobotAlbertFrontLedBrick extends FormulaBrick implements OnClickLis
 
 		int val = 0;
 		try {
-			val = getFormulaWithBrickField(BrickField.ALBERT_ROBOT_FRONT_LED).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
+			val = getFormulaWithBrickField(BrickField.ROBOT_ALBERT_FRONT_LED).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
 		} catch (InterpretationException interpretationException) {
 			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
 		}
@@ -136,7 +137,7 @@ public class RobotAlbertFrontLedBrick extends FormulaBrick implements OnClickLis
 
 	@Override
 	public void onClick(View view) {
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_FRONT_LED));
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_FRONT_LED));
 	}
 
 	@Override
@@ -150,7 +151,7 @@ public class RobotAlbertFrontLedBrick extends FormulaBrick implements OnClickLis
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertFrontLedAction(sprite, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_FRONT_LED)));
+//		sequence.addAction(ExtendedActions.robotAlbertFrontLedAction(sprite, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_FRONT_LED)));
 		return null;
 	}
 }
