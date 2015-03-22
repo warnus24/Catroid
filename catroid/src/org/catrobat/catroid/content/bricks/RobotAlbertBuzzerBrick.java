@@ -68,12 +68,12 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 		initializeBrickFields(value);
 	}
 	private void initializeBrickFields(Formula brightness) {
-		addAllowedBrickField(BrickField.ALBERT_ROBOT_BUZZER);
-		setFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER, brightness);
+		addAllowedBrickField(BrickField.ROBOT_ALBERT_BUZZER);
+		setFormulaWithBrickField(BrickField.ROBOT_ALBERT_BUZZER, brightness);
 	}
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_ROBOT_ALBERT;
+		return 0;//BLUETOOTH_ROBOT_ALBERT;
 	}
 
 	@Override
@@ -108,8 +108,8 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 
 		TextView textValue = (TextView) view.findViewById(R.id.robot_albert_buzzer_frequency_prototype_text_view);
 		editValue = (TextView) view.findViewById(R.id.robot_albert_buzzer_frequency_edit_text);
-		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER).setTextFieldId(R.id.robot_albert_buzzer_frequency_edit_text);
-		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER).refreshTextField(view);
+		getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BUZZER).setTextFieldId(R.id.robot_albert_buzzer_frequency_edit_text);
+		getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BUZZER).refreshTextField(view);
 
 		textValue.setVisibility(View.GONE);
 		editValue.setVisibility(View.VISIBLE);
@@ -118,7 +118,7 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 
 		int val = 0;
 		try {
-			val = getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
+			val = getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BUZZER).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
 		} catch (InterpretationException interpretationException) {
 			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
 		}
@@ -133,7 +133,7 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 
 	@Override
 	public void onClick(View view) {
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER));
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BUZZER));
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertBuzzer(sprite,getFormulaWithBrickField(BrickField.ALBERT_ROBOT_BUZZER)));
+//		sequence.addAction(ExtendedActions.robotAlbertBuzzer(sprite,getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BUZZER)));
 		return null;
 	}
 }

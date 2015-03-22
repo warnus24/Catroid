@@ -29,7 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
-import org.catrobat.catroid.robot.albert.RobotAlbert;
+//import org.catrobat.catroid.robot.albert.RobotAlbert;
 
 public class RobotAlbertFrontLedAction extends TemporalAction {
 	private static final int MIN = 0;
@@ -52,7 +52,7 @@ public class RobotAlbertFrontLedAction extends TemporalAction {
 		} else if (status > MAX) {
 			status = MAX;
 		}
-		RobotAlbert.sendRobotAlbertFrontLedMessage(status);
+//		RobotAlbert.sendRobotAlbertFrontLedMessage(status);
 	}
 
 	public void setValue(Formula value) {

@@ -74,17 +74,17 @@ public class RobotAlbertDistanceSensorLeftBrick extends FormulaBrick implements 
 	}
 
 	private void initializeBrickFields(Formula brightness) {
-		addAllowedBrickField(BrickField.ALBERT_ROBOT_DISTANCE_SENSOR_LEFT);
-		setFormulaWithBrickField(BrickField.ALBERT_ROBOT_DISTANCE_SENSOR_LEFT, brightness);
+		addAllowedBrickField(BrickField.ROBOT_ALBERT_DISTANCE_SENSOR_LEFT);
+		setFormulaWithBrickField(BrickField.ROBOT_ALBERT_DISTANCE_SENSOR_LEFT, brightness);
 	}
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_ROBOT_ALBERT;
+		return 0;// BLUETOOTH_ROBOT_ALBERT;
 	}
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertDistanceSensorLeft(sprite, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_DISTANCE_SENSOR_LEFT), userVariable));
+//		sequence.addAction(ExtendedActions.robotAlbertDistanceSensorLeft(sprite, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_DISTANCE_SENSOR_LEFT), userVariable));
 		return null;
 	}
 
@@ -219,7 +219,7 @@ public class RobotAlbertDistanceSensorLeftBrick extends FormulaBrick implements 
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_DISTANCE_SENSOR_LEFT));
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_DISTANCE_SENSOR_LEFT));
 	}
 
 

@@ -83,13 +83,14 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 		initializeBrickFields(speedFormula);
 	}
 	private void initializeBrickFields(Formula brightness) {
-		addAllowedBrickField(BrickField.ALBERT_ROBOT_SPEED);
-		setFormulaWithBrickField(BrickField.ALBERT_ROBOT_SPEED, brightness);
+		addAllowedBrickField(BrickField.ROBOT_ALBERT_SPEED);
+		setFormulaWithBrickField(BrickField.ROBOT_ALBERT_SPEED, brightness);
 	}
 
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_ROBOT_ALBERT;
+//		return BLUETOOTH_ROBOT_ALBERT;
+		return 0;
 	}
 
 	@Override
@@ -139,8 +140,8 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 
 		TextView textSpeed = (TextView) view.findViewById(R.id.robot_albert_motor_action_speed_prototype_text_view);
 		editSpeed = (TextView) view.findViewById(R.id.robot_albert_motor_action_speed_edit_text);
-		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_SPEED).setTextFieldId(R.id.robot_albert_motor_action_speed_edit_text);
-		getFormulaWithBrickField(BrickField.ALBERT_ROBOT_SPEED).refreshTextField(view);
+		getFormulaWithBrickField(BrickField.ROBOT_ALBERT_SPEED).setTextFieldId(R.id.robot_albert_motor_action_speed_edit_text);
+		getFormulaWithBrickField(BrickField.ROBOT_ALBERT_SPEED).refreshTextField(view);
 
 		textSpeed.setVisibility(View.GONE);
 		editSpeed.setVisibility(View.VISIBLE);
@@ -182,7 +183,7 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 
 		int val = 0;
 		try {
-			val = getFormulaWithBrickField(BrickField.ALBERT_ROBOT_SPEED).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
+			val = getFormulaWithBrickField(BrickField.ROBOT_ALBERT_SPEED).interpretInteger(ProjectManager.getInstance().getCurrentSprite());
 		} catch (InterpretationException interpretationException) {
 			Log.d(getClass().getSimpleName(), "Couldn't interpret Formula.", interpretationException);
 		}
@@ -200,7 +201,7 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ALBERT_ROBOT_SPEED));
+		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_SPEED));
 	}
 
 	@Override
@@ -247,7 +248,7 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.robotAlbertMotor(sprite,Motor.valueOf(motor), getFormulaWithBrickField(BrickField.ALBERT_ROBOT_SPEED)));
+//		sequence.addAction(ExtendedActions.robotAlbertMotor(sprite,Motor.valueOf(motor), getFormulaWithBrickField(BrickField.ROBOT_ALBERT_SPEED)));
 		return null;
 	}
 }
