@@ -60,10 +60,6 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 		initializeBrickFields(new Formula(value));
 	}
 
-	public RobotAlbertBodyLedBrick( Formula value) {
-		initializeBrickFields(value);
-	}
-
 	private void initializeBrickFields(Formula brightness) {
 		addAllowedBrickField(BrickField.ROBOT_ALBERT_BODY_LED);
 		setFormulaWithBrickField(BrickField.ROBOT_ALBERT_BODY_LED, brightness);
@@ -71,7 +67,7 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 
 	@Override
 	public int getRequiredResources() {
-		return 0; // BLUETOOTH_ROBOT_ALBERT;
+		return 0; // BLUETOOTH_ROBOT_ALBERT; //TODO: albert
 	}
 
 	@Override
@@ -147,7 +143,7 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-//		sequence.addAction(ExtendedActions.robotAlbertBodyLedAction( getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BODY_LED)));
+		sequence.addAction(ExtendedActions.robotAlbertBodyLedAction( getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BODY_LED)));
 		return null;
 	}
 }

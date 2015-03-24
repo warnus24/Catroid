@@ -78,12 +78,12 @@ public class RobotAlbertDistanceSensorRightBrick extends FormulaBrick implements
 	}
 	@Override
 	public int getRequiredResources() {
-		return 0;//BLUETOOTH_ROBOT_ALBERT;
+		return 0;//BLUETOOTH_ROBOT_ALBERT;//TODO: albert
 	}
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-//		sequence.addAction(ExtendedActions.robotAlbertDistanceSensorRight(sprite, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_DISTANCE_SENSOR_RIGHT)));
+		sequence.addAction(ExtendedActions.robotAlbertDistanceSensorRight(sprite, userVariable));
 		return null;
 	}
 

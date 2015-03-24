@@ -68,23 +68,18 @@ public class RobotAlbertDistanceSensorLeftBrick extends FormulaBrick implements 
 		initializeBrickFields(variableFormula);
 	}
 
-	public RobotAlbertDistanceSensorLeftBrick( double value) {
-		this.userVariable = null;
-		initializeBrickFields(new Formula(value));
-	}
-
 	private void initializeBrickFields(Formula brightness) {
 		addAllowedBrickField(BrickField.ROBOT_ALBERT_DISTANCE_SENSOR_LEFT);
 		setFormulaWithBrickField(BrickField.ROBOT_ALBERT_DISTANCE_SENSOR_LEFT, brightness);
 	}
 	@Override
 	public int getRequiredResources() {
-		return 0;// BLUETOOTH_ROBOT_ALBERT;
+		return 0;// BLUETOOTH_ROBOT_ALBERT;//TODO: albert
 	}
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-//		sequence.addAction(ExtendedActions.robotAlbertDistanceSensorLeft(sprite, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_DISTANCE_SENSOR_LEFT), userVariable));
+		sequence.addAction(ExtendedActions.robotAlbertDistanceSensorLeft(sprite,  userVariable));
 		return null;
 	}
 
@@ -199,10 +194,10 @@ public class RobotAlbertDistanceSensorLeftBrick extends FormulaBrick implements 
 		background.setAlpha(alphaValue);
 
 		TextView textSetVariable = (TextView) view.findViewById(R.id.brick_robot_albert_distance_sensor_left_label);
-		Spinner variablebrickSpinner = (Spinner) view.findViewById(R.id.robot_albert_distance_sensor_left_spinner);
+		Spinner variableBrickSpinner = (Spinner) view.findViewById(R.id.robot_albert_distance_sensor_left_spinner);
 
 		ColorStateList color = textSetVariable.getTextColors().withAlpha(alphaValue);
-		variablebrickSpinner.getBackground().setAlpha(alphaValue);
+		variableBrickSpinner.getBackground().setAlpha(alphaValue);
 		if (adapterView != null) {
 			((TextView) adapterView.getChildAt(0)).setTextColor(color);
 		}

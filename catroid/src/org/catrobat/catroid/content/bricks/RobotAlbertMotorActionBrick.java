@@ -89,7 +89,7 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 
 	@Override
 	public int getRequiredResources() {
-//		return BLUETOOTH_ROBOT_ALBERT;
+//		return BLUETOOTH_ROBOT_ALBERT;//TODO: albert
 		return 0;
 	}
 
@@ -248,7 +248,7 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-//		sequence.addAction(ExtendedActions.robotAlbertMotor(sprite,Motor.valueOf(motor), getFormulaWithBrickField(BrickField.ROBOT_ALBERT_SPEED)));
+		sequence.addAction(ExtendedActions.robotAlbertMotor(sprite,Motor.valueOf(motor), getFormulaWithBrickField(BrickField.ROBOT_ALBERT_SPEED)));
 		return null;
 	}
 }

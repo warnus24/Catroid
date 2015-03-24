@@ -66,7 +66,7 @@ public class RobotAlbertMotorActionAction extends TemporalAction {
 		} else {
 			Log.d("Albert", "Error: motorEnum:" + motorEnum);
 		}
-
+// TODO: albert
 //		RobotAlbert.sendRobotAlbertMotorMessage(motor, speedValue);
 	}
 

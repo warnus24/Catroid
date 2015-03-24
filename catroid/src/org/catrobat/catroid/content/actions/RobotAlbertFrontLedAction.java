@@ -52,6 +52,7 @@ public class RobotAlbertFrontLedAction extends TemporalAction {
 		} else if (status > MAX) {
 			status = MAX;
 		}
+		// TODO: albert
 //		RobotAlbert.sendRobotAlbertFrontLedMessage(status);
 	}
 
