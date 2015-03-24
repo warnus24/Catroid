@@ -87,7 +87,7 @@ public class PointInDirectionBrick extends FormulaBrick implements View.OnClickL
 	@Override
 	public int getRequiredResources() {
 		return NO_RESOURCES;
-	}
+	} //TODO: albert :if (getFormulaWithBrickField(BrickField.DEGREES).containsRobotAlbertSensors() == true) {
 
 	@Override
 	public View getView(final Context context, int brickId, BaseAdapter baseAdapter) {

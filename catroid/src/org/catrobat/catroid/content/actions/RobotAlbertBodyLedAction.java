@@ -28,7 +28,12 @@ import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
+import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
+import org.catrobat.catroid.bluetooth.base.BluetoothDeviceService;
+import org.catrobat.catroid.common.CatroidService;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.devices.albert.Albert;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
 
@@ -38,6 +43,8 @@ public class RobotAlbertBodyLedAction extends TemporalAction {
 
 	private Formula value;
 	private Sprite sprite;
+
+	private BluetoothDeviceService btService = ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE);
 
 	@Override
 	protected void update(float percent) {
@@ -52,8 +59,12 @@ public class RobotAlbertBodyLedAction extends TemporalAction {
 			status = MIN;
 		} else if (status > MAX) {
 			status = MAX;
-		}// TODO: albert
-//		RobotAlbert.sendRobotAlbertBodyLedMessage(status);
+		}
+		Albert albert = btService.getDevice(BluetoothDevice.ALBERT);
+		if (albert == null) {
+			return;
+		}
+		albert.setBodyLed(status);
 	}
 
 	public void setValue(Formula value) {

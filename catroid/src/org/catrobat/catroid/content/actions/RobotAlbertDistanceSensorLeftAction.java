@@ -24,7 +24,12 @@ package org.catrobat.catroid.content.actions;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
+import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
+import org.catrobat.catroid.bluetooth.base.BluetoothDeviceService;
+import org.catrobat.catroid.common.CatroidService;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.devices.albert.Albert;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 //import org.catrobat.catroid.robot.albert.RobotAlbert;// TODO: albert
 
@@ -33,15 +38,18 @@ public class RobotAlbertDistanceSensorLeftAction extends TemporalAction {
 	@SuppressWarnings("unused")
 	private Sprite sprite;
 	private UserVariable userVariable;
+	private BluetoothDeviceService btService = ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE);
 
 	@Override
 	protected void update(float percent) {
 		if (userVariable == null) {
 			return;
 		}
-		// TODO: albert
-//		int value = RobotAlbert.getRobotAlbertDistanceSensorLeftMessage();
-//		userVariable.setValue(value);
+		Albert albert = btService.getDevice(BluetoothDevice.ALBERT);
+		if (albert == null) {
+			return;
+		}
+
 	}
 
 	public void setUserVariable(UserVariable userVariable) {

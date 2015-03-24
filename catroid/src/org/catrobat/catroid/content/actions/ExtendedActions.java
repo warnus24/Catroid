@@ -189,9 +189,9 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
-	public static RobotAlbertMotorActionAction robotAlbertMotor(Sprite sprite,
+	public static RobotAlbertMotorAction robotAlbertMotor(Sprite sprite,
 			org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick.Motor motorEnum, Formula speed) {
-		RobotAlbertMotorActionAction action = action(RobotAlbertMotorActionAction.class);
+		RobotAlbertMotorAction action = action(RobotAlbertMotorAction.class);
 		action.setMotorEnum(motorEnum);
 		action.setSprite(sprite);
 		action.setSpeed(speed);

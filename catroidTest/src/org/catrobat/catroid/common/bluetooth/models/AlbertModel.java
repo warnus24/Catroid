@@ -1,6 +1,6 @@
 /*
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2014 The Catrobat Team
+ * Copyright (C) 2010-2015 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,31 +20,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.bluetooth;
 
-import android.content.Context;
+package org.catrobat.catroid.common.bluetooth.models;
 
-import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
-import org.catrobat.catroid.bluetooth.base.BluetoothDeviceFactory;
-import org.catrobat.catroid.devices.albert.AlbertImpl;
 
-public class BluetoothDeviceFactoryImpl implements BluetoothDeviceFactory {
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.util.UUID;
+
+public class AlbertModel implements DeviceModel {
+
+
+	private boolean stopAlbertSensorThread;
 
 	@Override
-	public <T extends BluetoothDevice> BluetoothDevice createDevice(Class<T> service, Context applicationContext) {
-
-//		if (service == BluetoothDevice.LEGO_NXT) {
-//			return new LegoNXTImpl(applicationContext);
-//		}
-
-        if (service == BluetoothDevice.ALBERT) {
-            return new AlbertImpl();
-        }
-
-//        if (service == BTDeviceService.ARDUINO) {
-//            return new Arduino();
-//        }
-
-		return null; // may throw exception
+	public void start(DataInputStream inputStream, OutputStream outStream) throws IOException {
+//		inputStream.readFully();
 	}
+
+	@Override
+	public void stop() {
+
+	}
+
+
 }

@@ -77,11 +77,6 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 		initializeBrickFields(new Formula(speedValue));
 	}
 
-	public RobotAlbertMotorActionBrick( Motor motor, Formula speedFormula) {
-		this.motorEnum = motor;
-		this.motor = motorEnum.name();
-		initializeBrickFields(speedFormula);
-	}
 	private void initializeBrickFields(Formula brightness) {
 		addAllowedBrickField(BrickField.ROBOT_ALBERT_SPEED);
 		setFormulaWithBrickField(BrickField.ROBOT_ALBERT_SPEED, brightness);
@@ -89,8 +84,7 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 
 	@Override
 	public int getRequiredResources() {
-//		return BLUETOOTH_ROBOT_ALBERT;//TODO: albert
-		return 0;
+		return BLUETOOTH_ROBOT_ALBERT;
 	}
 
 	@Override

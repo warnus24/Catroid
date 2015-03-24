@@ -78,7 +78,7 @@ public class RobotAlbertDistanceSensorRightBrick extends FormulaBrick implements
 	}
 	@Override
 	public int getRequiredResources() {
-		return 0;//BLUETOOTH_ROBOT_ALBERT;//TODO: albert
+		return BLUETOOTH_ROBOT_ALBERT;
 	}
 
 	@Override
