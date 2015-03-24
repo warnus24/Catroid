@@ -67,7 +67,7 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 
 	@Override
 	public int getRequiredResources() {
-		return 0; // BLUETOOTH_ROBOT_ALBERT; //TODO: albert
+		return BLUETOOTH_ROBOT_ALBERT;
 	}
 
 	@Override

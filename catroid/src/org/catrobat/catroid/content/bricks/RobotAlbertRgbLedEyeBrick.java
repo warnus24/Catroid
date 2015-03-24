@@ -93,8 +93,7 @@ public class RobotAlbertRgbLedEyeBrick extends FormulaBrick implements OnClickLi
 
 	@Override
 	public int getRequiredResources() {
-		return 0;
-//		return BLUETOOTH_ROBOT_ALBERT;//TODO: albert
+		return BLUETOOTH_ROBOT_ALBERT;
 	}
 
 	@Override

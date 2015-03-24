@@ -26,25 +26,29 @@ import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
+import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
+import org.catrobat.catroid.bluetooth.base.BluetoothDeviceService;
+import org.catrobat.catroid.common.CatroidService;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick.Motor;
+import org.catrobat.catroid.devices.albert.Albert;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
 //import org.catrobat.catroid.robot.albert.RobotAlbert;
 
-public class RobotAlbertMotorActionAction extends TemporalAction {
+public class RobotAlbertMotorAction extends TemporalAction {
 	private static final int MIN = -100;
 	private static final int MAX = 100;
 
 	private Motor motorEnum;
 	private Formula speed;
 	private Sprite sprite;
+	private BluetoothDeviceService btService = ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE);
 
 	@Override
 	protected void update(float percent) {
 		int speedValue = 0;
-		// only local
-
 		try {
 			speedValue = speed.interpretInteger(sprite);
 		} catch (InterpretationException interpretationException) {
@@ -66,8 +70,11 @@ public class RobotAlbertMotorActionAction extends TemporalAction {
 		} else {
 			Log.d("Albert", "Error: motorEnum:" + motorEnum);
 		}
-// TODO: albert
-//		RobotAlbert.sendRobotAlbertMotorMessage(motor, speedValue);
+		Albert albert = btService.getDevice(BluetoothDevice.ALBERT);
+		if (albert == null) {
+			return;
+		}
+		albert.move(motor, speedValue);
 	}
 
 	public void setMotorEnum(Motor motorEnum) {

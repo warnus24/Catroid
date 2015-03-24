@@ -26,8 +26,13 @@ import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
+import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
+import org.catrobat.catroid.bluetooth.base.BluetoothDeviceService;
+import org.catrobat.catroid.common.CatroidService;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.RobotAlbertRgbLedEyeBrick.Eye;
+import org.catrobat.catroid.devices.albert.Albert;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
 //import org.catrobat.catroid.robot.albert.RobotAlbert;
@@ -41,6 +46,7 @@ public class RobotAlbertRgbLedEyeAction extends TemporalAction {
 	private Formula green;
 	private Formula blue;
 	private Sprite sprite;
+	private BluetoothDeviceService btService = ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE);
 
 	@Override
 	protected void update(float percent) {
@@ -89,8 +95,11 @@ public class RobotAlbertRgbLedEyeAction extends TemporalAction {
 		} else {
 			Log.d("Albert", "Error: EyeEnum:" + eyeEnum);
 		}
-// TODO: albert
-//		RobotAlbert.sendRobotAlbertRgbLedEyeMessage(eye, redValue, greenValue, blueValue);
+		Albert albert = btService.getDevice(BluetoothDevice.ALBERT);
+		if (albert == null) {
+			return;
+		}
+		albert.setRgbLedEye(eye,redValue,greenValue,blueValue);
 	}
 
 	public void setEyeEnum(Eye eyeEnum) {
