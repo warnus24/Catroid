@@ -52,7 +52,7 @@ public class RobotAlbertBodyLedAction extends TemporalAction {
 			status = MIN;
 		} else if (status > MAX) {
 			status = MAX;
-		}
+		}// TODO: albert
 //		RobotAlbert.sendRobotAlbertBodyLedMessage(status);
 	}
 

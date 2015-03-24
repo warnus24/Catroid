@@ -108,6 +108,7 @@ import org.catrobat.catroid.formulaeditor.FormulaElement;
 import org.catrobat.catroid.formulaeditor.FormulaElement.ElementType;
 import org.catrobat.catroid.formulaeditor.Operators;
 import org.catrobat.catroid.ui.UserBrickScriptActivity;
+import org.catrobat.catroid.formulaeditor.Sensors;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -339,8 +340,9 @@ public class CategoryBricksFactory {
 				BrickValues.ROBOT_ALBERT_RGB_LED_EYE_BLUE));
 		robotAlbertBrickList.add(new RobotAlbertFrontLedBrick( BrickValues.ROBOT_ALBERT_FRONT_LED));
 		robotAlbertBrickList.add(new RobotAlbertBodyLedBrick( BrickValues.ROBOT_ALBERT_BODY_LED));
-//		robotAlbertBrickList.add(new SetVariableBrick( Sensors.ALBERT_ROBOT_DISTANCE_LEFT.toString()));
-//		robotAlbertBrickList.add(new SetVariableBrick( Sensors.ALBERT_ROBOT_DISTANCE_RIGHT.toString()));
+		//TODO: albert
+		robotAlbertBrickList.add(new SetVariableBrick( Sensors.ALBERT_ROBOT_DISTANCE_LEFT.toString()));
+		robotAlbertBrickList.add(new SetVariableBrick( Sensors.ALBERT_ROBOT_DISTANCE_RIGHT.toString()));
 
 		return robotAlbertBrickList;
 	}

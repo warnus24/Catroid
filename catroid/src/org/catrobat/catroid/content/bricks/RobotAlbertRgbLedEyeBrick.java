@@ -94,18 +94,18 @@ public class RobotAlbertRgbLedEyeBrick extends FormulaBrick implements OnClickLi
 	@Override
 	public int getRequiredResources() {
 		return 0;
-//		return BLUETOOTH_ROBOT_ALBERT;
+//		return BLUETOOTH_ROBOT_ALBERT;//TODO: albert
 	}
 
 	@Override
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_robot_albert_rgb_eye_action, null);
-		TextView textred = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_red_prototype_text_view);
-		textred.setText(String.valueOf((BrickValues.ROBOT_ALBERT_RGB_LED_EYE_RED)));
-		TextView textgreen = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_green_prototype_text_view);
-		textgreen.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_GREEN));
-		TextView textblue = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_blue_prototype_text_view);
-		textblue.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_BLUE));
+		TextView textRed = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_red_prototype_text_view);
+		textRed.setText(String.valueOf((BrickValues.ROBOT_ALBERT_RGB_LED_EYE_RED)));
+		TextView textGreen = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_green_prototype_text_view);
+		textGreen.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_GREEN));
+		TextView textBlue = (TextView) prototypeView.findViewById(R.id.robot_albert_rgb_led_blue_prototype_text_view);
+		textBlue.setText(String.valueOf(BrickValues.ROBOT_ALBERT_RGB_LED_EYE_BLUE));
 		Spinner eyeSpinner = (Spinner) prototypeView.findViewById(R.id.robot_albert_eye_spinner);
 		eyeSpinner.setFocusableInTouchMode(false);
 		eyeSpinner.setFocusable(false);
@@ -308,8 +308,8 @@ public class RobotAlbertRgbLedEyeBrick extends FormulaBrick implements OnClickLi
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-//		sequence.addAction(ExtendedActions.robotAlbertRgbLedEye(sprite, eye, eyeEnum, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_RGB_RED),
-//				getFormulaWithBrickField(BrickField.ROBOT_ALBERT_RGB_GREEN), getFormulaWithBrickField(BrickField.ROBOT_ALBERT_RGB_BLUE)));
+		sequence.addAction(ExtendedActions.robotAlbertRgbLedEye(sprite, eye, eyeEnum, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_RGB_RED),
+				getFormulaWithBrickField(BrickField.ROBOT_ALBERT_RGB_GREEN), getFormulaWithBrickField(BrickField.ROBOT_ALBERT_RGB_BLUE)));
 		return null;
 	}
 

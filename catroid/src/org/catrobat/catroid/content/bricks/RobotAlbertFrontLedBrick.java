@@ -61,10 +61,6 @@ public class RobotAlbertFrontLedBrick extends FormulaBrick implements OnClickLis
 		initializeBrickFields(new Formula(value));
 	}
 
-	public RobotAlbertFrontLedBrick( Formula value) {
-		initializeBrickFields(value);
-	}
-
 	private void initializeBrickFields(Formula brightness) {
 		addAllowedBrickField(BrickField.ROBOT_ALBERT_FRONT_LED);
 		setFormulaWithBrickField(BrickField.ROBOT_ALBERT_FRONT_LED, brightness);
@@ -72,7 +68,7 @@ public class RobotAlbertFrontLedBrick extends FormulaBrick implements OnClickLis
 	@Override
 	public int getRequiredResources() {
 		return 0;
-//		return BLUETOOTH_ROBOT_ALBERT;
+//		return BLUETOOTH_ROBOT_ALBERT;//TODO: albert
 	}
 
 
@@ -151,7 +147,7 @@ public class RobotAlbertFrontLedBrick extends FormulaBrick implements OnClickLis
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-//		sequence.addAction(ExtendedActions.robotAlbertFrontLedAction(sprite, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_FRONT_LED)));
+		sequence.addAction(ExtendedActions.robotAlbertFrontLedAction(sprite, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_FRONT_LED)));
 		return null;
 	}
 }

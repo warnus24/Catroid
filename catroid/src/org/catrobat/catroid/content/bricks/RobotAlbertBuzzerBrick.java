@@ -52,28 +52,22 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 	private transient View prototypeView;
 
 	private transient TextView editValue;
-//	private Formula value;
 
 	protected Object readResolve() {
 		return this;
 	}
 
 	public RobotAlbertBuzzerBrick( int value) {
-//		this.value = new Formula(value);
 		initializeBrickFields(new Formula(value));
 	}
 
-	public RobotAlbertBuzzerBrick( Formula value) {
-//		this.value = value;
-		initializeBrickFields(value);
-	}
 	private void initializeBrickFields(Formula brightness) {
 		addAllowedBrickField(BrickField.ROBOT_ALBERT_BUZZER);
 		setFormulaWithBrickField(BrickField.ROBOT_ALBERT_BUZZER, brightness);
 	}
 	@Override
 	public int getRequiredResources() {
-		return 0;//BLUETOOTH_ROBOT_ALBERT;
+		return 0;//BLUETOOTH_ROBOT_ALBERT;//TODO: albert
 	}
 
 	@Override
@@ -147,7 +141,7 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite,SequenceAction sequence) {
-//		sequence.addAction(ExtendedActions.robotAlbertBuzzer(sprite,getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BUZZER)));
+		sequence.addAction(ExtendedActions.robotAlbertBuzzer(sprite,getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BUZZER)));
 		return null;
 	}
 }
