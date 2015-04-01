@@ -2,21 +2,21 @@
  *  Catroid: An on-device visual programming system for Android devices
  *  Copyright (C) 2010-2014 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
- *  
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as
  *  published by the Free Software Foundation, either version 3 of the
  *  License, or (at your option) any later version.
- *  
+ *
  *  An additional term exception under section 7 of the GNU Affero
  *  General Public License, version 3, is available at
  *  http://developer.catrobat.org/license_additional_term
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *  GNU Affero General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -81,11 +81,11 @@ public class RobotAlbertBodyLedBrickTest extends BaseActivityInstrumentationTest
 
 		assertNotNull("TextView does not exist.", solo.getText(solo.getString(R.string.robot_albert_body_led_status)));
 
-		UiTestUtils.testBrickWithFormulaEditor(solo,ProjectManager.getInstance().getCurrentSprite(),
-				R.id.robot_albert_body_led_status_edit_text, SET_LED, Brick.BrickField.ROBOT_ALBERT_BODY_LED,brick);
+		UiTestUtils.testBrickWithFormulaEditor(solo, ProjectManager.getInstance().getCurrentSprite(),
+				R.id.robot_albert_body_led_status_edit_text, SET_LED, Brick.BrickField.ROBOT_ALBERT_BODY_LED, brick);
 
-		UiTestUtils.testBrickWithFormulaEditor(ProjectManager.getInstance().getCurrentSprite(),solo,
-				R.id.robot_albert_body_led_status_edit_text, SET_LED_STRING, Brick.BrickField.ROBOT_ALBERT_BODY_LED,brick);
+		UiTestUtils.testBrickWithFormulaEditor(ProjectManager.getInstance().getCurrentSprite(), solo,
+				R.id.robot_albert_body_led_status_edit_text, SET_LED_STRING, Brick.BrickField.ROBOT_ALBERT_BODY_LED, brick);
 	}
 
 	private void createProject() {
@@ -93,7 +93,7 @@ public class RobotAlbertBodyLedBrickTest extends BaseActivityInstrumentationTest
 		Sprite sprite = new Sprite("cat");
 		Script script = new StartScript();
 
-		brick = new RobotAlbertBodyLedBrick( SET_LED_INITIALLY);
+		brick = new RobotAlbertBodyLedBrick(SET_LED_INITIALLY);
 
 		script.addBrick(brick);
 

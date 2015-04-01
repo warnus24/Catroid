@@ -24,27 +24,57 @@
 package org.catrobat.catroid.common.bluetooth.models;
 
 
+import android.util.Log;
+
+import org.catrobat.catroid.devices.albert.AlbertReceiveSensorCommands;
+
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
-import java.util.UUID;
 
 public class AlbertModel implements DeviceModel {
 
-
-	private boolean stopAlbertSensorThread;
+	private static final String TAG = AlbertModel.class.getSimpleName();
+	private DataInputStream inputStream;
+	private OutputStream outputStream;
+	private int distanceLeft;
+	private int distanceRight;
+	private int size;
+	private boolean run;
 
 	@Override
 	public void start(DataInputStream inputStream, OutputStream outStream) throws IOException {
-//		inputStream.readFully();
+		this.inputStream = inputStream;
+		this.outputStream = outStream;
+		this.distanceLeft = 50;
+		this.distanceRight = 60;
+		this.size = 36;
+		this.run = true;
 	}
 
 	@Override
 	public void stop() {
-
+		run = false;
 	}
 
+	public void sendSensorCommands(final int distanceLeft, final int distanceRight, final int size) throws IOException {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					AlbertReceiveSensorCommands sensorCommands = new AlbertReceiveSensorCommands(size);
+					sensorCommands.setDistanceLeft(distanceLeft);
+					sensorCommands.setDistanceRight(distanceRight);
+					byte[] command = sensorCommands.getSensorCommandMessage();
+					synchronized (outputStream) {
+						outputStream.write(command);
+						outputStream.flush();
+					}
+				} catch (IOException e) {
+					Log.d(TAG, "Cannot send albert message");
+				}
+			}
+		}).start();
 
+	}
 }

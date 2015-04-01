@@ -32,78 +32,78 @@ import org.catrobat.catroid.devices.albert.AlbertImpl;
 
 public class RobotAlbertSendCommandsTest extends AndroidTestCase {
 
-	public void testFrontLed(){
+	public void testFrontLed() {
 		Albert albert = new AlbertImpl();
-		ConnectionDataLogger logger= ConnectionDataLogger.createLocalConnectionLogger();
+		ConnectionDataLogger logger = ConnectionDataLogger.createLocalConnectionLogger();
 		albert.setConnection(logger.getConnectionProxy());
 		albert.setFrontLed(1);
 		byte[] send = logger.getNextSentMessage();
-		checkSendCommand(1,send,17);
+		checkSendCommand(1, send, 17);
 	}
 
-	public void testBodyLed(){
+	public void testBodyLed() {
 		Albert albert = new AlbertImpl();
-		ConnectionDataLogger logger= ConnectionDataLogger.createLocalConnectionLogger();
+		ConnectionDataLogger logger = ConnectionDataLogger.createLocalConnectionLogger();
 		albert.setConnection(logger.getConnectionProxy());
 		albert.setBodyLed(150);
 		byte[] send = logger.getNextSentMessage();
-		checkSendCommand(150,send,19);
+		checkSendCommand(150, send, 19);
 	}
 
-	public void testBuzzer(){
+	public void testBuzzer() {
 		Albert albert = new AlbertImpl();
-		ConnectionDataLogger logger= ConnectionDataLogger.createLocalConnectionLogger();
+		ConnectionDataLogger logger = ConnectionDataLogger.createLocalConnectionLogger();
 		albert.setConnection(logger.getConnectionProxy());
 		albert.setBuzzer(60);
 		byte[] send = logger.getNextSentMessage();
-		checkSendCommand(60,send,10);
+		checkSendCommand(60, send, 10);
 	}
 
-	public void testMotor(){
+	public void testMotor() {
 		Albert albert = new AlbertImpl();
-		ConnectionDataLogger logger= ConnectionDataLogger.createLocalConnectionLogger();
+		ConnectionDataLogger logger = ConnectionDataLogger.createLocalConnectionLogger();
 		albert.setConnection(logger.getConnectionProxy());
 
-		albert.move(AlbertImpl.MOTOR_LEFT,50);
+		albert.move(AlbertImpl.MOTOR_LEFT, 50);
 		byte[] send = logger.getNextSentMessage();
-		checkSendCommand(50,send,9);
+		checkSendCommand(50, send, 9);
 
-		albert.move(AlbertImpl.MOTOR_RIGHT,40);
+		albert.move(AlbertImpl.MOTOR_RIGHT, 40);
 		send = logger.getNextSentMessage();
-		checkSendCommand(40,send,8);
+		checkSendCommand(40, send, 8);
 
-		albert.move(AlbertImpl.MOTOR_BOTH,60);
+		albert.move(AlbertImpl.MOTOR_BOTH, 60);
 		send = logger.getNextSentMessage();
-		checkSendCommand(60,send,8);
-		checkSendCommand(60,send,9);
+		checkSendCommand(60, send, 8);
+		checkSendCommand(60, send, 9);
 	}
 
-	public void testRgbEyeLed(){
+	public void testRgbEyeLed() {
 		Albert albert = new AlbertImpl();
-		ConnectionDataLogger logger= ConnectionDataLogger.createLocalConnectionLogger();
+		ConnectionDataLogger logger = ConnectionDataLogger.createLocalConnectionLogger();
 		albert.setConnection(logger.getConnectionProxy());
 
 		albert.setRgbLedEye(AlbertImpl.EYE_LEFT, 100, 100, 100);
 		byte[] send = logger.getNextSentMessage();
-		checkSendCommand(100,send,11,12,13);
+		checkSendCommand(100, send, 11, 12, 13);
 
 		albert.setRgbLedEye(AlbertImpl.EYE_RIGHT, 150, 150, 150);
 		send = logger.getNextSentMessage();
-		checkSendCommand(150,send,14,15,16);
+		checkSendCommand(150, send, 14, 15, 16);
 
 		albert.setRgbLedEye(AlbertImpl.EYE_BOTH, 200, 200, 200);
 		send = logger.getNextSentMessage();
-		checkSendCommand(200,send,11,12,13,14,15,16);
+		checkSendCommand(200, send, 11, 12, 13, 14, 15, 16);
 	}
 
-	private void checkSendCommand(int target, byte[] send, int... items){
-		assertEquals("Error: Albert test HEADER1 not found!",(byte) 0xAA, send[0] );
-		assertEquals("Error: Albert test HEADER2 not found!",(byte) 0x55, send[1] );
-		assertEquals("Error: Albert test send command length false!", 22, send.length );
-		assertEquals("Error: Albert test TAIL1 not found!",(byte) 0x0D, send[20] );
-		assertEquals("Error: Albert test TAIL1 not found!",(byte) 0x0A, send[21] );
+	private void checkSendCommand(int target, byte[] send, int... items) {
+		assertEquals("Error: Albert test HEADER1 not found!", (byte) 0xAA, send[0]);
+		assertEquals("Error: Albert test HEADER2 not found!", (byte) 0x55, send[1]);
+		assertEquals("Error: Albert test send command length false!", 22, send.length);
+		assertEquals("Error: Albert test TAIL1 not found!", (byte) 0x0D, send[20]);
+		assertEquals("Error: Albert test TAIL1 not found!", (byte) 0x0A, send[21]);
 		for (int item : items) {
-			assertEquals("Error: Albert test wrong value send!",(byte) target, send[item]);
+			assertEquals("Error: Albert test wrong value send!", (byte) target, send[item]);
 		}
 	}
 
