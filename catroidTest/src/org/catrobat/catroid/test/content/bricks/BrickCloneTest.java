@@ -180,27 +180,27 @@ public class BrickCloneTest extends AndroidTestCase {
 		brick = new SpeakBrick(String.valueOf(BRICK_FORMULA_VALUE));
 		brickClone(brick, Brick.BrickField.SPEAK);
 
-		brick = new RobotAlbertMotorActionBrick( RobotAlbertMotorActionBrick.Motor.Left, BRICK_FORMULA_VALUE);
-		brickClone(brick,Brick.BrickField.ROBOT_ALBERT_SPEED);
+		brick = new RobotAlbertMotorActionBrick(RobotAlbertMotorActionBrick.Motor.Left, BRICK_FORMULA_VALUE);
+		brickClone(brick, Brick.BrickField.ROBOT_ALBERT_SPEED);
 
-		brick = new RobotAlbertMotorActionBrick( RobotAlbertMotorActionBrick.Motor.Right, BRICK_FORMULA_VALUE);
-		brickClone(brick,Brick.BrickField.ROBOT_ALBERT_SPEED);
+		brick = new RobotAlbertMotorActionBrick(RobotAlbertMotorActionBrick.Motor.Right, BRICK_FORMULA_VALUE);
+		brickClone(brick, Brick.BrickField.ROBOT_ALBERT_SPEED);
 
-		brick = new RobotAlbertMotorActionBrick( RobotAlbertMotorActionBrick.Motor.Both, BRICK_FORMULA_VALUE);
-		brickClone(brick,Brick.BrickField.ROBOT_ALBERT_SPEED);
+		brick = new RobotAlbertMotorActionBrick(RobotAlbertMotorActionBrick.Motor.Both, BRICK_FORMULA_VALUE);
+		brickClone(brick, Brick.BrickField.ROBOT_ALBERT_SPEED);
 
-		brick = new RobotAlbertBuzzerBrick( BRICK_FORMULA_VALUE);
-		brickClone(brick,Brick.BrickField.ROBOT_ALBERT_BUZZER);
+		brick = new RobotAlbertBuzzerBrick(BRICK_FORMULA_VALUE);
+		brickClone(brick, Brick.BrickField.ROBOT_ALBERT_BUZZER);
 
-		brick = new RobotAlbertFrontLedBrick( BRICK_FORMULA_VALUE);
-		brickClone(brick,Brick.BrickField.ROBOT_ALBERT_FRONT_LED);
+		brick = new RobotAlbertFrontLedBrick(BRICK_FORMULA_VALUE);
+		brickClone(brick, Brick.BrickField.ROBOT_ALBERT_FRONT_LED);
 
-		brick = new RobotAlbertBodyLedBrick( BRICK_FORMULA_VALUE);
-		brickClone(brick,Brick.BrickField.ROBOT_ALBERT_BODY_LED);
+		brick = new RobotAlbertBodyLedBrick(BRICK_FORMULA_VALUE);
+		brickClone(brick, Brick.BrickField.ROBOT_ALBERT_BODY_LED);
 
-		brick = new RobotAlbertRgbLedEyeBrick(RobotAlbertRgbLedEyeBrick.Eye.Left,BRICK_FORMULA_VALUE,
-				BRICK_FORMULA_VALUE,BRICK_FORMULA_VALUE);
-		brickClone(brick,Brick.BrickField.ROBOT_ALBERT_RGB_BLUE, Brick.BrickField.ROBOT_ALBERT_RGB_RED,
+		brick = new RobotAlbertRgbLedEyeBrick(RobotAlbertRgbLedEyeBrick.Eye.Left, BRICK_FORMULA_VALUE,
+				BRICK_FORMULA_VALUE, BRICK_FORMULA_VALUE);
+		brickClone(brick, Brick.BrickField.ROBOT_ALBERT_RGB_BLUE, Brick.BrickField.ROBOT_ALBERT_RGB_RED,
 				Brick.BrickField.ROBOT_ALBERT_RGB_GREEN);
 	}
 

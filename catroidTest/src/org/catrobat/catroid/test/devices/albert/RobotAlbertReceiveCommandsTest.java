@@ -25,30 +25,106 @@ package org.catrobat.catroid.test.devices.albert;
 
 
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import org.catrobat.catroid.common.bluetooth.ConnectionDataLogger;
-import org.catrobat.catroid.devices.albert.Albert;
-import org.catrobat.catroid.devices.albert.AlbertImpl;
+import org.catrobat.catroid.common.bluetooth.models.AlbertModel;
+import org.catrobat.catroid.devices.albert.AlbertConnection;
+import org.catrobat.catroid.devices.albert.SensorData;
+
+import java.io.DataInputStream;
+import java.io.IOException;
 
 public class RobotAlbertReceiveCommandsTest extends AndroidTestCase {
 
-	public void testLeftDistance(){
-		Albert albert = new AlbertImpl();
-		ConnectionDataLogger logger= ConnectionDataLogger.createLocalConnectionLogger();
-		albert.setConnection(logger.getConnectionProxy());
-		albert.setFrontLed(1);
-		byte[] send = logger.getNextSentMessage();
-		checkSendCommand(1,send,17);
+	private static final String TAG = RobotAlbertReceiveCommandsTest.class.getSimpleName();
+	protected SensorData sensors = SensorData.getInstance();
+	ConnectionDataLogger logger;
+	private AlbertConnection connection;
+	AlbertModel model;
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.model = new AlbertModel();
+		this.logger = ConnectionDataLogger.createLocalConnectionLoggerWithDeviceModel(model);
+//		this.connection = new AlbertConnection(logger.getConnectionProxy());
 	}
 
-	private void checkSendCommand(int target, byte[] send, int... items){
-		assertEquals("Error: Albert test HEADER1 not found!",(byte) 0xAA, send[0] );
-		assertEquals("Error: Albert test HEADER2 not found!",(byte) 0x55, send[1] );
-		assertEquals("Error: Albert test send command length false!", 22, send.length );
-		assertEquals("Error: Albert test TAIL1 not found!",(byte) 0x0D, send[20] );
-		assertEquals("Error: Albert test TAIL1 not found!",(byte) 0x0A, send[21] );
+	@Override
+	protected void tearDown() throws Exception {
+//		connection.disconnect();
+		logger.disconnect();
+		super.tearDown();
+	}
+
+	public void testSendCommandsDistance() {
+		DataInputStream inputStream;
+		try {
+			inputStream = new DataInputStream(logger.getConnectionProxy().getInputStream());
+			singleSent(model, inputStream, 50, 60, 36);
+			singleSent(model, inputStream, 40, 70, 36);
+			singleSent(model, inputStream, 80, 30, 28);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void testSensorReceive() {
+		AlbertConnection connection = new AlbertConnection(logger.getConnectionProxy());
+		int distanceLeft;
+		int distanceRight;
+		int count = 0;
+
+		do {
+			try {
+				model.sendSensorCommands(25, 35, 36);
+			} catch (IOException e) {
+				Log.d(TAG, "Albert model send failed!");
+			}
+			distanceLeft = sensors.getValueOfLeftDistanceSensor();
+			distanceRight = sensors.getValueOfRightDistanceSensor();
+			count++;
+			if (count > 40) {
+				break;
+			}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} while (distanceLeft == 0);
+		assertEquals("Error: Albert distance left wrong value!", 25, distanceLeft);
+		assertEquals("Error: Albert distance right wrong value!", 35, distanceRight);
+	}
+
+	private void singleSent(AlbertModel model, DataInputStream inputStream, int distanceLeft, int distanceRight, int length) {
+		byte[] buf = new byte[length];
+		byte[] message;
+		try {
+			model.sendSensorCommands(distanceLeft, distanceRight, length);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			inputStream.readFully(buf);
+		} catch (IOException e) {
+			Log.d(TAG, "Albert model send or receive failed!");
+		}
+		message = logger.getNextReceivedMessage();
+		checkSendCommand(distanceLeft, length, message, 14, 16, 18, 20);
+		checkSendCommand(distanceRight, length, message, 13, 15, 17, 19);
+	}
+
+	private void checkSendCommand(int distance, int length, byte[] send, int... items) {
+		assertEquals("Error: Albert test HEADER1 not found!", AlbertConnection.PACKET_HEADER_1, send[0]);
+		assertEquals("Error: Albert test HEADER2 not found!", AlbertConnection.PACKET_HEADER_2, send[1]);
+		assertEquals("Error: Albert test send command length false!", length, send.length);
+		assertEquals("Error: Albert test TAIL1 not found!", AlbertConnection.PACKET_TAIL_1, send[length - 2]);
+		assertEquals("Error: Albert test TAIL1 not found!", AlbertConnection.PACKET_TAIL_2, send[length - 1]);
 		for (int item : items) {
-			assertEquals("Error: Albert test wrong value send!",(byte) target, send[item]);
+			assertEquals("Error: Albert test wrong value received!", (byte) distance, send[item]);
 		}
 	}
 

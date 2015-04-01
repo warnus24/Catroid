@@ -30,15 +30,16 @@ import java.util.UUID;
 
 public class AlbertImpl implements Albert {
 
-	private static final UUID ALBERT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fc");
-	private AlbertState commands;
-	private AlbertConnection albertConnection;
 	public static final int EYE_LEFT = 0;
 	public static final int EYE_RIGHT = 1;
 	public static final int EYE_BOTH = 2;
 	public static final int MOTOR_LEFT = 0;
 	public static final int MOTOR_RIGHT = 1;
 	public static final int MOTOR_BOTH = 2;
+	private static final UUID ALBERT_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fc");
+	public static boolean ALBERT_SENSOR_DEBUG_OUTPUT = true;
+	private AlbertSendCommands commands;
+	private AlbertConnection albertConnection;
 
 	@Override
 	public String getName() {
@@ -53,7 +54,7 @@ public class AlbertImpl implements Albert {
 	@Override
 	public void setConnection(BluetoothConnection connection) {
 		this.albertConnection = new AlbertConnection(connection);
-		commands = new AlbertState();
+		commands = new AlbertSendCommands();
 	}
 
 	@Override
@@ -96,11 +97,11 @@ public class AlbertImpl implements Albert {
 
 	@Override
 	public void move(int motor, int speed) {
-		if(motor  == MOTOR_LEFT)
+		if (motor == MOTOR_LEFT)
 			commands.setSpeedOfLeftMotor(speed);
-		else if(motor == MOTOR_RIGHT){
+		else if (motor == MOTOR_RIGHT) {
 			commands.setSpeedOfRightMotor(speed);
-		}else if(motor == MOTOR_BOTH){
+		} else if (motor == MOTOR_BOTH) {
 			commands.setSpeedOfLeftMotor(speed);
 			commands.setSpeedOfRightMotor(speed);
 		} else {
@@ -129,12 +130,12 @@ public class AlbertImpl implements Albert {
 
 	@Override
 	public void setRgbLedEye(int eye, int red, int green, int blue) {
-		if(eye  == EYE_LEFT)
+		if (eye == EYE_LEFT)
 			commands.setLeftEye(red, green, blue);
-		else if(eye == EYE_RIGHT){
+		else if (eye == EYE_RIGHT) {
 			commands.setRightEye(red, green, blue);
-		}else if(eye == EYE_BOTH){
-			commands.setLeftEye(red,green,blue);
+		} else if (eye == EYE_BOTH) {
+			commands.setLeftEye(red, green, blue);
 			commands.setRightEye(red, green, blue);
 		} else {
 			return;

@@ -23,22 +23,37 @@
 
 package org.catrobat.catroid.devices.albert;
 
+public final class SensorData {
 
-import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
+	private static SensorData instance;
 
-public interface Albert extends BluetoothDevice {
+	private int leftDistanceSensor; // 0 = infinity, 100 = 0mm
+	private int rightDistanceSensor;
 
-	void move(int motor, int speed);
+	private SensorData() {
+	}
 
-	void setBuzzer(int frequency);
+	public static synchronized SensorData getInstance() {
+		if (instance == null) {
+			instance = new SensorData();
+		}
+		return instance;
+	}
 
-	void setFrontLed(int status);
+	public int getValueOfLeftDistanceSensor() {
+		return leftDistanceSensor;
+	}
 
-	void setBodyLed(int value);
+	public void setValueOfLeftDistanceSensor(int value) {
+		leftDistanceSensor = value;
+	}
 
-	void setRgbLedEye(int eye, int red, int green, int blue);
+	public int getValueOfRightDistanceSensor() {
+		return rightDistanceSensor;
+	}
 
-	int getDistanceLeft();
+	public void setValueOfRightDistanceSensor(int value) {
+		rightDistanceSensor = value;
+	}
 
-	int getDistanceRight();
 }

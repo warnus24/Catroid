@@ -45,6 +45,7 @@ import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
+import org.catrobat.catroid.devices.albert.SensorRobotAlbert;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.ui.BaseActivity;
@@ -97,6 +98,7 @@ public class PreStageActivity extends BaseActivity {
 			startActivityForResult(checkIntent, REQUEST_TEXT_TO_SPEECH);
 		}
 
+		SensorRobotAlbert sensor = SensorRobotAlbert.getSensorRobotAlbertInstance();
 		if ((requiredResources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
 			BluetoothManager bluetoothManager = new BluetoothManager(this);
 
@@ -115,6 +117,13 @@ public class PreStageActivity extends BaseActivity {
 		}
 		if ((requiredResources & Brick.BLUETOOTH_ROBOT_ALBERT) > 0) {
 			connectBTDevice(BluetoothDevice.ALBERT, false);
+			//set flag to start thread to update distance sensor values in formula editor
+			sensor.setBooleanAlbertBricks(true);
+		} else {
+			//set flag not to start a thread to update distance sensor values in formula editor
+			//this is necessary, because if after running a project with this sensor and then edit it,
+			// not to use them anymore, then change the flag
+			sensor.setBooleanAlbertBricks(false);
 		}
 		if ((requiredResources & Brick.ARDRONE_SUPPORT) > 0) {
 			droneInitializer = getDroneInitializer();

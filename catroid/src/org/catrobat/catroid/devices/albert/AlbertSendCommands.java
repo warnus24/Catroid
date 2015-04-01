@@ -25,9 +25,8 @@ package org.catrobat.catroid.devices.albert;
 
 import java.util.Arrays;
 
-public class AlbertState {
+public class AlbertSendCommands {
 
-	// for Tests
 	private final byte[]buffer = new byte[22];
 
 	// Actor variables
@@ -44,7 +43,7 @@ public class AlbertState {
 	private int bodyLed;			// Body-LED 0...255
 	private byte sendFrameNumber = 1;
 
-	public AlbertState() {
+	public AlbertSendCommands() {
 		buffer[0] = (byte) 0xAA;	// HEADER
 		buffer[1] = (byte) 0x55;	// HEADER
 		buffer[2] = (byte) 20;
