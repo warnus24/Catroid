@@ -1,6 +1,6 @@
 /*
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2015 The Catrobat Team
+ * Copyright (C) 2010-2014 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -97,9 +97,9 @@ public class AlbertImpl implements Albert {
 
 	@Override
 	public void move(int motor, int speed) {
-		if (motor == MOTOR_LEFT)
+		if (motor == MOTOR_LEFT) {
 			commands.setSpeedOfLeftMotor(speed);
-		else if (motor == MOTOR_RIGHT) {
+		} else if (motor == MOTOR_RIGHT) {
 			commands.setSpeedOfRightMotor(speed);
 		} else if (motor == MOTOR_BOTH) {
 			commands.setSpeedOfLeftMotor(speed);
@@ -130,9 +130,9 @@ public class AlbertImpl implements Albert {
 
 	@Override
 	public void setRgbLedEye(int eye, int red, int green, int blue) {
-		if (eye == EYE_LEFT)
+		if (eye == EYE_LEFT) {
 			commands.setLeftEye(red, green, blue);
-		else if (eye == EYE_RIGHT) {
+		} else if (eye == EYE_RIGHT) {
 			commands.setRightEye(red, green, blue);
 		} else if (eye == EYE_BOTH) {
 			commands.setLeftEye(red, green, blue);

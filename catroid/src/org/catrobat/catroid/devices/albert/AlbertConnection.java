@@ -1,6 +1,6 @@
 /*
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2015 The Catrobat Team
+ * Copyright (C) 2010-2014 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -159,33 +159,4 @@ public class AlbertConnection {
 		}
 		return buffer;
 	}
-
-	private void checkIfDataIsAvailable(int neededBytes) throws IOException {
-		int available;
-		long timeStart = System.currentTimeMillis();
-		long timePast;
-
-		while (true) {
-			if (inputStream == null) {
-				Log.e(TAG, "Stream was null");
-				throw new IOException(" Software caused connection abort ");
-			}
-			available = inputStream.available();
-			if (available >= neededBytes) {
-				break;
-			}
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException interruptedException) {
-				Log.e(TAG, "Thread interrupted", interruptedException);
-			}
-			// here you can optionally check elapsed time, and time out
-			timePast = System.currentTimeMillis();
-			if ((timePast - timeStart) > 16000) {
-				Log.e(TAG, "TIMEOUT for receive message occurred");
-				throw new IOException(" Software caused connection abort because of timeout");
-			}
-		}
-	}
-
 }

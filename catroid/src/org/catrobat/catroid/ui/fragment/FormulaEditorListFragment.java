@@ -155,7 +155,6 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 				//if the option "Robot Albert bricks" is not selected, than use the standard SENSOR_ITEMS
 				itemsIds = SENSOR_ITEMS;
 			}
-			itemsIds = SENSOR_ITEMS;
 		}
 
 		String[] items = new String[itemsIds.length];

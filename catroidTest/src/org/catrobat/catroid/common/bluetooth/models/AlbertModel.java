@@ -1,6 +1,6 @@
 /*
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2015 The Catrobat Team
+ * Copyright (C) 2010-2014 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,26 +35,15 @@ import java.io.OutputStream;
 public class AlbertModel implements DeviceModel {
 
 	private static final String TAG = AlbertModel.class.getSimpleName();
-	private DataInputStream inputStream;
 	private OutputStream outputStream;
-	private int distanceLeft;
-	private int distanceRight;
-	private int size;
-	private boolean run;
 
 	@Override
 	public void start(DataInputStream inputStream, OutputStream outStream) throws IOException {
-		this.inputStream = inputStream;
 		this.outputStream = outStream;
-		this.distanceLeft = 50;
-		this.distanceRight = 60;
-		this.size = 36;
-		this.run = true;
 	}
 
 	@Override
 	public void stop() {
-		run = false;
 	}
 
 	public void sendSensorCommands(final int distanceLeft, final int distanceRight, final int size) throws IOException {
