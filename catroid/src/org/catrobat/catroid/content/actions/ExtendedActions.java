@@ -35,6 +35,7 @@ import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorStopBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorTurnAngleBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertMotorBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 
@@ -190,7 +191,7 @@ public class ExtendedActions extends Actions {
 	}
 
 	public static RobotAlbertMotorAction robotAlbertMotor(Sprite sprite,
-			org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick.Motor motorEnum, Formula speed) {
+			RobotAlbertMotorBrick.Motor motorEnum, Formula speed) {
 		RobotAlbertMotorAction action = action(RobotAlbertMotorAction.class);
 		action.setMotorEnum(motorEnum);
 		action.setSprite(sprite);

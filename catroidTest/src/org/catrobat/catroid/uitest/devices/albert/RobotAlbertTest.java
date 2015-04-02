@@ -47,7 +47,7 @@ import org.catrobat.catroid.content.WhenScript;
 import org.catrobat.catroid.content.bricks.RobotAlbertBodyLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertBuzzerBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertFrontLedBrick;
-import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertMotorBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertRgbLedEyeBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.content.bricks.SetVariableBrick;
@@ -71,8 +71,7 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 	private static final int IMAGE_FILE_ID = org.catrobat.catroid.test.R.raw.icon;
 	private String DUMMY_DEVICE_NAME = "AlbertDummy";
 	private String REAL_DEVICE_NAME = "Albert";
-	private String DEVICE_NAME;
-	private boolean useRealRobot = true;
+	private boolean useRealRobot = false;
 
 	ByteArrayBuffer sendCommands = new ByteArrayBuffer(1024);
 	UserVariablesContainer userVariablesContainer = null;
@@ -135,14 +134,15 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 				getInstrumentation());
 		ListView deviceList = solo.getCurrentViews(ListView.class).get(0);
 		String connectedDeviceName = null;
+		String device;
 		if (useRealRobot) {
-			DEVICE_NAME = REAL_DEVICE_NAME;
+			device = REAL_DEVICE_NAME;
 		} else {
-			DEVICE_NAME = DUMMY_DEVICE_NAME;
+			device = DUMMY_DEVICE_NAME;
 		}
 		for (int i = 0; i < deviceList.getCount(); i++) {
 			String deviceName = (String) deviceList.getItemAtPosition(i);
-			if (deviceName.startsWith(DEVICE_NAME)) {
+			if (deviceName.startsWith(device)) {
 				connectedDeviceName = deviceName;
 				break;
 			}
@@ -173,8 +173,8 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		Script whenScript = new WhenScript();
 		SetLookBrick setLookBrick = new SetLookBrick();
 
-		RobotAlbertMotorActionBrick legoMotorActionBrick = new RobotAlbertMotorActionBrick(
-				RobotAlbertMotorActionBrick.Motor.Both, 100);
+		RobotAlbertMotorBrick legoMotorActionBrick = new RobotAlbertMotorBrick(
+				RobotAlbertMotorBrick.Motor.Both, 100);
 		AlbertSendCommands commands = new AlbertSendCommands();
 		commands.setSpeedOfLeftMotor(100);
 		commands.setSpeedOfRightMotor(100);

@@ -50,7 +50,7 @@ import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClickListener {
+public class RobotAlbertMotorBrick extends FormulaBrick implements OnClickListener {
 	private static final long serialVersionUID = 1L;
 
 	private transient View prototypeView;
@@ -71,7 +71,7 @@ public class RobotAlbertMotorActionBrick extends FormulaBrick implements OnClick
 		return this;
 	}
 
-	public RobotAlbertMotorActionBrick( Motor motor, int speedValue) {
+	public RobotAlbertMotorBrick(Motor motor, int speedValue) {
 		this.motorEnum = motor;
 		this.motor = motorEnum.name();
 		initializeBrickFields(new Formula(speedValue));

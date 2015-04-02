@@ -31,7 +31,7 @@ import org.catrobat.catroid.bluetooth.base.BluetoothDeviceService;
 import org.catrobat.catroid.common.CatroidService;
 import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick.Motor;
+import org.catrobat.catroid.content.bricks.RobotAlbertMotorBrick.Motor;
 import org.catrobat.catroid.devices.albert.Albert;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.InterpretationException;
