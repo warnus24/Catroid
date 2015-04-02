@@ -63,6 +63,8 @@ public class SetVariableBrick extends FormulaBrick implements OnClickListener, N
 	private UserVariable userVariable;
 	private transient AdapterView<?> adapterView;
 	public boolean inUserBrick = false;
+	private boolean isStringInPrototype = false;
+	private String stringInPrototype;
 
 	public SetVariableBrick() {
 		addAllowedBrickField(BrickField.VARIABLE);
@@ -79,8 +81,8 @@ public class SetVariableBrick extends FormulaBrick implements OnClickListener, N
 	}
 	//TODO: albert
 	public SetVariableBrick( String value) {
-//		this.isStringInPrototype = true;
-//		this.stringInPrototype = value;
+		this.isStringInPrototype = true;
+		this.stringInPrototype = value;
 		this.userVariable = null;
 		initializeBrickFields(new Formula(value));
 	}
@@ -216,20 +218,19 @@ public class SetVariableBrick extends FormulaBrick implements OnClickListener, N
 		TextView textSetVariable = (TextView) prototypeView.findViewById(R.id.brick_set_variable_prototype_view);
 		textSetVariable.setText(String.valueOf(BrickValues.SET_VARIABLE));
 		//TODO: albert
-//		if (isStringInPrototype == false) {
-//				textSetVariable.setText(String.valueOf(BrickValues.SET_VARIABLE));
-//		} else {
-//			if (stringInPrototype.equalsIgnoreCase(Sensors.ALBERT_ROBOT_DISTANCE_LEFT.toString())) {
-//				textSetVariable.setText(context.getResources().getString(
-//						R.string.formula_editor_sensor_albert_robot_distance_left));
-//			} else if (stringInPrototype.equalsIgnoreCase(Sensors.ALBERT_ROBOT_DISTANCE_RIGHT.toString())) {
-//				textSetVariable.setText(context.getResources().getString(
-//						R.string.formula_editor_sensor_albert_robot_distance_right));
-//			} else {
-//				textSetVariable.setText(stringInPrototype);
-//			}
-//		}
-
+		if (isStringInPrototype == false) {
+				textSetVariable.setText(String.valueOf(BrickValues.SET_VARIABLE));
+		} else {
+			if (stringInPrototype.equalsIgnoreCase(Sensors.ALBERT_ROBOT_DISTANCE_LEFT.toString())) {
+				textSetVariable.setText(context.getResources().getString(
+						R.string.formula_editor_sensor_albert_robot_distance_left));
+			} else if (stringInPrototype.equalsIgnoreCase(Sensors.ALBERT_ROBOT_DISTANCE_RIGHT.toString())) {
+				textSetVariable.setText(context.getResources().getString(
+						R.string.formula_editor_sensor_albert_robot_distance_right));
+			} else {
+				textSetVariable.setText(stringInPrototype);
+			}
+		}
 
 		return prototypeView;
 	}
