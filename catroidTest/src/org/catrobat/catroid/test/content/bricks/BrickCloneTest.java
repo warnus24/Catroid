@@ -51,7 +51,7 @@ import org.catrobat.catroid.content.bricks.RepeatBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertBodyLedBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertBuzzerBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertFrontLedBrick;
-import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertMotorBrick;
 import org.catrobat.catroid.content.bricks.RobotAlbertRgbLedEyeBrick;
 import org.catrobat.catroid.content.bricks.SetBrightnessBrick;
 import org.catrobat.catroid.content.bricks.SetSizeToBrick;
@@ -180,13 +180,13 @@ public class BrickCloneTest extends AndroidTestCase {
 		brick = new SpeakBrick(String.valueOf(BRICK_FORMULA_VALUE));
 		brickClone(brick, Brick.BrickField.SPEAK);
 
-		brick = new RobotAlbertMotorActionBrick(RobotAlbertMotorActionBrick.Motor.Left, BRICK_FORMULA_VALUE);
+		brick = new RobotAlbertMotorBrick(RobotAlbertMotorBrick.Motor.Left, BRICK_FORMULA_VALUE);
 		brickClone(brick, Brick.BrickField.ROBOT_ALBERT_SPEED);
 
-		brick = new RobotAlbertMotorActionBrick(RobotAlbertMotorActionBrick.Motor.Right, BRICK_FORMULA_VALUE);
+		brick = new RobotAlbertMotorBrick(RobotAlbertMotorBrick.Motor.Right, BRICK_FORMULA_VALUE);
 		brickClone(brick, Brick.BrickField.ROBOT_ALBERT_SPEED);
 
-		brick = new RobotAlbertMotorActionBrick(RobotAlbertMotorActionBrick.Motor.Both, BRICK_FORMULA_VALUE);
+		brick = new RobotAlbertMotorBrick(RobotAlbertMotorBrick.Motor.Both, BRICK_FORMULA_VALUE);
 		brickClone(brick, Brick.BrickField.ROBOT_ALBERT_SPEED);
 
 		brick = new RobotAlbertBuzzerBrick(BRICK_FORMULA_VALUE);

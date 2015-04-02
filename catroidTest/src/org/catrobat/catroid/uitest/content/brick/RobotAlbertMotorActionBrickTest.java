@@ -35,7 +35,7 @@ import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.StartScript;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.RobotAlbertMotorActionBrick;
+import org.catrobat.catroid.content.bricks.RobotAlbertMotorBrick;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
@@ -49,7 +49,7 @@ public class RobotAlbertMotorActionBrickTest extends BaseActivityInstrumentation
 	private static final String SET_SPEED_STRING = "10+70";
 
 	private Project project;
-	private RobotAlbertMotorActionBrick motorBrick;
+	private RobotAlbertMotorBrick motorBrick;
 
 	public RobotAlbertMotorActionBrickTest() {
 		super(ScriptActivity.class);
@@ -119,7 +119,7 @@ public class RobotAlbertMotorActionBrickTest extends BaseActivityInstrumentation
 		Sprite sprite = new Sprite("cat");
 		Script script = new StartScript();
 
-		motorBrick = new RobotAlbertMotorActionBrick(RobotAlbertMotorActionBrick.Motor.Left,
+		motorBrick = new RobotAlbertMotorBrick(RobotAlbertMotorBrick.Motor.Left,
 				SET_SPEED_INITIALLY);
 
 		script.addBrick(motorBrick);
