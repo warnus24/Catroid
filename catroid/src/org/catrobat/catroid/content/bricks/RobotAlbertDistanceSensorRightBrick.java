@@ -1,6 +1,6 @@
 /**
  *  Catroid: An on-device visual programming system for Android devices
- *  Copyright (C) 2010-2014 The Catrobat Team
+ *  Copyright (C) 2010-2015 The Catrobat Team
  *  (<http://developer.catrobat.org/credits>)
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -107,9 +107,9 @@ public class RobotAlbertDistanceSensorRightBrick extends FormulaBrick implements
 				adapter.handleCheck(brickInstance, isChecked);
 			}
 		});
-		UserBrick currentBrick = ProjectManager.getInstance().getCurrentUserBrick();
-		int userBrickId = (currentBrick == null ? -1 : currentBrick.getUserBrickId());
-		Spinner variableSpinner = (Spinner) view.findViewById(R.id.robot_albert_distance_sensor_right_spinner);
+//		UserBrick currentBrick = ProjectManager.getInstance().getCurrentUserBrick();
+//		int userBrickId = (currentBrick == null ? -1 : currentBrick.getUserBrickId());
+//		Spinner variableSpinner = (Spinner) view.findViewById(R.id.robot_albert_distance_sensor_right_spinner);
 //		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
 //				.createUserVariableAdapter(context, userBrickId, ProjectManager.getInstance().getCurrentSprite(),inUserBrick);
 //		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,

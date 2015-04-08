@@ -110,8 +110,6 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_sensor_albert_robot_distance_left,
 			R.string.formula_editor_sensor_albert_robot_distance_right};
 
-	private String tag;
-	private String[] items;
 	private String actionBarTitle;
 	private int[] itemsIds;
 

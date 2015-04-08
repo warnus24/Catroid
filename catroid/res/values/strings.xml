@@ -77,8 +77,6 @@
     <string name="preference_description_use_face_detection">Allow to detect faces</string>
     <string name="preference_title_select_camera">Choose Camera</string>
     <string name="preference_description_select_camera">Select camera which is used for face detection</string>
-	<string name="preference_title_enable_quadcopter_bricks">ARDrone 2.0 bricks</string>
-    <string name="preference_description_quadcopter_bricks">Allow to control the ARDrone 2.0 quadcopter</string>
     <string name="preference_title_enable_robot_albert_bricks">Robot Albert bricks</string>
     <string name="preference_description_robot_albert_bricks">Allow to control robot Albert</string>
     <!--  -->
