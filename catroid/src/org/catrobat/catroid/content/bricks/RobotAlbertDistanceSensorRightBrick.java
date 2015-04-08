@@ -46,17 +46,16 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
 import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.formulaeditor.UserList;
 import org.catrobat.catroid.formulaeditor.UserVariable;
-import org.catrobat.catroid.ui.adapter.UserVariableAdapter;
+import org.catrobat.catroid.ui.adapter.DataAdapter;
 import org.catrobat.catroid.ui.adapter.UserVariableAdapterWrapper;
-import org.catrobat.catroid.ui.dialogs.NewVariableDialog;
-import org.catrobat.catroid.ui.dialogs.NewVariableDialog.NewVariableDialogListener;
+import org.catrobat.catroid.ui.dialogs.NewDataDialog;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 
 import java.util.List;
 
-public class RobotAlbertDistanceSensorRightBrick extends FormulaBrick implements OnClickListener,
-		NewVariableDialogListener {
+public class RobotAlbertDistanceSensorRightBrick extends FormulaBrick implements OnClickListener, NewDataDialog.NewUserListDialogListener {
 	private static final long serialVersionUID = 1L;
 	private UserVariable userVariable;
 	private transient AdapterView<?> adapterView;
@@ -111,58 +110,58 @@ public class RobotAlbertDistanceSensorRightBrick extends FormulaBrick implements
 		UserBrick currentBrick = ProjectManager.getInstance().getCurrentUserBrick();
 		int userBrickId = (currentBrick == null ? -1 : currentBrick.getUserBrickId());
 		Spinner variableSpinner = (Spinner) view.findViewById(R.id.robot_albert_distance_sensor_right_spinner);
-		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
-				.createUserVariableAdapter(context, userBrickId, ProjectManager.getInstance().getCurrentSprite(),inUserBrick);
-		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
-				userVariableAdapter);
-		userVariableAdapterWrapper.setItemLayout(android.R.layout.simple_spinner_item, android.R.id.text1);
-
-		variableSpinner.setAdapter(userVariableAdapterWrapper);
-
-		if (!(checkbox.getVisibility() == View.VISIBLE)) {
-			variableSpinner.setClickable(true);
-			variableSpinner.setEnabled(true);
-		} else {
-			variableSpinner.setClickable(false);
-			variableSpinner.setFocusable(false);
-		}
-
-		setSpinnerSelection(variableSpinner, null);
-
-		variableSpinner.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_UP && ((Spinner) v).getSelectedItemPosition() == 0 &&
-					((Spinner) v).getAdapter().getCount() == 1) {
-					NewVariableDialog dialog = new NewVariableDialog((Spinner) v);
-					dialog.addVariableDialogListener(RobotAlbertDistanceSensorRightBrick.this);
-					dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
-							NewVariableDialog.DIALOG_FRAGMENT_TAG);
-					return true;
-				}
-				return false;
-			}
-		});
-		variableSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				if (position == 0 && ((UserVariableAdapterWrapper) parent.getAdapter()).isTouchInDropDownView()) {
-					NewVariableDialog dialog = new NewVariableDialog((Spinner) parent);
-					dialog.addVariableDialogListener(RobotAlbertDistanceSensorRightBrick.this);
-					dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
-							NewVariableDialog.DIALOG_FRAGMENT_TAG);
-				}
-				((UserVariableAdapterWrapper) parent.getAdapter()).resetIsTouchInDropDownView();
-				userVariable = (UserVariable) parent.getItemAtPosition(position);
-				adapterView = parent;
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				userVariable = null;
-			}
-		});
+//		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
+//				.createUserVariableAdapter(context, userBrickId, ProjectManager.getInstance().getCurrentSprite(),inUserBrick);
+//		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
+//				userVariableAdapter);
+//		userVariableAdapterWrapper.setItemLayout(android.R.layout.simple_spinner_item, android.R.id.text1);
+//
+//		variableSpinner.setAdapter(userVariableAdapterWrapper);
+//
+//		if (!(checkbox.getVisibility() == View.VISIBLE)) {
+//			variableSpinner.setClickable(true);
+//			variableSpinner.setEnabled(true);
+//		} else {
+//			variableSpinner.setClickable(false);
+//			variableSpinner.setFocusable(false);
+//		}
+//
+//		setSpinnerSelection(variableSpinner, null);
+//
+//		variableSpinner.setOnTouchListener(new OnTouchListener() {
+//
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				if (event.getAction() == MotionEvent.ACTION_UP && ((Spinner) v).getSelectedItemPosition() == 0 &&
+//					((Spinner) v).getAdapter().getCount() == 1) {
+//					NewVariableDialog dialog = new NewVariableDialog((Spinner) v);
+//					dialog.addVariableDialogListener(RobotAlbertDistanceSensorRightBrick.this);
+//					dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
+//							NewVariableDialog.DIALOG_FRAGMENT_TAG);
+//					return true;
+//				}
+//				return false;
+//			}
+//		});
+//		variableSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+//			@Override
+//			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//				if (position == 0 && ((UserVariableAdapterWrapper) parent.getAdapter()).isTouchInDropDownView()) {
+//					NewVariableDialog dialog = new NewVariableDialog((Spinner) parent);
+//					dialog.addVariableDialogListener(RobotAlbertDistanceSensorRightBrick.this);
+//					dialog.show(((SherlockFragmentActivity) view.getContext()).getSupportFragmentManager(),
+//							NewVariableDialog.DIALOG_FRAGMENT_TAG);
+//				}
+//				((UserVariableAdapterWrapper) parent.getAdapter()).resetIsTouchInDropDownView();
+//				userVariable = (UserVariable) parent.getItemAtPosition(position);
+//				adapterView = parent;
+//			}
+//
+//			@Override
+//			public void onNothingSelected(AdapterView<?> arg0) {
+//				userVariable = null;
+//			}
+//		});
 
 		return view;
 	}
@@ -175,9 +174,8 @@ public class RobotAlbertDistanceSensorRightBrick extends FormulaBrick implements
 		variableSpinner.setFocusable(false);
 		UserBrick currentBrick = ProjectManager.getInstance().getCurrentUserBrick();
 		int userBrickId = (currentBrick == null ? -1 : currentBrick.getDefinitionBrick().getUserBrickId());
-		UserVariableAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getUserVariables()
-				.createUserVariableAdapter(context, userBrickId, ProjectManager.getInstance().getCurrentSprite(),inUserBrick);
-
+		DataAdapter userVariableAdapter = ProjectManager.getInstance().getCurrentProject().getDataContainer()
+				.createDataAdapter(context, userBrickId, ProjectManager.getInstance().getCurrentSprite(),inUserBrick);
 
 		UserVariableAdapterWrapper userVariableAdapterWrapper = new UserVariableAdapterWrapper(context,
 				userVariableAdapter);
@@ -214,7 +212,12 @@ public class RobotAlbertDistanceSensorRightBrick extends FormulaBrick implements
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_DISTANCE_SENSOR_RIGHT));
+		FormulaEditorFragment.showFragment(view, this, BrickField.ROBOT_ALBERT_DISTANCE_SENSOR_RIGHT);
+	}
+
+	@Override
+	public void showFormulaEditorToEditFormula(View view) {
+
 	}
 
 	private void updateUserVariableIfDeleted(UserVariableAdapterWrapper userVariableAdapterWrapper) {
@@ -240,12 +243,9 @@ public class RobotAlbertDistanceSensorRightBrick extends FormulaBrick implements
 		}
 	}
 
-	@Override
-	public void onFinishNewVariableDialog(Spinner spinnerToUpdate, UserVariable newUserVariable) {
-		UserVariableAdapterWrapper userVariableAdapterWrapper = ((UserVariableAdapterWrapper) spinnerToUpdate
-				.getAdapter());
-		userVariableAdapterWrapper.notifyDataSetChanged();
-		setSpinnerSelection(spinnerToUpdate, newUserVariable);
-	}
 
+	@Override
+	public void onFinishNewUserListDialog(Spinner spinnerToUpdate, UserList newUserList) {
+
+	}
 }

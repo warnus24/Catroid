@@ -53,8 +53,8 @@ import org.catrobat.catroid.content.bricks.SetLookBrick;
 import org.catrobat.catroid.content.bricks.SetVariableBrick;
 import org.catrobat.catroid.devices.albert.Albert;
 import org.catrobat.catroid.devices.albert.AlbertSendCommands;
+import org.catrobat.catroid.formulaeditor.DataContainer;
 import org.catrobat.catroid.formulaeditor.Formula;
-import org.catrobat.catroid.formulaeditor.UserVariablesContainer;
 import org.catrobat.catroid.io.StorageHandler;
 import org.catrobat.catroid.stage.StageActivity;
 import org.catrobat.catroid.ui.MainMenuActivity;
@@ -74,7 +74,7 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 	private boolean useRealRobot = false;
 
 	ByteArrayBuffer sendCommands = new ByteArrayBuffer(1024);
-	UserVariablesContainer userVariablesContainer = null;
+	DataContainer userVariablesContainer = null;
 	private BluetoothDeviceService btService;
 	ConnectionDataLogger logger;
 	Albert albert;
@@ -225,7 +225,7 @@ public class RobotAlbertTest extends BaseActivityInstrumentationTestCase<MainMen
 		ArrayList<Sprite> spriteList = new ArrayList<Sprite>();
 		spriteList.add(firstSprite);
 		Project project = UiTestUtils.createProject(projectName, spriteList, getActivity());
-		userVariablesContainer = project.getUserVariables();
+		userVariablesContainer = project.getDataContainer();
 		userVariablesContainer.addProjectUserVariable("p1");
 		userVariablesContainer.addSpriteUserVariable("sprite_var1");
 

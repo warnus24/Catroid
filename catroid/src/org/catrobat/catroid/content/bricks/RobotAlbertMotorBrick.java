@@ -195,7 +195,12 @@ public class RobotAlbertMotorBrick extends FormulaBrick implements OnClickListen
 		if (checkbox.getVisibility() == View.VISIBLE) {
 			return;
 		}
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_SPEED));
+		FormulaEditorFragment.showFragment(view, this, BrickField.ROBOT_ALBERT_SPEED);
+	}
+
+	@Override
+	public void showFormulaEditorToEditFormula(View view) {
+
 	}
 
 	@Override

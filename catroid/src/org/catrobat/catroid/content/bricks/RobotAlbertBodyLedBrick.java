@@ -129,7 +129,12 @@ public class RobotAlbertBodyLedBrick extends FormulaBrick implements View.OnClic
 
 	@Override
 	public void onClick(View view) {
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BODY_LED));
+		FormulaEditorFragment.showFragment(view, this, BrickField.ROBOT_ALBERT_BODY_LED);
+	}
+
+	@Override
+	public void showFormulaEditorToEditFormula(View view) {
+
 	}
 
 	@Override

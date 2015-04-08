@@ -132,7 +132,12 @@ public class RobotAlbertFrontLedBrick extends FormulaBrick implements OnClickLis
 
 	@Override
 	public void onClick(View view) {
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_FRONT_LED));
+		FormulaEditorFragment.showFragment(view, this, BrickField.ROBOT_ALBERT_FRONT_LED);
+	}
+
+	@Override
+	public void showFormulaEditorToEditFormula(View view) {
+
 	}
 
 	@Override

@@ -235,17 +235,22 @@ public class RobotAlbertRgbLedEyeBrick extends FormulaBrick implements OnClickLi
 		}
 		switch (view.getId()) {
 			case R.id.robot_albert_rgb_led_action_red_edit_text:
-				FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_RGB_RED));
+				FormulaEditorFragment.showFragment(view, this, BrickField.ROBOT_ALBERT_RGB_RED);
 				break;
 
 			case R.id.robot_albert_rgb_led_action_green_edit_text:
-				FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_RGB_GREEN));
+				FormulaEditorFragment.showFragment(view, this, BrickField.ROBOT_ALBERT_RGB_GREEN);
 				break;
 
 			case R.id.robot_albert_rgb_led_action_blue_edit_text:
-				FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_RGB_BLUE));
+				FormulaEditorFragment.showFragment(view, this, BrickField.ROBOT_ALBERT_RGB_BLUE);
 				break;
 		}
+	}
+
+	@Override
+	public void showFormulaEditorToEditFormula(View view) {
+
 	}
 
 	@Override

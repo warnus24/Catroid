@@ -127,7 +127,12 @@ public class RobotAlbertBuzzerBrick extends FormulaBrick implements OnClickListe
 
 	@Override
 	public void onClick(View view) {
-		FormulaEditorFragment.showFragment(view, this, getFormulaWithBrickField(BrickField.ROBOT_ALBERT_BUZZER));
+		FormulaEditorFragment.showFragment(view, this, BrickField.ROBOT_ALBERT_BUZZER);
+	}
+
+	@Override
+	public void showFormulaEditorToEditFormula(View view) {
+
 	}
 
 	@Override

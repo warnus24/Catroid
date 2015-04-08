@@ -22,13 +22,17 @@
  */
 package org.catrobat.catroid.stage;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -37,17 +41,20 @@ import android.util.Log;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.bluetooth.BluetoothManager;
+import org.catrobat.catroid.bluetooth.DeviceListActivity;
 import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
 import org.catrobat.catroid.bluetooth.base.BluetoothDeviceService;
 import org.catrobat.catroid.camera.CameraManager;
 import org.catrobat.catroid.common.CatroidService;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.ServiceProvider;
-import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.devices.albert.SensorRobotAlbert;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
+import org.catrobat.catroid.legonxt.LegoNXT;
+import org.catrobat.catroid.legonxt.LegoNXTBtCommunicator;
 import org.catrobat.catroid.ui.BaseActivity;
 import org.catrobat.catroid.ui.dialogs.CustomAlertDialogBuilder;
 import org.catrobat.catroid.utils.LedUtil;
@@ -55,7 +62,6 @@ import org.catrobat.catroid.utils.ToastUtil;
 import org.catrobat.catroid.utils.VibratorUtil;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -64,17 +70,22 @@ import java.util.Locale;
 public class PreStageActivity extends BaseActivity {
 
 	private static final String TAG = PreStageActivity.class.getSimpleName();
+	private static final int REQUEST_ENABLE_BLUETOOTH = 2000;
 	private static final int REQUEST_CONNECT_DEVICE = 1000;
 	public static final int REQUEST_RESOURCES_INIT = 101;
 	public static final int REQUEST_TEXT_TO_SPEECH = 10;
 
-	private int resources = Brick.NO_RESOURCES;
 	private int requiredResourceCounter;
 
+	private static LegoNXT legoNXT;
+	private boolean autoConnect = false;
+	private ProgressDialog connectingProgressDialog;
 	private static TextToSpeech textToSpeech;
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
 
 	private DroneInitializer droneInitializer = null;
+	private boolean nxtActive = false;
+	private boolean robotAlbertActive = false;
 
 	private Intent returnToActivityIntent = null;
 
@@ -89,7 +100,7 @@ public class PreStageActivity extends BaseActivity {
 
 		setContentView(R.layout.activity_prestage);
 
-		int requiredResources = getRequiredRessources();
+		int requiredResources = ProjectManager.getInstance().getCurrentProject().getRequiredResources();
 		requiredResourceCounter = Integer.bitCount(requiredResources);
 
 		if ((requiredResources & Brick.TEXT_TO_SPEECH) > 0) {
@@ -98,7 +109,6 @@ public class PreStageActivity extends BaseActivity {
 			startActivityForResult(checkIntent, REQUEST_TEXT_TO_SPEECH);
 		}
 
-		SensorRobotAlbert sensor = SensorRobotAlbert.getSensorRobotAlbertInstance();
 		if ((requiredResources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
 			BluetoothManager bluetoothManager = new BluetoothManager(this);
 
@@ -108,6 +118,7 @@ public class PreStageActivity extends BaseActivity {
 				ToastUtil.showError(PreStageActivity.this, R.string.notification_blueth_err);
 				resourceFailed();
 			} else if (bluetoothState == BluetoothManager.BLUETOOTH_ALREADY_ON) {
+				nxtActive = true;
 				if (legoNXT == null) {
 					startBluetoothCommunication(true);
 				} else {
@@ -115,8 +126,10 @@ public class PreStageActivity extends BaseActivity {
 				}
 			}
 		}
+		SensorRobotAlbert sensor = SensorRobotAlbert.getSensorRobotAlbertInstance();
 		if ((requiredResources & Brick.BLUETOOTH_ROBOT_ALBERT) > 0) {
 			connectBTDevice(BluetoothDevice.ALBERT, false);
+			robotAlbertActive = true;
 			//set flag to start thread to update distance sensor values in formula editor
 			sensor.setBooleanAlbertBricks(true);
 		} else {
@@ -140,7 +153,7 @@ public class PreStageActivity extends BaseActivity {
 			}
 		}
 
-		if ((requiredResources & Brick.CAMERA_LED ) > 0) {
+		if ((requiredResources & Brick.CAMERA_LED) > 0) {
 			if (!CameraManager.getInstance().isFacingBack()) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setMessage(getString(R.string.led_and_front_camera_warning)).setCancelable(false)
@@ -263,9 +276,10 @@ public class PreStageActivity extends BaseActivity {
 			textToSpeech.stop();
 			textToSpeech.shutdown();
 		}
-
-		ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).pause();
-
+		if (legoNXT != null) {
+			legoNXT.pauseCommunicator();
+		}
+//		ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).pause();
 		if (FaceDetectionHandler.isFaceDetectionRunning()) {
 			FaceDetectionHandler.stopFaceDetection();
 		}
@@ -273,9 +287,10 @@ public class PreStageActivity extends BaseActivity {
 
 	//all resources that should not have to be reinitialized every stage start
 	public static void shutdownPersistentResources() {
-
-		ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).disconnectDevices();
-
+		if (legoNXT != null) {
+			legoNXT.destroyCommunicator();
+			legoNXT = null;
+		}
 		deleteSpeechFiles();
 		if (LedUtil.isActive()) {
 			LedUtil.destroy();
@@ -313,16 +328,14 @@ public class PreStageActivity extends BaseActivity {
 		finish();
 	}
 
-	private int getRequiredRessources() {
-		ArrayList<Sprite> spriteList = (ArrayList<Sprite>) ProjectManager.getInstance().getCurrentProject()
-				.getSpriteList();
-
-		resources = Brick.NO_RESOURCES;
-		for (Sprite sprite : spriteList) {
-			resources |= sprite.getRequiredResources();
-		}
-		return resources;
+	private void startBluetoothCommunication(boolean autoConnect) {
+		connectingProgressDialog = ProgressDialog.show(this, "",
+				getResources().getString(R.string.connecting_please_wait), true);
+		Intent serverIntent = new Intent(this, DeviceListActivity.class);
+		serverIntent.putExtra(DeviceListActivity.AUTO_CONNECT, autoConnect);
+		this.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 	}
+
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -332,6 +345,7 @@ public class PreStageActivity extends BaseActivity {
 			case REQUEST_ENABLE_BLUETOOTH:
 				switch (resultCode) {
 					case Activity.RESULT_OK:
+						nxtActive = true;
 						startBluetoothCommunication(true);
 						break;
 					case Activity.RESULT_CANCELED:
@@ -344,14 +358,29 @@ public class PreStageActivity extends BaseActivity {
 			case REQUEST_CONNECT_DEVICE:
 				switch (resultCode) {
 					case Activity.RESULT_OK:
-						resourceInitialized();
-						break;
+						if (nxtActive == true) {
+							Log.d("LegoNXT", "PreStageActivity:onActivityResult: NXT recognized");
+							legoNXT = new LegoNXT(this, recieveHandler);
+							String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+							autoConnect = data.getExtras().getBoolean(DeviceListActivity.AUTO_CONNECT);
+							legoNXT.startBTCommunicator(address);
+							break;
+						}
+						if (robotAlbertActive == true) {
+							Log.d("RobotAlbert", "PreStageActivity:onActivityResult: Albert recognized");
+							resourceInitialized();
+						}
 
 					case Activity.RESULT_CANCELED:
-						connectingProgressDialog.dismiss();
-						ToastUtil.showError(PreStageActivity.this, R.string.bt_connection_failed);
-						resourceFailed();
-						break;
+						if (nxtActive == true) {
+							connectingProgressDialog.dismiss();
+							ToastUtil.showError(PreStageActivity.this, R.string.bt_connection_failed);
+							resourceFailed();
+							break;
+						}
+						if (robotAlbertActive == true) {
+							resourceFailed();
+						}
 				}
 				break;
 
@@ -450,7 +479,7 @@ public class PreStageActivity extends BaseActivity {
 	};
 
 	private void ledInitialize() {
-		if ( hasFlash() ) {
+		if (hasFlash()) {
 			resourceInitialized();
 			LedUtil.activateLedThread();
 		} else {
