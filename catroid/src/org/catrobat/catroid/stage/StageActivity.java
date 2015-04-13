@@ -33,7 +33,9 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.common.CatroidService;
 import org.catrobat.catroid.common.ScreenValues;
+import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.drone.DroneInitializer;
 import org.catrobat.catroid.facedetection.FaceDetectionHandler;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
@@ -78,7 +80,7 @@ public class StageActivity extends AndroidApplication {
 				this.finish();
 			}
 		}
-
+		ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).initialise();
 		stageAudioFocus = new StageAudioFocus(this);
 	}
 
@@ -107,6 +109,8 @@ public class StageActivity extends AndroidApplication {
 		if (droneConnection != null) {
 			droneConnection.pause();
 		}
+
+		ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).pause();
 	}
 
 	@Override
@@ -121,6 +125,8 @@ public class StageActivity extends AndroidApplication {
 		if (droneConnection != null) {
 			droneConnection.start();
 		}
+
+		ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).start();
 	}
 
 	public void pause() {
@@ -129,6 +135,8 @@ public class StageActivity extends AndroidApplication {
 		LedUtil.pauseLed();
 		VibratorUtil.pauseVibrator();
 		FaceDetectionHandler.pauseFaceDetection();
+
+		ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).pause();
 	}
 
 	public void resume() {
@@ -137,6 +145,8 @@ public class StageActivity extends AndroidApplication {
 		VibratorUtil.resumeVibrator();
 		SensorHandler.startSensorListener(this);
 		FaceDetectionHandler.startFaceDetection(this);
+
+		ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).start();
 	}
 
 	public boolean getResizePossible() {
@@ -191,6 +201,9 @@ public class StageActivity extends AndroidApplication {
 		if (droneConnection != null) {
 			droneConnection.destroy();
 		}
+
+		ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).destroy();
+
 		Log.d(TAG, "Destroy");
 		LedUtil.destroy();
 		VibratorUtil.destroy();

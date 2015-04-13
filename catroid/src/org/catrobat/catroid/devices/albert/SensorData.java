@@ -20,37 +20,40 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.formulaeditor;
 
-import android.util.Log;
+package org.catrobat.catroid.devices.albert;
 
-public enum Sensors {
-	X_ACCELERATION, Y_ACCELERATION, Z_ACCELERATION, ALBERT_ROBOT_DISTANCE_LEFT, ALBERT_ROBOT_DISTANCE_RIGHT, COMPASS_DIRECTION, X_INCLINATION, Y_INCLINATION, LOUDNESS, FACE_DETECTED, FACE_SIZE, FACE_X_POSITION, FACE_Y_POSITION, OBJECT_X(
-			true), OBJECT_Y(true), OBJECT_TRANSPARENCY(true), OBJECT_BRIGHTNESS(true), OBJECT_SIZE(true), OBJECT_ROTATION(
-			true), OBJECT_LAYER(true);
+public final class SensorData {
 
-	public final boolean isObjectSensor;
-	public static final String TAG = Sensors.class.getSimpleName();
+	private static SensorData instance;
 
-	Sensors(boolean isObjectSensor) {
-		this.isObjectSensor = isObjectSensor;
+	private int leftDistanceSensor; // 0 = infinity, 100 = 0mm
+	private int rightDistanceSensor;
+
+	private SensorData() {
 	}
 
-	Sensors() {
-		this.isObjectSensor = false;
-	}
-
-	public static boolean isSensor(String value) {
-		return getSensorByValue(value) != null;
-	}
-
-	public static Sensors getSensorByValue(String value) {
-		try {
-			return valueOf(value);
-		} catch (IllegalArgumentException illegalArgumentException) {
-			Log.e(TAG, Log.getStackTraceString(illegalArgumentException));
+	public static synchronized SensorData getInstance() {
+		if (instance == null) {
+			instance = new SensorData();
 		}
-		return null;
+		return instance;
+	}
+
+	public int getValueOfLeftDistanceSensor() {
+		return leftDistanceSensor;
+	}
+
+	public void setValueOfLeftDistanceSensor(int value) {
+		leftDistanceSensor = value;
+	}
+
+	public int getValueOfRightDistanceSensor() {
+		return rightDistanceSensor;
+	}
+
+	public void setValueOfRightDistanceSensor(int value) {
+		rightDistanceSensor = value;
 	}
 
 }
