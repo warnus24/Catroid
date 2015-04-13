@@ -20,31 +20,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.bluetooth;
 
-import android.content.Context;
+package org.catrobat.catroid.devices.albert;
+
 
 import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
-import org.catrobat.catroid.bluetooth.base.BluetoothDeviceFactory;
-import org.catrobat.catroid.devices.albert.AlbertImpl;
 
-public class BluetoothDeviceFactoryImpl implements BluetoothDeviceFactory {
+public interface Albert extends BluetoothDevice {
 
-	@Override
-	public <T extends BluetoothDevice> BluetoothDevice createDevice(Class<T> service, Context applicationContext) {
+	void move(int motor, int speed);
 
-//		if (service == BluetoothDevice.LEGO_NXT) {
-//			return new LegoNXTImpl(applicationContext);
-//		}
+	void setBuzzer(int frequency);
 
-        if (service == BluetoothDevice.ALBERT) {
-            return new AlbertImpl();
-        }
+	void setFrontLed(int status);
 
-//        if (service == BTDeviceService.ARDUINO) {
-//            return new Arduino();
-//        }
+	void setBodyLed(int value);
 
-		return null; // may throw exception
-	}
+	void setRgbLedEye(int eye, int red, int green, int blue);
+
+	int getDistanceLeft();
+
+	int getDistanceRight();
 }
